@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --font-space-grotesk: 'Space Grotesk', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --font-jetbrains-mono: 'JetBrains Mono', monospace;
+
+  --color-bg: #0D0D0D;
+  --color-text: #F5F5F0;
+  --color-primary: #7C3AED;
+  --color-secondary: #4338CA;
+  --color-accent: #06B6D4;
+  --color-slate: #64748B;
+  --color-card: #1A1A2E;
+  --color-elevated: #111118;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-inter);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-space-grotesk);
+  line-height: 1.15;
+}
+
+code, pre, .font-mono {
+  font-family: var(--font-jetbrains-mono);
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(124, 58, 237, 0.3);
+  color: #F5F5F0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0D0D0D;
+}
+::-webkit-scrollbar-thumb {
+  background: #4338CA;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7C3AED;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #7C3AED 0%, #4338CA 40%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient border utility */
+.gradient-border {
+  position: relative;
+  background: linear-gradient(#1A1A2E, #1A1A2E) padding-box,
+              linear-gradient(135deg, #7C3AED, #06B6D4) border-box;
+  border: 1px solid transparent;
+}
+
+/* Grid pattern background */
+.bg-grid {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(255 255 255 / 0.03)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+}
+
+/* Section padding */
+.section-padding {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(26, 26, 46, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Agent glow effect */
+.agent-glow-nova { box-shadow: 0 0 40px rgba(124, 58, 237, 0.2); }
+.agent-glow-atlas { box-shadow: 0 0 40px rgba(37, 99, 235, 0.2); }
+.agent-glow-nexus { box-shadow: 0 0 40px rgba(234, 88, 12, 0.2); }
+.agent-glow-pixel { box-shadow: 0 0 40px rgba(6, 182, 212, 0.2); }
+.agent-glow-core { box-shadow: 0 0 40px rgba(22, 163, 74, 0.2); }
+.agent-glow-pulse { box-shadow: 0 0 40px rgba(236, 72, 153, 0.2); }
+.agent-glow-sage { box-shadow: 0 0 40px rgba(217, 119, 6, 0.2); }
+
+/* Stagger animation delays */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
+.stagger-7 { animation-delay: 0.7s; }
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid #7C3AED;
+  outline-offset: 2px;
+}

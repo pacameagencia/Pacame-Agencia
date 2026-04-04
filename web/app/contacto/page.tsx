@@ -1,0 +1,315 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import {
+  Calendar, Mail, Phone, MapPin, Clock, ArrowRight,
+  Send, CheckCircle2, Loader2,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const services = [
+  "Desarrollo Web",
+  "SEO",
+  "Redes Sociales",
+  "Publicidad Digital (Ads)",
+  "Branding",
+  "App / Software a medida",
+  "Embudo de ventas",
+  "Otro",
+];
+
+const budgets = [
+  "Menos de 500 €",
+  "500 – 1.500 €",
+  "1.500 – 3.000 €",
+  "3.000 – 5.000 €",
+  "Más de 5.000 €",
+  "No estoy seguro",
+];
+
+export default function ContactoPage() {
+  const [formState, setFormState] = useState<"idle" | "sending" | "sent">("idle");
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+
+  function toggleService(service: string) {
+    setSelectedServices((prev) =>
+      prev.includes(service) ? prev.filter((s) => s !== service) : [...prev, service]
+    );
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setFormState("sending");
+    // Simulated — replace with real form submission (Supabase, Resend, etc.)
+    setTimeout(() => setFormState("sent"), 1500);
+  }
+
+  return (
+    <div className="bg-pacame-black min-h-screen">
+      {/* Hero */}
+      <section className="relative pt-32 pb-16 overflow-hidden">
+        <div className="absolute inset-0 bg-grid" />
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-electric-violet/15 rounded-full blur-[140px] pointer-events-none" />
+
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="font-mono text-electric-violet text-sm mb-4 uppercase tracking-widest">
+            Contacto
+          </p>
+          <h1 className="font-heading font-bold text-[clamp(2.5rem,5vw,4rem)] text-pacame-white leading-tight mb-6">
+            Cuéntanos tu problema.
+            <br />
+            <span className="gradient-text">Nosotros lo resolvemos.</span>
+          </h1>
+          <p className="text-lg text-pacame-white/60 font-body max-w-2xl mx-auto">
+            30 minutos. Sin compromiso. Sin presupuestos ciegos.
+            Escuchamos primero, cotizamos después.
+          </p>
+        </div>
+      </section>
+
+      {/* Form + info */}
+      <section className="section-padding bg-dark-elevated">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
+            {/* Form */}
+            <div className="lg:col-span-3">
+              {formState === "sent" ? (
+                <div className="rounded-3xl glass p-10 sm:p-14 text-center">
+                  <div className="w-16 h-16 rounded-full bg-lime-pulse/20 flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle2 className="w-8 h-8 text-lime-pulse" />
+                  </div>
+                  <h2 className="font-heading font-bold text-2xl text-pacame-white mb-3">
+                    Mensaje recibido
+                  </h2>
+                  <p className="text-pacame-white/60 font-body mb-6">
+                    Pablo te responderá en menos de 2 horas. Si es urgente,
+                    escríbenos a{" "}
+                    <a href="mailto:hola@pacame.es" className="text-electric-violet hover:underline">
+                      hola@pacame.es
+                    </a>
+                  </p>
+                  <Button variant="outline" asChild>
+                    <Link href="/">Volver al inicio</Link>
+                  </Button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-sm font-body text-pacame-white/70 mb-2">
+                        Nombre *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Tu nombre"
+                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-body text-pacame-white/70 mb-2">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="tu@empresa.com"
+                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-body text-pacame-white/70 mb-2">
+                      Empresa
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Nombre de tu empresa (opcional)"
+                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                    />
+                  </div>
+
+                  {/* Service selector */}
+                  <div>
+                    <label className="block text-sm font-body text-pacame-white/70 mb-3">
+                      ¿Qué necesitas? (selecciona uno o varios)
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {services.map((service) => (
+                        <button
+                          key={service}
+                          type="button"
+                          onClick={() => toggleService(service)}
+                          className={`px-4 py-2 rounded-full text-sm font-body border transition-all duration-200 ${
+                            selectedServices.includes(service)
+                              ? "bg-electric-violet/20 border-electric-violet text-electric-violet"
+                              : "bg-transparent border-white/10 text-pacame-white/50 hover:border-white/20 hover:text-pacame-white/70"
+                          }`}
+                        >
+                          {service}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Budget */}
+                  <div>
+                    <label className="block text-sm font-body text-pacame-white/70 mb-2">
+                      Presupuesto orientativo
+                    </label>
+                    <select className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors appearance-none">
+                      <option value="">Selecciona un rango</option>
+                      {budgets.map((b) => (
+                        <option key={b} value={b}>
+                          {b}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Message */}
+                  <div>
+                    <label className="block text-sm font-body text-pacame-white/70 mb-2">
+                      Cuéntanos tu proyecto *
+                    </label>
+                    <textarea
+                      required
+                      rows={5}
+                      placeholder="Describe brevemente qué necesitas, para cuándo y cualquier detalle que nos ayude a entenderte mejor..."
+                      className="w-full px-4 py-3 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors resize-none"
+                    />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    variant="gradient"
+                    size="xl"
+                    className="w-full sm:w-auto group"
+                    disabled={formState === "sending"}
+                  >
+                    {formState === "sending" ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Enviando...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        Enviar mensaje
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
+                  </Button>
+
+                  <p className="text-xs text-pacame-white/30 font-body">
+                    Al enviar este formulario aceptas nuestra{" "}
+                    <Link href="/privacidad" className="text-electric-violet/60 hover:underline">
+                      política de privacidad
+                    </Link>
+                    .
+                  </p>
+                </form>
+              )}
+            </div>
+
+            {/* Sidebar info */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Direct contact */}
+              <div className="glass rounded-2xl p-6">
+                <h3 className="font-heading font-bold text-lg text-pacame-white mb-5">
+                  Contacto directo
+                </h3>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-electric-violet/15 flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-4 h-4 text-electric-violet" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-pacame-white/40 font-body">Email</p>
+                      <a href="mailto:hola@pacame.es" className="text-sm text-pacame-white font-body hover:text-electric-violet transition-colors">
+                        hola@pacame.es
+                      </a>
+                    </div>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-neon-cyan/15 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-4 h-4 text-neon-cyan" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-pacame-white/40 font-body">Ubicación</p>
+                      <p className="text-sm text-pacame-white font-body">Madrid, España (remoto)</p>
+                    </div>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-lime-pulse/15 flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-4 h-4 text-lime-pulse" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-pacame-white/40 font-body">Tiempo de respuesta</p>
+                      <p className="text-sm text-pacame-white font-body">Menos de 2 horas</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              {/* FAQ mini */}
+              <div className="glass rounded-2xl p-6">
+                <h3 className="font-heading font-bold text-lg text-pacame-white mb-5">
+                  Preguntas frecuentes
+                </h3>
+                <div className="space-y-5">
+                  {[
+                    {
+                      q: "¿Cuánto cuesta una web?",
+                      a: "Desde 300€ una landing page hasta 15.000€ un SaaS completo. Te damos precio exacto en 24h.",
+                    },
+                    {
+                      q: "¿Son agentes IA de verdad?",
+                      a: "Sí. Cada agente es una IA especializada con personalidad y rol propio. Pablo supervisa todo.",
+                    },
+                    {
+                      q: "¿Cuánto tardáis en entregar?",
+                      a: "Landing en 2-3 días, web corporativa en 5-7 días, proyectos complejos en 2-6 semanas.",
+                    },
+                    {
+                      q: "¿Qué pasa si no me gusta?",
+                      a: "Trabajamos con rondas de revisión. Si al final no estás satisfecho, te devolvemos el dinero.",
+                    },
+                  ].map((faq) => (
+                    <div key={faq.q}>
+                      <p className="text-sm font-heading font-semibold text-pacame-white mb-1">
+                        {faq.q}
+                      </p>
+                      <p className="text-xs text-pacame-white/50 font-body leading-relaxed">
+                        {faq.a}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Trust */}
+              <div className="rounded-2xl bg-brand-gradient p-6 relative overflow-hidden">
+                <div className="absolute inset-0 bg-black/20" />
+                <div className="relative z-10">
+                  <Calendar className="w-6 h-6 text-white mb-3" />
+                  <h3 className="font-heading font-bold text-lg text-white mb-2">
+                    ¿Prefieres hablar directamente?
+                  </h3>
+                  <p className="text-sm text-white/80 font-body mb-4">
+                    Agenda una llamada de 30 minutos con Pablo. Sin compromiso.
+                  </p>
+                  <Button variant="secondary" size="sm" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+                    Agendar llamada gratuita
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
