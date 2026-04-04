@@ -1,0 +1,300 @@
+{
+  "name": "PACAME — WhatsApp Inbound (Flujo completo)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-webhook",
+        "options": {}
+      },
+      "id": "whatsapp-webhook",
+      "name": "WhatsApp Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraer datos del mensaje de WhatsApp Cloud API\nconst body = $input.first().json.body || $input.first().json;\nconst entry = body.entry?.[0];\nconst changes = entry?.changes?.[0];\nconst value = changes?.value;\n\nif (!value?.messages?.[0]) {\n  return []; // No es un mensaje, es verificacion o status\n}\n\nconst msg = value.messages[0];\nconst contact = value.contacts?.[0];\n\nreturn [{\n  json: {\n    phone: msg.from,\n    name: contact?.profile?.name || 'Desconocido',\n    type: msg.type, // text, audio, image, document\n    text: msg.text?.body || '',\n    media_id: msg.audio?.id || msg.image?.id || msg.document?.id || null,\n    timestamp: msg.timestamp,\n    wa_message_id: msg.id\n  }\n}];"
+      },
+      "id": "parse-message",
+      "name": "Parsear Mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/leads?phone=eq.{{ $json.phone }}&select=*&limit=1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "check-lead",
+      "name": "Buscar Lead por Telefono",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, -100]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/clients?phone=eq.{{ $('Parsear Mensaje').item.json.phone }}&select=*&limit=1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "check-client",
+      "name": "Buscar Cliente por Telefono",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 100]
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $('Buscar Lead por Telefono').first().json;\nconst client = $('Buscar Cliente por Telefono').first().json;\nconst msg = $('Parsear Mensaje').first().json;\n\nlet contactType = 'new';\nlet contactData = {};\nlet contactId = null;\n\nif (client && client.id) {\n  contactType = 'client';\n  contactData = client;\n  contactId = client.id;\n} else if (lead && lead.id) {\n  contactType = 'lead';\n  contactData = lead;\n  contactId = lead.id;\n}\n\nreturn [{\n  json: {\n    ...msg,\n    contact_type: contactType,\n    contact_data: contactData,\n    contact_id: contactId\n  }\n}];"
+      },
+      "id": "classify-contact",
+      "name": "Clasificar Contacto",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "conditions": [
+            {
+              "leftValue": "={{ $json.contact_type }}",
+              "rightValue": "new",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ]
+        }
+      },
+      "id": "is-new-contact",
+      "name": "Es nuevo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [880, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/leads",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=representation" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"name\": \"{{ $json.name }}\",\n  \"phone\": \"{{ $json.phone }}\",\n  \"source\": \"whatsapp\",\n  \"problem\": \"{{ $json.text }}\"\n}",
+        "options": {}
+      },
+      "id": "create-lead",
+      "name": "Crear Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, -100]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/conversations?or=(lead_id.eq.{{ $json.contact_id }},client_id.eq.{{ $json.contact_id }})&order=created_at.desc&limit=20&select=sender,message,created_at",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "load-history",
+      "name": "Cargar Historial",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 100]
+    },
+    {
+      "parameters": {
+        "jsCode": "const msg = $('Clasificar Contacto').first().json;\nconst history = $('Cargar Historial').first().json || [];\nconst historyFormatted = Array.isArray(history) \n  ? history.map(h => `${h.sender}: ${h.message}`).reverse().join('\\n')\n  : '';\n\nconst contactData = msg.contact_data || {};\n\nconst contextBlock = `\nCONTEXTO DEL CONTACTO:\n- Tipo: ${msg.contact_type}\n- Nombre: ${msg.name || contactData.name || 'Desconocido'}\n- Negocio: ${contactData.business_name || 'No disponible'}\n- Tipo negocio: ${contactData.business_type || 'No disponible'}\n- Plan: ${contactData.plan || 'Sin plan'}\n- Estado: ${contactData.status || msg.contact_type}\n\nHISTORIAL RECIENTE:\n${historyFormatted || '(Primera conversacion)'}\n`;\n\nreturn [{\n  json: {\n    context: contextBlock,\n    user_message: msg.text,\n    phone: msg.phone,\n    name: msg.name,\n    contact_type: msg.contact_type,\n    contact_id: msg.contact_id\n  }\n}];"
+      },
+      "id": "build-context",
+      "name": "Construir Contexto",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1320, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{ $env.CLAUDE_API_KEY }}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-sonnet-4-6\",\n  \"max_tokens\": 1024,\n  \"system\": \"Eres PACAME, una entidad de inteligencia artificial que resuelve problemas digitales para empresas. Fuiste creado por Pablo Calleja.\\n\\nCOMO HABLAS:\\n- Espanol de Espana. Tutea SIEMPRE.\\n- Frases cortas. Verbos activos. Sin relleno.\\n- Nunca digas: '¿En que puedo ayudarte?', 'Estoy aqui para asistirte', '¡Excelente pregunta!'\\n- Si di: 'Cuentame', 'Mira', 'Te soy sincero', 'Dejame ver', 'Fijate'.\\n- Emojis con moderacion: maximo 1-2 por mensaje.\\n- Expresiones naturales: 'mola', 'ojo con esto', 'va, te cuento', 'hecho'.\\n\\nCOMO PIENSAS:\\n- Diagnostica el problema REAL, no el que el cliente verbaliza.\\n- Propone basado en impacto de negocio.\\n- Se honesto con lo que no va a funcionar.\\n- Ofrece siempre un siguiente paso accionable.\\n\\nREGLAS:\\n- Si preguntan si eres IA: 'Si, soy una IA creada por Pablo Calleja.'\\n- Si piden hablar con humano: conecta con Pablo.\\n- Si hay riesgo legal/financiero: 'Voy a consultar esto con Pablo.'\\n\\n{{ $json.context }}\",\n  \"messages\": [{\"role\": \"user\", \"content\": \"{{ $json.user_message }}\"}]\n}",
+        "options": {}
+      },
+      "id": "claude-response",
+      "name": "Claude (PACAME)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1540, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json;\nconst text = response.content?.[0]?.text || 'Disculpa, dame un momento...';\nconst tokens_in = response.usage?.input_tokens || 0;\nconst tokens_out = response.usage?.output_tokens || 0;\n\n// Delay natural basado en longitud de respuesta\nconst isComplex = text.length > 300;\nconst delayMs = isComplex \n  ? Math.floor(Math.random() * 75000) + 45000  // 45-120s\n  : Math.floor(Math.random() * 30000) + 15000; // 15-45s\n\nreturn [{\n  json: {\n    response_text: text,\n    tokens_in,\n    tokens_out,\n    delay_ms: delayMs\n  }\n}];"
+      },
+      "id": "process-response",
+      "name": "Procesar Respuesta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1760, 0]
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.delay_ms }}",
+        "unit": "milliseconds"
+      },
+      "id": "natural-delay",
+      "name": "Delay Natural",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1980, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{ $env.WHATSAPP_PHONE_ID }}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WHATSAPP_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Parsear Mensaje').item.json.phone }}\",\n  \"type\": \"text\",\n  \"text\": { \"body\": \"{{ $('Procesar Respuesta').item.json.response_text }}\" }\n}",
+        "options": {}
+      },
+      "id": "send-whatsapp",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2200, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/conversations",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=[\n  {\n    \"lead_id\": \"{{ $('Construir Contexto').item.json.contact_id }}\",\n    \"channel\": \"whatsapp\",\n    \"direction\": \"inbound\",\n    \"sender\": \"lead\",\n    \"message\": \"{{ $('Construir Contexto').item.json.user_message }}\"\n  },\n  {\n    \"lead_id\": \"{{ $('Construir Contexto').item.json.contact_id }}\",\n    \"channel\": \"whatsapp\",\n    \"direction\": \"outbound\",\n    \"sender\": \"pacame\",\n    \"message\": \"{{ $('Procesar Respuesta').item.json.response_text }}\"\n  }\n]",
+        "options": {}
+      },
+      "id": "save-conversation",
+      "name": "Guardar en Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2200, 200]
+    }
+  ],
+  "connections": {
+    "WhatsApp Webhook": {
+      "main": [[{ "node": "Parsear Mensaje", "type": "main", "index": 0 }]]
+    },
+    "Parsear Mensaje": {
+      "main": [
+        [
+          { "node": "Buscar Lead por Telefono", "type": "main", "index": 0 },
+          { "node": "Buscar Cliente por Telefono", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Buscar Lead por Telefono": {
+      "main": [[{ "node": "Clasificar Contacto", "type": "main", "index": 0 }]]
+    },
+    "Buscar Cliente por Telefono": {
+      "main": [[{ "node": "Clasificar Contacto", "type": "main", "index": 0 }]]
+    },
+    "Clasificar Contacto": {
+      "main": [[{ "node": "Es nuevo?", "type": "main", "index": 0 }]]
+    },
+    "Es nuevo?": {
+      "main": [
+        [{ "node": "Crear Lead", "type": "main", "index": 0 }],
+        [{ "node": "Cargar Historial", "type": "main", "index": 0 }]
+      ]
+    },
+    "Crear Lead": {
+      "main": [[{ "node": "Construir Contexto", "type": "main", "index": 0 }]]
+    },
+    "Cargar Historial": {
+      "main": [[{ "node": "Construir Contexto", "type": "main", "index": 0 }]]
+    },
+    "Construir Contexto": {
+      "main": [[{ "node": "Claude (PACAME)", "type": "main", "index": 0 }]]
+    },
+    "Claude (PACAME)": {
+      "main": [[{ "node": "Procesar Respuesta", "type": "main", "index": 0 }]]
+    },
+    "Procesar Respuesta": {
+      "main": [[{ "node": "Delay Natural", "type": "main", "index": 0 }]]
+    },
+    "Delay Natural": {
+      "main": [
+        [
+          { "node": "Enviar WhatsApp", "type": "main", "index": 0 },
+          { "node": "Guardar en Supabase", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Madrid"
+  },
+  "tags": [{ "name": "semana-1" }, { "name": "whatsapp" }, { "name": "core" }]
+}

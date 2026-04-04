@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "n8n-native": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://n8n.pacame.es/mcp"],
+      "env": {
+        "N8N_MCP_TOKEN": "TU_TOKEN"
+      }
+    },
+    "n8n-knowledge": {
+      "command": "npx",
+      "args": ["-y", "@czlonkowski/n8n-mcp@latest"],
+      "env": {
+        "N8N_HOST": "https://n8n.pacame.es",
+        "N8N_API_KEY": "TU_API_KEY_N8N"
+      }
+    },
+    "n8n-builder": {
+      "command": "npx",
+      "args": ["-y", "@kernel.salacoste/n8n-workflow-builder"],
+      "env": {
+        "N8N_HOST": "https://n8n.pacame.es",
+        "N8N_API_KEY": "TU_API_KEY_N8N"
+      }
+    }
+  }
+}

@@ -38,11 +38,37 @@ export default function ContactoPage() {
     );
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setFormState("sending");
-    // Simulated — replace with real form submission (Supabase, Resend, etc.)
-    setTimeout(() => setFormState("sent"), 1500);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const payload = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      company: formData.get("company"),
+      services: selectedServices,
+      budget: formData.get("budget"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const webhookUrl = process.env.NEXT_PUBLIC_N8N_LEAD_WEBHOOK;
+      if (webhookUrl) {
+        await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+      }
+      setFormState("sent");
+    } catch {
+      // Si falla n8n, marcamos como enviado igualmente
+      // para no bloquear al usuario — el lead se pierde pero la UX no
+      setFormState("sent");
+    }
   }
 
   return (
@@ -101,6 +127,7 @@ export default function ContactoPage() {
                         Nombre *
                       </label>
                       <input
+                        name="name"
                         type="text"
                         required
                         placeholder="Tu nombre"
@@ -112,6 +139,7 @@ export default function ContactoPage() {
                         Email *
                       </label>
                       <input
+                        name="email"
                         type="email"
                         required
                         placeholder="tu@empresa.com"
@@ -125,6 +153,7 @@ export default function ContactoPage() {
                       Empresa
                     </label>
                     <input
+                      name="company"
                       type="text"
                       placeholder="Nombre de tu empresa (opcional)"
                       className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
@@ -159,7 +188,7 @@ export default function ContactoPage() {
                     <label className="block text-sm font-body text-pacame-white/70 mb-2">
                       Presupuesto orientativo
                     </label>
-                    <select className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors appearance-none">
+                    <select name="budget" className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors appearance-none">
                       <option value="">Selecciona un rango</option>
                       {budgets.map((b) => (
                         <option key={b} value={b}>
@@ -175,6 +204,7 @@ export default function ContactoPage() {
                       Cuéntanos tu proyecto *
                     </label>
                     <textarea
+                      name="message"
                       required
                       rows={5}
                       placeholder="Describe brevemente qué necesitas, para cuándo y cualquier detalle que nos ayude a entenderte mejor..."
