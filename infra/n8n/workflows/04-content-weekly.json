@@ -1,0 +1,171 @@
+{
+  "name": "PACAME — Generacion Contenido Semanal (Lunes 08:00)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "triggerAtHour": 8, "triggerAtDay": 1 }] }
+      },
+      "id": "cron-monday",
+      "name": "Lunes 08:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/clients?status=eq.active&select=id,business_name,business_type,brand_guidelines,plan",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-active-clients",
+      "name": "Clientes Activos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "split-clients",
+      "name": "Por cada cliente",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{ $env.CLAUDE_API_KEY }}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-sonnet-4-6\",\n  \"max_tokens\": 2048,\n  \"system\": \"Eres pulse.strategy, el subagente de planificacion de contenido de PACAME.\\n\\nGenera un calendario semanal de contenido para redes sociales.\\nResponde SOLO en JSON valido con esta estructura:\\n{\\n  \\\"posts\\\": [\\n    {\\n      \\\"platform\\\": \\\"instagram\\\",\\n      \\\"content_type\\\": \\\"post|carousel|reel|story\\\",\\n      \\\"title\\\": \\\"titulo corto\\\",\\n      \\\"topic\\\": \\\"tema del post\\\",\\n      \\\"angle\\\": \\\"angulo creativo\\\",\\n      \\\"day\\\": \\\"lunes|martes|...\\\",\\n      \\\"time\\\": \\\"10:00\\\",\\n      \\\"cta\\\": \\\"llamada a la accion\\\"\\n    }\\n  ]\\n}\\n\\nGenera 4 posts variados (mezcla formatos). Que sean relevantes para el sector y la semana actual.\",\n  \"messages\": [{\"role\": \"user\", \"content\": \"Cliente: {{ $json.business_name }} ({{ $json.business_type }}).\\nPlan: {{ $json.plan }}.\\nGuidelines: {{ JSON.stringify($json.brand_guidelines) }}.\\n\\nGenera el calendario semanal.\"}]\n}",
+        "options": {}
+      },
+      "id": "pulse-strategy",
+      "name": "pulse.strategy",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json;\nconst text = response.content?.[0]?.text || '{\"posts\":[]}';\nlet calendar;\ntry {\n  calendar = JSON.parse(text);\n} catch(e) {\n  const match = text.match(/\\{[\\s\\S]*\\}/);\n  calendar = match ? JSON.parse(match[0]) : { posts: [] };\n}\n\nconst client = $('Por cada cliente').first().json;\nreturn calendar.posts.map(post => ({\n  json: { ...post, client_id: client.id, client_name: client.business_name, brand_guidelines: client.brand_guidelines }\n}));"
+      },
+      "id": "parse-calendar",
+      "name": "Parsear Calendario",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{ $env.CLAUDE_API_KEY }}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-haiku-4-5-20251001\",\n  \"max_tokens\": 512,\n  \"system\": \"Eres copy.social, el subagente de copywriting para redes sociales de PACAME.\\n\\nEscribe el copy completo para un post de redes sociales.\\nResponde SOLO en JSON:\\n{\\n  \\\"body\\\": \\\"texto del post con emojis y saltos de linea\\\",\\n  \\\"hashtags\\\": \\\"#hashtag1 #hashtag2 (max 10)\\\",\\n  \\\"cta\\\": \\\"llamada a la accion\\\",\\n  \\\"image_prompt\\\": \\\"descripcion para generar imagen con IA\\\"\\n}\",\n  \"messages\": [{\"role\": \"user\", \"content\": \"Plataforma: {{ $json.platform }}.\\nFormato: {{ $json.content_type }}.\\nTema: {{ $json.topic }}.\\nAngulo: {{ $json.angle }}.\\nCTA: {{ $json.cta }}.\\nTono: cercano, espanol de Espana.\\n\\nEscribe el post.\"}]\n}",
+        "options": {}
+      },
+      "id": "copy-social",
+      "name": "copy.social",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json;\nconst text = response.content?.[0]?.text || '{}';\nlet copy;\ntry {\n  copy = JSON.parse(text);\n} catch(e) {\n  const match = text.match(/\\{[\\s\\S]*\\}/);\n  copy = match ? JSON.parse(match[0]) : { body: 'Error generando copy', hashtags: '', cta: '', image_prompt: '' };\n}\n\nconst post = $('Parsear Calendario').first().json;\nconst weekNum = Math.ceil((new Date().getDate()) / 7);\n\nreturn [{\n  json: {\n    client_id: post.client_id,\n    platform: post.platform,\n    content_type: post.content_type,\n    title: post.title,\n    body: copy.body,\n    hashtags: copy.hashtags,\n    cta: copy.cta,\n    image_prompt: copy.image_prompt,\n    status: 'pending_review',\n    batch_id: `${post.client_id}_w${weekNum}`,\n    subagents_used: ['pulse.strategy', 'copy.social']\n  }\n}];"
+      },
+      "id": "prepare-insert",
+      "name": "Preparar Insert",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1320, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/content",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=representation" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "insert-content",
+      "name": "Guardar en Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1540, 0]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "=🟢 Contenido semanal generado\n\n📋 {{ $('Por cada cliente').first().json.business_name }}\n📊 {{ $('Parsear Calendario').all().length }} posts\n\n/approve para aprobar",
+        "additionalFields": { "parse_mode": "Markdown" }
+      },
+      "id": "notify-pablo",
+      "name": "Notificar Pablo",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1760, 0],
+      "credentials": {
+        "telegramApi": {
+          "id": "TELEGRAM_CRED_ID",
+          "name": "PACAME Telegram Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Lunes 08:00": { "main": [[{ "node": "Clientes Activos", "type": "main", "index": 0 }]] },
+    "Clientes Activos": { "main": [[{ "node": "Por cada cliente", "type": "main", "index": 0 }]] },
+    "Por cada cliente": { "main": [[{ "node": "pulse.strategy", "type": "main", "index": 0 }]] },
+    "pulse.strategy": { "main": [[{ "node": "Parsear Calendario", "type": "main", "index": 0 }]] },
+    "Parsear Calendario": { "main": [[{ "node": "copy.social", "type": "main", "index": 0 }]] },
+    "copy.social": { "main": [[{ "node": "Preparar Insert", "type": "main", "index": 0 }]] },
+    "Preparar Insert": { "main": [[{ "node": "Guardar en Supabase", "type": "main", "index": 0 }]] },
+    "Guardar en Supabase": { "main": [[{ "node": "Notificar Pablo", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1", "timezone": "Europe/Madrid" },
+  "tags": [{ "name": "semana-3" }, { "name": "content" }, { "name": "cron" }]
+}
