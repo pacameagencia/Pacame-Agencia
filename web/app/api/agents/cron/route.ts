@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { logAgentActivity, updateAgentStatus, incrementAgentTasks } from "@/lib/agent-logger";
 import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
+import { verifyInternalAuth } from "@/lib/api-auth";
+import { createServerSupabase } from "@/lib/supabase/server";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const supabase = createServerSupabase();
 
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
@@ -46,14 +44,14 @@ function extractJSON(text: string): Record<string, unknown> | null {
  */
 // GET handler for Vercel cron
 export async function GET(request: NextRequest) {
-  const authHeader = request.headers.get("authorization");
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}` && process.env.CRON_SECRET) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const authError = verifyInternalAuth(request);
+  if (authError) return authError;
   return runAgentCron();
 }
 
 export async function POST(request: NextRequest) {
+  const authError = verifyInternalAuth(request);
+  if (authError) return authError;
   const body = await request.json();
   const { agent } = body;
   return runAgentCron(agent);
@@ -142,7 +140,7 @@ Responde SOLO JSON:
                   `<strong>Score:</strong> ${analysis.score}/5\n` +
                   `<strong>Accion:</strong> ${analysis.priority_action}\n` +
                   `<strong>Valor estimado:</strong> ${analysis.estimated_value_onetime}€ puntual + ${analysis.estimated_value_monthly}€/mes`,
-                  { cta: "Ver en Dashboard", ctaUrl: "https://pacameagencia.com/dashboard/leads" }
+                  { cta: "Ver en Dashboard", ctaUrl: "https://app.pacameagencia.com/dashboard/leads" }
                 )
               );
             }
@@ -612,7 +610,7 @@ Responde SOLO JSON: {"subject":"asunto","body":"cuerpo del email (max 200 palabr
       const endpoints = [
         { name: "homepage", url: "https://pacameagencia.com" },
         { name: "contacto", url: "https://pacameagencia.com/contacto" },
-        { name: "api_leads", url: "https://pacameagencia.com/api/leads" },
+        { name: "api_leads", url: "https://app.pacameagencia.com/api/leads" },
       ];
 
       for (const ep of endpoints) {
@@ -1126,7 +1124,7 @@ Responde en texto plano, 2 frases max. Primera frase: que esta pasando. Segunda:
             `<strong>Lens detecto anomalias en los KPIs:</strong>\n\n` +
             anomalies.map(a => `• ${a}`).join("\n") +
             `\n\nRevisa el dashboard para mas detalles.`,
-            { cta: "Ver Dashboard", ctaUrl: "https://pacameagencia.com/dashboard" }
+            { cta: "Ver Dashboard", ctaUrl: "https://app.pacameagencia.com/dashboard" }
           )
         );
       }
@@ -1169,6 +1167,91 @@ Responde en texto plano, 2 frases max. Primera frase: que esta pasando. Segunda:
     } catch {
       updateAgentStatus("lens", "idle");
       results.lens = { error: "failed" };
+    }
+  }
+
+  // =============================================
+  // COMMERCIAL PIPELINE — Auto follow-up outreach
+  // =============================================
+  if (!agent || agent === "commercial") {
+    try {
+      const now = new Date();
+      const threeDaysAgo = new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString();
+      const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      let followUpsSent = 0;
+
+      const { data: contactedLeads } = await supabase
+        .from("leads")
+        .select("id, name, email, sage_analysis")
+        .eq("source", "outbound")
+        .eq("status", "contacted")
+        .limit(50);
+
+      for (const lead of contactedLeads || []) {
+        const analysis = (lead.sage_analysis || {}) as Record<string, unknown>;
+        const lastOutreach = analysis.last_outreach_at as string | undefined;
+        const outreachCount = (analysis.outreach_count || 0) as number;
+        const outreachEmails = analysis.outreach_emails as Record<string, { subject: string; body: string }> | undefined;
+
+        if (!lastOutreach || !outreachEmails || !lead.email) continue;
+
+        const nextEmailNumber = outreachCount + 1;
+        if (nextEmailNumber > 3) continue;
+
+        const minDelay = nextEmailNumber === 2 ? threeDaysAgo : sevenDaysAgo;
+        if (lastOutreach > minDelay) continue;
+
+        // Send the next follow-up email inline
+        const emailKey = `email_${nextEmailNumber}`;
+        const emailData = outreachEmails[emailKey];
+        if (!emailData) continue;
+
+        try {
+          const emailId = await sendEmail({
+            to: lead.email,
+            subject: emailData.subject,
+            html: wrapEmailTemplate(emailData.body, {
+              cta: "Diagnostico gratuito",
+              ctaUrl: "https://app.pacameagencia.com/contacto",
+            }),
+            tags: [
+              { name: "type", value: "outreach" },
+              { name: "lead_id", value: lead.id },
+              { name: "email_number", value: String(nextEmailNumber) },
+            ],
+          });
+
+          if (emailId) {
+            const outreachHistory = (analysis.outreach_history || []) as Array<Record<string, unknown>>;
+            outreachHistory.push({ email_number: nextEmailNumber, sent_at: now.toISOString(), resend_id: emailId });
+            await supabase.from("leads").update({
+              sage_analysis: {
+                ...analysis,
+                outreach_history: outreachHistory,
+                last_outreach_at: now.toISOString(),
+                outreach_count: outreachHistory.length,
+              },
+            }).eq("id", lead.id);
+            followUpsSent++;
+          }
+        } catch {
+          // Non-blocking per lead
+        }
+
+        await new Promise((r) => setTimeout(r, 500));
+      }
+
+      logAgentActivity({
+        agentId: "sage",
+        type: "task_completed",
+        title: "Pipeline comercial procesado",
+        description: `Follow-ups automaticos enviados: ${followUpsSent}`,
+        metadata: { followups: followUpsSent },
+      });
+
+      results.commercial = { followups_sent: followUpsSent };
+    } catch {
+      results.commercial = { error: "failed" };
     }
   }
 
