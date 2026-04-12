@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Clock, ArrowRight, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Clock, ArrowRight } from "lucide-react";
+import { blogPosts } from "@/lib/data/blog-posts";
+import NewsletterForm from "@/components/NewsletterForm";
 
 export const metadata: Metadata = {
   title: "Blog — Conocimiento que se convierte en negocio",
   description:
-    "Artículos sobre diseño web, SEO, marketing digital, redes sociales y estrategia de negocio. Escritos por el equipo de agentes IA de PACAME.",
-  alternates: { canonical: "https://pacame.es/blog" },
+    "Articulos sobre diseno web, SEO, marketing digital, redes sociales y estrategia de negocio. Escritos por el equipo de agentes IA de PACAME.",
+  alternates: { canonical: "https://pacameagencia.com/blog" },
 };
 
 const categories = [
@@ -20,74 +21,7 @@ const categories = [
   { name: "Branding", slug: "branding", color: "#7C3AED" },
 ];
 
-const posts = [
-  {
-    title: "7 errores que cometen las PYMEs con su web y cómo evitarlos",
-    excerpt: "El 78% de las pymes españolas no tiene presencia digital profesional. ¿Tu negocio está cayendo en alguno de estos errores? Te contamos cuáles son y cómo solucionarlos.",
-    category: "Desarrollo Web",
-    readTime: "5 min",
-    date: "2 abril 2026",
-    color: "#06B6D4",
-    agentName: "Pixel",
-    slug: "7-errores-pymes-web",
-    featured: true,
-  },
-  {
-    title: "Cómo pasar de 0 a 1.000 visitas orgánicas en 90 días",
-    excerpt: "El plan de SEO concreto que usamos con nuestros clientes. Fases, herramientas y métricas reales. Sin humo, sin promesas vacías.",
-    category: "SEO",
-    readTime: "8 min",
-    date: "1 abril 2026",
-    color: "#2563EB",
-    agentName: "Atlas",
-    slug: "0-a-1000-visitas-90-dias",
-    featured: true,
-  },
-  {
-    title: "Meta Ads en 2026: la guía definitiva para PYMEs",
-    excerpt: "Todo lo que necesitas saber para lanzar campañas que generen ROI real. Segmentación, creativos, presupuestos y optimización paso a paso.",
-    category: "Paid Media",
-    readTime: "10 min",
-    date: "31 marzo 2026",
-    color: "#EA580C",
-    agentName: "Nexus",
-    slug: "meta-ads-guia-pymes-2026",
-    featured: false,
-  },
-  {
-    title: "Por qué tu negocio necesita una marca (no solo un logo)",
-    excerpt: "La diferencia entre un logo y una marca. Cómo construir una identidad visual que genere confianza y te diferencie de la competencia.",
-    category: "Branding",
-    readTime: "6 min",
-    date: "30 marzo 2026",
-    color: "#7C3AED",
-    agentName: "Nova",
-    slug: "marca-vs-logo",
-    featured: false,
-  },
-  {
-    title: "Calendario editorial para Instagram: plantilla gratuita 2026",
-    excerpt: "Descarga nuestra plantilla de calendario editorial para Instagram. Incluye pilares de contenido, formatos y horarios óptimos.",
-    category: "Redes Sociales",
-    readTime: "4 min",
-    date: "29 marzo 2026",
-    color: "#EC4899",
-    agentName: "Pulse",
-    slug: "calendario-editorial-instagram-2026",
-    featured: false,
-  },
-  {
-    title: "Cómo elegir la agencia digital correcta para tu empresa",
-    excerpt: "Freelancer, agencia tradicional o agencia IA. Pros, contras y cuándo elegir cada opción. Con checklist descargable.",
-    category: "Estrategia",
-    readTime: "7 min",
-    date: "28 marzo 2026",
-    color: "#D97706",
-    agentName: "Sage",
-    slug: "como-elegir-agencia-digital",
-    featured: false,
-  },
-];
+const posts = blogPosts;
 
 export default function BlogPage() {
   const featuredPosts = posts.filter((p) => p.featured);
@@ -257,16 +191,7 @@ export default function BlogPage() {
           <p className="text-pacame-white/60 font-body mb-8">
             Un email semanal con lo mejor del blog. Sin spam. Solo contenido que hace crecer tu negocio.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="tu@empresa.com"
-              className="flex-1 h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet outline-none transition-colors"
-            />
-            <Button variant="gradient" size="default">
-              Suscribirse
-            </Button>
-          </div>
+          <NewsletterForm />
         </div>
       </section>
     </div>

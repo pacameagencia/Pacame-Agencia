@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
-  Calendar, Mail, Phone, MapPin, Clock, ArrowRight,
-  Send, CheckCircle2, Loader2,
+  Calendar, Mail, MapPin, Clock, ArrowRight,
+  Send, CheckCircle2, Loader2, Gift,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -28,7 +29,9 @@ const budgets = [
   "No estoy seguro",
 ];
 
-export default function ContactoPage() {
+function ContactoForm() {
+  const searchParams = useSearchParams();
+  const refCode = searchParams.get("ref") || "";
   const [formState, setFormState] = useState<"idle" | "sending" | "sent">("idle");
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
 
@@ -52,21 +55,19 @@ export default function ContactoPage() {
       services: selectedServices,
       budget: formData.get("budget"),
       message: formData.get("message"),
+      referral_code: refCode || undefined,
     };
 
     try {
-      const webhookUrl = process.env.NEXT_PUBLIC_N8N_LEAD_WEBHOOK;
-      if (webhookUrl) {
-        await fetch(webhookUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-      }
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Error al enviar");
       setFormState("sent");
     } catch {
-      // Si falla n8n, marcamos como enviado igualmente
-      // para no bloquear al usuario — el lead se pierde pero la UX no
+      // Incluso si falla, mostramos confirmacion para no frustrar al usuario
       setFormState("sent");
     }
   }
@@ -100,6 +101,15 @@ export default function ContactoPage() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
             {/* Form */}
             <div className="lg:col-span-3">
+              {refCode && (
+                <div className="rounded-2xl bg-lime-pulse/10 border border-lime-pulse/20 p-4 mb-6 flex items-center gap-3">
+                  <Gift className="w-5 h-5 text-lime-pulse flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-heading font-semibold text-lime-pulse">Vienes recomendado — 10% de descuento aplicado</p>
+                    <p className="text-xs text-pacame-white/40 font-body">Codigo: {refCode}</p>
+                  </div>
+                </div>
+              )}
               {formState === "sent" ? (
                 <div className="rounded-3xl glass p-10 sm:p-14 text-center">
                   <div className="w-16 h-16 rounded-full bg-lime-pulse/20 flex items-center justify-center mx-auto mb-6">
@@ -111,8 +121,8 @@ export default function ContactoPage() {
                   <p className="text-pacame-white/60 font-body mb-6">
                     Pablo te responderá en menos de 2 horas. Si es urgente,
                     escríbenos a{" "}
-                    <a href="mailto:hola@pacame.es" className="text-electric-violet hover:underline">
-                      hola@pacame.es
+                    <a href="mailto:hola@pacameagencia.com" className="text-electric-violet hover:underline">
+                      hola@pacameagencia.com
                     </a>
                   </p>
                   <Button variant="outline" asChild>
@@ -258,8 +268,8 @@ export default function ContactoPage() {
                     </div>
                     <div>
                       <p className="text-xs text-pacame-white/40 font-body">Email</p>
-                      <a href="mailto:hola@pacame.es" className="text-sm text-pacame-white font-body hover:text-electric-violet transition-colors">
-                        hola@pacame.es
+                      <a href="mailto:hola@pacameagencia.com" className="text-sm text-pacame-white font-body hover:text-electric-violet transition-colors">
+                        hola@pacameagencia.com
                       </a>
                     </div>
                   </li>
@@ -331,8 +341,10 @@ export default function ContactoPage() {
                   <p className="text-sm text-white/80 font-body mb-4">
                     Agenda una llamada de 30 minutos con Pablo. Sin compromiso.
                   </p>
-                  <Button variant="secondary" size="sm" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
-                    Agendar llamada gratuita
+                  <Button variant="secondary" size="sm" className="bg-white/20 border-white/30 text-white hover:bg-white/30" asChild>
+                    <a href="mailto:hola@pacameagencia.com?subject=Agendar%20llamada%20gratuita">
+                      Agendar llamada gratuita
+                    </a>
                   </Button>
                 </div>
               </div>
@@ -341,5 +353,13 @@ export default function ContactoPage() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function ContactoPage() {
+  return (
+    <Suspense>
+      <ContactoForm />
+    </Suspense>
   );
 }

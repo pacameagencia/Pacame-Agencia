@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/agents/cron",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/agents/weekly-audit",
+      "schedule": "0 8 * * 1"
+    }
+  ]
+}

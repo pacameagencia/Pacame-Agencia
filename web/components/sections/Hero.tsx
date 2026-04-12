@@ -36,7 +36,7 @@ export default function Hero() {
         {/* Subtitle */}
         <p className="text-lg sm:text-xl text-pacame-white/60 max-w-2xl mx-auto mb-4 leading-relaxed font-body">
           Un equipo de{" "}
-          <span className="text-pacame-white font-medium">7 agentes IA especializados</span>,
+          <span className="text-pacame-white font-medium">10 agentes IA especializados</span>,
           liderados por un humano. Más rápido que una agencia, más fiable que un freelancer,
           a una fracción del coste.
         </p>
@@ -64,7 +64,7 @@ export default function Hero() {
         {/* Social proof stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-3xl mx-auto">
           {[
-            { value: "7", label: "Especialistas IA", color: "#7C3AED" },
+            { value: "10", label: "Especialistas IA", color: "#7C3AED" },
             { value: "24h", label: "Entrega mínima", color: "#06B6D4" },
             { value: "−60%", label: "vs agencia tradicional", color: "#84CC16" },
             { value: "100%", label: "Supervisión humana", color: "#F59E0B" },

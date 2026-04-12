@@ -251,6 +251,127 @@ export const seoSectors: SectorSEO[] = [
     starServices: ["seo-posicionamiento", "diseno-web", "chatbot-whatsapp-ia"],
     keywords: ["marketing talleres", "web taller mecanico", "marketing automocion"],
   },
+  // ---- FASE 2: Nuevos sectores ----
+  {
+    slug: "peluquerias",
+    name: "peluquería",
+    namePlural: "peluquerías y centros de estética",
+    tier: 2,
+    problems: [
+      "Dependencia de clientes habituales sin captar nuevos",
+      "Sin sistema de reservas online ni agenda automatizada",
+      "Instagram con fotos de baja calidad que no atraen",
+      "No aparecen en búsquedas locales de Google",
+      "Competencia con cadenas low-cost que invierten en marketing",
+    ],
+    starServices: ["diseno-web", "gestion-redes-sociales", "seo-posicionamiento"],
+    keywords: ["marketing peluquerias", "web peluqueria", "reservas online peluqueria"],
+  },
+  {
+    slug: "dentistas",
+    name: "clínica dental",
+    namePlural: "dentistas y clínicas dentales",
+    tier: 2,
+    problems: [
+      "Pacientes eligen por precio sin conocer tu diferencial",
+      "Web que no transmite confianza ni muestra casos reales",
+      "Sin estrategia de contenido educativo que genere autoridad",
+      "Google Ads caro con bajo retorno de inversión",
+      "Reseñas negativas sin respuesta que ahuyentan pacientes",
+    ],
+    starServices: ["seo-posicionamiento", "diseno-web", "publicidad-meta-ads"],
+    keywords: ["marketing dental", "web clinica dental", "SEO dentistas"],
+  },
+  {
+    slug: "academias",
+    name: "academia",
+    namePlural: "academias y centros de formación",
+    tier: 2,
+    problems: [
+      "Matrículas estancadas y dependencia del boca a boca",
+      "Web sin información clara de cursos ni precios",
+      "No captan alumnos por canales digitales",
+      "Sin embudo de captación automatizado",
+      "Competencia con plataformas online como Udemy o Coursera",
+    ],
+    starServices: ["publicidad-meta-ads", "diseno-web", "gestion-redes-sociales"],
+    keywords: ["marketing academias", "captacion alumnos", "web academia"],
+  },
+  {
+    slug: "asesoria-gestoria",
+    name: "asesoría",
+    namePlural: "asesorías y gestorías",
+    tier: 2,
+    problems: [
+      "Clientes no entienden el valor de tus servicios frente a apps gratuitas",
+      "Web genérica sin diferenciación de la competencia",
+      "No captan autónomos ni pymes por internet",
+      "Sin presencia en LinkedIn ni contenido de autoridad",
+      "Pérdida de clientes que migran a gestorías online",
+    ],
+    starServices: ["seo-posicionamiento", "diseno-web", "gestion-redes-sociales"],
+    keywords: ["marketing asesoria", "web gestoria", "captacion clientes asesoria"],
+  },
+  {
+    slug: "veterinarias",
+    name: "clínica veterinaria",
+    namePlural: "veterinarias",
+    tier: 2,
+    problems: [
+      "Dificultad para destacar frente a clínicas de cadenas grandes",
+      "Sin sistema de recordatorios ni fidelización digital",
+      "Web que no permite pedir cita online",
+      "Redes sociales sin contenido que conecte con dueños de mascotas",
+      "No aprovechan el marketing emocional del sector",
+    ],
+    starServices: ["diseno-web", "gestion-redes-sociales", "chatbot-whatsapp-ia"],
+    keywords: ["marketing veterinarias", "web clinica veterinaria", "redes sociales veterinario"],
+  },
+  {
+    slug: "arquitectos",
+    name: "estudio de arquitectura",
+    namePlural: "arquitectos y estudios",
+    tier: 2,
+    problems: [
+      "Portfolio online que no hace justicia a tus proyectos",
+      "Dependencia de contactos personales para conseguir obras",
+      "Web sin SEO que no aparece en búsquedas de servicios",
+      "No aprovechan Instagram como escaparate visual",
+      "Sin estrategia de captación de clientes particulares",
+    ],
+    starServices: ["diseno-web", "seo-posicionamiento", "gestion-redes-sociales"],
+    keywords: ["marketing arquitectos", "web estudio arquitectura", "portfolio arquitecto online"],
+  },
+  {
+    slug: "psicologos",
+    name: "consulta de psicología",
+    namePlural: "psicólogos y terapeutas",
+    tier: 2,
+    problems: [
+      "Pacientes buscan en Google y no te encuentran",
+      "Directorios genéricos que no muestran tu especialización",
+      "Web sin información que genere confianza antes de la primera cita",
+      "Sin estrategia de contenido sobre salud mental",
+      "No aprovechan la terapia online como diferencial",
+    ],
+    starServices: ["seo-posicionamiento", "diseno-web", "gestion-redes-sociales"],
+    keywords: ["marketing psicologos", "web psicologo", "captacion pacientes psicologo"],
+  },
+  {
+    slug: "autoescuelas",
+    name: "autoescuela",
+    namePlural: "autoescuelas",
+    tier: 2,
+    problems: [
+      "Alumnos eligen solo por precio sin conocer tu tasa de aprobados",
+      "Web anticuada que no permite inscripción online",
+      "Sin presencia en redes donde están los jóvenes",
+      "No comunican diferencial frente a autoescuelas online",
+      "Dependencia de localización física para captar alumnos",
+    ],
+    starServices: ["publicidad-meta-ads", "diseno-web", "gestion-redes-sociales"],
+    keywords: ["marketing autoescuelas", "web autoescuela", "captacion alumnos autoescuela"],
+  },
 ];
 
 // =============================================
@@ -268,6 +389,17 @@ export const seoCities: CitySEO[] = [
   { slug: "palma", name: "Palma de Mallorca", province: "Baleares", population: 420000, priority: 1, localFact: "Palma vive del turismo y el comercio. Tener presencia digital profesional marca la diferencia en temporada alta y baja." },
   { slug: "las-palmas", name: "Las Palmas de Gran Canaria", province: "Las Palmas", population: 380000, priority: 1, localFact: "Las Palmas, puerta de Europa a las Canarias, tiene negocios que necesitan competir tanto localmente como con el turismo internacional." },
   { slug: "bilbao", name: "Bilbao", province: "Vizcaya", population: 350000, priority: 1, localFact: "Bilbao, referente en innovación y transformación urbana, tiene un tejido empresarial que valora la calidad y el profesionalismo digital." },
+  // ---- FASE 2: Ciudades 50k-250k ----
+  { slug: "alicante", name: "Alicante", province: "Alicante", population: 337000, priority: 2, localFact: "Alicante combina turismo, comercio y un sector tech emergente. Miles de pymes necesitan presencia digital profesional." },
+  { slug: "cordoba", name: "Córdoba", province: "Córdoba", population: 326000, priority: 2, localFact: "Córdoba, patrimonio de la humanidad, tiene negocios turísticos y locales que necesitan competir en el mundo digital." },
+  { slug: "valladolid", name: "Valladolid", province: "Valladolid", population: 298000, priority: 2, localFact: "Valladolid, motor industrial de Castilla y León, tiene un tejido empresarial que está dando el salto al marketing digital." },
+  { slug: "vigo", name: "Vigo", province: "Pontevedra", population: 296000, priority: 2, localFact: "Vigo, la ciudad más poblada de Galicia, lidera en industria pesquera y naval. Sus pymes necesitan digitalizarse." },
+  { slug: "gijon", name: "Gijón", province: "Asturias", population: 270000, priority: 2, localFact: "Gijón apuesta por la tecnología y el emprendimiento. Sus negocios locales necesitan una presencia digital que esté a la altura." },
+  { slug: "granada", name: "Granada", province: "Granada", population: 232000, priority: 2, localFact: "Granada, entre turismo y universidad, tiene negocios que necesitan destacar en un mercado cada vez más competitivo." },
+  { slug: "vitoria", name: "Vitoria-Gasteiz", province: "Álava", population: 254000, priority: 2, localFact: "Vitoria, capital verde de Europa, tiene un ecosistema empresarial comprometido con la innovación y la sostenibilidad." },
+  { slug: "santander", name: "Santander", province: "Cantabria", population: 172000, priority: 2, localFact: "Santander, entre banca y turismo, tiene pymes que compiten con presupuestos limitados y necesitan soluciones digitales asequibles." },
+  { slug: "san-sebastian", name: "San Sebastián", province: "Guipúzcoa", population: 188000, priority: 2, localFact: "San Sebastián, referente gastronómico mundial, tiene negocios premium que necesitan una imagen digital a la altura de su reputación." },
+  { slug: "pamplona", name: "Pamplona", province: "Navarra", population: 203000, priority: 2, localFact: "Pamplona, conocida mundialmente por San Fermín, tiene un tejido empresarial diverso que empieza a apostar fuerte por lo digital." },
 ];
 
 // =============================================
@@ -286,7 +418,7 @@ export function generateMetaDescription(service: ServiceSEO, sector: SectorSEO, 
   return `Somos PACAME, tu equipo de IA especializado en ${service.nameShort.toLowerCase()} para ${sector.namePlural} en ${city.name}. Resultados en semanas, no meses. Pide tu diagnóstico gratuito.`;
 }
 
-// Generar todas las combinaciones Fase 1 (5 servicios x 8 sectores x 10 ciudades = 400 paginas)
+// Generar todas las combinaciones (5 servicios x 16 sectores x 20 ciudades = 1600 paginas)
 export function generateAllCombinations() {
   const combinations: { service: ServiceSEO; sector: SectorSEO; city: CitySEO; slug: string }[] = [];
   for (const service of seoServices) {

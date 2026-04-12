@@ -1,6 +1,38 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Star, Quote } from "lucide-react";
 
-const testimonials = [
+interface Review {
+  name: string;
+  role: string;
+  text: string;
+  rating: number;
+  service: string;
+  color: string;
+  initials: string;
+}
+
+const SERVICE_COLORS: Record<string, string> = {
+  "Web Corporativa": "#7C3AED",
+  "Landing Page": "#06B6D4",
+  "E-commerce": "#EA580C",
+  "SEO": "#2563EB",
+  "SEO Premium": "#2563EB",
+  "Redes Sociales": "#EC4899",
+  "Meta Ads": "#EA580C",
+  "Meta Ads + Embudo": "#EA580C",
+  "Google Ads": "#D97706",
+  "Branding": "#7C3AED",
+  "Branding Completo": "#7C3AED",
+  "Paquete Despega": "#06B6D4",
+  "Paquete Crece": "#16A34A",
+  "Paquete Domina": "#7C3AED",
+  "Plan Growth Social": "#D97706",
+  "ChatBot WhatsApp": "#16A34A",
+};
+
+const fallbackTestimonials: Review[] = [
   {
     name: "Carlos Martínez",
     role: "Constructor · Madrid",
@@ -57,7 +89,46 @@ const testimonials = [
   },
 ];
 
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+}
+
 export default function TestimonialsSection() {
+  const [reviews, setReviews] = useState<Review[]>(fallbackTestimonials);
+
+  useEffect(() => {
+    async function fetchReviews() {
+      try {
+        const res = await fetch("/api/reviews", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "list", limit: 12 }),
+        });
+        const data = await res.json();
+        if (data.reviews && data.reviews.length >= 3) {
+          const mapped: Review[] = data.reviews.map((r: { name: string; role: string; text: string; rating: number; service: string; city: string }) => ({
+            name: r.name,
+            role: r.role || (r.city ? `· ${r.city}` : ""),
+            text: r.text,
+            rating: r.rating,
+            service: r.service || "PACAME",
+            color: SERVICE_COLORS[r.service] || "#7C3AED",
+            initials: getInitials(r.name),
+          }));
+          setReviews(mapped);
+        }
+      } catch {
+        // Keep fallback testimonials
+      }
+    }
+    fetchReviews();
+  }, []);
+
   return (
     <section className="section-padding bg-dark-elevated relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-electric-violet/8 rounded-full blur-[140px] pointer-events-none" />
@@ -73,35 +144,34 @@ export default function TestimonialsSection() {
             <span className="gradient-text">Los clientes también.</span>
           </h2>
           <p className="text-sm text-pacame-white/40 font-body">
-            Testimonios de clientes reales. Próximamente, con sus webs como prueba.
+            Testimonios de negocios reales que ya trabajan con PACAME.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {testimonials.map((t, index) => (
+          {reviews.map((t, index) => (
             <div
-              key={t.name}
+              key={`${t.name}-${index}`}
               className="relative rounded-2xl p-6 bg-dark-card border border-white/[0.06] hover:border-white/10 transition-all duration-300 hover:-translate-y-1"
               style={{ animationDelay: `${index * 0.08}s` }}
             >
-              {/* Quote icon */}
               <div className="absolute top-5 right-5 opacity-10">
                 <Quote className="w-8 h-8 text-electric-violet" />
               </div>
 
-              {/* Stars */}
               <div className="flex gap-1 mb-4">
                 {[...Array(t.rating)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-amber-signal text-amber-signal" />
                 ))}
+                {[...Array(5 - t.rating)].map((_, i) => (
+                  <Star key={`empty-${i}`} className="w-4 h-4 text-pacame-white/10" />
+                ))}
               </div>
 
-              {/* Text */}
               <p className="text-pacame-white/80 font-body text-sm leading-relaxed mb-6">
                 &ldquo;{t.text}&rdquo;
               </p>
 
-              {/* Author */}
               <div className="flex items-center gap-3">
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center font-heading font-bold text-sm"

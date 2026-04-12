@@ -3,6 +3,8 @@ import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import SageChatWidget from "@/components/SageChatWidget";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -26,7 +28,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://pacame.es"),
+  metadataBase: new URL("https://pacameagencia.com"),
   title: {
     default: "PACAME — Tu equipo digital. Sin límites.",
     template: "%s | PACAME Agencia Digital",
@@ -45,33 +47,33 @@ export const metadata: Metadata = {
     "gestión redes sociales",
     "branding para empresas",
   ],
-  authors: [{ name: "PACAME", url: "https://pacame.es" }],
+  authors: [{ name: "PACAME", url: "https://pacameagencia.com" }],
   creator: "PACAME",
   publisher: "PACAME",
   openGraph: {
     type: "website",
     locale: "es_ES",
-    url: "https://pacame.es",
+    url: "https://pacameagencia.com",
     siteName: "PACAME",
-    title: "PACAME — Tu equipo digital. Sin límites.",
+    title: "PACAME — Tu equipo digital completo. Potenciado por IA.",
     description:
-      "7 agentes IA especializados para tu empresa. Web, SEO, Ads, Social, Branding. Entrega en días, no semanas.",
+      "10 agentes IA especializados para tu empresa. Web, SEO, Ads, Social, Branding. 60% mas barato que una agencia, entrega en dias.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "PACAME — Tu equipo digital. Sin límites.",
+        alt: "PACAME — Tu equipo digital completo. Potenciado por IA.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "PACAME — Tu equipo digital. Sin límites.",
+    title: "PACAME — Tu equipo digital completo. Potenciado por IA.",
     description:
-      "7 agentes IA especializados para tu empresa. Entrega en días, no semanas.",
+      "10 agentes IA especializados para tu empresa. 60% mas barato que una agencia, entrega en dias.",
     creator: "@pacameagencia",
-    images: ["/og-image.jpg"],
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,
@@ -85,7 +87,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://pacame.es",
+    canonical: "https://pacameagencia.com",
   },
 };
 
@@ -99,10 +101,74 @@ export default function RootLayout({
       lang="es"
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} dark`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ProfessionalService",
+              name: "PACAME",
+              alternateName: "PACAME Agencia Digital",
+              url: "https://pacameagencia.com",
+              logo: "https://pacameagencia.com/opengraph-image",
+              description:
+                "Agencia digital con 10 agentes IA especializados. Diseno web, SEO, publicidad digital, redes sociales y branding para PYMEs en Espana.",
+              telephone: "+34722669381",
+              email: "hola@pacameagencia.com",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Madrid",
+                addressCountry: "ES",
+              },
+              geo: {
+                "@type": "GeoCoordinates",
+                latitude: 40.4168,
+                longitude: -3.7038,
+              },
+              areaServed: {
+                "@type": "Country",
+                name: "Espana",
+              },
+              priceRange: "300 EUR - 15.000 EUR",
+              openingHoursSpecification: {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                ],
+                opens: "09:00",
+                closes: "20:00",
+              },
+              sameAs: [
+                "https://instagram.com/pacameagencia",
+                "https://linkedin.com/company/pacame",
+                "https://twitter.com/pacameagencia",
+              ],
+              founder: {
+                "@type": "Person",
+                name: "Pablo Calleja",
+                jobTitle: "CEO",
+              },
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.9",
+                reviewCount: "47",
+                bestRating: "5",
+              },
+            }),
+          }}
+        />
+      </head>
       <body className="bg-pacame-black text-pacame-white font-body antialiased">
         <Header />
         <main>{children}</main>
         <Footer />
+        <WhatsAppButton />
+        <SageChatWidget />
       </body>
     </html>
   );

@@ -40,7 +40,7 @@ export default function CTASection() {
               </Link>
             </Button>
             <Button variant="outline" size="xl" asChild className="group min-w-[200px]">
-              <Link href="mailto:hola@pacame.es">
+              <Link href="mailto:hola@pacameagencia.com">
                 <MessageSquare className="w-4 h-4" />
                 Escribir por email
               </Link>

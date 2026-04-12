@@ -5,22 +5,45 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, Users, UserPlus, FileText, Bot,
   DollarSign, Settings, ChevronLeft, Menu, X,
+  MessageSquare, Bell, ClipboardCheck, CreditCard,
+  Megaphone, FileCheck, Phone, Rocket, Building2, Award, LogOut,
 } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const navItems = [
   { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Oficina", href: "/dashboard/office", icon: Building2 },
+  { label: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   { label: "Clientes", href: "/dashboard/clients", icon: Users },
   { label: "Leads", href: "/dashboard/leads", icon: UserPlus },
+  { label: "Lead Gen", href: "/dashboard/leadgen", icon: Rocket },
   { label: "Contenido", href: "/dashboard/content", icon: FileText },
+  { label: "Campanas", href: "/dashboard/campaigns", icon: Megaphone },
+  { label: "Propuestas", href: "/dashboard/proposals", icon: FileCheck },
+  { label: "Referidos", href: "/dashboard/referrals", icon: Award },
+  { label: "Llamadas", href: "/dashboard/calls", icon: Phone },
   { label: "Agentes", href: "/dashboard/agents", icon: Bot },
+  { label: "Onboarding", href: "/dashboard/onboarding", icon: ClipboardCheck },
+  { label: "Pagos", href: "/dashboard/payments", icon: CreditCard },
   { label: "Finanzas", href: "/dashboard/finances", icon: DollarSign },
+  { label: "Notificaciones", href: "/dashboard/notifications", icon: Bell },
   { label: "Config", href: "/dashboard/settings", icon: Settings },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  async function handleLogout() {
+    await fetch("/api/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "logout" }),
+    });
+    router.push("/login");
+  }
 
   return (
     <div className="min-h-screen bg-pacame-black flex">
@@ -63,7 +86,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           })}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/[0.06]">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/[0.06] space-y-2">
           <Link
             href="/"
             className="flex items-center gap-2 text-xs text-pacame-white/30 hover:text-pacame-white/50 transition-colors font-body"
@@ -71,6 +94,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <ChevronLeft className="w-3.5 h-3.5" />
             Volver a la web
           </Link>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-xs text-pacame-white/20 hover:text-red-400/70 transition-colors font-body"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            Cerrar sesion
+          </button>
         </div>
       </aside>
 

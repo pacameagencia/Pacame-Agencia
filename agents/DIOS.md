@@ -234,3 +234,43 @@ Para inicializar una sesion completa de DIOS en la API, incluir en el contexto:
 4. Seccion relevante de `strategy/business-strategy.md` (servicios, precios, personas).
 
 No cargar todos los documentos de estrategia en cada sesion — cargar solo los relevantes para el contexto activo.
+
+---
+
+## Catalogo Expandido de Especialistas
+
+PACAME cuenta con un equipo extendido de 120+ agentes especializados integrados desde [agency-agents](https://github.com/msitarzewski/agency-agents), organizados bajo los 7 agentes PACAME principales. Los agentes estan organizados en 12 divisiones: Engineering, Design, Marketing, Paid Media, Sales, Product, Project Management, Testing, Support, Specialized, Academic, y Game Development.
+
+### Regla de activacion de especialistas
+
+1. **El agente PACAME principal lidera SIEMPRE** — el especialista es un recurso subordinado.
+2. **Activar SOLO cuando la tarea lo requiere** — no usar un Frontend Developer specialist para una tarea basica que Pixel resuelve directamente.
+3. **El especialista opera bajo supervision** del agente PACAME principal.
+4. **La salida del especialista pasa por QA** del agente PACAME antes de entregar al cliente.
+5. **Los archivos de especialistas estan en** `agency-agents/` organizados por division.
+
+### Mapping resumido
+
+| Agente PACAME | Especialistas disponibles |
+|--------------|--------------------------|
+| **Pixel** | Frontend Developer, Mobile App Builder, Rapid Prototyper, CMS Developer, UX Architect, Whimsy Injector, Evidence Collector, Performance Benchmarker, Accessibility Auditor, Technical Artist, Game Audio Engineer |
+| **Core** | Backend Architect, AI Engineer, DevOps Automator, Security Engineer, Database Optimizer, SRE, Data Engineer, Software Architect, Code Reviewer, Git Workflow Master, Incident Response Commander, Reality Checker, API Tester, Infrastructure Maintainer, MCP Builder |
+| **Atlas** | SEO Specialist, AI Citation Strategist |
+| **Nexus** | Growth Hacker, PPC Campaign Strategist, Paid Social Strategist, Ad Creative Strategist, Search Query Analyst, Tracking Specialist, Paid Media Auditor, Programmatic Buyer, App Store Optimizer, Outbound Strategist, Experiment Tracker, Behavioral Nudge Engine |
+| **Nova** | UI Designer, UX Researcher, Brand Guardian, Visual Storyteller, Image Prompt Engineer, Inclusive Visuals, Cultural Intelligence, Anthropologist, Narratologist, Psychologist |
+| **Pulse** | Content Creator, Twitter/X Engager, TikTok Strategist, Instagram Curator, Reddit Community Builder, Social Media Strategist, LinkedIn Content Creator, Carousel Growth Engine, Video Optimization, Podcast Strategist, Developer Advocate |
+| **Sage** | Technical Writer, Sprint Prioritizer, Trend Researcher, Feedback Synthesizer, Product Manager, Discovery Coach, Deal Strategist, Proposal Strategist, Pipeline Analyst, Account Strategist, Sales Coach, Studio Producer, Project Shepherd, Senior PM, Tool Evaluator, Workflow Optimizer, Analytics Reporter, Finance Tracker, Legal Compliance, Executive Summary Generator, Compliance Auditor, Workflow Architect, Document Generator |
+
+### Como DIOS activa un especialista
+
+```
+Patron de activacion:
+1. DIOS recibe solicitud del cliente
+2. DIOS identifica que la tarea requiere expertise profunda (ej: "auditar seguridad del smart contract")
+3. DIOS asigna agente PACAME lider: Core
+4. DIOS activa especialista: Security Engineer + Blockchain Security Auditor
+5. Core supervisa la ejecucion del especialista
+6. Core valida el output antes de entregar
+7. DIOS integra el resultado en el plan global
+```
+

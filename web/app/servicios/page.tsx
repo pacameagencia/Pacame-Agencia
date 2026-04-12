@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "Servicios — Diseño Web, SEO, Ads, Social Media y Branding",
   description:
     "Todos los servicios digitales que necesita tu empresa. Precios transparentes, plazos concretos. Web desde 300€, SEO desde 400€/mes, Ads desde 500€.",
-  alternates: { canonical: "https://pacame.es/servicios" },
+  alternates: { canonical: "https://pacameagencia.com/servicios" },
 };
 
 const iconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {

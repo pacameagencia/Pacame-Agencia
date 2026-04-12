@@ -28,11 +28,11 @@ export async function generateMetadata({ params }: { params: Promise<{ seoSlug: 
   return {
     title,
     description,
-    alternates: { canonical: `https://pacame.es/${seoSlug}` },
+    alternates: { canonical: `https://pacameagencia.com/${seoSlug}` },
     openGraph: {
       title,
       description,
-      url: `https://pacame.es/${seoSlug}`,
+      url: `https://pacameagencia.com/${seoSlug}`,
       siteName: "PACAME",
       type: "website",
     },
@@ -97,11 +97,11 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
             description: generateMetaDescription(service, sector, city),
             areaServed: { "@type": "City", name: city.name },
             serviceType: service.name,
-            url: `https://pacame.es/${seoSlug}`,
+            url: `https://pacameagencia.com/${seoSlug}`,
             provider: {
               "@type": "Organization",
               name: "PACAME",
-              url: "https://pacame.es",
+              url: "https://pacameagencia.com",
             },
           }),
         }}
@@ -157,7 +157,7 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
               </Link>
             </Button>
             <Button variant="outline" size="xl" asChild>
-              <Link href="https://wa.me/34600000000" target="_blank" rel="noopener">
+              <Link href="https://wa.me/34722669381" target="_blank" rel="noopener">
                 <MessageSquare className="w-4 h-4" />
                 Habla con PACAME
               </Link>

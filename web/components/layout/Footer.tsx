@@ -9,11 +9,18 @@ const footerLinks = {
     { label: "Publicidad Digital", href: "/servicios#ads" },
     { label: "Branding", href: "/servicios#branding" },
   ],
+  herramientas: [
+    { label: "Auditoria Web Gratis", href: "/auditoria" },
+    { label: "Calculadora ROI", href: "/calculadora-roi" },
+    { label: "7 Errores de tu Web", href: "/7-errores" },
+  ],
   empresa: [
     { label: "El equipo", href: "/equipo" },
+    { label: "Portfolio", href: "/portfolio" },
     { label: "Blog", href: "/blog" },
+    { label: "FAQ", href: "/faq" },
+    { label: "Colabora", href: "/colabora" },
     { label: "Contacto", href: "/contacto" },
-    { label: "Trabajar con nosotros", href: "/contacto" },
   ],
   legal: [
     { label: "Política de privacidad", href: "/privacidad" },
@@ -26,7 +33,7 @@ export default function Footer() {
   return (
     <footer className="bg-dark-elevated border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12">
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
@@ -68,7 +75,7 @@ export default function Footer() {
                 <Instagram className="w-4 h-4" />
               </a>
               <a
-                href="mailto:hola@pacame.es"
+                href="mailto:hola@pacameagencia.com"
                 className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-pacame-white/50 hover:text-pacame-white hover:bg-white/10 hover:border-white/20 transition-all"
                 aria-label="Email"
               >
@@ -115,6 +122,25 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Herramientas */}
+          <div>
+            <h4 className="font-heading font-semibold text-sm text-pacame-white mb-4 uppercase tracking-widest">
+              Gratis
+            </h4>
+            <ul className="space-y-3">
+              {footerLinks.herramientas.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-pacame-white/50 hover:text-pacame-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Contacto */}
           <div>
             <h4 className="font-heading font-semibold text-sm text-pacame-white mb-4 uppercase tracking-widest">
@@ -123,10 +149,10 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="mailto:hola@pacame.es"
+                  href="mailto:hola@pacameagencia.com"
                   className="text-sm text-pacame-white/50 hover:text-pacame-white transition-colors"
                 >
-                  hola@pacame.es
+                  hola@pacameagencia.com
                 </a>
               </li>
               <li className="text-sm text-pacame-white/50">

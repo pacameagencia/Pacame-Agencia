@@ -10,8 +10,8 @@ import { agents } from "@/lib/data/agents";
 export const metadata: Metadata = {
   title: "El Equipo — 7 Agentes IA + 1 Humano",
   description:
-    "Conoce al equipo de PACAME: 7 agentes IA especializados en branding, SEO, desarrollo web, ads, social media, backend y estrategia. Liderados por Pablo Calleja.",
-  alternates: { canonical: "https://pacame.es/equipo" },
+    "Conoce al equipo de PACAME: 10 agentes IA especializados en branding, SEO, desarrollo web, ads, social media, backend y estrategia. Liderados por Pablo Calleja.",
+  alternates: { canonical: "https://pacameagencia.com/equipo" },
 };
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -37,7 +37,7 @@ export default function EquipoPage() {
             <span className="gradient-text">Es un equipo completo.</span>
           </h1>
           <p className="text-lg text-pacame-white/60 font-body max-w-2xl mx-auto">
-            7 agentes IA, cada uno experto en su campo. Trabajan en red, se coordinan entre sí
+            10 agentes IA, cada uno experto en su campo. Trabajan en red, se coordinan entre sí
             y están supervisados por Pablo Calleja. Resultado: lo que una agencia tarda semanas,
             nosotros lo entregamos en días.
           </p>

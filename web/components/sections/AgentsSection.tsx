@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import {
-  Sparkles, Globe, TrendingUp, Layout, Terminal, Heart, Compass, ArrowRight
+  Sparkles, Globe, TrendingUp, Layout, Terminal, Heart, Compass, ArrowRight, Zap
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { agents } from "@/lib/data/agents";
+import { TOTAL_AGENTS, divisions } from "@/lib/data/agency-agents";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Sparkles, Globe, TrendingUp, Layout, Terminal, Heart, Compass,
@@ -21,17 +22,18 @@ export default function AgentsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <p className="font-mono text-neon-cyan text-sm mb-4 uppercase tracking-widest">
-            Sistema de Agentes
-          </p>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-electric-violet/10 border border-electric-violet/20 mb-6">
+            <Zap className="w-4 h-4 text-electric-violet" />
+            <span className="text-sm font-mono text-electric-violet">{TOTAL_AGENTS}+ Agentes IA Especializados</span>
+          </div>
           <h2 className="font-heading font-bold text-section text-pacame-white mb-6">
             No es una IA.
             <br />
-            <span className="gradient-text">Es un equipo completo.</span>
+            <span className="gradient-text">Es un ejército digital.</span>
           </h2>
           <p className="text-lg text-pacame-white/60 max-w-2xl mx-auto font-body">
-            Cada agente domina su especialidad. Trabajan en red, coordinados por Pablo,
-            para resolver cualquier problema digital que tengas.
+            10 agentes principales + {TOTAL_AGENTS - 10} sub-especialistas en {divisions.length} divisiones.
+            Coordinados por Pablo para resolver cualquier problema digital.
           </p>
         </div>
 
@@ -127,10 +129,16 @@ export default function AgentsSection() {
         </div>
 
         {/* CTA */}
-        <div className="text-center">
+        <div className="text-center flex flex-col sm:flex-row gap-4 justify-center">
+          <Button variant="gradient" size="lg" asChild className="group">
+            <Link href="/agentes">
+              Ver los {TOTAL_AGENTS}+ agentes
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </Button>
           <Button variant="outline" size="lg" asChild className="group">
             <Link href="/equipo">
-              Conocer al equipo completo
+              Conocer al equipo core
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
