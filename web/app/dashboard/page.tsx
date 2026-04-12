@@ -6,7 +6,8 @@ import { supabase } from "@/lib/supabase/client";
 import {
   Users, UserPlus, DollarSign, FileText, Bot, TrendingUp,
   ArrowRight, Zap, Building2, Rocket, MessageSquare, Sparkles,
-  Play, Loader2,
+  Play, Loader2, Phone, Target,
+  PhoneCall, BarChart3,
 } from "lucide-react";
 
 const agentColors: Record<string, string> = {
@@ -34,6 +35,10 @@ interface KPIs {
   apiCostUsd: number;
   revenueThisMonth: number;
   expensesThisMonth: number;
+  proposalsSent: number;
+  proposalsAccepted: number;
+  callsThisMonth: number;
+  outreachSent: number;
 }
 
 interface ActivityItem {
@@ -54,8 +59,8 @@ interface HotLead {
   sage_analysis: { recommended_services?: string[]; estimated_value_monthly?: number; estimated_value_onetime?: number };
 }
 
-function KPICard({ label, value, icon: Icon, color, sub }: {
-  label: string; value: string | number; icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>; color: string; sub?: string;
+function KPICard({ label, value, icon: Icon, color, sub, trend }: {
+  label: string; value: string | number; icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>; color: string; sub?: string; trend?: string;
 }) {
   return (
     <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 hover:border-white/10 transition-colors">
@@ -63,6 +68,11 @@ function KPICard({ label, value, icon: Icon, color, sub }: {
         <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${color}15` }}>
           <Icon className="w-5 h-5" style={{ color }} />
         </div>
+        {trend && (
+          <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+            trend.startsWith("+") ? "bg-green-500/15 text-green-400" : "bg-red-500/15 text-red-400"
+          }`}>{trend}</span>
+        )}
       </div>
       <div className="font-heading font-bold text-2xl text-pacame-white">{value}</div>
       <div className="text-xs text-pacame-white/40 font-body mt-1">{label}</div>
@@ -81,8 +91,8 @@ function CronTrigger() {
     try {
       const res = await fetch("/api/agents/cron", { method: "POST" });
       const data = await res.json();
-      const total = data.results?.length || 0;
-      setResult(`${total} agentes ejecutados`);
+      const agents = Object.keys(data.results || {}).length;
+      setResult(`${agents} agentes ejecutados`);
       setTimeout(() => setResult(null), 4000);
     } catch {
       setResult("Error");
@@ -107,6 +117,7 @@ export default function DashboardOverview() {
   const [kpis, setKpis] = useState<KPIs>({
     activeClients: 0, mrr: 0, hotLeads: 0, pendingContent: 0,
     leadsThisMonth: 0, apiCostUsd: 0, revenueThisMonth: 0, expensesThisMonth: 0,
+    proposalsSent: 0, proposalsAccepted: 0, callsThisMonth: 0, outreachSent: 0,
   });
   const [activity, setActivity] = useState<ActivityItem[]>([]);
   const [hotLeads, setHotLeads] = useState<HotLead[]>([]);
@@ -130,6 +141,9 @@ export default function DashboardOverview() {
         expensesRes,
         activityRes,
         hotLeadsRes,
+        proposalsSentRes,
+        proposalsAcceptedRes,
+        callsRes,
       ] = await Promise.all([
         supabase.from("clients").select("id", { count: "exact", head: true }).eq("status", "active"),
         supabase.from("clients").select("monthly_fee").eq("status", "active"),
@@ -141,6 +155,9 @@ export default function DashboardOverview() {
         supabase.from("finances").select("amount").eq("type", "expense").gte("date", monthISO.split("T")[0]),
         supabase.from("agent_activities").select("id, agent_id, type, title, description, created_at").order("created_at", { ascending: false }).limit(10),
         supabase.from("leads").select("id, name, business_name, score, source, sage_analysis").gte("score", 4).not("status", "in", "(won,lost)").order("score", { ascending: false }).limit(5),
+        supabase.from("proposals").select("id", { count: "exact", head: true }).in("status", ["sent", "viewed"]).gte("created_at", monthISO),
+        supabase.from("proposals").select("id", { count: "exact", head: true }).eq("status", "accepted").gte("created_at", monthISO),
+        supabase.from("voice_calls").select("id", { count: "exact", head: true }).gte("created_at", monthISO),
       ]);
 
       const mrr = (mrrRes.data || []).reduce((sum, c) => sum + (Number(c.monthly_fee) || 0), 0);
@@ -157,6 +174,10 @@ export default function DashboardOverview() {
         apiCostUsd: apiCost,
         revenueThisMonth: revenue,
         expensesThisMonth: expenses,
+        proposalsSent: proposalsSentRes.count || 0,
+        proposalsAccepted: proposalsAcceptedRes.count || 0,
+        callsThisMonth: callsRes.count || 0,
+        outreachSent: 0,
       });
 
       setActivity(activityRes.data || []);
@@ -166,6 +187,8 @@ export default function DashboardOverview() {
     fetchData();
   }, []);
 
+  const profit = kpis.revenueThisMonth - kpis.expensesThisMonth;
+
   return (
     <div className="space-y-8 max-w-7xl">
       <div>
@@ -173,19 +196,59 @@ export default function DashboardOverview() {
         <p className="text-sm text-pacame-white/40 font-body mt-1">Vista general del sistema PACAME</p>
       </div>
 
-      {/* KPIs */}
+      {/* Row 1: Core KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <KPICard label="Clientes activos" value={kpis.activeClients} icon={Users} color="#06B6D4" />
         <KPICard label="MRR" value={`${kpis.mrr.toLocaleString("es-ES")} €`} icon={DollarSign} color="#16A34A" />
         <KPICard label="Leads calientes" value={kpis.hotLeads} icon={Zap} color="#EA580C" />
-        <KPICard label="Contenido pendiente" value={kpis.pendingContent} icon={FileText} color="#7C3AED" />
+        <KPICard
+          label="Profit mes"
+          value={`${profit >= 0 ? "+" : ""}${profit.toLocaleString("es-ES")} €`}
+          icon={TrendingUp}
+          color={profit >= 0 ? "#16A34A" : "#EF4444"}
+          sub={`${kpis.revenueThisMonth.toLocaleString("es-ES")}€ rev — ${kpis.expensesThisMonth.toLocaleString("es-ES")}€ gastos`}
+        />
       </div>
 
+      {/* Row 2: Pipeline KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <KPICard label="Leads este mes" value={kpis.leadsThisMonth} icon={UserPlus} color="#EC4899" />
-        <KPICard label="Revenue mes" value={`${kpis.revenueThisMonth.toLocaleString("es-ES")} €`} icon={TrendingUp} color="#16A34A" />
-        <KPICard label="Gastos mes" value={`${kpis.expensesThisMonth.toLocaleString("es-ES")} €`} icon={DollarSign} color="#EF4444" sub="API + herramientas" />
-        <KPICard label="Coste API" value={`$${kpis.apiCostUsd.toFixed(2)}`} icon={Bot} color="#D97706" sub="Claude + otros" />
+        <KPICard
+          label="Propuestas"
+          value={kpis.proposalsSent}
+          icon={FileText}
+          color="#7C3AED"
+          sub={kpis.proposalsAccepted > 0 ? `${kpis.proposalsAccepted} aceptada${kpis.proposalsAccepted > 1 ? "s" : ""}` : "Ninguna aceptada aun"}
+        />
+        <KPICard label="Llamadas" value={kpis.callsThisMonth} icon={Phone} color="#06B6D4" sub="Vapi + manuales" />
+        <KPICard label="Coste API" value={`$${kpis.apiCostUsd.toFixed(2)}`} icon={Bot} color="#D97706" sub="Claude + Vapi + otros" />
+      </div>
+
+      {/* Mini funnel bar */}
+      <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <BarChart3 className="w-4 h-4 text-electric-violet" />
+            <h2 className="font-heading font-semibold text-pacame-white text-sm">Embudo rapido</h2>
+          </div>
+          <Link href="/dashboard/commercial" className="text-xs text-electric-violet hover:underline font-body">Ver completo</Link>
+        </div>
+        <div className="flex items-center gap-1">
+          {[
+            { label: "Leads", value: kpis.leadsThisMonth, color: "bg-blue-500" },
+            { label: "Hot", value: kpis.hotLeads, color: "bg-amber-500" },
+            { label: "Propuestas", value: kpis.proposalsSent, color: "bg-electric-violet" },
+            { label: "Aceptadas", value: kpis.proposalsAccepted, color: "bg-lime-pulse" },
+            { label: "Clientes", value: kpis.activeClients, color: "bg-green-500" },
+          ].map((stage, i) => (
+            <div key={stage.label} className="flex-1 text-center">
+              <div className={`h-2 ${stage.color} rounded-full mx-0.5`} style={{ opacity: Math.max(0.2, stage.value > 0 ? 1 : 0.15) }} />
+              <div className="text-[10px] text-pacame-white/40 font-body mt-1.5">{stage.label}</div>
+              <div className="text-xs font-heading font-bold text-pacame-white">{stage.value}</div>
+              {i < 4 && <ArrowRight className="w-3 h-3 text-pacame-white/10 mx-auto mt-0.5 hidden md:block" />}
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
@@ -275,13 +338,13 @@ export default function DashboardOverview() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {[
+            { label: "Pipeline comercial", href: "/dashboard/commercial", icon: Target, color: "#EA580C" },
+            { label: "Llamar con Sage", href: "/dashboard/calls", icon: PhoneCall, color: "#06B6D4" },
+            { label: "Lead Gen", href: "/dashboard/leadgen", icon: Rocket, color: "#7C3AED" },
+            { label: "Propuestas IA", href: "/dashboard/proposals", icon: Sparkles, color: "#D97706" },
             { label: "Chat con agentes", href: "/dashboard/chat", icon: MessageSquare, color: "#06B6D4" },
-            { label: "Lead Gen", href: "/dashboard/leadgen", icon: Rocket, color: "#EA580C" },
-            { label: "Propuestas IA", href: "/dashboard/proposals", icon: Sparkles, color: "#7C3AED" },
-            { label: "Ver leads", href: "/dashboard/leads", icon: UserPlus, color: "#EC4899" },
             { label: "Oficina PACAME", href: "/dashboard/office", icon: Building2, color: "#D97706" },
             { label: "Revisar contenido", href: "/dashboard/content", icon: FileText, color: "#16A34A" },
-            { label: "Clientes", href: "/dashboard/clients", icon: Users, color: "#06B6D4" },
             { label: "Finanzas", href: "/dashboard/finances", icon: DollarSign, color: "#16A34A" },
           ].map((action) => (
             <Link
