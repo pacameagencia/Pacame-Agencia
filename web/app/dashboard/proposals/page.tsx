@@ -160,10 +160,54 @@ export default function ProposalsPage() {
     fetchData();
   }
 
+  async function sendProposal(proposalId: string) {
+    try {
+      const res = await fetch("/api/proposals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "send", proposal_id: proposalId }),
+      });
+      const data = await res.json();
+      if (!data.ok) {
+        alert(`Error al enviar: ${data.error || "desconocido"}`);
+        return;
+      }
+      alert(data.email_sent ? "Propuesta enviada por email" : "Propuesta marcada como enviada (lead sin email)");
+    } catch {
+      alert("Error de conexion");
+    }
+    fetchData();
+  }
+
+  async function generateWithAI(leadId: string) {
+    setGenerating(true);
+    try {
+      const res = await fetch("/api/proposals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "generate", lead_id: leadId }),
+      });
+      const data = await res.json();
+      if (data.error) {
+        alert(`Error: ${data.error}`);
+      } else {
+        setShowForm(false);
+        setForm({ lead_id: "", brief: "", services: [] });
+        setGeneratedBrief("");
+      }
+    } catch {
+      alert("Error generando propuesta");
+    }
+    setGenerating(false);
+    fetchData();
+  }
+
   async function updateStatus(id: string, status: string) {
-    const updates: Record<string, unknown> = { status };
-    if (status === "sent") updates.sent_at = new Date().toISOString();
-    await supabase.from("proposals").update(updates).eq("id", id);
+    await fetch("/api/proposals", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "update_status", proposal_id: id, status }),
+    });
     fetchData();
   }
 
@@ -295,9 +339,17 @@ export default function ProposalsPage() {
             )}
           </div>
 
-          <Button type="submit" variant="gradient" size="sm" disabled={saving || form.services.length === 0}>
-            {saving ? "Guardando..." : "Crear propuesta"}
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button type="submit" variant="gradient" size="sm" disabled={saving || form.services.length === 0}>
+              {saving ? "Guardando..." : "Crear propuesta manual"}
+            </Button>
+            {form.lead_id && (
+              <Button type="button" variant="outline" size="sm" onClick={() => generateWithAI(form.lead_id)} disabled={generating} className="gap-1.5">
+                <Sparkles className="w-3.5 h-3.5" />
+                {generating ? "Generando con Sage..." : "Generar con IA"}
+              </Button>
+            )}
+          </div>
         </form>
       )}
 
@@ -350,30 +402,31 @@ export default function ProposalsPage() {
                 </div>
               </div>
               {/* Actions */}
-              {(p.status === "ready" || p.status === "sent" || p.status === "viewed") && (
-                <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/[0.04]">
-                  {p.status === "ready" && (
-                    <Button size="sm" variant="gradient" onClick={() => updateStatus(p.id, "sent")} className="gap-1 text-xs h-7">
-                      <Send className="w-3 h-3" />Marcar enviada
+              <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/[0.04]">
+                {p.status === "ready" && (
+                  <Button size="sm" variant="gradient" onClick={() => sendProposal(p.id)} className="gap-1 text-xs h-7">
+                    <Send className="w-3 h-3" />Enviar por email
+                  </Button>
+                )}
+                {(p.status === "sent" || p.status === "viewed") && (
+                  <>
+                    <Button size="sm" variant="gradient" onClick={() => updateStatus(p.id, "accepted")} className="gap-1 text-xs h-7">
+                      <CheckCircle2 className="w-3 h-3" />Aceptada
                     </Button>
-                  )}
-                  {(p.status === "sent" || p.status === "viewed") && (
-                    <>
-                      <Button size="sm" variant="gradient" onClick={() => updateStatus(p.id, "accepted")} className="gap-1 text-xs h-7">
-                        <CheckCircle2 className="w-3 h-3" />Aceptada
-                      </Button>
-                      <Button size="sm" variant="ghost" onClick={() => updateStatus(p.id, "rejected")} className="gap-1 text-xs h-7 text-red-400">
-                        <XCircle className="w-3 h-3" />Rechazada
-                      </Button>
-                    </>
-                  )}
-                  {p.pdf_url && (
-                    <a href={p.pdf_url} target="_blank" rel="noopener noreferrer" className="text-xs text-electric-violet/70 hover:text-electric-violet flex items-center gap-1">
-                      <ExternalLink className="w-3 h-3" />PDF
-                    </a>
-                  )}
-                </div>
-              )}
+                    <Button size="sm" variant="ghost" onClick={() => updateStatus(p.id, "rejected")} className="gap-1 text-xs h-7 text-red-400">
+                      <XCircle className="w-3 h-3" />Rechazada
+                    </Button>
+                  </>
+                )}
+                <a
+                  href={`/propuesta/${p.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-electric-violet/70 hover:text-electric-violet flex items-center gap-1 ml-auto"
+                >
+                  <ExternalLink className="w-3 h-3" />Ver pagina publica
+                </a>
+              </div>
               {/* Feedback */}
               {p.feedback && (
                 <div className="mt-3 pt-3 border-t border-white/[0.04]">
