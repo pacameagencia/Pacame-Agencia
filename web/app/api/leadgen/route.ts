@@ -200,7 +200,10 @@ Responde SOLO JSON valido:
       const text = data.content?.[0]?.text || "";
       const jsonStart = text.indexOf("{");
       const jsonEnd = text.lastIndexOf("}") + 1;
-      const emails = jsonStart >= 0 ? JSON.parse(text.slice(jsonStart, jsonEnd)) : null;
+      let emails: Record<string, unknown> | null = null;
+      if (jsonStart >= 0) {
+        try { emails = JSON.parse(text.slice(jsonStart, jsonEnd)); } catch { /* AI devolvio JSON invalido */ }
+      }
 
       return NextResponse.json({
         emails,

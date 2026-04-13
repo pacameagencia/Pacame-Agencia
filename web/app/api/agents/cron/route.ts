@@ -3,6 +3,7 @@ import { logAgentActivity, updateAgentStatus, incrementAgentTasks } from "@/lib/
 import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { notifyHotLead, alertPablo } from "@/lib/telegram";
 
 const supabase = createServerSupabase();
 
@@ -140,9 +141,19 @@ Responde SOLO JSON:
                   `<strong>Score:</strong> ${analysis.score}/5\n` +
                   `<strong>Accion:</strong> ${analysis.priority_action}\n` +
                   `<strong>Valor estimado:</strong> ${analysis.estimated_value_onetime}€ puntual + ${analysis.estimated_value_monthly}€/mes`,
-                  { cta: "Ver en Dashboard", ctaUrl: "https://app.pacameagencia.com/dashboard/leads" }
+                  { cta: "Ver en Dashboard", ctaUrl: "https://pacameagencia.com/dashboard/leads" }
                 )
               );
+
+              // Notificar a Pablo por Telegram
+              notifyHotLead({
+                name: lead.name,
+                business_name: lead.business_name || undefined,
+                score: Number(analysis.score),
+                problem: lead.problem || undefined,
+                budget: lead.budget || undefined,
+                source: lead.source || undefined,
+              });
             }
           }
         } catch {
@@ -410,7 +421,8 @@ Responde SOLO JSON array:
           const arrStart = text.indexOf("[");
           const arrEnd = text.lastIndexOf("]") + 1;
           if (arrStart >= 0) {
-            const posts = JSON.parse(text.slice(arrStart, arrEnd)) as Array<Record<string, string>>;
+            let posts: Array<Record<string, string>> = [];
+            try { posts = JSON.parse(text.slice(arrStart, arrEnd)); } catch { /* JSON invalido */ }
             for (const post of posts) {
               await supabase.from("content").insert({
                 platform: post.platform || "instagram",
@@ -610,7 +622,7 @@ Responde SOLO JSON: {"subject":"asunto","body":"cuerpo del email (max 200 palabr
       const endpoints = [
         { name: "homepage", url: "https://pacameagencia.com" },
         { name: "contacto", url: "https://pacameagencia.com/contacto" },
-        { name: "api_leads", url: "https://app.pacameagencia.com/api/leads" },
+        { name: "api_leads", url: "https://pacameagencia.com/api/leads" },
       ];
 
       for (const ep of endpoints) {
@@ -647,6 +659,9 @@ Responde SOLO JSON: {"subject":"asunto","body":"cuerpo del email (max 200 palabr
           `🚨 Web caida: ${failedChecks.join(", ")}`,
           wrapEmailTemplate(`<strong>Pixel detecto endpoints caidos:</strong>\n${failedChecks.map(c => `• ${c}`).join("\n")}\n\nRevisar deploy de Vercel inmediatamente.`)
         );
+
+        // Telegram urgente
+        alertPablo(`Web caida: ${failedChecks.join(", ")}`, `Endpoints caidos detectados por Pixel. Revisar deploy.`, "critical");
       } else {
         logAgentActivity({
           agentId: "pixel",
@@ -739,6 +754,9 @@ Responde SOLO JSON: {"subject":"asunto","body":"cuerpo del email (max 200 palabr
           `🚨 CRITICO: ${issues.join(" + ")} caido`,
           wrapEmailTemplate(`<strong>Core detecto sistema degradado.</strong>\n\nServicios caidos: ${issues.join(", ")}\n\n${unread || 0} notificaciones sin leer. ${recentAlerts || 0} alertas en las ultimas 24h.\n\nRevisar inmediatamente.`)
         );
+
+        // Telegram critico
+        alertPablo(`SISTEMA DEGRADADO: ${issues.join(" + ")}`, `Servicios caidos detectados por Core. ${unread || 0} notificaciones sin leer.`, "critical");
       } else {
         logAgentActivity({
           agentId: "core",
@@ -935,7 +953,8 @@ Responde SOLO JSON:
           const arrStart = text.indexOf("[");
           const arrEnd = text.lastIndexOf("]") + 1;
           if (arrStart >= 0) {
-            const variants = JSON.parse(text.slice(arrStart, arrEnd)) as Array<Record<string, string>>;
+            let variants: Array<Record<string, string>> = [];
+            try { variants = JSON.parse(text.slice(arrStart, arrEnd)); } catch { /* JSON invalido */ }
             for (const v of variants) {
               await supabase.from("content").insert({
                 platform: campaign.platform || "meta",
@@ -1124,7 +1143,7 @@ Responde en texto plano, 2 frases max. Primera frase: que esta pasando. Segunda:
             `<strong>Lens detecto anomalias en los KPIs:</strong>\n\n` +
             anomalies.map(a => `• ${a}`).join("\n") +
             `\n\nRevisa el dashboard para mas detalles.`,
-            { cta: "Ver Dashboard", ctaUrl: "https://app.pacameagencia.com/dashboard" }
+            { cta: "Ver Dashboard", ctaUrl: "https://pacameagencia.com/dashboard" }
           )
         );
       }
@@ -1212,7 +1231,7 @@ Responde en texto plano, 2 frases max. Primera frase: que esta pasando. Segunda:
             subject: emailData.subject,
             html: wrapEmailTemplate(emailData.body, {
               cta: "Diagnostico gratuito",
-              ctaUrl: "https://app.pacameagencia.com/contacto",
+              ctaUrl: "https://pacameagencia.com/contacto",
             }),
             tags: [
               { name: "type", value: "outreach" },

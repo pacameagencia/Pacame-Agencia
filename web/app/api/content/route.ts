@@ -64,7 +64,10 @@ Responde SOLO JSON valido:
       const text = data.content?.[0]?.text || "";
       const jsonStart = text.indexOf("[");
       const jsonEnd = text.lastIndexOf("]") + 1;
-      const calendar = jsonStart >= 0 ? JSON.parse(text.slice(jsonStart, jsonEnd)) : [];
+      let calendar: Array<Record<string, string | string[]>> = [];
+      if (jsonStart >= 0) {
+        try { calendar = JSON.parse(text.slice(jsonStart, jsonEnd)); } catch { /* AI devolvio JSON invalido */ }
+      }
 
       // Save to content table
       if (calendar.length > 0 && client_id) {
@@ -76,7 +79,7 @@ Responde SOLO JSON valido:
             content_type: post.type,
             title: post.title,
             body: post.copy,
-            hashtags: (post.hashtags || []).join(" "),
+            hashtags: Array.isArray(post.hashtags) ? post.hashtags.join(" ") : String(post.hashtags || ""),
             cta: post.cta,
             status: "pending_review",
             batch_id: batchId,
@@ -138,7 +141,10 @@ Responde SOLO JSON: {"title": "...", "copy": "...", "hook": "...", "cta": "...",
       const text = data.content?.[0]?.text || "";
       const jsonStart = text.indexOf("{");
       const jsonEnd = text.lastIndexOf("}") + 1;
-      const post = jsonStart >= 0 ? JSON.parse(text.slice(jsonStart, jsonEnd)) : null;
+      let post: Record<string, unknown> | null = null;
+      if (jsonStart >= 0) {
+        try { post = JSON.parse(text.slice(jsonStart, jsonEnd)); } catch { /* AI devolvio JSON invalido */ }
+      }
 
       return NextResponse.json({ post, tokens: data.usage?.output_tokens || 0 });
     } catch (error) {

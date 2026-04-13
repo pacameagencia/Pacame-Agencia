@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
       subject: emailData.subject,
       html: wrapEmailTemplate(emailData.body, {
         cta: "Diagnostico gratuito",
-        ctaUrl: "https://app.pacameagencia.com/contacto",
+        ctaUrl: "https://pacameagencia.com/contacto",
         preheader: `${lead.business_name || lead.name} — oportunidad digital`,
       }),
       tags: [
@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
         `Enviados: <strong>${sent}</strong>\n` +
         `Fallidos: <strong>${failed}</strong>\n` +
         `Email #${email_number} de la secuencia`,
-        { cta: "Ver leads", ctaUrl: "https://app.pacameagencia.com/dashboard/leads" }
+        { cta: "Ver leads", ctaUrl: "https://pacameagencia.com/dashboard/leads" }
       )
     );
 

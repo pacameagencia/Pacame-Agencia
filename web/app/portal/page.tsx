@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -60,6 +60,18 @@ const statusLabels: Record<string, { label: string; color: string }> = {
 };
 
 export default function PortalPage() {
+  return (
+    <Suspense fallback={
+      <div className="bg-pacame-black min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-electric-violet" />
+      </div>
+    }>
+      <PortalContent />
+    </Suspense>
+  );
+}
+
+function PortalContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 

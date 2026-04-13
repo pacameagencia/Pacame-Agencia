@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
     }).eq("id", client.id);
 
     // Send magic link email
-    const portalUrl = `https://app.pacameagencia.com/portal?token=${token}`;
+    const portalUrl = `https://pacameagencia.com/portal?token=${token}`;
 
     await sendEmail({
       to: client.email,

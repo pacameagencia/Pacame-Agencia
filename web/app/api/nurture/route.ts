@@ -282,7 +282,10 @@ Responde SOLO JSON: {"subject": "...", "body": "..."}`;
       const text = data.content?.[0]?.text || "";
       const jsonStart = text.indexOf("{");
       const jsonEnd = text.lastIndexOf("}") + 1;
-      const personalized = jsonStart >= 0 ? JSON.parse(text.slice(jsonStart, jsonEnd)) : null;
+      let personalized: Record<string, unknown> | null = null;
+      if (jsonStart >= 0) {
+        try { personalized = JSON.parse(text.slice(jsonStart, jsonEnd)); } catch { /* AI devolvio JSON invalido */ }
+      }
 
       return NextResponse.json({ personalized, tokens: data.usage?.output_tokens || 0 });
     } catch (error) {

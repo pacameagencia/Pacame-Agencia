@@ -4,6 +4,7 @@ import Stripe from "stripe";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
+import { notifyPayment } from "@/lib/telegram";
 
 const supabase = createServerSupabase();
 
@@ -163,7 +164,7 @@ export async function POST(request: NextRequest) {
               `Un saludo,\nPablo Calleja\nPACAME`,
               {
                 cta: "Acceder a mi portal",
-                ctaUrl: "https://app.pacameagencia.com/portal",
+                ctaUrl: "https://pacameagencia.com/portal",
                 preheader: `Pago de ${amount}€ confirmado — tu proyecto esta en marcha`,
               }
             ),
@@ -174,16 +175,17 @@ export async function POST(request: NextRequest) {
           });
         }
 
-        // Notify Pablo
+        // Notify Pablo (email + Telegram)
         notifyPablo(
           `Nuevo pago: ${amount}€ de ${customerName}`,
           wrapEmailTemplate(
             `<strong>${customerName}</strong> ha pagado <strong>${amount}€</strong> por ${metadata.product || "servicio"}.\n\n` +
             `Email: ${customerEmail || "N/A"}\n` +
             `${clientId ? "Cliente creado y onboarding iniciado automaticamente." : "Sin cliente asociado — revisar manualmente."}`,
-            { cta: "Ver en dashboard", ctaUrl: "https://app.pacameagencia.com/dashboard/clients" }
+            { cta: "Ver en dashboard", ctaUrl: "https://pacameagencia.com/dashboard/clients" }
           )
         );
+        notifyPayment(customerName, amount, metadata.product || "servicio");
 
         logAgentActivity({
           agentId: "sage",

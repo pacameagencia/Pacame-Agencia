@@ -228,7 +228,7 @@ Responde SOLO JSON:
     const sage = (proposal.sage_analysis || {}) as Record<string, unknown>;
     const proposalTitle = String(sage.title || `Propuesta para ${lead?.business_name || lead?.name}`);
     const services = (proposal.services_proposed || []) as Array<{ name: string; price: number; type: string }>;
-    const proposalUrl = `https://app.pacameagencia.com/propuesta/${proposal_id}`;
+    const proposalUrl = `https://pacameagencia.com/propuesta/${proposal_id}`;
 
     // Update status
     await supabase.from("proposals").update({
@@ -289,7 +289,7 @@ PACAME`;
         `Propuesta "${proposalTitle}" enviada a ${lead?.email || "sin email"}.\n\n` +
         `Valor: ${proposal.total_onetime}€ + ${proposal.total_monthly}€/mes\n` +
         `Servicios: ${services.map((s) => s.name).join(", ")}`,
-        { cta: "Ver en dashboard", ctaUrl: "https://app.pacameagencia.com/dashboard/proposals" }
+        { cta: "Ver en dashboard", ctaUrl: "https://pacameagencia.com/dashboard/proposals" }
       )
     );
 

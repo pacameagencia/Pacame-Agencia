@@ -17,7 +17,7 @@ const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
  * - transcript: Real-time transcript updates
  *
  * Configure this webhook URL in Vapi dashboard:
- * https://app.pacameagencia.com/api/calls/webhook
+ * https://pacameagencia.com/api/calls/webhook
  */
 export async function POST(request: NextRequest) {
   try {
@@ -155,7 +155,7 @@ ${transcript.slice(0, 3000)}
                 `<strong>Siguiente paso:</strong> ${nextAction}\n` +
                 `<strong>Duracion:</strong> ${durationSeconds ? `${Math.round(durationSeconds / 60)}m ${durationSeconds % 60}s` : "N/A"}\n` +
                 `<strong>Coste:</strong> ${costEur ? `${costEur.toFixed(3)}€` : "N/A"}`,
-                { cta: "Ver en dashboard", ctaUrl: `https://app.pacameagencia.com/dashboard/calls` }
+                { cta: "Ver en dashboard", ctaUrl: `https://pacameagencia.com/dashboard/calls` }
               )
             );
           }

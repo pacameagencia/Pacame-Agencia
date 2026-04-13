@@ -14,7 +14,7 @@ Cosas que solo tu puedes hacer. De mas a menos prioritaria.
 - Comprar un numero de telefono espanol (+34)
 - Copiar: `VAPI_API_KEY` y `VAPI_PHONE_NUMBER_ID`
 - Anadir en Vercel → Environment Variables
-- En Vapi dashboard, configurar webhook: `https://app.pacameagencia.com/api/calls/webhook`
+- En Vapi dashboard, configurar webhook: `https://pacameagencia.com/api/calls/webhook`
 - **Por que:** sin esto, el sistema de llamadas automaticas no funciona
 
 ### 3. Crear cuenta ElevenLabs (opcional)
@@ -33,7 +33,7 @@ Cosas que solo tu puedes hacer. De mas a menos prioritaria.
 - **Por que:** sin verificacion, los emails van a spam
 
 ### 5. Hacer un pago de prueba en Stripe
-- Ir a https://app.pacameagencia.com/dashboard/payments
+- Ir a https://pacameagencia.com/dashboard/payments
 - Generar un link de pago y probarlo (puedes usar tu tarjeta y reembolsar)
 - Verificar que el webhook llega y se registra en Supabase
 - **Por que:** confirma que el flujo de cobro funciona end-to-end
@@ -48,7 +48,7 @@ Cosas que solo tu puedes hacer. De mas a menos prioritaria.
 
 ### 7. Google Search Console
 - Verificar `app.pacameagencia.com` en Search Console
-- Subir sitemap: `https://app.pacameagencia.com/sitemap.xml`
+- Subir sitemap: `https://pacameagencia.com/sitemap.xml`
 - **Por que:** indexar las 400+ paginas SEO programaticas
 
 ### 8. Google Analytics / Plausible
