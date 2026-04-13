@@ -1,13 +1,21 @@
-// TODO: Add auth for moderation actions (moderate, request, list — but NOT submit, which stays public)
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { verifyInternalAuth } from "@/lib/api-auth";
 import { logAgentActivity } from "@/lib/agent-logger";
+import { sendEmail, wrapEmailTemplate } from "@/lib/resend";
 
 const supabase = createServerSupabase();
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { action } = body;
+
+  // Public actions: submit, list (no auth required)
+  // Protected actions: moderate, request (require auth)
+  if (action === "moderate" || action === "request") {
+    const authError = verifyInternalAuth(request);
+    if (authError) return authError;
+  }
 
   // --- Submit a review ---
   if (action === "submit") {
@@ -92,17 +100,44 @@ export async function POST(request: NextRequest) {
 
     if (!client) return NextResponse.json({ error: "Client not found" }, { status: 404 });
 
-    // Store as notification (email integration via Resend later)
+    const reviewUrl = `https://pacameagencia.com/review?client=${client_id}`;
+    const firstName = client.name?.split(" ")[0] || client.name || "cliente";
+
+    // Send review request email via Resend
+    const emailId = await sendEmail({
+      to: client.email,
+      subject: `${firstName}, ¿que tal tu experiencia con PACAME?`,
+      html: wrapEmailTemplate(
+        `Hola ${firstName},\n\n` +
+        `Llevamos un tiempo trabajando juntos y nos encantaria saber que tal esta siendo tu experiencia con PACAME.\n\n` +
+        `Tu opinion nos ayuda a mejorar y tambien ayuda a otros negocios a decidir si somos el equipo que necesitan.\n\n` +
+        `Solo te llevara 1 minuto. Prometido.`,
+        {
+          cta: "Dejar mi resena",
+          ctaUrl: reviewUrl,
+          preheader: "Tu opinion nos importa — 1 minuto",
+        }
+      ),
+      tags: [
+        { name: "type", value: "review_request" },
+        { name: "client_id", value: client_id },
+      ],
+    });
+
     await supabase.from("notifications").insert({
       type: "review_request",
       priority: "normal",
-      title: `Solicitar resena: ${client.name}`,
-      message: `Enviar email a ${client.email} pidiendo resena de su experiencia con PACAME.`,
+      title: `Resena solicitada: ${client.name}`,
+      message: `Email enviado a ${client.email} pidiendo resena.`,
+      sent: !!emailId,
+      sent_at: emailId ? new Date().toISOString() : null,
+      sent_via: emailId ? "resend" : null,
       data: {
         client_id,
         to_email: client.email,
         to_name: client.name,
-        review_url: `https://pacameagencia.com/review?client=${client_id}`,
+        review_url: reviewUrl,
+        resend_email_id: emailId,
       },
     });
 
@@ -110,10 +145,10 @@ export async function POST(request: NextRequest) {
       agentId: "sage",
       type: "update",
       title: `Resena solicitada: ${client.name}`,
-      description: `Email de solicitud de resena preparado para ${client.email}.`,
+      description: `Email enviado a ${client.email}. ${emailId ? "Enviado OK." : "Fallo de envio."}`,
     });
 
-    return NextResponse.json({ ok: true, client_name: client.name });
+    return NextResponse.json({ ok: true, client_name: client.name, email_sent: !!emailId });
   }
 
   return NextResponse.json({ error: "Invalid action" }, { status: 400 });

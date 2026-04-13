@@ -113,11 +113,19 @@ export async function POST(request: NextRequest) {
     let failed = 0;
     const baseUrl = request.nextUrl.origin;
 
+    // Forward auth headers for internal calls
+    const authHeader = request.headers.get("authorization") || "";
+    const cookieHeader = request.headers.get("cookie") || "";
+
     for (const leadId of lead_ids) {
       try {
         const res = await fetch(`${baseUrl}/api/commercial`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...(authHeader ? { Authorization: authHeader } : {}),
+            ...(cookieHeader ? { Cookie: cookieHeader } : {}),
+          },
           body: JSON.stringify({ action: "send_outreach", lead_id: leadId, email_number }),
         });
         if (res.ok) sent++;
