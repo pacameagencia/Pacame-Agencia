@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
+import { verifyInternalAuth } from "@/lib/api-auth";
+import { createServerSupabase } from "@/lib/supabase/server";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const supabase = createServerSupabase();
 
 /**
  * Centralized email sending endpoint.
@@ -15,6 +13,9 @@ const supabase = createClient(
  *  - notify_pablo: Send alert email to Pablo
  */
 export async function POST(request: NextRequest) {
+  const authError = verifyInternalAuth(request);
+  if (authError) return authError;
+
   const body = await request.json();
   const { action } = body;
 

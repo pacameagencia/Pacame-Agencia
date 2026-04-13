@@ -70,6 +70,7 @@ export async function POST(request: NextRequest) {
             .single();
 
           if (lead) {
+            const stripeCustomerId = typeof session.customer === "string" ? session.customer : null;
             const { data: newClient } = await supabase.from("clients").insert({
               name: lead.name,
               email: lead.email || session.customer_email,
@@ -79,8 +80,8 @@ export async function POST(request: NextRequest) {
               plan: metadata.product || "custom",
               monthly_fee: session.mode === "subscription" ? amount : 0,
               status: "onboarding",
-              stripe_customer_id: typeof session.customer === "string" ? session.customer : null,
               notes: `Auto-creado desde pago Stripe. Lead ID: ${lead.id}`,
+              onboarding_data: { stripe_customer_id: stripeCustomerId },
             }).select("id").single();
 
             if (newClient) {

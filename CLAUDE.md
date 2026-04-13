@@ -34,6 +34,12 @@ strategy/          → Roadmap, pricing, personas
 - Analytics → lee `agents/09-LENS.md` y `.claude/skills/analytics-report.md`
 - Lead gen outbound → lee `workflows/lead-gen-pipeline.md`
 - Orquestacion multi-agente → lee `agents/DIOS.md`
+- Vibe coding/MVP rapido → lee `.claude/skills/vibe-coding.md`
+- Figma a codigo → lee `.claude/skills/figma-to-code.md`
+- Design system/tokens → lee `.claude/skills/design-system.md`
+- Prototipos interactivos → lee `.claude/skills/interactive-prototyping.md`
+- Exploracion visual/estetica → lee `.claude/skills/visual-design-exploration.md`
+- Deploy/produccion → lee `.claude/skills/deploy-workflow.md`
 
 ## Coding Conventions
 - TypeScript strict mode, no `any`

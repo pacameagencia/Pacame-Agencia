@@ -12,12 +12,29 @@ const supabase = createClient(
  * Client Portal API
  *
  * Magic link auth: client enters email → receives link with token → accesses portal
- *
- * Actions:
- * - request_access: Send magic link email
- * - verify_token: Validate token and return client data
- * - get_project: Get project details (content, proposals, invoices)
+ * Token stored in onboarding_data JSONB (no DDL migration needed)
  */
+
+async function findClientByToken(token: string) {
+  // Token stored in onboarding_data->portal_token
+  const { data: clients } = await supabase
+    .from("clients")
+    .select("id, name, business_name, email, plan, status, monthly_fee, created_at, onboarding_data")
+    .limit(100);
+
+  if (!clients) return null;
+
+  for (const client of clients) {
+    const od = (client.onboarding_data || {}) as Record<string, unknown>;
+    if (od.portal_token === token) {
+      // Check expiry
+      const expires = od.portal_token_expires as string | undefined;
+      if (expires && new Date(expires) < new Date()) return null;
+      return client;
+    }
+  }
+  return null;
+}
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { action } = body;
@@ -30,7 +47,7 @@ export async function POST(request: NextRequest) {
     // Find client by email
     const { data: client } = await supabase
       .from("clients")
-      .select("id, name, email")
+      .select("id, name, email, onboarding_data")
       .eq("email", email.toLowerCase().trim())
       .single();
 
@@ -39,14 +56,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: true });
     }
 
-    // Generate token (valid 24h)
+    // Generate token (valid 24h) — stored in onboarding_data JSONB
     const token = crypto.randomBytes(32).toString("hex");
     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    const existingData = (client.onboarding_data || {}) as Record<string, unknown>;
 
-    // Store token in client notes or a dedicated field
     await supabase.from("clients").update({
-      portal_token: token,
-      portal_token_expires: expiresAt,
+      onboarding_data: {
+        ...existingData,
+        portal_token: token,
+        portal_token_expires: expiresAt,
+      },
     }).eq("id", client.id);
 
     // Send magic link email
@@ -80,19 +100,9 @@ export async function POST(request: NextRequest) {
     const { token } = body;
     if (!token) return NextResponse.json({ error: "Token requerido" }, { status: 400 });
 
-    const { data: client } = await supabase
-      .from("clients")
-      .select("id, name, business_name, email, plan, status, portal_token_expires")
-      .eq("portal_token", token)
-      .single();
-
+    const client = await findClientByToken(token);
     if (!client) {
       return NextResponse.json({ error: "Enlace invalido o expirado" }, { status: 401 });
-    }
-
-    // Check expiry
-    if (client.portal_token_expires && new Date(client.portal_token_expires) < new Date()) {
-      return NextResponse.json({ error: "Enlace expirado. Solicita uno nuevo." }, { status: 401 });
     }
 
     return NextResponse.json({
@@ -113,14 +123,8 @@ export async function POST(request: NextRequest) {
     const { token } = body;
     if (!token) return NextResponse.json({ error: "Token requerido" }, { status: 400 });
 
-    // Verify token first
-    const { data: client } = await supabase
-      .from("clients")
-      .select("id, name, business_name, email, plan, status, monthly_fee, created_at, portal_token_expires")
-      .eq("portal_token", token)
-      .single();
-
-    if (!client || (client.portal_token_expires && new Date(client.portal_token_expires) < new Date())) {
+    const client = await findClientByToken(token);
+    if (!client) {
       return NextResponse.json({ error: "Acceso no autorizado" }, { status: 401 });
     }
 

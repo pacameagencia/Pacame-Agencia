@@ -1,11 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
+import { verifyInternalAuth } from "@/lib/api-auth";
+import { createServerSupabase } from "@/lib/supabase/server";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// Rate limit: max 30 requests per 10 minutes (Claude API costs money)
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 30;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+
+function isRateLimited(key: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(key);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(key, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return false;
+  }
+  entry.count++;
+  return entry.count > RATE_LIMIT;
+}
+
+const supabase = createServerSupabase();
 
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 const CLAUDE_API_URL = "https://api.anthropic.com/v1/messages";
@@ -271,6 +285,14 @@ interface ChatMessage {
 }
 
 export async function POST(request: NextRequest) {
+  const authError = verifyInternalAuth(request);
+  if (authError) return authError;
+
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "dashboard";
+  if (isRateLimited(ip)) {
+    return NextResponse.json({ error: "Demasiadas peticiones. Espera unos minutos." }, { status: 429 });
+  }
+
   if (!CLAUDE_API_KEY) {
     return NextResponse.json({ error: "CLAUDE_API_KEY no configurada" }, { status: 500 });
   }

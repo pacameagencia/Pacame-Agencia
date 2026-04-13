@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { createHash, randomBytes } from "crypto";
+import { createHash, randomBytes, timingSafeEqual } from "crypto";
 
-// Password hash — set DASHBOARD_PASSWORD in .env.local
-// Default: "pacame2026" (change this immediately in production)
-const DASHBOARD_PASSWORD = process.env.DASHBOARD_PASSWORD || "pacame2026";
+// Password — set DASHBOARD_PASSWORD in .env.local
+const DASHBOARD_PASSWORD = process.env.DASHBOARD_PASSWORD;
 
 function hashPassword(password: string): string {
   return createHash("sha256").update(password).digest("hex");
+}
+
+function verifyPassword(input: string, stored: string): boolean {
+  const inputHash = Buffer.from(hashPassword(input), "hex");
+  const storedHash = Buffer.from(hashPassword(stored), "hex");
+  return timingSafeEqual(inputHash, storedHash);
 }
 
 function generateToken(): string {
@@ -25,7 +30,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Password requerido" }, { status: 400 });
     }
 
-    if (password !== DASHBOARD_PASSWORD) {
+    if (!DASHBOARD_PASSWORD) {
+      return NextResponse.json({ error: "DASHBOARD_PASSWORD no configurado en el servidor" }, { status: 500 });
+    }
+
+    if (!verifyPassword(password, DASHBOARD_PASSWORD)) {
       return NextResponse.json({ error: "Password incorrecto" }, { status: 401 });
     }
 

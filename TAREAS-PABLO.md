@@ -24,12 +24,6 @@ Cosas que solo tu puedes hacer. De mas a menos prioritaria.
 - Anadir en Vercel → Environment Variables
 - **Por que:** mejora la voz de Sage en llamadas. Sin esto usa una voz por defecto
 
-### 4. Ejecutar migracion SQL en Supabase
-- Ir a https://supabase.com/dashboard → SQL Editor
-- Copiar y ejecutar el contenido de `infra/migrations/002_portal_columns.sql`
-- Anade 3 columnas a clients: portal_token, portal_token_expires, stripe_customer_id
-- **Por que:** el portal de clientes y el auto-onboarding post-pago necesitan estas columnas
-
 ## IMPORTANTES (mejoran conversion)
 
 ### 4. Verificar dominio en Resend
