@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
             },
             voice: {
               provider: "11labs",
-              voiceId: process.env.ELEVENLABS_VOICE_ID || "ErXwobaYiN019PkySvjV",
+              voiceId: process.env.ELEVENLABS_VOICE_ID || "oHMibLgDqXK3fjgFVtJ6",
             },
             firstMessage: `Hola, ¿${contactName}? Oye, soy Sage de PACAME. Te soy sincera, no nos conocemos, pero he visto vuestro negocio y creo que os podemos echar una mano. ¿Te pillo en buen momento o prefieres que te llame en otro rato?`,
             endCallMessage: "Genial, pues nada, encantada de hablar contigo. Te mando toda la info por email. Un saludo!",
