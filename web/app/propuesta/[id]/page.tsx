@@ -5,10 +5,47 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
 import {
   Check, Clock, ArrowRight, MessageSquare, Shield,
-  FileCheck, Loader2, AlertCircle,
+  FileCheck, Loader2, AlertCircle, CreditCard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
+
+async function handlePayNow(proposalId: string, totalOnetime: number, totalMonthly: number, clientName: string, leadId: string) {
+  try {
+    // Determine payment type based on services
+    const hasOnetime = totalOnetime > 0;
+    const hasMonthly = totalMonthly > 0;
+
+    // If both, start with onetime payment
+    const amount = hasOnetime ? totalOnetime : totalMonthly;
+    const mode = (hasOnetime ? "payment" : "subscription") as "payment" | "subscription";
+
+    const res = await fetch("/api/stripe/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount,
+        product: hasOnetime ? "Proyecto PACAME" : "Suscripcion PACAME",
+        mode,
+        client_name: clientName,
+        client_email: "",
+        lead_id: leadId,
+        proposal_id: proposalId,
+        services: "web,seo", // Will be filled from proposal
+        success_url: `https://pacameagencia.com/propuesta/${proposalId}?paid=true`,
+        cancel_url: `https://pacameagencia.com/propuesta/${proposalId}`,
+      }),
+    });
+
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    }
+  } catch {
+    // Fallback to WhatsApp
+    window.open("https://wa.me/34722669381?text=Hola%20Pablo%2C%20quiero%20aceptar%20la%20propuesta", "_blank");
+  }
+}
 
 interface ProposalData {
   id: string;
@@ -102,11 +139,25 @@ export default function PublicProposalPage() {
   const monthlyServices = services.filter((s) => s.type === "monthly");
   const clientName = proposal.lead?.name || "Cliente";
   const businessName = proposal.lead?.business_name || "";
+  const [paying, setPaying] = useState(false);
+
+  // Check if just paid
+  const justPaid = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("paid") === "true";
 
   return (
     <div className="bg-pacame-black min-h-screen">
+      {/* Payment success banner */}
+      {justPaid && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-lime-pulse/20 border-b border-lime-pulse/30 px-4 py-3 text-center">
+          <p className="text-sm font-body text-lime-pulse font-medium">
+            <Check className="w-4 h-4 inline-block mr-2" />
+            Pago procesado correctamente. Nuestro equipo ya esta trabajando en tu proyecto.
+          </p>
+        </div>
+      )}
+
       {/* Hero */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
+      <section className={`relative ${justPaid ? "pt-44" : "pt-32"} pb-16 overflow-hidden`}>
         <div className="absolute inset-0 bg-grid" />
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/15 rounded-full blur-[140px] pointer-events-none" />
 
@@ -275,18 +326,50 @@ export default function PublicProposalPage() {
             {sage.cta || "¿Empezamos?"}
           </h2>
           <p className="text-pacame-white/60 font-body mb-8">
-            Responde al email, escribenos por WhatsApp o rellena el formulario. Estamos listos.
+            Acepta la propuesta y empezamos a trabajar hoy mismo.
           </p>
+
+          {/* Payment button */}
+          {(proposal.total_onetime > 0 || proposal.total_monthly > 0) && proposal.status !== "accepted" && !justPaid && (
+            <div className="mb-6">
+              <Button
+                variant="gradient"
+                size="xl"
+                className="group shadow-glow-violet"
+                disabled={paying}
+                onClick={async () => {
+                  setPaying(true);
+                  await handlePayNow(
+                    proposal.id,
+                    proposal.total_onetime,
+                    proposal.total_monthly,
+                    clientName,
+                    proposal.id,
+                  );
+                  setPaying(false);
+                }}
+              >
+                {paying ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <CreditCard className="w-5 h-5" />
+                )}
+                {paying ? "Procesando..." : `Aceptar y pagar ${proposal.total_onetime > 0 ? `${Number(proposal.total_onetime).toLocaleString("es-ES")}€` : `${Number(proposal.total_monthly).toLocaleString("es-ES")}€/mes`}`}
+                {!paying && <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
+              </Button>
+              <p className="text-xs text-pacame-white/30 font-body mt-3">Pago seguro con Stripe · Factura incluida</p>
+            </div>
+          )}
+
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="gradient" size="xl" asChild className="group">
+            <Button variant="outline" size="lg" asChild className="group border-white/[0.08] hover:border-white/20">
               <a href="https://wa.me/34722669381?text=Hola%20Pablo%2C%20he%20visto%20la%20propuesta%20y%20me%20interesa" target="_blank" rel="noopener noreferrer">
-                <MessageSquare className="w-5 h-5" />
-                WhatsApp directo
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <MessageSquare className="w-4 h-4" />
+                Hablar por WhatsApp
               </a>
             </Button>
-            <Button variant="outline" size="xl" asChild>
-              <Link href="/contacto">Escribir por formulario</Link>
+            <Button variant="outline" size="lg" asChild className="border-white/[0.08] hover:border-white/20">
+              <Link href="/contacto">Contactar</Link>
             </Button>
           </div>
 

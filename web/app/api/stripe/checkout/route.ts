@@ -1,35 +1,76 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe, PACAME_PRODUCTS, type ProductKey } from "@/lib/stripe";
 import { verifyInternalAuth } from "@/lib/api-auth";
+import { createServerSupabase } from "@/lib/supabase/server";
+
+const supabase = createServerSupabase();
 
 export async function POST(request: NextRequest) {
-  const authError = verifyInternalAuth(request);
-  if (authError) return authError;
+  const body = await request.json();
+
+  // Public checkout from proposal pages doesn't require auth
+  // but must have a valid proposal_id
+  const isProposalCheckout = !!body.proposal_id;
+
+  if (!isProposalCheckout) {
+    const authError = verifyInternalAuth(request);
+    if (authError) return authError;
+  }
 
   try {
-    const body = await request.json();
     const {
       product,
       client_name,
       client_email,
       client_id,
+      lead_id,
+      proposal_id,
       amount,
       description,
       recurring,
+      success_url: customSuccessUrl,
+      cancel_url: customCancelUrl,
+      services,
     } = body as {
       product: ProductKey | string;
       client_name: string;
       client_email: string;
       client_id?: string;
-      amount: number; // en EUR (ej: 300)
+      lead_id?: string;
+      proposal_id?: string;
+      amount: number;
       description?: string;
       recurring?: boolean;
+      success_url?: string;
+      cancel_url?: string;
+      services?: string;
     };
 
     if (!amount || amount <= 0) {
       return NextResponse.json({ error: "Cantidad invalida" }, { status: 400 });
     }
-    if (!client_email) {
+
+    // For proposal checkouts, fetch lead email if not provided
+    let email = client_email;
+    let name = client_name;
+    let leadId = lead_id;
+
+    if (isProposalCheckout && !email) {
+      const { data: proposal } = await supabase
+        .from("proposals")
+        .select("lead_id, leads(name, email)")
+        .eq("id", proposal_id)
+        .single();
+
+      if (proposal) {
+        const lead = Array.isArray(proposal.leads) ? proposal.leads[0] : proposal.leads;
+        email = (lead as Record<string, string> | null)?.email || "";
+        name = name || (lead as Record<string, string> | null)?.name || "";
+        leadId = leadId || (proposal.lead_id as string) || "";
+      }
+    }
+
+    if (!email) {
       return NextResponse.json({ error: "Email del cliente requerido" }, { status: 400 });
     }
 
@@ -64,19 +105,31 @@ export async function POST(request: NextRequest) {
       lineItem.price_data.recurring = { interval: "month" };
     }
 
+    const origin = request.nextUrl.origin;
+    const defaultSuccessUrl = isProposalCheckout
+      ? `${origin}/propuesta/${proposal_id}?paid=true`
+      : `${origin}/dashboard/payments?success=true&session_id={CHECKOUT_SESSION_ID}`;
+    const defaultCancelUrl = isProposalCheckout
+      ? `${origin}/propuesta/${proposal_id}`
+      : `${origin}/dashboard/payments?cancelled=true`;
+
     const sessionParams: Parameters<typeof stripe.checkout.sessions.create>[0] = {
       payment_method_types: ["card"],
       mode: isRecurring ? "subscription" : "payment",
       line_items: [lineItem],
-      customer_email: client_email,
+      customer_email: email,
       metadata: {
         client_id: client_id || "",
-        client_name: client_name || "",
+        client_name: name || "",
+        client_email: email,
+        lead_id: leadId || "",
+        proposal_id: proposal_id || "",
         product: product || "custom",
-        pacame_source: "dashboard",
+        services: services || "",
+        pacame_source: isProposalCheckout ? "proposal" : "dashboard",
       },
-      success_url: `${request.nextUrl.origin}/dashboard/payments?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${request.nextUrl.origin}/dashboard/payments?cancelled=true`,
+      success_url: customSuccessUrl || defaultSuccessUrl,
+      cancel_url: customCancelUrl || defaultCancelUrl,
       locale: "es",
     };
 
