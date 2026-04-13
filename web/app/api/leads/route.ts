@@ -3,6 +3,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { notifyHotLead } from "@/lib/telegram";
+import { sendLeadWelcome, isWhatsAppConfigured } from "@/lib/whatsapp";
 
 const supabase = createServerSupabase();
 
@@ -151,6 +152,15 @@ export async function POST(request: NextRequest) {
       budget: budget || undefined,
       source: referral_code ? `referral (${referral_code})` : "web",
     });
+
+    // 3c. Enviar WhatsApp de bienvenida si tiene telefono
+    if (phone && isWhatsAppConfigured()) {
+      try {
+        await sendLeadWelcome(phone, name);
+      } catch {
+        // WhatsApp failure is non-blocking
+      }
+    }
 
     // 4. Auto-enqueue into nurturing sequence (non-blocking)
     if (lead?.id && lead?.email) {

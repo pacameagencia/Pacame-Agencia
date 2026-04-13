@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
 import {
   FileText, Check, X, Instagram, Linkedin, Facebook,
-  Twitter, Clock, Bot, ChevronDown, Image,
+  Twitter, Clock, Bot, ChevronDown, Image, Send, Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -50,9 +50,34 @@ export default function ContentReviewPage() {
     fetchContent();
   }, []);
 
+  const [publishing, setPublishing] = useState<string | null>(null);
+
   async function updateStatus(id: string, status: string) {
     await supabase.from("content").update({ status }).eq("id", id);
     setItems((prev) => prev.map((i) => (i.id === id ? { ...i, status } : i)));
+  }
+
+  async function publishNow(id: string) {
+    setPublishing(id);
+    try {
+      const res = await fetch("/api/social/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "publish", content_id: id }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setItems((prev) => prev.map((i) => (i.id === id ? { ...i, status: "published" } : i)));
+      }
+    } catch {
+      // Non-blocking
+    }
+    setPublishing(null);
+  }
+
+  async function approveAndPublish(id: string) {
+    await updateStatus(id, "approved");
+    await publishNow(id);
   }
 
   const pending = items.filter((i) => i.status === "pending_review");
@@ -155,6 +180,15 @@ export default function ContentReviewPage() {
                   </Button>
                   <Button
                     size="sm" variant="outline"
+                    onClick={() => approveAndPublish(item.id)}
+                    disabled={publishing === item.id}
+                    className="gap-1.5 text-cyan-400 border-cyan-400/30 hover:bg-cyan-400/10"
+                  >
+                    {publishing === item.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+                    Aprobar y publicar
+                  </Button>
+                  <Button
+                    size="sm" variant="outline"
                     onClick={() => updateStatus(item.id, "rejected")}
                     className="gap-1.5 text-red-400 border-red-400/30 hover:bg-red-400/10"
                   >
@@ -175,9 +209,22 @@ export default function ContentReviewPage() {
               const clientName = item.client?.business_name || item.client?.name || "";
               return (
                 <div key={item.id} className="flex items-center gap-3 p-3 rounded-xl bg-dark-card border border-white/[0.06] opacity-60">
-                  {item.status === "approved" ? <Check className="w-4 h-4 text-lime-pulse" /> : <X className="w-4 h-4 text-red-400" />}
+                  {item.status === "approved" ? <Check className="w-4 h-4 text-lime-pulse" /> : item.status === "published" ? <Send className="w-4 h-4 text-cyan-400" /> : <X className="w-4 h-4 text-red-400" />}
                   <span className="text-sm text-pacame-white/60 font-body">{clientName}{clientName ? " — " : ""}{item.title}</span>
-                  <span className="text-xs text-pacame-white/30 font-body ml-auto">{item.status === "approved" ? "Aprobado" : "Rechazado"}</span>
+                  <span className="text-xs text-pacame-white/30 font-body ml-auto">
+                    {item.status === "published" ? "Publicado" : item.status === "approved" ? "Aprobado" : "Rechazado"}
+                  </span>
+                  {item.status === "approved" && (
+                    <Button
+                      size="sm" variant="outline"
+                      onClick={() => publishNow(item.id)}
+                      disabled={publishing === item.id}
+                      className="gap-1 text-cyan-400 border-cyan-400/30 hover:bg-cyan-400/10 ml-2"
+                    >
+                      {publishing === item.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3" />}
+                      Publicar
+                    </Button>
+                  )}
                 </div>
               );
             })}

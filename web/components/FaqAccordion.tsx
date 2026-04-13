@@ -18,17 +18,24 @@ function AccordionItem({
   faq,
   isOpen,
   onToggle,
+  itemId,
 }: {
   faq: FaqItem;
   isOpen: boolean;
   onToggle: () => void;
+  itemId: string;
 }) {
+  const triggerId = `faq-trigger-${itemId}`;
+  const panelId = `faq-panel-${itemId}`;
+
   return (
     <div className="rounded-2xl bg-dark-card border border-white/[0.06] hover:border-white/10 transition-all overflow-hidden">
       <button
+        id={triggerId}
         onClick={onToggle}
         className="w-full flex items-center justify-between gap-4 p-6 text-left"
         aria-expanded={isOpen}
+        aria-controls={panelId}
       >
         <h3 className="font-heading font-semibold text-lg text-pacame-white pr-4">
           {faq.question}
@@ -37,7 +44,9 @@ function AccordionItem({
           className={`w-5 h-5 text-pacame-white/40 flex-shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
         />
       </button>
-      <div
+      <section
+        id={panelId}
+        aria-labelledby={triggerId}
         className={`grid transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
       >
         <div className="overflow-hidden">
@@ -45,7 +54,7 @@ function AccordionItem({
             {faq.answer}
           </p>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
@@ -77,7 +86,7 @@ export default function FaqAccordion({
             </h2>
 
             <div className="space-y-3">
-              {category.items.map((faq) => {
+              {category.items.map((faq, faqIdx) => {
                 const key = `${catIdx}-${faq.question}`;
                 return (
                   <AccordionItem
@@ -85,6 +94,7 @@ export default function FaqAccordion({
                     faq={faq}
                     isOpen={openItems[key] ?? false}
                     onToggle={() => toggleItem(key)}
+                    itemId={`${catIdx}-${faqIdx}`}
                   />
                 );
               })}

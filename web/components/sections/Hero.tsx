@@ -97,7 +97,7 @@ export default function Hero() {
               <div className="font-heading font-bold text-2xl sm:text-3xl text-pacame-white mb-1.5">
                 {stat.value}
               </div>
-              <div className="text-xs text-pacame-white/35 font-body">{stat.label}</div>
+              <div className="text-xs text-pacame-white/50 font-body">{stat.label}</div>
             </div>
           ))}
         </motion.div>

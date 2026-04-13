@@ -32,7 +32,7 @@ const footerLinks = {
 function FooterColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
   return (
     <div>
-      <h4 className="font-body text-xs font-semibold text-pacame-white/30 uppercase tracking-[0.15em] mb-5">
+      <h4 className="font-body text-xs font-semibold text-pacame-white/50 uppercase tracking-[0.15em] mb-5">
         {title}
       </h4>
       <ul className="space-y-3">
@@ -65,7 +65,7 @@ export default function Footer() {
               </div>
               <span className="font-heading font-bold text-lg text-pacame-white">PACAME</span>
             </Link>
-            <p className="text-[15px] text-pacame-white/40 leading-relaxed max-w-xs mb-8">
+            <p className="text-[15px] text-pacame-white/60 leading-relaxed max-w-xs mb-8">
               Tu equipo digital completo. Agentes IA especializados, liderados por humanos.
             </p>
             <div className="flex items-center gap-5">
@@ -79,7 +79,7 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-pacame-white/30 hover:text-pacame-white transition-colors duration-300"
+                  className="text-xs text-pacame-white/50 hover:text-pacame-white transition-colors duration-300"
                   aria-label={social.label}
                 >
                   {social.label}
@@ -94,7 +94,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-body text-xs font-semibold text-pacame-white/30 uppercase tracking-[0.15em] mb-5">
+            <h4 className="font-body text-xs font-semibold text-pacame-white/50 uppercase tracking-[0.15em] mb-5">
               Contacto
             </h4>
             <ul className="space-y-3">
@@ -106,7 +106,7 @@ export default function Footer() {
                   hola@pacameagencia.com
                 </a>
               </li>
-              <li className="text-sm text-pacame-white/30">
+              <li className="text-sm text-pacame-white/50">
                 Madrid, Espana
               </li>
             </ul>
@@ -115,7 +115,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-8 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-pacame-white/20">
+          <p className="text-xs text-pacame-white/40">
             &copy; {new Date().getFullYear()} PACAME. Todos los derechos reservados.
           </p>
           <div className="flex items-center gap-6">
@@ -123,7 +123,7 @@ export default function Footer() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-xs text-pacame-white/20 hover:text-pacame-white/50 transition-colors duration-300"
+                className="text-xs text-pacame-white/40 hover:text-pacame-white/70 transition-colors duration-300"
               >
                 {link.label}
               </Link>

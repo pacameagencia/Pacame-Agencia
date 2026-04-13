@@ -175,9 +175,33 @@ const faqCategories = [
   },
 ];
 
+function FaqJsonLd() {
+  const allFaqs = faqCategories.flatMap((cat) => cat.items);
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: allFaqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 export default function FaqPage() {
   return (
     <div className="bg-pacame-black min-h-screen">
+      <FaqJsonLd />
       {/* Hero */}
       <section className="relative pt-36 pb-20 overflow-hidden">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
@@ -191,7 +215,7 @@ export default function FaqPage() {
             <br />
             <span className="gradient-text-vivid">Resueltas aqui.</span>
           </h1>
-          <p className="text-lg text-pacame-white/40 font-body font-light max-w-2xl mx-auto">
+          <p className="text-lg text-pacame-white/60 font-body font-light max-w-2xl mx-auto">
             Si no encuentras lo que buscas, escribenos y te respondemos en menos de 2 horas.
           </p>
         </div>

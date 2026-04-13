@@ -14,6 +14,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = blogPosts.find((p) => p.slug === slug);
   if (!post) return { title: "Articulo no encontrado" };
 
+  const ogImage = `/api/og?title=${encodeURIComponent(post.title)}&category=${encodeURIComponent(post.category)}`;
+
   return {
     title: `${post.title} | Blog PACAME`,
     description: post.excerpt,
@@ -24,6 +26,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       url: `https://pacameagencia.com/blog/${slug}`,
       siteName: "PACAME",
       type: "article",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [ogImage],
     },
   };
 }

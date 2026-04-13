@@ -4,6 +4,8 @@ import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { notifyHotLead, alertPablo } from "@/lib/telegram";
+import { sendWhatsApp, sendLeadFollowup, isWhatsAppConfigured } from "@/lib/whatsapp";
+import { publishContent, getConfiguredPlatforms } from "@/lib/social-publish";
 
 const supabase = createServerSupabase();
 
@@ -242,7 +244,7 @@ Responde SOLO JSON:
       const twoDaysAgo = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString();
       const { data: staleLeads } = await supabase
         .from("leads")
-        .select("id, name, email, business_name, sage_analysis, score")
+        .select("id, name, email, phone, business_name, sage_analysis, score")
         .lt("updated_at", twoDaysAgo)
         .not("status", "in", "(won,lost,dormant)")
         .gte("score", 2)
@@ -269,6 +271,17 @@ Responde SOLO JSON:
           });
         }
 
+        // Also send WhatsApp followup if configured and lead has phone
+        let waFollowupSent = false;
+        if (isWhatsAppConfigured() && (lead as Record<string, unknown>).phone) {
+          const waResult = await sendLeadFollowup(
+            (lead as Record<string, unknown>).phone as string,
+            lead.name || "amigo",
+            analysis?.followup_context as string || `Vi que mencionaste un reto con ${(lead.business_name || "tu negocio").toLowerCase()}.`
+          );
+          waFollowupSent = waResult.success;
+        }
+
         // Save as notification with correct fields for send_pending fallback
         await supabase.from("notifications").insert({
           type: "followup_needed",
@@ -278,7 +291,7 @@ Responde SOLO JSON:
           sent: !!followupEmailId,
           sent_at: followupEmailId ? new Date().toISOString() : null,
           sent_via: followupEmailId ? "resend" : null,
-          data: { lead_id: lead.id, to_email: lead.email, subject: `${lead.name}, ¿hablamos de tu proyecto?`, days_inactive: 2, resend_email_id: followupEmailId },
+          data: { lead_id: lead.id, to_email: lead.email, subject: `${lead.name}, ¿hablamos de tu proyecto?`, days_inactive: 2, resend_email_id: followupEmailId, whatsapp_sent: waFollowupSent },
         });
 
         // Mark as touched so we don't spam
@@ -485,9 +498,58 @@ Responde SOLO JSON array:
         });
       }
 
+      // 4. AUTO-PUBLICAR contenido aprobado en redes sociales
+      let postsPublished = 0;
+      const platforms = getConfiguredPlatforms();
+      const hasAnyPlatform = Object.values(platforms).some(Boolean);
+
+      if (hasAnyPlatform) {
+        const { data: approvedContent } = await supabase
+          .from("content")
+          .select("*")
+          .eq("status", "approved")
+          .in("platform", ["instagram", "facebook", "linkedin", "twitter"])
+          .order("created_at", { ascending: true })
+          .limit(5);
+
+        for (const content of approvedContent || []) {
+          const result = await publishContent({
+            platform: content.platform,
+            text: content.body || content.title || "",
+            imageUrl: content.image_url || undefined,
+            hashtags: content.hashtags || undefined,
+          });
+
+          if (result.success) {
+            postsPublished++;
+            await supabase.from("content").update({
+              status: "published",
+              published_at: new Date().toISOString(),
+              engagement_data: {
+                ...(content.engagement_data as Record<string, unknown> || {}),
+                platform_post_id: result.post_id,
+                published_via: result.method,
+              },
+            }).eq("id", content.id);
+          }
+
+          // Delay between publishes to avoid rate limits
+          await new Promise((r) => setTimeout(r, 2000));
+        }
+
+        if (postsPublished > 0) {
+          logAgentActivity({
+            agentId: "pulse",
+            type: "delivery",
+            title: `${postsPublished} posts publicados automaticamente`,
+            description: `Contenido aprobado publicado en redes sociales.`,
+          });
+        }
+      }
+
       incrementAgentTasks("pulse");
       updateAgentStatus("pulse", "idle");
-      results.pulse = { week_content: weekContent, posts_generated: postsGenerated };
+      results.pulse = { week_content: weekContent, posts_generated: postsGenerated, posts_published: postsPublished };
     } catch {
       updateAgentStatus("pulse", "idle");
       results.pulse = { error: "failed" };
