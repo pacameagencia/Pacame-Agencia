@@ -253,13 +253,32 @@ Responde SOLO JSON:
         const analysis = lead.sage_analysis as Record<string, unknown> | null;
         const followupMsg = analysis?.followup_message as string || `Hola ${lead.name}, soy Pablo de PACAME. ¿Pudiste revisar nuestra propuesta?`;
 
-        // Save followup as notification (for Pablo to send or auto-send via Resend later)
+        // Send followup email directly via Resend
+        let followupEmailId: string | null = null;
+        if (lead.email) {
+          const followupHtml = wrapEmailTemplate(followupMsg, {
+            cta: "Ver como podemos ayudarte",
+            ctaUrl: "https://pacameagencia.com/contacto",
+            preheader: `Followup para ${lead.name}`,
+          });
+          followupEmailId = await sendEmail({
+            to: lead.email,
+            subject: `${lead.name}, ¿hablamos de tu proyecto?`,
+            html: followupHtml,
+            tags: [{ name: "type", value: "followup" }, { name: "lead_id", value: lead.id }],
+          });
+        }
+
+        // Save as notification with correct fields for send_pending fallback
         await supabase.from("notifications").insert({
           type: "followup_needed",
           priority: lead.score >= 4 ? "high" : "normal",
           title: `Followup: ${lead.name}`,
           message: followupMsg,
-          data: { lead_id: lead.id, email: lead.email, days_inactive: 2 },
+          sent: !!followupEmailId,
+          sent_at: followupEmailId ? new Date().toISOString() : null,
+          sent_via: followupEmailId ? "resend" : null,
+          data: { lead_id: lead.id, to_email: lead.email, subject: `${lead.name}, ¿hablamos de tu proyecto?`, days_inactive: 2, resend_email_id: followupEmailId },
         });
 
         // Mark as touched so we don't spam
@@ -1272,6 +1291,57 @@ Responde en texto plano, 2 frases max. Primera frase: que esta pasando. Segunda:
     } catch {
       results.commercial = { error: "failed" };
     }
+  }
+
+  // =============================================
+  // PROCESS PENDING EMAILS — Catch-all for unsent notifications
+  // =============================================
+  try {
+    const emailTypes = ["nurture_email", "followup_needed", "proposal_ready"];
+    const { data: pendingEmails } = await supabase
+      .from("notifications")
+      .select("*")
+      .in("type", emailTypes)
+      .eq("sent", false)
+      .order("created_at", { ascending: true })
+      .limit(10);
+
+    let emailsSent = 0;
+    for (const notif of pendingEmails || []) {
+      const data = notif.data as Record<string, unknown> || {};
+      const toEmail = data.to_email as string;
+      const subject = data.subject as string || notif.title;
+      if (!toEmail) continue;
+
+      const html = wrapEmailTemplate(notif.message, {
+        cta: "Hablemos",
+        ctaUrl: "https://pacameagencia.com/contacto",
+        preheader: subject,
+      });
+
+      const emailId = await sendEmail({
+        to: toEmail,
+        subject,
+        html,
+        tags: [{ name: "type", value: notif.type }],
+      });
+
+      if (emailId) {
+        await supabase.from("notifications").update({
+          sent: true,
+          sent_at: new Date().toISOString(),
+          sent_via: "resend",
+          data: { ...data, resend_email_id: emailId },
+        }).eq("id", notif.id);
+        emailsSent++;
+      }
+    }
+
+    if (emailsSent > 0) {
+      results.emails_sent = emailsSent;
+    }
+  } catch {
+    // Non-blocking
   }
 
   // Reset daily counters at midnight (first run of day)

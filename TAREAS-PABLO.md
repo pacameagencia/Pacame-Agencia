@@ -23,15 +23,11 @@ Cosas que solo tu puedes hacer. De mas a menos prioritaria.
 - Anadir en Vercel → Environment Variables
 - **Por que:** mejora la voz de Sage en llamadas. Sin esto usa una voz por defecto
 
-### 4. Configurar Telegram Bot (alertas en tiempo real)
-- Ir a Telegram → buscar @BotFather → crear bot con `/newbot`
-- Nombre sugerido: PACAME Bot
-- Copiar el token y anadirlo en Vercel: `TELEGRAM_BOT_TOKEN`
-- Abrir chat con el bot, enviar `/start`, luego ir a `https://api.telegram.org/bot{TOKEN}/getUpdates` para obtener tu chat_id
-- Anadir en Vercel: `TELEGRAM_CHAT_ID`
-- (Opcional) Configurar webhook: `https://api.telegram.org/bot{TOKEN}/setWebhook?url=https://pacameagencia.com/api/telegram/webhook?secret={TELEGRAM_WEBHOOK_SECRET}`
-- Comandos disponibles: `/status`, `/leads`, `/cron`, `/takeover +34XXX`, `/release +34XXX`
-- **Por que:** recibiras alertas de leads nuevos, pagos, caidas del sistema directamente en Telegram
+### ~~4. Configurar Telegram Bot (alertas en tiempo real)~~ ✅ HECHO
+- ✅ Bot token y chat ID configurados en Vercel
+- ✅ Webhook configurado: `https://pacameagencia.com/api/telegram/webhook`
+- ✅ Comandos: `/status`, `/leads`, `/cron`, `/takeover`, `/release`
+- ✅ Alertas automaticas: leads calientes, sistema degradado, web caida
 
 ## IMPORTANTES (mejoran conversion)
 
