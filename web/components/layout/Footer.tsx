@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Zap, Twitter, Linkedin, Instagram, Mail } from "lucide-react";
+import { Zap } from "lucide-react";
 
 const footerLinks = {
   servicios: [
@@ -23,164 +23,112 @@ const footerLinks = {
     { label: "Contacto", href: "/contacto" },
   ],
   legal: [
-    { label: "Política de privacidad", href: "/privacidad" },
+    { label: "Privacidad", href: "/privacidad" },
     { label: "Aviso legal", href: "/aviso-legal" },
     { label: "Cookies", href: "/cookies" },
   ],
 };
 
+function FooterColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
+  return (
+    <div>
+      <h4 className="font-body text-xs font-semibold text-pacame-white/30 uppercase tracking-[0.15em] mb-5">
+        {title}
+      </h4>
+      <ul className="space-y-3">
+        {links.map((link) => (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              className="text-sm text-pacame-white/50 hover:text-pacame-white transition-colors duration-300"
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function Footer() {
   return (
-    <footer className="bg-dark-elevated border-t border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12">
+    <footer className="bg-[#0A0A0A] border-t border-white/[0.04]">
+      <div className="max-w-6xl mx-auto px-6 pt-20 pb-12">
+        {/* Top section - brand + links */}
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-12 mb-20">
           {/* Brand */}
-          <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
+          <div className="col-span-2">
+            <Link href="/" className="flex items-center gap-2.5 mb-5">
               <div className="w-8 h-8 rounded-lg bg-brand-gradient flex items-center justify-center">
-                <Zap className="w-4 h-4 text-white fill-white" />
+                <Zap className="w-3.5 h-3.5 text-white fill-white" />
               </div>
-              <span className="font-heading font-bold text-xl text-pacame-white">PACAME</span>
+              <span className="font-heading font-bold text-lg text-pacame-white">PACAME</span>
             </Link>
-            <p className="text-pacame-white/50 text-sm leading-relaxed max-w-xs mb-6">
+            <p className="text-[15px] text-pacame-white/40 leading-relaxed max-w-xs mb-8">
               Tu equipo digital completo. Agentes IA especializados, liderados por humanos.
-              Más rápido, mejor y más barato.
             </p>
-            <div className="flex items-center gap-3">
-              <a
-                href="https://twitter.com/pacameagencia"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-pacame-white/50 hover:text-pacame-white hover:bg-white/10 hover:border-white/20 transition-all"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a
-                href="https://linkedin.com/company/pacame"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-pacame-white/50 hover:text-pacame-white hover:bg-white/10 hover:border-white/20 transition-all"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-4 h-4" />
-              </a>
-              <a
-                href="https://instagram.com/pacameagencia"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-pacame-white/50 hover:text-pacame-white hover:bg-white/10 hover:border-white/20 transition-all"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a
-                href="mailto:hola@pacameagencia.com"
-                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-pacame-white/50 hover:text-pacame-white hover:bg-white/10 hover:border-white/20 transition-all"
-                aria-label="Email"
-              >
-                <Mail className="w-4 h-4" />
-              </a>
+            <div className="flex items-center gap-5">
+              {[
+                { label: "X", href: "https://twitter.com/pacameagencia" },
+                { label: "LinkedIn", href: "https://linkedin.com/company/pacame" },
+                { label: "Instagram", href: "https://instagram.com/pacameagencia" },
+              ].map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-pacame-white/30 hover:text-pacame-white transition-colors duration-300"
+                  aria-label={social.label}
+                >
+                  {social.label}
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Servicios */}
-          <div>
-            <h4 className="font-heading font-semibold text-sm text-pacame-white mb-4 uppercase tracking-widest">
-              Servicios
-            </h4>
-            <ul className="space-y-3">
-              {footerLinks.servicios.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-pacame-white/50 hover:text-pacame-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <FooterColumn title="Servicios" links={footerLinks.servicios} />
+          <FooterColumn title="Empresa" links={footerLinks.empresa} />
+          <FooterColumn title="Gratis" links={footerLinks.herramientas} />
 
-          {/* Empresa */}
+          {/* Contact */}
           <div>
-            <h4 className="font-heading font-semibold text-sm text-pacame-white mb-4 uppercase tracking-widest">
-              Empresa
-            </h4>
-            <ul className="space-y-3">
-              {footerLinks.empresa.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-pacame-white/50 hover:text-pacame-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Herramientas */}
-          <div>
-            <h4 className="font-heading font-semibold text-sm text-pacame-white mb-4 uppercase tracking-widest">
-              Gratis
-            </h4>
-            <ul className="space-y-3">
-              {footerLinks.herramientas.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-pacame-white/50 hover:text-pacame-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contacto */}
-          <div>
-            <h4 className="font-heading font-semibold text-sm text-pacame-white mb-4 uppercase tracking-widest">
+            <h4 className="font-body text-xs font-semibold text-pacame-white/30 uppercase tracking-[0.15em] mb-5">
               Contacto
             </h4>
             <ul className="space-y-3">
               <li>
                 <a
                   href="mailto:hola@pacameagencia.com"
-                  className="text-sm text-pacame-white/50 hover:text-pacame-white transition-colors"
+                  className="text-sm text-pacame-white/50 hover:text-pacame-white transition-colors duration-300"
                 >
                   hola@pacameagencia.com
                 </a>
               </li>
-              <li className="text-sm text-pacame-white/50">
-                Madrid, España
-              </li>
-              <li className="pt-2">
-                {footerLinks.legal.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="block text-xs text-pacame-white/30 hover:text-pacame-white/60 transition-colors mb-2"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+              <li className="text-sm text-pacame-white/30">
+                Madrid, Espana
               </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-pacame-white/30">
-            © {new Date().getFullYear()} PACAME. Todos los derechos reservados.
+        <div className="pt-8 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-pacame-white/20">
+            &copy; {new Date().getFullYear()} PACAME. Todos los derechos reservados.
           </p>
-          <p className="text-xs text-pacame-white/30">
-            Tu equipo digital. Sin límites.
-          </p>
+          <div className="flex items-center gap-6">
+            {footerLinks.legal.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-xs text-pacame-white/20 hover:text-pacame-white/50 transition-colors duration-300"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

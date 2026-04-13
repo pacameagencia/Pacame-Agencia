@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Check, ArrowRight, Zap } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { packages } from "@/lib/data/services";
@@ -9,59 +9,52 @@ import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scr
 
 export default function PricingSection() {
   return (
-    <section className="section-padding bg-pacame-black relative" id="paquetes">
-      <div className="absolute inset-0 bg-dots opacity-50" />
+    <section className="section-padding bg-[#0A0A0A] relative" id="paquetes">
+      <div className="absolute top-0 inset-x-0 section-divider" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <ScrollReveal className="text-center mb-16">
-          <p className="font-mono text-electric-violet text-sm mb-4 uppercase tracking-widest">
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
+        <ScrollReveal className="text-center mb-20">
+          <p className="text-[13px] font-body font-medium text-electric-violet mb-4 uppercase tracking-[0.2em]">
             Paquetes
           </p>
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-6">
-            Precios claros.
-            <br />
-            <span className="gradient-text-vivid">Sin sorpresas en la factura.</span>
+          <h2 className="font-heading font-bold text-section text-pacame-white mb-6 text-balance">
+            Precios claros.{" "}
+            <span className="gradient-text-vivid">Sin sorpresas.</span>
           </h2>
-          <p className="text-lg text-pacame-white/60 max-w-xl mx-auto font-body">
+          <p className="text-lg text-pacame-white/40 max-w-lg mx-auto font-body">
             Combina servicios y ahorra. O elige solo lo que necesitas.
-            En cualquier caso, siempre sabras exactamente lo que pagas.
           </p>
         </ScrollReveal>
 
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12" staggerDelay={0.1}>
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12" staggerDelay={0.1}>
           {packages.map((pkg) => (
             <StaggerItem key={pkg.id}>
               <motion.div
-                className={`relative rounded-2xl p-7 h-full ${
+                className={`relative rounded-2xl p-8 h-full flex flex-col ${
                   pkg.featured
-                    ? "bg-brand-gradient shadow-glow-violet"
-                    : "card-interactive card-shine"
+                    ? "bg-brand-gradient"
+                    : "bg-dark-card border border-white/[0.06]"
                 }`}
-                whileHover={{ y: -6 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
               >
                 {pkg.featured && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <motion.div
-                      className="flex items-center gap-1.5 bg-pacame-white rounded-full px-4 py-1.5 shadow-lg"
-                      animate={{ y: [0, -3, 0] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                      <Zap className="w-3 h-3 fill-pacame-black text-pacame-black" />
-                      <span className="text-xs font-bold font-body text-pacame-black uppercase tracking-wide">
+                    <div className="bg-pacame-white rounded-full px-4 py-1.5 shadow-apple">
+                      <span className="text-xs font-body font-semibold text-pacame-black uppercase tracking-wider">
                         Mas popular
                       </span>
-                    </motion.div>
+                    </div>
                   </div>
                 )}
 
                 {/* Header */}
-                <div className="mb-6">
+                <div className="mb-8">
                   <div
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-body font-medium mb-3 ${
-                      pkg.featured ? "bg-white/20 text-white" : "text-pacame-white"
+                    className={`inline-block px-3 py-1 rounded-full text-xs font-body font-medium mb-4 ${
+                      pkg.featured ? "bg-white/20 text-white" : ""
                     }`}
-                    style={!pkg.featured ? { backgroundColor: `${pkg.color}20`, color: pkg.color } : {}}
+                    style={!pkg.featured ? { backgroundColor: `${pkg.color}10`, color: pkg.color } : {}}
                   >
                     {pkg.subtitle}
                   </div>
@@ -73,22 +66,22 @@ export default function PricingSection() {
                     {pkg.name}
                   </h3>
                   <p
-                    className={`text-sm font-body leading-relaxed mb-4 ${
-                      pkg.featured ? "text-white/80" : "text-pacame-white/60"
+                    className={`text-sm font-body leading-relaxed mb-5 ${
+                      pkg.featured ? "text-white/70" : "text-pacame-white/40"
                     }`}
                   >
                     {pkg.target}
                   </p>
                   <div
-                    className={`font-heading font-bold text-3xl ${
+                    className={`font-heading font-bold text-4xl tracking-tight ${
                       pkg.featured ? "text-white" : "text-pacame-white"
                     }`}
                   >
                     {pkg.price}
                   </div>
                   <p
-                    className={`text-xs font-body mt-1 ${
-                      pkg.featured ? "text-white/60" : "text-pacame-white/40"
+                    className={`text-xs font-body mt-1.5 ${
+                      pkg.featured ? "text-white/50" : "text-pacame-white/30"
                     }`}
                   >
                     {pkg.deadline}
@@ -96,23 +89,17 @@ export default function PricingSection() {
                 </div>
 
                 {/* Includes */}
-                <ul className="space-y-3 mb-7">
+                <ul className="space-y-3 mb-8 flex-1">
                   {pkg.includes.map((item) => (
                     <li key={item} className="flex items-start gap-3">
-                      <div
-                        className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          pkg.featured ? "bg-white/20" : ""
+                      <Check
+                        className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
+                          pkg.featured ? "text-white/80" : "text-pacame-white/30"
                         }`}
-                        style={!pkg.featured ? { backgroundColor: `${pkg.color}20` } : {}}
-                      >
-                        <Check
-                          className="w-3 h-3"
-                          style={!pkg.featured ? { color: pkg.color } : { color: "white" }}
-                        />
-                      </div>
+                      />
                       <span
                         className={`text-sm font-body ${
-                          pkg.featured ? "text-white/90" : "text-pacame-white/70"
+                          pkg.featured ? "text-white/85" : "text-pacame-white/55"
                         }`}
                       >
                         {item}
@@ -121,12 +108,12 @@ export default function PricingSection() {
                   ))}
                 </ul>
 
-                {/* Savings badge */}
+                {/* Savings */}
                 <div
-                  className={`text-xs font-body font-medium text-center py-2 rounded-xl mb-5 ${
-                    pkg.featured ? "bg-white/15 text-white" : "text-pacame-white"
+                  className={`text-xs font-body font-medium text-center py-2.5 rounded-xl mb-6 ${
+                    pkg.featured ? "bg-white/15 text-white" : ""
                   }`}
-                  style={!pkg.featured ? { backgroundColor: `${pkg.color}15`, color: pkg.color } : {}}
+                  style={!pkg.featured ? { backgroundColor: `${pkg.color}08`, color: pkg.color } : {}}
                 >
                   {pkg.savings} vs servicios individuales
                 </div>
@@ -134,10 +121,10 @@ export default function PricingSection() {
                 <Button
                   variant={pkg.featured ? "secondary" : "outline"}
                   size="lg"
-                  className={`w-full group ${
+                  className={`w-full group rounded-full ${
                     pkg.featured
-                      ? "bg-white/20 border-white/30 text-white hover:bg-white/30"
-                      : "border-white/10 hover:border-electric-violet/40"
+                      ? "bg-white text-pacame-black hover:bg-white/90"
+                      : "border-white/[0.08] hover:border-white/20"
                   }`}
                   asChild
                 >
@@ -152,9 +139,9 @@ export default function PricingSection() {
         </StaggerContainer>
 
         <ScrollReveal>
-          <p className="text-center text-sm text-pacame-white/40 font-body">
+          <p className="text-center text-sm text-pacame-white/30 font-body">
             Necesitas algo distinto?{" "}
-            <Link href="/contacto" className="text-electric-violet hover:text-electric-violet/80 transition-colors underline underline-offset-4">
+            <Link href="/contacto" className="text-electric-violet hover:text-electric-violet/80 transition-colors underline underline-offset-4 decoration-electric-violet/30">
               Hablamos y te preparamos un presupuesto a medida
             </Link>
           </p>

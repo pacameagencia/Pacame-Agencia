@@ -32,8 +32,23 @@ const budgets = [
 function ContactoForm() {
   const searchParams = useSearchParams();
   const refCode = searchParams.get("ref") || "";
+  const serviceParam = searchParams.get("service") || "";
   const [formState, setFormState] = useState<"idle" | "sending" | "sent">("idle");
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+
+  // Map URL slugs to service names for preselection
+  const serviceSlugMap: Record<string, string> = {
+    web: "Desarrollo Web",
+    seo: "SEO",
+    redes: "Redes Sociales",
+    ads: "Publicidad Digital (Ads)",
+    branding: "Branding",
+    app: "App / Software a medida",
+    embudo: "Embudo de ventas",
+  };
+  const initialService = serviceSlugMap[serviceParam];
+  const [selectedServices, setSelectedServices] = useState<string[]>(
+    initialService ? [initialService] : [],
+  );
 
   function toggleService(service: string) {
     setSelectedServices((prev) =>
@@ -76,29 +91,27 @@ function ContactoForm() {
   return (
     <div className="bg-pacame-black min-h-screen">
       {/* Hero */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-grid" />
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-electric-violet/15 rounded-full blur-[140px] pointer-events-none" />
+      <section className="relative pt-36 pb-20 overflow-hidden">
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="font-mono text-electric-violet text-sm mb-4 uppercase tracking-widest">
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+          <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
             Contacto
           </p>
-          <h1 className="font-heading font-bold text-[clamp(2.5rem,5vw,4rem)] text-pacame-white leading-tight mb-6">
-            Cuéntanos tu problema.
-            <br />
-            <span className="gradient-text">Nosotros lo resolvemos.</span>
+          <h1 className="font-heading font-bold text-display text-pacame-white mb-6 text-balance">
+            Cuentanos tu problema.{" "}
+            <span className="gradient-text-vivid">Nosotros lo resolvemos.</span>
           </h1>
-          <p className="text-lg text-pacame-white/60 font-body max-w-2xl mx-auto">
+          <p className="text-xl text-pacame-white/40 font-body max-w-2xl mx-auto font-light">
             30 minutos. Sin compromiso. Sin presupuestos ciegos.
-            Escuchamos primero, cotizamos después.
           </p>
         </div>
       </section>
 
       {/* Form + info */}
-      <section className="section-padding bg-dark-elevated">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="section-padding relative">
+        <div className="absolute top-0 inset-x-0 section-divider" />
+        <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
             {/* Form */}
             <div className="lg:col-span-3">
@@ -119,16 +132,21 @@ function ContactoForm() {
                   <h2 className="font-heading font-bold text-2xl text-pacame-white mb-3">
                     Mensaje recibido
                   </h2>
-                  <p className="text-pacame-white/60 font-body mb-6">
+                  <p className="text-pacame-white/60 font-body mb-8">
                     Pablo te responderá en menos de 2 horas. Si es urgente,
                     escríbenos a{" "}
                     <a href="mailto:hola@pacameagencia.com" className="text-electric-violet hover:underline">
                       hola@pacameagencia.com
                     </a>
                   </p>
-                  <Button variant="outline" asChild>
-                    <Link href="/">Volver al inicio</Link>
-                  </Button>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <Button variant="outline" asChild className="rounded-full">
+                      <Link href="/blog">Leer el blog mientras esperas</Link>
+                    </Button>
+                    <Button variant="outline" asChild className="rounded-full border-white/[0.06]">
+                      <Link href="/portfolio">Ver nuestro portfolio</Link>
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">

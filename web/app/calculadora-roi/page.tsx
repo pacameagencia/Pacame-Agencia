@@ -23,10 +23,10 @@ const sectors = [
 ];
 
 const investmentOptions = [
-  { label: "Web + SEO", monthly: 397, description: "Web profesional + posicionamiento", avgLeadsMonth: 15, avgConversion: 8 },
-  { label: "RRSS + Contenido", monthly: 397, description: "Redes sociales gestionadas por IA", avgLeadsMonth: 10, avgConversion: 5 },
-  { label: "Pack Completo", monthly: 797, description: "Web + SEO + RRSS + Ads", avgLeadsMonth: 35, avgConversion: 12 },
-  { label: "Solo Ads", monthly: 397, description: "Google Ads + Meta Ads gestionados", avgLeadsMonth: 25, avgConversion: 10 },
+  { label: "Despega", monthly: 180, description: "Web + logo + SEO basico (pago unico ~2.150€)", avgLeadsMonth: 15, avgConversion: 8 },
+  { label: "Escala", monthly: 350, description: "Web + SEO 3 meses + Ads (pago unico ~4.250€)", avgLeadsMonth: 25, avgConversion: 10 },
+  { label: "Domina", monthly: 600, description: "Web + branding + SEO + RRSS + Ads 6 meses", avgLeadsMonth: 40, avgConversion: 12 },
+  { label: "Solo SEO mensual", monthly: 400, description: "Posicionamiento organico mensual", avgLeadsMonth: 20, avgConversion: 8 },
 ];
 
 export default function CalculadoraROIPage() {
@@ -48,22 +48,21 @@ export default function CalculadoraROIPage() {
   return (
     <div className="bg-pacame-black min-h-screen">
       {/* Hero */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-grid" />
-        <div className="absolute top-1/3 right-1/4 w-[500px] h-[300px] bg-lime-pulse/10 rounded-full blur-[140px] pointer-events-none" />
+      <section className="relative pt-36 pb-20 overflow-hidden">
+        <div className="absolute top-1/3 right-1/4 w-[500px] h-[300px] bg-lime-pulse/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-body text-pacame-white/60 mb-6">
+        <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-body text-pacame-white/40 mb-6">
             <Calculator className="w-3.5 h-3.5 text-lime-pulse" />
             Herramienta gratuita
           </div>
 
-          <h1 className="font-heading font-bold text-[clamp(2rem,5vw,3.5rem)] text-pacame-white leading-tight mb-6">
+          <h1 className="font-heading font-bold text-display text-pacame-white leading-tight mb-6">
             ¿Cuanto dinero estas
             <br />
-            <span className="gradient-text">dejando en la mesa?</span>
+            <span className="gradient-text-vivid">dejando en la mesa?</span>
           </h1>
-          <p className="text-lg text-pacame-white/60 font-body max-w-xl mx-auto">
+          <p className="text-lg text-pacame-white/40 font-body font-light max-w-xl mx-auto">
             Calcula en 30 segundos el retorno de inversion que tendria
             contratar marketing digital para tu negocio.
           </p>
@@ -72,7 +71,7 @@ export default function CalculadoraROIPage() {
 
       {/* Calculator */}
       <section className="section-padding">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Inputs */}
             <div className="space-y-6">
@@ -85,7 +84,7 @@ export default function CalculadoraROIPage() {
                     <select
                       value={sector}
                       onChange={(e) => setSector(e.target.value)}
-                      className="w-full h-11 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm focus:border-electric-violet outline-none"
+                      className="w-full h-11 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm focus:border-electric-violet outline-none"
                     >
                       <option value="">Selecciona tu sector</option>
                       {sectors.map((s) => <option key={s} value={s}>{s}</option>)}

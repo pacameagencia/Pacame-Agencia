@@ -78,14 +78,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             description: post.excerpt,
             author: { "@type": "Organization", name: "PACAME" },
             publisher: { "@type": "Organization", name: "PACAME", url: "https://pacameagencia.com" },
-            datePublished: "2026-04-01",
+            datePublished: post.dateISO,
             url: `https://pacameagencia.com/blog/${slug}`,
           }),
         }}
       />
 
-      <article className="pt-32 pb-20">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <article className="pt-36 pb-20">
+        <div className="max-w-3xl mx-auto px-6">
           {/* Back + meta */}
           <div className="mb-8">
             <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-pacame-white/40 hover:text-pacame-white/60 font-body mb-6">
@@ -108,7 +108,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </div>
 
           {/* Title */}
-          <h1 className="font-heading font-bold text-[clamp(2rem,4vw,3rem)] text-pacame-white leading-tight mb-4">
+          <h1 className="font-heading font-bold text-display text-pacame-white mb-4">
             {post.title}
           </h1>
 

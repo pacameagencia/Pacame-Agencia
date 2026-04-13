@@ -4,6 +4,7 @@ export interface BlogPost {
   category: string;
   readTime: string;
   date: string;
+  dateISO: string;
   color: string;
   agentName: string;
   slug: string;
@@ -18,6 +19,7 @@ export const blogPosts: BlogPost[] = [
     category: "Desarrollo Web",
     readTime: "5 min",
     date: "2 abril 2026",
+    dateISO: "2026-04-02",
     color: "#06B6D4",
     agentName: "Pixel",
     slug: "7-errores-pymes-web",
@@ -62,6 +64,7 @@ Si no tienes Google Analytics (o GA4), no sabes cuantas personas visitan tu web,
     category: "SEO",
     readTime: "8 min",
     date: "1 abril 2026",
+    dateISO: "2026-04-01",
     color: "#2563EB",
     agentName: "Atlas",
     slug: "0-a-1000-visitas-90-dias",
@@ -115,6 +118,7 @@ Pasar de 0 a 1.000 visitas organicas mensuales es un objetivo realista para cual
     category: "Paid Media",
     readTime: "10 min",
     date: "31 marzo 2026",
+    dateISO: "2026-03-31",
     color: "#EA580C",
     agentName: "Nexus",
     slug: "meta-ads-guia-pymes-2026",
@@ -151,6 +155,7 @@ En 2026, Meta (Facebook + Instagram) sigue siendo la plataforma de ads mas efect
     category: "Branding",
     readTime: "6 min",
     date: "30 marzo 2026",
+    dateISO: "2026-03-30",
     color: "#7C3AED",
     agentName: "Nova",
     slug: "marca-vs-logo",
@@ -186,6 +191,7 @@ Si has respondido NO a alguna, necesitas trabajar tu marca.
     category: "Redes Sociales",
     readTime: "4 min",
     date: "29 marzo 2026",
+    dateISO: "2026-03-29",
     color: "#EC4899",
     agentName: "Pulse",
     slug: "calendario-editorial-instagram-2026",
@@ -224,6 +230,7 @@ Publicar "cuando me acuerde" no es una estrategia. Los negocios que publican con
     category: "Estrategia",
     readTime: "7 min",
     date: "28 marzo 2026",
+    dateISO: "2026-03-28",
     color: "#D97706",
     agentName: "Sage",
     slug: "como-elegir-agencia-digital",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -20,12 +20,17 @@ export default function ScrollReveal({
   delay = 0,
   duration = 0.6,
   direction = "up",
-  distance = 40,
+  distance = 30,
   once = true,
   scale,
 }: ScrollRevealProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once, margin: "-60px" });
+  const prefersReduced = useReducedMotion();
+
+  if (prefersReduced) {
+    return <div ref={ref} className={className}>{children}</div>;
+  }
 
   const directionMap = {
     up: { y: distance, x: 0 },
@@ -55,7 +60,7 @@ export default function ScrollReveal({
       transition={{
         duration,
         delay,
-        ease: [0.25, 0.4, 0.25, 1],
+        ease: [0.23, 1, 0.32, 1],
       }}
     >
       {children}
@@ -104,12 +109,11 @@ export function StaggerItem({
     <motion.div
       className={className}
       variants={{
-        hidden: { opacity: 0, y: 30, scale: 0.95 },
+        hidden: { opacity: 0, y: 24 },
         visible: {
           opacity: 1,
           y: 0,
-          scale: 1,
-          transition: { duration: 0.5, ease: [0.25, 0.4, 0.25, 1] },
+          transition: { duration: 0.6, ease: [0.23, 1, 0.32, 1] },
         },
       }}
     >

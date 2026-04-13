@@ -91,24 +91,21 @@ export default function AuditoriaPage() {
   return (
     <div className="bg-pacame-black min-h-screen">
       {/* Hero */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-grid" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-neon-cyan/10 rounded-full blur-[140px] pointer-events-none" />
+      <section className="relative pt-36 pb-20 overflow-hidden">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-neon-cyan/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-body text-pacame-white/60 mb-6">
-            <Search className="w-3.5 h-3.5 text-neon-cyan" />
-            Lead Magnet Gratuito
-          </div>
+        <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
+          <p className="text-[13px] font-body font-medium text-neon-cyan mb-5 uppercase tracking-[0.2em]">
+            Auditoria gratuita
+          </p>
 
-          <h1 className="font-heading font-bold text-[clamp(2rem,5vw,3.5rem)] text-pacame-white leading-tight mb-6">
-            Auditoria web gratuita
-            <br />
-            <span className="gradient-text">en 30 segundos.</span>
+          <h1 className="font-heading font-bold text-display text-pacame-white mb-6 text-balance">
+            Auditoria web gratuita{" "}
+            <span className="gradient-text-vivid">en 30 segundos.</span>
           </h1>
-          <p className="text-lg text-pacame-white/60 font-body max-w-xl mx-auto mb-10">
+          <p className="text-xl text-pacame-white/40 font-body max-w-xl mx-auto mb-12 font-light">
             Introduce la URL de tu negocio y nuestros agentes IA analizan SEO, velocidad,
-            movil, seguridad y UX. Gratis. Sin compromiso.
+            movil, seguridad y UX. Gratis.
           </p>
 
           {state === "idle" && (

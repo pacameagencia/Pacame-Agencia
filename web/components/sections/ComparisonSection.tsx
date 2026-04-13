@@ -1,7 +1,6 @@
 "use client";
 
 import { Check, X, Minus } from "lucide-react";
-import { motion } from "framer-motion";
 import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
 
 type CellValue = "yes" | "no" | "partial" | string;
@@ -32,27 +31,27 @@ const rows: ComparisonRow[] = [
 function CellContent({ value, highlight }: { value: CellValue; highlight?: boolean }) {
   if (value === "yes") {
     return (
-      <div className={`flex items-center justify-center ${highlight ? "text-lime-pulse" : "text-lime-pulse/70"}`}>
-        <Check className="w-5 h-5" />
+      <div className={`flex items-center justify-center ${highlight ? "text-lime-pulse" : "text-pacame-white/25"}`}>
+        <Check className="w-4 h-4" />
       </div>
     );
   }
   if (value === "no") {
     return (
-      <div className="flex items-center justify-center text-rose-alert/60">
-        <X className="w-5 h-5" />
+      <div className="flex items-center justify-center text-pacame-white/15">
+        <X className="w-4 h-4" />
       </div>
     );
   }
   if (value === "partial") {
     return (
-      <div className="flex items-center justify-center text-amber-signal/60">
-        <Minus className="w-5 h-5" />
+      <div className="flex items-center justify-center text-pacame-white/20">
+        <Minus className="w-4 h-4" />
       </div>
     );
   }
   return (
-    <span className={`text-xs font-body ${highlight ? "text-pacame-white font-medium" : "text-pacame-white/50"}`}>
+    <span className={`text-xs font-body ${highlight ? "text-pacame-white font-medium" : "text-pacame-white/40"}`}>
       {value}
     </span>
   );
@@ -62,64 +61,60 @@ const summaryCards = [
   {
     vs: "vs Agencia",
     stat: "60-80% mas barato",
-    detail: "Mismo equipo multidisciplinar, sin el overhead de oficinas y reuniones internas.",
+    detail: "Mismo equipo multidisciplinar, sin overhead de oficinas y reuniones.",
     color: "#7C3AED",
   },
   {
     vs: "vs Freelancer",
-    stat: "10 especialistas por el precio de 1",
+    stat: "10 especialistas x1 precio",
     detail: "No dependes de una sola persona. Equipo completo con proceso estructurado.",
     color: "#06B6D4",
   },
   {
     vs: "vs DIY (Wix)",
-    stat: "Estrategia real, no templates",
-    detail: "Web personalizada con SEO, copy y codigo propio. Sin cuotas mensuales eternas.",
+    stat: "Estrategia real",
+    detail: "Web personalizada con SEO, copy y codigo propio. Sin cuotas eternas.",
     color: "#84CC16",
   },
 ];
 
 export default function ComparisonSection() {
   return (
-    <section className="section-padding bg-pacame-black relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-electric-violet/10 rounded-full blur-[160px] pointer-events-none" />
+    <section className="section-padding bg-pacame-black relative">
+      <div className="absolute top-0 inset-x-0 section-divider" />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal className="text-center mb-12">
-          <p className="font-mono text-neon-cyan text-sm mb-4 uppercase tracking-widest">
+      <div className="max-w-6xl mx-auto px-6">
+        <ScrollReveal className="text-center mb-16">
+          <p className="text-[13px] font-body font-medium text-neon-cyan mb-4 uppercase tracking-[0.2em]">
             Comparativa
           </p>
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-6">
-            PACAME vs las alternativas.
-            <br />
+          <h2 className="font-heading font-bold text-section text-pacame-white mb-6 text-balance">
+            PACAME vs las alternativas.{" "}
             <span className="gradient-text-vivid">Tu decides.</span>
           </h2>
-          <p className="text-pacame-white/50 font-body max-w-2xl mx-auto">
-            Sin humo. Los hechos comparados para que tomes la mejor decision.
-          </p>
         </ScrollReveal>
 
         {/* Table */}
         <ScrollReveal>
-          <div className="rounded-2xl border border-white/[0.08] overflow-hidden card-shine">
+          <div className="rounded-2xl border border-white/[0.06] overflow-hidden bg-dark-card">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[640px]">
                 <thead>
-                  <tr className="border-b border-white/[0.08]">
-                    <th className="text-left p-4 text-sm font-heading font-semibold text-pacame-white/40 w-[200px]">
+                  <tr className="border-b border-white/[0.06]">
+                    <th className="text-left p-4 text-xs font-body font-medium text-pacame-white/30 uppercase tracking-wider w-[200px]">
                       Criterio
                     </th>
-                    <th className="p-4 text-center text-sm font-heading font-semibold text-pacame-white/40">
-                      Agencia tradicional
+                    <th className="p-4 text-center text-xs font-body font-medium text-pacame-white/30 uppercase tracking-wider">
+                      Agencia
                     </th>
-                    <th className="p-4 text-center text-sm font-heading font-semibold text-pacame-white/40">
+                    <th className="p-4 text-center text-xs font-body font-medium text-pacame-white/30 uppercase tracking-wider">
                       Freelancer
                     </th>
-                    <th className="p-4 text-center text-sm font-heading font-semibold text-pacame-white/40">
-                      DIY (Wix/Squarespace)
+                    <th className="p-4 text-center text-xs font-body font-medium text-pacame-white/30 uppercase tracking-wider">
+                      DIY
                     </th>
-                    <th className="p-4 text-center text-sm font-heading font-semibold text-electric-violet relative">
-                      <div className="absolute inset-0 bg-electric-violet/10" />
+                    <th className="p-4 text-center text-xs font-body font-medium text-electric-violet uppercase tracking-wider relative">
+                      <div className="absolute inset-0 bg-electric-violet/[0.04]" />
                       <span className="relative">PACAME</span>
                     </th>
                   </tr>
@@ -128,9 +123,9 @@ export default function ComparisonSection() {
                   {rows.map((row, idx) => (
                     <tr
                       key={row.feature}
-                      className={`border-b border-white/[0.04] ${idx % 2 === 0 ? "bg-white/[0.02]" : ""}`}
+                      className="border-b border-white/[0.03] last:border-0"
                     >
-                      <td className="p-4 text-sm font-body text-pacame-white/70">
+                      <td className="p-4 text-sm font-body text-pacame-white/50">
                         {row.feature}
                       </td>
                       <td className="p-4 text-center">
@@ -143,7 +138,7 @@ export default function ComparisonSection() {
                         <CellContent value={row.diy} />
                       </td>
                       <td className="p-4 text-center relative">
-                        <div className="absolute inset-0 bg-electric-violet/6" />
+                        <div className="absolute inset-0 bg-electric-violet/[0.04]" />
                         <div className="relative">
                           <CellContent value={row.pacame} highlight />
                         </div>
@@ -156,31 +151,24 @@ export default function ComparisonSection() {
           </div>
         </ScrollReveal>
 
-        {/* Bottom summary cards */}
+        {/* Summary cards */}
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8" staggerDelay={0.1}>
           {summaryCards.map((card) => (
             <StaggerItem key={card.vs}>
-              <motion.div
-                className="rounded-xl p-5 border transition-all"
-                style={{
-                  backgroundColor: `${card.color}08`,
-                  borderColor: `${card.color}20`,
-                }}
-                whileHover={{
-                  y: -4,
-                  borderColor: `${card.color}50`,
-                  boxShadow: `0 0 30px ${card.color}15`,
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              <div
+                className="rounded-2xl p-6 border border-white/[0.06] bg-dark-card transition-all duration-500 ease-apple hover:border-white/[0.12]"
               >
-                <div className="text-xs font-mono uppercase tracking-widest mb-2" style={{ color: card.color }}>
+                <div
+                  className="text-xs font-body font-medium uppercase tracking-[0.15em] mb-3"
+                  style={{ color: card.color }}
+                >
                   {card.vs}
                 </div>
-                <div className="font-heading font-bold text-pacame-white text-sm mb-1">
+                <div className="font-heading font-bold text-pacame-white text-base mb-2">
                   {card.stat}
                 </div>
-                <p className="text-xs text-pacame-white/50 font-body">{card.detail}</p>
-              </motion.div>
+                <p className="text-sm text-pacame-white/35 font-body leading-relaxed">{card.detail}</p>
+              </div>
             </StaggerItem>
           ))}
         </StaggerContainer>

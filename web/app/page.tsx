@@ -12,7 +12,7 @@ import CTASection from "@/components/sections/CTASection";
 export const metadata: Metadata = {
   title: "PACAME — Tu equipo digital completo. Potenciado por IA, liderado por humanos.",
   description:
-    "Agencia digital con 10 agentes IA especializados. Diseno web desde 300 EUR, SEO, publicidad digital, redes sociales y branding para PYMEs en Espana. 60% mas barato que una agencia, 3x mas rapido.",
+    "Agencia digital con 7 agentes IA especializados. Diseno web desde 300 EUR, SEO, publicidad digital, redes sociales y branding para PYMEs en Espana. 60% mas barato que una agencia, 3x mas rapido.",
   alternates: { canonical: "https://pacameagencia.com" },
 };
 
@@ -21,11 +21,11 @@ export default function HomePage() {
     <>
       <Hero />
       <ServicesSection />
-      <AgentsSection />
       <HowItWorks />
       <ComparisonSection />
-      <PricingSection />
       <TestimonialsSection />
+      <PricingSection />
+      <AgentsSection />
       <BlogPreview />
       <CTASection />
     </>

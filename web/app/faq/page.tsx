@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import FaqAccordion from "@/components/FaqAccordion";
 
 export const metadata: Metadata = {
   title: "Preguntas Frecuentes — PACAME Agencia Digital",
@@ -10,18 +11,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://pacameagencia.com/faq" },
 };
 
-interface FaqItem {
-  question: string;
-  answer: string;
-}
-
-interface FaqCategory {
-  title: string;
-  color: string;
-  items: FaqItem[];
-}
-
-const faqCategories: FaqCategory[] = [
+const faqCategories = [
   {
     title: "Sobre PACAME",
     color: "#7C3AED",
@@ -29,7 +19,7 @@ const faqCategories: FaqCategory[] = [
       {
         question: "Que es PACAME exactamente?",
         answer:
-          "PACAME es una agencia digital formada por 10 agentes IA especializados, liderados por Pablo Calleja. Cada agente domina un area: branding, SEO, desarrollo web, publicidad, redes sociales, copywriting, analitica, estrategia y backend. Es como tener un departamento de marketing completo, pero mas rapido y a una fraccion del coste.",
+          "PACAME es una agencia digital formada por 7 agentes IA especializados, liderados por Pablo Calleja. Cada agente domina un area: branding, SEO, desarrollo web, publicidad, redes sociales, estrategia y backend. Es como tener un departamento de marketing completo, pero mas rapido y a una fraccion del coste.",
       },
       {
         question: "Son agentes IA de verdad? Como funciona?",
@@ -189,68 +179,36 @@ export default function FaqPage() {
   return (
     <div className="bg-pacame-black min-h-screen">
       {/* Hero */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-grid" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/15 rounded-full blur-[140px] pointer-events-none" />
+      <section className="relative pt-36 pb-20 overflow-hidden">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="font-mono text-electric-violet text-sm mb-4 uppercase tracking-widest">
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+          <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
             Preguntas frecuentes
           </p>
-          <h1 className="font-heading font-bold text-[clamp(2.5rem,5vw,4rem)] text-pacame-white leading-tight mb-6">
+          <h1 className="font-heading font-bold text-display text-pacame-white leading-tight mb-6">
             Todas tus dudas.
             <br />
-            <span className="gradient-text">Resueltas aqui.</span>
+            <span className="gradient-text-vivid">Resueltas aqui.</span>
           </h1>
-          <p className="text-lg text-pacame-white/60 font-body max-w-2xl mx-auto">
+          <p className="text-lg text-pacame-white/40 font-body font-light max-w-2xl mx-auto">
             Si no encuentras lo que buscas, escribenos y te respondemos en menos de 2 horas.
           </p>
         </div>
       </section>
 
-      {/* FAQ Categories */}
-      {faqCategories.map((category, catIdx) => (
-        <section
-          key={category.title}
-          className={`section-padding ${catIdx % 2 === 0 ? "bg-dark-elevated" : "bg-pacame-black"}`}
-        >
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2
-              className="font-heading font-bold text-2xl mb-8"
-              style={{ color: category.color }}
-            >
-              {category.title}
-            </h2>
-
-            <div className="space-y-6">
-              {category.items.map((faq) => (
-                <div
-                  key={faq.question}
-                  className="rounded-2xl bg-dark-card border border-white/[0.06] p-6 hover:border-white/10 transition-all"
-                >
-                  <h3 className="font-heading font-semibold text-lg text-pacame-white mb-3">
-                    {faq.question}
-                  </h3>
-                  <p className="text-sm text-pacame-white/60 font-body leading-relaxed">
-                    {faq.answer}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      ))}
+      <FaqAccordion categories={faqCategories} />
 
       {/* CTA */}
-      <section className="py-20 bg-dark-elevated text-center">
-        <div className="max-w-2xl mx-auto px-4">
+      <section className="py-20 bg-pacame-black border-t border-white/[0.04] text-center">
+        <div className="max-w-2xl mx-auto px-6">
           <h2 className="font-heading font-bold text-3xl text-pacame-white mb-4">
             No has encontrado tu respuesta?
           </h2>
           <p className="text-pacame-white/60 font-body mb-8">
             Escribenos y te respondemos en menos de 2 horas. Sin compromiso.
           </p>
-          <Button variant="gradient" size="xl" asChild className="group">
+          <Button variant="gradient" size="xl" asChild className="group rounded-full">
             <Link href="/contacto">
               <MessageSquare className="w-5 h-5" />
               Escribir al equipo

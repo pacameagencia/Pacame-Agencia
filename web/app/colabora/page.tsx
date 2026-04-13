@@ -79,20 +79,19 @@ export default function ColaboraPage() {
   return (
     <div className="bg-pacame-black min-h-screen">
       {/* Hero */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-grid" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/15 rounded-full blur-[140px] pointer-events-none" />
+      <section className="relative pt-36 pb-20 overflow-hidden">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="font-mono text-lime-pulse text-sm mb-4 uppercase tracking-widest">
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+          <p className="text-[13px] font-body font-medium text-lime-pulse mb-5 uppercase tracking-[0.2em]">
             Programa de colaboradores
           </p>
-          <h1 className="font-heading font-bold text-[clamp(2rem,5vw,3.5rem)] text-pacame-white leading-tight mb-6">
+          <h1 className="font-heading font-bold text-display text-pacame-white leading-tight mb-6">
             Tu recomiendas.
             <br />
-            <span className="gradient-text">Nosotros ejecutamos. Tu cobras.</span>
+            <span className="gradient-text-vivid">Nosotros ejecutamos. Tu cobras.</span>
           </h1>
-          <p className="text-lg text-pacame-white/60 font-body max-w-2xl mx-auto mb-8">
+          <p className="text-lg text-pacame-white/40 font-body font-light max-w-2xl mx-auto mb-8">
             Gana comisiones recurrentes por cada negocio que recomiendes a PACAME.
             Sin exclusividad, sin compromiso, sin tener que vender nada.
           </p>
@@ -119,10 +118,10 @@ export default function ColaboraPage() {
       </section>
 
       {/* How it works */}
-      <section className="section-padding bg-dark-elevated">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="section-padding bg-pacame-black border-t border-white/[0.04]">
+        <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
-            <p className="font-mono text-electric-violet text-sm mb-4 uppercase tracking-widest">
+            <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
               Como funciona
             </p>
             <h2 className="font-heading font-bold text-section text-pacame-white">
@@ -150,9 +149,9 @@ export default function ColaboraPage() {
 
       {/* Tiers */}
       <section className="section-padding bg-pacame-black">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
-            <p className="font-mono text-amber-signal text-sm mb-4 uppercase tracking-widest">
+            <p className="text-[13px] font-body font-medium text-amber-signal mb-5 uppercase tracking-[0.2em]">
               Comisiones
             </p>
             <h2 className="font-heading font-bold text-section text-pacame-white">
@@ -197,10 +196,10 @@ export default function ColaboraPage() {
       </section>
 
       {/* Who is this for */}
-      <section className="section-padding bg-dark-elevated">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="section-padding bg-pacame-black border-t border-white/[0.04]">
+        <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
-            <p className="font-mono text-neon-cyan text-sm mb-4 uppercase tracking-widest">
+            <p className="text-[13px] font-body font-medium text-neon-cyan mb-5 uppercase tracking-[0.2em]">
               Para quien es
             </p>
             <h2 className="font-heading font-bold text-section text-pacame-white">
@@ -224,7 +223,7 @@ export default function ColaboraPage() {
 
       {/* Form */}
       <section className="section-padding bg-pacame-black">
-        <div className="max-w-xl mx-auto px-4 sm:px-6">
+        <div className="max-w-xl mx-auto px-6">
           {state === "success" ? (
             <div className="rounded-3xl glass p-10 text-center">
               <div className="w-16 h-16 rounded-full bg-lime-pulse/20 flex items-center justify-center mx-auto mb-6">
@@ -255,7 +254,7 @@ export default function ColaboraPage() {
           ) : (
             <>
               <div className="text-center mb-8">
-                <p className="font-mono text-electric-violet text-sm mb-4 uppercase tracking-widest">
+                <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
                   Unete
                 </p>
                 <h2 className="font-heading font-bold text-[clamp(1.5rem,4vw,2.5rem)] text-pacame-white leading-tight mb-4">
@@ -273,7 +272,7 @@ export default function ColaboraPage() {
                     name="name"
                     required
                     placeholder="Tu nombre"
-                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
                   />
                 </div>
 
@@ -284,7 +283,7 @@ export default function ColaboraPage() {
                     type="email"
                     required
                     placeholder="tu@email.com"
-                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
                   />
                 </div>
 
@@ -293,7 +292,7 @@ export default function ColaboraPage() {
                   <input
                     name="phone"
                     placeholder="+34 600 000 000"
-                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
                   />
                 </div>
 

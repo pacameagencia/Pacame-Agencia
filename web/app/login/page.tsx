@@ -38,8 +38,7 @@ export default function LoginPage() {
 
   return (
     <div className="bg-pacame-black min-h-screen flex items-center justify-center">
-      <div className="absolute inset-0 bg-grid opacity-30" />
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-electric-violet/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-sm px-4">
         <div className="text-center mb-8">
@@ -62,7 +61,7 @@ export default function LoginPage() {
                 placeholder="Introduce el password"
                 required
                 autoFocus
-                className="w-full h-12 pl-10 pr-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none"
+                className="w-full h-12 pl-10 pr-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none"
               />
             </div>
           </div>

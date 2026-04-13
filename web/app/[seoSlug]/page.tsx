@@ -124,11 +124,10 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
       />
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-grid" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full blur-[140px] pointer-events-none" style={{ backgroundColor: `${service.color}15` }} />
+      <section className="relative pt-36 pb-20 overflow-hidden">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full blur-[200px] pointer-events-none" style={{ backgroundColor: `${service.color}08` }} />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative z-10 max-w-4xl mx-auto px-6">
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-xs text-pacame-white/30 font-body mb-8">
             <Link href="/" className="hover:text-pacame-white/50">PACAME</Link>
@@ -283,9 +282,60 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
         </div>
       </section>
 
+      {/* Related pages — internal linking for SEO */}
+      <section className="section-padding bg-pacame-black">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Other cities for same service+sector */}
+            <div>
+              <h3 className="font-heading font-semibold text-lg text-pacame-white mb-4">
+                {service.nameShort} para {sector.namePlural} en otras ciudades
+              </h3>
+              <ul className="space-y-2">
+                {seoCities
+                  .filter((c) => c.slug !== city.slug)
+                  .slice(0, 6)
+                  .map((c) => (
+                    <li key={c.slug}>
+                      <Link
+                        href={`/${service.slug}-${sector.slug}-${c.slug}`}
+                        className="text-sm text-pacame-white/50 hover:text-electric-violet font-body transition-colors"
+                      >
+                        {service.nameShort} para {sector.namePlural} en {c.name}
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+
+            {/* Other services for same sector+city */}
+            <div>
+              <h3 className="font-heading font-semibold text-lg text-pacame-white mb-4">
+                Otros servicios para {sector.namePlural} en {city.name}
+              </h3>
+              <ul className="space-y-2">
+                {seoServices
+                  .filter((s) => s.slug !== service.slug)
+                  .slice(0, 6)
+                  .map((s) => (
+                    <li key={s.slug}>
+                      <Link
+                        href={`/${s.slug}-${sector.slug}-${city.slug}`}
+                        className="text-sm text-pacame-white/50 hover:text-electric-violet font-body transition-colors"
+                      >
+                        {s.nameShort} para {sector.namePlural} en {city.name}
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA final */}
       <section className="py-20 bg-pacame-black text-center">
-        <div className="max-w-2xl mx-auto px-4">
+        <div className="max-w-2xl mx-auto px-6">
           <h2 className="font-heading font-bold text-3xl text-pacame-white mb-4">
             ¿Listo para hacer crecer tu {sector.name} en {city.name}?
           </h2>
@@ -293,7 +343,7 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
             Diagnóstico gratuito. Presupuesto en 24 horas. Sin compromiso.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="gradient" size="xl" asChild className="group">
+            <Button variant="gradient" size="xl" asChild className="group rounded-full">
               <Link href="/contacto">
                 Empezar ahora
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

@@ -9,13 +9,12 @@ Cosas que solo tu puedes hacer. De mas a menos prioritaria.
 - Cambialo en Vercel → Environment Variables → `DASHBOARD_PASSWORD`
 - **Por que:** cualquiera que vea el codigo puede entrar
 
-### 2. Crear cuenta Vapi + comprar numero
-- Ir a https://vapi.ai → Crear cuenta
-- Comprar un numero de telefono espanol (+34)
-- Copiar: `VAPI_API_KEY` y `VAPI_PHONE_NUMBER_ID`
-- Anadir en Vercel → Environment Variables
-- En Vapi dashboard, configurar webhook: `https://pacameagencia.com/api/calls/webhook`
-- **Por que:** sin esto, el sistema de llamadas automaticas no funciona
+### 2. ~~Crear cuenta Vapi + comprar numero~~ ✅ HECHO
+- ✅ Cuenta Vapi creada
+- ✅ Numero +34 722 669 381 registrado (via Twilio)
+- ✅ `VAPI_API_KEY` y `VAPI_PHONE_NUMBER_ID` configurados en Vercel
+- ✅ Webhook configurado: `https://pacameagencia.com/api/calls/webhook`
+- ✅ Pipeline completo: llamada → transcripcion → analisis IA → notificacion
 
 ### 3. Crear cuenta ElevenLabs (opcional)
 - Ir a https://elevenlabs.io → Crear cuenta

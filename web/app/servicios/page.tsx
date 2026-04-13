@@ -30,22 +30,19 @@ export default function ServiciosPage() {
   return (
     <div className="bg-pacame-black min-h-screen">
       {/* Hero */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-grid" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/15 rounded-full blur-[140px] pointer-events-none" />
+      <section className="relative pt-36 pb-24 overflow-hidden">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.06] rounded-full blur-[200px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="font-mono text-electric-violet text-sm mb-4 uppercase tracking-widest">
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+          <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
             Servicios y precios
           </p>
-          <h1 className="font-heading font-bold text-[clamp(2.5rem,5vw,4rem)] text-pacame-white leading-tight mb-6">
-            Precios claros.
-            <br />
-            <span className="gradient-text">Resultados concretos.</span>
+          <h1 className="font-heading font-bold text-display text-pacame-white mb-6 text-balance">
+            Precios claros.{" "}
+            <span className="gradient-text-vivid">Resultados concretos.</span>
           </h1>
-          <p className="text-lg text-pacame-white/60 font-body max-w-2xl mx-auto mb-10">
+          <p className="text-xl text-pacame-white/40 font-body max-w-2xl mx-auto mb-12 font-light">
             Sin presupuestos que se inflan. Sin sorpresas en la factura.
-            Todo lo que necesita tu negocio, con plazos y precios reales.
           </p>
 
           {/* Jump nav */}
@@ -56,11 +53,11 @@ export default function ServiciosPage() {
                 <a
                   key={s.id}
                   href={`#${s.id}`}
-                  className="px-4 py-2 rounded-full text-sm font-body border transition-all duration-200 hover:-translate-y-0.5"
+                  className="px-4 py-2 rounded-full text-sm font-body border transition-all duration-300 hover:translate-y-[-1px]"
                   style={{
-                    borderColor: `${catColor}40`,
+                    borderColor: `${catColor}20`,
                     color: catColor,
-                    backgroundColor: `${catColor}10`,
+                    backgroundColor: `${catColor}06`,
                   }}
                 >
                   {s.name}
@@ -79,28 +76,24 @@ export default function ServiciosPage() {
           <section
             key={service.id}
             id={service.id}
-            className={`section-padding ${sIdx % 2 === 0 ? "bg-pacame-black" : "bg-dark-elevated"}`}
+            className="section-padding relative"
           >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {sIdx > 0 && <div className="absolute top-0 inset-x-0 section-divider" />}
+
+            <div className="max-w-6xl mx-auto px-6">
               {/* Section header */}
-              <div className="flex items-start gap-5 mb-12">
+              <div className="flex items-start gap-5 mb-14">
                 <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: `${catColor}20` }}
+                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: `${catColor}10` }}
                 >
-                  {Icon && <Icon className="w-6 h-6" style={{ color: catColor }} />}
+                  {Icon && <Icon className="w-5 h-5" style={{ color: catColor }} />}
                 </div>
                 <div>
-                  <div
-                    className="text-xs font-mono uppercase tracking-widest mb-1"
-                    style={{ color: catColor }}
-                  >
-                    {service.category}
-                  </div>
-                  <h2 className="font-heading font-bold text-3xl text-pacame-white mb-2">
+                  <h2 className="font-heading font-bold text-2xl sm:text-3xl text-pacame-white mb-2">
                     {service.name}
                   </h2>
-                  <p className="text-pacame-white/60 font-body max-w-xl">{service.description}</p>
+                  <p className="text-pacame-white/40 font-body max-w-xl">{service.description}</p>
                 </div>
               </div>
 
@@ -109,31 +102,27 @@ export default function ServiciosPage() {
                 {service.items.map((item) => (
                   <div
                     key={item.name}
-                    className={`rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 relative ${
+                    className={`rounded-2xl p-7 transition-all duration-500 ease-apple relative ${
                       item.featured
-                        ? "border-2"
-                        : "bg-dark-card border border-white/[0.06] hover:border-white/10"
+                        ? "border-2 hover:translate-y-[-2px]"
+                        : "bg-dark-card border border-white/[0.06] hover:border-white/[0.1] hover:translate-y-[-2px]"
                     }`}
                     style={
                       item.featured
                         ? {
-                            background: `linear-gradient(135deg, ${catColor}15, transparent)`,
-                            borderColor: `${catColor}50`,
+                            background: `linear-gradient(135deg, ${catColor}08, transparent)`,
+                            borderColor: `${catColor}30`,
                           }
                         : {}
                     }
                   >
                     {item.featured && (
                       <div
-                        className="absolute -top-3 left-5"
-                        style={{
-                          backgroundColor: catColor,
-                          borderRadius: "999px",
-                          padding: "2px 12px",
-                        }}
+                        className="absolute -top-3 left-6 rounded-full px-3 py-1"
+                        style={{ backgroundColor: catColor }}
                       >
-                        <span className="text-[11px] font-bold font-body text-white uppercase tracking-wide">
-                          Más contratado
+                        <span className="text-[11px] font-body font-semibold text-white uppercase tracking-wider">
+                          Mas contratado
                         </span>
                       </div>
                     )}
@@ -141,28 +130,28 @@ export default function ServiciosPage() {
                     <h3 className="font-heading font-bold text-xl text-pacame-white mb-1.5">
                       {item.name}
                     </h3>
-                    <p className="text-sm text-pacame-white/60 font-body mb-5">
+                    <p className="text-sm text-pacame-white/40 font-body mb-6">
                       {item.description}
                     </p>
 
-                    <ul className="space-y-2.5 mb-6">
+                    <ul className="space-y-2.5 mb-7">
                       {item.includes.map((inc) => (
                         <li key={inc} className="flex items-start gap-2.5">
                           <Check
                             className="w-4 h-4 mt-0.5 flex-shrink-0"
                             style={{ color: catColor }}
                           />
-                          <span className="text-sm text-pacame-white/70 font-body">{inc}</span>
+                          <span className="text-sm text-pacame-white/55 font-body">{inc}</span>
                         </li>
                       ))}
                     </ul>
 
-                    <div className="border-t border-white/[0.06] pt-4 flex items-end justify-between">
+                    <div className="border-t border-white/[0.06] pt-5 flex items-end justify-between">
                       <div>
                         <div className="font-heading font-bold text-2xl text-pacame-white">
                           {item.price}
                         </div>
-                        <div className="flex items-center gap-1.5 text-xs text-pacame-white/40 font-body mt-1">
+                        <div className="flex items-center gap-1.5 text-xs text-pacame-white/30 font-body mt-1">
                           <Clock className="w-3 h-3" />
                           {item.deadline}
                         </div>
@@ -171,10 +160,10 @@ export default function ServiciosPage() {
                         variant="outline"
                         size="sm"
                         asChild
-                        className="flex-shrink-0"
+                        className="flex-shrink-0 rounded-full"
                         style={item.featured ? { borderColor: catColor, color: catColor } : {}}
                       >
-                        <Link href="/contacto">Contratar</Link>
+                        <Link href={`/contacto?service=${service.id}`}>Contratar</Link>
                       </Button>
                     </div>
                   </div>
@@ -186,58 +175,58 @@ export default function ServiciosPage() {
       })}
 
       {/* Packages section */}
-      <section className="section-padding bg-dark-elevated" id="paquetes">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="section-padding relative" id="paquetes">
+        <div className="absolute top-0 inset-x-0 section-divider" />
+
+        <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
-            <p className="font-mono text-neon-cyan text-sm mb-4 uppercase tracking-widest">
+            <p className="text-[13px] font-body font-medium text-neon-cyan mb-4 uppercase tracking-[0.2em]">
               Paquetes combinados
             </p>
-            <h2 className="font-heading font-bold text-section text-pacame-white mb-6">
-              Combina servicios.
-              <span className="gradient-text"> Ahorra hasta un 35%.</span>
+            <h2 className="font-heading font-bold text-section text-pacame-white mb-6 text-balance">
+              Combina servicios.{" "}
+              <span className="gradient-text-vivid">Ahorra hasta un 35%.</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
             {packages.map((pkg) => (
               <div
                 key={pkg.id}
-                className={`rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 relative ${
+                className={`rounded-2xl p-8 transition-all duration-500 ease-apple hover:translate-y-[-2px] relative flex flex-col ${
                   pkg.featured ? "bg-brand-gradient" : "bg-dark-card border border-white/[0.06]"
                 }`}
               >
                 {pkg.featured && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <div className="flex items-center gap-1.5 bg-pacame-white rounded-full px-4 py-1.5 shadow-lg">
-                      <Zap className="w-3 h-3 fill-pacame-black text-pacame-black" />
-                      <span className="text-xs font-bold font-body text-pacame-black uppercase tracking-wide">
-                        Más popular
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <div className="bg-pacame-white rounded-full px-4 py-1.5 shadow-apple">
+                      <span className="text-xs font-body font-semibold text-pacame-black uppercase tracking-wider">
+                        Mas popular
                       </span>
                     </div>
                   </div>
                 )}
 
-                <div className="mb-5">
+                <div className="mb-6">
                   <h3 className={`font-heading font-bold text-2xl mb-1 ${pkg.featured ? "text-white" : "text-pacame-white"}`}>
                     {pkg.name}
                   </h3>
-                  <p className={`text-sm font-body mb-4 ${pkg.featured ? "text-white/70" : "text-pacame-white/60"}`}>
+                  <p className={`text-sm font-body mb-5 ${pkg.featured ? "text-white/60" : "text-pacame-white/40"}`}>
                     {pkg.target}
                   </p>
-                  <div className={`font-heading font-bold text-3xl ${pkg.featured ? "text-white" : "text-pacame-white"}`}>
+                  <div className={`font-heading font-bold text-4xl tracking-tight ${pkg.featured ? "text-white" : "text-pacame-white"}`}>
                     {pkg.price}
                   </div>
-                  <p className={`text-xs font-body mt-1 ${pkg.featured ? "text-white/60" : "text-pacame-white/40"}`}>
+                  <p className={`text-xs font-body mt-1.5 ${pkg.featured ? "text-white/50" : "text-pacame-white/30"}`}>
                     {pkg.deadline}
                   </p>
                 </div>
 
-                <ul className="space-y-2.5 mb-6">
+                <ul className="space-y-2.5 mb-7 flex-1">
                   {pkg.includes.map((item) => (
                     <li key={item} className="flex items-start gap-2.5">
-                      <Check className={`w-4 h-4 mt-0.5 flex-shrink-0 ${pkg.featured ? "text-white" : ""}`}
-                        style={!pkg.featured ? { color: pkg.color } : {}} />
-                      <span className={`text-sm font-body ${pkg.featured ? "text-white/90" : "text-pacame-white/70"}`}>
+                      <Check className={`w-4 h-4 mt-0.5 flex-shrink-0 ${pkg.featured ? "text-white/80" : "text-pacame-white/30"}`} />
+                      <span className={`text-sm font-body ${pkg.featured ? "text-white/85" : "text-pacame-white/55"}`}>
                         {item}
                       </span>
                     </li>
@@ -245,17 +234,17 @@ export default function ServiciosPage() {
                 </ul>
 
                 <div
-                  className={`text-xs text-center font-body font-medium py-2 rounded-xl mb-5 ${
+                  className={`text-xs text-center font-body font-medium py-2.5 rounded-xl mb-6 ${
                     pkg.featured ? "bg-white/15 text-white" : ""
                   }`}
-                  style={!pkg.featured ? { backgroundColor: `${pkg.color}15`, color: pkg.color } : {}}
+                  style={!pkg.featured ? { backgroundColor: `${pkg.color}08`, color: pkg.color } : {}}
                 >
                   {pkg.savings} vs servicios individuales
                 </div>
 
                 <Button
                   size="lg"
-                  className={`w-full group ${pkg.featured ? "bg-white/20 border-white/30 text-white hover:bg-white/30" : ""}`}
+                  className={`w-full group rounded-full ${pkg.featured ? "bg-white text-pacame-black hover:bg-white/90" : ""}`}
                   variant={pkg.featured ? "secondary" : "outline"}
                   asChild
                 >
@@ -271,15 +260,15 @@ export default function ServiciosPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 bg-pacame-black text-center">
-        <div className="max-w-2xl mx-auto px-4">
-          <h2 className="font-heading font-bold text-3xl text-pacame-white mb-4">
-            ¿No ves lo que necesitas?
+      <section className="section-padding bg-pacame-black text-center">
+        <div className="max-w-2xl mx-auto px-6">
+          <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
+            No ves lo que necesitas?
           </h2>
-          <p className="text-pacame-white/60 font-body mb-8">
+          <p className="text-pacame-white/40 font-body mb-10 text-lg">
             Te escuchamos y preparamos un presupuesto a medida. En 24 horas.
           </p>
-          <Button variant="gradient" size="xl" asChild className="group">
+          <Button variant="gradient" size="xl" asChild className="group rounded-full shadow-glow-violet">
             <Link href="/contacto">
               Hablar con el equipo
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

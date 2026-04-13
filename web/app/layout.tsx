@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     siteName: "PACAME",
     title: "PACAME — Tu equipo digital completo. Potenciado por IA.",
     description:
-      "10 agentes IA especializados para tu empresa. Web, SEO, Ads, Social, Branding. 60% mas barato que una agencia, entrega en dias.",
+      "7 agentes IA especializados para tu empresa. Web, SEO, Ads, Social, Branding. 60% mas barato que una agencia, entrega en dias.",
     images: [
       {
         url: "/opengraph-image",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "PACAME — Tu equipo digital completo. Potenciado por IA.",
     description:
-      "10 agentes IA especializados para tu empresa. 60% mas barato que una agencia, entrega en dias.",
+      "7 agentes IA especializados para tu empresa. 60% mas barato que una agencia, entrega en dias.",
     creator: "@pacameagencia",
     images: ["/opengraph-image"],
   },
@@ -113,7 +113,7 @@ export default function RootLayout({
               url: "https://pacameagencia.com",
               logo: "https://pacameagencia.com/opengraph-image",
               description:
-                "Agencia digital con 10 agentes IA especializados. Diseno web, SEO, publicidad digital, redes sociales y branding para PYMEs en Espana.",
+                "Agencia digital con 7 agentes IA especializados. Diseno web, SEO, publicidad digital, redes sociales y branding para PYMEs en Espana.",
               telephone: "+34722669381",
               email: "hola@pacameagencia.com",
               address: {
@@ -164,8 +164,14 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-pacame-black text-pacame-white font-body antialiased">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-electric-violet focus:text-white focus:rounded-lg focus:text-sm focus:font-body"
+        >
+          Saltar al contenido
+        </a>
         <Header />
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
         <Footer />
         <WhatsAppButton />
         <SageChatWidget />
