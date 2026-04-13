@@ -60,6 +60,7 @@ export default function LeadsPage() {
   const [loading, setLoading] = useState(true);
   const [generatingProposal, setGeneratingProposal] = useState<string | null>(null);
   const [convertingLead, setConvertingLead] = useState<string | null>(null);
+  const [callingLead, setCallingLead] = useState<string | null>(null);
   const [statusDropdownId, setStatusDropdownId] = useState<string | null>(null);
 
   async function fetchLeads() {
@@ -75,6 +76,31 @@ export default function LeadsPage() {
   useEffect(() => {
     fetchLeads();
   }, []);
+
+  async function callLead(lead: Lead) {
+    if (!lead.phone) return;
+    setCallingLead(lead.id);
+    try {
+      const res = await fetch("/api/calls", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "initiate",
+          lead_id: lead.id,
+          phone_number: lead.phone,
+          purpose: "discovery",
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        await supabase.from("leads").update({ status: "contacted", last_contacted_at: new Date().toISOString() }).eq("id", lead.id);
+        fetchLeads();
+      }
+    } catch {
+      // handle error
+    }
+    setCallingLead(null);
+  }
 
   async function generateProposal(leadId: string) {
     setGeneratingProposal(leadId);
@@ -307,6 +333,20 @@ export default function LeadsPage() {
 
                   {/* Quick contact */}
                   <div className="flex gap-1.5">
+                    {lead.phone && (
+                      <button
+                        onClick={() => callLead(lead)}
+                        disabled={callingLead === lead.id}
+                        className="p-1.5 rounded-lg bg-electric-violet/10 hover:bg-electric-violet/20 transition-colors disabled:opacity-50"
+                        title="Llamar con Sage IA"
+                      >
+                        {callingLead === lead.id ? (
+                          <Loader2 className="w-3.5 h-3.5 text-electric-violet animate-spin" />
+                        ) : (
+                          <Phone className="w-3.5 h-3.5 text-electric-violet" />
+                        )}
+                      </button>
+                    )}
                     {lead.phone && (
                       <a
                         href={`https://wa.me/${lead.phone.replace(/\D/g, "")}`}

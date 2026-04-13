@@ -1,9 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod/v4";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { notifyHotLead } from "@/lib/telegram";
 import { sendLeadWelcome, isWhatsAppConfigured } from "@/lib/whatsapp";
+
+const leadSchema = z.object({
+  name: z.string().min(2, "Nombre debe tener al menos 2 caracteres").max(100),
+  email: z.email("Email no valido"),
+  phone: z.string().max(20).optional(),
+  company: z.string().max(100).optional(),
+  services: z.array(z.string()).max(10).optional(),
+  budget: z.string().max(50).optional(),
+  message: z.string().max(2000).optional(),
+  referral_code: z.string().max(50).optional(),
+});
 
 const supabase = createServerSupabase();
 
@@ -30,12 +42,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Demasiadas solicitudes. Intentalo en unos minutos." }, { status: 429 });
     }
 
-    const body = await request.json();
-    const { name, email, phone, company, services, budget, message, referral_code } = body;
+    const raw = await request.json();
+    const parsed = leadSchema.safeParse(raw);
 
-    if (!name || !email) {
-      return NextResponse.json({ error: "Nombre y email son obligatorios" }, { status: 400 });
+    if (!parsed.success) {
+      const firstError = parsed.error.issues[0]?.message || "Datos invalidos";
+      return NextResponse.json({ error: firstError }, { status: 400 });
     }
+
+    const { name, email, phone, company, services, budget, message, referral_code } = parsed.data;
+
+    // Auto-score based on budget + services + referral
+    let score = 2;
+    if (budget === ">5000€") score = 5;
+    else if (budget === "3000-5000€") score = 4;
+    else if (budget === "1500-3000€") score = 3;
+    else if (budget === "500-1500€") score = 2;
+    else if (budget === "<500€") score = 1;
+    if (referral_code) score = Math.min(5, score + 1);
+    if ((services || []).length >= 3) score = Math.min(5, score + 1);
 
     // 1. SIEMPRE guardar en Supabase primero (nunca perder un lead)
     const { data: lead, error: dbError } = await supabase.from("leads").insert({
@@ -45,6 +70,7 @@ export async function POST(request: NextRequest) {
       business_name: company || null,
       problem: message || null,
       budget: budget || null,
+      score,
       source: referral_code ? "referral" : "web",
       status: "new",
       sage_analysis: {
@@ -110,7 +136,7 @@ export async function POST(request: NextRequest) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            ...body,
+            ...parsed.data,
             lead_id: lead?.id,
             source: "web_form",
             timestamp: new Date().toISOString(),
