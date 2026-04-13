@@ -1,11 +1,11 @@
 # PACAME — AUDITORIA COMPLETA + PLAN DE ESTADO
-> **Fecha:** 13 abril 2026 | **Build:** OK (0 errores) | **Deploy:** LIVE en pacameagencia.com | **Autor:** Claude Code
+> **Fecha:** 14 abril 2026 | **Build:** OK (0 errores) | **Deploy:** LIVE en pacameagencia.com | **Autor:** Claude Code
 
 ---
 
 ## RESUMEN EJECUTIVO
 
-PACAME es una agencia digital autonoma con 9 agentes IA, 24 API routes, 17 paginas de dashboard, 36+ paginas publicas (1670 total), 18 tablas Supabase, Stripe en produccion y un sistema de cron autonomo ejecutandose 3x/dia. **El Nivel 1 del plan esta construido al ~95%.**
+PACAME es una agencia digital autonoma con 9 agentes IA, 27 API routes, 17 paginas de dashboard, 36+ paginas publicas (1670 total), 18 tablas Supabase, Stripe en produccion y un sistema de cron autonomo ejecutandose 3x/dia. **El Nivel 1 del plan esta construido al ~98%.**
 
 **Lo que funciona HOY:**
 - Web publica completa (landing, servicios, blog, SEO programatico, auditoria, calculadora ROI)
@@ -45,17 +45,22 @@ PACAME es una agencia digital autonoma con 9 agentes IA, 24 API routes, 17 pagin
 | **Telegram Bot** | CONFIGURADO EN VERCEL | Alertas a Pablo (leads calientes, emergencias) | Bot token + chat ID configurados |
 | **Vapi** | CONFIGURADO | Llamadas de voz IA | API key + numero +34 722 669 381 |
 
-### NO INTEGRADAS TODAVIA (3/11)
+### INTEGRADAS — CODIGO LISTO, FALTA API KEY (2/11)
+
+| Integracion | Estado | Para que | Env Var necesaria |
+|-------------|--------|----------|-------------------|
+| **WhatsApp Business** | CODIGO OK | Conversaciones automaticas, bienvenida leads, followups, auto-respuesta IA | `WHATSAPP_PHONE_ID` + `WHATSAPP_TOKEN` |
+| **Social Publishing** | CODIGO OK | Auto-publicar contenido aprobado (Meta Graph + LinkedIn + Buffer fallback) | `META_PAGE_ACCESS_TOKEN` + `META_PAGE_ID` o `BUFFER_ACCESS_TOKEN` |
+
+### NO INTEGRADAS TODAVIA (1/11)
 
 | Integracion | Prioridad | Para que | Env Var necesaria |
 |-------------|-----------|----------|-------------------|
-| **WhatsApp Business** | ALTA | Conversaciones automaticas PACAME ↔ clientes | `WHATSAPP_PHONE_ID` + `WHATSAPP_TOKEN` |
-| **Buffer** | MEDIA | Auto-publicar contenido aprobado en RRSS | `BUFFER_API_KEY` |
 | **ElevenLabs** | BAJA | Voz espanola mejorada para Vapi | `ELEVENLABS_API_KEY` + `VOICE_ID` |
 
 ---
 
-## 2. API ROUTES — 17 ENDPOINTS
+## 2. API ROUTES — 27 ENDPOINTS
 
 | Ruta | Metodo | Funcion | Estado |
 |------|--------|---------|--------|
@@ -76,6 +81,16 @@ PACAME es una agencia digital autonoma con 9 agentes IA, 24 API routes, 17 pagin
 | `/api/stripe/portal` | POST | Portal billing Stripe | OK |
 | `/api/agents/cron` | POST | Loop autonomo 9 agentes | OK |
 | `/api/agents/weekly-audit` | POST | Informe semanal DIOS | OK |
+| `/api/whatsapp` | POST | Enviar WhatsApp (texto, templates, welcome, followup, propuestas) | OK (falta API key) |
+| `/api/whatsapp/webhook` | GET/POST | Recibir mensajes WhatsApp + auto-respuesta IA | OK (falta API key) |
+| `/api/social/publish` | POST | Publicar contenido en RRSS (Meta, LinkedIn, Buffer) | OK (falta API key) |
+| `/api/commercial` | POST | Pipeline comercial (outreach, batch, pipeline, funnel stats) | OK |
+| `/api/calls` | POST | Llamadas de voz (iniciar, log, resumir, status) | OK |
+| `/api/calls/webhook` | POST | Webhook llamadas de voz | OK |
+| `/api/email/send` | POST | Envio email via Resend | OK |
+| `/api/telegram/webhook` | POST | Comandos Telegram bot | OK |
+| `/api/portal` | POST | Portal cliente (magic link, datos proyecto) | OK |
+| `/api/seed` | POST | Seed base de datos | OK |
 
 ---
 
@@ -220,12 +235,12 @@ Cada agente hace trabajo REAL, no solo reporta:
 4. ~~**Cron schedule**~~ — 3 ejecuciones diarias (6AM, 12PM, 18PM UTC) via Vercel Cron.
 5. ~~**Vapi**~~ — CONFIGURADO. API key + numero +34 722 669 381 + webhook.
 
-### PRIORIDAD 1 — Mejoran operaciones
+### PRIORIDAD 1 — Solo falta API key (Pablo)
 1. **Verificar dominio Resend** — Los emails podrian ir a spam si el dominio no esta verificado. Tarea de Pablo en resend.com/domains.
-2. **WhatsApp Business API** — El canal principal de comunicacion con clientes en Espana. Solo hay boton wa.me. Sin API, PACAME no puede responder automaticamente.
+2. **WhatsApp Business API key** — CODIGO COMPLETO (envio, recepcion, auto-respuesta IA, welcome leads, followups, propuestas). Solo falta: `WHATSAPP_PHONE_ID` + `WHATSAPP_TOKEN` de Meta Business Manager.
+3. **Social Publishing API key** — CODIGO COMPLETO (Meta Graph para Instagram/Facebook, LinkedIn API, Buffer fallback, auto-publish en cron). Solo falta: `META_PAGE_ACCESS_TOKEN` + `META_PAGE_ID` o `BUFFER_ACCESS_TOKEN`.
 
 ### PRIORIDAD 2 — Escalar
-3. **Buffer** — Contenido se genera pero no se publica automaticamente. Pablo tiene que copiar/pegar manualmente.
 4. **Meta Ads API** — Gestion automatica de campanas
 5. **GA4 API** — Analytics automatizados (Lens los necesita para datos reales)
 6. **ElevenLabs** — Mejora de voz para Vapi (opcional)

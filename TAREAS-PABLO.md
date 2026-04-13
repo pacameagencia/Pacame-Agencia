@@ -43,25 +43,39 @@ Cosas que solo tu puedes hacer. De mas a menos prioritaria.
 - Verificar que el webhook llega y se registra en Supabase
 - **Por que:** confirma que el flujo de cobro funciona end-to-end
 
-### 7. Configurar Meta Graph API token
+### 7. Configurar WhatsApp Business API
+- Ir a https://developers.facebook.com → WhatsApp → Getting Started
+- Crear una app de negocio con WhatsApp Cloud API
+- Copiar `Phone Number ID` y `Permanent Token`
+- Anadir en Vercel:
+  - `WHATSAPP_PHONE_ID` = el Phone Number ID
+  - `WHATSAPP_TOKEN` = el token permanente
+- Configurar webhook en Meta: URL = `https://pacameagencia.com/api/whatsapp/webhook`, Verify Token = `pacame_wa_verify_2026`
+- **Por que:** TODO el codigo esta listo — bienvenida leads, followups, auto-respuesta IA con Claude, propuestas por WhatsApp. Solo falta la API key.
+
+### 8. Configurar Meta Graph API token (publicacion RRSS)
 - Ir a https://developers.facebook.com
-- Crear token de pagina con permisos: `pages_manage_posts`, `pages_read_engagement`
-- Anadir como `META_PAGE_ACCESS_TOKEN` en Vercel
-- **Por que:** permite publicar automaticamente en Instagram/Facebook
+- Crear token de pagina con permisos: `pages_manage_posts`, `pages_read_engagement`, `instagram_basic`, `instagram_content_publish`
+- Anadir en Vercel:
+  - `META_PAGE_ACCESS_TOKEN` = token de pagina
+  - `META_PAGE_ID` = ID de tu pagina Facebook
+  - `INSTAGRAM_ACCOUNT_ID` = ID de tu cuenta Instagram Business
+- **Alternativa:** Si prefieres Buffer, solo necesitas `BUFFER_ACCESS_TOKEN` de buffer.com
+- **Por que:** el contenido se genera y aprueba, pero no se publica solo. Con esta key, Pulse publica automaticamente 3x/dia
 
 ## DESEABLES (para mas adelante)
 
-### 8. Google Search Console
+### 9. Google Search Console
 - Verificar `pacameagencia.com` en Search Console
 - Subir sitemap: `https://pacameagencia.com/sitemap.xml`
 - **Por que:** indexar las 1600+ paginas SEO programaticas
 
-### 9. Google Analytics / Plausible
+### 10. Google Analytics / Plausible
 - Crear propiedad GA4 o cuenta Plausible para `pacameagencia.com`
 - Anadir el ID de medicion al proyecto
 - **Por que:** medir trafico real, conversion de visitantes
 
-### 10. Primer cliente real
+### 11. Primer cliente real
 - Cuando todo lo anterior este listo, lanzar primera campana outbound:
   - Dashboard → Lead Gen → Scrapear un nicho en tu ciudad
   - Dashboard → Comercial → Enviar emails de outreach
