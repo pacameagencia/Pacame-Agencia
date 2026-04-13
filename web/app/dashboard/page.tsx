@@ -9,6 +9,10 @@ import {
   Play, Loader2, Phone, Target,
   PhoneCall, BarChart3,
 } from "lucide-react";
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  AreaChart, Area, CartesianGrid,
+} from "recharts";
 
 const agentColors: Record<string, string> = {
   SAGE: "#D97706", NOVA: "#7C3AED", ATLAS: "#2563EB", NEXUS: "#EA580C",
@@ -39,6 +43,13 @@ interface KPIs {
   proposalsAccepted: number;
   callsThisMonth: number;
   outreachSent: number;
+}
+
+interface MonthlyFinance {
+  month: string;
+  revenue: number;
+  expenses: number;
+  profit: number;
 }
 
 interface ActivityItem {
@@ -77,6 +88,22 @@ function KPICard({ label, value, icon: Icon, color, sub, trend }: {
       <div className="font-heading font-bold text-2xl text-pacame-white">{value}</div>
       <div className="text-xs text-pacame-white/40 font-body mt-1">{label}</div>
       {sub && <div className="text-[11px] text-pacame-white/30 font-body mt-0.5">{sub}</div>}
+    </div>
+  );
+}
+
+const monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+
+function ChartTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number; name: string; color: string }>; label?: string }) {
+  if (!active || !payload) return null;
+  return (
+    <div className="rounded-lg bg-dark-elevated border border-white/10 px-3 py-2 shadow-xl">
+      <p className="text-xs text-pacame-white/60 font-body mb-1">{label}</p>
+      {payload.map((entry) => (
+        <p key={entry.name} className="text-xs font-body font-medium" style={{ color: entry.color }}>
+          {entry.name === "revenue" ? "Ingresos" : entry.name === "expenses" ? "Gastos" : "Profit"}: {entry.value.toLocaleString("es-ES")}€
+        </p>
+      ))}
     </div>
   );
 }
@@ -121,6 +148,7 @@ export default function DashboardOverview() {
   });
   const [activity, setActivity] = useState<ActivityItem[]>([]);
   const [hotLeads, setHotLeads] = useState<HotLead[]>([]);
+  const [monthlyData, setMonthlyData] = useState<MonthlyFinance[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -129,6 +157,13 @@ export default function DashboardOverview() {
       monthStart.setDate(1);
       monthStart.setHours(0, 0, 0, 0);
       const monthISO = monthStart.toISOString();
+
+      // Calculate 6 months ago for chart data
+      const sixMonthsAgo = new Date();
+      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5);
+      sixMonthsAgo.setDate(1);
+      sixMonthsAgo.setHours(0, 0, 0, 0);
+      const sixMonthsISO = sixMonthsAgo.toISOString().split("T")[0];
 
       const [
         clientsRes,
@@ -144,6 +179,7 @@ export default function DashboardOverview() {
         proposalsSentRes,
         proposalsAcceptedRes,
         callsRes,
+        financesHistoryRes,
       ] = await Promise.all([
         supabase.from("clients").select("id", { count: "exact", head: true }).eq("status", "active"),
         supabase.from("clients").select("monthly_fee").eq("status", "active"),
@@ -158,12 +194,42 @@ export default function DashboardOverview() {
         supabase.from("proposals").select("id", { count: "exact", head: true }).in("status", ["sent", "viewed"]).gte("created_at", monthISO),
         supabase.from("proposals").select("id", { count: "exact", head: true }).eq("status", "accepted").gte("created_at", monthISO),
         supabase.from("voice_calls").select("id", { count: "exact", head: true }).gte("created_at", monthISO),
+        supabase.from("finances").select("type, amount, date").gte("date", sixMonthsISO).order("date", { ascending: true }),
       ]);
 
       const mrr = (mrrRes.data || []).reduce((sum, c) => sum + (Number(c.monthly_fee) || 0), 0);
       const apiCost = (apiCostRes.data || []).reduce((sum, t) => sum + (Number(t.cost_usd) || 0), 0);
       const revenue = (revenueRes.data || []).reduce((sum, f) => sum + (Number(f.amount) || 0), 0);
       const expenses = (expensesRes.data || []).reduce((sum, f) => sum + (Number(f.amount) || 0), 0);
+
+      // Build monthly chart data
+      const monthMap = new Map<string, { revenue: number; expenses: number }>();
+      const now = new Date();
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+        monthMap.set(key, { revenue: 0, expenses: 0 });
+      }
+      for (const f of financesHistoryRes.data || []) {
+        const dateStr = (f.date as string) || "";
+        const key = dateStr.substring(0, 7);
+        const entry = monthMap.get(key);
+        if (entry) {
+          if (f.type === "income") entry.revenue += Number(f.amount) || 0;
+          else entry.expenses += Number(f.amount) || 0;
+        }
+      }
+      const chartData: MonthlyFinance[] = [];
+      for (const [key, val] of monthMap) {
+        const [, m] = key.split("-");
+        chartData.push({
+          month: monthNames[parseInt(m, 10) - 1],
+          revenue: Math.round(val.revenue),
+          expenses: Math.round(val.expenses),
+          profit: Math.round(val.revenue - val.expenses),
+        });
+      }
+      setMonthlyData(chartData);
 
       setKpis({
         activeClients: clientsRes.count || 0,
@@ -250,6 +316,78 @@ export default function DashboardOverview() {
           ))}
         </div>
       </div>
+
+      {/* Revenue & Expenses Chart */}
+      {monthlyData.length > 0 && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Bar chart: Revenue vs Expenses */}
+          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="font-heading font-semibold text-sm text-pacame-white">Ingresos vs Gastos</h2>
+                <p className="text-[11px] text-pacame-white/30 font-body mt-0.5">Ultimos 6 meses</p>
+              </div>
+              <DollarSign className="w-4 h-4 text-pacame-white/20" />
+            </div>
+            <div className="h-52">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={monthlyData} barGap={2}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                  <XAxis dataKey="month" tick={{ fontSize: 11, fill: "rgba(255,255,255,0.4)" }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 10, fill: "rgba(255,255,255,0.3)" }} axisLine={false} tickLine={false} width={45} tickFormatter={(v: number) => `${v}€`} />
+                  <Tooltip content={<ChartTooltip />} />
+                  <Bar dataKey="revenue" name="revenue" fill="#16A34A" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="expenses" name="expenses" fill="#EF4444" radius={[4, 4, 0, 0]} opacity={0.7} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex items-center gap-4 mt-3">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-sm bg-green-600" />
+                <span className="text-[10px] text-pacame-white/40 font-body">Ingresos</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-sm bg-red-500 opacity-70" />
+                <span className="text-[10px] text-pacame-white/40 font-body">Gastos</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Area chart: Profit trend */}
+          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="font-heading font-semibold text-sm text-pacame-white">Beneficio neto</h2>
+                <p className="text-[11px] text-pacame-white/30 font-body mt-0.5">Evolucion mensual</p>
+              </div>
+              <TrendingUp className="w-4 h-4 text-pacame-white/20" />
+            </div>
+            <div className="h-52">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={monthlyData}>
+                  <defs>
+                    <linearGradient id="profitGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#7C3AED" stopOpacity={0.3} />
+                      <stop offset="100%" stopColor="#7C3AED" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                  <XAxis dataKey="month" tick={{ fontSize: 11, fill: "rgba(255,255,255,0.4)" }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 10, fill: "rgba(255,255,255,0.3)" }} axisLine={false} tickLine={false} width={45} tickFormatter={(v: number) => `${v}€`} />
+                  <Tooltip content={<ChartTooltip />} />
+                  <Area type="monotone" dataKey="profit" name="profit" stroke="#7C3AED" fill="url(#profitGradient)" strokeWidth={2} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex items-center gap-4 mt-3">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-sm bg-[#7C3AED]" />
+                <span className="text-[10px] text-pacame-white/40 font-body">Beneficio neto</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Activity feed */}

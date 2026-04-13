@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createServerSupabase } from "@/lib/supabase/server";
 import { sendEmail, wrapEmailTemplate } from "@/lib/resend";
 import crypto from "crypto";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const supabase = createServerSupabase();
 
 /**
  * Client Portal API
@@ -44,13 +41,14 @@ export async function POST(request: NextRequest) {
     const { email } = body;
     if (!email) return NextResponse.json({ error: "Email requerido" }, { status: 400 });
 
-    // Find client by email
-    const { data: client } = await supabase
+    // Find client by email (use limit(1) instead of single() to avoid crash on 0/multiple)
+    const { data: clients } = await supabase
       .from("clients")
       .select("id, name, email, onboarding_data")
       .eq("email", email.toLowerCase().trim())
-      .single();
+      .limit(1);
 
+    const client = clients?.[0];
     if (!client) {
       // Don't reveal if email exists or not — always show success
       return NextResponse.json({ ok: true });
@@ -74,9 +72,9 @@ export async function POST(request: NextRequest) {
 
     await sendEmail({
       to: client.email,
-      subject: `${client.name}, accede a tu portal PACAME`,
+      subject: `${client.name || "Cliente"}, accede a tu portal PACAME`,
       html: wrapEmailTemplate(
-        `Hola ${client.name.split(" ")[0]},\n\n` +
+        `Hola ${client.name?.split(" ")[0] || client.name || "cliente"},\n\n` +
         `Usa este enlace para acceder a tu portal de cliente en PACAME. ` +
         `Aqui puedes ver el estado de tu proyecto, contenido pendiente de aprobar y tu historial de pagos.\n\n` +
         `El enlace es valido durante 24 horas. Si no has solicitado este acceso, ignora este email.`,

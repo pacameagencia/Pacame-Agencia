@@ -1,13 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createServerSupabase } from "@/lib/supabase/server";
 import { sequences } from "@/lib/data/email-sequences";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { sendEmail, wrapEmailTemplate } from "@/lib/resend";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const supabase = createServerSupabase();
 
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 

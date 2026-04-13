@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const supabase = createServerSupabase();
 
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
@@ -104,6 +101,7 @@ export async function POST(request: NextRequest) {
   if (action === "batch_outreach") {
     const { lead_ids, email_number = 1 } = body;
     if (!lead_ids?.length) return NextResponse.json({ error: "lead_ids required" }, { status: 400 });
+    if (lead_ids.length > 100) return NextResponse.json({ error: "Maximo 100 leads por batch" }, { status: 400 });
 
     updateAgentStatus("copy", "working", `Enviando outreach batch: ${lead_ids.length} leads`);
 

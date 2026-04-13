@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const supabase = createServerSupabase();
 
 const VAPI_API_KEY = process.env.VAPI_API_KEY;
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
@@ -234,7 +231,12 @@ ${call.transcript}
       const jsonEnd = text.lastIndexOf("}") + 1;
 
       if (jsonStart >= 0) {
-        const analysis = JSON.parse(text.slice(jsonStart, jsonEnd));
+        let analysis: Record<string, unknown>;
+        try {
+          analysis = JSON.parse(text.slice(jsonStart, jsonEnd));
+        } catch {
+          return NextResponse.json({ error: "AI devolvio JSON invalido" }, { status: 500 });
+        }
 
         // Update the call with AI analysis
         await supabase.from("voice_calls").update({
@@ -252,7 +254,7 @@ ${call.transcript}
             .eq("id", call.lead_id)
             .single();
           if (lead) {
-            const newScore = Math.min(5, Math.max(1, (lead.score || 3) + analysis.lead_score_delta));
+            const newScore = Math.min(5, Math.max(1, ((lead.score as number) || 3) + (analysis.lead_score_delta as number)));
             await supabase.from("leads").update({ score: newScore }).eq("id", call.lead_id);
           }
         }

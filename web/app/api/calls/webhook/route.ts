@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const supabase = createServerSupabase();
 
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
@@ -106,18 +103,24 @@ ${transcript.slice(0, 3000)}
           const jsonEnd = text.lastIndexOf("}") + 1;
 
           if (jsonStart >= 0) {
-            const analysis = JSON.parse(text.slice(jsonStart, jsonEnd));
+            let analysis: Record<string, unknown>;
+            try { analysis = JSON.parse(text.slice(jsonStart, jsonEnd)); } catch { analysis = {}; }
+            const sentiment = String(analysis.sentiment || "neutral");
+            const summary = String(analysis.summary || "");
+            const outcome = String(analysis.outcome || "");
+            const nextAction = String(analysis.next_action || "");
+
             await supabase.from("voice_calls").update({
-              summary: analysis.summary,
-              sentiment: analysis.sentiment || "neutral",
-              outcome: analysis.outcome,
-              next_action: analysis.next_action,
+              summary,
+              sentiment,
+              outcome,
+              next_action: nextAction,
             }).eq("vapi_call_id", vapiCallId);
 
             // Update lead score based on sentiment
             if (metadata.lead_id) {
-              const scoreDelta = analysis.sentiment === "positive" ? 1 :
-                                 analysis.sentiment === "negative" ? -1 : 0;
+              const scoreDelta = sentiment === "positive" ? 1 :
+                                 sentiment === "negative" ? -1 : 0;
               if (scoreDelta !== 0) {
                 const { data: lead } = await supabase
                   .from("leads")
@@ -128,7 +131,7 @@ ${transcript.slice(0, 3000)}
                   const newScore = Math.min(5, Math.max(1, (lead.score || 3) + scoreDelta));
                   await supabase.from("leads").update({
                     score: newScore,
-                    status: analysis.sentiment === "positive" ? "qualified" : undefined,
+                    status: sentiment === "positive" ? "qualified" : undefined,
                   }).eq("id", metadata.lead_id);
                 }
               }
@@ -139,18 +142,17 @@ ${transcript.slice(0, 3000)}
               agentId: "sage",
               type: "task_completed",
               title: `Llamada completada y analizada`,
-              description: `Sentimiento: ${analysis.sentiment}. ${analysis.summary}`,
+              description: `Sentimiento: ${sentiment}. ${summary}`,
               metadata: { vapi_call_id: vapiCallId, lead_id: metadata.lead_id },
             });
 
             // Notify Pablo about completed call
-            const contactId = metadata.lead_id || metadata.client_id;
             notifyPablo(
-              `Llamada ${analysis.sentiment === "positive" ? "positiva" : analysis.sentiment} completada`,
+              `Llamada ${sentiment === "positive" ? "positiva" : sentiment} completada`,
               wrapEmailTemplate(
-                `<strong>Resumen:</strong> ${analysis.summary}\n\n` +
-                `<strong>Resultado:</strong> ${analysis.outcome}\n` +
-                `<strong>Siguiente paso:</strong> ${analysis.next_action}\n` +
+                `<strong>Resumen:</strong> ${summary}\n\n` +
+                `<strong>Resultado:</strong> ${outcome}\n` +
+                `<strong>Siguiente paso:</strong> ${nextAction}\n` +
                 `<strong>Duracion:</strong> ${durationSeconds ? `${Math.round(durationSeconds / 60)}m ${durationSeconds % 60}s` : "N/A"}\n` +
                 `<strong>Coste:</strong> ${costEur ? `${costEur.toFixed(3)}€` : "N/A"}`,
                 { cta: "Ver en dashboard", ctaUrl: `https://app.pacameagencia.com/dashboard/calls` }

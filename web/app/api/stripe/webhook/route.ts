@@ -35,14 +35,14 @@ export async function POST(request: NextRequest) {
         const amount = (session.amount_total || 0) / 100;
 
         // Record payment in finances
-        await supabase.from("finances").insert({
+        const { data: financeRecord } = await supabase.from("finances").insert({
           type: "income",
           category: metadata.product || "stripe",
           amount,
           description: `Pago Stripe: ${metadata.client_name || session.customer_email} — ${metadata.product || "servicio"}`,
           client_id: metadata.client_id || null,
           invoice_number: session.invoice ? String(session.invoice) : null,
-        });
+        }).select("id").single();
 
         // Create notification
         await supabase.from("notifications").insert({
@@ -91,8 +91,9 @@ export async function POST(request: NextRequest) {
               await supabase.from("leads").update({ status: "won" }).eq("id", lead.id);
 
               // Link payment to client
-              await supabase.from("finances").update({ client_id: clientId })
-                .eq("description", `Pago Stripe: ${metadata.client_name || session.customer_email} — ${metadata.product || "servicio"}`);
+              if (financeRecord?.id) {
+                await supabase.from("finances").update({ client_id: clientId }).eq("id", financeRecord.id);
+              }
             }
           }
         }
@@ -148,13 +149,14 @@ export async function POST(request: NextRequest) {
 
         // Send welcome email to the customer
         const customerEmail = session.customer_email || metadata.client_email;
-        const customerName = metadata.client_name || "cliente";
+        const customerName = (metadata.client_name || "cliente").replace(/[\r\n]/g, "");
+        const firstName = customerName.split(" ")[0] || customerName;
         if (customerEmail) {
           sendEmail({
             to: customerEmail,
-            subject: `Bienvenido a PACAME, ${customerName.split(" ")[0]}!`,
+            subject: `Bienvenido a PACAME, ${firstName}!`,
             html: wrapEmailTemplate(
-              `Hola ${customerName.split(" ")[0]},\n\n` +
+              `Hola ${firstName},\n\n` +
               `Tu pago de <strong>${amount}€</strong> se ha procesado correctamente.\n\n` +
               `Nuestro equipo ya esta trabajando en tu proyecto. Puedes seguir el progreso en tu portal de cliente.\n\n` +
               `Si tienes cualquier duda, respondeme directamente a este email o escribeme por WhatsApp al +34 722 669 381.\n\n` +
