@@ -51,6 +51,7 @@ function ContactoForm() {
     const payload = {
       name: formData.get("name"),
       email: formData.get("email"),
+      phone: formData.get("phone") || undefined,
       company: formData.get("company"),
       services: selectedServices,
       budget: formData.get("budget"),
@@ -158,16 +159,29 @@ function ContactoForm() {
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-body text-pacame-white/70 mb-2">
-                      Empresa
-                    </label>
-                    <input
-                      name="company"
-                      type="text"
-                      placeholder="Nombre de tu empresa (opcional)"
-                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
-                    />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-sm font-body text-pacame-white/70 mb-2">
+                        Empresa
+                      </label>
+                      <input
+                        name="company"
+                        type="text"
+                        placeholder="Nombre de tu empresa (opcional)"
+                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-body text-pacame-white/70 mb-2">
+                        Teléfono
+                      </label>
+                      <input
+                        name="phone"
+                        type="tel"
+                        placeholder="+34 600 000 000 (opcional)"
+                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                      />
+                    </div>
                   </div>
 
                   {/* Service selector */}

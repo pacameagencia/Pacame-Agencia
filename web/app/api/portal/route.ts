@@ -13,24 +13,22 @@ const supabase = createServerSupabase();
  */
 
 async function findClientByToken(token: string) {
-  // Token stored in onboarding_data->portal_token
+  // JSONB query: onboarding_data->>portal_token = token (indexed, no full scan)
   const { data: clients } = await supabase
     .from("clients")
     .select("id, name, business_name, email, plan, status, monthly_fee, created_at, onboarding_data")
-    .limit(100);
+    .filter("onboarding_data->>portal_token", "eq", token)
+    .limit(1);
 
-  if (!clients) return null;
+  const client = clients?.[0];
+  if (!client) return null;
 
-  for (const client of clients) {
-    const od = (client.onboarding_data || {}) as Record<string, unknown>;
-    if (od.portal_token === token) {
-      // Check expiry
-      const expires = od.portal_token_expires as string | undefined;
-      if (expires && new Date(expires) < new Date()) return null;
-      return client;
-    }
-  }
-  return null;
+  // Check expiry
+  const od = (client.onboarding_data || {}) as Record<string, unknown>;
+  const expires = od.portal_token_expires as string | undefined;
+  if (expires && new Date(expires) < new Date()) return null;
+
+  return client;
 }
 export async function POST(request: NextRequest) {
   const body = await request.json();

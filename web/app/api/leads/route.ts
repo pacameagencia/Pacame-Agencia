@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
+import { notifyPablo, wrapEmailTemplate } from "@/lib/resend";
+import { notifyHotLead } from "@/lib/telegram";
 
 const supabase = createServerSupabase();
 
@@ -28,7 +30,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, email, company, services, budget, message, referral_code } = body;
+    const { name, email, phone, company, services, budget, message, referral_code } = body;
 
     if (!name || !email) {
       return NextResponse.json({ error: "Nombre y email son obligatorios" }, { status: 400 });
@@ -38,6 +40,7 @@ export async function POST(request: NextRequest) {
     const { data: lead, error: dbError } = await supabase.from("leads").insert({
       name,
       email,
+      phone: phone || null,
       business_name: company || null,
       problem: message || null,
       budget: budget || null,
@@ -124,6 +127,29 @@ export async function POST(request: NextRequest) {
       title: "Nuevo lead desde la web",
       message: `${name} (${company || "sin empresa"}) — ${email}. Servicios: ${(services || []).join(", ") || "no especificado"}`,
       data: { lead_id: lead?.id, name, email, company, services, budget },
+    });
+
+    // 3b. Notificar a Pablo por email + Telegram
+    notifyPablo(
+      `Nuevo lead: ${name} (${company || "sin empresa"})`,
+      wrapEmailTemplate(
+        `<strong>${name}</strong>${company ? ` de <strong>${company}</strong>` : ""}\n\n` +
+        `Email: ${email}\n` +
+        (phone ? `Telefono: ${phone}\n` : "") +
+        `Servicios: ${(services || []).join(", ") || "No especificado"}\n` +
+        `Presupuesto: ${budget || "No indicado"}\n` +
+        `Mensaje: ${message ? message.slice(0, 200) : "Sin mensaje"}` +
+        (referral_code ? `\n\nViene referido: ${referral_code}` : ""),
+        { cta: "Ver en dashboard", ctaUrl: "https://pacameagencia.com/dashboard/leads" }
+      )
+    );
+    notifyHotLead({
+      name,
+      business_name: company || undefined,
+      score: referral_code ? 4 : 3,
+      problem: message ? message.slice(0, 100) : undefined,
+      budget: budget || undefined,
+      source: referral_code ? `referral (${referral_code})` : "web",
     });
 
     // 4. Auto-enqueue into nurturing sequence (non-blocking)
