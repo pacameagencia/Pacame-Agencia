@@ -3,6 +3,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { sequences } from "@/lib/data/email-sequences";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { sendEmail, wrapEmailTemplate } from "@/lib/resend";
+import { verifyInternalAuth } from "@/lib/api-auth";
 
 const supabase = createServerSupabase();
 
@@ -15,6 +16,9 @@ function interpolate(template: string, vars: Record<string, string>): string {
 
 // POST: Trigger nurturing actions
 export async function POST(request: NextRequest) {
+  const authError = verifyInternalAuth(request);
+  if (authError) return authError;
+
   const body = await request.json();
   const { action } = body;
 

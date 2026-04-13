@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
+import { verifyInternalAuth } from "@/lib/api-auth";
+import { notifyPablo, wrapEmailTemplate } from "@/lib/resend";
+import { alertPablo } from "@/lib/telegram";
 
 const supabase = createServerSupabase();
 
@@ -22,6 +25,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(_request: NextRequest) {
+  const authError = verifyInternalAuth(_request);
+  if (authError) return authError;
+
   return runWeeklyAudit();
 }
 
@@ -180,6 +186,31 @@ Notificaciones sin leer: ${unreadNotifications}`;
       message: aiSummary,
       data: report,
     });
+
+    // Send weekly report to Pablo via email
+    const emailBody = aiSummary.replace(/\n/g, "<br>") +
+      `<br><br><strong>Resumen rapido:</strong><br>` +
+      `• Leads: ${newLeads} nuevos (${hotLeads} calientes), ${wonLeads} ganados<br>` +
+      `• Propuestas: ${newProposals} creadas, ${acceptedProposals} aceptadas (${conversionRate}%)<br>` +
+      `• Valor cerrado: ${proposalRevenue.toLocaleString("es-ES")}€ anualizado<br>` +
+      `• Contenido: ${contentCreated} piezas generadas<br>` +
+      `• Referidos: ${newReferrals} nuevos, ${convertedReferrals} convertidos`;
+
+    notifyPablo(
+      `Informe Semanal PACAME — ${newLeads} leads, ${wonLeads} ganados`,
+      wrapEmailTemplate(emailBody, {
+        cta: "Ver Dashboard",
+        ctaUrl: "https://pacameagencia.com/dashboard",
+        preheader: `${newLeads} leads, ${acceptedProposals} propuestas aceptadas, ${proposalRevenue}€ valor`,
+      })
+    );
+
+    // Send Telegram summary
+    const telegramMsg = `Leads: ${newLeads} (${hotLeads} hot), ${wonLeads} won\n` +
+      `Propuestas: ${newProposals} → ${acceptedProposals} aceptadas (${conversionRate}%)\n` +
+      `Valor: ${proposalRevenue.toLocaleString("es-ES")}€\n` +
+      `Contenido: ${contentCreated} piezas`;
+    alertPablo("Informe Semanal DIOS", telegramMsg, "normal");
 
     // Log the audit
     logAgentActivity({

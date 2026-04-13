@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
+import { verifyInternalAuth } from "@/lib/api-auth";
 
 const supabase = createServerSupabase();
 
@@ -21,6 +22,9 @@ const TIERS = {
 } as const;
 
 export async function POST(request: NextRequest) {
+  const authError = verifyInternalAuth(request);
+  if (authError) return authError;
+
   const body = await request.json();
   const { action } = body;
 

@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { verifyInternalAuth } from "@/lib/api-auth";
 
 const supabase = createServerSupabase();
 
 // Seed demo data — only works with correct password
 export async function POST(request: NextRequest) {
+  const authError = verifyInternalAuth(request);
+  if (authError) return authError;
+
   const { password } = await request.json();
   if (password !== process.env.DASHBOARD_PASSWORD) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

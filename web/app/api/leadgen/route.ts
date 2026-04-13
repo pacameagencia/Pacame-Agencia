@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
+import { verifyInternalAuth } from "@/lib/api-auth";
 
 const supabase = createServerSupabase();
 
@@ -10,6 +11,9 @@ const APIFY_ACTOR = "nwua9Gu5YrADL7ZDj"; // Google Maps Scraper
 
 // POST: Launch a new lead gen campaign
 export async function POST(request: NextRequest) {
+  const authError = verifyInternalAuth(request);
+  if (authError) return authError;
+
   const body = await request.json();
   const { action, niche, city, maxResults = 50, runId } = body;
 

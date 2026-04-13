@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
+import { verifyInternalAuth } from "@/lib/api-auth";
 
 const supabase = createServerSupabase();
 
@@ -17,6 +18,9 @@ const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
  * 4. funnel_stats — Get conversion metrics
  */
 export async function POST(request: NextRequest) {
+  const authError = verifyInternalAuth(request);
+  if (authError) return authError;
+
   const body = await request.json();
   const { action } = body;
 

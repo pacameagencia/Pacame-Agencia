@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
+import { verifyInternalAuth } from "@/lib/api-auth";
 
 export async function POST(request: NextRequest) {
+  const authError = verifyInternalAuth(request);
+  if (authError) return authError;
+
   try {
     const body = await request.json();
     const { customer_email } = body as { customer_email: string };

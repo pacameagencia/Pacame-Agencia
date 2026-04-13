@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { verifyInternalAuth } from "@/lib/api-auth";
 import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 
@@ -78,6 +79,9 @@ Si dice "No tengo presupuesto":
 - WhatsApp de contacto: +34 722 669 381`;
 
 export async function POST(request: NextRequest) {
+  const authError = verifyInternalAuth(request);
+  if (authError) return authError;
+
   const body = await request.json();
   const { action } = body;
 
@@ -87,6 +91,12 @@ export async function POST(request: NextRequest) {
 
     if (!phone_number) {
       return NextResponse.json({ error: "phone_number required" }, { status: 400 });
+    }
+
+    // Validate phone format (E.164: +country code + number, 8-15 digits)
+    const cleanPhone = phone_number.replace(/[\s\-()]/g, "");
+    if (!/^\+\d{8,15}$/.test(cleanPhone)) {
+      return NextResponse.json({ error: "Formato de telefono invalido. Usa formato internacional: +34XXXXXXXXX" }, { status: 400 });
     }
 
     if (!VAPI_API_KEY) {
@@ -139,7 +149,7 @@ export async function POST(request: NextRequest) {
         },
         body: JSON.stringify({
           phoneNumberId: process.env.VAPI_PHONE_NUMBER_ID,
-          customer: { number: phone_number },
+          customer: { number: cleanPhone },
           assistant: {
             model: {
               provider: "anthropic",

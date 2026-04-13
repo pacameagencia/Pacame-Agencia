@@ -1,3 +1,4 @@
+// TODO: Add auth for moderation actions (moderate, request, list — but NOT submit, which stays public)
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";

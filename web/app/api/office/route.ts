@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { verifyInternalAuth } from "@/lib/api-auth";
 
 const supabase = createServerSupabase();
 
 // GET: Retrieve agent states, activities, and tasks
 export async function GET(request: NextRequest) {
+  const authError = verifyInternalAuth(request);
+  if (authError) return authError;
+
   const { searchParams } = new URL(request.url);
   const view = searchParams.get("view") || "overview"; // overview | activities | tasks
   const agentId = searchParams.get("agent");
@@ -70,6 +74,9 @@ export async function GET(request: NextRequest) {
 
 // POST: Log an agent activity or update agent state
 export async function POST(request: NextRequest) {
+  const authError = verifyInternalAuth(request);
+  if (authError) return authError;
+
   const body = await request.json();
   const { action } = body;
 
