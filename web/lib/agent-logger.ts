@@ -90,6 +90,7 @@ export async function incrementAgentTasks(agentId: string) {
 
 // =============================================
 // Agent Discovery System — Autonomous learnings
+// Stored in agent_activities with type "discovery" and extra data in metadata
 // =============================================
 
 type DiscoveryType = "trend" | "service_idea" | "technique" | "competitor_insight" | "optimization" | "market_signal" | "content_idea";
@@ -118,27 +119,23 @@ export async function logAgentDiscovery({
   metadata,
 }: LogDiscoveryParams) {
   try {
-    await supabase.from("agent_discoveries").insert({
+    // Uses "insight" type (allowed by DB constraint) with is_discovery flag in metadata
+    await supabase.from("agent_activities").insert({
       agent_id: agentId.toLowerCase(),
-      type,
+      type: "insight",
       title,
       description,
-      evidence: evidence || null,
-      impact,
-      actionable,
-      suggested_action: suggestedAction || null,
-      status: "new",
-      metadata: metadata || {},
+      metadata: {
+        is_discovery: true,
+        discovery_type: type,
+        evidence: evidence || null,
+        impact,
+        actionable,
+        suggested_action: suggestedAction || null,
+        discovery_status: "new",
+        ...(metadata || {}),
+      },
       created_at: new Date().toISOString(),
-    });
-
-    // Also log as agent activity so it shows in the office
-    await logAgentActivity({
-      agentId,
-      type: "insight",
-      title: "Descubrimiento: " + title,
-      description: "[" + type + "] " + description + (suggestedAction ? " → Accion: " + suggestedAction : ""),
-      metadata: { discovery_type: type, impact, ...metadata },
     });
   } catch {
     // Non-blocking

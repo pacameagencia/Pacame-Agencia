@@ -5,27 +5,24 @@ import { verifyInternalAuth } from "@/lib/api-auth";
 const supabase = createServerSupabase();
 
 /**
- * GET — List all discoveries with optional filters
- * Query params: status, type, agent_id, limit
+ * GET — List discoveries (stored as agent_activities with type "discovery")
+ * Query params: discovery_status, discovery_type, agent_id, limit
  */
 export async function GET(request: NextRequest) {
   const authError = verifyInternalAuth(request);
   if (authError) return authError;
 
   const { searchParams } = new URL(request.url);
-  const status = searchParams.get("status");
-  const type = searchParams.get("type");
-  const agentId = searchParams.get("agent_id");
   const limit = Math.min(Number(searchParams.get("limit") || 50), 100);
+  const agentId = searchParams.get("agent_id");
 
   let query = supabase
-    .from("agent_discoveries")
+    .from("agent_activities")
     .select("*")
+    .eq("type", "insight").eq("metadata->>is_discovery", "true")
     .order("created_at", { ascending: false })
     .limit(limit);
 
-  if (status) query = query.eq("status", status);
-  if (type) query = query.eq("type", type);
   if (agentId) query = query.eq("agent_id", agentId);
 
   const { data, error } = await query;
@@ -34,30 +31,26 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  // Stats
-  const { count: totalNew } = await supabase
-    .from("agent_discoveries")
-    .select("id", { count: "exact", head: true })
-    .eq("status", "new");
+  const discoveries = data || [];
+  const newCount = discoveries.filter(d => {
+    const meta = d.metadata as Record<string, unknown> | null;
+    return !meta?.discovery_status || meta.discovery_status === "new";
+  }).length;
 
-  const { count: totalImplemented } = await supabase
-    .from("agent_discoveries")
-    .select("id", { count: "exact", head: true })
-    .eq("status", "implemented");
+  const implementedCount = discoveries.filter(d => {
+    const meta = d.metadata as Record<string, unknown> | null;
+    return meta?.discovery_status === "implemented";
+  }).length;
 
   return NextResponse.json({
-    discoveries: data || [],
-    stats: {
-      new: totalNew || 0,
-      implemented: totalImplemented || 0,
-      total: (data || []).length,
-    },
+    discoveries,
+    stats: { new: newCount, implemented: implementedCount, total: discoveries.length },
   });
 }
 
 /**
- * POST — Update discovery status or create manual discovery
- * Body: { action: "update_status", id, status } or { action: "create", ...discovery }
+ * POST — Update discovery status
+ * Body: { action: "update_status", id, status }
  */
 export async function POST(request: NextRequest) {
   const authError = verifyInternalAuth(request);
@@ -73,11 +66,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "ID y status valido requeridos" }, { status: 400 });
     }
 
+    // Get current metadata and update discovery_status within it
+    const { data: current } = await supabase
+      .from("agent_activities")
+      .select("metadata")
+      .eq("id", id)
+      .single();
+
+    const currentMeta = (current?.metadata as Record<string, unknown>) || {};
+
     const { error } = await supabase
-      .from("agent_discoveries")
+      .from("agent_activities")
       .update({
-        status,
-        reviewed_at: status !== "new" ? new Date().toISOString() : null,
+        metadata: {
+          ...currentMeta,
+          discovery_status: status,
+          reviewed_at: status !== "new" ? new Date().toISOString() : null,
+        },
       })
       .eq("id", id);
 

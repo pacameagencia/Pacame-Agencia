@@ -63,12 +63,6 @@ Cosas que solo tu puedes hacer. De mas a menos prioritaria.
 - **Alternativa:** Si prefieres Buffer, solo necesitas `BUFFER_ACCESS_TOKEN` de buffer.com
 - **Por que:** el contenido se genera y aprueba, pero no se publica solo. Con esta key, Pulse publica automaticamente 3x/dia
 
-### 12. Crear tabla `agent_discoveries` en Supabase
-- Ir a Supabase Dashboard → SQL Editor
-- Copiar y pegar el contenido de `infra/migrations/003_agent_discoveries.sql`
-- Ejecutar
-- **Por que:** los agentes ahora investigan oportunidades en cada ciclo. Sin esta tabla, los descubrimientos se pierden. El dashboard `/dashboard/discoveries` ya esta listo.
-
 ## DESEABLES (para mas adelante)
 
 ### 9. Google Search Console

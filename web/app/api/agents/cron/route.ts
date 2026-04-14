@@ -1451,8 +1451,9 @@ Responde en texto plano, 2 frases max. Primera frase: que esta pasando. Segunda:
         .limit(20);
 
       const { data: existingDiscoveries } = await supabase
-        .from("agent_discoveries")
+        .from("agent_activities")
         .select("title")
+        .eq("type", "insight").eq("metadata->>is_discovery", "true")
         .order("created_at", { ascending: false })
         .limit(20);
 

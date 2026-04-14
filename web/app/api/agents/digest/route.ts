@@ -14,8 +14,7 @@ export async function POST(request: NextRequest) {
   const authError = verifyInternalAuth(request);
   if (authError) return authError;
 
-  const body = await request.json();
-  const results = body.results || {};
+  await request.json();
 
   // 1. Get today's activity summary
   const todayStart = new Date();
@@ -28,13 +27,13 @@ export async function POST(request: NextRequest) {
     .order("created_at", { ascending: false })
     .limit(50);
 
-  // 2. Get new discoveries since last digest
+  // 2. Get new discoveries since last digest (stored in agent_activities with type "discovery")
   const { data: newDiscoveries } = await supabase
-    .from("agent_discoveries")
-    .select("agent_id, type, title, impact, suggested_action")
-    .eq("status", "new")
+    .from("agent_activities")
+    .select("agent_id, type, title, metadata")
+    .eq("type", "insight").eq("metadata->>is_discovery", "true")
     .gte("created_at", todayStart.toISOString())
-    .order("impact", { ascending: false })
+    .order("created_at", { ascending: false })
     .limit(10);
 
   // 3. Get key metrics
@@ -98,7 +97,11 @@ export async function POST(request: NextRequest) {
   if (discoveries > 0) {
     telegramMsg += `\n🔬 <b>${discoveries} descubrimiento${discoveries > 1 ? "s" : ""} nuevo${discoveries > 1 ? "s" : ""}:</b>\n`;
     for (const d of (newDiscoveries || []).slice(0, 3)) {
-      const impactEmoji = d.impact === "critical" ? "🔴" : d.impact === "high" ? "🟠" : "🟢";
+      const meta = (d.metadata || {}) as Record<string, unknown>;
+      const impact = typeof meta.impact === "string" ? meta.impact : "medium";
+      let impactEmoji = "🟢";
+      if (impact === "critical") impactEmoji = "🔴";
+      else if (impact === "high") impactEmoji = "🟠";
       telegramMsg += `${impactEmoji} ${d.title}\n`;
     }
     if (discoveries > 3) {
@@ -121,8 +124,13 @@ export async function POST(request: NextRequest) {
 
   const discoveryLines = (newDiscoveries || [])
     .map(d => {
-      const label = d.impact === "critical" ? "[CRITICO]" : d.impact === "high" ? "[ALTO]" : "[MEDIO]";
-      return label + " " + d.title + (d.suggested_action ? "\n  Accion: " + d.suggested_action : "");
+      const meta = (d.metadata || {}) as Record<string, unknown>;
+      const impact = typeof meta.impact === "string" ? meta.impact : "medium";
+      const suggestedAction = typeof meta.suggested_action === "string" ? meta.suggested_action : "";
+      let label = "[MEDIO]";
+      if (impact === "critical") label = "[CRITICO]";
+      else if (impact === "high") label = "[ALTO]";
+      return label + " " + d.title + (suggestedAction ? "\n  Accion: " + suggestedAction : "");
     })
     .join("\n\n");
 
