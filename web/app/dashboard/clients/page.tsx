@@ -236,7 +236,7 @@ export default function ClientsPage() {
             <p className="text-sm text-pacame-white/40 font-body">
               {filter === "all" ? "Sin clientes aun" : `Sin clientes con estado "${statusLabels[filter]?.label || filter}"`}
             </p>
-            <p className="text-xs text-pacame-white/25 font-body mt-1">
+            <p className="text-xs text-pacame-white/50 font-body mt-1">
               {filter === "all" ? "Anade tu primer cliente para empezar" : "Cambia el filtro para ver otros clientes"}
             </p>
           </div>

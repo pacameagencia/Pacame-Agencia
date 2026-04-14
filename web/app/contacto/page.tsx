@@ -158,7 +158,7 @@ function ContactoForm() {
                   <Gift className="w-5 h-5 text-lime-pulse flex-shrink-0" />
                   <div>
                     <p className="text-sm font-heading font-semibold text-lime-pulse">Vienes recomendado — 10% de descuento aplicado</p>
-                    <p className="text-xs text-pacame-white/40 font-body">Codigo: {refCode}</p>
+                    <p className="text-xs text-pacame-white/60 font-body">Codigo: {refCode}</p>
                   </div>
                 </div>
               )}
@@ -212,7 +212,7 @@ function ContactoForm() {
                         onBlur={(e) => handleBlur("name", e.target.value)}
                         aria-invalid={!!errors.name}
                         aria-describedby={errors.name ? "error-name" : undefined}
-                        className={`w-full h-12 px-4 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors ${errors.name ? "border-red-500/50" : "border-white/[0.08]"}`}
+                        className={`w-full h-12 px-4 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors ${errors.name ? "border-red-500/50" : "border-white/[0.08]"}`}
                       />
                       {errors.name && <p id="error-name" className="text-xs text-red-400 font-body mt-1.5">{errors.name}</p>}
                     </div>
@@ -229,7 +229,7 @@ function ContactoForm() {
                         onBlur={(e) => handleBlur("email", e.target.value)}
                         aria-invalid={!!errors.email}
                         aria-describedby={errors.email ? "error-email" : undefined}
-                        className={`w-full h-12 px-4 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors ${errors.email ? "border-red-500/50" : "border-white/[0.08]"}`}
+                        className={`w-full h-12 px-4 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors ${errors.email ? "border-red-500/50" : "border-white/[0.08]"}`}
                       />
                       {errors.email && <p id="error-email" className="text-xs text-red-400 font-body mt-1.5">{errors.email}</p>}
                     </div>
@@ -245,7 +245,7 @@ function ContactoForm() {
                         name="company"
                         type="text"
                         placeholder="Nombre de tu empresa (opcional)"
-                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
                       />
                     </div>
                     <div>
@@ -257,7 +257,7 @@ function ContactoForm() {
                         name="phone"
                         type="tel"
                         placeholder="+34 600 000 000 (opcional)"
-                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
                       />
                     </div>
                   </div>
@@ -315,7 +315,7 @@ function ContactoForm() {
                       onBlur={(e) => handleBlur("message", e.target.value)}
                       aria-invalid={!!errors.message}
                       aria-describedby={errors.message ? "error-message" : undefined}
-                      className={`w-full px-4 py-3 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors resize-none ${errors.message ? "border-red-500/50" : "border-white/[0.08]"}`}
+                      className={`w-full px-4 py-3 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors resize-none ${errors.message ? "border-red-500/50" : "border-white/[0.08]"}`}
                     />
                     {errors.message && <p id="error-message" className="text-xs text-red-400 font-body mt-1.5">{errors.message}</p>}
                   </div>
@@ -341,7 +341,7 @@ function ContactoForm() {
                     )}
                   </Button>
 
-                  <p className="text-xs text-pacame-white/40 font-body">
+                  <p className="text-xs text-pacame-white/60 font-body">
                     Al enviar este formulario aceptas nuestra{" "}
                     <Link href="/privacidad" className="text-electric-violet/70 hover:underline">
                       política de privacidad
@@ -365,7 +365,7 @@ function ContactoForm() {
                       <Mail className="w-4 h-4 text-electric-violet" />
                     </div>
                     <div>
-                      <p className="text-xs text-pacame-white/40 font-body">Email</p>
+                      <p className="text-xs text-pacame-white/60 font-body">Email</p>
                       <a href="mailto:hola@pacameagencia.com" className="text-sm text-pacame-white font-body hover:text-electric-violet transition-colors">
                         hola@pacameagencia.com
                       </a>
@@ -376,7 +376,7 @@ function ContactoForm() {
                       <MapPin className="w-4 h-4 text-neon-cyan" />
                     </div>
                     <div>
-                      <p className="text-xs text-pacame-white/40 font-body">Ubicación</p>
+                      <p className="text-xs text-pacame-white/60 font-body">Ubicación</p>
                       <p className="text-sm text-pacame-white font-body">Madrid, España (remoto)</p>
                     </div>
                   </li>
@@ -385,7 +385,7 @@ function ContactoForm() {
                       <Clock className="w-4 h-4 text-lime-pulse" />
                     </div>
                     <div>
-                      <p className="text-xs text-pacame-white/40 font-body">Tiempo de respuesta</p>
+                      <p className="text-xs text-pacame-white/60 font-body">Tiempo de respuesta</p>
                       <p className="text-sm text-pacame-white font-body">Menos de 2 horas</p>
                     </div>
                   </li>
@@ -420,7 +420,7 @@ function ContactoForm() {
                       <p className="text-sm font-heading font-semibold text-pacame-white mb-1">
                         {faq.q}
                       </p>
-                      <p className="text-xs text-pacame-white/50 font-body leading-relaxed">
+                      <p className="text-xs text-pacame-white/60 font-body leading-relaxed">
                         {faq.a}
                       </p>
                     </div>

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod/v4";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
 
@@ -6,13 +7,21 @@ const supabase = createServerSupabase();
 
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
+const auditSchema = z.object({
+  url: z.url("URL no valida"),
+  email: z.email("Email no valido").optional(),
+});
+
 export async function POST(request: NextRequest) {
   try {
-    const { url, email } = await request.json();
+    const parsed = auditSchema.safeParse(await request.json());
 
-    if (!url) {
-      return NextResponse.json({ error: "URL es obligatoria" }, { status: 400 });
+    if (!parsed.success) {
+      const firstError = parsed.error.issues[0]?.message || "Datos invalidos";
+      return NextResponse.json({ error: firstError }, { status: 400 });
     }
+
+    const { url, email } = parsed.data;
 
     // Save as lead if email provided
     if (email) {

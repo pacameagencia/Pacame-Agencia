@@ -45,18 +45,27 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Lead not found" }, { status: 404 });
     }
 
-    // Update lead nurturing status
+    // Update lead nurturing status + store which sequence they're in
     await supabase.from("leads").update({
       status: "nurturing",
       nurturing_step: 0,
+      nurture_sequence: sequence_id,
     }).eq("id", lead_id);
 
     // Schedule first email (immediate)
     const firstEmail = sequence.emails[0];
+    const sageAnalysis = (lead.sage_analysis || {}) as Record<string, unknown>;
     const vars: Record<string, string> = {
       name: lead.name || "amigo",
       email: lead.email || "",
       business_name: lead.business_name || "tu negocio",
+      proposal_url: (sageAnalysis.proposal_url as string) || "https://pacameagencia.com/dashboard/proposals",
+      services: (sageAnalysis.recommended_services as string[])?.join(", ") || "servicios digitales",
+      total_price: (sageAnalysis.estimated_value_onetime as string) || "personalizado",
+      timeline: (sageAnalysis.timeline as string) || "5-10 dias",
+      brief_summary: (sageAnalysis.brief_summary as string) || "tu proyecto personalizado",
+      project_type: (sageAnalysis.project_type as string) || "proyecto",
+      review_url: "https://pacameagencia.com/review/" + lead_id,
     };
 
     const subject = interpolate(firstEmail.subject, vars);
@@ -138,7 +147,8 @@ export async function POST(request: NextRequest) {
 
     for (const lead of leads) {
       const step = (lead.nurturing_step || 0) + 1;
-      const sequence = sequences.find((s) => s.id === "welcome"); // default to welcome
+      const sequenceId = lead.nurture_sequence || "welcome";
+      const sequence = sequences.find((s) => s.id === sequenceId);
       if (!sequence || step >= sequence.emails.length) {
         // Sequence complete — move to qualified
         await supabase.from("leads").update({
@@ -156,10 +166,19 @@ export async function POST(request: NextRequest) {
       // Check if enough time has passed
       if (hoursSinceLastContact < email.delay_hours) continue;
 
+      // Build template vars — include proposal data if available
+      const sageAnalysis = (lead.sage_analysis || {}) as Record<string, unknown>;
       const vars: Record<string, string> = {
         name: lead.name || "amigo",
         email: lead.email || "",
         business_name: lead.business_name || "tu negocio",
+        proposal_url: (sageAnalysis.proposal_url as string) || "https://pacameagencia.com/dashboard/proposals",
+        services: (sageAnalysis.recommended_services as string[])?.join(", ") || "servicios digitales",
+        total_price: (sageAnalysis.estimated_value_onetime as string) || "personalizado",
+        timeline: (sageAnalysis.timeline as string) || "5-10 dias",
+        brief_summary: (sageAnalysis.brief_summary as string) || "tu proyecto personalizado",
+        project_type: (sageAnalysis.project_type as string) || "proyecto",
+        review_url: "https://pacameagencia.com/review/" + lead.id,
       };
 
       const subject = interpolate(email.subject, vars);
@@ -195,7 +214,7 @@ export async function POST(request: NextRequest) {
         sent_via: resendId ? "resend" : null,
         data: {
           lead_id: lead.id,
-          sequence_id: "welcome",
+          sequence_id: sequenceId,
           email_id: email.id,
           step,
           to_email: lead.email,

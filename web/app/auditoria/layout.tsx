@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
 export const metadata: Metadata = {
   title: "Auditoria Web Gratuita",
@@ -8,5 +9,15 @@ export const metadata: Metadata = {
 };
 
 export default function AuditoriaLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Inicio", url: "https://pacameagencia.com" },
+          { name: "Auditoria", url: "https://pacameagencia.com/auditoria" },
+        ]}
+      />
+      {children}
+    </>
+  );
 }

@@ -5,6 +5,7 @@ import {
   Monitor, Search, Share2, Megaphone, Palette, MessageSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
 export const metadata: Metadata = {
   title: "Portfolio — Casos de Exito | PACAME Agencia Digital",
@@ -146,9 +147,45 @@ const cases: CaseStudy[] = [
   },
 ];
 
+function PortfolioJsonLd() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Portfolio PACAME — Casos de Exito",
+    description: "Proyectos reales con resultados medibles para PYMEs en Espana.",
+    url: "https://pacameagencia.com/portfolio",
+    numberOfItems: cases.length,
+    itemListElement: cases.map((c, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "CreativeWork",
+        name: `${c.client} — ${c.sector}`,
+        description: c.challenge,
+        creator: { "@type": "Organization", name: "PACAME", url: "https://pacameagencia.com" },
+        locationCreated: { "@type": "Place", address: { "@type": "PostalAddress", addressLocality: c.city, addressCountry: "ES" } },
+      },
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 export default function PortfolioPage() {
   return (
     <div className="bg-pacame-black min-h-screen">
+      <PortfolioJsonLd />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Inicio", url: "https://pacameagencia.com" },
+          { name: "Portfolio", url: "https://pacameagencia.com/portfolio" },
+        ]}
+      />
       {/* Hero */}
       <section className="relative pt-36 pb-24 overflow-hidden">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
@@ -161,7 +198,7 @@ export default function PortfolioPage() {
             Resultados reales.{" "}
             <span className="gradient-text-vivid">No promesas vacias.</span>
           </h1>
-          <p className="text-xl text-pacame-white/40 font-body max-w-2xl mx-auto mb-14 font-light">
+          <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto mb-14 font-light">
             Cada proyecto con metricas concretas. Porque los numeros no mienten.
           </p>
 
@@ -177,7 +214,7 @@ export default function PortfolioPage() {
                 <div className="font-heading font-bold text-2xl text-pacame-white mb-1">
                   {stat.value}
                 </div>
-                <div className="text-xs text-pacame-white/30 font-body">{stat.label}</div>
+                <div className="text-xs text-pacame-white/50 font-body">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -210,7 +247,7 @@ export default function PortfolioPage() {
                         <h2 className="font-heading font-bold text-xl text-pacame-white">
                           {c.client}
                         </h2>
-                        <p className="text-sm text-pacame-white/35 font-body">
+                        <p className="text-sm text-pacame-white/50 font-body">
                           {c.sector} &middot; {c.city}
                         </p>
                       </div>
@@ -235,18 +272,18 @@ export default function PortfolioPage() {
                   {/* Challenge + Solution */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                     <div>
-                      <h3 className="text-xs font-body font-medium uppercase tracking-[0.15em] text-pacame-white/30 mb-2">
+                      <h3 className="text-xs font-body font-medium uppercase tracking-[0.15em] text-pacame-white/50 mb-2">
                         El problema
                       </h3>
-                      <p className="text-sm text-pacame-white/55 font-body leading-relaxed">
+                      <p className="text-sm text-pacame-white/60 font-body leading-relaxed">
                         {c.challenge}
                       </p>
                     </div>
                     <div>
-                      <h3 className="text-xs font-body font-medium uppercase tracking-[0.15em] text-pacame-white/30 mb-2">
+                      <h3 className="text-xs font-body font-medium uppercase tracking-[0.15em] text-pacame-white/50 mb-2">
                         La solucion
                       </h3>
-                      <p className="text-sm text-pacame-white/55 font-body leading-relaxed">
+                      <p className="text-sm text-pacame-white/60 font-body leading-relaxed">
                         {c.solution}
                       </p>
                     </div>
@@ -266,8 +303,8 @@ export default function PortfolioPage() {
                         >
                           {r.value}
                         </div>
-                        <div className="text-xs text-pacame-white/40 font-body">{r.metric}</div>
-                        <div className="text-[10px] text-pacame-white/25 font-body mt-1">
+                        <div className="text-xs text-pacame-white/50 font-body">{r.metric}</div>
+                        <div className="text-[10px] text-pacame-white/40 font-body mt-1">
                           {r.improvement}
                         </div>
                       </div>
@@ -277,11 +314,11 @@ export default function PortfolioPage() {
                   {/* Testimonial + meta */}
                   <div className="flex flex-col lg:flex-row lg:items-center gap-6 pt-6 border-t border-white/[0.04]">
                     <div className="flex-1">
-                      <p className="text-sm text-pacame-white/45 font-body italic leading-relaxed">
+                      <p className="text-sm text-pacame-white/60 font-body italic leading-relaxed">
                         &ldquo;{c.testimonial}&rdquo;
                       </p>
                     </div>
-                    <div className="flex items-center gap-6 text-xs text-pacame-white/30 font-body flex-shrink-0">
+                    <div className="flex items-center gap-6 text-xs text-pacame-white/50 font-body flex-shrink-0">
                       <div className="flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5" />
                         {c.duration}
@@ -310,7 +347,7 @@ export default function PortfolioPage() {
           <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
             Tu proyecto puede ser el siguiente.
           </h2>
-          <p className="text-lg text-pacame-white/40 font-body mb-10">
+          <p className="text-lg text-pacame-white/60 font-body mb-10">
             Cuentanos que necesitas. Diagnostico gratuito, sin compromiso.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

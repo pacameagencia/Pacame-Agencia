@@ -4,8 +4,16 @@ import Link from "next/link";
 import { Check, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import CheckoutButton from "@/components/CheckoutButton";
 import { packages } from "@/lib/data/services";
 import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
+
+// Map package IDs to starting prices for checkout
+const packagePrices: Record<string, { amount: number; product: string; description: string }> = {
+  despega: { amount: 1800, product: "custom", description: "Paquete Despega — Presencia digital desde cero" },
+  escala: { amount: 3500, product: "custom", description: "Paquete Escala — Crecimiento digital completo" },
+  domina: { amount: 8000, product: "custom", description: "Paquete Domina — Transformacion digital total" },
+};
 
 export default function PricingSection() {
   return (
@@ -118,21 +126,29 @@ export default function PricingSection() {
                   {pkg.savings} vs servicios individuales
                 </div>
 
-                <Button
+                {/* Primary: Buy Now */}
+                <CheckoutButton
+                  product={packagePrices[pkg.id]?.product || "custom"}
+                  amount={packagePrices[pkg.id]?.amount || 1800}
+                  label={`Empezar desde ${(packagePrices[pkg.id]?.amount || 1800).toLocaleString("es-ES")}\u00A0\u20AC`}
+                  description={packagePrices[pkg.id]?.description || pkg.name}
                   variant={pkg.featured ? "secondary" : "outline"}
                   size="lg"
-                  className={`w-full group rounded-full ${
+                  className={`w-full ${
                     pkg.featured
                       ? "bg-white text-pacame-black hover:bg-white/90"
                       : "border-white/[0.08] hover:border-white/20"
                   }`}
-                  asChild
+                />
+                {/* Secondary: Talk first */}
+                <Link
+                  href="/contacto"
+                  className={`block text-center text-xs font-body mt-3 transition-colors ${
+                    pkg.featured ? "text-white/40 hover:text-white/60" : "text-pacame-white/30 hover:text-pacame-white/50"
+                  }`}
                 >
-                  <Link href="/contacto">
-                    Empezar con {pkg.name}
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
+                  o hablar primero sin compromiso
+                </Link>
               </motion.div>
             </StaggerItem>
           ))}

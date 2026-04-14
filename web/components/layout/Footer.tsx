@@ -14,6 +14,12 @@ const footerLinks = {
     { label: "Calculadora ROI", href: "/calculadora-roi" },
     { label: "7 Errores de tu Web", href: "/7-errores" },
   ],
+  sectores: [
+    { label: "Restaurantes", href: "/para/restaurantes" },
+    { label: "Clinicas", href: "/para/clinicas" },
+    { label: "Abogados", href: "/para/abogados" },
+    { label: "Tiendas", href: "/para/tiendas" },
+  ],
   empresa: [
     { label: "El equipo", href: "/equipo" },
     { label: "Portfolio", href: "/portfolio" },
@@ -56,7 +62,7 @@ export default function Footer() {
     <footer className="bg-[#0A0A0A] border-t border-white/[0.04]">
       <div className="max-w-6xl mx-auto px-6 pt-20 pb-12">
         {/* Top section - brand + links */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-12 mb-20">
+        <div className="grid grid-cols-2 md:grid-cols-7 gap-10 mb-20">
           {/* Brand */}
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2.5 mb-5">
@@ -89,6 +95,7 @@ export default function Footer() {
           </div>
 
           <FooterColumn title="Servicios" links={footerLinks.servicios} />
+          <FooterColumn title="Sectores" links={footerLinks.sectores} />
           <FooterColumn title="Empresa" links={footerLinks.empresa} />
           <FooterColumn title="Gratis" links={footerLinks.herramientas} />
 

@@ -266,7 +266,7 @@ export default function PartnerDashboardPage() {
 
         {/* CTA */}
         <div className="text-center pt-4">
-          <p className="text-xs text-pacame-white/25 font-body mb-4">
+          <p className="text-xs text-pacame-white/50 font-body mb-4">
             ¿Dudas? Contacta con nosotros en{" "}
             <a href="mailto:hola@pacameagencia.com" className="text-electric-violet/60 hover:underline">hola@pacameagencia.com</a>
           </p>

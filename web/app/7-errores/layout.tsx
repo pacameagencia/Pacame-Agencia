@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
 export const metadata: Metadata = {
   title: "7 Errores que Cometen las PYMEs con su Web",
@@ -8,5 +9,15 @@ export const metadata: Metadata = {
 };
 
 export default function SieteErroresLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Inicio", url: "https://pacameagencia.com" },
+          { name: "7 Errores", url: "https://pacameagencia.com/7-errores" },
+        ]}
+      />
+      {children}
+    </>
+  );
 }

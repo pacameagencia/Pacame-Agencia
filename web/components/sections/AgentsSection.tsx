@@ -74,25 +74,21 @@ export default function AgentsSection() {
                     {agent.role}
                   </p>
                   <p className="text-sm text-pacame-white/50 font-body leading-relaxed line-clamp-3">
-                    {agent.description}
+                    {agent.simpleDescription}
                   </p>
 
-                  {/* Skills */}
-                  <div className="mt-5 flex flex-wrap gap-1.5">
-                    {agent.skills.slice(0, 3).map((skill) => (
-                      <span
-                        key={skill}
-                        className="text-[10px] px-2 py-0.5 rounded-full font-body"
-                        style={{
-                          backgroundColor: `${agent.color}08`,
-                          color: `${agent.color}`,
-                          border: `1px solid ${agent.color}15`,
-                        }}
+                  {/* Benefits */}
+                  <ul className="mt-5 space-y-1.5">
+                    {agent.benefits.slice(0, 2).map((benefit) => (
+                      <li
+                        key={benefit}
+                        className="text-[11px] text-pacame-white/35 font-body flex items-start gap-1.5"
                       >
-                        {skill}
-                      </span>
+                        <span style={{ color: agent.color }} className="mt-0.5">&#x2713;</span>
+                        {benefit}
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </motion.div>
                 </Link>
               </StaggerItem>
@@ -125,14 +121,14 @@ export default function AgentsSection() {
         {/* CTA */}
         <ScrollReveal className="text-center flex flex-col sm:flex-row gap-4 justify-center">
           <Button variant="gradient" size="lg" asChild className="group rounded-full shadow-glow-violet">
-            <Link href="/agentes">
-              Ver los {TOTAL_AGENTS}+ especialistas
+            <Link href="/equipo">
+              Conoce a tu equipo
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
           <Button variant="outline" size="lg" asChild className="group rounded-full border-white/[0.08] hover:border-white/20">
-            <Link href="/equipo">
-              Conocer al equipo core
+            <Link href="/servicios">
+              Ver servicios y precios
             </Link>
           </Button>
         </ScrollReveal>

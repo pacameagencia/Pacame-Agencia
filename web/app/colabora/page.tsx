@@ -91,7 +91,7 @@ export default function ColaboraPage() {
             <br />
             <span className="gradient-text-vivid">Nosotros ejecutamos. Tu cobras.</span>
           </h1>
-          <p className="text-lg text-pacame-white/40 font-body font-light max-w-2xl mx-auto mb-8">
+          <p className="text-lg text-pacame-white/60 font-body font-light max-w-2xl mx-auto mb-8">
             Gana comisiones recurrentes por cada negocio que recomiendes a PACAME.
             Sin exclusividad, sin compromiso, sin tener que vender nada.
           </p>
@@ -169,7 +169,7 @@ export default function ColaboraPage() {
                   {tier.name[0]}
                 </div>
                 <h3 className="font-heading font-bold text-xl text-pacame-white mb-1">{tier.name}</h3>
-                <p className="text-xs text-pacame-white/40 font-body mb-4">{tier.range}</p>
+                <p className="text-xs text-pacame-white/60 font-body mb-4">{tier.range}</p>
 
                 <div className="space-y-3 mb-4">
                   <div className="flex justify-between items-center">
@@ -187,7 +187,7 @@ export default function ColaboraPage() {
                 </div>
 
                 <div className="rounded-xl bg-white/[0.03] p-3">
-                  <p className="text-xs text-pacame-white/40 font-body">{tier.example}</p>
+                  <p className="text-xs text-pacame-white/60 font-body">{tier.example}</p>
                 </div>
               </div>
             ))}
@@ -213,7 +213,7 @@ export default function ColaboraPage() {
                 <CheckCircle2 className="w-5 h-5 text-lime-pulse flex-shrink-0 mt-0.5" />
                 <div>
                   <h3 className="font-heading font-semibold text-sm text-pacame-white mb-1">{item.title}</h3>
-                  <p className="text-xs text-pacame-white/40 font-body">{item.desc}</p>
+                  <p className="text-xs text-pacame-white/60 font-body">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -234,9 +234,9 @@ export default function ColaboraPage() {
               </h2>
               {partnerCode && (
                 <div className="rounded-xl bg-dark-card border border-white/[0.06] p-4 mb-4">
-                  <p className="text-xs text-pacame-white/40 font-body mb-1">Tu codigo de colaborador:</p>
+                  <p className="text-xs text-pacame-white/60 font-body mb-1">Tu codigo de colaborador:</p>
                   <p className="font-mono text-lg text-electric-violet font-bold">{partnerCode}</p>
-                  <p className="text-xs text-pacame-white/30 font-body mt-2">
+                  <p className="text-xs text-pacame-white/60 font-body mt-2">
                     Tu link: pacameagencia.com/p/{partnerCode}
                   </p>
                 </div>
@@ -272,7 +272,7 @@ export default function ColaboraPage() {
                     name="name"
                     required
                     placeholder="Tu nombre"
-                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
                   />
                 </div>
 
@@ -283,7 +283,7 @@ export default function ColaboraPage() {
                     type="email"
                     required
                     placeholder="tu@email.com"
-                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
                   />
                 </div>
 
@@ -292,7 +292,7 @@ export default function ColaboraPage() {
                   <input
                     name="phone"
                     placeholder="+34 600 000 000"
-                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
                   />
                 </div>
 
@@ -316,7 +316,7 @@ export default function ColaboraPage() {
                   )}
                 </Button>
 
-                <p className="text-xs text-pacame-white/30 font-body text-center">
+                <p className="text-xs text-pacame-white/60 font-body text-center">
                   Sin permanencia. Sin exclusividad. Cancela cuando quieras.{" "}
                   <Link href="/privacidad" className="text-electric-violet/60 hover:underline">
                     Politica de privacidad

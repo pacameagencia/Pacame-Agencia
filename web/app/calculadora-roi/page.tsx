@@ -52,7 +52,7 @@ export default function CalculadoraROIPage() {
         <div className="absolute top-1/3 right-1/4 w-[500px] h-[300px] bg-lime-pulse/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-body text-pacame-white/40 mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-body text-pacame-white/60 mb-6">
             <Calculator className="w-3.5 h-3.5 text-lime-pulse" />
             Herramienta gratuita
           </div>
@@ -62,7 +62,7 @@ export default function CalculadoraROIPage() {
             <br />
             <span className="gradient-text-vivid">dejando en la mesa?</span>
           </h1>
-          <p className="text-lg text-pacame-white/40 font-body font-light max-w-xl mx-auto">
+          <p className="text-lg text-pacame-white/60 font-body font-light max-w-xl mx-auto">
             Calcula en 30 segundos el retorno de inversion que tendria
             contratar marketing digital para tu negocio.
           </p>
@@ -100,7 +100,7 @@ export default function CalculadoraROIPage() {
                       onChange={(e) => setTicketMedio(Number(e.target.value))}
                       className="w-full accent-electric-violet"
                     />
-                    <div className="flex justify-between text-[10px] text-pacame-white/30 font-body mt-1">
+                    <div className="flex justify-between text-[10px] text-pacame-white/50 font-body mt-1">
                       <span>10€</span><span>500€</span>
                     </div>
                   </div>
@@ -114,7 +114,7 @@ export default function CalculadoraROIPage() {
                       onChange={(e) => setClientesMes(Number(e.target.value))}
                       className="w-full accent-electric-violet"
                     />
-                    <div className="flex justify-between text-[10px] text-pacame-white/30 font-body mt-1">
+                    <div className="flex justify-between text-[10px] text-pacame-white/50 font-body mt-1">
                       <span>10</span><span>500</span>
                     </div>
                   </div>
@@ -137,9 +137,9 @@ export default function CalculadoraROIPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <span className="font-heading font-semibold text-sm text-pacame-white">{opt.label}</span>
-                          <p className="text-xs text-pacame-white/40 font-body mt-0.5">{opt.description}</p>
+                          <p className="text-xs text-pacame-white/60 font-body mt-0.5">{opt.description}</p>
                         </div>
-                        <span className="font-heading font-bold text-lg text-pacame-white">{opt.monthly}€<span className="text-xs text-pacame-white/40">/mes</span></span>
+                        <span className="font-heading font-bold text-lg text-pacame-white">{opt.monthly}€<span className="text-xs text-pacame-white/60">/mes</span></span>
                       </div>
                     </button>
                   ))}
@@ -161,7 +161,7 @@ export default function CalculadoraROIPage() {
             {/* Results */}
             <div className={`space-y-5 transition-opacity duration-500 ${calculated ? "opacity-100" : "opacity-30"}`}>
               <div className="rounded-3xl glass p-8 text-center">
-                <p className="text-xs text-pacame-white/40 font-body uppercase tracking-widest mb-2">ROI estimado</p>
+                <p className="text-xs text-pacame-white/60 font-body uppercase tracking-widest mb-2">ROI estimado</p>
                 <div className={`font-heading font-bold text-6xl mb-2 ${roi > 0 ? "text-lime-pulse" : "text-amber-signal"}`}>
                   {roi}%
                 </div>
@@ -172,22 +172,22 @@ export default function CalculadoraROIPage() {
                 <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
                   <Users className="w-5 h-5 text-neon-cyan mx-auto mb-2" />
                   <div className="font-heading font-bold text-2xl text-neon-cyan">{newLeads}</div>
-                  <div className="text-[10px] text-pacame-white/40 font-body">leads nuevos/mes</div>
+                  <div className="text-[10px] text-pacame-white/60 font-body">leads nuevos/mes</div>
                 </div>
                 <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
                   <Target className="w-5 h-5 text-electric-violet mx-auto mb-2" />
                   <div className="font-heading font-bold text-2xl text-electric-violet">{newClients}</div>
-                  <div className="text-[10px] text-pacame-white/40 font-body">clientes nuevos/mes</div>
+                  <div className="text-[10px] text-pacame-white/60 font-body">clientes nuevos/mes</div>
                 </div>
                 <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
                   <DollarSign className="w-5 h-5 text-lime-pulse mx-auto mb-2" />
                   <div className="font-heading font-bold text-2xl text-lime-pulse">+{revenueIncrease}€</div>
-                  <div className="text-[10px] text-pacame-white/40 font-body">ingresos extra/mes</div>
+                  <div className="text-[10px] text-pacame-white/60 font-body">ingresos extra/mes</div>
                 </div>
                 <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
                   <BarChart3 className="w-5 h-5 text-amber-signal mx-auto mb-2" />
                   <div className="font-heading font-bold text-2xl text-amber-signal">{paybackMonths > 12 ? "12+" : paybackMonths}</div>
-                  <div className="text-[10px] text-pacame-white/40 font-body">meses payback</div>
+                  <div className="text-[10px] text-pacame-white/60 font-body">meses payback</div>
                 </div>
               </div>
 
@@ -235,7 +235,7 @@ export default function CalculadoraROIPage() {
                 </div>
               )}
 
-              <p className="text-[10px] text-pacame-white/20 font-body text-center">
+              <p className="text-[10px] text-pacame-white/50 font-body text-center">
                 *Estimaciones basadas en medias del sector. Los resultados reales pueden variar segun negocio, ubicacion y competencia.
               </p>
             </div>

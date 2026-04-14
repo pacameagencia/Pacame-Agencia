@@ -126,7 +126,7 @@ export default function ReferralsPage() {
           <div className="text-center py-8">
             <Users className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
             <p className="text-sm text-pacame-white/40 font-body">Sin colaboradores aun</p>
-            <p className="text-xs text-pacame-white/25 font-body mt-1">
+            <p className="text-xs text-pacame-white/50 font-body mt-1">
               Comparte pacameagencia.com/colabora para captar partners
             </p>
           </div>

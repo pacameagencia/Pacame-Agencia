@@ -6,6 +6,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { services, packages } from "@/lib/data/services";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
+import ServiceCheckoutButton from "@/components/ServiceCheckoutButton";
+import PackageCheckoutButton from "@/components/PackageCheckoutButton";
 
 export const metadata: Metadata = {
   title: "Servicios — Diseño Web, SEO, Ads, Social Media y Branding",
@@ -26,9 +29,58 @@ const serviceCategories = [
   { id: "branding", color: "#7C3AED" },
 ];
 
+function ServicesJsonLd() {
+  const allOffers = services.flatMap((service) =>
+    service.items.map((item) => ({
+      "@type": "Offer",
+      name: `${item.name} — ${service.name}`,
+      description: item.description,
+      priceSpecification: {
+        "@type": "PriceSpecification",
+        priceCurrency: "EUR",
+        price: item.price,
+      },
+      seller: {
+        "@type": "Organization",
+        name: "PACAME",
+        url: "https://pacameagencia.com",
+      },
+      areaServed: { "@type": "Country", name: "Spain" },
+    })),
+  );
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Servicios PACAME — Agencia Digital IA",
+    description: "Todos los servicios digitales de PACAME: desarrollo web, SEO, redes sociales, publicidad digital y branding.",
+    url: "https://pacameagencia.com/servicios",
+    numberOfItems: allOffers.length,
+    itemListElement: allOffers.map((offer, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: offer,
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 export default function ServiciosPage() {
   return (
     <div className="bg-pacame-black min-h-screen">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Inicio", url: "https://pacameagencia.com" },
+          { name: "Servicios", url: "https://pacameagencia.com/servicios" },
+        ]}
+      />
+      <ServicesJsonLd />
       {/* Hero */}
       <section className="relative pt-36 pb-24 overflow-hidden">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.06] rounded-full blur-[200px] pointer-events-none" />
@@ -41,7 +93,7 @@ export default function ServiciosPage() {
             Precios claros.{" "}
             <span className="gradient-text-vivid">Resultados concretos.</span>
           </h1>
-          <p className="text-xl text-pacame-white/40 font-body max-w-2xl mx-auto mb-12 font-light">
+          <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto mb-12 font-light">
             Sin presupuestos que se inflan. Sin sorpresas en la factura.
           </p>
 
@@ -93,7 +145,7 @@ export default function ServiciosPage() {
                   <h2 className="font-heading font-bold text-2xl sm:text-3xl text-pacame-white mb-2">
                     {service.name}
                   </h2>
-                  <p className="text-pacame-white/40 font-body max-w-xl">{service.description}</p>
+                  <p className="text-pacame-white/60 font-body max-w-xl">{service.description}</p>
                 </div>
               </div>
 
@@ -130,7 +182,7 @@ export default function ServiciosPage() {
                     <h3 className="font-heading font-bold text-xl text-pacame-white mb-1.5">
                       {item.name}
                     </h3>
-                    <p className="text-sm text-pacame-white/40 font-body mb-6">
+                    <p className="text-sm text-pacame-white/60 font-body mb-6">
                       {item.description}
                     </p>
 
@@ -141,7 +193,7 @@ export default function ServiciosPage() {
                             className="w-4 h-4 mt-0.5 flex-shrink-0"
                             style={{ color: catColor }}
                           />
-                          <span className="text-sm text-pacame-white/55 font-body">{inc}</span>
+                          <span className="text-sm text-pacame-white/60 font-body">{inc}</span>
                         </li>
                       ))}
                     </ul>
@@ -151,20 +203,17 @@ export default function ServiciosPage() {
                         <div className="font-heading font-bold text-2xl text-pacame-white">
                           {item.price}
                         </div>
-                        <div className="flex items-center gap-1.5 text-xs text-pacame-white/30 font-body mt-1">
+                        <div className="flex items-center gap-1.5 text-xs text-pacame-white/50 font-body mt-1">
                           <Clock className="w-3 h-3" />
                           {item.deadline}
                         </div>
                       </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        asChild
-                        className="flex-shrink-0 rounded-full"
-                        style={item.featured ? { borderColor: catColor, color: catColor } : {}}
-                      >
-                        <Link href={`/contacto?service=${service.id}`}>Contratar</Link>
-                      </Button>
+                      <ServiceCheckoutButton
+                        serviceName={item.name}
+                        serviceCategory={service.name}
+                        featured={item.featured}
+                        accentColor={catColor}
+                      />
                     </div>
                   </div>
                 ))}
@@ -211,13 +260,13 @@ export default function ServiciosPage() {
                   <h3 className={`font-heading font-bold text-2xl mb-1 ${pkg.featured ? "text-white" : "text-pacame-white"}`}>
                     {pkg.name}
                   </h3>
-                  <p className={`text-sm font-body mb-5 ${pkg.featured ? "text-white/60" : "text-pacame-white/40"}`}>
+                  <p className={`text-sm font-body mb-5 ${pkg.featured ? "text-white/60" : "text-pacame-white/60"}`}>
                     {pkg.target}
                   </p>
                   <div className={`font-heading font-bold text-4xl tracking-tight ${pkg.featured ? "text-white" : "text-pacame-white"}`}>
                     {pkg.price}
                   </div>
-                  <p className={`text-xs font-body mt-1.5 ${pkg.featured ? "text-white/50" : "text-pacame-white/30"}`}>
+                  <p className={`text-xs font-body mt-1.5 ${pkg.featured ? "text-white/50" : "text-pacame-white/50"}`}>
                     {pkg.deadline}
                   </p>
                 </div>
@@ -225,8 +274,8 @@ export default function ServiciosPage() {
                 <ul className="space-y-2.5 mb-7 flex-1">
                   {pkg.includes.map((item) => (
                     <li key={item} className="flex items-start gap-2.5">
-                      <Check className={`w-4 h-4 mt-0.5 flex-shrink-0 ${pkg.featured ? "text-white/80" : "text-pacame-white/30"}`} />
-                      <span className={`text-sm font-body ${pkg.featured ? "text-white/85" : "text-pacame-white/55"}`}>
+                      <Check className={`w-4 h-4 mt-0.5 flex-shrink-0 ${pkg.featured ? "text-white/80" : "text-pacame-white/50"}`} />
+                      <span className={`text-sm font-body ${pkg.featured ? "text-white/85" : "text-pacame-white/60"}`}>
                         {item}
                       </span>
                     </li>
@@ -242,17 +291,11 @@ export default function ServiciosPage() {
                   {pkg.savings} vs servicios individuales
                 </div>
 
-                <Button
-                  size="lg"
-                  className={`w-full group rounded-full ${pkg.featured ? "bg-white text-pacame-black hover:bg-white/90" : ""}`}
-                  variant={pkg.featured ? "secondary" : "outline"}
-                  asChild
-                >
-                  <Link href="/contacto">
-                    Empezar con {pkg.name}
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
+                <PackageCheckoutButton
+                  packageId={pkg.id}
+                  packageName={pkg.name}
+                  featured={pkg.featured}
+                />
               </div>
             ))}
           </div>
@@ -265,7 +308,7 @@ export default function ServiciosPage() {
           <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
             No ves lo que necesitas?
           </h2>
-          <p className="text-pacame-white/40 font-body mb-10 text-lg">
+          <p className="text-pacame-white/60 font-body mb-10 text-lg">
             Te escuchamos y preparamos un presupuesto a medida. En 24 horas.
           </p>
           <Button variant="gradient" size="xl" asChild className="group rounded-full shadow-glow-violet">

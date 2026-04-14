@@ -141,7 +141,7 @@ export default function SieteErroresPage() {
                     <h2 className="font-heading font-bold text-lg text-pacame-white">{error.title}</h2>
                     <div className="flex-shrink-0 text-right">
                       <div className="font-heading font-bold text-xl text-red-400">{error.stat}</div>
-                      <div className="text-[10px] text-pacame-white/30 font-body">{error.statLabel}</div>
+                      <div className="text-[10px] text-pacame-white/50 font-body">{error.statLabel}</div>
                     </div>
                   </div>
 
@@ -194,7 +194,7 @@ export default function SieteErroresPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="tu@email.com"
                     required
-                    className="flex-1 h-12 px-5 rounded-xl bg-white/10 border border-white/20 text-white font-body text-sm placeholder:text-white/40 focus:border-white/40 outline-none"
+                    className="flex-1 h-12 px-5 rounded-xl bg-white/10 border border-white/20 text-white font-body text-sm placeholder:text-white/50 focus:border-white/40 outline-none"
                   />
                   <Button
                     type="submit"
@@ -210,7 +210,7 @@ export default function SieteErroresPage() {
                     )}
                   </Button>
                 </form>
-                <p className="text-xs text-white/30 font-body mt-4">
+                <p className="text-xs text-white/50 font-body mt-4">
                   Sin spam. Solo la guia + un email de seguimiento.
                 </p>
               </>
@@ -220,7 +220,7 @@ export default function SieteErroresPage() {
 
         {/* After the CTA, additional trust elements */}
         <div className="mt-8 text-center">
-          <p className="text-xs text-pacame-white/30 font-body mb-4">
+          <p className="text-xs text-pacame-white/50 font-body mb-4">
             ¿No quieres dar tu email? No pasa nada. Toda la info esta en esta pagina.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">

@@ -8,11 +8,11 @@ const supabase = createServerSupabase();
 export async function POST(request: NextRequest) {
   const body = await request.json();
 
-  // Public checkout from proposal pages doesn't require auth
-  // but must have a valid proposal_id
+  // Public checkout from proposal pages or website "Buy Now" buttons
   const isProposalCheckout = !!body.proposal_id;
+  const isPublicCheckout = body.source === "public";
 
-  if (!isProposalCheckout) {
+  if (!isProposalCheckout && !isPublicCheckout) {
     const authError = verifyInternalAuth(request);
     if (authError) return authError;
   }
@@ -126,7 +126,7 @@ export async function POST(request: NextRequest) {
         proposal_id: proposal_id || "",
         product: product || "custom",
         services: services || "",
-        pacame_source: isProposalCheckout ? "proposal" : "dashboard",
+        pacame_source: isProposalCheckout ? "proposal" : isPublicCheckout ? "website" : "dashboard",
       },
       success_url: customSuccessUrl || defaultSuccessUrl,
       cancel_url: customCancelUrl || defaultCancelUrl,

@@ -46,7 +46,7 @@ function ScoreRing({ score }: { score: number }) {
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className="font-heading font-bold text-3xl text-pacame-white">{score}</span>
-        <span className="text-[10px] text-pacame-white/40 font-body">/100</span>
+        <span className="text-[10px] text-pacame-white/60 font-body">/100</span>
       </div>
     </div>
   );
@@ -103,7 +103,7 @@ export default function AuditoriaPage() {
             Auditoria web gratuita{" "}
             <span className="gradient-text-vivid">en 30 segundos.</span>
           </h1>
-          <p className="text-xl text-pacame-white/40 font-body max-w-xl mx-auto mb-12 font-light">
+          <p className="text-xl text-pacame-white/60 font-body max-w-xl mx-auto mb-12 font-light">
             Introduce la URL de tu negocio y nuestros agentes IA analizan SEO, velocidad,
             movil, seguridad y UX. Gratis.
           </p>
@@ -117,14 +117,14 @@ export default function AuditoriaPage() {
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://tunegocio.com"
                   required
-                  className="flex-1 h-14 px-5 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan outline-none"
+                  className="flex-1 h-14 px-5 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan outline-none"
                 />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="tu@email.com (opcional)"
-                  className="sm:w-56 h-14 px-5 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan outline-none"
+                  className="sm:w-56 h-14 px-5 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan outline-none"
                 />
               </div>
               <Button type="submit" variant="gradient" size="xl" className="w-full sm:w-auto mt-4 group">
@@ -139,7 +139,7 @@ export default function AuditoriaPage() {
             <div className="max-w-md mx-auto rounded-2xl glass p-10 text-center">
               <Loader2 className="w-10 h-10 text-neon-cyan mx-auto mb-4 animate-spin" />
               <p className="text-sm text-pacame-white/60 font-body">Nuestros agentes IA estan analizando tu web...</p>
-              <div className="flex items-center justify-center gap-4 mt-4 text-xs text-pacame-white/30 font-body">
+              <div className="flex items-center justify-center gap-4 mt-4 text-xs text-pacame-white/50 font-body">
                 <span>SEO...</span>
                 <span>Velocidad...</span>
                 <span>Movil...</span>
@@ -156,7 +156,7 @@ export default function AuditoriaPage() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
             {/* Overall score */}
             <div className="rounded-3xl glass p-8 sm:p-10 mb-8 text-center">
-              <p className="text-xs text-pacame-white/40 font-body mb-4 uppercase tracking-widest">Puntuacion general</p>
+              <p className="text-xs text-pacame-white/60 font-body mb-4 uppercase tracking-widest">Puntuacion general</p>
               <div className="flex justify-center mb-6">
                 <ScoreRing score={result.score} />
               </div>

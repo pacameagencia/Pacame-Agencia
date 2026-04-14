@@ -46,14 +46,14 @@ export default function LoginPage() {
             <Zap className="w-7 h-7 text-white fill-white" />
           </div>
           <h1 className="font-heading font-bold text-2xl text-pacame-white">PACAME Dashboard</h1>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">Acceso restringido</p>
+          <p className="text-sm text-pacame-white/60 font-body mt-1">Acceso restringido</p>
         </div>
 
         <form onSubmit={handleSubmit} className="rounded-2xl glass p-6 space-y-4">
           <div>
             <label className="block text-xs text-pacame-white/50 font-body mb-2">Password</label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/30" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/50" />
               <input
                 type="password"
                 value={password}
@@ -61,7 +61,7 @@ export default function LoginPage() {
                 placeholder="Introduce el password"
                 required
                 autoFocus
-                className="w-full h-12 pl-10 pr-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none"
+                className="w-full h-12 pl-10 pr-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none"
               />
             </div>
           </div>
@@ -88,7 +88,7 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <p className="text-center text-[10px] text-pacame-white/20 font-body mt-6">
+        <p className="text-center text-[10px] text-pacame-white/50 font-body mt-6">
           Solo Pablo tiene acceso a este panel.
         </p>
       </div>

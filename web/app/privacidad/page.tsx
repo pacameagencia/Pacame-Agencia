@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
 export const metadata: Metadata = {
   title: "Politica de Privacidad — PACAME",
@@ -10,13 +11,19 @@ export const metadata: Metadata = {
 export default function PrivacidadPage() {
   return (
     <div className="bg-pacame-black min-h-screen pt-32 pb-20">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Inicio", url: "https://pacameagencia.com" },
+          { name: "Privacidad", url: "https://pacameagencia.com/privacidad" },
+        ]}
+      />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="font-heading font-bold text-3xl text-pacame-white mb-8">
           Politica de Privacidad
         </h1>
         <div className="prose prose-invert prose-sm max-w-none font-body text-pacame-white/70 space-y-6">
 
-          <p className="text-pacame-white/50 text-xs">Ultima actualizacion: Abril 2026</p>
+          <p className="text-pacame-white/60 text-xs">Ultima actualizacion: Abril 2026</p>
 
           <h2 className="font-heading font-semibold text-lg text-pacame-white">1. Responsable del tratamiento</h2>
           <p>
@@ -105,7 +112,7 @@ export default function PrivacidadPage() {
           </p>
           <p>
             Tambien puedes presentar una reclamacion ante la Agencia Espanola de Proteccion de Datos (AEPD)
-            en <span className="text-pacame-white/50">www.aepd.es</span>.
+            en <span className="text-pacame-white/60">www.aepd.es</span>.
           </p>
 
           <div className="pt-8 border-t border-white/[0.06]">

@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Hero from "@/components/sections/Hero";
 import ServicesSection from "@/components/sections/ServicesSection";
-import AgentsSection from "@/components/sections/AgentsSection";
-import HowItWorks from "@/components/sections/HowItWorks";
-import PricingSection from "@/components/sections/PricingSection";
-import ComparisonSection from "@/components/sections/ComparisonSection";
-import TestimonialsSection from "@/components/sections/TestimonialsSection";
-import BlogPreview from "@/components/sections/BlogPreview";
-import CTASection from "@/components/sections/CTASection";
+
+const NichesSection = dynamic(() => import("@/components/sections/NichesSection"));
+const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks"));
+const ComparisonSection = dynamic(() => import("@/components/sections/ComparisonSection"));
+const TestimonialsSection = dynamic(() => import("@/components/sections/TestimonialsSection"));
+const PricingSection = dynamic(() => import("@/components/sections/PricingSection"));
+const AgentsSection = dynamic(() => import("@/components/sections/AgentsSection"));
+const BlogPreview = dynamic(() => import("@/components/sections/BlogPreview"));
+const CTASection = dynamic(() => import("@/components/sections/CTASection"));
 
 export const metadata: Metadata = {
   title: "PACAME — Tu equipo digital completo. Potenciado por IA, liderado por humanos.",
@@ -21,6 +24,7 @@ export default function HomePage() {
     <>
       <Hero />
       <ServicesSection />
+      <NichesSection />
       <HowItWorks />
       <ComparisonSection />
       <TestimonialsSection />

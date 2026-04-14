@@ -2,6 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { sendEmail, wrapEmailTemplate } from "@/lib/resend";
 import crypto from "crypto";
+import { z } from "zod/v4";
+
+const requestAccessSchema = z.object({
+  action: z.literal("request_access"),
+  email: z.email("Email no valido"),
+});
+
+const verifyTokenSchema = z.object({
+  action: z.literal("verify_token"),
+  token: z.string().min(1, "Token requerido").max(200),
+});
+
+const getProjectSchema = z.object({
+  action: z.literal("get_project"),
+  token: z.string().min(1, "Token requerido").max(200),
+});
+
+const portalSchema = z.discriminatedUnion("action", [requestAccessSchema, verifyTokenSchema, getProjectSchema]);
 
 const supabase = createServerSupabase();
 
@@ -31,13 +49,18 @@ async function findClientByToken(token: string) {
   return client;
 }
 export async function POST(request: NextRequest) {
-  const body = await request.json();
-  const { action } = body;
+  const parsed = portalSchema.safeParse(await request.json());
+
+  if (!parsed.success) {
+    const firstError = parsed.error.issues[0]?.message || "Datos invalidos";
+    return NextResponse.json({ error: firstError }, { status: 400 });
+  }
+
+  const { action } = parsed.data;
 
   // --- Request magic link ---
   if (action === "request_access") {
-    const { email } = body;
-    if (!email) return NextResponse.json({ error: "Email requerido" }, { status: 400 });
+    const { email } = parsed.data;
 
     // Find client by email (use limit(1) instead of single() to avoid crash on 0/multiple)
     const { data: clients } = await supabase
@@ -93,8 +116,7 @@ export async function POST(request: NextRequest) {
 
   // --- Verify token ---
   if (action === "verify_token") {
-    const { token } = body;
-    if (!token) return NextResponse.json({ error: "Token requerido" }, { status: 400 });
+    const { token } = parsed.data;
 
     const client = await findClientByToken(token);
     if (!client) {
@@ -116,8 +138,7 @@ export async function POST(request: NextRequest) {
 
   // --- Get project data ---
   if (action === "get_project") {
-    const { token } = body;
-    if (!token) return NextResponse.json({ error: "Token requerido" }, { status: 400 });
+    const { token } = parsed.data;
 
     const client = await findClientByToken(token);
     if (!client) {

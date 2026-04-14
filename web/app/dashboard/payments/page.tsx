@@ -374,7 +374,7 @@ export default function PaymentsPage() {
           <div className="p-12 text-center">
             <CreditCard className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
             <p className="text-sm text-pacame-white/40 font-body">Sin cobros registrados</p>
-            <p className="text-xs text-pacame-white/25 font-body mt-1">Los pagos via Stripe apareceran aqui automaticamente</p>
+            <p className="text-xs text-pacame-white/50 font-body mt-1">Los pagos via Stripe apareceran aqui automaticamente</p>
           </div>
         ) : (
           <div className="divide-y divide-white/[0.04]">

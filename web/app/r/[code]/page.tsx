@@ -85,7 +85,7 @@ export default function ReferralLandingPage() {
             </Button>
           </div>
 
-          <p className="text-xs text-pacame-white/25 font-body mt-6">
+          <p className="text-xs text-pacame-white/50 font-body mt-6">
             Codigo de referido: <span className="font-mono text-pacame-white/40">{code}</span>
           </p>
         </div>

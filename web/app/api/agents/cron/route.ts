@@ -6,6 +6,8 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { notifyHotLead, alertPablo } from "@/lib/telegram";
 import { sendWhatsApp, sendLeadFollowup, isWhatsAppConfigured } from "@/lib/whatsapp";
 import { publishContent, getConfiguredPlatforms } from "@/lib/social-publish";
+import { findEmailsFromWebsite } from "@/lib/email-enrichment";
+import { generateContentImage } from "@/lib/image-generation";
 
 const supabase = createServerSupabase();
 
@@ -321,8 +323,46 @@ Responde SOLO JSON:
         });
       }
 
+      // 4. AUTO-ENRIQUECER leads outbound sin email
+      let emailsEnriched = 0;
+      const { data: leadsWithoutEmail } = await supabase
+        .from("leads")
+        .select("id, name, sage_analysis")
+        .is("email", null)
+        .eq("source", "outbound")
+        .order("created_at", { ascending: false })
+        .limit(10);
+
+      for (const lead of leadsWithoutEmail || []) {
+        const analysis = (lead.sage_analysis || {}) as Record<string, unknown>;
+        const website = analysis.website as string;
+        if (!website) continue;
+        try {
+          const emails = await findEmailsFromWebsite(website);
+          if (emails.length > 0) {
+            await supabase.from("leads").update({
+              email: emails[0],
+              sage_analysis: { ...analysis, email_source: "website_scrape", emails_found: emails },
+            }).eq("id", lead.id);
+            emailsEnriched++;
+          }
+        } catch {
+          // Non-blocking
+        }
+      }
+
+      if (emailsEnriched > 0) {
+        logAgentActivity({
+          agentId: "sage",
+          type: "task_completed",
+          title: `${emailsEnriched} emails encontrados`,
+          description: `Emails extraidos de webs de leads outbound. Listos para outreach.`,
+          metadata: { enriched: emailsEnriched },
+        });
+      }
+
       updateAgentStatus("sage", "idle");
-      results.sage = { leads_qualified: leadsQualified, proposals_generated: proposalsGenerated, followups: followupsSent };
+      results.sage = { leads_qualified: leadsQualified, proposals_generated: proposalsGenerated, followups: followupsSent, emails_enriched: emailsEnriched };
     } catch (e) {
       updateAgentStatus("sage", "idle");
       results.sage = { error: String(e) };
@@ -498,7 +538,42 @@ Responde SOLO JSON array:
         });
       }
 
-      // 4. AUTO-PUBLICAR contenido aprobado en redes sociales
+      // 4. AUTO-GENERAR imagenes para contenido sin imagen
+      let imagesGenerated = 0;
+      const { data: contentNeedingImages } = await supabase
+        .from("content")
+        .select("id, image_prompt, platform")
+        .in("status", ["pending_review", "approved"])
+        .is("image_url", null)
+        .not("image_prompt", "is", null)
+        .order("created_at", { ascending: false })
+        .limit(3);
+
+      for (const content of contentNeedingImages || []) {
+        if (!content.image_prompt) continue;
+        try {
+          const imageUrl = await generateContentImage(content.image_prompt, content.platform);
+          if (imageUrl) {
+            await supabase.from("content").update({
+              image_url: imageUrl,
+            }).eq("id", content.id);
+            imagesGenerated++;
+          }
+        } catch {
+          // Non-blocking
+        }
+      }
+
+      if (imagesGenerated > 0) {
+        logAgentActivity({
+          agentId: "pulse",
+          type: "delivery",
+          title: `${imagesGenerated} imagenes generadas para posts`,
+          description: `Imagenes IA creadas para contenido de redes sociales.`,
+        });
+      }
+
+      // 5. AUTO-PUBLICAR contenido aprobado en redes sociales
       let postsPublished = 0;
       const platforms = getConfiguredPlatforms();
       const hasAnyPlatform = Object.values(platforms).some(Boolean);
@@ -549,7 +624,7 @@ Responde SOLO JSON array:
 
       incrementAgentTasks("pulse");
       updateAgentStatus("pulse", "idle");
-      results.pulse = { week_content: weekContent, posts_generated: postsGenerated, posts_published: postsPublished };
+      results.pulse = { week_content: weekContent, posts_generated: postsGenerated, posts_published: postsPublished, images_generated: imagesGenerated };
     } catch {
       updateAgentStatus("pulse", "idle");
       results.pulse = { error: "failed" };

@@ -260,7 +260,7 @@ export default function CommercialPage() {
             </Button>
           ))}
         </div>
-        <p className="text-[10px] text-pacame-white/25 font-body mt-2">
+        <p className="text-[10px] text-pacame-white/50 font-body mt-2">
           Solo envia a leads que tengan emails generados y no hayan recibido ese numero de email.
         </p>
       </div>
@@ -273,7 +273,7 @@ export default function CommercialPage() {
           <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
             <Target className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
             <p className="text-sm text-pacame-white/40 font-body">Sin leads outbound</p>
-            <p className="text-xs text-pacame-white/25 font-body mt-1">Usa Lead Generation para scrapear negocios de Google Maps</p>
+            <p className="text-xs text-pacame-white/50 font-body mt-1">Usa Lead Generation para scrapear negocios de Google Maps</p>
           </div>
         )}
 

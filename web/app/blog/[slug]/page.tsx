@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Clock, ArrowRight } from "lucide-react";
+import { ArrowLeft, Clock, ArrowRight, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/lib/data/blog-posts";
+import ReadingProgress from "@/components/blog/ReadingProgress";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
@@ -74,8 +76,29 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     });
   };
 
+  const relatedPosts = blogPosts
+    .filter((p) => p.slug !== slug && p.category === post.category)
+    .slice(0, 3);
+
+  // If not enough from same category, fill with other posts
+  if (relatedPosts.length < 2) {
+    const others = blogPosts.filter((p) => p.slug !== slug && !relatedPosts.includes(p)).slice(0, 3 - relatedPosts.length);
+    relatedPosts.push(...others);
+  }
+
+  const shareUrl = `https://pacameagencia.com/blog/${slug}`;
+  const shareText = encodeURIComponent(post.title);
+
   return (
     <div className="bg-pacame-black min-h-screen">
+      <ReadingProgress color={post.color} />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Inicio", url: "https://pacameagencia.com" },
+          { name: "Blog", url: "https://pacameagencia.com/blog" },
+          { name: post.title, url: `https://pacameagencia.com/blog/${slug}` },
+        ]}
+      />
       {/* Article schema */}
       <script
         type="application/ld+json"
@@ -97,7 +120,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <div className="max-w-3xl mx-auto px-6">
           {/* Back + meta */}
           <div className="mb-8">
-            <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-pacame-white/40 hover:text-pacame-white/60 font-body mb-6">
+            <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-pacame-white/60 hover:text-pacame-white/80 font-body mb-6">
               <ArrowLeft className="w-4 h-4" />
               Volver al blog
             </Link>
@@ -108,11 +131,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               >
                 {post.category}
               </span>
-              <div className="flex items-center gap-1.5 text-xs text-pacame-white/40 font-body">
+              <div className="flex items-center gap-1.5 text-xs text-pacame-white/60 font-body">
                 <Clock className="w-3 h-3" />
                 {post.readTime}
               </div>
-              <span className="text-xs text-pacame-white/30 font-body">{post.date}</span>
+              <span className="text-xs text-pacame-white/50 font-body">{post.date}</span>
             </div>
           </div>
 
@@ -121,17 +144,51 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {post.title}
           </h1>
 
-          {/* Author */}
-          <div className="flex items-center gap-3 mb-10 pb-8 border-b border-white/[0.06]">
-            <span
-              className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold font-heading"
-              style={{ backgroundColor: `${post.color}30`, color: post.color }}
-            >
-              {post.agentName[0]}
-            </span>
-            <div>
-              <p className="text-sm text-pacame-white font-body">Escrito por {post.agentName}</p>
-              <p className="text-xs text-pacame-white/40 font-body">Agente IA de PACAME</p>
+          {/* Author + share */}
+          <div className="flex items-center justify-between mb-10 pb-8 border-b border-white/[0.06]">
+            <div className="flex items-center gap-3">
+              <span
+                className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold font-heading"
+                style={{ backgroundColor: `${post.color}30`, color: post.color }}
+              >
+                {post.agentName[0]}
+              </span>
+              <div>
+                <p className="text-sm text-pacame-white font-body">Escrito por {post.agentName}</p>
+                <p className="text-xs text-pacame-white/60 font-body">Agente IA de PACAME</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-pacame-white/50 font-body mr-1 hidden sm:inline">
+                <Share2 className="w-3 h-3 inline mr-1" />Compartir
+              </span>
+              <a
+                href={`https://twitter.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(shareUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg bg-dark-card border border-white/[0.06] flex items-center justify-center text-xs text-pacame-white/50 hover:text-pacame-white hover:border-white/20 transition-colors"
+                aria-label="Compartir en X"
+              >
+                X
+              </a>
+              <a
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg bg-dark-card border border-white/[0.06] flex items-center justify-center text-xs text-pacame-white/50 hover:text-pacame-white hover:border-white/20 transition-colors"
+                aria-label="Compartir en LinkedIn"
+              >
+                in
+              </a>
+              <a
+                href={`https://api.whatsapp.com/send?text=${shareText}%20${encodeURIComponent(shareUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg bg-dark-card border border-white/[0.06] flex items-center justify-center text-xs text-pacame-white/50 hover:text-pacame-white hover:border-white/20 transition-colors"
+                aria-label="Compartir por WhatsApp"
+              >
+                WA
+              </a>
             </div>
           </div>
 
@@ -139,6 +196,37 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <div className="space-y-1">
             {renderContent(post.content)}
           </div>
+
+          {/* Related posts */}
+          {relatedPosts.length > 0 && (
+            <div className="mt-16 pt-10 border-t border-white/[0.06]">
+              <h3 className="font-heading font-bold text-xl text-pacame-white mb-6">
+                Articulos relacionados
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {relatedPosts.map((rp) => (
+                  <Link
+                    key={rp.slug}
+                    href={`/blog/${rp.slug}`}
+                    className="group rounded-xl bg-dark-card border border-white/[0.06] p-5 hover:border-white/[0.12] transition-all"
+                  >
+                    <span
+                      className="text-[10px] px-2 py-0.5 rounded-full font-body font-medium inline-block mb-3"
+                      style={{ backgroundColor: `${rp.color}15`, color: rp.color }}
+                    >
+                      {rp.category}
+                    </span>
+                    <h4 className="font-heading font-semibold text-sm text-pacame-white group-hover:text-electric-violet transition-colors line-clamp-2 mb-2">
+                      {rp.title}
+                    </h4>
+                    <p className="text-xs text-pacame-white/60 font-body flex items-center gap-1.5">
+                      <Clock className="w-3 h-3" />{rp.readTime}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* CTA */}
           <div className="mt-12 rounded-2xl bg-dark-card border border-electric-violet/20 p-8 text-center">

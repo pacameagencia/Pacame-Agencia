@@ -124,7 +124,7 @@ export default function AgentesPage() {
 
             {/* Search bar */}
             <div className="max-w-2xl mx-auto relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pacame-white/30" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pacame-white/50" />
               <input
                 type="text"
                 placeholder="Buscar agentes... (ej: SEO, React, TikTok, Security)"
@@ -154,7 +154,7 @@ export default function AgentesPage() {
             <h2 className="font-heading font-bold text-xl text-pacame-white">
               Equipo Principal PACAME
             </h2>
-            <span className="text-sm font-mono text-pacame-white/40">7 agentes core</span>
+            <span className="text-sm font-mono text-pacame-white/60">7 agentes core</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
@@ -187,7 +187,7 @@ export default function AgentesPage() {
                   <p className="font-heading font-bold text-sm mb-0.5" style={{ color: agent.color }}>
                     {agent.name}
                   </p>
-                  <p className="text-[10px] text-pacame-white/40 font-body">
+                  <p className="text-[10px] text-pacame-white/60 font-body">
                     +{subCount} especialistas
                   </p>
                 </button>
@@ -202,7 +202,7 @@ export default function AgentesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <Filter className="w-4 h-4 text-pacame-white/40" />
+              <Filter className="w-4 h-4 text-pacame-white/60" />
               <span className="text-sm font-body text-pacame-white/60">Filtrar por división</span>
             </div>
             {hasFilters && (
@@ -246,7 +246,7 @@ export default function AgentesPage() {
                 >
                   <span>{div.emoji}</span>
                   <span>{div.label}</span>
-                  <span className={`${isActive ? "text-white/70" : "text-pacame-white/30"}`}>
+                  <span className={`${isActive ? "text-white/70" : "text-pacame-white/50"}`}>
                     {count}
                   </span>
                 </button>
@@ -261,7 +261,7 @@ export default function AgentesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Results count */}
           <div className="flex items-center justify-between mb-8">
-            <p className="text-sm font-body text-pacame-white/40">
+            <p className="text-sm font-body text-pacame-white/60">
               {filteredAgents.length} agente{filteredAgents.length !== 1 ? "s" : ""} encontrado{filteredAgents.length !== 1 ? "s" : ""}
               {hasFilters && " con los filtros aplicados"}
             </p>
@@ -270,9 +270,9 @@ export default function AgentesPage() {
           {filteredAgents.length === 0 ? (
             <div className="text-center py-20">
               <div className="w-16 h-16 rounded-2xl bg-dark-card border border-white/[0.06] flex items-center justify-center mx-auto mb-4">
-                <Search className="w-7 h-7 text-pacame-white/20" />
+                <Search className="w-7 h-7 text-pacame-white/50" />
               </div>
-              <p className="text-pacame-white/40 font-body mb-4">
+              <p className="text-pacame-white/60 font-body mb-4">
                 No se encontraron agentes con esos filtros
               </p>
               <button
@@ -321,7 +321,7 @@ export default function AgentesPage() {
                     </p>
 
                     {/* When to use */}
-                    <p className="text-xs text-pacame-white/40 font-body mb-4 line-clamp-2">
+                    <p className="text-xs text-pacame-white/60 font-body mb-4 line-clamp-2">
                       <span className="text-neon-cyan/70 font-mono">Cuándo usar →</span> {agent.whenToUse}
                     </p>
 
@@ -371,7 +371,7 @@ export default function AgentesPage() {
                 <p className="text-3xl md:text-4xl font-heading font-bold gradient-text mb-1">
                   {stat.value}
                 </p>
-                <p className="text-sm text-pacame-white/40 font-body">{stat.label}</p>
+                <p className="text-sm text-pacame-white/60 font-body">{stat.label}</p>
               </div>
             ))}
           </div>

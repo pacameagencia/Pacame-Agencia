@@ -6,6 +6,10 @@ export interface Agent {
   color: string;
   icon: string;
   description: string;
+  /** Explicacion en lenguaje sencillo para usuarios no tecnicos */
+  simpleDescription: string;
+  /** 3 beneficios concretos que el usuario entiende */
+  benefits: string[];
   skills: string[];
   personality: string;
   deliverables: string[];
@@ -21,6 +25,13 @@ export const agents: Agent[] = [
     icon: "Sparkles",
     description:
       "Construye la identidad visual de tu marca desde cero. Diseña sistemas visuales que cuentan tu historia y conectan con tu audiencia.",
+    simpleDescription:
+      "Crea tu logo, colores y toda la imagen visual de tu marca. Que te reconozcan de un vistazo.",
+    benefits: [
+      "Un logo profesional que transmite confianza",
+      "Colores y estilo coherente en todo tu negocio",
+      "Material listo para redes, tarjetas y web",
+    ],
     skills: ["Branding", "Identidad Visual", "Dirección de Arte", "UI/UX Design", "Sistemas de Diseño"],
     personality: "Visionaria, audaz, estética",
     deliverables: [
@@ -40,6 +51,13 @@ export const agents: Agent[] = [
     icon: "Globe",
     description:
       "Construye visibilidad orgánica rentable. Analiza keywords, optimiza contenidos y diseña arquitecturas web que Google adora.",
+    simpleDescription:
+      "Hace que te encuentren en Google. Mas gente te busca, mas gente te llama.",
+    benefits: [
+      "Apareces en Google cuando buscan tu servicio",
+      "Mas visitas a tu web sin pagar publicidad",
+      "Resultados medibles cada mes con informes claros",
+    ],
     skills: ["SEO Técnico", "Keyword Research", "Link Building", "SEO Local", "Content Strategy"],
     personality: "Analítico, paciente, meticuloso",
     deliverables: [
@@ -59,6 +77,13 @@ export const agents: Agent[] = [
     icon: "TrendingUp",
     description:
       "Convierte demanda en revenue. Diseña embudos de captación, gestiona campañas de paid media y optimiza cada conversión.",
+    simpleDescription:
+      "Monta anuncios en Facebook e Instagram que traen clientes reales a tu negocio.",
+    benefits: [
+      "Anuncios que llegan exactamente a tu cliente ideal",
+      "Cada euro invertido se mide y se optimiza",
+      "Mas llamadas, mas formularios, mas ventas",
+    ],
     skills: ["Meta Ads", "Google Ads", "Embudos de Venta", "Email Marketing", "CRO"],
     personality: "Persuasivo, orientado a datos, intenso",
     deliverables: [
@@ -78,6 +103,13 @@ export const agents: Agent[] = [
     icon: "Layout",
     description:
       "Convierte estrategia y diseño en experiencias digitales rápidas, claras y que convierten. Next.js, React, Tailwind — sin código legacy.",
+    simpleDescription:
+      "Construye tu pagina web. Rapida, bonita y que convierte visitas en llamadas.",
+    benefits: [
+      "Una web profesional lista en dias, no meses",
+      "Se ve perfecta en movil, tablet y ordenador",
+      "Rapida de cargar, facil de usar, diseñada para vender",
+    ],
     skills: ["Next.js", "React", "Tailwind CSS", "Animaciones Web", "Performance"],
     personality: "Perfeccionista, visual, detallista",
     deliverables: [
@@ -97,6 +129,13 @@ export const agents: Agent[] = [
     icon: "Terminal",
     description:
       "Diseña y mantiene la infraestructura técnica. APIs robustas, bases de datos optimizadas, integraciones sólidas. Silencioso pero potente.",
+    simpleDescription:
+      "Se encarga de la tecnologia por dentro. Que todo funcione sin que tu lo notes.",
+    benefits: [
+      "Tu web nunca se cae ni va lenta",
+      "Datos seguros y protegidos",
+      "Todo conectado: pagos, emails, formularios",
+    ],
     skills: ["Node.js", "Supabase", "PostgreSQL", "APIs REST/GraphQL", "Seguridad"],
     personality: "Lógico, robusto, silencioso pero potente",
     deliverables: [
@@ -116,6 +155,13 @@ export const agents: Agent[] = [
     icon: "Heart",
     description:
       "Convierte tu marca en conversación y demanda. Estrategia de contenidos, calendarios editoriales y community management multiplataforma.",
+    simpleDescription:
+      "Gestiona tus redes sociales. Publica contenido, responde y hace crecer tu comunidad.",
+    benefits: [
+      "Publicaciones profesionales sin que tu muevas un dedo",
+      "Tu marca activa y visible todos los dias",
+      "Mas seguidores que se convierten en clientes",
+    ],
     skills: ["Instagram", "LinkedIn", "TikTok", "Copywriting", "Community Management"],
     personality: "Expresivo, trend-aware, social",
     deliverables: [
@@ -135,6 +181,13 @@ export const agents: Agent[] = [
     icon: "Compass",
     description:
       "Transforma contexto de negocio en decisiones ejecutables. Diagnóstico, estrategia, gobernanza de proyectos y reporting ejecutivo.",
+    simpleDescription:
+      "Analiza tu negocio y te dice exactamente que hacer primero y por que.",
+    benefits: [
+      "Sabes donde invertir para crecer mas rapido",
+      "Plan claro con pasos concretos y plazos",
+      "Informes mensuales que entiendes de un vistazo",
+    ],
     skills: ["Estrategia Digital", "Análisis Competitivo", "Business Planning", "KPIs", "Gestión de Proyectos"],
     personality: "Reflexivo, panorámico, mentor",
     deliverables: [

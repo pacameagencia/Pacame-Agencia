@@ -70,14 +70,14 @@ export default function Hero() {
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20"
         >
           <Button variant="gradient" size="xl" asChild className="group rounded-full min-w-[240px] shadow-glow-violet">
-            <Link href="/contacto">
-              Agenda una llamada gratis
+            <Link href="/servicios">
+              Ver servicios desde 300{"\u00A0"}{"\u20AC"}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
           <Button variant="outline" size="xl" asChild className="rounded-full min-w-[200px] border-white/[0.08] hover:border-white/20 hover:bg-white/[0.03]">
-            <Link href="/servicios">
-              Ver servicios y precios
+            <Link href="/contacto">
+              Hablar con el equipo
             </Link>
           </Button>
         </motion.div>

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { verifyInternalAuth } from "@/lib/api-auth";
+import { generateContentImage } from "@/lib/image-generation";
 
 const supabase = createServerSupabase();
 
@@ -177,6 +178,36 @@ Responde SOLO JSON: {"title": "...", "copy": "...", "hook": "...", "cta": "...",
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
     return NextResponse.json({ ok: true });
+  }
+
+  // --- Generate image for content ---
+  if (action === "generate_image") {
+    const { content_id } = body;
+    if (!content_id) return NextResponse.json({ error: "content_id required" }, { status: 400 });
+
+    const { data: content } = await supabase
+      .from("content")
+      .select("id, image_prompt, platform")
+      .eq("id", content_id)
+      .single();
+
+    if (!content) return NextResponse.json({ error: "Content not found" }, { status: 404 });
+    if (!content.image_prompt) return NextResponse.json({ error: "No image_prompt set" }, { status: 400 });
+
+    const imageUrl = await generateContentImage(content.image_prompt, content.platform);
+    if (!imageUrl) return NextResponse.json({ error: "Image generation failed" }, { status: 500 });
+
+    await supabase.from("content").update({ image_url: imageUrl }).eq("id", content_id);
+
+    logAgentActivity({
+      agentId: "pulse",
+      type: "delivery",
+      title: "Imagen generada para post",
+      description: `Imagen IA creada para contenido de ${content.platform}.`,
+      metadata: { content_id },
+    });
+
+    return NextResponse.json({ ok: true, image_url: imageUrl });
   }
 
   return NextResponse.json({ error: "Invalid action" }, { status: 400 });

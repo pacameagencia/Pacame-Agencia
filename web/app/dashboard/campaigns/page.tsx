@@ -214,7 +214,7 @@ export default function CampaignsPage() {
           <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
             <Megaphone className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
             <p className="text-sm text-pacame-white/40 font-body">Sin campanas</p>
-            <p className="text-xs text-pacame-white/25 font-body mt-1">Crea tu primera campana de ads</p>
+            <p className="text-xs text-pacame-white/50 font-body mt-1">Crea tu primera campana de ads</p>
           </div>
         )}
         {campaigns.map((c) => {

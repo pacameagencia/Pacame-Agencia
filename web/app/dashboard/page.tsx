@@ -435,7 +435,7 @@ export default function DashboardOverview() {
             <div className="text-center py-8">
               <UserPlus className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
               <p className="text-sm text-pacame-white/40 font-body">Sin leads calientes</p>
-              <p className="text-xs text-pacame-white/25 font-body mt-1">Llegaran por WhatsApp, web o ads</p>
+              <p className="text-xs text-pacame-white/50 font-body mt-1">Llegaran por WhatsApp, web o ads</p>
             </div>
           ) : (
             <div className="space-y-4">

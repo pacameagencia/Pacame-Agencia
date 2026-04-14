@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { agents } from "@/lib/data/agents";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
 export const metadata: Metadata = {
   title: "El Equipo — 7 Agentes IA + 1 Humano",
@@ -18,9 +19,45 @@ const iconMap: Record<string, React.ComponentType<{ className?: string; style?: 
   Sparkles, Globe, TrendingUp, Layout, Terminal, Heart, Compass,
 };
 
+function TeamJsonLd() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "Equipo PACAME — 7 Agentes IA + 1 Humano",
+    description: "Conoce al equipo de agentes IA especializados de PACAME, liderados por Pablo Calleja.",
+    url: "https://pacameagencia.com/equipo",
+    mainEntity: {
+      "@type": "Organization",
+      name: "PACAME",
+      url: "https://pacameagencia.com",
+      founder: { "@type": "Person", name: "Pablo Calleja", jobTitle: "CEO" },
+      employee: agents.map((agent) => ({
+        "@type": "Person",
+        name: agent.name,
+        jobTitle: agent.role,
+        description: agent.description,
+      })),
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 export default function EquipoPage() {
   return (
     <div className="bg-pacame-black min-h-screen">
+      <TeamJsonLd />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Inicio", url: "https://pacameagencia.com" },
+          { name: "Equipo", url: "https://pacameagencia.com/equipo" },
+        ]}
+      />
       {/* Hero */}
       <section className="relative pt-36 pb-24 overflow-hidden">
         <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
@@ -33,7 +70,7 @@ export default function EquipoPage() {
             No es un chatbot.{" "}
             <span className="gradient-text-vivid">Es un equipo completo.</span>
           </h1>
-          <p className="text-xl text-pacame-white/40 font-body max-w-2xl mx-auto font-light text-balance">
+          <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto font-light text-balance">
             7 agentes IA, cada uno experto en su campo. Supervisados por Pablo Calleja.
             Lo que una agencia tarda semanas, nosotros lo entregamos en dias.
           </p>
@@ -70,13 +107,13 @@ export default function EquipoPage() {
                           >
                             {agent.name}
                           </h2>
-                          <p className="text-xs text-pacame-white/35 font-body uppercase tracking-wider">
+                          <p className="text-xs text-pacame-white/50 font-body uppercase tracking-wider">
                             {agent.role}
                           </p>
                         </div>
                       </div>
 
-                      <p className="text-[15px] text-pacame-white/50 font-body leading-relaxed mb-6">
+                      <p className="text-[15px] text-pacame-white/60 font-body leading-relaxed mb-6">
                         {agent.description}
                       </p>
 
@@ -103,7 +140,7 @@ export default function EquipoPage() {
                       <h3 className="font-heading font-semibold text-lg text-pacame-white mb-2">
                         Lo que entrega {agent.name}
                       </h3>
-                      <p className="text-xs text-pacame-white/30 font-body mb-6 uppercase tracking-wider">
+                      <p className="text-xs text-pacame-white/50 font-body mb-6 uppercase tracking-wider">
                         {agent.personality}
                       </p>
 
@@ -114,7 +151,7 @@ export default function EquipoPage() {
                               className="w-4 h-4 mt-0.5 flex-shrink-0"
                               style={{ color: agent.color }}
                             />
-                            <span className="text-sm text-pacame-white/55 font-body">{d}</span>
+                            <span className="text-sm text-pacame-white/60 font-body">{d}</span>
                           </li>
                         ))}
                       </ul>
@@ -185,7 +222,7 @@ export default function EquipoPage() {
             Trabajan en red.{" "}
             <span className="gradient-text-vivid">No en silos.</span>
           </h2>
-          <p className="text-lg text-pacame-white/40 font-body max-w-2xl mx-auto mb-14">
+          <p className="text-lg text-pacame-white/60 font-body max-w-2xl mx-auto mb-14">
             Cuando Pixel construye tu web, Atlas ya ha optimizado la estructura SEO.
             Cuando Nexus lanza los ads, Nova ya ha disenado los creativos.
             Todo conectado.
@@ -214,7 +251,7 @@ export default function EquipoPage() {
                     <span className="font-heading font-semibold text-sm" style={{ color: item.color }}>
                       {item.agent}
                     </span>
-                    <span className="text-pacame-white/40 font-body text-sm ml-2">
+                    <span className="text-pacame-white/60 font-body text-sm ml-2">
                       {item.text}
                     </span>
                   </div>
@@ -231,7 +268,7 @@ export default function EquipoPage() {
           <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
             Quieres que el equipo trabaje para ti?
           </h2>
-          <p className="text-lg text-pacame-white/40 font-body mb-10">
+          <p className="text-lg text-pacame-white/60 font-body mb-10">
             Cuentanos tu problema y te decimos como lo resolvemos, quien lo resuelve y cuanto cuesta.
           </p>
           <Button variant="gradient" size="xl" asChild className="group rounded-full shadow-glow-violet">

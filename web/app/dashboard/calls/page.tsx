@@ -420,7 +420,7 @@ export default function CallsPage() {
           <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
             <Phone className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
             <p className="text-sm text-pacame-white/40 font-body">Sin llamadas registradas</p>
-            <p className="text-xs text-pacame-white/25 font-body mt-1">Usa &quot;Llamar con Sage&quot; para iniciar una llamada automatica</p>
+            <p className="text-xs text-pacame-white/50 font-body mt-1">Usa &quot;Llamar con Sage&quot; para iniciar una llamada automatica</p>
           </div>
         )}
         {filteredCalls.map((call) => {
@@ -495,7 +495,7 @@ export default function CallsPage() {
                     </Button>
                   )}
                   {!call.transcript && !call.summary && (
-                    <div className="flex items-center gap-2 text-xs text-pacame-white/25 font-body">
+                    <div className="flex items-center gap-2 text-xs text-pacame-white/50 font-body">
                       <AlertCircle className="w-3 h-3" />
                       Sin transcripcion ni resumen
                     </div>

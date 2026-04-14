@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { verifyInternalAuth } from "@/lib/api-auth";
+import { findEmailsFromWebsite } from "@/lib/email-enrichment";
 
 const supabase = createServerSupabase();
 
@@ -87,6 +88,7 @@ export async function POST(request: NextRequest) {
         address: item.address || "",
         phone: item.phone || "",
         website: item.website || "",
+        email: "",
         rating: item.totalScore || 0,
         reviews: item.reviewsCount || 0,
         category: item.categoryName || "",
@@ -94,7 +96,27 @@ export async function POST(request: NextRequest) {
         maps_url: item.url || "",
       }));
 
-      return NextResponse.json({ status: "SUCCEEDED", leads, total: leads.length });
+      // Auto-enrich: extract emails from each lead's website
+      let emailsFound = 0;
+      for (const lead of leads) {
+        if (!lead.website) continue;
+        try {
+          const emails = await findEmailsFromWebsite(lead.website);
+          if (emails.length > 0) {
+            lead.email = emails[0];
+            emailsFound++;
+          }
+        } catch {
+          // Non-blocking per lead
+        }
+      }
+
+      return NextResponse.json({
+        status: "SUCCEEDED",
+        leads,
+        total: leads.length,
+        emails_found: emailsFound,
+      });
     } catch (error) {
       return NextResponse.json({ error: String(error) }, { status: 500 });
     }
@@ -267,6 +289,61 @@ Responde SOLO JSON valido:
     });
 
     return NextResponse.json({ saved: saved.length, total: leadsToSave.length });
+  }
+
+  // --- ACTION: ENRICH — Find emails for leads without them ---
+  if (action === "enrich") {
+    const { lead_ids } = body;
+
+    // Either enrich specific leads or auto-find leads without emails
+    let leadsToEnrich;
+    if (lead_ids?.length) {
+      const { data } = await supabase
+        .from("leads")
+        .select("id, name, email, sage_analysis")
+        .in("id", lead_ids);
+      leadsToEnrich = data || [];
+    } else {
+      const { data } = await supabase
+        .from("leads")
+        .select("id, name, email, sage_analysis")
+        .is("email", null)
+        .eq("source", "outbound")
+        .order("created_at", { ascending: false })
+        .limit(20);
+      leadsToEnrich = data || [];
+    }
+
+    let enriched = 0;
+    for (const lead of leadsToEnrich) {
+      if (lead.email) continue;
+      const analysis = (lead.sage_analysis || {}) as Record<string, unknown>;
+      const website = analysis.website as string;
+      if (!website) continue;
+
+      try {
+        const emails = await findEmailsFromWebsite(website);
+        if (emails.length > 0) {
+          await supabase.from("leads").update({
+            email: emails[0],
+            sage_analysis: { ...analysis, email_source: "website_scrape", emails_found: emails },
+          }).eq("id", lead.id);
+          enriched++;
+        }
+      } catch {
+        // Non-blocking
+      }
+    }
+
+    logAgentActivity({
+      agentId: "sage",
+      type: "task_completed",
+      title: `Emails enriquecidos: ${enriched}/${leadsToEnrich.length}`,
+      description: `Emails extraidos de webs de leads outbound.`,
+      metadata: { enriched, total: leadsToEnrich.length },
+    });
+
+    return NextResponse.json({ ok: true, enriched, total: leadsToEnrich.length });
   }
 
   return NextResponse.json({ error: "Invalid action" }, { status: 400 });

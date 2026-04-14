@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FaqAccordion from "@/components/FaqAccordion";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
 export const metadata: Metadata = {
   title: "Preguntas Frecuentes — PACAME Agencia Digital",
@@ -202,6 +203,12 @@ export default function FaqPage() {
   return (
     <div className="bg-pacame-black min-h-screen">
       <FaqJsonLd />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Inicio", url: "https://pacameagencia.com" },
+          { name: "Preguntas frecuentes", url: "https://pacameagencia.com/faq" },
+        ]}
+      />
       {/* Hero */}
       <section className="relative pt-36 pb-20 overflow-hidden">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />

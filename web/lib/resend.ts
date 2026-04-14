@@ -85,7 +85,7 @@ ${options?.preheader ? `<span style="display:none;max-height:0;overflow:hidden">
 
     <!-- Body -->
     <div style="background:#141414;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;color:#e0e0e0;font-size:15px;line-height:1.6">
-      ${body.replace(/\n/g, "<br>")}
+      ${body.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/\n/g, "<br>")}
       ${ctaHtml}
     </div>
 

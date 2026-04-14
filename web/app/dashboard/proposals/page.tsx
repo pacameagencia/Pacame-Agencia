@@ -359,7 +359,7 @@ export default function ProposalsPage() {
           <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
             <FileCheck className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
             <p className="text-sm text-pacame-white/40 font-body">Sin propuestas</p>
-            <p className="text-xs text-pacame-white/25 font-body mt-1">Genera tu primera propuesta para un lead</p>
+            <p className="text-xs text-pacame-white/50 font-body mt-1">Genera tu primera propuesta para un lead</p>
           </div>
         )}
         {proposals.map((p) => {
