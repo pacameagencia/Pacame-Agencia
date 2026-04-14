@@ -33,14 +33,36 @@ PERSONALIDAD:
 - Maximo 2 emojis por mensaje. Nada de parrafos gigantes.
 - Cuando ejecutes algo, confirma escueto: "Hecho. Carrusel de 7 slides enviado."
 
-CAPACIDADES:
-Leads (consultar, crear, scrapear Google Maps, auditar webs, nurturing)
-Propuestas comerciales con IA | Metricas de negocio
-Contenido: carruseles pro, calendarios, posts
-Imagenes IA: DALL-E 3 (OpenAI) + Freepik Suite (Mystic, Flux, upscale 16x, quitar fondo, style transfer, expandir)
-Video IA: Freepik Kling 2.6 Pro (imagen a video, texto a video, 5-10s)
-Stock: Freepik (millones de fotos, vectores, iconos) | Iconos IA: Freepik text-to-icon
-Email (Resend) | Llamadas IA (Vapi) | Agentes PACAME (cron)
+CAPACIDADES COMPLETAS:
+
+VENTAS:
+- Leads: consultar, crear, scrapear Google Maps (Apify), auditar webs, nurturing automatico
+- Propuestas: generar con IA + enviar por email | Metricas de negocio completas
+
+CONTENIDO (pipeline completo):
+- creative_pipeline: genera copy IA + imagen Freepik + preview + publica — TODO en un paso
+- Carruseles pro Instagram: 8 tipos de slide, 10 paletas, branding PACAME
+- Calendarios editoriales semanales | Posts individuales por plataforma
+
+IMAGENES IA (Freepik Suite):
+- Mystic: 6 modelos (realism, fluid, zen, flexible, super_real, editorial_portraits), hasta 4K
+- Upscale Magnific: 2x/4x/8x/16x con IA
+- Quitar fondo: PNG transparente instantaneo
+- Stock: millones de fotos, vectores, mockups, iconos
+- Iconos IA: genera desde texto (5 estilos)
+- DALL-E 3: fallback para imagenes creativas
+
+VIDEO IA:
+- Freepik Kling 2.6 Pro: imagen a video 5-10s (reels, stories, anuncios)
+
+INSTAGRAM (API directa):
+- Publicar posts y carruseles directamente
+- Ver insights: seguidores, alcance, impresiones
+- Ver posts recientes con engagement
+
+COMUNICACION:
+- Email via Resend | Llamadas IA via Vapi | WhatsApp (n8n)
+- Agentes PACAME: ejecutar todos o uno especifico
 
 SERVICIOS PACAME: Web 497€ | Landing 300€ | Ecommerce 997€ | SEO 397€/mes | RRSS 297€/mes | Meta Ads 297€/mes | Google Ads 397€/mes | Branding 497€ | ChatBot 197€/mes
 
@@ -60,10 +82,30 @@ REGLAS DE CONDUCTA:
 6. Audio de Pablo llega ya transcrito. Procesalo como texto.
 
 ═══════════════════════════════════════════════════
-CARRUSELES INSTAGRAM — TU SUPERPODER CREATIVO
+DECISION DE HERRAMIENTAS — PIENSA ANTES DE ACTUAR
 ═══════════════════════════════════════════════════
 
-Eres el DIRECTOR CREATIVO de una agencia top. Cada carrusel que generas compite con las mejores agencias de marketing en Instagram. No rellenas plantillas — creas contenido que PARA el scroll, genera saves y shares.
+Cuando Pablo pide contenido, ELIGE la herramienta correcta:
+
+"hazme un post de X" → creative_pipeline (genera copy + imagen + preview, todo junto)
+"hazme un carrusel de X" → generate_carousel (slides con tipografia real)
+"genera una imagen de X" → freepik_generate_image (Mystic, la mejor calidad)
+"genera un logo/imagen creativa" → generate_and_send_image (DALL-E 3, mas creativo)
+"busca fotos de X" → freepik_search_stock (stock real, millones de recursos)
+"necesito un icono de X" → freepik_generate_icon (iconos vectoriales IA)
+"mejora/escala esta imagen" → freepik_upscale (Magnific, hasta 16x)
+"quita el fondo" → freepik_remove_background (PNG transparente)
+"haz un video/reel" → freepik_image_to_video (Kling 2.6, 5-10s)
+"publica en instagram" → instagram_publish (directo, post o carrusel)
+"como va instagram?" → instagram_insights (metricas + posts recientes)
+"genera un calendario semanal" → generate_content (5 posts lun-vie)
+"publica todo lo aprobado" → publish_content (batch publish)
+
+Para IMAGENES: Freepik Mystic > DALL-E 3 > Stock. Usa Mystic por defecto (calidad superior). DALL-E solo si necesitas algo muy creativo/abstracto. Stock solo si Pablo pide algo real/existente.
+
+═══════════════════════════════════════════════════
+CARRUSELES INSTAGRAM — TU SUPERPODER CREATIVO
+═══════════════════════════════════════════════════
 
 PASO 1 — ESTRATEGIA (piensa en silencio, no se lo cuentes a Pablo):
 A) Audiencia: quien va a ver esto? (dueños pyme, emprendedores, marketers, profesionales...)
@@ -1205,7 +1247,8 @@ Responde SOLO JSON:
         if (result.status === "FAILED") return "Error: la generacion de video fallo.";
         const urls = result.generated || [];
         if (urls.length > 0) {
-          return `Video generado (${input.duration || "5"}s). URL de descarga: ${urls[0]}\n\nDescargalo y subelo a redes.`;
+          await sendTelegramVideo(urls[0], `Video IA (${input.duration || "5"}s) — Freepik Kling 2.6 Pro`);
+          return `Video generado y enviado (${input.duration || "5"}s). URL: ${urls[0]}`;
         }
         return `Video en proceso. Task ID: ${task.task_id}. Puede tardar unos minutos mas.`;
       } catch (err) {
@@ -1250,6 +1293,149 @@ Responde SOLO JSON:
         return "Icono generado. Task ID: " + task.task_id;
       } catch (err) {
         return `Error Freepik Icon: ${err instanceof Error ? err.message : "desconocido"}`;
+      }
+    }
+
+    case "instagram_insights": {
+      try {
+        if (!igIsConfigured()) return "Instagram no configurado. Necesito el OAuth access token. Ve a pacameagencia.com/api/instagram/callback para conectar la cuenta.";
+        const includePosts = input.include_posts !== false;
+        const insights = await igGetInsights();
+        let msg = "";
+        if (insights.success && insights.data) {
+          msg = `INSTAGRAM INSIGHTS:\n- Seguidores: ${insights.data.followers}\n- Alcance: ${insights.data.reach}\n- Impresiones: ${insights.data.impressions}\n- Visitas perfil: ${insights.data.profileViews}`;
+        } else {
+          msg = `No se pudieron obtener insights: ${insights.error || "sin datos"}`;
+        }
+        if (includePosts) {
+          const media = await igGetRecentMedia(10);
+          if (media.success && media.posts?.length) {
+            msg += "\n\nULTIMOS POSTS:";
+            for (const p of media.posts) {
+              msg += `\n- ${p.caption?.slice(0, 60) || "sin caption"} | ${p.likeCount} likes | ${p.commentsCount} comments | ${new Date(p.timestamp).toLocaleDateString("es-ES")}`;
+            }
+          }
+        }
+        return msg;
+      } catch (err) {
+        return `Error Instagram: ${err instanceof Error ? err.message : "desconocido"}`;
+      }
+    }
+
+    case "instagram_publish": {
+      try {
+        if (!igIsConfigured()) return "Instagram no configurado. Necesito el OAuth access token.";
+        const imageUrls = input.image_urls as string[];
+        const caption = input.caption as string;
+        const hashtags = (input.hashtags as string) || "";
+        const type = input.type as string;
+
+        if (type === "carousel" && imageUrls.length >= 2) {
+          await sendTelegram(`Publicando carrusel de ${imageUrls.length} imagenes en Instagram...`);
+          const result = await igPublishCarousel(
+            imageUrls.map((url) => ({ imageUrl: url })),
+            caption,
+            hashtags
+          );
+          if (result.success) return `Carrusel publicado en Instagram. Post ID: ${result.postId}`;
+          return `Error publicando carrusel: ${result.error}`;
+        } else {
+          if (!imageUrls[0]) return "Necesito al menos una URL de imagen.";
+          await sendTelegram("Publicando en Instagram...");
+          const result = await igPublishPost({ imageUrl: imageUrls[0], caption, hashtags });
+          if (result.success) return `Post publicado en Instagram. Post ID: ${result.postId}`;
+          return `Error publicando: ${result.error}`;
+        }
+      } catch (err) {
+        return `Error Instagram Publish: ${err instanceof Error ? err.message : "desconocido"}`;
+      }
+    }
+
+    case "creative_pipeline": {
+      const topic = input.topic as string;
+      const platform = (input.platform as string) || "instagram";
+      const imageStyle = (input.image_style as string) || "realism";
+      const shouldPublish = input.publish === true;
+      const brandCtx = (input.brand_context as string) || "PACAME agencia digital";
+
+      try {
+        // Step 1: Generate copy with Claude
+        await sendTelegram(`Pipeline creativo: generando copy para "${topic}"...`);
+        const copyRes = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": CLAUDE_API_KEY!,
+            "anthropic-version": "2023-06-01",
+          },
+          body: JSON.stringify({
+            model: "claude-haiku-4-5-20251001",
+            max_tokens: 1000,
+            messages: [{
+              role: "user",
+              content: `Genera un post de ${platform} sobre: "${topic}". Marca: ${brandCtx}.
+Responde SOLO JSON:
+{"caption":"texto del post (max 200 palabras, enganche + valor + CTA)","hashtags":"5-8 hashtags relevantes del nicho separados por espacio","image_prompt":"descripcion en INGLES de la imagen ideal para este post, estilo profesional, sin texto"}`,
+            }],
+          }),
+        });
+        const copyData = await copyRes.json();
+        const copyText = copyData.content?.[0]?.text || "";
+        const jsonMatch = copyText.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) return "Error: no se pudo generar el copy. Respuesta invalida de Claude.";
+        const postData = JSON.parse(jsonMatch[0]) as { caption: string; hashtags: string; image_prompt: string };
+
+        // Step 2: Generate image with Freepik Mystic
+        await sendTelegram("Pipeline creativo: generando imagen con Freepik Mystic...");
+        let imageUrl: string | null = null;
+        try {
+          const task = await generateMystic(postData.image_prompt, {
+            model: imageStyle as MysticModel,
+            resolution: "2k",
+            aspect_ratio: platform === "instagram" ? "square_1_1" : "widescreen_16_9",
+          });
+          const result = await waitForTask(`/ai/mystic/${task.task_id}`, 24, 5000);
+          if (result.status === "COMPLETED" && result.generated?.length) {
+            imageUrl = result.generated[0];
+          }
+        } catch {
+          // Freepik failed, try DALL-E
+          imageUrl = await generateContentImage(postData.image_prompt, platform);
+        }
+
+        if (!imageUrl) return "Error: no se pudo generar la imagen. Ni Freepik ni DALL-E respondieron.";
+
+        // Step 3: Send preview to Telegram
+        const fullCaption = `${postData.caption}\n\n${postData.hashtags}`;
+        await sendTelegramPhoto(imageUrl, `<b>Preview — ${platform}</b>\n\n${fullCaption.slice(0, 900)}`);
+
+        // Step 4: Save to content table
+        const supabase = createServerSupabase();
+        const { data: saved } = await supabase.from("content").insert({
+          title: topic,
+          body: fullCaption,
+          platform,
+          content_type: "post",
+          image_url: imageUrl,
+          image_prompt: postData.image_prompt,
+          status: shouldPublish ? "approved" : "pending_review",
+        }).select("id").single();
+
+        // Step 5: Publish if requested
+        if (shouldPublish && igIsConfigured() && platform === "instagram") {
+          const pubResult = await igPublishPost({ imageUrl, caption: postData.caption, hashtags: postData.hashtags });
+          if (pubResult.success) {
+            if (saved?.id) {
+              await supabase.from("content").update({ status: "published", published_at: new Date().toISOString() }).eq("id", saved.id);
+            }
+            return `Post creado Y publicado en Instagram.\n- Caption: ${postData.caption.slice(0, 100)}...\n- Hashtags: ${postData.hashtags}\n- Post ID: ${pubResult.postId}\n- Imagen: Freepik Mystic (${imageStyle})`;
+          }
+          return `Post creado pero fallo la publicacion: ${pubResult.error}. La imagen y el copy estan listos — puedo reintentarlo.`;
+        }
+
+        return `Post creado y guardado como pendiente.\n- Caption: ${postData.caption.slice(0, 100)}...\n- Hashtags: ${postData.hashtags}\n- Imagen: Freepik Mystic\n- Plataforma: ${platform}\n${saved?.id ? `- ID: ${saved.id}` : ""}\n\nDime "publica" para publicarlo o "edita el copy" si quieres cambios.`;
+      } catch (err) {
+        return `Error en pipeline creativo: ${err instanceof Error ? err.message : "desconocido"}`;
       }
     }
 
