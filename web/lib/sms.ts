@@ -1,6 +1,6 @@
 const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
 const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
-const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER || "+34722669381";
+const TWILIO_PHONE_NUMBER = process.env.TWILIO_SMS_NUMBER || process.env.TWILIO_PHONE_NUMBER || "+16624995056";
 
 const TWILIO_API = `https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json`;
 
