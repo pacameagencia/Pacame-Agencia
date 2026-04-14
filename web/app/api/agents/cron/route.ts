@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { logAgentActivity, updateAgentStatus, incrementAgentTasks } from "@/lib/agent-logger";
+import { logAgentActivity, updateAgentStatus, incrementAgentTasks, logAgentDiscovery } from "@/lib/agent-logger";
 import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { createServerSupabase } from "@/lib/supabase/server";
@@ -1422,6 +1422,185 @@ Responde en texto plano, 2 frases max. Primera frase: que esta pasando. Segunda:
     }
   } catch {
     // Non-blocking
+  }
+
+  // =============================================
+  // RESEARCH PHASE — Agents proactively discover opportunities
+  // =============================================
+  if (CLAUDE_API_KEY) {
+    try {
+      // Gather context for research
+      const monthStart = new Date();
+      monthStart.setDate(1);
+
+      const { count: totalLeadsMonth } = await supabase
+        .from("leads")
+        .select("id", { count: "exact", head: true })
+        .gte("created_at", monthStart.toISOString());
+
+      const { data: recentContent } = await supabase
+        .from("content")
+        .select("title, platform, status")
+        .order("created_at", { ascending: false })
+        .limit(10);
+
+      const { data: recentLeads } = await supabase
+        .from("leads")
+        .select("source, budget, sage_analysis, sector")
+        .order("created_at", { ascending: false })
+        .limit(20);
+
+      const { data: existingDiscoveries } = await supabase
+        .from("agent_discoveries")
+        .select("title")
+        .order("created_at", { ascending: false })
+        .limit(20);
+
+      const existingTitles = (existingDiscoveries || []).map(d => d.title).join("; ");
+
+      // Extract lead patterns
+      const sectors = (recentLeads || []).map(l => {
+        const analysis = l.sage_analysis as Record<string, unknown> | null;
+        return l.sector || (analysis?.sector as string) || "";
+      }).filter(Boolean);
+      const budgets = (recentLeads || []).map(l => l.budget).filter(Boolean);
+      const sources = (recentLeads || []).map(l => l.source).filter(Boolean);
+
+      const researchContext =
+        "Leads mes: " + (totalLeadsMonth || 0) +
+        ". Sectores: " + [...new Set(sectors)].join(", ") +
+        ". Presupuestos: " + [...new Set(budgets)].join(", ") +
+        ". Fuentes: " + [...new Set(sources)].join(", ") +
+        ". Contenido reciente: " + (recentContent || []).map(c => c.title || c.platform).slice(0, 5).join(", ") +
+        ". Descubrimientos previos (no repetir): " + existingTitles;
+
+      // Pick 2 random agents to research this cycle (rotate coverage)
+      const researchAgents = [
+        {
+          id: "sage",
+          prompt: `Eres Sage, CSO de PACAME. Analiza estos datos y descubre UNA oportunidad de negocio que no estamos aprovechando.
+
+DATOS ACTUALES: ${researchContext}
+
+SERVICIOS PACAME: Web (300-2000€), SEO (397-797€/mes), RRSS (197-697€/mes), Ads (397€/mes), Branding (800€), Embudos (1500€).
+
+Piensa en: nuevos servicios que podriamos ofrecer, nichos sin explotar, mejoras de pricing, tendencias del mercado PYME espanol.
+
+Responde SOLO JSON: {"type":"service_idea|market_signal|optimization","title":"titulo corto","description":"explicacion en 2-3 frases","evidence":"dato concreto que lo respalda","impact":"low|medium|high","suggested_action":"accion concreta a tomar"}`,
+        },
+        {
+          id: "atlas",
+          prompt: `Eres Atlas, estratega SEO de PACAME. Analiza estos datos y descubre UNA oportunidad SEO o de contenido.
+
+DATOS ACTUALES: ${researchContext}
+
+Piensa en: keywords sin explotar, formatos de contenido nuevos (video SEO, podcasts, tools interactivas), tendencias de busqueda para PYMEs, oportunidades locales.
+
+Responde SOLO JSON: {"type":"content_idea|trend|optimization","title":"titulo corto","description":"explicacion en 2-3 frases","evidence":"dato concreto","impact":"low|medium|high","suggested_action":"accion concreta"}`,
+        },
+        {
+          id: "pulse",
+          prompt: `Eres Pulse, Head of Social Media de PACAME. Analiza estos datos y descubre UNA tendencia o formato que deberiamos adoptar.
+
+DATOS ACTUALES: ${researchContext}
+
+Piensa en: formatos virales actuales, nuevas plataformas, estrategias de contenido innovadoras, colaboraciones, UGC, IA generativa para RRSS.
+
+Responde SOLO JSON: {"type":"trend|technique|content_idea","title":"titulo corto","description":"explicacion en 2-3 frases","evidence":"dato concreto","impact":"low|medium|high","suggested_action":"accion concreta"}`,
+        },
+        {
+          id: "nexus",
+          prompt: `Eres Nexus, Head of Growth de PACAME. Analiza estos datos y descubre UNA oportunidad de crecimiento.
+
+DATOS ACTUALES: ${researchContext}
+
+Piensa en: canales de adquisicion sin explotar, automatizaciones de conversion, partnerships, programas de referidos, hacks de crecimiento para agencias.
+
+Responde SOLO JSON: {"type":"optimization|market_signal|technique","title":"titulo corto","description":"explicacion en 2-3 frases","evidence":"dato concreto","impact":"low|medium|high","suggested_action":"accion concreta"}`,
+        },
+        {
+          id: "lens",
+          prompt: `Eres Lens, Head of Analytics de PACAME. Analiza estos datos y descubre UN patron o anomalia accionable.
+
+DATOS ACTUALES: ${researchContext}
+
+Piensa en: patrones de conversion, correlaciones entre servicios, estacionalidad, predicciones de demanda, benchmarks del sector.
+
+Responde SOLO JSON: {"type":"market_signal|optimization|trend","title":"titulo corto","description":"explicacion en 2-3 frases","evidence":"dato concreto","impact":"low|medium|high","suggested_action":"accion concreta"}`,
+        },
+        {
+          id: "copy",
+          prompt: `Eres Copy, Head of Copywriting de PACAME. Analiza estos datos y descubre UNA oportunidad de messaging o comunicacion.
+
+DATOS ACTUALES: ${researchContext}
+
+Piensa en: nuevos angulos de venta, objeciones frecuentes que resolver, formatos de copy innovadores, storytelling, video scripts, email hooks.
+
+Responde SOLO JSON: {"type":"technique|content_idea|optimization","title":"titulo corto","description":"explicacion en 2-3 frases","evidence":"dato concreto","impact":"low|medium|high","suggested_action":"accion concreta"}`,
+        },
+        {
+          id: "nova",
+          prompt: `Eres Nova, Directora Creativa de PACAME. Analiza estos datos y descubre UNA oportunidad de branding o posicionamiento.
+
+DATOS ACTUALES: ${researchContext}
+
+Piensa en: diferenciacion de marca, tendencias visuales, nuevos touchpoints, experiencia de cliente, posicionamiento vs competencia.
+
+Responde SOLO JSON: {"type":"trend|technique|optimization","title":"titulo corto","description":"explicacion en 2-3 frases","evidence":"dato concreto","impact":"low|medium|high","suggested_action":"accion concreta"}`,
+        },
+      ];
+
+      // Select 2-3 agents randomly per cycle so we don't burn too many tokens
+      const shuffled = researchAgents.sort(() => Math.random() - 0.5);
+      const selectedAgents = shuffled.slice(0, 3);
+
+      for (const ra of selectedAgents) {
+        try {
+          updateAgentStatus(ra.id, "reviewing", "Investigando oportunidades");
+          const text = await callClaude(ra.prompt, 400);
+          const discovery = extractJSON(text);
+
+          if (discovery && discovery.title && discovery.description) {
+            await logAgentDiscovery({
+              agentId: ra.id,
+              type: (discovery.type as "trend" | "service_idea" | "technique" | "competitor_insight" | "optimization" | "market_signal" | "content_idea") || "market_signal",
+              title: String(discovery.title),
+              description: String(discovery.description),
+              evidence: discovery.evidence ? String(discovery.evidence) : undefined,
+              impact: (discovery.impact as "low" | "medium" | "high") || "medium",
+              suggestedAction: discovery.suggested_action ? String(discovery.suggested_action) : undefined,
+              metadata: { cycle: new Date().toISOString(), research_phase: true },
+            });
+
+            results["research_" + ra.id] = { discovery: discovery.title };
+          }
+        } catch {
+          // Research failure is non-blocking
+        }
+      }
+    } catch {
+      // Research phase failure doesn't block cron
+    }
+  }
+
+  // =============================================
+  // DAILY DIGEST — Notify Pablo of all agent work
+  // =============================================
+  try {
+    const baseUrl = process.env.VERCEL_URL
+      ? "https://" + process.env.VERCEL_URL
+      : process.env.NEXT_PUBLIC_SITE_URL || "https://pacameagencia.com";
+
+    await fetch(baseUrl + "/api/agents/digest", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: process.env.CRON_SECRET ? "Bearer " + process.env.CRON_SECRET : "",
+      },
+      body: JSON.stringify({ results }),
+    });
+  } catch {
+    // Digest failure is non-blocking
   }
 
   // Set unique idle messages per agent so they feel alive

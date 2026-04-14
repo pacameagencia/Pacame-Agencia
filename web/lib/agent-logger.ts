@@ -87,3 +87,60 @@ export async function incrementAgentTasks(agentId: string) {
     // Non-blocking
   }
 }
+
+// =============================================
+// Agent Discovery System — Autonomous learnings
+// =============================================
+
+type DiscoveryType = "trend" | "service_idea" | "technique" | "competitor_insight" | "optimization" | "market_signal" | "content_idea";
+
+interface LogDiscoveryParams {
+  agentId: string;
+  type: DiscoveryType;
+  title: string;
+  description: string;
+  evidence?: string;
+  impact?: "low" | "medium" | "high" | "critical";
+  actionable?: boolean;
+  suggestedAction?: string;
+  metadata?: Record<string, unknown>;
+}
+
+export async function logAgentDiscovery({
+  agentId,
+  type,
+  title,
+  description,
+  evidence,
+  impact = "medium",
+  actionable = true,
+  suggestedAction,
+  metadata,
+}: LogDiscoveryParams) {
+  try {
+    await supabase.from("agent_discoveries").insert({
+      agent_id: agentId.toLowerCase(),
+      type,
+      title,
+      description,
+      evidence: evidence || null,
+      impact,
+      actionable,
+      suggested_action: suggestedAction || null,
+      status: "new",
+      metadata: metadata || {},
+      created_at: new Date().toISOString(),
+    });
+
+    // Also log as agent activity so it shows in the office
+    await logAgentActivity({
+      agentId,
+      type: "insight",
+      title: "Descubrimiento: " + title,
+      description: "[" + type + "] " + description + (suggestedAction ? " → Accion: " + suggestedAction : ""),
+      metadata: { discovery_type: type, impact, ...metadata },
+    });
+  } catch {
+    // Non-blocking
+  }
+}
