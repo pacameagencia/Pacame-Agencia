@@ -4,180 +4,312 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
 import {
   Sparkles, Globe, TrendingUp, Layout, Terminal, Heart, Compass,
-  Pencil, BarChart3, CheckCircle2, XCircle, DollarSign,
+  Pencil, BarChart3, Brain, CheckCircle2, XCircle, DollarSign,
+  Activity, Zap, Clock, RefreshCw, Play,
 } from "lucide-react";
 
-const agentMeta: Record<string, { role: string; icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>; color: string }> = {
-  NOVA: { role: "Marca y Creatividad", icon: Sparkles, color: "#7C3AED" },
-  ATLAS: { role: "SEO", icon: Globe, color: "#2563EB" },
-  NEXUS: { role: "Growth y Ads", icon: TrendingUp, color: "#EA580C" },
-  PIXEL: { role: "Frontend", icon: Layout, color: "#06B6D4" },
-  CORE: { role: "Backend", icon: Terminal, color: "#16A34A" },
-  PULSE: { role: "Social Media", icon: Heart, color: "#EC4899" },
-  SAGE: { role: "Estrategia", icon: Compass, color: "#D97706" },
-  COPY: { role: "Copywriting", icon: Pencil, color: "#7C3AED" },
-  LENS: { role: "Analytics", icon: BarChart3, color: "#2563EB" },
+const agentMeta: Record<string, {
+  role: string;
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+  color: string;
+  specialty: string;
+}> = {
+  dios:  { role: "Orquestador del Sistema", icon: Brain,      color: "#FFFFFF", specialty: "Coordina los 9 agentes, auditoria semanal" },
+  nova:  { role: "Directora Creativa",      icon: Sparkles,   color: "#7C3AED", specialty: "Modera resenas, auditoria de marca" },
+  atlas: { role: "Estratega SEO",           icon: Globe,      color: "#2563EB", specialty: "Genera blog posts, audita 1600 paginas SEO" },
+  nexus: { role: "Head of Growth",          icon: TrendingUp, color: "#EA580C", specialty: "Nurturing automatico, analiza campanas" },
+  pixel: { role: "Lead Frontend",           icon: Layout,     color: "#06B6D4", specialty: "Health checks web, detecta caidas" },
+  core:  { role: "Arquitecto Backend",      icon: Terminal,   color: "#16A34A", specialty: "Monitoriza Supabase, Claude API, alertas" },
+  pulse: { role: "Head of Social Media",    icon: Heart,      color: "#EC4899", specialty: "Genera y publica contenido RRSS" },
+  sage:  { role: "Chief Strategy Officer",  icon: Compass,    color: "#D97706", specialty: "Cualifica leads, genera propuestas, followups" },
+  copy:  { role: "Head of Copywriting",     icon: Pencil,     color: "#F59E0B", specialty: "Mejora copy, genera scripts de ads" },
+  lens:  { role: "Head of Analytics",       icon: BarChart3,  color: "#8B5CF6", specialty: "KPIs, deteccion anomalias, insights IA" },
 };
 
-interface AgentStats {
-  name: string;
-  tasks: number;
-  failed: number;
-  avgTimeMs: number;
-  costUsd: number;
-  qualityAvg: number;
+const statusConfig: Record<string, { label: string; color: string; pulse: boolean }> = {
+  working:   { label: "Trabajando",  color: "#84CC16", pulse: true },
+  idle:      { label: "Disponible",  color: "#06B6D4", pulse: false },
+  reviewing: { label: "Revisando",   color: "#F59E0B", pulse: true },
+  waiting:   { label: "En espera",   color: "#D97706", pulse: false },
+  offline:   { label: "Offline",     color: "#6B7280", pulse: false },
+};
+
+interface AgentState {
+  agent_id: string;
+  status: string;
+  current_task: string | null;
+  tasks_today: number;
+  tasks_completed: number;
+  active_hours: number;
+  last_activity: string;
+}
+
+interface RecentActivity {
+  id: string;
+  agent_id: string;
+  type: string;
+  title: string;
+  description: string;
+  created_at: string;
 }
 
 export default function AgentsPage() {
-  const [agents, setAgents] = useState<AgentStats[]>([]);
+  const [states, setStates] = useState<AgentState[]>([]);
+  const [activities, setActivities] = useState<RecentActivity[]>([]);
   const [loading, setLoading] = useState(true);
+  const [triggeringCron, setTriggeringCron] = useState(false);
 
   useEffect(() => {
-    async function fetchAgentStats() {
-      // Get all tasks from current month
-      const monthStart = new Date();
-      monthStart.setDate(1);
-      monthStart.setHours(0, 0, 0, 0);
+    async function fetchData() {
+      const [statesRes, activitiesRes] = await Promise.all([
+        supabase.from("agent_states").select("*").order("agent_id"),
+        supabase.from("agent_activities").select("id, agent_id, type, title, description, created_at").order("created_at", { ascending: false }).limit(100),
+      ]);
 
-      const { data: tasks } = await supabase
-        .from("agent_tasks")
-        .select("agent, status, duration_ms, cost_usd")
-        .gte("created_at", monthStart.toISOString());
-
-      // Also check agent_metrics for aggregated data
-      const { data: metrics } = await supabase
-        .from("agent_metrics")
-        .select("*")
-        .gte("date", monthStart.toISOString().split("T")[0]);
-
-      // Aggregate from tasks
-      const map = new Map<string, AgentStats>();
-
-      // Seed with known agents
-      for (const name of Object.keys(agentMeta)) {
-        map.set(name, { name, tasks: 0, failed: 0, avgTimeMs: 0, costUsd: 0, qualityAvg: 0 });
-      }
-
-      if (tasks && tasks.length > 0) {
-        const durationSums = new Map<string, { total: number; count: number }>();
-        for (const t of tasks) {
-          const key = (t.agent || "").toUpperCase();
-          if (!map.has(key)) map.set(key, { name: key, tasks: 0, failed: 0, avgTimeMs: 0, costUsd: 0, qualityAvg: 0 });
-          const a = map.get(key)!;
-          a.tasks++;
-          if (t.status === "failed") a.failed++;
-          a.costUsd += Number(t.cost_usd) || 0;
-          if (t.duration_ms) {
-            if (!durationSums.has(key)) durationSums.set(key, { total: 0, count: 0 });
-            const d = durationSums.get(key)!;
-            d.total += t.duration_ms;
-            d.count++;
-          }
-        }
-        for (const [key, d] of durationSums) {
-          map.get(key)!.avgTimeMs = d.total / d.count;
-        }
-      }
-
-      // Merge metrics quality
-      if (metrics && metrics.length > 0) {
-        for (const m of metrics) {
-          const key = (m.agent || "").toUpperCase();
-          if (map.has(key) && m.quality_avg > 0) {
-            map.get(key)!.qualityAvg = Number(m.quality_avg);
-          }
-        }
-      }
-
-      setAgents(Array.from(map.values()).sort((a, b) => b.tasks - a.tasks));
+      setStates(statesRes.data || []);
+      setActivities(activitiesRes.data || []);
       setLoading(false);
     }
-    fetchAgentStats();
+    fetchData();
+    const interval = setInterval(fetchData, 30000);
+    return () => clearInterval(interval);
   }, []);
 
-  const totalTasks = agents.reduce((s, a) => s + a.tasks, 0);
-  const totalFailed = agents.reduce((s, a) => s + a.failed, 0);
-  const totalCost = agents.reduce((s, a) => s + a.costUsd, 0);
+  function getState(agentId: string): AgentState | null {
+    return states.find((s) => s.agent_id === agentId) || null;
+  }
+
+  function getAgentActivities(agentId: string): RecentActivity[] {
+    return activities.filter((a) => a.agent_id === agentId).slice(0, 5);
+  }
+
+  function timeAgo(dateStr: string): string {
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return "ahora";
+    if (mins < 60) return `hace ${mins}m`;
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return `hace ${hours}h`;
+    return `hace ${Math.floor(hours / 24)}d`;
+  }
+
+  async function triggerCron() {
+    setTriggeringCron(true);
+    try {
+      await fetch("/api/agents/cron", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+      // Refresh data after cron
+      const [statesRes, activitiesRes] = await Promise.all([
+        supabase.from("agent_states").select("*").order("agent_id"),
+        supabase.from("agent_activities").select("id, agent_id, type, title, description, created_at").order("created_at", { ascending: false }).limit(100),
+      ]);
+      setStates(statesRes.data || []);
+      setActivities(activitiesRes.data || []);
+    } catch {
+      // silently fail
+    } finally {
+      setTriggeringCron(false);
+    }
+  }
+
+  const agentIds = Object.keys(agentMeta);
+  const workingCount = states.filter((s) => s.status === "working").length;
+  const totalTasksToday = states.reduce((sum, s) => sum + (s.tasks_today || 0), 0);
+  const totalCompleted = states.reduce((sum, s) => sum + (s.tasks_completed || 0), 0);
+
+  // Count activities by type
+  const activityCounts = activities.reduce((acc, a) => {
+    acc[a.type] = (acc[a.type] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <RefreshCw className="w-8 h-8 animate-spin text-electric-violet" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 max-w-7xl">
-      <div>
-        <h1 className="font-heading font-bold text-2xl text-pacame-white">Agentes</h1>
-        <p className="text-sm text-pacame-white/40 font-body mt-1">
-          {loading ? "Cargando..." : `Rendimiento del sistema — ${totalTasks} tareas este mes, $${totalCost.toFixed(2)} gastado`}
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="font-heading font-bold text-2xl text-pacame-white">Agentes</h1>
+          <p className="text-sm text-pacame-white/40 font-body mt-1">
+            10 agentes IA autonomos — trabajan 3x/dia + auditoria semanal
+          </p>
+        </div>
+        <button
+          onClick={triggerCron}
+          disabled={triggeringCron}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-electric-violet/15 text-electric-violet text-sm font-heading font-medium hover:bg-electric-violet/25 transition-all disabled:opacity-50"
+        >
+          {triggeringCron ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
+          {triggeringCron ? "Ejecutando..." : "Ejecutar ciclo ahora"}
+        </button>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-          <CheckCircle2 className="w-6 h-6 text-lime-pulse mx-auto mb-2" />
-          <div className="font-heading font-bold text-2xl text-pacame-white">{totalTasks - totalFailed}</div>
-          <div className="text-xs text-pacame-white/40 font-body">Completadas</div>
-        </div>
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-          <XCircle className="w-6 h-6 text-red-400 mx-auto mb-2" />
-          <div className="font-heading font-bold text-2xl text-pacame-white">{totalFailed}</div>
-          <div className="text-xs text-pacame-white/40 font-body">Fallidas</div>
-        </div>
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-          <DollarSign className="w-6 h-6 text-neon-cyan mx-auto mb-2" />
-          <div className="font-heading font-bold text-2xl text-pacame-white">${totalCost.toFixed(2)}</div>
-          <div className="text-xs text-pacame-white/40 font-body">Coste API mes</div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {agents.map((agent) => {
-          const meta = agentMeta[agent.name] || { role: agent.name, icon: BarChart3, color: "#6B7280" };
-          const AgentIcon = meta.icon;
-          const avgSec = agent.avgTimeMs > 0 ? (agent.avgTimeMs / 1000).toFixed(1) + "s" : "—";
+      {/* Quick stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+        {[
+          { label: "Activos ahora", value: `${workingCount}/10`, color: "#84CC16", icon: Zap },
+          { label: "Tareas hoy", value: String(totalTasksToday), color: "#06B6D4", icon: Activity },
+          { label: "Total completadas", value: String(totalCompleted), color: "#7C3AED", icon: CheckCircle2 },
+          { label: "Alertas", value: String(activityCounts.alert || 0), color: "#EF4444", icon: XCircle },
+          { label: "Entregas", value: String(activityCounts.delivery || 0), color: "#16A34A", icon: DollarSign },
+        ].map((stat) => {
+          const StatIcon = stat.icon;
           return (
-            <div key={agent.name} className="rounded-2xl bg-dark-card border border-white/[0.06] hover:border-white/10 transition-all overflow-hidden">
+            <div key={stat.label} className="rounded-xl bg-dark-card border border-white/[0.06] p-4">
+              <div className="flex items-center gap-2 mb-1">
+                <StatIcon className="w-3.5 h-3.5" style={{ color: stat.color }} />
+                <span className="text-xs text-pacame-white/40 font-body">{stat.label}</span>
+              </div>
+              <div className="font-heading font-bold text-xl" style={{ color: stat.color }}>
+                {stat.value}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Agent cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {agentIds.map((id) => {
+          const meta = agentMeta[id];
+          const state = getState(id);
+          const status = state?.status || "idle";
+          const statusConf = statusConfig[status] || statusConfig.idle;
+          const Icon = meta.icon;
+          const recentActs = getAgentActivities(id);
+
+          return (
+            <div
+              key={id}
+              className="rounded-2xl bg-dark-card border border-white/[0.06] hover:border-white/10 transition-all overflow-hidden"
+            >
               <div className="h-1 w-full" style={{ backgroundColor: meta.color }} />
               <div className="p-5">
+                {/* Header */}
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${meta.color}20` }}>
-                    <AgentIcon className="w-5 h-5" style={{ color: meta.color }} />
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: `${meta.color}20` }}
+                  >
+                    <Icon className="w-5 h-5" style={{ color: meta.color }} />
                   </div>
-                  <div>
-                    <h3 className="font-heading font-bold text-pacame-white" style={{ color: meta.color }}>{agent.name}</h3>
-                    <p className="text-xs text-pacame-white/40 font-body">{meta.role}</p>
-                  </div>
-                  <div className="ml-auto">
-                    <div className="w-2 h-2 rounded-full bg-lime-pulse animate-pulse" />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-2.5 rounded-lg bg-white/[0.03]">
-                    <div className="text-xs text-pacame-white/30 font-body mb-0.5">Tareas</div>
-                    <div className="font-heading font-bold text-pacame-white text-lg">{agent.tasks}</div>
-                  </div>
-                  <div className="p-2.5 rounded-lg bg-white/[0.03]">
-                    <div className="text-xs text-pacame-white/30 font-body mb-0.5">Calidad</div>
-                    <div className="font-heading font-bold text-lg" style={{ color: agent.qualityAvg >= 4.5 ? "#16A34A" : agent.qualityAvg >= 4 ? "#D97706" : agent.qualityAvg > 0 ? "#EF4444" : "#6B7280" }}>
-                      {agent.qualityAvg > 0 ? `${agent.qualityAvg}/5` : "—"}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-heading font-bold text-sm" style={{ color: meta.color }}>
+                        {id.toUpperCase()}
+                      </h3>
+                      <span
+                        className={`w-2 h-2 rounded-full flex-shrink-0 ${statusConf.pulse ? "animate-pulse" : ""}`}
+                        style={{ backgroundColor: statusConf.color }}
+                      />
+                      <span className="text-[10px] font-body" style={{ color: statusConf.color }}>
+                        {statusConf.label}
+                      </span>
                     </div>
+                    <p className="text-xs text-pacame-white/40 font-body truncate">{meta.role}</p>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-white/[0.03]">
-                    <div className="text-xs text-pacame-white/30 font-body mb-0.5">Tiempo</div>
-                    <div className="font-heading font-bold text-pacame-white/80 text-lg">{avgSec}</div>
+                  {state?.last_activity && (
+                    <span className="text-[10px] text-pacame-white/30 font-body flex-shrink-0">
+                      {timeAgo(state.last_activity)}
+                    </span>
+                  )}
+                </div>
+
+                {/* Current task */}
+                {state?.current_task && (
+                  <div className="rounded-lg bg-white/[0.03] border border-white/[0.04] px-3 py-2 mb-3">
+                    <div className="text-[10px] text-pacame-white/30 font-body uppercase tracking-wide mb-0.5">
+                      Tarea actual
+                    </div>
+                    <p className="text-xs text-pacame-white/70 font-body line-clamp-2">{state.current_task}</p>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-white/[0.03]">
-                    <div className="text-xs text-pacame-white/30 font-body mb-0.5">Coste</div>
-                    <div className="font-heading font-bold text-pacame-white/80 text-lg">${agent.costUsd.toFixed(2)}</div>
+                )}
+
+                {/* Specialty */}
+                <p className="text-[11px] text-pacame-white/30 font-body mb-3 italic">{meta.specialty}</p>
+
+                {/* Stats */}
+                <div className="flex items-center gap-4 text-[10px] text-pacame-white/30 font-body mb-3">
+                  <div className="flex items-center gap-1">
+                    <Zap className="w-3 h-3" />
+                    {state?.tasks_today || 0} hoy
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3" />
+                    {state?.tasks_completed || 0} total
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    {state?.active_hours || 0}h
                   </div>
                 </div>
 
-                {agent.failed > 0 && (
-                  <div className="mt-3 p-2 rounded-lg bg-red-500/10 border border-red-500/20">
-                    <span className="text-xs text-red-400 font-body">{agent.failed} tarea{agent.failed > 1 ? "s" : ""} fallida{agent.failed > 1 ? "s" : ""}</span>
+                {/* Recent activity */}
+                {recentActs.length > 0 && (
+                  <div className="space-y-1.5 border-t border-white/[0.04] pt-3">
+                    <div className="text-[10px] text-pacame-white/25 font-body uppercase tracking-wide">
+                      Actividad reciente
+                    </div>
+                    {recentActs.map((act) => (
+                      <div key={act.id} className="flex items-start gap-2">
+                        <span
+                          className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
+                          style={{
+                            backgroundColor:
+                              act.type === "alert" ? "#EF4444" :
+                              act.type === "delivery" ? "#16A34A" :
+                              act.type === "insight" ? "#7C3AED" :
+                              act.type === "task_completed" ? "#06B6D4" :
+                              "#F59E0B",
+                          }}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[11px] text-pacame-white/60 font-body truncate">{act.title}</p>
+                          <span className="text-[9px] text-pacame-white/20 font-body">
+                            {timeAgo(act.created_at)}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {recentActs.length === 0 && (
+                  <div className="border-t border-white/[0.04] pt-3">
+                    <p className="text-[11px] text-pacame-white/20 font-body text-center">
+                      Sin actividad registrada. Ejecuta un ciclo.
+                    </p>
                   </div>
                 )}
               </div>
             </div>
           );
         })}
+      </div>
+
+      {/* Cron schedule info */}
+      <div className="rounded-xl bg-dark-card border border-white/[0.06] p-4">
+        <div className="flex items-center gap-3">
+          <Clock className="w-4 h-4 text-pacame-white/30" />
+          <div>
+            <p className="text-xs text-pacame-white/50 font-body">
+              <span className="font-medium text-pacame-white/70">Ciclo autonomo:</span>{" "}
+              3x/dia (6:00, 12:00, 18:00 UTC) — Cada agente analiza, ejecuta y reporta.
+            </p>
+            <p className="text-[11px] text-pacame-white/30 font-body mt-0.5">
+              DIOS ejecuta auditoria semanal completa los lunes a las 7:00 UTC.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

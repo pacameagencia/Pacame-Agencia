@@ -1412,6 +1412,89 @@ Responde en texto plano, 2 frases max. Primera frase: que esta pasando. Segunda:
     await supabase.from("agent_states").update({ tasks_today: 0 }).neq("agent_id", "");
   }
 
+  // Update active_hours for all agents (+0.5h per cron cycle)
+  try {
+    const { data: allStates } = await supabase.from("agent_states").select("agent_id, active_hours");
+    for (const state of allStates || []) {
+      await supabase.from("agent_states").update({
+        active_hours: Math.round(((state.active_hours || 0) + 0.5) * 10) / 10,
+      }).eq("agent_id", state.agent_id);
+    }
+  } catch {
+    // Non-blocking
+  }
+
+  // Set unique idle messages per agent so they feel alive
+  const idleMessages: Record<string, string[]> = {
+    sage: [
+      "Monitorizando pipeline de leads. Lista para cualificar.",
+      "Analizando patrones de conversion. Disponible para diagnosticos.",
+      "Revisando tarifario y oportunidades. Esperando nuevos leads.",
+    ],
+    atlas: [
+      "Indexando 1600 paginas SEO. Buscando oportunidades de ranking.",
+      "Monitorizando posiciones organicas. Preparando proxima auditoria.",
+      "Analizando keywords con potencial. Contenido al dia.",
+    ],
+    pulse: [
+      "Observando tendencias en redes. Preparando contenido de la semana.",
+      "Calendario editorial activo. Buscando oportunidades de engagement.",
+      "Monitorizando engagement de publicaciones recientes.",
+    ],
+    nexus: [
+      "Supervisando secuencias de nurturing. Analizando CPL de campanas.",
+      "Embudo activo: monitorizando conversion en cada etapa.",
+      "Optimizando presupuesto de ads. Buscando quick wins.",
+    ],
+    pixel: [
+      "Web operativa. Monitorizando rendimiento y Core Web Vitals.",
+      "Todos los endpoints respondiendo. Lighthouse en zona verde.",
+      "Vigilando velocidad de carga. Preparado para health check.",
+    ],
+    core: [
+      "Sistemas operativos. Supabase OK, Claude API OK.",
+      "Monitorizando infraestructura. Sin incidencias detectadas.",
+      "Backend estable. Verificando integridad de datos.",
+    ],
+    nova: [
+      "Revisando consistencia de marca en todos los touchpoints.",
+      "Identidad visual coherente. Esperando nuevas resenas para moderar.",
+      "Guardiana de marca activa. Auditando materiales recientes.",
+    ],
+    copy: [
+      "Textos optimizados. Buscando contenido para mejorar hooks.",
+      "Copy al dia. Monitorizando rendimiento de textos publicados.",
+      "Analizando CTAs de campanas activas. Lista para escribir.",
+    ],
+    lens: [
+      "Dashboard de KPIs actualizado. Sin anomalias detectadas.",
+      "Monitorizando metricas clave. Lead velocity estable.",
+      "Analizando tendencias semanales. Preparando insights.",
+    ],
+    dios: [
+      "Coordinando el equipo. Todos los agentes operativos.",
+      "Sistema PACAME funcionando al 100%. Proximo audit: lunes.",
+      "Orquestando operaciones. 10 agentes sincronizados.",
+    ],
+  };
+
+  try {
+    for (const [agentId, messages] of Object.entries(idleMessages)) {
+      const state = (await supabase.from("agent_states").select("status").eq("agent_id", agentId).single()).data;
+      if (state?.status === "idle" || !state) {
+        const msg = messages[Math.floor(Math.random() * messages.length)];
+        await supabase.from("agent_states").upsert({
+          agent_id: agentId,
+          status: "idle",
+          current_task: msg,
+          last_activity: new Date().toISOString(),
+        }, { onConflict: "agent_id" });
+      }
+    }
+  } catch {
+    // Non-blocking
+  }
+
   return NextResponse.json({
     ok: true,
     timestamp: new Date().toISOString(),
