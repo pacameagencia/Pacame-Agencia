@@ -3,6 +3,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { verifyInternalAuth } from "@/lib/api-auth";
+import { fireSynapse, recordStimulus, rememberMemory } from "@/lib/neural";
 
 const supabase = createServerSupabase();
 
@@ -97,6 +98,10 @@ export async function POST(request: NextRequest) {
       description: `Email ${email_number}/3 enviado a ${lead.email}. Asunto: "${emailData.subject}"`,
       metadata: { lead_id, email_number, resend_id: emailId },
     });
+
+    // Neural: COPY ejecuta outreach, sinapsis SAGE→COPY
+    fireSynapse("sage", "copy", "delegates_to", true);
+    recordStimulus({ targetAgent: "copy", source: "system", signal: `outreach_enviado:${lead.name}:email${email_number}`, intensity: 0.5 });
 
     return NextResponse.json({ ok: true, email_id: emailId, email_number });
   }
@@ -243,6 +248,21 @@ export async function POST(request: NextRequest) {
       title: "Pipeline comercial procesado",
       description: `Follow-ups: ${followUpsSent}. Propuestas generadas: ${proposalsGenerated}.`,
       metadata: { followups: followUpsSent, proposals: proposalsGenerated },
+    });
+
+    // Neural: pipeline procesado — reforzar sinapsis de la cadena comercial
+    if (followUpsSent > 0) fireSynapse("copy", "sage", "reports_to", true);
+    if (proposalsGenerated > 0) {
+      fireSynapse("sage", "copy", "delegates_to", true);
+      fireSynapse("sage", "nexus", "collaborates_with", true);
+    }
+    rememberMemory({
+      agentId: "sage",
+      type: "procedural",
+      title: `Pipeline: ${followUpsSent} followups, ${proposalsGenerated} propuestas`,
+      content: `Ciclo comercial procesado automaticamente.`,
+      importance: 0.5,
+      tags: ["pipeline", "comercial", "auto"],
     });
 
     return NextResponse.json({

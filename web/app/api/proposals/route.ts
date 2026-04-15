@@ -3,6 +3,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { verifyInternalAuth } from "@/lib/api-auth";
+import { fireSynapse, recordStimulus, rememberMemory } from "@/lib/neural";
 
 const supabase = createServerSupabase();
 
@@ -166,6 +167,19 @@ Responde SOLO JSON:
       metadata: { proposal_id: proposal.id, lead_id, services: services.map((s) => s.name) },
     });
 
+    // Neural: SAGE genera propuesta (colabora con COPY para redaccion)
+    fireSynapse("dios", "sage", "orchestrates", true);
+    fireSynapse("sage", "copy", "consults", true);
+    recordStimulus({ targetAgent: "sage", source: "system", signal: `propuesta_generada:${lead.name}:${totalOnetime + totalMonthly}EUR`, intensity: 0.8 });
+    rememberMemory({
+      agentId: "sage",
+      type: "procedural",
+      title: `Propuesta: ${lead.name}`,
+      content: `${services.length} servicios por ${totalOnetime}€ + ${totalMonthly}€/mes. Lead: ${lead.business_name || lead.name}.`,
+      importance: 0.7,
+      tags: ["propuesta", "generada"],
+    });
+
     updateAgentStatus("sage", "idle");
 
     return NextResponse.json({
@@ -208,6 +222,30 @@ Responde SOLO JSON:
         type: "delivery",
         title: "Propuesta aceptada",
         description: `Propuesta ${proposal_id} aceptada. Iniciar onboarding.`,
+      });
+      // Neural: refuerzo positivo en toda la cadena de venta
+      fireSynapse("sage", "dios", "reports_to", true);
+      fireSynapse("sage", "copy", "collaborates_with", true);
+      fireSynapse("sage", "nexus", "collaborates_with", true);
+      rememberMemory({
+        agentId: "sage",
+        type: "emotional",
+        title: `Victoria: propuesta ${proposal_id} aceptada`,
+        content: "Propuesta aceptada por el cliente. Proceso de venta completado con exito.",
+        importance: 0.9,
+        tags: ["victoria", "propuesta_aceptada", "conversion"],
+      });
+    }
+    if (status === "rejected") {
+      // Neural: debilitar sinapsis (aprender del fallo)
+      fireSynapse("sage", "copy", "collaborates_with", false);
+      rememberMemory({
+        agentId: "sage",
+        type: "emotional",
+        title: `Propuesta ${proposal_id} rechazada`,
+        content: "Propuesta rechazada. Analizar razones para mejorar futuras propuestas.",
+        importance: 0.6,
+        tags: ["rechazo", "propuesta_rechazada", "mejora"],
       });
     }
 
@@ -318,6 +356,10 @@ PACAME`;
       title: `Propuesta enviada a ${lead?.name || "lead"}`,
       description: `${proposal.total_onetime}EUR + ${proposal.total_monthly}EUR/mes. Email enviado + secuencia de cierre activada.`,
     });
+
+    // Neural: SAGE delega nurturing post-propuesta a NEXUS
+    fireSynapse("sage", "nexus", "delegates_to", true);
+    recordStimulus({ targetAgent: "nexus", source: "agent", signal: `propuesta_enviada:${lead?.name}`, intensity: 0.7 });
 
     return NextResponse.json({ ok: true, email_sent: !!lead?.email });
   }

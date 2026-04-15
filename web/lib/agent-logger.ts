@@ -90,10 +90,12 @@ export async function incrementAgentTasks(agentId: string) {
 
 // =============================================
 // Agent Discovery System — Autonomous learnings
-// Stored in agent_activities with type "discovery" and extra data in metadata
+// Escribe en la tabla nativa agent_discoveries (red neuronal).
 // =============================================
 
-type DiscoveryType = "trend" | "service_idea" | "technique" | "competitor_insight" | "optimization" | "market_signal" | "content_idea";
+type DiscoveryType =
+  | "trend" | "service_idea" | "technique" | "competitor_insight"
+  | "optimization" | "market_signal" | "content_idea" | "pattern" | "anomaly";
 
 interface LogDiscoveryParams {
   agentId: string;
@@ -102,8 +104,10 @@ interface LogDiscoveryParams {
   description: string;
   evidence?: string;
   impact?: "low" | "medium" | "high" | "critical";
+  confidence?: number;
   actionable?: boolean;
   suggestedAction?: string;
+  thoughtChainId?: string | null;
   metadata?: Record<string, unknown>;
 }
 
@@ -114,27 +118,72 @@ export async function logAgentDiscovery({
   description,
   evidence,
   impact = "medium",
+  confidence = 0.7,
   actionable = true,
   suggestedAction,
+  thoughtChainId,
   metadata,
 }: LogDiscoveryParams) {
   try {
-    // Uses "insight" type (allowed by DB constraint) with is_discovery flag in metadata
+    await supabase.from("agent_discoveries").insert({
+      agent_id: agentId.toLowerCase(),
+      type,
+      title,
+      description,
+      evidence: evidence ?? null,
+      impact,
+      confidence,
+      actionable,
+      suggested_action: suggestedAction ?? null,
+      thought_chain_id: thoughtChainId ?? null,
+      metadata: metadata ?? {},
+    });
+
+    // Tambien registramos en activities para el feed
     await supabase.from("agent_activities").insert({
       agent_id: agentId.toLowerCase(),
       type: "insight",
       title,
       description,
-      metadata: {
-        is_discovery: true,
-        discovery_type: type,
-        evidence: evidence || null,
-        impact,
-        actionable,
-        suggested_action: suggestedAction || null,
-        discovery_status: "new",
-        ...(metadata || {}),
-      },
+      metadata: { discovery_type: type, impact, confidence },
+      created_at: new Date().toISOString(),
+    });
+  } catch {
+    // Non-blocking
+  }
+}
+
+// =============================================
+// Handoff entre agentes — refuerza la sinapsis correspondiente.
+// =============================================
+
+type SynapseType =
+  | "collaborates_with" | "reports_to" | "delegates_to" | "consults"
+  | "reviews"           | "orchestrates" | "learns_from" | "supervises";
+
+export async function logAgentHandoff(
+  fromAgent: string,
+  toAgent: string,
+  reason: string,
+  synapseType: SynapseType = "delegates_to",
+  success = true
+) {
+  try {
+    // Refuerzo hebbiano via RPC
+    await supabase.rpc("fire_synapse", {
+      p_from: fromAgent.toLowerCase(),
+      p_to: toAgent.toLowerCase(),
+      p_type: synapseType,
+      p_success: success,
+    });
+
+    // Actividad visible en el feed
+    await supabase.from("agent_activities").insert({
+      agent_id: fromAgent.toLowerCase(),
+      type: "update",
+      title: `Handoff a ${toAgent}`,
+      description: reason,
+      metadata: { handoff: true, target: toAgent.toLowerCase(), synapse_type: synapseType, success },
       created_at: new Date().toISOString(),
     });
   } catch {

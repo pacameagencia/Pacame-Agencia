@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { fireSynapse, recordStimulus, rememberMemory } from "@/lib/neural";
 
 // Rate limit: max 30 requests per 10 minutes (Claude API costs money)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -477,6 +478,19 @@ export async function POST(request: NextRequest) {
       title: `Consulta respondida`,
       description: `${message.slice(0, 100)}${message.length > 100 ? "..." : ""}`,
       metadata: { tokens: data.usage?.output_tokens, model: data.model, conversation_id: convId },
+    });
+
+    // Neural: registrar estimulo del usuario y sinapsis DIOS→agente
+    recordStimulus({ targetAgent: agentLower, source: "user", signal: `chat:${message.slice(0, 80)}`, intensity: 0.6 });
+    fireSynapse("dios", agentLower, "orchestrates", true);
+    // Guardar como memoria episodica del agente (non-blocking)
+    rememberMemory({
+      agentId: agentLower,
+      type: "episodic",
+      title: `Chat: ${message.slice(0, 60)}`,
+      content: `Consulta respondida. Tokens: ${data.usage?.output_tokens || 0}. Modelo: ${data.model}.`,
+      importance: 0.3,
+      tags: ["chat", "consulta"],
     });
 
     return NextResponse.json({

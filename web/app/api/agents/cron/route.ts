@@ -8,6 +8,7 @@ import { sendWhatsApp, sendLeadFollowup, isWhatsAppConfigured } from "@/lib/what
 import { publishContent, getConfiguredPlatforms } from "@/lib/social-publish";
 import { findEmailsFromWebsite } from "@/lib/email-enrichment";
 import { generateContentImage } from "@/lib/image-generation";
+import { fireSynapse, recordStimulus, rememberMemory, startThoughtChain, endThoughtChain, recordDiscovery } from "@/lib/neural";
 
 const supabase = createServerSupabase();
 
@@ -361,6 +362,21 @@ Responde SOLO JSON:
         });
       }
 
+      // Neural: SAGE cron cycle — registrar actividad y reforzar sinapsis
+      recordStimulus({ targetAgent: "sage", source: "cron", signal: `ciclo:${leadsQualified}leads:${proposalsGenerated}prop`, intensity: 0.6 });
+      fireSynapse("dios", "sage", "orchestrates", true);
+      if (leadsQualified > 0) fireSynapse("sage", "dios", "reports_to", true);
+      if (proposalsGenerated > 0) fireSynapse("sage", "copy", "consults", true);
+      if (emailsEnriched > 0) fireSynapse("sage", "core", "consults", true);
+      rememberMemory({
+        agentId: "sage",
+        type: "procedural",
+        title: `Cron SAGE: ${leadsQualified}Q ${proposalsGenerated}P ${followupsSent}F`,
+        content: `Leads cualificados: ${leadsQualified}. Propuestas: ${proposalsGenerated}. Followups: ${followupsSent}. Emails: ${emailsEnriched}.`,
+        importance: 0.4,
+        tags: ["cron", "sage", "resumen"],
+      });
+
       updateAgentStatus("sage", "idle");
       results.sage = { leads_qualified: leadsQualified, proposals_generated: proposalsGenerated, followups: followupsSent, emails_enriched: emailsEnriched };
     } catch (e) {
@@ -446,6 +462,15 @@ Responde SOLO JSON:
       });
 
       incrementAgentTasks("atlas");
+
+      // Neural: ATLAS cron cycle
+      recordStimulus({ targetAgent: "atlas", source: "cron", signal: `seo:${blogCount}posts:${pendingContent}pending`, intensity: 0.5 });
+      fireSynapse("dios", "atlas", "orchestrates", true);
+      if (blogGenerated) {
+        fireSynapse("atlas", "copy", "collaborates_with", true);
+        fireSynapse("atlas", "pulse", "delegates_to", true);
+      }
+
       updateAgentStatus("atlas", "idle");
       results.atlas = { seo_pages: 1600, blog_posts: blogCount, pending: pendingContent, blog_generated: blogGenerated };
     } catch {
@@ -623,6 +648,13 @@ Responde SOLO JSON array:
       }
 
       incrementAgentTasks("pulse");
+
+      // Neural: PULSE cron cycle
+      recordStimulus({ targetAgent: "pulse", source: "cron", signal: `social:${postsGenerated}gen:${postsPublished}pub`, intensity: 0.5 });
+      fireSynapse("dios", "pulse", "orchestrates", true);
+      if (postsGenerated > 0) fireSynapse("pulse", "copy", "consults", true);
+      if (postsPublished > 0) fireSynapse("pulse", "nova", "consults", true);
+
       updateAgentStatus("pulse", "idle");
       results.pulse = { week_content: weekContent, posts_generated: postsGenerated, posts_published: postsPublished, images_generated: imagesGenerated };
     } catch {
@@ -758,6 +790,12 @@ Responde SOLO JSON: {"subject":"asunto","body":"cuerpo del email (max 200 palabr
       });
 
       incrementAgentTasks("nexus");
+
+      // Neural: NEXUS cron cycle
+      recordStimulus({ targetAgent: "nexus", source: "cron", signal: `growth:${nurtured}nurture:${campaigns?.length || 0}camp`, intensity: 0.5 });
+      fireSynapse("dios", "nexus", "orchestrates", true);
+      if (nurtured > 0) fireSynapse("nexus", "copy", "delegates_to", true);
+
       updateAgentStatus("nexus", "idle");
       results.nexus = { campaigns: campaigns?.length, leads_from_ads: leadsFromAds, cpl, nurtured };
     } catch {
@@ -829,6 +867,12 @@ Responde SOLO JSON: {"subject":"asunto","body":"cuerpo del email (max 200 palabr
       }
 
       incrementAgentTasks("pixel");
+
+      // Neural: PIXEL health check
+      fireSynapse("dios", "pixel", "orchestrates", true);
+      fireSynapse("pixel", "core", "collaborates_with", allHealthy);
+      if (!allHealthy) recordStimulus({ targetAgent: "core", source: "agent", signal: "pixel:web_down", intensity: 1.0 });
+
       updateAgentStatus("pixel", "idle");
       results.pixel = { checks, healthy: allHealthy };
     } catch {
@@ -924,6 +968,14 @@ Responde SOLO JSON: {"subject":"asunto","body":"cuerpo del email (max 200 palabr
       }
 
       incrementAgentTasks("core");
+
+      // Neural: CORE health check
+      fireSynapse("dios", "core", "orchestrates", true);
+      fireSynapse("core", "pixel", "collaborates_with", supabaseOk && claudeOk);
+      if (!supabaseOk || !claudeOk) {
+        recordStimulus({ targetAgent: "dios", source: "agent", signal: `core:degraded:sb=${supabaseOk}:cl=${claudeOk}`, intensity: 1.0 });
+      }
+
       updateAgentStatus("core", "idle");
       results.core = { supabase: supabaseOk, claude: claudeOk, unread, alerts_24h: recentAlerts, status: systemStatus };
     } catch {
@@ -1648,6 +1700,26 @@ Responde SOLO JSON: {"type":"trend|technique|optimization","title":"titulo corto
               metadata: { cycle: new Date().toISOString(), research_phase: true },
             });
 
+            // Neural: descubrimiento → tabla nativa + memoria + sinapsis
+            recordDiscovery({
+              agentId: ra.id,
+              type: (discovery.type as "trend" | "service_idea" | "technique" | "optimization" | "market_signal" | "content_idea" | "pattern" | "anomaly") || "market_signal",
+              title: String(discovery.title),
+              description: String(discovery.description),
+              impact: (discovery.impact as "low" | "medium" | "high" | "critical") || "medium",
+              confidence: 0.7,
+              evidence: discovery.evidence ? String(discovery.evidence) : undefined,
+            });
+            fireSynapse(ra.id, "dios", "reports_to", true);
+            rememberMemory({
+              agentId: ra.id,
+              type: "semantic",
+              title: `Descubrimiento: ${String(discovery.title).slice(0, 60)}`,
+              content: String(discovery.description),
+              importance: discovery.impact === "high" ? 0.9 : discovery.impact === "medium" ? 0.6 : 0.3,
+              tags: ["descubrimiento", "research", String(discovery.type || "insight")],
+            });
+
             results["research_" + ra.id] = { discovery: discovery.title };
           }
         } catch {
@@ -1746,6 +1818,22 @@ Responde SOLO JSON: {"type":"trend|technique|optimization","title":"titulo corto
         }, { onConflict: "agent_id" });
       }
     }
+  } catch {
+    // Non-blocking
+  }
+
+  // Neural: DIOS registra ciclo completo del cron
+  try {
+    const agentsRan = Object.keys(results).filter(k => !k.startsWith("research_") && k !== "emails_sent");
+    recordStimulus({ targetAgent: "dios", source: "cron", signal: `ciclo_completo:${agentsRan.join(",")}`, intensity: 0.8 });
+    rememberMemory({
+      agentId: "dios",
+      type: "procedural",
+      title: `Cron ${new Date().toISOString().slice(0, 16)}: ${agentsRan.length} agentes`,
+      content: `Agentes ejecutados: ${agentsRan.join(", ")}. Resultados: ${JSON.stringify(results).slice(0, 200)}`,
+      importance: 0.4,
+      tags: ["cron", "orquestacion", "ciclo"],
+    });
   } catch {
     // Non-blocking
   }
