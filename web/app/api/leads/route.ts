@@ -5,6 +5,7 @@ import { logAgentActivity } from "@/lib/agent-logger";
 import { notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { notifyHotLead } from "@/lib/telegram";
 import { sendLeadWelcome, isWhatsAppConfigured } from "@/lib/whatsapp";
+import { fireSynapse, recordStimulus, startThoughtChain, rememberMemory } from "@/lib/neural";
 
 const leadSchema = z.object({
   name: z.string().min(2, "Nombre debe tener al menos 2 caracteres").max(100),
@@ -213,6 +214,22 @@ export async function POST(request: NextRequest) {
       title: `Nuevo lead: ${name}`,
       description: `${company || "Sin empresa"} — ${email}. Servicios: ${(services || []).join(", ") || "no especificado"}. Nurturing iniciado.`,
       metadata: { lead_id: lead?.id, budget, source: "web" },
+    });
+
+    // 6. Neural: estimulo externo → SAGE, sinapsis DIOS→SAGE, cadena de pensamiento
+    recordStimulus({ targetAgent: "sage", source: "webhook", signal: `nuevo_lead:${name}:${score}`, intensity: Math.min(score / 5, 1) });
+    fireSynapse("dios", "sage", "orchestrates", true);
+    if (score >= 4) {
+      fireSynapse("sage", "nexus", "delegates_to", true); // hot lead → nurturing pipeline
+    }
+    startThoughtChain({ initiatingAgent: "sage", goal: `Procesar lead ${name} (score ${score})`, participatingAgents: ["sage", "nexus", "copy"] });
+    rememberMemory({
+      agentId: "sage",
+      type: "episodic",
+      title: `Lead recibido: ${name}`,
+      content: `${company || "Sin empresa"}, ${email}. Budget: ${budget || "?"}. Score: ${score}. Servicios: ${(services || []).join(", ") || "?"}`,
+      importance: score / 5,
+      tags: ["lead", "inbound", score >= 4 ? "hot" : "warm"],
     });
 
     return NextResponse.json({ success: true, lead_id: lead?.id });
