@@ -31,15 +31,13 @@ Cosas que solo tu puedes hacer. De mas a menos prioritaria.
 
 ## IMPORTANTES (mejoran conversion)
 
-### 5. Verificar dominio en Resend
-- Ir a https://resend.com/domains
-- Verificar que `pacameagencia.com` esta verificado con DNS records
-- Si no esta, anadir los registros TXT/MX que indique Resend en Hostinger
-- **Por que:** sin verificacion, los emails van a spam
+### ~~5. Verificar dominio en Resend~~ ✅ HECHO
+- ✅ Dominio `pacameagencia.com` verificado en Resend
 
-### 6. Hacer un pago de prueba en Stripe
-- Ir a https://pacameagencia.com/dashboard/payments
-- Generar un link de pago y probarlo (puedes usar tu tarjeta y reembolsar)
+### 6. Hacer un pago de prueba en Stripe — LISTO PARA PROBAR
+- ✅ Cupon `TEST100` creado (100% descuento, hasta 50 usos)
+- ✅ Checkout acepta codigos promocionales
+- Genera un pago desde dashboard o propuesta, usa codigo **TEST100** en el checkout
 - Verificar que el webhook llega y se registra en Supabase
 - **Por que:** confirma que el flujo de cobro funciona end-to-end
 
