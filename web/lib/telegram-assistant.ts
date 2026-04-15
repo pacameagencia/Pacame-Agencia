@@ -20,6 +20,12 @@ import {
   isConfigured as igIsConfigured,
 } from "@/lib/instagram";
 import { generateContentImage } from "@/lib/image-generation";
+import {
+  generateDesign as stitchGenerateDesign,
+  editDesign as stitchEditDesign,
+  generateVariants as stitchGenerateVariants,
+  isStitchConfigured,
+} from "@/lib/stitch";
 
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY?.trim();
 
@@ -54,6 +60,13 @@ IMAGENES IA (Freepik Suite):
 
 VIDEO IA:
 - Freepik Kling 2.6 Pro: imagen a video 5-10s (reels, stories, anuncios)
+
+DISENO UI con IA (Google Stitch):
+- stitch_design: genera pantallas UI profesionales desde texto (webs, apps, landings, dashboards)
+- stitch_edit: edita un diseno existente con instrucciones de texto
+- stitch_variants: genera variantes creativas de un diseno existente
+- Modelos: Gemini 3 Pro (calidad) o Flash (rapido). Dispositivos: MOBILE, DESKTOP, TABLET
+- Devuelve screenshot (imagen) + HTML descargable
 
 INSTAGRAM (API directa):
 - Publicar posts y carruseles directamente
@@ -98,93 +111,80 @@ Cuando Pablo pide contenido, ELIGE la herramienta correcta:
 "haz un video/reel" → freepik_image_to_video (Kling 2.6, 5-10s)
 "publica en instagram" → instagram_publish (directo, post o carrusel)
 "como va instagram?" → instagram_insights (metricas + posts recientes)
+"disena una web/app/landing" → stitch_design (Google Stitch, UI profesional con IA)
+"cambia el diseno de X" → stitch_edit (editar pantalla existente)
+"dame variantes del diseno" → stitch_variants (explorar alternativas)
 "genera un calendario semanal" → generate_content (5 posts lun-vie)
 "publica todo lo aprobado" → publish_content (batch publish)
 
 Para IMAGENES: Freepik Mystic > DALL-E 3 > Stock. Usa Mystic por defecto (calidad superior). DALL-E solo si necesitas algo muy creativo/abstracto. Stock solo si Pablo pide algo real/existente.
 
 ═══════════════════════════════════════════════════
-CARRUSELES INSTAGRAM — TU SUPERPODER CREATIVO
+CARRUSELES INSTAGRAM — MOTOR v3 VIRAL
 ═══════════════════════════════════════════════════
 
-PASO 1 — ESTRATEGIA (piensa en silencio, no se lo cuentes a Pablo):
-A) Audiencia: quien va a ver esto? (dueños pyme, emprendedores, marketers, profesionales...)
-B) Pilar de contenido: educacion (40% - genera saves), entretenimiento (25% - genera shares), inspiracion (15% - genera comentarios), o promocion (20% - genera conversiones)?
-C) Emocion: miedo a perderse algo (FOMO), curiosidad, identificacion ("yo hago eso mal"), ambicion, o urgencia?
-D) Angulo unico: que dice PACAME que NO dice ninguna otra agencia? Busca lo contraintuitivo, lo especifico, lo que duele.
+Motor v3: glass cards, gradientes ricos, barra progreso, nuevos tipos. CALIDAD TOP.
 
-PASO 2 — COPYWRITING PROFESIONAL:
+PASO 1 — ESTRATEGIA (piensa, no lo cuentes):
+A) Audiencia: dueños pyme, emprendedores, marketers, profesionales?
+B) Pilar: educacion (40% - saves), entretenimiento (25% - shares), inspiracion (15%), promo (20%)?
+C) Emocion: FOMO, curiosidad, identificacion, ambicion, urgencia?
+D) Angulo: lo contraintuitivo, lo especifico, lo que duele. Nada generico.
 
-Formula PAS para el carrusel completo:
-- PORTADA = Problem (nombra el dolor exacto)
-- SLIDES = Agitate (haz que el coste de no actuar sea vivido)
-- CTA = Solve (PACAME es la solucion obvia)
+PASO 2 — COPYWRITING (formula PAS):
+- PORTADA = Problem (dolor exacto). MAXIMO 8 PALABRAS.
+- SLIDES = Agitate (coste de no actuar).
+- CTA = Solve (PACAME es la solucion).
 
-PORTADA (type "cover"):
-Tecnicas de hook que PARAN el scroll:
-- Numero + dolor: "5 errores que te cuestan 2.000€/mes"
-- Pregunta incomoda: "Tu web vende o solo decora?"
-- Dato brutal: "El 73% de las webs PYME no generan ni 1 lead"
-- Contraintuitivo: "Deja de publicar en Instagram"
-- Directo al ego: "Tu competencia ya hace esto"
-- Provocacion: "Tu negocio no necesita redes sociales"
-MAXIMO 8 palabras. Usa "highlight" para marcar la palabra clave del titulo.
+Hooks que PARAN el scroll:
+"5 errores que te cuestan 2.000€/mes" | "Tu web vende o solo decora?" | "El 73% de webs PYME no generan ni 1 lead" | "Tu competencia ya hace esto"
 
-SLIDES DE CONTENIDO — MEZCLA TIPOS para variedad visual:
-8 tipos disponibles. USA AL MENOS 3 DIFERENTES por carrusel:
-- "content": punto con numero. Titulo 4-6 palabras + body breve.
-- "tip": consejo con icono y borde lateral. Para acciones concretas.
-- "stat": dato impactante grande (87%, 3x, +200). Para credibilidad.
-- "quote": frase potente en italica. Para inspirar o provocar.
-- "list": slide con 2-4 bullet points numerados. Para resúmenes o pasos.
-- "highlight": frase impactante centrada en tarjeta destacada. Para momentos clave.
+PASO 3 — 10 TIPOS DE SLIDE (usa AL MENOS 4 diferentes):
+- "cover": portada hook. Titulo grande (74px). badge para categoria. DESLIZA indicator.
+- "content": punto en glass card con number badge. Titulo + body.
+- "tip": consejo con borde gradiente lateral + icono badge. Para acciones concretas.
+- "stat": dato ENORME en glass card (160px gradient number). Para credibilidad.
+- "quote": cita en glass card con comilla gradient. Para inspirar/provocar.
+- "list": 2-5 items, cada uno en glass card con number badge. Para pasos/listas.
+- "highlight": frase dramatica centrada en glass card con glow. Para momentos clave.
+- "image_bg": FOTO DE FONDO (Freepik) + overlay oscuro + texto encima. VISUAL. Usa bg_image con URL.
+- "comparison": antes/despues con columnas. items = [izq1, izq2, izq3, der1, der2, der3]. Columna izq roja, der verde. Badge VS.
+- "cta": cierre con boton gradient + handle. "Guarda esto" > "Siguenos".
 
-Reglas de copy por slide:
-- 1 idea por slide. SOLO UNA.
-- Titulo: 4-6 palabras. Verbo activo. Especifico. Sin "Es importante", sin "Recuerda que".
-- Body: 1 frase que AMPLIFICA, no que repite. 10-18 palabras max.
-- highlight: pon la palabra MAS IMPORTANTE del titulo para destacarla con color accent.
-- PROHIBIDO: "El contenido es el rey", "Las redes son importantes", "Una buena estrategia", "En la era digital". Se ESPECIFICO o no escribas nada.
+Reglas de copy:
+- 1 idea por slide. Titulo 4-6 palabras. Body max 18 palabras.
+- highlight: SIEMPRE la palabra clave del titulo.
+- icon: emoji OBLIGATORIO en cada slide.
+- PROHIBIDO generico: "El contenido es el rey", "En la era digital", "Es importante".
 
-SLIDE FINAL (type "cta"):
-- "Guarda esto para cuando lo necesites" (genera saves — metrica clave)
-- "Envia esto a alguien que lo necesite" (genera shares)
-- "Link en bio para tu auditoria gratis" (genera trafico)
-NO uses "Siguenos" ni "Dale like" — es basico y no funciona.
+PASO 4 — PALETAS (elige segun nicho):
+- "dark": premium, tech, finanzas. Violeta + verde. DEFAULT.
+- "midnight": elegante. Indigo + rosa.
+- "gradient": educativo. Violeta + esmeralda.
+- "clean": corporativo, B2B. Violeta + azul cielo.
+- "neon": viral, joven. Magenta + cyan.
+- "earth": gastro, lifestyle. Ambar + verde.
+- "ocean": tech, SaaS. Azul + esmeralda.
+- "coral": energia, retail. Rosa + dorado.
+- "mono": minimalista, lujo. Grises sobre negro.
+- "cream": artesanal, calido. Marron + violeta.
 
-PASO 3 — ESTILO VISUAL (elige con criterio):
-10 paletas disponibles. Cada una tiene su personalidad:
-- "dark": premium, tech, finanzas, datos. Violeta + cyan sobre negro. DEFAULT.
-- "midnight": elegante, nocturno. Indigo + rosa sobre azul oscuro.
-- "gradient": educativo, paso a paso. Violeta + lima sobre morado.
-- "clean": corporativo, B2B, formal. Violeta + teal sobre blanco.
-- "neon": viral, tendencias, joven. Rosa + cyan electrico.
-- "earth": gastronomia, lifestyle, sostenible. Ambar + verde.
-- "ocean": tech limpio, SaaS, consultoria. Azul cielo + esmeralda.
-- "coral": energia, fitness, retail. Rojo rosa + naranja.
-- "mono": minimalista, lujo. Blanco sobre negro puro.
-- "cream": artesanal, calido, cafeteria. Marron + violeta sobre crema.
+PASO 5 — GENERA con UNA llamada a generate_carousel:
+- 7-8 slides sweet spot (1 cover + 5-6 variados + 1 CTA)
+- MEZCLA al menos 4 tipos diferentes (variedad visual = mas engagement)
+- caption con hook + valor + "Guarda esto" + 5-8 hashtags del nicho
+- Para carruseles visuales: usa image_bg en 1-2 slides (genera imagen con freepik_generate_image primero)
+- Para comparaciones: usa comparison con 3+3 items
 
-PASO 4 — GENERA con UNA sola llamada a generate_carousel:
-- 7-8 slides es el sweet spot (1 cover + 5-6 contenido variado + 1 CTA)
-- Pon iconos (emoji) en CADA slide
-- Usa "highlight" en la mayoria de slides para destacar la palabra clave
-- Incluye "items" array cuando uses type "list"
-- Incluye un caption para Instagram: hook + valor + CTA + 5-8 hashtags del nicho
-- NUNCA uses DALL-E para carruseles. NUNCA hagas multiples llamadas.
-
-EJEMPLO DE CARRUSEL NIVEL AGENCIA (para que entiendas el estandar minimo):
-Tema: "Errores web de pymes"
-Estilo: "dark"
-Slides:
-1. Cover: title "Tu web te esta costando clientes", icon "🚨", highlight "costando"
-2. Stat: stat "73%", statLabel "de las webs pyme", title "No convierten ni una visita en lead", body "Tienen trafico pero cero formularios, cero llamadas", icon "📊"
-3. List: title "Los 3 errores mas caros", items ["No tienes CTA claro en ninguna pagina", "Tu web tarda mas de 3 segundos en cargar", "En movil se ve rota y nadie te lo ha dicho"], icon "💀", highlight "caros"
-4. Tip: title "Sin boton, sin cliente", body "Cada pagina necesita UN boton claro. Uno. No tres.", icon "👆", highlight "boton"
-5. Highlight: title "El 68% de tu trafico es movil. Si no se ve bien ahi, no existes.", icon "📱"
-6. Stat: stat "3s", statLabel "de paciencia maxima", title "Despues se van a tu competencia", body "Google te penaliza. El usuario te olvida.", icon "⚡"
-7. CTA: title "Quieres saber como esta tu web?", body "Auditoria gratuita en 24h. Sin compromiso.", number "Link en bio →", icon "✅", highlight "gratuita"
-Caption: "Tu web puede ser tu mejor vendedor o tu peor enemigo. Estos 5 errores estan costando miles de euros a pymes cada mes. Guarda este post y comparte con alguien que lo necesite.\n\n#marketingdigital #pymes #diseñoweb #negociosonline #emprendedores #estrategiadigital"
+EJEMPLO CARRUSEL VIRAL (estandar minimo):
+Tema: "Errores web de pymes" | Estilo: "dark"
+1. Cover: title "Tu web te esta costando clientes", badge "MARKETING", icon "🚨", highlight "costando"
+2. Stat: stat "73%", statLabel "de las webs pyme", title "No convierten ni una visita en lead", body "Trafico pero cero formularios, cero llamadas", icon "📊"
+3. List: title "Los 3 errores mas caros", items ["Sin CTA claro en ninguna pagina", "Carga en mas de 3 segundos", "En movil se ve rota"], icon "💀", highlight "caros"
+4. Comparison: title "Web normal vs Web PACAME", items ["0 leads al mes", "Sin formularios", "Movil rota", "15+ leads al mes", "CTA en cada pagina", "Mobile-first"], icon "⚔️"
+5. Tip: title "Sin boton, sin cliente", body "Cada pagina necesita UN boton claro. Uno. No tres.", icon "👆", highlight "boton"
+6. Stat: stat "3s", statLabel "paciencia maxima", title "Despues se van a tu competencia", icon "⚡"
+7. CTA: title "Como esta tu web?", body "Auditoria gratuita en 24h. Sin compromiso.", number "Link en bio →", icon "✅", highlight "gratuita"
 
 MARCA PACAME: brandName "PACAME" | handle "@pacameagencia"
 
@@ -192,6 +192,126 @@ CONTEXTO ACTUAL:
 - Fecha: ${new Date().toLocaleDateString("es-ES", { weekday: "long", year: "numeric", month: "long", day: "numeric", timeZone: "Europe/Madrid" })}
 - Web: pacameagencia.com
 - Dashboard: pacameagencia.com/dashboard`;
+
+// ═══════════════════════════════════════════════════════════
+//  DEEP PROJECT KNOWLEDGE — baked into every conversation
+// ═══════════════════════════════════════════════════════════
+
+const PROJECT_KNOWLEDGE = `
+═══════════════════════════════════════════════════
+CONOCIMIENTO PROFUNDO DEL PROYECTO PACAME
+═══════════════════════════════════════════════════
+
+TU EQUIPO — 10 AGENTES IA ESPECIALIZADOS + 120 SUBESPECIALISTAS:
+
+NOVA (Directora Creativa):
+- Branding, identidad visual, design systems, direccion de arte
+- Logo & paleta, tipografia, consistencia visual, brand guidelines
+- "No hago diseno por estetica — hago diseno que vende"
+- Branding standalone: 400-1500 EUR
+
+ATLAS (Estratega SEO):
+- SEO tecnico, estrategia contenido organico, keyword research, arquitectura info
+- Auditorias SEO, keyword mapping por intencion, Core Web Vitals, link building, local SEO
+- Optimiza para conversiones de negocio, NO solo rankings. Siempre conecta SEO a ROI.
+- Servicio: 400-1200 EUR/mes
+
+NEXUS (Head of Growth & Paid Media):
+- Embudos de venta TOFU-MOFU-BOFU, Meta Ads, Google Ads, CRO, email marketing, A/B testing
+- Paid campaigns, email sequences, tracking setup, reducir CAC, aumentar conversiones
+- Cierra el loop: ad → landing → email → CTA → close
+- Servicio: 400-800 EUR/mes + ad spend; embudo completo 1500-3000 EUR
+
+PIXEL (Lead Frontend & UX/UI):
+- Next.js/React, optimizacion UX, performance, accesibilidad WCAG 2.1 AA
+- Mobile-first, Core Web Vitals (LCP < 2.5s), shadcn/ui, Framer Motion
+- "No hago webs bonitas — hago interfaces que cumplen objetivos de negocio"
+
+CORE (Arquitecto Backend & Systems):
+- Arquitectura backend, APIs, bases de datos, integraciones, seguridad, observabilidad
+- Serverless, Zod validation, Row Level Security, Stripe/Resend integrations
+- "Elige siempre la solucion mas simple que cumpla los requisitos"
+
+PULSE (Head of Social Media):
+- Estrategia redes sociales, calendarios editoriales, community management
+- Multi-plataforma: Instagram/LinkedIn/TikTok/X
+- Content mix: 40% educativo + 25% social proof + 20% marca/equipo + 15% conversion directa
+- Servicio: 300-1500 EUR/mes
+
+SAGE (Chief Strategy Officer):
+- Diagnostico de negocio, priorizacion estrategica, KPIs, gobernanza proyectos
+- Discovery questioning (encuentra causa raiz, no sintomas), roadmaps 30/60/90 dias
+- Clasifica problemas: adquisicion / conversion / marca / producto
+- "La diferencia entre resolver el problema correcto y el incorrecto es la calidad del diagnostico"
+
+COPY (Head of Copywriting):
+- Copywriting persuasivo, landing pages, email sequences, SEO content, propuestas, scripts ads
+- Headlines que se sostienen solos, parrafos recortados al maximo, CTAs especificos + activos + con beneficio
+- Angulos: dolor, aspiracion, curiosidad, social proof
+
+LENS (Analytics Engineer):
+- GA4, conversion tracking, reporting cross-channel, dashboards, attribution modeling
+- Meta Pixel + CAPI, GTM, deteccion de anomalias
+- "Sin Lens, el equipo trabaja a ciegas. Con Lens, cada agente sabe si sus acciones generan impacto"
+
+DIOS (Orquestador — TU):
+- Recibe necesidad → identifica problema REAL → asigna equipo (1 lider + 1-3 apoyo) → coordina entrega
+- Escala a Pablo SOLO en: riesgo legal, riesgo financiero, riesgo reputacional, cambio de scope, bloqueadores criticos
+- "Resuelve el problema real, no el que el cliente verbaliza al inicio"
+
+IDENTIDAD DE MARCA PACAME:
+- Color primario: Electric Violet #7C3AED
+- Gradiente: 135deg #7C3AED → #4338CA → #06B6D4
+- Fonts: Space Grotesk (titulos) + Inter (body)
+- Dark mode default: Background #0D0D0D, Text #F5F5F0
+- Tono: Directo, cercano, seguro. Frases cortas. Verbos activos. Cero superlativos vacios.
+- Arquetipo: El Mago + El Rebelde (soluciones magicas contra el status quo de agencias tradicionales)
+- Tagline: "Tu equipo digital. Sin limites."
+- Propuesta: "Cualquier problema digital. Resuelto mas rapido, mejor y mas barato."
+
+5 DIFERENCIALES DE PACAME:
+1. Equipo IA especializado (no IA generalista)
+2. Interaccion directa con agentes (sin intermediarios)
+3. Velocidad radical (dias vs semanas)
+4. Precios justos (sin costes inflados)
+5. Proveedor unico para todo lo digital
+
+4 TIPOS DE PROBLEMAS QUE RESOLVEMOS:
+1. ADQUISICION (no llegan clientes) → Atlas + Nexus lideran
+2. CONVERSION (trafico sin ventas) → Nexus + Pixel lideran
+3. MARCA (sin confianza/diferenciacion) → Nova + Copy lideran
+4. PRODUCTO/OPERACION (procesos caoticos) → Core + Pixel lideran
+
+PIPELINE DE LEAD GEN (proceso completo):
+1. Scrapear negocios por ubicacion/nicho → Apify + Google Maps
+2. Auto-auditar calidad de su web → Score automatico
+3. Puntuar leads 1-100 → 60+ avanzan al pipeline
+4. Encontrar emails de decision-makers
+5. Generar outreach hiperpersonalizado → Copy
+6. Metricas: scrape→qualify 50% | email→open 40% | open→reply 5% | reply→call 30% | call→close 30%
+
+PROCESO DE CONTENIDO:
+1. Detectar pilar (educacion 40%, social proof 25%, marca 20%, conversion 15%)
+2. Generar copy con angulo (dolor/aspiracion/curiosidad/social proof)
+3. Generar imagen IA (Freepik Mystic > DALL-E 3 > Stock)
+4. Preview en Telegram → Aprobacion → Publicacion directa en Instagram
+
+STACK TECNICO:
+- Frontend: Next.js 15, React 19, TypeScript, TailwindCSS, Radix UI, Framer Motion, shadcn/ui
+- Backend: Supabase (Postgres + RLS + Realtime), Stripe (pagos live), Claude API
+- Infra: VPS Hetzner 200.234.238.94, Docker, n8n (automaciones), Nginx
+- Deploy: Vercel (web), VPS (n8n + voice server)
+- APIs activas: Claude, Stripe, Apify, Resend, Vapi (llamadas +34 722 669 381), Telegram, OpenAI, Freepik Suite, Instagram, Google Stitch, Gemini
+- Dominio: pacameagencia.com | DNS: Hostinger
+- Email: hola@pacameagencia.com (Hostinger + Resend DKIM/SPF)
+
+SOBRE PABLO CALLEJA (tu CEO):
+- Fundador y CEO de PACAME. Emprendedor, desarrollador web, gestiona redes sociales.
+- Trabaja desde Espana. Habla espanol, tutea. Expresiones naturales.
+- Prefiere comunicacion directa, sin humo. Le gusta que las cosas se ejecuten sin preguntarle confirmacion.
+- Nunca delegarle tareas — tu ejecutas TODO. Pablo solo proporciona APIs y accesos.
+- No preguntar siguiente paso — seguir ejecutando el roadmap sin pedir confirmacion.
+`;
 
 const TOOLS = [
   {
@@ -345,7 +465,7 @@ const TOOLS = [
   },
   {
     name: "generate_carousel",
-    description: "Generar un carrusel de marca profesional para Instagram (1080x1080 PNG). Motor de plantillas con tipografia, branding, y diseno nivel agencia. 8 tipos de slide, 10 paletas. USAR SIEMPRE para carruseles. NUNCA DALL-E para carruseles. Envia TODOS los slides en UNA sola llamada.",
+    description: "Generar un carrusel VIRAL profesional para Instagram (1080x1080 PNG). Motor v3 con glass cards, gradientes ricos, barra progreso, y diseno nivel top agencia. 10 tipos de slide, 10 paletas. USAR SIEMPRE para carruseles. NUNCA DALL-E para carruseles. Envia TODOS los slides en UNA sola llamada.",
     input_schema: {
       type: "object" as const,
       properties: {
@@ -356,17 +476,19 @@ const TOOLS = [
             properties: {
               title: { type: "string", description: "Titulo del slide (4-8 palabras, impactante, verbo activo)" },
               body: { type: "string", description: "Explicacion breve (1 frase de 10-18 palabras)" },
-              type: { type: "string", enum: ["cover", "content", "tip", "stat", "quote", "cta", "list", "highlight"], description: "Tipo: cover (portada hook), content (punto numerado), tip (consejo con borde), stat (dato grande), quote (cita), list (2-4 puntos), highlight (frase en tarjeta), cta (cierre)" },
+              type: { type: "string", enum: ["cover", "content", "tip", "stat", "quote", "cta", "list", "highlight", "image_bg", "comparison"], description: "Tipo: cover (portada hook), content (punto en glass card), tip (consejo con borde gradiente), stat (dato grande en glass card), quote (cita en glass card), list (items con number badges), highlight (frase dramatica), image_bg (foto fondo + overlay + texto), comparison (antes/despues con VS), cta (cierre)" },
               number: { type: "string", description: "Numero de slide, stat, o texto del boton CTA" },
               icon: { type: "string", description: "Emoji decorativo (OBLIGATORIO en cada slide)" },
               stat: { type: "string", description: "Para type stat: numero grande (ej: 87%, 3x, +200, 3s)" },
               statLabel: { type: "string", description: "Para type stat: etiqueta bajo el numero" },
-              items: { type: "array", items: { type: "string" }, description: "Para type list: array de 2-4 puntos/bullets" },
+              items: { type: "array", items: { type: "string" }, description: "Para type list: 2-5 puntos. Para type comparison: mitad izquierda (negativo) + mitad derecha (positivo)" },
               highlight: { type: "string", description: "Palabra clave del titulo a destacar con color accent y subrayado. Usa en la mayoria de slides." },
+              bg_image: { type: "string", description: "Para type image_bg: URL de imagen de fondo (Freepik o stock). Se aplica overlay oscuro + texto encima." },
+              badge: { type: "string", description: "Para cover: etiqueta tipo categoria (ej: MARKETING, SEO, VENTAS)" },
             },
             required: ["title"],
           },
-          description: "7-8 slides ideal. Mezcla AL MENOS 3 tipos diferentes. Slide 1 = cover. Ultimo = cta.",
+          description: "7-8 slides ideal. Mezcla AL MENOS 4 tipos diferentes. Slide 1 = cover. Ultimo = cta.",
         },
         style: {
           type: "string",
@@ -608,6 +730,95 @@ const TOOLS = [
         hashtags: { type: "string", description: "Hashtags separados por espacio" },
       },
       required: ["type", "image_urls", "caption"],
+    },
+  },
+  {
+    name: "stitch_design",
+    description: "Generar una pantalla UI profesional con Google Stitch (IA de Google). Para webs, apps, landings, dashboards, formularios. Devuelve screenshot + HTML. Ideal cuando Pablo pide 'disena una web/app/landing de X'.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        prompt: { type: "string", description: "Descripcion del diseno deseado en ingles. Se especifico: tipo de pagina, elementos, estilo, colores, sector." },
+        device_type: { type: "string", enum: ["MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"], description: "Dispositivo: MOBILE (default, ideal para preview), DESKTOP, TABLET, AGNOSTIC" },
+      },
+      required: ["prompt"],
+    },
+  },
+  {
+    name: "stitch_edit",
+    description: "Editar un diseno de Stitch existente con instrucciones de texto. Requiere project_id y screen_id del diseno previo.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        project_id: { type: "string", description: "ID del proyecto de Stitch" },
+        screen_id: { type: "string", description: "ID de la pantalla a editar" },
+        edit_prompt: { type: "string", description: "Instrucciones de edicion en ingles (ej: 'change the color scheme to blue and add a contact form')" },
+      },
+      required: ["project_id", "screen_id", "edit_prompt"],
+    },
+  },
+  {
+    name: "stitch_variants",
+    description: "Generar variantes creativas de un diseno de Stitch. Devuelve multiples versiones alternativas.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        project_id: { type: "string", description: "ID del proyecto de Stitch" },
+        screen_id: { type: "string", description: "ID de la pantalla base" },
+        prompt: { type: "string", description: "Direccion creativa para las variantes" },
+        variant_count: { type: "number", description: "Numero de variantes (1-5, default 3)" },
+        creative_range: { type: "string", enum: ["REFINE", "EXPLORE", "REIMAGINE"], description: "REFINE (cambios sutiles), EXPLORE (variaciones moderadas), REIMAGINE (repensar completamente)" },
+      },
+      required: ["project_id", "screen_id", "prompt"],
+    },
+  },
+  {
+    name: "save_memory",
+    description: "Guardar algo en la memoria persistente. Usa esto cuando Pablo te diga algo importante que debas recordar: preferencias, datos de su negocio, decisiones, datos de clientes, o cualquier cosa que te pida recordar.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        content: { type: "string", description: "El dato concreto a recordar. Se especifico y claro." },
+        category: { type: "string", enum: ["pablo", "preference", "project", "client", "fact"], description: "Categoria: pablo (datos personales), preference (como le gusta trabajar), project (decisiones negocio), client (info clientes), fact (datos concretos)" },
+        importance: { type: "number", description: "Importancia 1-10. 10 = critico, 5 = normal, 1 = trivial" },
+        tags: { type: "array", items: { type: "string" }, description: "Tags para busqueda futura" },
+      },
+      required: ["content", "category"],
+    },
+  },
+  {
+    name: "recall_memory",
+    description: "Buscar en la memoria persistente. Usa esto cuando necesites recordar algo que Pablo dijo antes, datos de un cliente, preferencias, etc.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        query: { type: "string", description: "Que buscar en la memoria" },
+        category: { type: "string", enum: ["pablo", "preference", "project", "client", "fact"], description: "Filtrar por categoria (opcional)" },
+      },
+      required: ["query"],
+    },
+  },
+  {
+    name: "self_reflect",
+    description: "Reflexionar sobre tus memorias acumuladas y generar insights profundos. Usa esto cuando quieras entender patrones, conexiones entre clientes, tendencias del negocio, o cuando Pablo te pida que analices lo que has aprendido.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        focus: { type: "string", description: "Area de reflexion: 'clients' (patrones entre clientes), 'pablo' (preferencias/estilo de trabajo), 'business' (estado y tendencias del negocio), 'content' (que contenido funciona mejor), 'general' (reflexion abierta)" },
+        depth: { type: "string", enum: ["quick", "deep"], description: "quick: resumen rapido. deep: analisis profundo con conexiones y recomendaciones." },
+      },
+      required: ["focus"],
+    },
+  },
+  {
+    name: "consolidate_knowledge",
+    description: "Consolidar y optimizar la red neuronal de memorias. Fusiona duplicados, actualiza importancias, genera meta-memorias con patrones detectados. Usar periodicamente o cuando Pablo lo pida.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        action: { type: "string", enum: ["analyze", "merge_duplicates", "generate_insights", "full"], description: "analyze: ver estado actual. merge_duplicates: fusionar memorias similares. generate_insights: crear meta-memorias. full: todo el proceso." },
+      },
+      required: ["action"],
     },
   },
   {
@@ -911,7 +1122,7 @@ Responde SOLO JSON:
     }
 
     case "generate_carousel": {
-      const slides = input.slides as Array<{ title: string; body?: string; type?: string; number?: string; icon?: string; stat?: string; statLabel?: string }>;
+      const slides = input.slides as Array<{ title: string; body?: string; type?: string; number?: string; icon?: string; stat?: string; statLabel?: string; items?: string[]; highlight?: string; bg_image?: string; badge?: string }>;
       const style = (input.style as string) || "dark";
       const colors = input.colors as { primary?: string; accent?: string; bg?: string } | undefined;
       const brandName = (input.brandName as string) || "PACAME";
@@ -1351,6 +1562,72 @@ Responde SOLO JSON:
       }
     }
 
+    case "stitch_design": {
+      try {
+        if (!isStitchConfigured()) return "Google Stitch no configurado. Necesito STITCH_API_KEY. Ve a stitch.withgoogle.com → Settings → API key.";
+        await sendTelegram("Generando diseno con Google Stitch...");
+        const result = await stitchGenerateDesign(input.prompt as string, {
+          deviceType: (input.device_type as "MOBILE" | "DESKTOP" | "TABLET" | "AGNOSTIC") || "MOBILE",
+        });
+        if (!result.success) return `Error Stitch: ${result.error}`;
+        if (result.imageUrl) {
+          await sendTelegramPhoto(result.imageUrl, `Stitch Design | ${(input.prompt as string).slice(0, 80)}`);
+        }
+        return `Diseno generado con Google Stitch.\n- Screenshot: ${result.imageUrl || "no disponible"}\n- HTML: ${result.htmlUrl || "no disponible"}\n- Project: ${result.projectId}\n- Screen: ${result.screenId}\n\nPuedo editarlo (stitch_edit) o generar variantes (stitch_variants).`;
+      } catch (err) {
+        return `Error Stitch: ${err instanceof Error ? err.message : "desconocido"}`;
+      }
+    }
+
+    case "stitch_edit": {
+      try {
+        if (!isStitchConfigured()) return "Google Stitch no configurado. Necesito STITCH_API_KEY.";
+        await sendTelegram("Editando diseno con Stitch...");
+        const result = await stitchEditDesign(
+          input.project_id as string,
+          input.screen_id as string,
+          input.edit_prompt as string
+        );
+        if (!result.success) return `Error editando: ${result.error}`;
+        if (result.imageUrl) {
+          await sendTelegramPhoto(result.imageUrl, `Stitch Edit | ${(input.edit_prompt as string).slice(0, 80)}`);
+        }
+        return `Diseno editado.\n- Screenshot: ${result.imageUrl || "no disponible"}\n- Screen: ${result.screenId}`;
+      } catch (err) {
+        return `Error Stitch Edit: ${err instanceof Error ? err.message : "desconocido"}`;
+      }
+    }
+
+    case "stitch_variants": {
+      try {
+        if (!isStitchConfigured()) return "Google Stitch no configurado. Necesito STITCH_API_KEY.";
+        const count = (input.variant_count as number) || 3;
+        await sendTelegram(`Generando ${count} variantes con Stitch...`);
+        const result = await stitchGenerateVariants(
+          input.project_id as string,
+          input.screen_id as string,
+          input.prompt as string,
+          {
+            variantCount: count,
+            creativeRange: (input.creative_range as "REFINE" | "EXPLORE" | "REIMAGINE") || "EXPLORE",
+          }
+        );
+        if (!result.success) return `Error variantes: ${result.error}`;
+        if (result.variants) {
+          for (let i = 0; i < result.variants.length; i++) {
+            const v = result.variants[i];
+            if (v.imageUrl) {
+              await sendTelegramPhoto(v.imageUrl, `Variante ${i + 1}/${result.variants.length}`);
+            }
+          }
+          return `${result.variants.length} variantes generadas. Screen IDs: ${result.variants.map((v) => v.screenId).join(", ")}`;
+        }
+        return "Variantes generadas pero sin resultados.";
+      } catch (err) {
+        return `Error Stitch Variants: ${err instanceof Error ? err.message : "desconocido"}`;
+      }
+    }
+
     case "creative_pipeline": {
       const topic = input.topic as string;
       const platform = (input.platform as string) || "instagram";
@@ -1439,6 +1716,31 @@ Responde SOLO JSON:
       }
     }
 
+    case "save_memory": {
+      const content = input.content as string;
+      const category = (input.category as string) || "fact";
+      const importance = (input.importance as number) || 5;
+      const tags = (input.tags as string[]) || [];
+      return await saveMemoryEntry(content, category, importance, tags);
+    }
+
+    case "recall_memory": {
+      const query = input.query as string;
+      const category = input.category as string | undefined;
+      return await searchMemories(query, category);
+    }
+
+    case "self_reflect": {
+      return await neuralReflect(
+        (input.focus as string) || "general",
+        (input.depth as "quick" | "deep") || "quick"
+      );
+    }
+
+    case "consolidate_knowledge": {
+      return await neuralConsolidate((input.action as string) || "full");
+    }
+
     default:
       return `Herramienta no reconocida: ${name}`;
   }
@@ -1462,9 +1764,728 @@ function splitMessage(text: string, maxLen = 4000): string[] {
   return parts;
 }
 
+// ═══════════════════════════════════════════════════════════
+//  CONVERSATION MEMORY — Supabase-backed chat history + persistent memory
+// ═══════════════════════════════════════════════════════════
+
+const HISTORY_LIMIT = 40; // Last N messages loaded as context (doubled for real conversations)
+
+type ClaudeMessage = {
+  role: string;
+  content: string | Array<{ type: string; tool_use_id?: string; content?: string; id?: string; name?: string; input?: unknown; text?: string }>;
+};
+
+// Track if we've already checked the memory table exists this process
+let memoryTableMode: "bot_memory" | "config" | null = null;
+
+/**
+ * Check which memory storage is available.
+ * Prefers bot_memory table, falls back to config table (key/value).
+ */
+async function getMemoryMode(): Promise<"bot_memory" | "config"> {
+  if (memoryTableMode !== null) return memoryTableMode;
+  try {
+    const supabase = createServerSupabase();
+    const { error } = await supabase.from("bot_memory").select("id").limit(1);
+    // Table not found: PostgREST returns PGRST205, Postgres returns 42P01
+    if (error && (error.code === "42P01" || error.code === "PGRST205" || error.message?.includes("not find"))) {
+      memoryTableMode = "config";
+      console.log("[Memory] bot_memory table not found, using config table as fallback.");
+    } else {
+      memoryTableMode = error ? "config" : "bot_memory";
+    }
+    return memoryTableMode;
+  } catch {
+    memoryTableMode = "config";
+    return "config";
+  }
+}
+
+/**
+ * Load persistent memories about Pablo and the project.
+ * Returns a formatted string to inject into the system prompt.
+ * Works with bot_memory table OR config table fallback.
+ */
+async function loadMemories(): Promise<string> {
+  try {
+    const mode = await getMemoryMode();
+    const supabase = createServerSupabase();
+
+    if (mode === "config") {
+      // Fallback: load memories from config table as JSON
+      const { data } = await supabase
+        .from("config")
+        .select("value")
+        .eq("key", "bot_memories")
+        .single();
+
+      if (!data?.value) return "";
+      try {
+        const memories = JSON.parse(data.value) as Array<{ category: string; content: string; importance: number }>;
+        return formatMemories(memories);
+      } catch {
+        return "";
+      }
+    }
+
+    // Primary: load from bot_memory table
+    const { data, error } = await supabase
+      .from("bot_memory")
+      .select("id, category, content, importance, tags")
+      .order("importance", { ascending: false })
+      .order("updated_at", { ascending: false })
+      .limit(50);
+
+    if (error || !data?.length) return "";
+    return formatMemories(data);
+  } catch (err) {
+    console.error("[Memory] Error loading memories:", err);
+    return "";
+  }
+}
+
+/**
+ * Format memories array into system prompt text.
+ */
+function formatMemories(data: Array<{ category: string; content: string; importance?: number }>): string {
+  const grouped: Record<string, string[]> = {};
+  for (const m of data) {
+    const cat = m.category || "general";
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push(m.content);
+  }
+
+  const categoryLabels: Record<string, string> = {
+    pablo: "SOBRE PABLO (lo que se de ti)",
+    preference: "TUS PREFERENCIAS (como te gusta trabajar)",
+    project: "CONTEXTO DEL PROYECTO (decisiones, estado)",
+    client: "SOBRE CLIENTES (lo que recuerdo)",
+    fact: "DATOS IMPORTANTES",
+    insight: "INSIGHTS NEURONALES (conexiones y patrones detectados)",
+    general: "NOTAS GENERALES",
+  };
+
+  const sections: string[] = [];
+  for (const [cat, items] of Object.entries(grouped)) {
+    const label = categoryLabels[cat] || cat.toUpperCase();
+    sections.push(`${label}:\n${items.map((i) => `- ${i}`).join("\n")}`);
+  }
+  return sections.join("\n\n");
+}
+
+/**
+ * Save a memory to persistent storage.
+ * Uses bot_memory table if available, otherwise config table as JSON.
+ */
+async function saveMemoryEntry(
+  content: string,
+  category: string = "fact",
+  importance: number = 5,
+  tags: string[] = []
+): Promise<string> {
+  try {
+    const mode = await getMemoryMode();
+    const supabase = createServerSupabase();
+
+    if (mode === "config") {
+      // Fallback: store in config table as JSON array
+      const { data: existing } = await supabase
+        .from("config")
+        .select("value")
+        .eq("key", "bot_memories")
+        .single();
+
+      let memories: Array<{ category: string; content: string; importance: number; tags: string[]; created_at: string }> = [];
+      if (existing?.value) {
+        try { memories = JSON.parse(existing.value); } catch { memories = []; }
+      }
+
+      // Check for duplicates
+      const duplicate = memories.find((m) => m.content.slice(0, 50) === content.slice(0, 50) && m.category === category);
+      if (duplicate) {
+        duplicate.content = content;
+        duplicate.importance = importance;
+        duplicate.tags = tags;
+      } else {
+        memories.push({ category, content, importance, tags, created_at: new Date().toISOString() });
+      }
+
+      // Keep max 200 memories, sorted by importance (expanded for neural network)
+      memories.sort((a, b) => b.importance - a.importance);
+      if (memories.length > 200) memories = memories.slice(0, 200);
+
+      const { error } = await supabase.from("config").upsert({
+        key: "bot_memories",
+        value: JSON.stringify(memories),
+        description: "Persistent bot memories (auto-managed)",
+        updated_at: new Date().toISOString(),
+      }, { onConflict: "key" });
+
+      if (error) return `Error guardando memoria: ${error.message}`;
+      return `Memoria guardada (${category}): "${content.slice(0, 80)}..."`;
+    }
+
+    // Primary: bot_memory table
+    const { data: existingMem } = await supabase
+      .from("bot_memory")
+      .select("id, content")
+      .eq("category", category)
+      .ilike("content", `%${content.slice(0, 50)}%`)
+      .limit(3);
+
+    if (existingMem?.length) {
+      const { error } = await supabase
+        .from("bot_memory")
+        .update({
+          content,
+          importance,
+          tags,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", existingMem[0].id);
+      if (error) return `Error actualizando memoria: ${error.message}`;
+      return `Memoria actualizada (${category}): "${content.slice(0, 80)}..."`;
+    }
+
+    const { error } = await supabase.from("bot_memory").insert({
+      category,
+      content,
+      importance,
+      tags,
+      source: "conversation",
+    });
+
+    if (error) return `Error guardando memoria: ${error.message}`;
+    return `Memoria guardada (${category}): "${content.slice(0, 80)}..."`;
+  } catch (err) {
+    return `Error: ${err instanceof Error ? err.message : "desconocido"}`;
+  }
+}
+
+/**
+ * Search memories by query.
+ */
+async function searchMemories(query: string, category?: string): Promise<string> {
+  try {
+    const mode = await getMemoryMode();
+    const supabase = createServerSupabase();
+
+    if (mode === "config") {
+      const { data } = await supabase
+        .from("config")
+        .select("value")
+        .eq("key", "bot_memories")
+        .single();
+
+      if (!data?.value) return `No encontre memorias sobre "${query}".`;
+      try {
+        const memories = JSON.parse(data.value) as Array<{ category: string; content: string; importance: number }>;
+        // Search by individual words for better matching
+        const words = query.toLowerCase().split(/\s+/).filter((w) => w.length > 2);
+        const matches = memories.filter((m) => {
+          const contentLower = m.content.toLowerCase();
+          const matchContent = words.some((w) => contentLower.includes(w));
+          const matchCategory = !category || m.category === category;
+          return matchContent && matchCategory;
+        });
+        if (!matches.length) return `No encontre memorias sobre "${query}".`;
+        return matches.map((m) => `[${m.category}] (importancia ${m.importance}/10) ${m.content}`).join("\n");
+      } catch {
+        return `No encontre memorias sobre "${query}".`;
+      }
+    }
+
+    // Primary: bot_memory table — search by individual words
+    const words = query.split(/\s+/).filter((w) => w.length > 2);
+    const searchWord = words[0] || query; // Use first meaningful word for ilike
+    let q = supabase
+      .from("bot_memory")
+      .select("category, content, importance, tags, created_at")
+      .order("importance", { ascending: false });
+
+    if (category) q = q.eq("category", category);
+    q = q.ilike("content", `%${searchWord}%`);
+
+    const { data, error } = await q.limit(10);
+    if (error) return `Error buscando: ${error.message}`;
+    if (!data?.length) return `No encontre memorias sobre "${query}".`;
+
+    return data.map((m) =>
+      `[${m.category}] (importancia ${m.importance}/10) ${m.content}`
+    ).join("\n");
+  } catch (err) {
+    return `Error: ${err instanceof Error ? err.message : "desconocido"}`;
+  }
+}
+
+/**
+ * Load recent conversation history from Supabase.
+ * Returns messages in Claude API format (alternating user/assistant).
+ */
+async function loadHistory(): Promise<ClaudeMessage[]> {
+  try {
+    const supabase = createServerSupabase();
+    const { data, error } = await supabase
+      .from("conversations")
+      .select("direction, message, created_at")
+      .eq("channel", "telegram")
+      .or("sender.eq.pablo,sender.eq.DIOS")
+      .order("created_at", { ascending: false })
+      .limit(HISTORY_LIMIT);
+
+    if (error || !data?.length) return [];
+
+    // Reverse to chronological order and convert to Claude format
+    const history: ClaudeMessage[] = [];
+    for (const row of data.reverse()) {
+      const role = row.direction === "inbound" ? "user" : "assistant";
+      // Prevent consecutive same-role messages (Claude API requires alternation)
+      if (history.length > 0 && history[history.length - 1].role === role) {
+        // Merge consecutive same-role messages instead of dropping them
+        const last = history[history.length - 1];
+        if (typeof last.content === "string") {
+          last.content = last.content + "\n" + row.message;
+        }
+        continue;
+      }
+      history.push({ role, content: row.message });
+    }
+
+    // Ensure history starts with "user" (Claude requirement)
+    while (history.length > 0 && history[0].role !== "user") {
+      history.shift();
+    }
+    // Ensure history ends with "assistant" (so current user msg follows properly)
+    while (history.length > 0 && history[history.length - 1].role !== "assistant") {
+      history.pop();
+    }
+
+    return history;
+  } catch (err) {
+    console.error("[Telegram Memory] Error loading history:", err);
+    return [];
+  }
+}
+
+/**
+ * Save a message to conversation history.
+ */
+async function saveMessage(direction: "inbound" | "outbound", message: string): Promise<void> {
+  try {
+    const supabase = createServerSupabase();
+    await supabase.from("conversations").insert({
+      channel: "telegram",
+      direction,
+      sender: direction === "inbound" ? "pablo" : "DIOS",
+      message: message.slice(0, 8000), // Increased from 4000 for richer context
+      message_type: "text",
+      mode: "auto",
+    });
+  } catch (err) {
+    console.error("[Telegram Memory] Error saving message:", err);
+  }
+}
+
+/**
+ * Auto-extract and save memories from a conversation turn.
+ * Enhanced with connection detection — builds neural links between memories.
+ * Uses Claude Haiku for cheap background analysis.
+ */
+async function extractAndSaveMemories(userMessage: string, assistantResponse: string): Promise<void> {
+  if (!CLAUDE_API_KEY) return;
+  // Only analyze substantial conversations (skip short ones)
+  if (userMessage.length < 20 && assistantResponse.length < 50) return;
+
+  try {
+    // Load existing memories for connection detection
+    const existingMemories = await loadMemories();
+    const existingContext = existingMemories
+      ? `\nMEMORIAS EXISTENTES (detecta conexiones con estas):\n${existingMemories.slice(0, 1500)}`
+      : "";
+
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": CLAUDE_API_KEY,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 800,
+        messages: [{
+          role: "user",
+          content: `Eres la red neuronal de PACAME. Analiza esta conversacion y extrae conocimiento.
+
+TAREA 1 — HECHOS NUEVOS: Extrae datos concretos que valga la pena recordar a largo plazo.
+TAREA 2 — CONEXIONES: Si detectas que algo se relaciona con memorias existentes, crea un "insight" que conecte ambos datos.
+TAREA 3 — PATRONES: Si ves un patron que se repite (ej: Pablo siempre pide X antes de Y), guardalo como preference.
+
+Categorias:
+- pablo: datos personales, gustos, forma de trabajar
+- preference: como le gusta que le contesten, patrones de comportamiento
+- project: decisiones de negocio, estado de proyectos
+- client: info sobre clientes especificos
+- fact: datos concretos (numeros, fechas, URLs)
+- insight: conexiones entre datos, patrones detectados, meta-conocimiento
+${existingContext}
+
+Pablo dijo: "${userMessage.slice(0, 600)}"
+Asistente respondio: "${assistantResponse.slice(0, 600)}"
+
+Responde SOLO JSON array. Si no hay nada nuevo, responde [].
+Formato: [{"content":"dato concreto o insight","category":"pablo|preference|project|client|fact|insight","importance":1-10,"tags":["tag1"]}]`,
+        }],
+      }),
+    });
+
+    const data = await res.json();
+    const text = data.content?.[0]?.text || "[]";
+    const jsonMatch = text.match(/\[[\s\S]*\]/);
+    if (!jsonMatch) return;
+
+    const memories = JSON.parse(jsonMatch[0]) as Array<{
+      content: string;
+      category: string;
+      importance: number;
+      tags: string[];
+    }>;
+
+    for (const mem of memories) {
+      if (mem.content && mem.content.length > 5) {
+        await saveMemoryEntry(
+          mem.content,
+          mem.category || "fact",
+          Math.min(Math.max(mem.importance || 5, 1), 10),
+          mem.tags || []
+        );
+      }
+    }
+
+    // Track conversation count for periodic consolidation
+    await incrementConversationCount();
+  } catch {
+    // Silent — memory extraction is best-effort, never blocks the conversation
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RED NEURONAL — Self-reflection, consolidation, neural growth
+// ═══════════════════════════════════════════════════════════
+
+/** Track conversation count for periodic consolidation */
+async function incrementConversationCount(): Promise<void> {
+  try {
+    const supabase = createServerSupabase();
+    const { data } = await supabase
+      .from("config")
+      .select("value")
+      .eq("key", "neural_state")
+      .single();
+
+    let state = { conversation_count: 0, last_consolidation: "", insights_generated: 0 };
+    if (data?.value) {
+      try { state = JSON.parse(data.value); } catch { /* use default */ }
+    }
+
+    state.conversation_count = (state.conversation_count || 0) + 1;
+
+    // Auto-consolidate every 15 conversations
+    if (state.conversation_count % 15 === 0 && CLAUDE_API_KEY) {
+      neuralConsolidate("full").catch(() => {}); // Background, non-blocking
+      state.last_consolidation = new Date().toISOString();
+    }
+
+    await supabase.from("config").upsert({
+      key: "neural_state",
+      value: JSON.stringify(state),
+      description: "Neural network state tracker",
+      updated_at: new Date().toISOString(),
+    }, { onConflict: "key" });
+  } catch {
+    // Silent
+  }
+}
+
+/**
+ * Neural self-reflection — analyze accumulated memories and generate insights.
+ * The bot "thinks" about what it knows and finds patterns.
+ */
+async function neuralReflect(focus: string, depth: "quick" | "deep"): Promise<string> {
+  if (!CLAUDE_API_KEY) return "Error: necesito CLAUDE_API_KEY para reflexionar.";
+
+  try {
+    const memories = await loadMemories();
+    if (!memories || memories.length < 50) return "Aun no tengo suficientes memorias para reflexionar. Necesito mas conversaciones.";
+
+    const focusPrompts: Record<string, string> = {
+      clients: "Analiza los patrones entre los clientes mencionados. Que tipo de negocio nos busca? Que servicios piden mas? Hay patrones en los problemas que traen? Que podemos aprender para vender mejor?",
+      pablo: "Analiza todo lo que sabes sobre Pablo. Como prefiere trabajar? Que le importa? Que patrones tiene en sus decisiones? Como puedo ser mas util para el?",
+      business: "Analiza el estado del negocio PACAME. Como van los leads? Los clientes? Los ingresos? Que tendencias detectas? Que riesgos u oportunidades ves?",
+      content: "Analiza que tipo de contenido se ha creado y que resultados ha dado. Que funciona? Que no? Hay patrones en lo que Pablo pide o aprueba?",
+      general: "Reflexiona sobre TODO lo que sabes. Que patrones generales ves? Que conexiones entre datos no son obvias? Que insights profundos puedes generar?",
+    };
+
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": CLAUDE_API_KEY,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: depth === "deep" ? "claude-sonnet-4-6" : "claude-haiku-4-5-20251001",
+        max_tokens: depth === "deep" ? 1500 : 800,
+        messages: [{
+          role: "user",
+          content: `Eres la red neuronal de PACAME agencia digital. Reflexiona sobre tus memorias acumuladas.
+
+MEMORIAS ACTUALES:
+${memories.slice(0, 3000)}
+
+TAREA: ${focusPrompts[focus] || focusPrompts.general}
+
+Responde en DOS partes:
+1. REFLEXION: Tu analisis en texto natural (max 500 palabras). Se concreto, con datos.
+2. NUEVOS INSIGHTS (JSON): Insights que vale la pena guardar permanentemente.
+
+Formato parte 2:
+INSIGHTS_JSON: [{"content":"insight concreto","importance":7,"tags":["tag1"]}]
+
+Si no hay insights nuevos, pon INSIGHTS_JSON: []`,
+        }],
+      }),
+    });
+
+    const data = await res.json();
+    const text = data.content?.[0]?.text || "No pude reflexionar.";
+
+    // Extract and save insights
+    const insightsMatch = text.match(/INSIGHTS_JSON:\s*(\[[\s\S]*?\])/);
+    if (insightsMatch) {
+      try {
+        const insights = JSON.parse(insightsMatch[1]) as Array<{
+          content: string;
+          importance: number;
+          tags: string[];
+        }>;
+        for (const ins of insights) {
+          if (ins.content) {
+            await saveMemoryEntry(ins.content, "insight", ins.importance || 7, ins.tags || ["neural", "reflection"]);
+          }
+        }
+      } catch { /* parsing failed, no problem */ }
+    }
+
+    // Return just the reflection text (without the JSON part)
+    const reflectionText = text.replace(/INSIGHTS_JSON:[\s\S]*$/, "").trim();
+    return reflectionText || text;
+  } catch (err) {
+    return `Error en reflexion: ${err instanceof Error ? err.message : "desconocido"}`;
+  }
+}
+
+/**
+ * Neural consolidation — merge duplicates, update importances, generate meta-memories.
+ * Like defragmenting the brain.
+ */
+async function neuralConsolidate(action: string): Promise<string> {
+  if (!CLAUDE_API_KEY) return "Error: necesito CLAUDE_API_KEY para consolidar.";
+
+  try {
+    const memories = await loadMemories();
+    if (!memories || memories.length < 30) return "Pocas memorias para consolidar. Sigue conversando y vuelve luego.";
+
+    const mode = await getMemoryMode();
+    const supabase = createServerSupabase();
+
+    if (action === "analyze") {
+      // Just report the current state
+      let count = 0;
+      const categories: Record<string, number> = {};
+
+      if (mode === "config") {
+        const { data } = await supabase.from("config").select("value").eq("key", "bot_memories").single();
+        if (data?.value) {
+          const mems = JSON.parse(data.value) as Array<{ category: string }>;
+          count = mems.length;
+          for (const m of mems) {
+            categories[m.category] = (categories[m.category] || 0) + 1;
+          }
+        }
+      } else {
+        const { data } = await supabase.from("bot_memory").select("category");
+        count = data?.length || 0;
+        for (const m of (data || [])) {
+          categories[m.category] = (categories[m.category] || 0) + 1;
+        }
+      }
+
+      const { data: stateData } = await supabase.from("config").select("value").eq("key", "neural_state").single();
+      const state = stateData?.value ? JSON.parse(stateData.value) : { conversation_count: 0 };
+
+      return `RED NEURONAL PACAME:
+- Total memorias: ${count}
+- Categorias: ${Object.entries(categories).map(([k, v]) => `${k}(${v})`).join(", ")}
+- Conversaciones procesadas: ${state.conversation_count || 0}
+- Ultima consolidacion: ${state.last_consolidation || "nunca"}
+- Insights generados: ${state.insights_generated || 0}
+- Modo almacenamiento: ${mode}`;
+    }
+
+    // For merge/insights/full — use Claude to analyze and consolidate
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": CLAUDE_API_KEY,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 1200,
+        messages: [{
+          role: "user",
+          content: `Eres el motor de consolidacion de la red neuronal de PACAME.
+
+MEMORIAS ACTUALES:
+${memories.slice(0, 3000)}
+
+TAREA ${action === "merge_duplicates" ? "MERGE" : action === "generate_insights" ? "INSIGHTS" : "FULL"}:
+
+${action === "merge_duplicates" || action === "full" ? `
+1. DUPLICADOS: Identifica memorias duplicadas o muy similares. Para cada grupo, genera UNA memoria consolidada que combine la info.
+` : ""}
+${action === "generate_insights" || action === "full" ? `
+2. INSIGHTS: Genera 2-5 meta-memorias que conecten datos existentes. Busca:
+   - Patrones de comportamiento de Pablo
+   - Tendencias en el tipo de clientes/servicios
+   - Conexiones no obvias entre datos
+   - Predicciones basadas en lo acumulado
+` : ""}
+${action === "full" ? `
+3. IMPORTANCIAS: Sugiere cambios de importancia para memorias que han demostrado ser mas/menos relevantes.
+` : ""}
+
+Responde JSON:
+{
+  "merged": [{"old_contents": ["texto1", "texto2"], "new": {"content": "texto consolidado", "category": "cat", "importance": 8, "tags": ["t1"]}}],
+  "insights": [{"content": "insight", "category": "insight", "importance": 7, "tags": ["neural"]}],
+  "importance_updates": [{"content_start": "primeros 30 chars de la memoria", "new_importance": 8}],
+  "summary": "resumen de cambios realizados"
+}`,
+        }],
+      }),
+    });
+
+    const data = await res.json();
+    const text = data.content?.[0]?.text || "{}";
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) return "No se pudo consolidar. Formato de respuesta invalido.";
+
+    const result = JSON.parse(jsonMatch[0]) as {
+      merged?: Array<{ new: { content: string; category: string; importance: number; tags: string[] } }>;
+      insights?: Array<{ content: string; category: string; importance: number; tags: string[] }>;
+      summary?: string;
+    };
+
+    let changes = 0;
+
+    // Save merged memories
+    if (result.merged) {
+      for (const m of result.merged) {
+        if (m.new?.content) {
+          await saveMemoryEntry(m.new.content, m.new.category || "fact", m.new.importance || 5, m.new.tags || []);
+          changes++;
+        }
+      }
+    }
+
+    // Save new insights
+    if (result.insights) {
+      for (const ins of result.insights) {
+        if (ins.content) {
+          await saveMemoryEntry(ins.content, "insight", ins.importance || 7, ins.tags || ["neural", "consolidation"]);
+          changes++;
+        }
+      }
+    }
+
+    // Update neural state
+    const { data: stateData } = await supabase.from("config").select("value").eq("key", "neural_state").single();
+    const state = stateData?.value ? JSON.parse(stateData.value) : { conversation_count: 0, insights_generated: 0 };
+    state.last_consolidation = new Date().toISOString();
+    state.insights_generated = (state.insights_generated || 0) + (result.insights?.length || 0);
+    await supabase.from("config").upsert({
+      key: "neural_state",
+      value: JSON.stringify(state),
+      description: "Neural network state tracker",
+      updated_at: new Date().toISOString(),
+    }, { onConflict: "key" });
+
+    return `Consolidacion completada: ${changes} cambios.\n${result.summary || "Red neuronal actualizada."}`;
+  } catch (err) {
+    return `Error consolidando: ${err instanceof Error ? err.message : "desconocido"}`;
+  }
+}
+
+/**
+ * Seed initial project knowledge as dynamic memories.
+ * Runs ONCE — checks if already seeded before inserting.
+ */
+async function seedProjectKnowledge(): Promise<void> {
+  try {
+    const supabase = createServerSupabase();
+    const { data } = await supabase
+      .from("config")
+      .select("value")
+      .eq("key", "knowledge_seeded")
+      .single();
+
+    if (data?.value === "true") return; // Already seeded
+
+    // Seed comprehensive memories about current state
+    const seedMemories = [
+      { content: "Pablo Calleja es el CEO y fundador de PACAME agencia digital. Emprendedor, desarrollador web, gestiona redes sociales. Trabaja desde Espana.", category: "pablo", importance: 10, tags: ["fundador", "ceo"] },
+      { content: "Pablo prefiere comunicacion directa, sin humo. Le gusta que las cosas se ejecuten sin preguntarle confirmacion. Nunca delegarle tareas.", category: "preference", importance: 10, tags: ["comunicacion", "autonomia"] },
+      { content: "PACAME es una agencia digital con 10 agentes IA + 120 subespecialistas. Resuelve problemas digitales para PYMEs en Espana. Tagline: Tu equipo digital. Sin limites.", category: "project", importance: 10, tags: ["agencia", "mision"] },
+      { content: "Stack: Next.js 15, React 19, TypeScript, Supabase, Stripe (pagos live), Claude API, Vercel, VPS Hetzner. Todo en produccion.", category: "project", importance: 9, tags: ["tech", "stack"] },
+      { content: "Servicios PACAME: Web 497EUR, Landing 300EUR, Ecommerce 997EUR, SEO 397EUR/mes, RRSS 297EUR/mes, Meta Ads 297EUR/mes, Google Ads 397EUR/mes, Branding 497EUR, ChatBot 197EUR/mes.", category: "project", importance: 10, tags: ["precios", "servicios"] },
+      { content: "Dominio: pacameagencia.com. Email: hola@pacameagencia.com. WhatsApp: +34 722 669 381. DNS en Hostinger.", category: "fact", importance: 9, tags: ["contacto", "dominio"] },
+      { content: "Telegram Bot webhook esta en Vercel: /api/telegram/webhook. NO usar telegramTrigger de n8n. Bot tiene memoria persistente en Supabase.", category: "fact", importance: 8, tags: ["telegram", "infra"] },
+      { content: "APIs activas en produccion: Claude, Stripe, Apify (scraping), Resend (email), Vapi (llamadas IA), Telegram, OpenAI (Whisper+DALL-E), Freepik Suite (imagenes IA), Google Stitch (diseno UI), Gemini.", category: "fact", importance: 9, tags: ["apis", "integraciones"] },
+      { content: "Instagram API configurada parcialmente. Pendiente OAuth callback para access token. WhatsApp Business API pendiente.", category: "project", importance: 7, tags: ["apis", "pendiente"] },
+      { content: "VPS Hetzner 200.234.238.94 — corre n8n (automaciones), voice server. Subdominios: n8n.pacameagencia.com, api.pacameagencia.com, voice.pacameagencia.com.", category: "fact", importance: 8, tags: ["infra", "vps"] },
+      { content: "Pipeline lead gen: Apify scraping Google Maps → auto-audit web → scoring 1-100 → outreach personalizado via Copy. Metricas: scrape→qualify 50%, email→open 40%, reply 5%, call→close 30%.", category: "project", importance: 9, tags: ["leads", "pipeline"] },
+      { content: "Carruseles Instagram: Motor v3 con glass cards, gradientes, 10 tipos de slide, 10 paletas. Calidad top agencia. PACAME branding por defecto.", category: "fact", importance: 7, tags: ["contenido", "carruseles"] },
+      { content: "Agentes: Nova (branding), Atlas (SEO), Nexus (ads/growth), Pixel (frontend), Core (backend), Pulse (RRSS), Sage (estrategia), Copy (textos), Lens (analytics), DIOS (orquestacion).", category: "project", importance: 10, tags: ["equipo", "agentes"] },
+      { content: "4 problemas que PACAME resuelve: 1) Adquisicion (Atlas+Nexus), 2) Conversion (Nexus+Pixel), 3) Marca (Nova+Copy), 4) Producto/Operacion (Core+Pixel).", category: "project", importance: 9, tags: ["framework", "ventas"] },
+      { content: "Marca PACAME: Electric Violet #7C3AED, gradiente #7C3AED→#4338CA→#06B6D4, Space Grotesk (titulos), Inter (body), dark mode #0D0D0D. Arquetipo: Mago + Rebelde.", category: "fact", importance: 8, tags: ["marca", "identidad"] },
+      { content: "Red neuronal activada: el bot aprende de cada conversacion, detecta conexiones entre memorias, genera insights automaticamente, y consolida conocimiento cada 15 conversaciones.", category: "project", importance: 8, tags: ["neural", "aprendizaje"] },
+    ];
+
+    for (const mem of seedMemories) {
+      await saveMemoryEntry(mem.content, mem.category, mem.importance, mem.tags);
+    }
+
+    // Mark as seeded
+    await supabase.from("config").upsert({
+      key: "knowledge_seeded",
+      value: "true",
+      description: "Flag: initial project knowledge has been seeded into bot memories",
+      updated_at: new Date().toISOString(),
+    }, { onConflict: "key" });
+
+    console.log("[Neural] Project knowledge seeded successfully — 16 base memories.");
+  } catch (err) {
+    console.error("[Neural] Error seeding knowledge:", err);
+  }
+}
+
 /**
  * Process a natural language message from Pablo via Telegram.
  * Uses Claude with tool_use to understand intent and execute actions.
+ * Loads conversation history for context (memory/brain).
  */
 export async function processMessage(userMessage: string): Promise<void> {
   if (!CLAUDE_API_KEY) {
@@ -1473,13 +2494,46 @@ export async function processMessage(userMessage: string): Promise<void> {
   }
 
   try {
-    // Call Claude with tools
-    let messages: Array<{ role: string; content: string | Array<{ type: string; tool_use_id?: string; content?: string; id?: string; name?: string; input?: unknown; text?: string }> }> = [
+    // Save incoming message to history + seed knowledge on first run
+    await saveMessage("inbound", userMessage);
+    seedProjectKnowledge().catch(() => {}); // Background, runs once
+
+    // Load conversation history + persistent memories in parallel
+    const [history, memories] = await Promise.all([
+      loadHistory(),
+      loadMemories(),
+    ]);
+
+    // Build dynamic system prompt with deep knowledge + memories
+    const memoryBlock = memories
+      ? `\n\n═══════════════════════════════════════════════════
+MI MEMORIA PERSISTENTE (lo que recuerdo de conversaciones anteriores)
+═══════════════════════════════════════════════════
+${memories}
+
+RED NEURONAL — INSTRUCCIONES DE APRENDIZAJE CONTINUO:
+- Usa esta informacion para dar respuestas personalizadas y contextuales.
+- Si Pablo menciona algo importante (preferencias, datos de clientes, decisiones), usa save_memory para guardarlo.
+- Si necesitas recordar algo especifico, usa recall_memory para buscarlo.
+- NUNCA digas "no tengo memoria" o "no recuerdo" — BUSCA primero con recall_memory.
+- Detecta CONEXIONES entre memorias: si un cliente se parece a otro, si un patron se repite, guardalo como insight.
+- Cuando acumules suficiente info sobre un tema, usa self_reflect para generar insights profundos.
+- Aprende continuamente. Cada conversacion te hace mas util. Eres una red neuronal que crece.`
+      : `\n\nMEMORIA: Aun no tengo memorias guardadas. Empezare a aprender sobre Pablo y el proyecto a medida que hablemos. Usa save_memory cuando detectes info importante.`;
+
+    const systemWithMemory = SYSTEM_PROMPT + PROJECT_KNOWLEDGE + memoryBlock;
+
+    // Build messages array: history + current message
+    const messages: ClaudeMessage[] = [
+      ...history,
       { role: "user", content: userMessage },
     ];
 
-    // Loop for multi-turn tool use (max 3 rounds — prevents runaway behavior)
-    for (let round = 0; round < 3; round++) {
+    // Track the final assistant response for saving to history
+    let finalResponse = "";
+
+    // Loop for multi-turn tool use (max 5 rounds — increased for memory operations)
+    for (let round = 0; round < 5; round++) {
       const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: {
@@ -1489,8 +2543,8 @@ export async function processMessage(userMessage: string): Promise<void> {
         },
         body: JSON.stringify({
           model: "claude-sonnet-4-6",
-          max_tokens: 2500,
-          system: SYSTEM_PROMPT,
+          max_tokens: 3000,
+          system: systemWithMemory,
           tools: TOOLS,
           messages,
         }),
@@ -1512,10 +2566,16 @@ export async function processMessage(userMessage: string): Promise<void> {
       if (toolCalls.length === 0) {
         // No tool calls — send the text response
         const responseText = textParts.map((t: { text: string }) => t.text).join("\n") || "...";
+        finalResponse += responseText;
         const parts = splitMessage(responseText);
         for (const part of parts) {
           await sendTelegram(part);
         }
+        // Save assistant response to history
+        await saveMessage("outbound", finalResponse);
+
+        // Auto-extract memories in background (non-blocking)
+        extractAndSaveMemories(userMessage, finalResponse).catch(() => {});
         return;
       }
 
@@ -1528,7 +2588,15 @@ export async function processMessage(userMessage: string): Promise<void> {
       ];
       messages.push({ role: "assistant", content: filteredContent });
 
+      // Capture any text before tool execution
+      const preToolText = textParts.map((t: { text: string }) => t.text).join("\n");
+      if (preToolText) finalResponse += preToolText + "\n";
+
       const result = await executeTool(toolToRun.name, toolToRun.input as Record<string, unknown>);
+
+      // Save tool execution to history for richer context
+      await saveMessage("outbound", `[Tool: ${toolToRun.name}] ${result.slice(0, 500)}`);
+
       messages.push({
         role: "user",
         content: [{
@@ -1540,7 +2608,12 @@ export async function processMessage(userMessage: string): Promise<void> {
     }
 
     // If we exhausted rounds, send what we have
-    await sendTelegram("He ejecutado varias acciones. Revisa el dashboard para ver los resultados.");
+    const exhaustedMsg = "He ejecutado varias acciones. Revisa el dashboard para ver los resultados.";
+    await sendTelegram(exhaustedMsg);
+    await saveMessage("outbound", finalResponse || exhaustedMsg);
+
+    // Auto-extract memories even on exhausted rounds
+    extractAndSaveMemories(userMessage, finalResponse || exhaustedMsg).catch(() => {});
   } catch (err) {
     console.error("[Telegram Assistant] Error:", err);
     await sendTelegram(`Error procesando mensaje: ${err instanceof Error ? err.message : "desconocido"}`);

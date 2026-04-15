@@ -9,12 +9,25 @@ import { services, packages } from "@/lib/data/services";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import ServiceCheckoutButton from "@/components/ServiceCheckoutButton";
 import PackageCheckoutButton from "@/components/PackageCheckoutButton";
+import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
+import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
+import GoldenDivider from "@/components/effects/GoldenDivider";
+import MagneticButton from "@/components/effects/MagneticButton";
+import { ShinyButton } from "@/components/ui/shiny-button";
 
 export const metadata: Metadata = {
-  title: "Servicios — Diseño Web, SEO, Ads, Social Media y Branding",
+  title: "Servicios — Diseño Web, SEO, Ads, Social Media y Branding | PACAME",
   description:
     "Todos los servicios digitales que necesita tu empresa. Precios transparentes, plazos concretos. Web desde 300€, SEO desde 400€/mes, Ads desde 500€.",
   alternates: { canonical: "https://pacameagencia.com/servicios" },
+  openGraph: {
+    title: "Servicios Digitales para PYMEs — Precios Transparentes | PACAME",
+    description: "Web desde 300€, SEO desde 400€/mes, Ads desde 500€. Plazos concretos y precios públicos.",
+    url: "https://pacameagencia.com/servicios",
+    siteName: "PACAME",
+    type: "website",
+    locale: "es_ES",
+  },
 };
 
 const iconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
@@ -83,15 +96,15 @@ export default function ServiciosPage() {
       <ServicesJsonLd />
       {/* Hero */}
       <section className="relative pt-36 pb-24 overflow-hidden">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.06] rounded-full blur-[200px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-olympus-radial pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
+        <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+          <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-5 uppercase tracking-[0.2em]">
             Servicios y precios
           </p>
-          <h1 className="font-heading font-bold text-display text-pacame-white mb-6 text-balance">
+          <h1 className="font-accent font-bold text-display text-pacame-white mb-6 text-balance">
             Precios claros.{" "}
-            <span className="gradient-text-vivid">Resultados concretos.</span>
+            <span className="gradient-text-gold">Resultados concretos.</span>
           </h1>
           <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto mb-12 font-light">
             Sin presupuestos que se inflan. Sin sorpresas en la factura.
@@ -117,7 +130,7 @@ export default function ServiciosPage() {
               );
             })}
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Services */}
@@ -130,11 +143,11 @@ export default function ServiciosPage() {
             id={service.id}
             className="section-padding relative"
           >
-            {sIdx > 0 && <div className="absolute top-0 inset-x-0 section-divider" />}
+            {sIdx > 0 && <div className="px-6"><GoldenDivider variant="line" /></div>}
 
             <div className="max-w-6xl mx-auto px-6">
               {/* Section header */}
-              <div className="flex items-start gap-5 mb-14">
+              <ScrollReveal direction="left" className="flex items-start gap-5 mb-14">
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
                   style={{ backgroundColor: `${catColor}10` }}
@@ -147,14 +160,16 @@ export default function ServiciosPage() {
                   </h2>
                   <p className="text-pacame-white/60 font-body max-w-xl">{service.description}</p>
                 </div>
-              </div>
+              </ScrollReveal>
 
               {/* Service cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" staggerDelay={0.08}>
                 {service.items.map((item) => (
+                  <StaggerItem key={item.name}>
+                  <CardTilt tiltMaxAngle={8} scale={1.02}>
+                  <CardTiltContent>
                   <div
-                    key={item.name}
-                    className={`rounded-2xl p-7 transition-all duration-500 ease-apple relative ${
+                    className={`rounded-2xl p-7 transition-all duration-500 ease-apple relative card-golden-shine ${
                       item.featured
                         ? "border-2 hover:translate-y-[-2px]"
                         : "bg-dark-card border border-white/[0.06] hover:border-white/[0.1] hover:translate-y-[-2px]"
@@ -216,8 +231,11 @@ export default function ServiciosPage() {
                       />
                     </div>
                   </div>
+                  </CardTiltContent>
+                  </CardTilt>
+                  </StaggerItem>
                 ))}
-              </div>
+              </StaggerContainer>
             </div>
           </section>
         );
@@ -225,25 +243,27 @@ export default function ServiciosPage() {
 
       {/* Packages section */}
       <section className="section-padding relative" id="paquetes">
-        <div className="absolute top-0 inset-x-0 section-divider" />
+        <div className="px-6"><GoldenDivider variant="laurel" /></div>
 
         <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <p className="text-[13px] font-body font-medium text-neon-cyan mb-4 uppercase tracking-[0.2em]">
+          <ScrollReveal className="text-center mb-16">
+            <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
               Paquetes combinados
             </p>
-            <h2 className="font-heading font-bold text-section text-pacame-white mb-6 text-balance">
+            <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
               Combina servicios.{" "}
-              <span className="gradient-text-vivid">Ahorra hasta un 35%.</span>
+              <span className="gradient-text-gold">Ahorra hasta un 35%.</span>
             </h2>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10" staggerDelay={0.1}>
             {packages.map((pkg) => (
+              <StaggerItem key={pkg.id}>
+              <CardTilt tiltMaxAngle={pkg.featured ? 6 : 8} scale={1.02}>
+              <CardTiltContent>
               <div
-                key={pkg.id}
                 className={`rounded-2xl p-8 transition-all duration-500 ease-apple hover:translate-y-[-2px] relative flex flex-col ${
-                  pkg.featured ? "bg-brand-gradient" : "bg-dark-card border border-white/[0.06]"
+                  pkg.featured ? "bg-brand-gradient glow-border" : "bg-dark-card border border-white/[0.06]"
                 }`}
               >
                 {pkg.featured && (
@@ -297,27 +317,37 @@ export default function ServiciosPage() {
                   featured={pkg.featured}
                 />
               </div>
+              </CardTiltContent>
+              </CardTilt>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* Final CTA */}
       <section className="section-padding bg-pacame-black text-center">
-        <div className="max-w-2xl mx-auto px-6">
+        <ScrollReveal className="max-w-2xl mx-auto px-6">
           <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
             No ves lo que necesitas?
           </h2>
           <p className="text-pacame-white/60 font-body mb-10 text-lg">
             Te escuchamos y preparamos un presupuesto a medida. En 24 horas.
           </p>
-          <Button variant="gradient" size="xl" asChild className="group rounded-full shadow-glow-violet">
-            <Link href="/contacto">
-              Hablar con el equipo
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
-        </div>
+          <MagneticButton>
+            <ShinyButton
+              gradientFrom="#D4A853"
+              gradientTo="#7C3AED"
+              gradientOpacity={0.8}
+              className="group min-w-[260px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
+            >
+              <Link href="/contacto" className="flex items-center gap-2 text-pacame-white">
+                Hablar con el equipo
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </ShinyButton>
+          </MagneticButton>
+        </ScrollReveal>
       </section>
     </div>
   );

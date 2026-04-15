@@ -7,6 +7,11 @@ import { getServiceBySlug, getAllServiceSlugs, services } from "@/lib/data/servi
 import { agents } from "@/lib/data/agents";
 import ServiceCheckoutButton from "@/components/ServiceCheckoutButton";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
+import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
+import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
+import GoldenDivider from "@/components/effects/GoldenDivider";
+import MagneticButton from "@/components/effects/MagneticButton";
+import { ShinyButton } from "@/components/ui/shiny-button";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -25,6 +30,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${item.name} — ${service.name} | PACAME`,
     description: `${item.longDescription.slice(0, 155)}...`,
     alternates: { canonical: `https://pacameagencia.com/servicios/${item.slug}` },
+    openGraph: {
+      title: `${item.name} — ${service.name} | PACAME`,
+      description: item.description,
+      url: `https://pacameagencia.com/servicios/${item.slug}`,
+      siteName: "PACAME",
+      type: "website",
+      locale: "es_ES",
+    },
   };
 }
 
@@ -54,9 +67,9 @@ export default async function ServiceDetailPage({ params }: Props) {
 
       {/* Hero */}
       <section className="relative pt-36 pb-20 overflow-hidden">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.06] rounded-full blur-[200px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-olympus-radial pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6">
+        <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm font-body text-pacame-white/30 mb-8">
             <Link href="/servicios" className="hover:text-pacame-white/50 transition-colors">
@@ -74,11 +87,11 @@ export default async function ServiceDetailPage({ params }: Props) {
             {/* Left: Content */}
             <div className="lg:col-span-2">
               {item.featured && (
-                <span className="inline-block text-[11px] font-body font-semibold text-electric-violet uppercase tracking-wider bg-electric-violet/10 rounded-full px-3 py-1 mb-4">
+                <span className="inline-block text-[11px] font-body font-semibold text-olympus-gold uppercase tracking-wider bg-olympus-gold/10 rounded-full px-3 py-1 mb-4 border border-olympus-gold/20">
                   Mas contratado
                 </span>
               )}
-              <h1 className="font-heading font-bold text-4xl sm:text-5xl text-pacame-white mb-4">
+              <h1 className="font-accent font-bold text-4xl sm:text-5xl text-pacame-white mb-4">
                 {item.name}
               </h1>
               <p className="text-xl text-pacame-white/60 font-body leading-relaxed mb-8">
@@ -108,7 +121,9 @@ export default async function ServiceDetailPage({ params }: Props) {
 
             {/* Right: Pricing card */}
             <div className="lg:col-span-1">
-              <div className="rounded-2xl p-7 bg-dark-card border border-white/[0.06] sticky top-28">
+              <CardTilt tiltMaxAngle={6} scale={1.02}>
+              <CardTiltContent>
+              <div className="rounded-2xl p-7 bg-dark-card border border-white/[0.06] sticky top-28 card-golden-shine">
                 <div className="font-heading font-bold text-3xl text-pacame-white mb-1">
                   {item.price}
                 </div>
@@ -132,26 +147,32 @@ export default async function ServiceDetailPage({ params }: Props) {
                   o hablar primero sin compromiso
                 </Link>
               </div>
+              </CardTiltContent>
+              </CardTilt>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* What's included */}
       <section className="section-padding relative">
-        <div className="absolute top-0 inset-x-0 section-divider" />
+        <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-4xl mx-auto px-6">
+          <ScrollReveal>
           <h2 className="font-heading font-bold text-2xl text-pacame-white mb-8">
             Que incluye
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          </ScrollReveal>
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-4" staggerDelay={0.06}>
             {item.includes.map((inc) => (
-              <div key={inc} className="flex items-start gap-3 p-4 rounded-xl bg-dark-card border border-white/[0.04]">
-                <Check className="w-5 h-5 text-lime-pulse flex-shrink-0 mt-0.5" />
+              <StaggerItem key={inc}>
+              <div className="flex items-start gap-3 p-4 rounded-xl bg-dark-card border border-white/[0.04]">
+                <Check className="w-5 h-5 text-olympus-gold flex-shrink-0 mt-0.5" />
                 <span className="text-sm text-pacame-white/65 font-body">{inc}</span>
               </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
 
           {item.deliverables.length > 0 && (
             <div className="mt-10">
@@ -162,7 +183,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                 {item.deliverables.map((d) => (
                   <span
                     key={d}
-                    className="text-xs font-body px-3 py-1.5 rounded-full bg-electric-violet/8 text-electric-violet/80 border border-electric-violet/15"
+                    className="text-xs font-body px-3 py-1.5 rounded-full bg-electric-violet/8 text-olympus-gold/80 border border-olympus-gold/15"
                   >
                     {d}
                   </span>
@@ -176,16 +197,19 @@ export default async function ServiceDetailPage({ params }: Props) {
       {/* Process */}
       {item.process.length > 0 && (
         <section className="section-padding relative">
-          <div className="absolute top-0 inset-x-0 section-divider" />
+          <div className="px-6"><GoldenDivider variant="line" /></div>
           <div className="max-w-4xl mx-auto px-6">
+            <ScrollReveal>
             <h2 className="font-heading font-bold text-2xl text-pacame-white mb-10">
               Como lo hacemos
             </h2>
+            </ScrollReveal>
             <div className="space-y-6">
               {item.process.map((step, i) => (
-                <div key={step.step} className="flex gap-5">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-electric-violet/10 flex items-center justify-center">
-                    <span className="font-heading font-bold text-sm text-electric-violet">
+                <ScrollReveal key={step.step} delay={i * 0.1}>
+                <div className="flex gap-5">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-olympus-gold/10 flex items-center justify-center">
+                    <span className="font-heading font-bold text-sm text-olympus-gold">
                       {i + 1}
                     </span>
                   </div>
@@ -198,6 +222,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                     </p>
                   </div>
                 </div>
+                </ScrollReveal>
               ))}
             </div>
           </div>
@@ -207,20 +232,24 @@ export default async function ServiceDetailPage({ params }: Props) {
       {/* FAQ */}
       {item.faq.length > 0 && (
         <section className="section-padding relative">
-          <div className="absolute top-0 inset-x-0 section-divider" />
+          <div className="px-6"><GoldenDivider variant="line" /></div>
           <div className="max-w-4xl mx-auto px-6">
+            <ScrollReveal>
             <h2 className="font-heading font-bold text-2xl text-pacame-white mb-8">
               Preguntas frecuentes
             </h2>
+            </ScrollReveal>
             <div className="space-y-4">
-              {item.faq.map((f) => (
-                <div key={f.q} className="rounded-2xl p-6 bg-dark-card border border-white/[0.06]">
+              {item.faq.map((f, i) => (
+                <ScrollReveal key={f.q} delay={i * 0.08}>
+                <div className="rounded-2xl p-6 bg-dark-card border border-white/[0.06] card-golden-shine">
                   <div className="flex items-start gap-3 mb-2">
-                    <HelpCircle className="w-5 h-5 text-electric-violet flex-shrink-0 mt-0.5" />
+                    <HelpCircle className="w-5 h-5 text-olympus-gold flex-shrink-0 mt-0.5" />
                     <h3 className="font-heading font-semibold text-pacame-white">{f.q}</h3>
                   </div>
                   <p className="text-sm text-pacame-white/55 font-body pl-8">{f.a}</p>
                 </div>
+                </ScrollReveal>
               ))}
             </div>
           </div>
@@ -230,17 +259,21 @@ export default async function ServiceDetailPage({ params }: Props) {
       {/* Related services */}
       {relatedItems.length > 0 && (
         <section className="section-padding relative">
-          <div className="absolute top-0 inset-x-0 section-divider" />
+          <div className="px-6"><GoldenDivider variant="laurel" /></div>
           <div className="max-w-4xl mx-auto px-6">
+            <ScrollReveal>
             <h2 className="font-heading font-bold text-2xl text-pacame-white mb-8">
               Tambien te puede interesar
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            </ScrollReveal>
+            <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-5" staggerDelay={0.1}>
               {relatedItems.map((related) => (
+                <StaggerItem key={related.slug}>
+                <CardTilt tiltMaxAngle={8} scale={1.02}>
+                <CardTiltContent>
                 <Link
-                  key={related.slug}
                   href={`/servicios/${related.slug}`}
-                  className="group rounded-2xl p-7 bg-dark-card border border-white/[0.06] hover:border-electric-violet/20 transition-all duration-500"
+                  className="group block rounded-2xl p-7 bg-dark-card border border-white/[0.06] hover:border-olympus-gold/20 transition-all duration-500 card-golden-shine"
                 >
                   <h3 className="font-heading font-bold text-xl text-pacame-white mb-2">
                     {related.name}
@@ -253,15 +286,18 @@ export default async function ServiceDetailPage({ params }: Props) {
                     <ArrowRight className="w-4 h-4 text-pacame-white/30 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </Link>
+                </CardTiltContent>
+                </CardTilt>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </div>
         </section>
       )}
 
       {/* Final CTA */}
       <section className="section-padding bg-pacame-black text-center">
-        <div className="max-w-2xl mx-auto px-6">
+        <ScrollReveal className="max-w-2xl mx-auto px-6">
           <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
             Listo para empezar?
           </h2>
@@ -269,19 +305,26 @@ export default async function ServiceDetailPage({ params }: Props) {
             Contratalo ahora o hablamos primero. Sin compromiso.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="gradient" size="xl" asChild className="group rounded-full shadow-glow-violet">
-              <Link href={`/contacto?service=${service.id}`}>
-                Hablar con el equipo
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
+            <MagneticButton>
+              <ShinyButton
+                gradientFrom="#D4A853"
+                gradientTo="#7C3AED"
+                gradientOpacity={0.8}
+                className="group min-w-[260px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
+              >
+                <Link href={`/contacto?service=${service.id}`} className="flex items-center gap-2 text-pacame-white">
+                  Hablar con el equipo
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </ShinyButton>
+            </MagneticButton>
             <Button variant="outline" size="xl" asChild className="rounded-full border-white/[0.08] hover:border-white/20">
               <Link href="/servicios">
                 Ver todos los servicios
               </Link>
             </Button>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
     </div>
   );

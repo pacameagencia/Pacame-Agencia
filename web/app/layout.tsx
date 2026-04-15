@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SageChatWidget from "@/components/SageChatWidget";
+import CursorGlowWrapper from "@/components/effects/CursorGlowWrapper";
+import CookieConsent from "@/components/CookieConsent";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import LoadingScreen from "@/components/effects/LoadingScreen";
+import ScrollProgress from "@/components/effects/ScrollProgress";
+import NoiseOverlay from "@/components/effects/NoiseOverlay";
+import BackToTop from "@/components/effects/BackToTop";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -24,6 +31,13 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-jetbrains-mono",
+  display: "swap",
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-playfair",
   display: "swap",
 });
 
@@ -89,6 +103,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://pacameagencia.com",
   },
+  verification: {
+    google: "B2h8SzjtvgC881Mq7jebvGxsYkLM2OQ5mqUcVs6wgyo",
+  },
 };
 
 export default function RootLayout({
@@ -99,9 +116,28 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} dark`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable} dark`}
     >
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "PACAME",
+              url: "https://pacameagencia.com",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: {
+                  "@type": "EntryPoint",
+                  urlTemplate: "https://pacameagencia.com/servicios?q={search_term_string}",
+                },
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -170,11 +206,18 @@ export default function RootLayout({
         >
           Saltar al contenido
         </a>
+        <LoadingScreen />
+        <ScrollProgress />
+        <NoiseOverlay />
+        <CursorGlowWrapper />
         <Header />
         <main id="main-content">{children}</main>
         <Footer />
         <WhatsAppButton />
+        <BackToTop />
         <SageChatWidget />
+        <CookieConsent />
+        <GoogleAnalytics />
       </body>
     </html>
   );

@@ -9,11 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/stitch-sdk": "^0.1.0",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-dialog": "^1.1.4",
     "@radix-ui/react-navigation-menu": "^1.2.3",
     "@radix-ui/react-slot": "^1.1.1",
     "@supabase/supabase-js": "^2.101.1",
+    "@tsparticles/react": "^3.0.0",
+    "@tsparticles/slim": "^3.9.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^11.15.0",
@@ -24,6 +27,7 @@
     "react-dom": "^19.0.0",
     "recharts": "^3.8.1",
     "resend": "^6.10.0",
+    "simplex-noise": "^4.0.3",
     "stripe": "^22.0.0",
     "tailwind-merge": "^2.5.5",
     "zod": "^4.3.6"

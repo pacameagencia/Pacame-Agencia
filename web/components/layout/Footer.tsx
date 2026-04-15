@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Zap } from "lucide-react";
+import GoldenDivider from "@/components/effects/GoldenDivider";
+import TrustBadges from "@/components/TrustBadges";
 
 const footerLinks = {
   servicios: [
@@ -32,13 +33,15 @@ const footerLinks = {
     { label: "Privacidad", href: "/privacidad" },
     { label: "Aviso legal", href: "/aviso-legal" },
     { label: "Cookies", href: "/cookies" },
+    { label: "Terminos", href: "/terminos-servicio" },
+    { label: "Accesibilidad", href: "/accesibilidad" },
   ],
 };
 
 function FooterColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
   return (
     <div>
-      <h4 className="font-body text-xs font-semibold text-pacame-white/50 uppercase tracking-[0.15em] mb-5">
+      <h4 className="font-body text-xs font-semibold text-olympus-gold/60 uppercase tracking-[0.15em] mb-5">
         {title}
       </h4>
       <ul className="space-y-3">
@@ -59,22 +62,37 @@ function FooterColumn({ title, links }: { title: string; links: { label: string;
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0A0A0A] border-t border-white/[0.04]">
+    <footer className="bg-[#0A0A0A] relative" role="contentinfo">
+      {/* Golden divider instead of plain border */}
+      <div className="px-6">
+        <GoldenDivider variant="star" />
+      </div>
+
       <div className="max-w-6xl mx-auto px-6 pt-20 pb-12">
         {/* Top section - brand + links */}
         <div className="grid grid-cols-2 md:grid-cols-7 gap-10 mb-20">
           {/* Brand */}
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2.5 mb-5">
-              <div className="w-8 h-8 rounded-lg bg-brand-gradient flex items-center justify-center">
-                <Zap className="w-3.5 h-3.5 text-white fill-white" />
-              </div>
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <defs>
+                  <linearGradient id="footer-logo-grad" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#7C3AED" />
+                    <stop offset="50%" stopColor="#D4A853" />
+                    <stop offset="100%" stopColor="#06B6D4" />
+                  </linearGradient>
+                </defs>
+                <rect width="28" height="28" rx="7" fill="url(#footer-logo-grad)" />
+                <path d="M9 21V7H14.5C17 7 19 9 19 11.5C19 14 17 16 14.5 16H12.5" stroke="white" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+                <circle cx="20" cy="8" r="1" fill="white" opacity="0.6" />
+                <circle cx="22" cy="12" r="0.7" fill="white" opacity="0.4" />
+              </svg>
               <span className="font-heading font-bold text-lg text-pacame-white">PACAME</span>
             </Link>
             <p className="text-[15px] text-pacame-white/60 leading-relaxed max-w-xs mb-8">
               Tu equipo digital completo. Agentes IA especializados, liderados por humanos.
             </p>
-            <div className="flex items-center gap-5">
+            <nav aria-label="Redes sociales" className="flex items-center gap-5">
               {[
                 { label: "X", href: "https://twitter.com/pacameagencia" },
                 { label: "LinkedIn", href: "https://linkedin.com/company/pacame" },
@@ -85,13 +103,13 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-pacame-white/50 hover:text-pacame-white transition-colors duration-300"
+                  className="text-xs text-pacame-white/50 hover:text-olympus-gold transition-colors duration-300"
                   aria-label={social.label}
                 >
                   {social.label}
                 </a>
               ))}
-            </div>
+            </nav>
           </div>
 
           <FooterColumn title="Servicios" links={footerLinks.servicios} />
@@ -101,7 +119,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-body text-xs font-semibold text-pacame-white/50 uppercase tracking-[0.15em] mb-5">
+            <h4 className="font-body text-xs font-semibold text-olympus-gold/60 uppercase tracking-[0.15em] mb-5">
               Contacto
             </h4>
             <ul className="space-y-3">
@@ -116,25 +134,38 @@ export default function Footer() {
               <li className="text-sm text-pacame-white/50">
                 Madrid, Espana
               </li>
+              <li className="text-sm text-pacame-white/35 mt-2">
+                Pablo Calleja Mena
+              </li>
+              {/* NIF: se anadira cuando Pablo lo proporcione */}
             </ul>
           </div>
         </div>
 
+        {/* Trust badges */}
+        <div className="mb-10 pt-8 relative">
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/10 to-transparent" />
+          <TrustBadges variant="footer" />
+        </div>
+
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-pacame-white/40">
-            &copy; {new Date().getFullYear()} PACAME. Todos los derechos reservados.
-          </p>
-          <div className="flex items-center gap-6">
-            {footerLinks.legal.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-xs text-pacame-white/40 hover:text-pacame-white/70 transition-colors duration-300"
-              >
-                {link.label}
-              </Link>
-            ))}
+        <div className="pt-8 relative">
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/10 to-transparent" />
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-xs text-pacame-white/40">
+              &copy; {new Date().getFullYear()} PACAME. Forjado en el Olimpo Digital.
+            </p>
+            <div className="flex items-center gap-6">
+              {footerLinks.legal.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-xs text-pacame-white/40 hover:text-pacame-white/70 transition-colors duration-300"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -8,6 +8,8 @@ import {
   CreditCard, Phone, Shield, ExternalLink, ThumbsUp, Minus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
+import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
 
 interface ClientData {
   name: string;
@@ -134,7 +136,7 @@ function PortalContent() {
   if (step === "login") {
     return (
       <div className="bg-pacame-black min-h-screen flex items-center justify-center">
-        <div className="w-full max-w-md px-6">
+        <ScrollReveal className="w-full max-w-md px-6">
           <div className="text-center mb-8">
             <div className="inline-flex w-12 h-12 rounded-xl bg-brand-gradient items-center justify-center mb-4">
               <span className="text-white font-heading font-bold text-lg">P</span>
@@ -146,13 +148,15 @@ function PortalContent() {
           </div>
 
           {sent ? (
-            <div className="rounded-2xl bg-dark-card border border-lime-pulse/20 p-6 text-center">
-              <Mail className="w-8 h-8 text-lime-pulse mx-auto mb-3" />
-              <h2 className="font-heading font-semibold text-pacame-white mb-2">Enlace enviado</h2>
-              <p className="text-sm text-pacame-white/50 font-body">
-                Si tu email esta registrado, recibiras un enlace de acceso en tu bandeja de entrada. Revisa tambien spam.
-              </p>
-            </div>
+            <CardTilt tiltMaxAngle={4}>
+              <CardTiltContent className="rounded-2xl bg-dark-card border border-lime-pulse/20 p-6 text-center">
+                <Mail className="w-8 h-8 text-lime-pulse mx-auto mb-3" />
+                <h2 className="font-heading font-semibold text-pacame-white mb-2">Enlace enviado</h2>
+                <p className="text-sm text-pacame-white/50 font-body">
+                  Si tu email esta registrado, recibiras un enlace de acceso en tu bandeja de entrada. Revisa tambien spam.
+                </p>
+              </CardTiltContent>
+            </CardTilt>
           ) : (
             <form onSubmit={handleRequestAccess} className="space-y-4">
               <input
@@ -161,7 +165,7 @@ function PortalContent() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body placeholder:text-pacame-white/50 focus:border-electric-violet/50 outline-none"
+                className="w-full px-4 py-3 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body placeholder:text-pacame-white/50 input-premium outline-none"
               />
               <Button type="submit" variant="gradient" size="xl" disabled={sending} className="w-full gap-2">
                 {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
@@ -175,7 +179,7 @@ function PortalContent() {
             <Shield className="w-3 h-3" />
             Acceso seguro via email
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     );
   }
@@ -230,7 +234,7 @@ function PortalContent() {
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Welcome */}
-        <div>
+        <ScrollReveal>
           <h1 className="font-heading font-bold text-2xl text-pacame-white">
             Hola, {client.name.split(" ")[0]}
           </h1>
@@ -238,34 +242,50 @@ function PortalContent() {
             Cliente desde {new Date(client.member_since).toLocaleDateString("es-ES", { month: "long", year: "numeric" })}
             {client.monthly_fee > 0 && ` · Plan: ${client.monthly_fee}€/mes`}
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-            <FileText className="w-6 h-6 text-electric-violet mx-auto mb-2" />
-            <div className="font-heading font-bold text-2xl text-pacame-white">{content.stats.total}</div>
-            <div className="text-xs text-pacame-white/60 font-body">Contenido total</div>
-          </div>
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-            <CheckCircle className="w-6 h-6 text-lime-pulse mx-auto mb-2" />
-            <div className="font-heading font-bold text-2xl text-lime-pulse">{content.stats.published}</div>
-            <div className="text-xs text-pacame-white/60 font-body">Publicados</div>
-          </div>
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-            <Clock className="w-6 h-6 text-amber-400 mx-auto mb-2" />
-            <div className="font-heading font-bold text-2xl text-amber-400">{content.stats.pending}</div>
-            <div className="text-xs text-pacame-white/60 font-body">Pendientes</div>
-          </div>
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-            <CreditCard className="w-6 h-6 text-neon-cyan mx-auto mb-2" />
-            <div className="font-heading font-bold text-2xl text-neon-cyan">{payments.length}</div>
-            <div className="text-xs text-pacame-white/60 font-body">Pagos</div>
-          </div>
-        </div>
+        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4" staggerDelay={0.08}>
+          <StaggerItem>
+            <CardTilt tiltMaxAngle={8}>
+              <CardTiltContent className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
+                <FileText className="w-6 h-6 text-electric-violet mx-auto mb-2" />
+                <div className="font-heading font-bold text-2xl text-pacame-white">{content.stats.total}</div>
+                <div className="text-xs text-pacame-white/60 font-body">Contenido total</div>
+              </CardTiltContent>
+            </CardTilt>
+          </StaggerItem>
+          <StaggerItem>
+            <CardTilt tiltMaxAngle={8}>
+              <CardTiltContent className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
+                <CheckCircle className="w-6 h-6 text-lime-pulse mx-auto mb-2" />
+                <div className="font-heading font-bold text-2xl text-lime-pulse">{content.stats.published}</div>
+                <div className="text-xs text-pacame-white/60 font-body">Publicados</div>
+              </CardTiltContent>
+            </CardTilt>
+          </StaggerItem>
+          <StaggerItem>
+            <CardTilt tiltMaxAngle={8}>
+              <CardTiltContent className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
+                <Clock className="w-6 h-6 text-amber-400 mx-auto mb-2" />
+                <div className="font-heading font-bold text-2xl text-amber-400">{content.stats.pending}</div>
+                <div className="text-xs text-pacame-white/60 font-body">Pendientes</div>
+              </CardTiltContent>
+            </CardTilt>
+          </StaggerItem>
+          <StaggerItem>
+            <CardTilt tiltMaxAngle={8}>
+              <CardTiltContent className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
+                <CreditCard className="w-6 h-6 text-neon-cyan mx-auto mb-2" />
+                <div className="font-heading font-bold text-2xl text-neon-cyan">{payments.length}</div>
+                <div className="text-xs text-pacame-white/60 font-body">Pagos</div>
+              </CardTiltContent>
+            </CardTilt>
+          </StaggerItem>
+        </StaggerContainer>
 
         {/* Content */}
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+        <ScrollReveal delay={0.1} className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
           <h2 className="font-heading font-semibold text-lg text-pacame-white mb-4">Tu contenido</h2>
           {content.items.length === 0 ? (
             <p className="text-sm text-pacame-white/50 font-body text-center py-6">Aun no hay contenido creado</p>
@@ -296,11 +316,11 @@ function PortalContent() {
               })}
             </div>
           )}
-        </div>
+        </ScrollReveal>
 
         {/* Payments */}
         {payments.length > 0 && (
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+          <ScrollReveal delay={0.15} className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
             <h2 className="font-heading font-semibold text-lg text-pacame-white mb-4">Historial de pagos</h2>
             <div className="space-y-2">
               {payments.map((payment) => (
@@ -317,12 +337,12 @@ function PortalContent() {
                 </div>
               ))}
             </div>
-          </div>
+          </ScrollReveal>
         )}
 
         {/* Recent calls */}
         {calls.length > 0 && (
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+          <ScrollReveal delay={0.2} className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
             <h2 className="font-heading font-semibold text-lg text-pacame-white mb-4">Llamadas recientes</h2>
             <div className="space-y-2">
               {calls.map((call) => (
@@ -343,11 +363,13 @@ function PortalContent() {
                 </div>
               ))}
             </div>
-          </div>
+          </ScrollReveal>
         )}
 
         {/* Contact */}
-        <div className="rounded-2xl bg-brand-gradient p-8 text-center relative overflow-hidden">
+        <ScrollReveal delay={0.1}>
+        <CardTilt tiltMaxAngle={4}>
+        <CardTiltContent className="rounded-2xl bg-brand-gradient p-8 text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-black/20" />
           <div className="relative z-10">
             <h2 className="font-heading font-bold text-xl text-white mb-3">¿Necesitas algo?</h2>
@@ -369,7 +391,9 @@ function PortalContent() {
               </Button>
             </div>
           </div>
-        </div>
+        </CardTiltContent>
+        </CardTilt>
+        </ScrollReveal>
 
         {/* Footer */}
         <div className="text-center text-xs text-pacame-white/50 font-body py-4">

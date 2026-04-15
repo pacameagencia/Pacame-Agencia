@@ -102,19 +102,19 @@ export default function AgentesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-electric-violet/10 border border-electric-violet/20 mb-8">
-              <Zap className="w-4 h-4 text-electric-violet" />
-              <span className="text-sm font-mono text-electric-violet">Catálogo de Agentes IA</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-olympus-gold/10 border border-olympus-gold/20 mb-8">
+              <Zap className="w-4 h-4 text-olympus-gold" />
+              <span className="text-sm font-mono text-olympus-gold">Catalogo de Agentes IA</span>
             </div>
 
             {/* Counter */}
             <div ref={counter.ref} className="mb-6">
-              <span className="text-8xl md:text-9xl font-heading font-bold gradient-text">
+              <span className="text-8xl md:text-9xl font-heading font-bold gradient-text-gold">
                 {counter.count}+
               </span>
             </div>
 
-            <h1 className="font-heading font-bold text-hero text-pacame-white mb-6">
+            <h1 className="font-accent font-bold text-hero text-pacame-white mb-6">
               Especialistas IA a tu servicio
             </h1>
             <p className="text-lg md:text-xl text-pacame-white/60 max-w-3xl mx-auto font-body mb-10">
@@ -130,7 +130,7 @@ export default function AgentesPage() {
                 placeholder="Buscar agentes... (ej: SEO, React, TikTok, Security)"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-dark-card border border-white/[0.08] rounded-2xl text-pacame-white placeholder-pacame-white/30 font-body focus:outline-none focus:border-electric-violet/50 focus:ring-1 focus:ring-electric-violet/30 transition-all"
+                className="w-full pl-12 pr-4 py-4 bg-dark-card border border-white/[0.08] rounded-2xl text-pacame-white placeholder-pacame-white/30 font-body focus:outline-none focus:border-olympus-gold/50 focus:ring-1 focus:ring-olympus-gold/30 transition-all"
                 id="agent-search"
               />
               {searchQuery && (
@@ -150,9 +150,9 @@ export default function AgentesPage() {
       <section className="py-12 border-t border-b border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-8">
-            <Users className="w-5 h-5 text-electric-violet" />
+            <Users className="w-5 h-5 text-olympus-gold" />
             <h2 className="font-heading font-bold text-xl text-pacame-white">
-              Equipo Principal PACAME
+              El Panteon PACAME
             </h2>
             <span className="text-sm font-mono text-pacame-white/60">7 agentes core</span>
           </div>
@@ -208,7 +208,7 @@ export default function AgentesPage() {
             {hasFilters && (
               <button
                 onClick={clearFilters}
-                className="text-xs font-mono text-electric-violet hover:text-electric-violet/80 transition-colors flex items-center gap-1"
+                className="text-xs font-mono text-olympus-gold hover:text-olympus-gold/80 transition-colors flex items-center gap-1"
               >
                 <X className="w-3 h-3" />
                 Limpiar filtros
@@ -221,7 +221,7 @@ export default function AgentesPage() {
               onClick={() => setActiveDivision(null)}
               className={`px-3 py-1.5 rounded-lg text-xs font-body transition-all ${
                 !activeDivision
-                  ? "bg-electric-violet text-white"
+                  ? "bg-olympus-gold text-pacame-black"
                   : "bg-dark-card text-pacame-white/50 hover:text-pacame-white/80 border border-white/[0.06]"
               }`}
             >
@@ -277,7 +277,7 @@ export default function AgentesPage() {
               </p>
               <button
                 onClick={clearFilters}
-                className="text-sm text-electric-violet hover:text-electric-violet/80 font-body transition-colors"
+                className="text-sm text-olympus-gold hover:text-olympus-gold/80 font-body transition-colors"
               >
                 Limpiar filtros
               </button>
@@ -368,7 +368,7 @@ export default function AgentesPage() {
             ].map((stat, i) => (
               <div key={i} className="text-center">
                 <span className="text-2xl mb-2 block">{stat.icon}</span>
-                <p className="text-3xl md:text-4xl font-heading font-bold gradient-text mb-1">
+                <p className="text-3xl md:text-4xl font-heading font-bold gradient-text-gold mb-1">
                   {stat.value}
                 </p>
                 <p className="text-sm text-pacame-white/60 font-body">{stat.label}</p>
@@ -384,9 +384,9 @@ export default function AgentesPage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-hero-glow opacity-30 pointer-events-none" />
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-6">
-            ¿Necesitas un equipo{" "}
-            <span className="gradient-text">de élite</span>?
+          <h2 className="font-accent font-bold text-section text-pacame-white mb-6">
+            Necesitas un equipo{" "}
+            <span className="gradient-text-aurora">de elite</span>?
           </h2>
           <p className="text-lg text-pacame-white/60 font-body mb-10">
             No contratas freelancers. No esperas meses. Activas un equipo de {TOTAL_AGENTS}+ especialistas IA

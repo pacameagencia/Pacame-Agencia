@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Zap } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,27 @@ const navLinks = [
   { href: "/blog", label: "Blog" },
   { href: "/contacto", label: "Contacto" },
 ];
+
+function PacameLogo() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <defs>
+        <linearGradient id="logo-grad" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#7C3AED" />
+          <stop offset="50%" stopColor="#D4A853" />
+          <stop offset="100%" stopColor="#06B6D4" />
+        </linearGradient>
+      </defs>
+      <rect width="28" height="28" rx="7" fill="url(#logo-grad)" />
+      {/* Stylized P with constellation dots */}
+      <path d="M9 21V7H14.5C17 7 19 9 19 11.5C19 14 17 16 14.5 16H12.5" stroke="white" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+      {/* Constellation dots */}
+      <circle cx="20" cy="8" r="1" fill="white" opacity="0.6" />
+      <circle cx="22" cy="12" r="0.7" fill="white" opacity="0.4" />
+      <circle cx="9" cy="22" r="0.7" fill="white" opacity="0.4" />
+    </svg>
+  );
+}
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -33,16 +54,21 @@ export default function Header() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-apple",
         scrolled
-          ? "bg-[#0A0A0A]/80 backdrop-blur-xl border-b border-white/[0.06] py-3"
+          ? "bg-[#0A0A0A]/80 backdrop-blur-xl py-3"
           : "bg-transparent py-5"
       )}
     >
+      {/* Golden border on scroll */}
+      {scrolled && (
+        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/20 to-transparent" />
+      )}
+
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-brand-gradient flex items-center justify-center">
-              <Zap className="w-3.5 h-3.5 text-white fill-white" />
+            <div className="transition-transform duration-300 group-hover:scale-105">
+              <PacameLogo />
             </div>
             <span className="font-heading font-bold text-lg text-pacame-white tracking-tight">
               PACAME
@@ -50,7 +76,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1" role="navigation" aria-label="Navegacion principal">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -64,7 +90,7 @@ export default function Header() {
               >
                 {pathname === link.href && (
                   <motion.div
-                    className="absolute inset-0 rounded-full bg-white/[0.07]"
+                    className="absolute inset-0 rounded-full bg-white/[0.07] border border-olympus-gold/10"
                     layoutId="activeNav"
                     transition={{ type: "spring", stiffness: 350, damping: 30 }}
                   />
@@ -76,7 +102,12 @@ export default function Header() {
 
           {/* CTA */}
           <div className="hidden md:flex items-center">
-            <Button variant="gradient" size="default" asChild className="rounded-full text-[13px] px-5 h-9">
+            <Button
+              variant="gradient"
+              size="default"
+              asChild
+              className="rounded-full text-[13px] px-5 h-9 hover:shadow-glow-gold/30 transition-shadow duration-500"
+            >
               <Link href="/contacto">
                 Hablar con el equipo
               </Link>
@@ -87,7 +118,8 @@ export default function Header() {
           <button
             className="md:hidden p-2 rounded-full text-pacame-white/60 hover:text-pacame-white transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
+            aria-label={mobileOpen ? "Cerrar menu de navegacion" : "Abrir menu de navegacion"}
+            aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -103,8 +135,8 @@ export default function Header() {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
             >
-              <div className="h-px bg-white/[0.06] mb-4" />
-              <nav className="flex flex-col gap-0.5">
+              <div className="h-px bg-gradient-to-r from-transparent via-olympus-gold/20 to-transparent mb-4" />
+              <nav className="flex flex-col gap-0.5" aria-label="Navegacion movil">
                 {navLinks.map((link, i) => (
                   <motion.div
                     key={link.href}
@@ -118,7 +150,7 @@ export default function Header() {
                       className={cn(
                         "px-4 py-3 rounded-xl text-[15px] font-medium font-body transition-all block",
                         pathname === link.href
-                          ? "text-pacame-white bg-white/[0.06]"
+                          ? "text-pacame-white bg-white/[0.06] border-l-2 border-olympus-gold/40"
                           : "text-pacame-white/50 hover:text-pacame-white"
                       )}
                     >

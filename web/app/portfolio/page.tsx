@@ -6,12 +6,24 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
+import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
+import GoldenDivider from "@/components/effects/GoldenDivider";
+import MagneticButton from "@/components/effects/MagneticButton";
+import { ShinyButton } from "@/components/ui/shiny-button";
 
 export const metadata: Metadata = {
-  title: "Portfolio — Casos de Exito | PACAME Agencia Digital",
+  title: "Portfolio — Casos de Éxito Reales con Resultados | PACAME",
   description:
-    "Proyectos reales con resultados medibles. Webs, SEO, ads, redes sociales y branding para PYMEs en Espana. Ve lo que nuestro equipo IA puede hacer por tu negocio.",
+    "Proyectos reales con resultados medibles. Webs, SEO, ads, redes sociales y branding para PYMEs en España. Ve lo que nuestro equipo IA puede hacer por tu negocio.",
   alternates: { canonical: "https://pacameagencia.com/portfolio" },
+  openGraph: {
+    title: "Portfolio — Casos de Éxito con Resultados Medibles | PACAME",
+    description: "Proyectos reales para PYMEs españolas. Resultados medibles en web, SEO, ads y branding.",
+    url: "https://pacameagencia.com/portfolio",
+    siteName: "PACAME",
+    type: "website",
+    locale: "es_ES",
+  },
 };
 
 const iconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
@@ -190,7 +202,7 @@ export default function PortfolioPage() {
       <section className="relative pt-36 pb-24 overflow-hidden">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
             Portfolio
           </p>
@@ -203,35 +215,37 @@ export default function PortfolioPage() {
           </p>
 
           {/* Quick stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/[0.04] rounded-2xl overflow-hidden max-w-3xl mx-auto">
+          <StaggerContainer className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/[0.04] rounded-2xl overflow-hidden max-w-3xl mx-auto" staggerDelay={0.1}>
             {[
               { value: "50+", label: "Proyectos entregados" },
               { value: "98%", label: "Clientes satisfechos" },
               { value: "5 dias", label: "Media de entrega" },
               { value: "4.9/5", label: "Valoracion media" },
             ].map((stat) => (
-              <div key={stat.label} className="bg-pacame-black p-6 text-center">
+              <StaggerItem key={stat.label}>
+              <div className="bg-pacame-black p-6 text-center">
                 <div className="font-heading font-bold text-2xl text-pacame-white mb-1">
                   {stat.value}
                 </div>
                 <div className="text-xs text-pacame-white/50 font-body">{stat.label}</div>
               </div>
+              </StaggerItem>
             ))}
-          </div>
-        </div>
+          </StaggerContainer>
+        </ScrollReveal>
       </section>
 
       {/* Case Studies */}
       <section className="section-padding relative">
-        <div className="absolute top-0 inset-x-0 section-divider" />
+        <div className="px-6"><GoldenDivider variant="laurel" /></div>
 
         <div className="max-w-6xl mx-auto px-6 space-y-8">
-          {cases.map((c) => {
+          {cases.map((c, caseIdx) => {
             const Icon = iconMap[c.icon];
             return (
+              <ScrollReveal key={c.id} delay={caseIdx * 0.1}>
               <div
-                key={c.id}
-                className="rounded-2xl bg-dark-card border border-white/[0.06] hover:border-white/[0.1] transition-all duration-500 ease-apple overflow-hidden"
+                className="rounded-2xl bg-dark-card border border-white/[0.06] hover:border-white/[0.1] transition-all duration-500 ease-apple overflow-hidden card-golden-shine"
               >
                 <div className="p-8 lg:p-10">
                   {/* Top row */}
@@ -336,6 +350,7 @@ export default function PortfolioPage() {
                   </div>
                 </div>
               </div>
+              </ScrollReveal>
             );
           })}
         </div>
@@ -343,7 +358,7 @@ export default function PortfolioPage() {
 
       {/* CTA */}
       <section className="section-padding bg-pacame-black text-center">
-        <div className="max-w-2xl mx-auto px-6">
+        <ScrollReveal className="max-w-2xl mx-auto px-6">
           <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
             Tu proyecto puede ser el siguiente.
           </h2>
@@ -351,18 +366,25 @@ export default function PortfolioPage() {
             Cuentanos que necesitas. Diagnostico gratuito, sin compromiso.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="gradient" size="xl" asChild className="group rounded-full shadow-glow-violet">
-              <Link href="/contacto">
-                <MessageSquare className="w-5 h-5" />
-                Pedir diagnostico gratis
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
+            <MagneticButton>
+              <ShinyButton
+                gradientFrom="#D4A853"
+                gradientTo="#7C3AED"
+                gradientOpacity={0.8}
+                className="group min-w-[280px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
+              >
+                <Link href="/contacto" className="flex items-center gap-2 text-pacame-white">
+                  <MessageSquare className="w-5 h-5" />
+                  Pedir diagnostico gratis
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </ShinyButton>
+            </MagneticButton>
             <Button variant="outline" size="xl" asChild className="rounded-full border-white/[0.08] hover:border-white/20">
               <Link href="/servicios">Ver servicios y precios</Link>
             </Button>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
     </div>
   );

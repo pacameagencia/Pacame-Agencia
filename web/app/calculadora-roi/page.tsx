@@ -7,6 +7,11 @@ import {
   Users, BarChart3, Target,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ScrollReveal from "@/components/ui/scroll-reveal";
+import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
+import GoldenDivider from "@/components/effects/GoldenDivider";
+import MagneticButton from "@/components/effects/MagneticButton";
+import { ShinyButton } from "@/components/ui/shiny-button";
 
 const sectors = [
   "Restaurante / Bar",
@@ -51,7 +56,7 @@ export default function CalculadoraROIPage() {
       <section className="relative pt-36 pb-20 overflow-hidden">
         <div className="absolute top-1/3 right-1/4 w-[500px] h-[300px] bg-lime-pulse/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
+        <ScrollReveal className="relative z-10 max-w-3xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-body text-pacame-white/60 mb-6">
             <Calculator className="w-3.5 h-3.5 text-lime-pulse" />
             Herramienta gratuita
@@ -66,15 +71,18 @@ export default function CalculadoraROIPage() {
             Calcula en 30 segundos el retorno de inversion que tendria
             contratar marketing digital para tu negocio.
           </p>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Calculator */}
       <section className="section-padding">
+        <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-5xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Inputs */}
             <div className="space-y-6">
+              <CardTilt tiltMaxAngle={4} scale={1.01}>
+              <CardTiltContent>
               <div className="rounded-2xl glass p-6">
                 <h2 className="font-heading font-semibold text-lg text-pacame-white mb-5">Tu negocio</h2>
 
@@ -98,7 +106,7 @@ export default function CalculadoraROIPage() {
                     <input
                       type="range" min={10} max={500} step={5} value={ticketMedio}
                       onChange={(e) => setTicketMedio(Number(e.target.value))}
-                      className="w-full accent-electric-violet"
+                      className="w-full premium-range"
                     />
                     <div className="flex justify-between text-[10px] text-pacame-white/50 font-body mt-1">
                       <span>10€</span><span>500€</span>
@@ -112,7 +120,7 @@ export default function CalculadoraROIPage() {
                     <input
                       type="range" min={10} max={500} step={5} value={clientesMes}
                       onChange={(e) => setClientesMes(Number(e.target.value))}
-                      className="w-full accent-electric-violet"
+                      className="w-full premium-range"
                     />
                     <div className="flex justify-between text-[10px] text-pacame-white/50 font-body mt-1">
                       <span>10</span><span>500</span>
@@ -120,7 +128,11 @@ export default function CalculadoraROIPage() {
                   </div>
                 </div>
               </div>
+              </CardTiltContent>
+              </CardTilt>
 
+              <CardTilt tiltMaxAngle={4} scale={1.01}>
+              <CardTiltContent>
               <div className="rounded-2xl glass p-6">
                 <h2 className="font-heading font-semibold text-lg text-pacame-white mb-5">Inversion</h2>
                 <div className="space-y-3">
@@ -145,28 +157,40 @@ export default function CalculadoraROIPage() {
                   ))}
                 </div>
               </div>
+              </CardTiltContent>
+              </CardTilt>
 
               {!calculated && (
-                <Button
-                  variant="gradient" size="xl" className="w-full group"
-                  onClick={() => setCalculated(true)}
-                >
-                  <Calculator className="w-4 h-4" />
-                  Calcular mi ROI
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <MagneticButton>
+                  <ShinyButton
+                    gradientFrom="#84CC16"
+                    gradientTo="#06B6D4"
+                    gradientOpacity={0.8}
+                    className="group w-full h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
+                  >
+                    <button onClick={() => setCalculated(true)} className="flex items-center gap-2 text-pacame-white w-full justify-center">
+                      <Calculator className="w-4 h-4" />
+                      Calcular mi ROI
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </ShinyButton>
+                </MagneticButton>
               )}
             </div>
 
             {/* Results */}
-            <div className={`space-y-5 transition-opacity duration-500 ${calculated ? "opacity-100" : "opacity-30"}`}>
-              <div className="rounded-3xl glass p-8 text-center">
+            <ScrollReveal className={`space-y-5 transition-opacity duration-500 ${calculated ? "opacity-100" : "opacity-30"}`}>
+              <CardTilt tiltMaxAngle={6} scale={1.02}>
+              <CardTiltContent>
+              <div className="rounded-3xl glass p-8 text-center card-golden-shine">
                 <p className="text-xs text-pacame-white/60 font-body uppercase tracking-widest mb-2">ROI estimado</p>
                 <div className={`font-heading font-bold text-6xl mb-2 ${roi > 0 ? "text-lime-pulse" : "text-amber-signal"}`}>
                   {roi}%
                 </div>
                 <p className="text-sm text-pacame-white/50 font-body">retorno anual sobre tu inversion</p>
               </div>
+              </CardTiltContent>
+              </CardTilt>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
@@ -238,7 +262,7 @@ export default function CalculadoraROIPage() {
               <p className="text-[10px] text-pacame-white/50 font-body text-center">
                 *Estimaciones basadas en medias del sector. Los resultados reales pueden variar segun negocio, ubicacion y competencia.
               </p>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>

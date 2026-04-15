@@ -11,6 +11,8 @@ const PricingSection = dynamic(() => import("@/components/sections/PricingSectio
 const AgentsSection = dynamic(() => import("@/components/sections/AgentsSection"));
 const BlogPreview = dynamic(() => import("@/components/sections/BlogPreview"));
 const CTASection = dynamic(() => import("@/components/sections/CTASection"));
+const TrustLogos = dynamic(() => import("@/components/sections/TrustLogos"));
+const GuaranteesSection = dynamic(() => import("@/components/sections/GuaranteesSection"));
 
 export const metadata: Metadata = {
   title: "PACAME — Tu equipo digital completo. Potenciado por IA, liderado por humanos.",
@@ -23,6 +25,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <TrustLogos />
       <ServicesSection />
       <NichesSection />
       <HowItWorks />
@@ -30,6 +33,7 @@ export default function HomePage() {
       <TestimonialsSection />
       <PricingSection />
       <AgentsSection />
+      <GuaranteesSection />
       <BlogPreview />
       <CTASection />
     </>

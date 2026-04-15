@@ -8,6 +8,11 @@ import { agents } from "@/lib/data/agents";
 import { services } from "@/lib/data/services";
 import PackageCheckoutButton from "@/components/PackageCheckoutButton";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
+import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
+import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
+import GoldenDivider from "@/components/effects/GoldenDivider";
+import MagneticButton from "@/components/effects/MagneticButton";
+import { ShinyButton } from "@/components/ui/shiny-button";
 
 interface Props {
   params: Promise<{ nicho: string }>;
@@ -25,6 +30,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: niche.metaTitle,
     description: niche.metaDescription,
     alternates: { canonical: `https://pacameagencia.com/para/${niche.slug}` },
+    openGraph: {
+      title: niche.metaTitle,
+      description: niche.metaDescription,
+      url: `https://pacameagencia.com/para/${niche.slug}`,
+      siteName: "PACAME",
+      type: "website",
+      locale: "es_ES",
+    },
   };
 }
 
@@ -52,13 +65,13 @@ export default async function NichePage({ params }: Props) {
 
       {/* Hero */}
       <section className="relative pt-36 pb-24 overflow-hidden">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-electric-violet/[0.06] rounded-full blur-[200px] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-olympus-radial pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-electric-violet mb-6 uppercase tracking-[0.2em]">
+        <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+          <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-6 uppercase tracking-[0.2em]">
             Soluciones para {niche.namePlural}
           </p>
-          <h1 className="font-heading font-bold text-display text-pacame-white mb-6 whitespace-pre-line text-balance">
+          <h1 className="font-accent font-bold text-display text-pacame-white mb-6 whitespace-pre-line text-balance">
             {niche.headline}
           </h1>
           <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto mb-8 font-light leading-relaxed">
@@ -67,20 +80,27 @@ export default async function NichePage({ params }: Props) {
 
           {/* Stat */}
           <div className="inline-flex items-center gap-2 bg-electric-violet/10 border border-electric-violet/20 rounded-full px-5 py-2.5 mb-12">
-            <Zap className="w-4 h-4 text-electric-violet" />
-            <span className="text-sm font-body text-electric-violet font-medium">
+            <Zap className="w-4 h-4 text-olympus-gold" />
+            <span className="text-sm font-body text-olympus-gold font-medium">
               {niche.heroStat}
             </span>
           </div>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="gradient" size="xl" asChild className="group rounded-full min-w-[240px] shadow-glow-violet">
-              <Link href={`/contacto?service=${niche.recommendedServices[0]}`}>
-                Quiero mas clientes
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
+            <MagneticButton>
+              <ShinyButton
+                gradientFrom="#D4A853"
+                gradientTo="#7C3AED"
+                gradientOpacity={0.8}
+                className="group min-w-[240px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
+              >
+                <Link href={`/contacto?service=${niche.recommendedServices[0]}`} className="flex items-center gap-2 text-pacame-white">
+                  Quiero mas clientes
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </ShinyButton>
+            </MagneticButton>
             <Button variant="outline" size="xl" asChild className="rounded-full min-w-[200px] border-white/[0.08] hover:border-white/20 hover:bg-white/[0.03]">
               <a href="https://wa.me/34722669381" target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-4 h-4" />
@@ -88,27 +108,29 @@ export default async function NichePage({ params }: Props) {
               </a>
             </Button>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Pain Points */}
       <section className="section-padding relative">
-        <div className="absolute top-0 inset-x-0 section-divider" />
+        <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-16">
+          <ScrollReveal className="text-center mb-16">
             <p className="text-[13px] font-body font-medium text-rose-alert mb-4 uppercase tracking-[0.2em]">
               Te suena esto?
             </p>
             <h2 className="font-heading font-bold text-section text-pacame-white mb-6 text-balance">
               Los problemas de{" "}
-              <span className="gradient-text-vivid">tu {niche.name}</span>
+              <span className="gradient-text-gold">tu {niche.name}</span>
             </h2>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-5" staggerDelay={0.08}>
             {niche.painPoints.map((pain) => (
+              <StaggerItem key={pain.title}>
+              <CardTilt tiltMaxAngle={6} scale={1.02}>
+              <CardTiltContent>
               <div
-                key={pain.title}
                 className="rounded-2xl p-7 bg-dark-card border border-white/[0.06] hover:border-rose-alert/20 transition-colors duration-500"
               >
                 <div className="flex items-start gap-4">
@@ -125,32 +147,37 @@ export default async function NichePage({ params }: Props) {
                   </div>
                 </div>
               </div>
+              </CardTiltContent>
+              </CardTilt>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* Solutions */}
       <section className="section-padding relative">
-        <div className="absolute top-0 inset-x-0 section-divider" />
+        <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <p className="text-[13px] font-body font-medium text-lime-pulse mb-4 uppercase tracking-[0.2em]">
+          <ScrollReveal className="text-center mb-16">
+            <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
               La solucion
             </p>
-            <h2 className="font-heading font-bold text-section text-pacame-white mb-6 text-balance">
+            <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
               Que hacemos por{" "}
-              <span className="gradient-text-vivid">tu {niche.name}</span>
+              <span className="gradient-text-aurora">tu {niche.name}</span>
             </h2>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-5" staggerDelay={0.08}>
             {niche.solutions.map((solution, i) => {
               const agent = nicheAgents[i];
               return (
+                <StaggerItem key={solution.title}>
+                <CardTilt tiltMaxAngle={8} scale={1.02}>
+                <CardTiltContent>
                 <div
-                  key={solution.title}
-                  className="rounded-2xl p-7 bg-dark-card border border-white/[0.06] hover:border-electric-violet/20 transition-colors duration-500"
+                  className="rounded-2xl p-7 bg-dark-card border border-white/[0.06] hover:border-electric-violet/20 transition-colors duration-500 card-golden-shine"
                 >
                   {/* Agent badge */}
                   {agent && (
@@ -179,34 +206,39 @@ export default async function NichePage({ params }: Props) {
                     {solution.description}
                   </p>
                 </div>
+                </CardTiltContent>
+                </CardTilt>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* Recommended services with pricing */}
       <section className="section-padding relative">
-        <div className="absolute top-0 inset-x-0 section-divider" />
+        <div className="px-6"><GoldenDivider variant="laurel" /></div>
         <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <p className="text-[13px] font-body font-medium text-electric-violet mb-4 uppercase tracking-[0.2em]">
+          <ScrollReveal className="text-center mb-16">
+            <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
               Servicios recomendados
             </p>
-            <h2 className="font-heading font-bold text-section text-pacame-white mb-6 text-balance">
+            <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
               Precios claros.{" "}
-              <span className="gradient-text-vivid">Sin sorpresas.</span>
+              <span className="gradient-text-gold">Sin sorpresas.</span>
             </h2>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12" staggerDelay={0.1}>
             {nicheServices.map((service) => {
               if (!service) return null;
               const featured = service.items.find((i) => i.featured) || service.items[0];
               return (
+                <StaggerItem key={service.id}>
+                <CardTilt tiltMaxAngle={8} scale={1.02}>
+                <CardTiltContent>
                 <div
-                  key={service.id}
-                  className="rounded-2xl p-7 bg-dark-card border border-white/[0.06]"
+                  className="rounded-2xl p-7 bg-dark-card border border-white/[0.06] card-golden-shine"
                 >
                   <h3 className="font-heading font-bold text-xl text-pacame-white mb-2">
                     {service.name}
@@ -217,7 +249,7 @@ export default async function NichePage({ params }: Props) {
                   <ul className="space-y-2 mb-6">
                     {featured.includes.slice(0, 4).map((inc) => (
                       <li key={inc} className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-electric-violet mt-0.5 flex-shrink-0" />
+                        <Check className="w-4 h-4 text-olympus-gold mt-0.5 flex-shrink-0" />
                         <span className="text-sm text-pacame-white/55 font-body">{inc}</span>
                       </li>
                     ))}
@@ -237,9 +269,12 @@ export default async function NichePage({ params }: Props) {
                     </Button>
                   </div>
                 </div>
+                </CardTiltContent>
+                </CardTilt>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerContainer>
 
           {/* Recommended package */}
           <div className="max-w-md mx-auto text-center">
@@ -257,26 +292,26 @@ export default async function NichePage({ params }: Props) {
 
       {/* FAQ */}
       <section className="section-padding relative">
-        <div className="absolute top-0 inset-x-0 section-divider" />
+        <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-3xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <p className="text-[13px] font-body font-medium text-electric-violet mb-4 uppercase tracking-[0.2em]">
+          <ScrollReveal className="text-center mb-16">
+            <p className="text-[13px] font-body font-medium text-olympus-gold mb-4 uppercase tracking-[0.2em]">
               Preguntas frecuentes
             </p>
             <h2 className="font-heading font-bold text-section text-pacame-white mb-6 text-balance">
               Lo que nos preguntan{" "}
-              <span className="gradient-text-vivid">los {niche.namePlural}</span>
+              <span className="gradient-text-gold">los {niche.namePlural}</span>
             </h2>
-          </div>
+          </ScrollReveal>
 
           <div className="space-y-4">
-            {niche.faq.map((item) => (
+            {niche.faq.map((item, i) => (
+              <ScrollReveal key={item.q} delay={i * 0.08}>
               <div
-                key={item.q}
-                className="rounded-2xl p-7 bg-dark-card border border-white/[0.06]"
+                className="rounded-2xl p-7 bg-dark-card border border-white/[0.06] card-golden-shine"
               >
                 <div className="flex items-start gap-3 mb-3">
-                  <HelpCircle className="w-5 h-5 text-electric-violet flex-shrink-0 mt-0.5" />
+                  <HelpCircle className="w-5 h-5 text-olympus-gold flex-shrink-0 mt-0.5" />
                   <h3 className="font-heading font-semibold text-lg text-pacame-white">
                     {item.q}
                   </h3>
@@ -285,6 +320,7 @@ export default async function NichePage({ params }: Props) {
                   {item.a}
                 </p>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -292,7 +328,7 @@ export default async function NichePage({ params }: Props) {
 
       {/* Final CTA */}
       <section className="section-padding bg-pacame-black text-center">
-        <div className="max-w-2xl mx-auto px-6">
+        <ScrollReveal className="max-w-2xl mx-auto px-6">
           <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
             Tu {niche.name} merece mas clientes
           </h2>
@@ -300,12 +336,19 @@ export default async function NichePage({ params }: Props) {
             Hablamos 30 minutos, analizamos tu situacion y te decimos exactamente que necesitas. Sin compromiso.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="gradient" size="xl" asChild className="group rounded-full shadow-glow-violet">
-              <Link href={`/contacto?service=${niche.recommendedServices[0]}`}>
-                Quiero empezar
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
+            <MagneticButton>
+              <ShinyButton
+                gradientFrom="#D4A853"
+                gradientTo="#7C3AED"
+                gradientOpacity={0.8}
+                className="group min-w-[240px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
+              >
+                <Link href={`/contacto?service=${niche.recommendedServices[0]}`} className="flex items-center gap-2 text-pacame-white">
+                  Quiero empezar
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </ShinyButton>
+            </MagneticButton>
             <Button variant="outline" size="xl" asChild className="rounded-full border-white/[0.08] hover:border-white/20">
               <a href="https://wa.me/34722669381" target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-4 h-4" />
@@ -313,7 +356,7 @@ export default async function NichePage({ params }: Props) {
               </a>
             </Button>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
     </div>
   );

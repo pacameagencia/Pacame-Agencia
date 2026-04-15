@@ -6,6 +6,11 @@ import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/lib/data/blog-posts";
 import ReadingProgress from "@/components/blog/ReadingProgress";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
+import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
+import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
+import GoldenDivider from "@/components/effects/GoldenDivider";
+import MagneticButton from "@/components/effects/MagneticButton";
+import { ShinyButton } from "@/components/ui/shiny-button";
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
@@ -200,49 +205,69 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {/* Related posts */}
           {relatedPosts.length > 0 && (
             <div className="mt-16 pt-10 border-t border-white/[0.06]">
-              <h3 className="font-heading font-bold text-xl text-pacame-white mb-6">
-                Articulos relacionados
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <ScrollReveal>
+                <h3 className="font-heading font-bold text-xl text-pacame-white mb-6">
+                  Articulos relacionados
+                </h3>
+              </ScrollReveal>
+              <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" staggerDelay={0.1}>
                 {relatedPosts.map((rp) => (
-                  <Link
-                    key={rp.slug}
-                    href={`/blog/${rp.slug}`}
-                    className="group rounded-xl bg-dark-card border border-white/[0.06] p-5 hover:border-white/[0.12] transition-all"
-                  >
-                    <span
-                      className="text-[10px] px-2 py-0.5 rounded-full font-body font-medium inline-block mb-3"
-                      style={{ backgroundColor: `${rp.color}15`, color: rp.color }}
-                    >
-                      {rp.category}
-                    </span>
-                    <h4 className="font-heading font-semibold text-sm text-pacame-white group-hover:text-electric-violet transition-colors line-clamp-2 mb-2">
-                      {rp.title}
-                    </h4>
-                    <p className="text-xs text-pacame-white/60 font-body flex items-center gap-1.5">
-                      <Clock className="w-3 h-3" />{rp.readTime}
-                    </p>
-                  </Link>
+                  <StaggerItem key={rp.slug}>
+                    <CardTilt tiltMaxAngle={8}>
+                      <CardTiltContent>
+                        <Link
+                          href={`/blog/${rp.slug}`}
+                          className="group block rounded-xl bg-dark-card border border-white/[0.06] p-5 hover:border-white/[0.12] transition-all card-golden-shine"
+                        >
+                          <span
+                            className="text-[10px] px-2 py-0.5 rounded-full font-body font-medium inline-block mb-3"
+                            style={{ backgroundColor: `${rp.color}15`, color: rp.color }}
+                          >
+                            {rp.category}
+                          </span>
+                          <h4 className="font-heading font-semibold text-sm text-pacame-white group-hover:text-electric-violet transition-colors line-clamp-2 mb-2">
+                            {rp.title}
+                          </h4>
+                          <p className="text-xs text-pacame-white/60 font-body flex items-center gap-1.5">
+                            <Clock className="w-3 h-3" />{rp.readTime}
+                          </p>
+                        </Link>
+                      </CardTiltContent>
+                    </CardTilt>
+                  </StaggerItem>
                 ))}
-              </div>
+              </StaggerContainer>
             </div>
           )}
 
+          <div className="mt-12"><GoldenDivider variant="line" /></div>
+
           {/* CTA */}
-          <div className="mt-12 rounded-2xl bg-dark-card border border-electric-violet/20 p-8 text-center">
-            <h3 className="font-heading font-bold text-xl text-pacame-white mb-3">
-              Quieres resultados como estos para tu negocio?
-            </h3>
-            <p className="text-sm text-pacame-white/60 font-body mb-6">
-              Diagnostico gratuito. Presupuesto en 24 horas. Sin compromiso.
-            </p>
-            <Button variant="gradient" size="xl" asChild className="group">
-              <Link href="/contacto">
-                Pedir diagnostico gratis
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
-          </div>
+          <ScrollReveal>
+            <CardTilt tiltMaxAngle={4}>
+              <CardTiltContent className="mt-8 rounded-2xl bg-dark-card border border-electric-violet/20 p-8 text-center card-golden-shine">
+                <h3 className="font-heading font-bold text-xl text-pacame-white mb-3">
+                  Quieres resultados como estos para tu negocio?
+                </h3>
+                <p className="text-sm text-pacame-white/60 font-body mb-6">
+                  Diagnostico gratuito. Presupuesto en 24 horas. Sin compromiso.
+                </p>
+                <MagneticButton>
+                  <ShinyButton
+                    gradientFrom="#D4A853"
+                    gradientTo="#7C3AED"
+                    gradientOpacity={0.8}
+                    className="min-w-[260px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
+                  >
+                    <Link href="/contacto" className="flex items-center gap-2 text-pacame-white">
+                      Pedir diagnostico gratis
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </ShinyButton>
+                </MagneticButton>
+              </CardTiltContent>
+            </CardTilt>
+          </ScrollReveal>
         </div>
       </article>
     </div>

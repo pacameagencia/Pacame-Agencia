@@ -4,12 +4,24 @@ import { ArrowRight, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FaqAccordion from "@/components/FaqAccordion";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
+import ScrollReveal from "@/components/ui/scroll-reveal";
+import GoldenDivider from "@/components/effects/GoldenDivider";
+import MagneticButton from "@/components/effects/MagneticButton";
+import { ShinyButton } from "@/components/ui/shiny-button";
 
 export const metadata: Metadata = {
-  title: "Preguntas Frecuentes — PACAME Agencia Digital",
+  title: "Preguntas Frecuentes sobre PACAME — Precios, Plazos, Garantías",
   description:
-    "Resolvemos tus dudas sobre PACAME: precios, plazos, proceso de trabajo, agentes IA, garantias y mas. Todo lo que necesitas saber antes de contratar.",
+    "Resolvemos tus dudas sobre PACAME: precios, plazos, proceso de trabajo, agentes IA, garantías y más. Todo lo que necesitas saber antes de contratar.",
   alternates: { canonical: "https://pacameagencia.com/faq" },
+  openGraph: {
+    title: "Preguntas Frecuentes — PACAME Agencia Digital",
+    description: "Precios, plazos, garantías y proceso de trabajo. Resolvemos todas tus dudas.",
+    url: "https://pacameagencia.com/faq",
+    siteName: "PACAME",
+    type: "website",
+    locale: "es_ES",
+  },
 };
 
 const faqCategories = [
@@ -213,7 +225,7 @@ export default function FaqPage() {
       <section className="relative pt-36 pb-20 overflow-hidden">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
             Preguntas frecuentes
           </p>
@@ -225,28 +237,36 @@ export default function FaqPage() {
           <p className="text-lg text-pacame-white/60 font-body font-light max-w-2xl mx-auto">
             Si no encuentras lo que buscas, escribenos y te respondemos en menos de 2 horas.
           </p>
-        </div>
+        </ScrollReveal>
       </section>
 
       <FaqAccordion categories={faqCategories} />
 
       {/* CTA */}
-      <section className="py-20 bg-pacame-black border-t border-white/[0.04] text-center">
-        <div className="max-w-2xl mx-auto px-6">
+      <section className="py-20 bg-pacame-black text-center">
+        <div className="px-6"><GoldenDivider variant="line" /></div>
+        <ScrollReveal className="max-w-2xl mx-auto px-6 pt-10">
           <h2 className="font-heading font-bold text-3xl text-pacame-white mb-4">
             No has encontrado tu respuesta?
           </h2>
           <p className="text-pacame-white/60 font-body mb-8">
             Escribenos y te respondemos en menos de 2 horas. Sin compromiso.
           </p>
-          <Button variant="gradient" size="xl" asChild className="group rounded-full">
-            <Link href="/contacto">
-              <MessageSquare className="w-5 h-5" />
-              Escribir al equipo
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
-        </div>
+          <MagneticButton>
+            <ShinyButton
+              gradientFrom="#D4A853"
+              gradientTo="#7C3AED"
+              gradientOpacity={0.8}
+              className="group min-w-[260px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
+            >
+              <Link href="/contacto" className="flex items-center gap-2 text-pacame-white">
+                <MessageSquare className="w-5 h-5" />
+                Escribir al equipo
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </ShinyButton>
+          </MagneticButton>
+        </ScrollReveal>
       </section>
     </div>
   );

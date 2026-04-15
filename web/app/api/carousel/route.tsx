@@ -4,23 +4,24 @@ import { NextRequest, NextResponse } from "next/server";
 export const runtime = "edge";
 
 /* ═══════════════════════════════════════════════════════════════
-   PACAME CAROUSEL ENGINE v2 — Motor de carruseles profesionales
-   para Instagram (1080×1080). Nivel agencia premium.
+   PACAME CAROUSEL ENGINE v3 — Carruseles profesionales 1080×1080
 
-   Slide types: cover, content, tip, stat, quote, cta, list, highlight
-   10 paletas visuales. Elementos decorativos. Texto destacado.
+   REGLA SATORI: NO function components como JSX (<Comp/>).
+   Solo divs. Llamar helpers como funciones: fn(args).
+   No textAlign, no textTransform, no fontStyle.
    ═══════════════════════════════════════════════════════════════ */
 
 interface SlideInput {
   title: string;
   body?: string;
-  type?: "cover" | "content" | "tip" | "stat" | "quote" | "cta" | "list" | "highlight";
+  type?: "cover" | "content" | "tip" | "stat" | "quote" | "cta" | "list" | "highlight" | "comparison";
   number?: string;
   icon?: string;
   stat?: string;
   statLabel?: string;
-  items?: string[];      // for "list" type: bullet points
-  highlight?: string;    // word(s) to highlight in title with accent color
+  items?: string[];
+  highlight?: string;
+  badge?: string;
 }
 
 interface CarouselRequest {
@@ -36,135 +37,131 @@ interface Colors {
   primary: string;
   accent: string;
   bg: string;
+  bgGrad: string;
+  cardBg: string;
+  cardBorder: string;
   text: string;
   textSub: string;
 }
 
-// ─── 10 PALETTES — nivel agencia premium ───────────────
 const PALETTES: Record<string, Colors> = {
   dark: {
-    primary: "#7C3AED", accent: "#22D3EE",
-    bg: "#09090F", text: "#FFFFFF", textSub: "rgba(255,255,255,0.65)",
+    primary: "#8B5CF6", accent: "#06D6A0",
+    bg: "#09090F", bgGrad: "linear-gradient(160deg, #09090F 0%, #170d2e 45%, #0d0d1a 100%)",
+    cardBg: "rgba(255,255,255,0.04)", cardBorder: "rgba(255,255,255,0.08)",
+    text: "#FFFFFF", textSub: "rgba(255,255,255,0.6)",
   },
   midnight: {
-    primary: "#6366F1", accent: "#F472B6",
-    bg: "#0C0A1D", text: "#FFFFFF", textSub: "rgba(255,255,255,0.6)",
+    primary: "#818CF8", accent: "#F472B6",
+    bg: "#0C0A1D", bgGrad: "linear-gradient(160deg, #0C0A1D 0%, #1e1145 45%, #0e0825 100%)",
+    cardBg: "rgba(255,255,255,0.04)", cardBorder: "rgba(255,255,255,0.08)",
+    text: "#FFFFFF", textSub: "rgba(255,255,255,0.55)",
   },
   gradient: {
-    primary: "#8B5CF6", accent: "#A3E635",
-    bg: "#110C24", text: "#FFFFFF", textSub: "rgba(255,255,255,0.65)",
+    primary: "#A78BFA", accent: "#34D399",
+    bg: "#110C24", bgGrad: "linear-gradient(160deg, #110C24 0%, #1e1050 45%, #0f0a1e 100%)",
+    cardBg: "rgba(255,255,255,0.04)", cardBorder: "rgba(255,255,255,0.08)",
+    text: "#FFFFFF", textSub: "rgba(255,255,255,0.6)",
   },
   clean: {
-    primary: "#7C3AED", accent: "#06B6D4",
-    bg: "#FAFAFA", text: "#111111", textSub: "#6B7280",
+    primary: "#7C3AED", accent: "#0EA5E9",
+    bg: "#F8FAFC", bgGrad: "linear-gradient(160deg, #F8FAFC 0%, #EEF2FF 45%, #F8FAFC 100%)",
+    cardBg: "rgba(0,0,0,0.03)", cardBorder: "rgba(0,0,0,0.06)",
+    text: "#0F172A", textSub: "#64748B",
   },
   neon: {
     primary: "#E040FB", accent: "#00E5FF",
-    bg: "#0A0A14", text: "#FFFFFF", textSub: "rgba(255,255,255,0.6)",
+    bg: "#0A0A14", bgGrad: "linear-gradient(160deg, #0A0A14 0%, #1a0a28 45%, #0a1018 100%)",
+    cardBg: "rgba(255,255,255,0.05)", cardBorder: "rgba(255,255,255,0.10)",
+    text: "#FFFFFF", textSub: "rgba(255,255,255,0.6)",
   },
   earth: {
-    primary: "#D97706", accent: "#059669",
-    bg: "#1A1714", text: "#FEFCE8", textSub: "rgba(254,252,232,0.6)",
+    primary: "#F59E0B", accent: "#10B981",
+    bg: "#1A1714", bgGrad: "linear-gradient(160deg, #1A1714 0%, #2a2010 45%, #1a1714 100%)",
+    cardBg: "rgba(255,255,255,0.04)", cardBorder: "rgba(255,255,255,0.07)",
+    text: "#FEF3C7", textSub: "rgba(254,252,232,0.55)",
   },
   ocean: {
-    primary: "#0EA5E9", accent: "#34D399",
-    bg: "#0B1120", text: "#FFFFFF", textSub: "rgba(255,255,255,0.6)",
+    primary: "#38BDF8", accent: "#34D399",
+    bg: "#0B1120", bgGrad: "linear-gradient(160deg, #0B1120 0%, #0d1e38 45%, #0b1120 100%)",
+    cardBg: "rgba(255,255,255,0.04)", cardBorder: "rgba(255,255,255,0.08)",
+    text: "#FFFFFF", textSub: "rgba(255,255,255,0.6)",
   },
   coral: {
-    primary: "#F43F5E", accent: "#FB923C",
-    bg: "#1A0A10", text: "#FFFFFF", textSub: "rgba(255,255,255,0.6)",
+    primary: "#FB7185", accent: "#FBBF24",
+    bg: "#1A0A10", bgGrad: "linear-gradient(160deg, #1A0A10 0%, #2a1020 45%, #1a0a10 100%)",
+    cardBg: "rgba(255,255,255,0.04)", cardBorder: "rgba(255,255,255,0.08)",
+    text: "#FFFFFF", textSub: "rgba(255,255,255,0.6)",
   },
   mono: {
-    primary: "#FFFFFF", accent: "#A1A1AA",
-    bg: "#111111", text: "#FFFFFF", textSub: "rgba(255,255,255,0.5)",
+    primary: "#E4E4E7", accent: "#A1A1AA",
+    bg: "#111111", bgGrad: "linear-gradient(160deg, #111111 0%, #1a1a1a 45%, #111111 100%)",
+    cardBg: "rgba(255,255,255,0.04)", cardBorder: "rgba(255,255,255,0.06)",
+    text: "#FFFFFF", textSub: "rgba(255,255,255,0.45)",
   },
   cream: {
-    primary: "#92400E", accent: "#7C3AED",
-    bg: "#FEF3C7", text: "#1C1917", textSub: "#78716C",
+    primary: "#B45309", accent: "#7C3AED",
+    bg: "#FFFBEB", bgGrad: "linear-gradient(160deg, #FFFBEB 0%, #FEF3C7 45%, #FFFBEB 100%)",
+    cardBg: "rgba(0,0,0,0.04)", cardBorder: "rgba(0,0,0,0.07)",
+    text: "#1C1917", textSub: "#78716C",
   },
 };
 
-function isLight(bg: string): boolean {
-  return bg.startsWith("#F") || bg.startsWith("#E") || bg.startsWith("#D") || bg === "#FAFAFA" || bg === "#FFFFFF";
-}
+// ═══════════════════════════════════════════════════════════
+//  INLINE HELPERS (called as functions, NOT JSX components)
+// ═══════════════════════════════════════════════════════════
 
-// ─── DECORATIVE ELEMENTS ───────────────────────────────
-
-/** Grid of small dots as background texture */
-function renderGridDots(colors: Colors, opacity = "06") {
-  const dots = [];
-  for (let row = 0; row < 8; row++) {
-    for (let col = 0; col < 8; col++) {
-      dots.push(
-        <div key={`${row}-${col}`} style={{
-          position: "absolute", display: "flex",
-          top: 120 + row * 110, left: 120 + col * 110,
-          width: 4, height: 4, borderRadius: "50%",
-          background: `${colors.primary}${opacity}`,
-        }} />
-      );
-    }
-  }
-  return dots;
-}
-
-/** Diagonal decorative lines */
-function renderCornerAccent(colors: Colors, position: "top-right" | "bottom-left") {
-  const isTopRight = position === "top-right";
+function glow(color: string, x: number, y: number, size = 500, opacity = 0.12) {
   return (
     <div style={{
       position: "absolute", display: "flex",
-      top: isTopRight ? 40 : undefined,
-      bottom: isTopRight ? undefined : 40,
-      right: isTopRight ? 40 : undefined,
-      left: isTopRight ? undefined : 40,
-      width: 80, height: 80,
-      borderTop: isTopRight ? `2px solid ${colors.primary}30` : "none",
-      borderRight: isTopRight ? `2px solid ${colors.primary}30` : "none",
-      borderBottom: isTopRight ? "none" : `2px solid ${colors.primary}30`,
-      borderLeft: isTopRight ? "none" : `2px solid ${colors.primary}30`,
-      borderRadius: isTopRight ? "0 16px 0 0" : "0 0 0 16px",
+      top: y, left: x, width: size, height: size,
+      borderRadius: 9999,
+      background: `radial-gradient(circle, ${color}, transparent 70%)`,
+      opacity,
     }} />
   );
 }
 
-/** Glow orb */
-function renderGlow(color: string, x: number, y: number, size = 500, opacity = "10") {
+function topStripe(c: Colors) {
   return (
     <div style={{
-      position: "absolute", display: "flex",
-      top: y, left: x, width: size, height: size, borderRadius: "50%",
-      background: `radial-gradient(circle, ${color}${opacity}, transparent 70%)`,
+      display: "flex", position: "absolute", top: 0, left: 0, right: 0, height: 5,
+      background: `linear-gradient(90deg, ${c.primary}, ${c.accent})`,
     }} />
   );
 }
 
-/** Brand badge — small consistent brand marker */
-function renderBrandBadge(brandName: string, handle: string, colors: Colors, compact = false) {
+function gradLine(c: Colors, w = 52, h = 4) {
   return (
     <div style={{
-      display: "flex", alignItems: "center", gap: compact ? 10 : 14,
-    }}>
+      display: "flex", width: w, height: h, borderRadius: h,
+      background: `linear-gradient(90deg, ${c.primary}, ${c.accent})`,
+    }} />
+  );
+}
+
+function badge(brandName: string, handle: string, c: Colors, compact = false) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: compact ? 10 : 14 }}>
       <div style={{
-        display: "flex", width: compact ? 34 : 42, height: compact ? 34 : 42,
-        borderRadius: compact ? 9 : 11,
-        background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
+        display: "flex", width: compact ? 36 : 44, height: compact ? 36 : 44,
+        borderRadius: compact ? 10 : 12,
+        background: `linear-gradient(135deg, ${c.primary}, ${c.accent})`,
         alignItems: "center", justifyContent: "center",
-        fontSize: compact ? 15 : 19, fontWeight: 800, color: "#FFFFFF",
+        fontSize: compact ? 16 : 20, fontWeight: 800, color: "#FFFFFF",
       }}>
         {brandName.charAt(0)}
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <div style={{
           display: "flex", fontSize: compact ? 15 : 17, fontWeight: 700,
-          color: colors.text, letterSpacing: 1.5,
+          color: c.text, letterSpacing: 2,
         }}>
           {brandName.toUpperCase()}
         </div>
         {!compact && (
-          <div style={{
-            display: "flex", fontSize: 13, color: colors.textSub, letterSpacing: 0.5,
-          }}>
+          <div style={{ display: "flex", fontSize: 13, color: c.textSub, letterSpacing: 0.5 }}>
             {handle}
           </div>
         )}
@@ -173,24 +170,22 @@ function renderBrandBadge(brandName: string, handle: string, colors: Colors, com
   );
 }
 
-/** Render title with optional highlighted word(s) */
-function renderTitle(
-  title: string, highlightWord: string | undefined, colors: Colors,
+function titleText(
+  title: string, highlightWord: string | undefined, c: Colors,
   fontSize: number, maxWidth: number, center = false
 ) {
   if (!highlightWord || !title.toLowerCase().includes(highlightWord.toLowerCase())) {
     return (
       <div style={{
-        display: "flex", fontSize, fontWeight: 800, color: colors.text,
-        lineHeight: 1.1, maxWidth,
-        ...(center ? { justifyContent: "center", textAlign: "center" as const } : {}),
+        display: "flex", fontSize, fontWeight: 800, color: c.text,
+        lineHeight: 1.08, maxWidth, letterSpacing: -0.5,
+        ...(center ? { justifyContent: "center" } : {}),
       }}>
         {title}
       </div>
     );
   }
 
-  // Split title to highlight the matching word(s)
   const idx = title.toLowerCase().indexOf(highlightWord.toLowerCase());
   const before = title.slice(0, idx);
   const match = title.slice(idx, idx + highlightWord.length);
@@ -199,668 +194,656 @@ function renderTitle(
   return (
     <div style={{
       display: "flex", flexWrap: "wrap", fontSize, fontWeight: 800,
-      color: colors.text, lineHeight: 1.15, maxWidth,
-      ...(center ? { justifyContent: "center", textAlign: "center" as const } : {}),
+      color: c.text, lineHeight: 1.15, maxWidth, letterSpacing: -0.5,
+      ...(center ? { justifyContent: "center" } : {}),
     }}>
-      {before && <span>{before}</span>}
-      <span style={{
-        color: colors.accent,
-        borderBottom: `4px solid ${colors.accent}`,
-        paddingBottom: 2,
+      {before ? <div style={{ display: "flex" }}>{before}</div> : null}
+      <div style={{
+        display: "flex", color: c.accent,
+        borderBottom: `5px solid ${c.accent}`, paddingBottom: 3,
       }}>
         {match}
-      </span>
-      {after && <span>{after}</span>}
+      </div>
+      {after ? <div style={{ display: "flex" }}>{after}</div> : null}
     </div>
   );
 }
 
-// ─── DOTS INDICATOR ────────────────────────────────────
-function renderDots(current: number, total: number, colors: Colors) {
-  const dots = [];
-  for (let i = 0; i < total; i++) {
-    dots.push(
-      <div key={i} style={{
-        display: "flex",
-        width: i === current ? 28 : 8, height: 8, borderRadius: 4,
-        background: i === current
-          ? `linear-gradient(90deg, ${colors.primary}, ${colors.accent})`
-          : `${colors.text}15`,
-      }} />
-    );
-  }
+function progressBar(current: number, total: number, c: Colors) {
+  const pct = Math.round(((current + 1) / total) * 100);
   return (
     <div style={{
-      display: "flex", gap: 5, justifyContent: "center",
-      position: "absolute", bottom: 42, left: 0, right: 0,
+      display: "flex", position: "absolute", bottom: 36, left: 60, right: 60,
+      flexDirection: "column", gap: 8,
     }}>
-      {dots}
+      <div style={{
+        display: "flex", width: "100%", height: 4, borderRadius: 4,
+        background: "rgba(255,255,255,0.08)",
+      }}>
+        <div style={{
+          display: "flex", width: `${pct}%`, height: 4, borderRadius: 4,
+          background: `linear-gradient(90deg, ${c.primary}, ${c.accent})`,
+        }} />
+      </div>
+      <div style={{
+        display: "flex", justifyContent: "space-between",
+        fontSize: 12, fontWeight: 600, color: c.textSub, letterSpacing: 1,
+      }}>
+        <div style={{ display: "flex" }}>{current + 1}/{total}</div>
+        <div style={{ display: "flex" }}>@pacameagencia</div>
+      </div>
     </div>
   );
 }
 
-// ═══════════════════════════════════════════════════════
-//  SLIDE RENDERERS
-// ═══════════════════════════════════════════════════════
+function card(c: Colors, children: React.ReactNode, padding = "36px 44px", radius = 24) {
+  return (
+    <div style={{
+      display: "flex", flexDirection: "column", width: "100%",
+      background: c.cardBg, border: `1px solid ${c.cardBorder}`,
+      borderRadius: radius, padding,
+    }}>
+      {children}
+    </div>
+  );
+}
 
-// ─── COVER ─────────────────────────────────────────────
-function renderCover(
-  slide: SlideInput, total: number, colors: Colors, brandName: string, handle: string
-) {
+function numBadge(num: string, c: Colors, size = 52) {
+  return (
+    <div style={{
+      display: "flex", width: size, height: size,
+      borderRadius: Math.round(size * 0.3),
+      background: `linear-gradient(135deg, ${c.primary}, ${c.accent})`,
+      alignItems: "center", justifyContent: "center",
+      fontSize: Math.round(size * 0.42), fontWeight: 800, color: "#FFFFFF",
+      flexShrink: 0,
+    }}>
+      {num}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SLIDE RENDERERS
+// ═══════════════════════════════════════════════════════════
+
+function renderCover(s: SlideInput, total: number, c: Colors, brand: string, handle: string) {
   return (
     <div style={{
       width: "100%", height: "100%", display: "flex", flexDirection: "column",
-      background: colors.bg, position: "relative", overflow: "hidden",
-      fontFamily: "Inter, system-ui, sans-serif",
+      background: c.bgGrad, position: "relative", overflow: "hidden",
     }}>
-      {/* Top gradient bar */}
-      <div style={{
-        display: "flex", position: "absolute", top: 0, left: 0, right: 0, height: 5,
-        background: `linear-gradient(90deg, ${colors.primary}, ${colors.accent})`,
-      }} />
+      {topStripe(c)}
+      {glow(c.primary, -180, -120, 650, 0.18)}
+      {glow(c.accent, 650, 550, 500, 0.10)}
 
-      {/* Background effects */}
-      {renderGlow(colors.primary, -200, -180, 600, "14")}
-      {renderGlow(colors.accent, 600, 500, 500, "08")}
-      {renderGridDots(colors, "04")}
-      {renderCornerAccent(colors, "top-right")}
-
-      {/* Brand header */}
-      <div style={{ display: "flex", padding: "56px 65px 0" }}>
-        {renderBrandBadge(brandName, handle, colors)}
+      <div style={{ display: "flex", padding: "52px 60px 0", position: "relative", zIndex: 10 }}>
+        {badge(brand, handle, c)}
       </div>
 
-      {/* Main content */}
       <div style={{
         display: "flex", flexDirection: "column", flex: 1,
-        justifyContent: "center", padding: "0 65px",
+        justifyContent: "center", padding: "0 60px",
         position: "relative", zIndex: 10,
       }}>
-        {slide.icon && (
+        {s.icon && <div style={{ display: "flex", fontSize: 60, marginBottom: 20 }}>{s.icon}</div>}
+
+        {s.badge && (
           <div style={{
-            display: "flex", fontSize: 52, marginBottom: 20,
-            filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
+            display: "flex", padding: "6px 18px", borderRadius: 20,
+            background: `${c.primary}20`, border: `1px solid ${c.primary}30`,
+            fontSize: 14, fontWeight: 700, color: c.primary,
+            letterSpacing: 2, marginBottom: 20, alignSelf: "flex-start",
           }}>
-            {slide.icon}
+            {(s.badge || "").toUpperCase()}
           </div>
         )}
 
-        {renderTitle(slide.title, slide.highlight, colors, 62, 880)}
+        {titleText(s.title, s.highlight, c, 74, 900)}
 
-        {slide.body && (
+        {s.body && (
           <div style={{
-            display: "flex", fontSize: 25, fontWeight: 400,
-            color: colors.textSub, lineHeight: 1.5,
-            marginTop: 22, maxWidth: 780,
+            display: "flex", fontSize: 26, fontWeight: 400,
+            color: c.textSub, lineHeight: 1.5, marginTop: 24, maxWidth: 800,
           }}>
-            {slide.body}
+            {s.body}
           </div>
         )}
 
-        {/* Swipe CTA */}
-        <div style={{
-          display: "flex", alignItems: "center", gap: 12, marginTop: 44,
-        }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 48 }}>
+          {gradLine(c, 48, 3)}
           <div style={{
-            display: "flex", width: 44, height: 3, borderRadius: 2,
-            background: `linear-gradient(90deg, ${colors.primary}, ${colors.accent})`,
-          }} />
-          <div style={{
-            display: "flex", fontSize: 13, fontWeight: 700,
-            color: colors.primary, letterSpacing: 3,
+            display: "flex", fontSize: 14, fontWeight: 700,
+            color: c.primary, letterSpacing: 4,
           }}>
             DESLIZA
           </div>
-          <div style={{ display: "flex", fontSize: 16, color: colors.accent }}>
-            →
+          <div style={{
+            display: "flex", fontSize: 22, fontWeight: 700,
+            background: `linear-gradient(90deg, ${c.primary}, ${c.accent})`,
+            backgroundClip: "text", color: "transparent",
+          }}>
+            {"\u2192"}
           </div>
         </div>
       </div>
 
-      {renderDots(0, total, colors)}
+      {progressBar(0, total, c)}
     </div>
   );
 }
 
-// ─── CONTENT ───────────────────────────────────────────
-function renderContent(
-  slide: SlideInput, index: number, total: number, colors: Colors, brandName: string, handle: string
-) {
-  const num = slide.number || String(index).padStart(2, "0");
-
+function renderContent(s: SlideInput, idx: number, total: number, c: Colors, brand: string, handle: string) {
+  const num = s.number || String(idx).padStart(2, "0");
   return (
     <div style={{
       width: "100%", height: "100%", display: "flex", flexDirection: "column",
-      background: colors.bg, position: "relative", overflow: "hidden",
-      fontFamily: "Inter, system-ui, sans-serif",
+      background: c.bgGrad, position: "relative", overflow: "hidden",
     }}>
-      {renderGlow(colors.primary, -150, -80, 400, "08")}
+      {glow(c.primary, -120, -60, 400, 0.10)}
 
-      {/* Top bar */}
       <div style={{
         display: "flex", justifyContent: "space-between", alignItems: "center",
-        padding: "50px 65px 0",
+        padding: "48px 60px 0",
       }}>
-        {renderBrandBadge(brandName, handle, colors, true)}
+        {badge(brand, handle, c, true)}
         <div style={{
-          display: "flex", fontSize: 14, fontWeight: 700,
-          color: colors.primary, letterSpacing: 1,
+          display: "flex", padding: "5px 16px", borderRadius: 20,
+          background: `${c.primary}15`, border: `1px solid ${c.primary}20`,
+          fontSize: 13, fontWeight: 700, color: c.primary, letterSpacing: 1,
         }}>
-          {num}/{String(total - 1).padStart(2, "0")}
+          {num}/{total - 1}
         </div>
       </div>
 
-      {/* Accent line */}
       <div style={{
-        display: "flex", margin: "28px 65px 0",
-        width: 48, height: 3, borderRadius: 2,
-        background: `linear-gradient(90deg, ${colors.primary}, ${colors.accent})`,
+        display: "flex", flexDirection: "column", flex: 1,
+        justifyContent: "center", padding: "0 60px", position: "relative", zIndex: 10,
+      }}>
+        {/* Watermark number */}
+        <div style={{
+          display: "flex", position: "absolute", top: -20, right: -10,
+          fontSize: 280, fontWeight: 900, lineHeight: 0.85,
+          background: `linear-gradient(135deg, ${c.primary}08, ${c.accent}04)`,
+          backgroundClip: "text", color: "transparent",
+        }}>
+          {num.replace(/^0/, "")}
+        </div>
+
+        {card(c, (
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 24 }}>
+            {numBadge(num.replace(/^0/, ""), c)}
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              {s.icon && <div style={{ display: "flex", fontSize: 38, marginBottom: 12 }}>{s.icon}</div>}
+              {titleText(s.title, s.highlight, c, 44, 750)}
+              {s.body && (
+                <div style={{
+                  display: "flex", fontSize: 24, fontWeight: 400,
+                  color: c.textSub, lineHeight: 1.6, marginTop: 18, maxWidth: 700,
+                }}>
+                  {s.body}
+                </div>
+              )}
+            </div>
+          </div>
+        ), "44px 48px")}
+      </div>
+
+      {progressBar(idx, total, c)}
+    </div>
+  );
+}
+
+function renderTip(s: SlideInput, idx: number, total: number, c: Colors, brand: string, handle: string) {
+  return (
+    <div style={{
+      width: "100%", height: "100%", display: "flex", flexDirection: "column",
+      background: c.bgGrad, position: "relative", overflow: "hidden",
+    }}>
+      <div style={{
+        display: "flex", position: "absolute", left: 0, top: 0, bottom: 0, width: 7,
+        background: `linear-gradient(180deg, ${c.primary}, ${c.accent})`,
       }} />
+      {glow(c.accent, 700, -80, 400, 0.08)}
 
-      {/* Background number watermark */}
-      <div style={{
-        display: "flex", position: "absolute",
-        top: 40, right: 30,
-        fontSize: 260, fontWeight: 900,
-        color: `${colors.primary}06`,
-        lineHeight: 0.85,
-      }}>
-        {num.replace(/^0/, "")}
-      </div>
-
-      {/* Content */}
-      <div style={{
-        display: "flex", flexDirection: "column", flex: 1,
-        justifyContent: "center", padding: "0 65px",
-        position: "relative", zIndex: 10,
-      }}>
-        {slide.icon && (
-          <div style={{ display: "flex", fontSize: 44, marginBottom: 14 }}>
-            {slide.icon}
-          </div>
-        )}
-
-        {renderTitle(slide.title, slide.highlight, colors, 46, 830)}
-
-        {slide.body && (
-          <div style={{
-            display: "flex", fontSize: 26, fontWeight: 400,
-            color: colors.textSub, lineHeight: 1.5,
-            marginTop: 22, maxWidth: 780,
-          }}>
-            {slide.body}
-          </div>
-        )}
-      </div>
-
-      {renderDots(index, total, colors)}
-    </div>
-  );
-}
-
-// ─── TIP ───────────────────────────────────────────────
-function renderTip(
-  slide: SlideInput, index: number, total: number, colors: Colors, brandName: string, handle: string
-) {
-  return (
-    <div style={{
-      width: "100%", height: "100%", display: "flex", flexDirection: "column",
-      background: colors.bg, position: "relative", overflow: "hidden",
-      fontFamily: "Inter, system-ui, sans-serif",
-    }}>
-      {/* Left accent bar */}
-      <div style={{
-        display: "flex", position: "absolute", left: 0, top: 0, bottom: 0, width: 6,
-        background: `linear-gradient(180deg, ${colors.primary}, ${colors.accent})`,
-      }} />
-
-      {renderGlow(colors.accent, 700, -100, 400, "06")}
-
-      {/* Top bar */}
       <div style={{
         display: "flex", justifyContent: "space-between", alignItems: "center",
-        padding: "50px 65px 0 72px",
+        padding: "48px 60px 0 68px",
       }}>
-        {renderBrandBadge(brandName, handle, colors, true)}
+        {badge(brand, handle, c, true)}
         <div style={{
-          display: "flex", padding: "5px 18px", borderRadius: 20,
-          background: `${colors.primary}18`,
-          fontSize: 13, fontWeight: 700, color: colors.primary, letterSpacing: 1,
+          display: "flex", padding: "6px 20px", borderRadius: 20,
+          background: `linear-gradient(135deg, ${c.primary}20, ${c.accent}15)`,
+          border: `1px solid ${c.primary}25`,
+          fontSize: 13, fontWeight: 700, color: c.primary, letterSpacing: 2,
         }}>
-          TIP {slide.number || index}
+          {"TIP " + (s.number || idx)}
         </div>
       </div>
 
-      {/* Content */}
       <div style={{
         display: "flex", flexDirection: "column", flex: 1,
-        justifyContent: "center", padding: "0 65px 0 72px",
+        justifyContent: "center", padding: "0 60px 0 68px",
       }}>
-        {slide.icon && (
-          <div style={{
-            display: "flex", width: 68, height: 68, borderRadius: 18,
-            background: `linear-gradient(135deg, ${colors.primary}20, ${colors.accent}15)`,
-            border: `1px solid ${colors.primary}25`,
-            alignItems: "center", justifyContent: "center",
-            fontSize: 32, marginBottom: 22,
-          }}>
-            {slide.icon}
+        {card(c, (
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {s.icon && (
+              <div style={{
+                display: "flex", width: 72, height: 72, borderRadius: 20,
+                background: `linear-gradient(135deg, ${c.primary}22, ${c.accent}18)`,
+                border: `1px solid ${c.primary}30`,
+                alignItems: "center", justifyContent: "center",
+                fontSize: 34, marginBottom: 22,
+              }}>
+                {s.icon}
+              </div>
+            )}
+            {titleText(s.title, s.highlight, c, 44, 840)}
+            {s.body && (
+              <div style={{
+                display: "flex", fontSize: 24, fontWeight: 400,
+                color: c.textSub, lineHeight: 1.6, marginTop: 20, maxWidth: 780,
+              }}>
+                {s.body}
+              </div>
+            )}
           </div>
-        )}
-
-        {renderTitle(slide.title, slide.highlight, colors, 44, 830)}
-
-        {slide.body && (
-          <div style={{
-            display: "flex", fontSize: 25, fontWeight: 400,
-            color: colors.textSub, lineHeight: 1.5,
-            marginTop: 22, maxWidth: 760,
-          }}>
-            {slide.body}
-          </div>
-        )}
+        ), "40px 44px")}
       </div>
 
-      {renderDots(index, total, colors)}
+      {progressBar(idx, total, c)}
     </div>
   );
 }
 
-// ─── STAT ──────────────────────────────────────────────
-function renderStat(
-  slide: SlideInput, index: number, total: number, colors: Colors, brandName: string, handle: string
-) {
+function renderStat(s: SlideInput, idx: number, total: number, c: Colors, brand: string, handle: string) {
   return (
     <div style={{
       width: "100%", height: "100%", display: "flex", flexDirection: "column",
-      background: colors.bg, position: "relative", overflow: "hidden",
-      fontFamily: "Inter, system-ui, sans-serif",
+      background: c.bgGrad, position: "relative", overflow: "hidden",
     }}>
-      {renderGlow(colors.primary, 200, 150, 600, "10")}
-      {renderCornerAccent(colors, "bottom-left")}
+      {glow(c.primary, 200, 150, 700, 0.16)}
+      {glow(c.accent, 400, 350, 500, 0.08)}
 
-      {/* Top bar */}
-      <div style={{
-        display: "flex", padding: "50px 65px 0",
-      }}>
-        {renderBrandBadge(brandName, handle, colors, true)}
+      <div style={{ display: "flex", padding: "48px 60px 0" }}>
+        {badge(brand, handle, c, true)}
       </div>
 
-      {/* Centered stat */}
       <div style={{
         display: "flex", flexDirection: "column", flex: 1,
-        justifyContent: "center", alignItems: "center",
-        padding: "0 65px",
+        justifyContent: "center", alignItems: "center", padding: "0 60px",
       }}>
-        {/* Big stat number with gradient */}
-        <div style={{
-          display: "flex", fontSize: 150, fontWeight: 900,
-          background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-          backgroundClip: "text",
-          color: "transparent",
-          lineHeight: 1,
-          letterSpacing: -4,
-        }}>
-          {slide.stat || slide.number || "0"}
-        </div>
-
-        {slide.statLabel && (
-          <div style={{
-            display: "flex", fontSize: 16, fontWeight: 600,
-            color: colors.textSub, marginTop: 8,
-            letterSpacing: 4, textTransform: "uppercase",
-          }}>
-            {slide.statLabel}
-          </div>
-        )}
-
-        {/* Gradient divider */}
-        <div style={{
-          display: "flex", width: 50, height: 3, borderRadius: 2,
-          background: `linear-gradient(90deg, ${colors.primary}, ${colors.accent})`,
-          margin: "28px 0",
-        }} />
-
-        <div style={{
-          display: "flex", fontSize: 38, fontWeight: 700,
-          color: colors.text, lineHeight: 1.2, maxWidth: 720,
-          justifyContent: "center", textAlign: "center" as const,
-        }}>
-          {slide.title}
-        </div>
-
-        {slide.body && (
-          <div style={{
-            display: "flex", fontSize: 22, fontWeight: 400,
-            color: colors.textSub, lineHeight: 1.5,
-            marginTop: 14, maxWidth: 680, justifyContent: "center",
-            textAlign: "center" as const,
-          }}>
-            {slide.body}
-          </div>
-        )}
-      </div>
-
-      {renderDots(index, total, colors)}
-    </div>
-  );
-}
-
-// ─── QUOTE ─────────────────────────────────────────────
-function renderQuote(
-  slide: SlideInput, index: number, total: number, colors: Colors, brandName: string, handle: string
-) {
-  return (
-    <div style={{
-      width: "100%", height: "100%", display: "flex", flexDirection: "column",
-      background: colors.bg, position: "relative", overflow: "hidden",
-      fontFamily: "Inter, system-ui, sans-serif",
-    }}>
-      {renderGlow(colors.accent, 600, 200, 400, "06")}
-
-      {/* Top bar */}
-      <div style={{
-        display: "flex", padding: "50px 65px 0",
-      }}>
-        {renderBrandBadge(brandName, handle, colors, true)}
-      </div>
-
-      {/* Quote */}
-      <div style={{
-        display: "flex", flexDirection: "column", flex: 1,
-        justifyContent: "center", padding: "0 75px",
-      }}>
-        {/* Big stylized quote mark */}
-        <div style={{
-          display: "flex", fontSize: 140, fontWeight: 900,
-          background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-          backgroundClip: "text",
-          color: "transparent",
-          lineHeight: 0.7, marginBottom: 16,
-          opacity: 0.5,
-        }}>
-          {"\u201C"}
-        </div>
-
-        <div style={{
-          display: "flex", fontSize: 40, fontWeight: 600,
-          color: colors.text, lineHeight: 1.35,
-          fontStyle: "italic", maxWidth: 850,
-        }}>
-          {slide.title}
-        </div>
-
-        {slide.body && (
-          <div style={{
-            display: "flex", alignItems: "center", gap: 12, marginTop: 32,
-          }}>
+        {card(c, (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <div style={{
-              display: "flex", width: 30, height: 2, borderRadius: 1,
-              background: colors.primary,
-            }} />
-            <div style={{
-              display: "flex", fontSize: 20, fontWeight: 600,
-              color: colors.textSub,
+              display: "flex", fontSize: 160, fontWeight: 900,
+              background: `linear-gradient(135deg, ${c.primary}, ${c.accent})`,
+              backgroundClip: "text", color: "transparent",
+              lineHeight: 1, letterSpacing: -6,
             }}>
-              {slide.body}
+              {s.stat || s.number || "0"}
             </div>
-          </div>
-        )}
-      </div>
-
-      {renderDots(index, total, colors)}
-    </div>
-  );
-}
-
-// ─── LIST (NEW) — slide con 2-4 puntos con icono ──────
-function renderList(
-  slide: SlideInput, index: number, total: number, colors: Colors, brandName: string, handle: string
-) {
-  const items = slide.items || [];
-
-  return (
-    <div style={{
-      width: "100%", height: "100%", display: "flex", flexDirection: "column",
-      background: colors.bg, position: "relative", overflow: "hidden",
-      fontFamily: "Inter, system-ui, sans-serif",
-    }}>
-      {renderGlow(colors.primary, -100, 300, 400, "08")}
-
-      {/* Top bar */}
-      <div style={{
-        display: "flex", justifyContent: "space-between", alignItems: "center",
-        padding: "50px 65px 0",
-      }}>
-        {renderBrandBadge(brandName, handle, colors, true)}
-        <div style={{
-          display: "flex", fontSize: 14, fontWeight: 700,
-          color: colors.primary, letterSpacing: 1,
-        }}>
-          {slide.number || `${index}/${total - 1}`}
-        </div>
-      </div>
-
-      {/* Title */}
-      <div style={{
-        display: "flex", flexDirection: "column", padding: "36px 65px 0",
-      }}>
-        {renderTitle(slide.title, slide.highlight, colors, 40, 800)}
-      </div>
-
-      {/* Items list */}
-      <div style={{
-        display: "flex", flexDirection: "column", flex: 1,
-        justifyContent: "center", padding: "0 65px",
-        gap: 20,
-      }}>
-        {items.slice(0, 4).map((item, i) => (
-          <div key={i} style={{
-            display: "flex", alignItems: "flex-start", gap: 18,
-            padding: "18px 24px",
-            background: `${colors.primary}08`,
-            borderRadius: 16,
-            borderLeft: `3px solid ${i === 0 ? colors.primary : i === 1 ? colors.accent : `${colors.primary}60`}`,
-          }}>
-            <div style={{
-              display: "flex", fontSize: 20, fontWeight: 800,
-              color: colors.primary, minWidth: 28,
-              marginTop: 2,
-            }}>
-              {String(i + 1).padStart(2, "0")}
+            {s.statLabel && (
+              <div style={{
+                display: "flex", fontSize: 15, fontWeight: 600,
+                color: c.textSub, marginTop: 8, letterSpacing: 5,
+              }}>
+                {(s.statLabel || "").toUpperCase()}
+              </div>
+            )}
+            <div style={{ display: "flex", marginTop: 28, marginBottom: 28 }}>
+              {gradLine(c, 56, 4)}
             </div>
             <div style={{
-              display: "flex", fontSize: 24, fontWeight: 500,
-              color: colors.text, lineHeight: 1.4,
+              display: "flex", fontSize: 36, fontWeight: 700,
+              color: c.text, lineHeight: 1.2, maxWidth: 700, justifyContent: "center",
             }}>
-              {item}
+              {s.title}
             </div>
+            {s.body && (
+              <div style={{
+                display: "flex", fontSize: 22, fontWeight: 400,
+                color: c.textSub, lineHeight: 1.5, marginTop: 14, maxWidth: 650, justifyContent: "center",
+              }}>
+                {s.body}
+              </div>
+            )}
           </div>
-        ))}
+        ), "48px 64px", 28)}
       </div>
 
-      {renderDots(index, total, colors)}
+      {progressBar(idx, total, c)}
     </div>
   );
 }
 
-// ─── HIGHLIGHT (NEW) — frase impactante con fondo ─────
-function renderHighlight(
-  slide: SlideInput, index: number, total: number, colors: Colors, brandName: string, handle: string
-) {
+function renderQuote(s: SlideInput, idx: number, total: number, c: Colors, brand: string, handle: string) {
   return (
     <div style={{
       width: "100%", height: "100%", display: "flex", flexDirection: "column",
-      background: colors.bg, position: "relative", overflow: "hidden",
-      fontFamily: "Inter, system-ui, sans-serif",
+      background: c.bgGrad, position: "relative", overflow: "hidden",
     }}>
-      {/* Full background gradient glow */}
-      {renderGlow(colors.primary, 100, 100, 800, "12")}
-      {renderGlow(colors.accent, 500, 400, 600, "08")}
-      {renderGridDots(colors, "03")}
+      {glow(c.accent, 600, 200, 400, 0.08)}
 
-      {/* Top bar */}
-      <div style={{
-        display: "flex", padding: "50px 65px 0",
-      }}>
-        {renderBrandBadge(brandName, handle, colors, true)}
+      <div style={{ display: "flex", padding: "48px 60px 0" }}>
+        {badge(brand, handle, c, true)}
       </div>
 
-      {/* Centered highlight */}
       <div style={{
         display: "flex", flexDirection: "column", flex: 1,
-        justifyContent: "center", alignItems: "center",
-        padding: "0 55px",
+        justifyContent: "center", padding: "0 60px",
       }}>
-        {slide.icon && (
-          <div style={{
-            display: "flex", fontSize: 48, marginBottom: 24,
-          }}>
-            {slide.icon}
+        {card(c, (
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{
+              display: "flex", fontSize: 120, fontWeight: 900,
+              background: `linear-gradient(135deg, ${c.primary}, ${c.accent})`,
+              backgroundClip: "text", color: "transparent",
+              lineHeight: 0.65, marginBottom: 18, opacity: 0.6,
+            }}>
+              {"\u201C"}
+            </div>
+            <div style={{
+              display: "flex", fontSize: 38, fontWeight: 600,
+              color: c.text, lineHeight: 1.35, maxWidth: 860,
+            }}>
+              {s.title}
+            </div>
+            {s.body && (
+              <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 32 }}>
+                {gradLine(c, 32, 3)}
+                <div style={{
+                  display: "flex", fontSize: 20, fontWeight: 600,
+                  color: c.textSub, letterSpacing: 0.5,
+                }}>
+                  {s.body}
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        ), "48px 52px")}
+      </div>
 
-        {/* Highlight card */}
+      {progressBar(idx, total, c)}
+    </div>
+  );
+}
+
+function renderList(s: SlideInput, idx: number, total: number, c: Colors, brand: string, handle: string) {
+  const items = s.items || [];
+  const listItems = [];
+  for (let i = 0; i < Math.min(items.length, 5); i++) {
+    listItems.push(
+      <div style={{
+        display: "flex", width: "100%",
+        background: c.cardBg, border: `1px solid ${c.cardBorder}`,
+        borderRadius: 16, padding: "20px 28px",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+          {numBadge(String(i + 1), c, 42)}
+          <div style={{
+            display: "flex", fontSize: 23, fontWeight: 500,
+            color: c.text, lineHeight: 1.4, flex: 1,
+          }}>
+            {items[i]}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      width: "100%", height: "100%", display: "flex", flexDirection: "column",
+      background: c.bgGrad, position: "relative", overflow: "hidden",
+    }}>
+      {glow(c.primary, -80, 300, 400, 0.10)}
+
+      <div style={{ display: "flex", padding: "48px 60px 0" }}>
+        {badge(brand, handle, c, true)}
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", padding: "32px 60px 0" }}>
+        {s.icon && <div style={{ display: "flex", fontSize: 36, marginBottom: 10 }}>{s.icon}</div>}
+        {titleText(s.title, s.highlight, c, 40, 820)}
+      </div>
+
+      <div style={{
+        display: "flex", flexDirection: "column", flex: 1,
+        justifyContent: "center", padding: "0 60px", gap: 16,
+      }}>
+        {listItems}
+      </div>
+
+      {progressBar(idx, total, c)}
+    </div>
+  );
+}
+
+function renderHighlight(s: SlideInput, idx: number, total: number, c: Colors, brand: string, handle: string) {
+  return (
+    <div style={{
+      width: "100%", height: "100%", display: "flex", flexDirection: "column",
+      background: c.bgGrad, position: "relative", overflow: "hidden",
+    }}>
+      {glow(c.primary, 100, 100, 900, 0.16)}
+      {glow(c.accent, 500, 400, 600, 0.10)}
+
+      <div style={{ display: "flex", padding: "48px 60px 0" }}>
+        {badge(brand, handle, c, true)}
+      </div>
+
+      <div style={{
+        display: "flex", flexDirection: "column", flex: 1,
+        justifyContent: "center", alignItems: "center", padding: "0 50px",
+      }}>
+        {s.icon && <div style={{ display: "flex", fontSize: 52, marginBottom: 28 }}>{s.icon}</div>}
+
         <div style={{
           display: "flex", flexDirection: "column", alignItems: "center",
-          padding: "40px 50px",
-          background: `linear-gradient(135deg, ${colors.primary}15, ${colors.accent}10)`,
-          border: `1px solid ${colors.primary}20`,
-          borderRadius: 24,
-          maxWidth: 900,
+          width: "100%", padding: "48px 56px",
+          background: `${c.primary}12`, border: `1px solid ${c.primary}25`,
+          borderRadius: 28,
         }}>
-          <div style={{
-            display: "flex", fontSize: 44, fontWeight: 800,
-            color: colors.text, lineHeight: 1.2,
-            textAlign: "center" as const, justifyContent: "center",
-          }}>
-            {slide.title}
-          </div>
+          {titleText(s.title, s.highlight, c, 44, 850, true)}
         </div>
 
-        {slide.body && (
+        {s.body && (
           <div style={{
             display: "flex", fontSize: 22, fontWeight: 400,
-            color: colors.textSub, lineHeight: 1.5,
-            marginTop: 24, maxWidth: 700,
-            textAlign: "center" as const, justifyContent: "center",
+            color: c.textSub, lineHeight: 1.5, marginTop: 28, maxWidth: 720, justifyContent: "center",
           }}>
-            {slide.body}
+            {s.body}
           </div>
         )}
       </div>
 
-      {renderDots(index, total, colors)}
+      {progressBar(idx, total, c)}
     </div>
   );
 }
 
-// ─── CTA ───────────────────────────────────────────────
-function renderCta(
-  slide: SlideInput, total: number, colors: Colors, brandName: string, handle: string
-) {
+function renderComparison(s: SlideInput, idx: number, total: number, c: Colors, brand: string, handle: string) {
+  const items = s.items || [];
+  const half = Math.ceil(items.length / 2);
+  const left = items.slice(0, half);
+  const right = items.slice(half);
+
+  const leftItems = [];
+  for (let i = 0; i < left.length; i++) {
+    leftItems.push(
+      <div style={{
+        display: "flex", padding: "18px 22px", borderRadius: 14,
+        background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.10)",
+      }}>
+        <div style={{ display: "flex", fontSize: 20, fontWeight: 500, color: c.textSub, lineHeight: 1.4 }}>
+          {left[i]}
+        </div>
+      </div>
+    );
+  }
+
+  const rightItems = [];
+  for (let i = 0; i < right.length; i++) {
+    rightItems.push(
+      <div style={{
+        display: "flex", padding: "18px 22px", borderRadius: 14,
+        background: `${c.accent}08`, border: `1px solid ${c.accent}12`,
+      }}>
+        <div style={{ display: "flex", fontSize: 20, fontWeight: 500, color: c.text, lineHeight: 1.4 }}>
+          {right[i]}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{
       width: "100%", height: "100%", display: "flex", flexDirection: "column",
-      background: colors.bg, position: "relative", overflow: "hidden",
-      fontFamily: "Inter, system-ui, sans-serif",
+      background: c.bgGrad, position: "relative", overflow: "hidden",
     }}>
-      {/* Big glow */}
-      {renderGlow(colors.primary, 200, 200, 700, "14")}
-      {renderGlow(colors.accent, 500, 400, 500, "08")}
+      <div style={{ display: "flex", padding: "48px 60px 0" }}>
+        {badge(brand, handle, c, true)}
+      </div>
 
-      {/* Centered */}
+      <div style={{ display: "flex", padding: "28px 60px 0", justifyContent: "center" }}>
+        {titleText(s.title, s.highlight, c, 36, 900, true)}
+      </div>
+
+      <div style={{
+        display: "flex", flex: 1, padding: "24px 60px",
+        gap: 20, alignItems: "center",
+      }}>
+        <div style={{ display: "flex", flexDirection: "column", flex: 1, gap: 12 }}>
+          <div style={{
+            display: "flex", padding: "8px 20px", borderRadius: 16,
+            background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.25)",
+            fontSize: 14, fontWeight: 700, color: "#EF4444", letterSpacing: 2,
+            justifyContent: "center",
+          }}>
+            {"\u2717 SIN ESTO"}
+          </div>
+          {leftItems}
+        </div>
+
+        <div style={{
+          display: "flex", width: 52, height: 52, borderRadius: 26,
+          background: `linear-gradient(135deg, ${c.primary}, ${c.accent})`,
+          alignItems: "center", justifyContent: "center",
+          fontSize: 16, fontWeight: 900, color: "#FFFFFF", flexShrink: 0,
+        }}>
+          VS
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", flex: 1, gap: 12 }}>
+          <div style={{
+            display: "flex", padding: "8px 20px", borderRadius: 16,
+            background: `${c.accent}20`, border: `1px solid ${c.accent}30`,
+            fontSize: 14, fontWeight: 700, color: c.accent, letterSpacing: 2,
+            justifyContent: "center",
+          }}>
+            {"\u2713 CON PACAME"}
+          </div>
+          {rightItems}
+        </div>
+      </div>
+
+      {progressBar(idx, total, c)}
+    </div>
+  );
+}
+
+function renderCta(s: SlideInput, total: number, c: Colors, brand: string, handle: string) {
+  return (
+    <div style={{
+      width: "100%", height: "100%", display: "flex", flexDirection: "column",
+      background: c.bgGrad, position: "relative", overflow: "hidden",
+    }}>
+      {glow(c.primary, 200, 200, 700, 0.18)}
+      {glow(c.accent, 500, 400, 500, 0.10)}
+
       <div style={{
         display: "flex", flexDirection: "column", flex: 1,
         justifyContent: "center", alignItems: "center",
-        padding: "0 70px", position: "relative", zIndex: 10,
+        padding: "0 60px", position: "relative", zIndex: 10,
       }}>
-        {/* Brand icon */}
         <div style={{
-          display: "flex", width: 76, height: 76, borderRadius: 20,
-          background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
+          display: "flex", width: 84, height: 84, borderRadius: 22,
+          background: `linear-gradient(135deg, ${c.primary}, ${c.accent})`,
           alignItems: "center", justifyContent: "center",
-          fontSize: 34, fontWeight: 900, color: "#FFFFFF",
-          marginBottom: 34,
-          boxShadow: `0 12px 40px ${colors.primary}40`,
+          fontSize: 38, fontWeight: 900, color: "#FFFFFF", marginBottom: 36,
         }}>
-          {brandName.charAt(0)}
+          {brand.charAt(0)}
         </div>
 
-        {renderTitle(slide.title, slide.highlight, colors, 48, 780, true)}
-
-        {slide.body && (
-          <div style={{
-            display: "flex", fontSize: 22, fontWeight: 400,
-            color: colors.textSub, lineHeight: 1.5,
-            marginTop: 18, maxWidth: 680, justifyContent: "center",
-            textAlign: "center" as const,
-          }}>
-            {slide.body}
+        {card(c, (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            {titleText(s.title, s.highlight, c, 46, 780, true)}
+            {s.body && (
+              <div style={{
+                display: "flex", fontSize: 22, fontWeight: 400,
+                color: c.textSub, lineHeight: 1.5, marginTop: 16, maxWidth: 680, justifyContent: "center",
+              }}>
+                {s.body}
+              </div>
+            )}
+            <div style={{
+              display: "flex", marginTop: 32, padding: "20px 56px", borderRadius: 50,
+              background: `linear-gradient(135deg, ${c.primary}, ${c.accent})`,
+              fontSize: 22, fontWeight: 700, color: "#FFFFFF", letterSpacing: 0.5,
+            }}>
+              {s.number || "Contactar ahora"}
+            </div>
           </div>
-        )}
+        ), "40px 52px", 28)}
 
-        {/* CTA button */}
-        <div style={{
-          display: "flex", marginTop: 36,
-          padding: "18px 48px", borderRadius: 50,
-          background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-          fontSize: 22, fontWeight: 700, color: "#FFFFFF",
-          letterSpacing: 0.5,
-          boxShadow: `0 8px 30px ${colors.primary}35`,
-        }}>
-          {slide.number || "Contactar ahora"}
-        </div>
-
-        {/* Handle */}
         <div style={{
           display: "flex", fontSize: 18, fontWeight: 600,
-          color: colors.textSub, marginTop: 24,
+          color: c.textSub, marginTop: 28,
         }}>
           {handle}
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div style={{
-        display: "flex", position: "absolute", bottom: 0, left: 0, right: 0, height: 4,
-        background: `linear-gradient(90deg, ${colors.primary}, ${colors.accent})`,
+        display: "flex", position: "absolute", bottom: 0, left: 0, right: 0, height: 5,
+        background: `linear-gradient(90deg, ${c.primary}, ${c.accent})`,
       }} />
 
-      {renderDots(total - 1, total, colors)}
+      {progressBar(total - 1, total, c)}
     </div>
   );
 }
 
-// ─── SLIDE ROUTER ──────────────────────────────────────
+// ─── ROUTER ────────────────────────────────────────────
+
 function renderSlide(
   slide: SlideInput, index: number, total: number,
   colors: Colors, brandName: string, handle: string
 ) {
-  const isCover = slide.type === "cover" || (index === 0 && !slide.type);
-  const isCta = slide.type === "cta" || (index === total - 1 && !slide.type);
+  const t = slide.type;
+  const isCover = t === "cover" || (index === 0 && !t);
+  const isCta = t === "cta" || (index === total - 1 && !t);
 
   if (isCover) return renderCover(slide, total, colors, brandName, handle);
   if (isCta) return renderCta(slide, total, colors, brandName, handle);
-  if (slide.type === "stat") return renderStat(slide, index, total, colors, brandName, handle);
-  if (slide.type === "quote") return renderQuote(slide, index, total, colors, brandName, handle);
-  if (slide.type === "tip") return renderTip(slide, index, total, colors, brandName, handle);
-  if (slide.type === "list") return renderList(slide, index, total, colors, brandName, handle);
-  if (slide.type === "highlight") return renderHighlight(slide, index, total, colors, brandName, handle);
+  if (t === "stat") return renderStat(slide, index, total, colors, brandName, handle);
+  if (t === "quote") return renderQuote(slide, index, total, colors, brandName, handle);
+  if (t === "tip") return renderTip(slide, index, total, colors, brandName, handle);
+  if (t === "list") return renderList(slide, index, total, colors, brandName, handle);
+  if (t === "highlight") return renderHighlight(slide, index, total, colors, brandName, handle);
+  if (t === "comparison") return renderComparison(slide, index, total, colors, brandName, handle);
   return renderContent(slide, index, total, colors, brandName, handle);
 }
 
 // ─── ROUTE HANDLER ─────────────────────────────────────
+
 export async function POST(request: NextRequest) {
   try {
     const data: CarouselRequest = await request.json();
     const {
-      slides,
-      style = "dark",
-      colors: inputColors,
-      brandName = "PACAME",
-      handle = "@pacameagencia",
-      slideIndex,
+      slides, style = "dark", colors: inputColors,
+      brandName = "PACAME", handle = "@pacameagencia", slideIndex,
     } = data;
 
     if (!slides?.length) {
@@ -875,18 +858,40 @@ export async function POST(request: NextRequest) {
       primary: inputColors?.primary || palette.primary,
       accent: inputColors?.accent || palette.accent,
       bg: inputColors?.bg || palette.bg,
+      bgGrad: palette.bgGrad,
+      cardBg: palette.cardBg,
+      cardBorder: palette.cardBorder,
       text: inputColors?.text || palette.text,
       textSub: palette.textSub,
     };
 
+    if (inputColors?.bg) {
+      colors.bgGrad = `linear-gradient(160deg, ${inputColors.bg} 0%, ${inputColors.bg} 100%)`;
+    }
+
     if (slideIndex !== undefined && slideIndex >= 0 && slideIndex < slides.length) {
-      const element = renderSlide(slides[slideIndex], slideIndex, slides.length, colors, brandName, handle);
-      return new ImageResponse(element, { width: 1080, height: 1080 });
+      try {
+        const element = renderSlide(slides[slideIndex], slideIndex, slides.length, colors, brandName, handle);
+        const imgRes = new ImageResponse(element, { width: 1080, height: 1080 });
+        const buf = await imgRes.arrayBuffer();
+        if (buf.byteLength === 0) {
+          return NextResponse.json({ error: "Empty image from Satori" }, { status: 500 });
+        }
+        return new Response(buf, {
+          headers: { "Content-Type": "image/png", "Cache-Control": "no-cache" },
+        });
+      } catch (renderErr) {
+        return NextResponse.json({
+          error: `Render: ${renderErr instanceof Error ? renderErr.message : String(renderErr)}`,
+        }, { status: 500 });
+      }
     }
 
     return NextResponse.json({
-      totalSlides: slides.length, style, colors, brandName, handle,
-      message: `Carousel listo: ${slides.length} slides. Pide cada uno con slideIndex 0-${slides.length - 1}.`,
+      totalSlides: slides.length, style,
+      colors: { primary: colors.primary, accent: colors.accent },
+      brandName, handle,
+      message: `Carousel ready: ${slides.length} slides. Use slideIndex 0-${slides.length - 1}.`,
     });
   } catch (err) {
     return NextResponse.json(
