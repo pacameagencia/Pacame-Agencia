@@ -7,10 +7,10 @@ services:
     ports:
       - "5678:5678"
     environment:
-      - N8N_HOST=n8n.pacame.es
+      - N8N_HOST=n8n.pacameagencia.com
       - N8N_PORT=5678
       - N8N_PROTOCOL=https
-      - WEBHOOK_URL=https://n8n.pacame.es/
+      - WEBHOOK_URL=https://n8n.pacameagencia.com/
       - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
       - N8N_COMMUNITY_PACKAGES_ENABLED=true
       - N8N_MCP_SERVER_ENABLED=true
