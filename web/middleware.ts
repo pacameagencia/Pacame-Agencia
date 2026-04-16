@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+import { verifyDashboardTokenEdge } from "@/lib/dashboard-auth";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // ─── Dashboard protection (admin) ────────────────────────
   if (pathname.startsWith("/dashboard")) {
     const token = request.cookies.get("pacame_auth")?.value;
+    const ok = await verifyDashboardTokenEdge(token);
 
-    if (!token) {
+    if (!ok) {
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("from", pathname);
       return NextResponse.redirect(loginUrl);
