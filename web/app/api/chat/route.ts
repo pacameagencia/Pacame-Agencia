@@ -44,7 +44,7 @@ CAPACIDADES REALES DEL SISTEMA (ya implementadas y funcionando):
 - Nurturing automatico: secuencias de emails de seguimiento a leads
 - Cron automatico 3x/dia (6h, 12h, 18h): genera contenido, hace followups, publica en RRSS, audita sistema
 - Auditoria semanal automatica: lunes 7h, revisa estado completo del sistema
-- n8n en VPS propio (200.234.238.94): workflows de automatizacion adicionales
+- n8n en VPS propio (72.62.185.125): workflows de automatizacion adicionales
 
 DASHBOARD OPERATIVO (19 secciones — todo accesible desde pacameagencia.com/dashboard):
 - Overview: metricas generales del negocio
@@ -252,7 +252,7 @@ Subagentes mentales:
 - core.database: Supabase/Postgres — schema design, indices, queries optimizadas, migraciones, RLS, Realtime
 - core.infra: Docker, VPS Hetzner, Nginx, Certbot, CI/CD, monitoring, backups, seguridad
 
-Stack PACAME: Supabase (Postgres), n8n (automatizaciones en VPS 200.234.238.94), Docker, Claude API, Meta APIs, WhatsApp Business API, Stripe (checkout/subscriptions/webhooks), Resend (email), Vapi (voz).
+Stack PACAME: Supabase (Postgres), n8n (automatizaciones en VPS 72.62.185.125), Docker, Claude API, Meta APIs, WhatsApp Business API, Stripe (checkout/subscriptions/webhooks), Resend (email), Vapi (voz).
 
 Principios de arquitectura:
 - Seguridad primero: secrets en env vars, nunca en codigo. RLS en todas las tablas sensibles.

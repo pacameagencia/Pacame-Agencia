@@ -6,8 +6,8 @@ Agencia digital que resuelve problemas digitales para PYMEs en Espana. 10 agente
 ## Tech Stack
 - **Frontend:** Next.js 15, React 19, TypeScript, TailwindCSS, Radix UI, Framer Motion
 - **Backend:** Supabase (Postgres + RLS + Realtime), Stripe, Claude API
-- **Infra:** VPS Hetzner (200.234.238.94), Docker, n8n, Nginx
-- **Deployment:** Vercel (web), VPS (n8n + automations)
+- **Infra:** VPS Hostinger KVM2 (72.62.185.125), 8GB RAM, 2 cores AMD EPYC, Docker, n8n, Nginx, Ollama + Gemma 4
+- **Deployment:** Vercel (web), VPS (n8n + Gemma 4 + automations)
 
 ## Estructura del proyecto
 ```

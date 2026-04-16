@@ -299,7 +299,7 @@ PROCESO DE CONTENIDO:
 STACK TECNICO:
 - Frontend: Next.js 15, React 19, TypeScript, TailwindCSS, Radix UI, Framer Motion, shadcn/ui
 - Backend: Supabase (Postgres + RLS + Realtime), Stripe (pagos live), Claude API
-- Infra: VPS Hetzner 200.234.238.94, Docker, n8n (automaciones), Nginx
+- Infra: VPS Hostinger 72.62.185.125, Docker, n8n (automaciones), Nginx
 - Deploy: Vercel (web), VPS (n8n + voice server)
 - APIs activas: Claude, Stripe, Apify, Resend, Vapi (llamadas +34 722 669 381), Telegram, OpenAI, Freepik Suite, Instagram, Google Stitch, Gemini
 - Dominio: pacameagencia.com | DNS: Hostinger
@@ -2449,13 +2449,13 @@ async function seedProjectKnowledge(): Promise<void> {
       { content: "Pablo Calleja es el CEO y fundador de PACAME agencia digital. Emprendedor, desarrollador web, gestiona redes sociales. Trabaja desde Espana.", category: "pablo", importance: 10, tags: ["fundador", "ceo"] },
       { content: "Pablo prefiere comunicacion directa, sin humo. Le gusta que las cosas se ejecuten sin preguntarle confirmacion. Nunca delegarle tareas.", category: "preference", importance: 10, tags: ["comunicacion", "autonomia"] },
       { content: "PACAME es una agencia digital con 10 agentes IA + 120 subespecialistas. Resuelve problemas digitales para PYMEs en Espana. Tagline: Tu equipo digital. Sin limites.", category: "project", importance: 10, tags: ["agencia", "mision"] },
-      { content: "Stack: Next.js 15, React 19, TypeScript, Supabase, Stripe (pagos live), Claude API, Vercel, VPS Hetzner. Todo en produccion.", category: "project", importance: 9, tags: ["tech", "stack"] },
+      { content: "Stack: Next.js 15, React 19, TypeScript, Supabase, Stripe (pagos live), Claude API, Vercel, VPS Hostinger. Todo en produccion.", category: "project", importance: 9, tags: ["tech", "stack"] },
       { content: "Servicios PACAME: Web 497EUR, Landing 300EUR, Ecommerce 997EUR, SEO 397EUR/mes, RRSS 297EUR/mes, Meta Ads 297EUR/mes, Google Ads 397EUR/mes, Branding 497EUR, ChatBot 197EUR/mes.", category: "project", importance: 10, tags: ["precios", "servicios"] },
       { content: "Dominio: pacameagencia.com. Email: hola@pacameagencia.com. WhatsApp: +34 722 669 381. DNS en Hostinger.", category: "fact", importance: 9, tags: ["contacto", "dominio"] },
       { content: "Telegram Bot webhook esta en Vercel: /api/telegram/webhook. NO usar telegramTrigger de n8n. Bot tiene memoria persistente en Supabase.", category: "fact", importance: 8, tags: ["telegram", "infra"] },
       { content: "APIs activas en produccion: Claude, Stripe, Apify (scraping), Resend (email), Vapi (llamadas IA), Telegram, OpenAI (Whisper+DALL-E), Freepik Suite (imagenes IA), Google Stitch (diseno UI), Gemini.", category: "fact", importance: 9, tags: ["apis", "integraciones"] },
       { content: "Instagram API configurada parcialmente. Pendiente OAuth callback para access token. WhatsApp Business API pendiente.", category: "project", importance: 7, tags: ["apis", "pendiente"] },
-      { content: "VPS Hetzner 200.234.238.94 — corre n8n (automaciones), voice server. Subdominios: n8n.pacameagencia.com, api.pacameagencia.com, voice.pacameagencia.com.", category: "fact", importance: 8, tags: ["infra", "vps"] },
+      { content: "VPS Hostinger 72.62.185.125 — corre n8n (automaciones), voice server. Subdominios: n8n.pacameagencia.com, api.pacameagencia.com, voice.pacameagencia.com.", category: "fact", importance: 8, tags: ["infra", "vps"] },
       { content: "Pipeline lead gen: Apify scraping Google Maps → auto-audit web → scoring 1-100 → outreach personalizado via Copy. Metricas: scrape→qualify 50%, email→open 40%, reply 5%, call→close 30%.", category: "project", importance: 9, tags: ["leads", "pipeline"] },
       { content: "Carruseles Instagram: Motor v3 con glass cards, gradientes, 10 tipos de slide, 10 paletas. Calidad top agencia. PACAME branding por defecto.", category: "fact", importance: 7, tags: ["contenido", "carruseles"] },
       { content: "Agentes: Nova (branding), Atlas (SEO), Nexus (ads/growth), Pixel (frontend), Core (backend), Pulse (RRSS), Sage (estrategia), Copy (textos), Lens (analytics), DIOS (orquestacion).", category: "project", importance: 10, tags: ["equipo", "agentes"] },
