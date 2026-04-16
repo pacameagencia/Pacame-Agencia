@@ -8,13 +8,20 @@
  * Optional: STITCH_PROJECT_ID (reuse a project, otherwise creates one per generation)
  */
 
-import { stitch } from "@google/stitch-sdk";
+// Dynamic import avoids evaluating the SDK at build time when STITCH_API_KEY is not set.
+// The SDK's top-level code throws "Neither apiKey nor config.authenticator provided"
+// when imported without credentials, which breaks Next.js page-data collection.
 
 const STITCH_API_KEY = process.env.STITCH_API_KEY?.trim();
 const STITCH_PROJECT_ID = process.env.STITCH_PROJECT_ID?.trim();
 
 export function isStitchConfigured(): boolean {
   return !!STITCH_API_KEY;
+}
+
+async function loadStitch() {
+  const mod = await import("@google/stitch-sdk");
+  return mod.stitch;
 }
 
 type DeviceType = "MOBILE" | "DESKTOP" | "TABLET" | "AGNOSTIC";
@@ -44,6 +51,7 @@ export async function generateDesign(
   }
 
   try {
+    const stitch = await loadStitch();
     const projectId = options.projectId || STITCH_PROJECT_ID;
     let project;
 
@@ -96,6 +104,7 @@ export async function editDesign(
   }
 
   try {
+    const stitch = await loadStitch();
     const project = stitch.project(projectId);
     const screen = await project.getScreen(screenId);
     const edited = await screen.edit(editPrompt);
@@ -136,6 +145,7 @@ export async function generateVariants(
   }
 
   try {
+    const stitch = await loadStitch();
     const project = stitch.project(projectId);
     const screen = await project.getScreen(screenId);
     const variants = await screen.variants(prompt, {

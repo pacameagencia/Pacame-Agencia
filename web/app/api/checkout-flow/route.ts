@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
     // 2. Save checkout session record
     let dbRecordId: string | null = null;
     try {
-      const { data: dbRecord } = await supabase
+      const { data: dbRecord, error: insertError } = await supabase
         .from("checkout_sessions")
         .insert({
           email,
@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
           timeline: timeline || null,
           service_slug,
           service_name,
-          service_price,
+          amount: service_price,
           recurring,
           lead_id: leadId,
           status: "completed",
@@ -131,11 +131,16 @@ export async function POST(req: NextRequest) {
         .select("id")
         .single();
 
+      if (insertError) {
+        console.warn("[checkout-flow] checkout_sessions insert failed:", insertError.message);
+      }
+
       dbRecordId = dbRecord?.id ?? null;
-    } catch {
+    } catch (err) {
       // If table doesn't exist yet, continue — Stripe session is the priority
       console.warn(
-        "[checkout-flow] Could not save checkout session — table may not exist"
+        "[checkout-flow] Could not save checkout session:",
+        err instanceof Error ? err.message : "unknown error"
       );
     }
 
