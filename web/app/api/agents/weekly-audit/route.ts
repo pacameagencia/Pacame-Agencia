@@ -5,6 +5,8 @@ import { verifyInternalAuth } from "@/lib/api-auth";
 import { notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { alertPablo } from "@/lib/telegram";
 
+export const maxDuration = 300;
+
 const supabase = createServerSupabase();
 
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;

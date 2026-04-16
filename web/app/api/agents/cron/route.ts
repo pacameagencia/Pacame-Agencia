@@ -11,6 +11,9 @@ import { generateContentImage } from "@/lib/image-generation";
 import { fireSynapse, recordStimulus, rememberMemory, startThoughtChain, endThoughtChain, recordDiscovery } from "@/lib/neural";
 import { llmChat, extractJSON as llmExtractJSON, type LLMTier } from "@/lib/llm";
 
+// Vercel: el cron completo puede llegar a 250s con 10 agentes. Subimos el techo a 5 min.
+export const maxDuration = 300;
+
 const supabase = createServerSupabase();
 
 /**
