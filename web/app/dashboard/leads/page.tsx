@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
+import { dbCall } from "@/lib/dashboard-db";
 import {
   UserPlus, Phone, Mail, MessageSquare,
   Clock, Building2, Sparkles, Loader2,
@@ -93,7 +94,7 @@ export default function LeadsPage() {
       });
       const data = await res.json();
       if (data.ok) {
-        await supabase.from("leads").update({ status: "contacted", last_contacted_at: new Date().toISOString() }).eq("id", lead.id);
+        await dbCall({ table: "leads", op: "update", data: { status: "contacted", last_contacted_at: new Date().toISOString() }, filter: { column: "id", value: lead.id } });
         fetchLeads();
       }
     } catch {
@@ -118,7 +119,7 @@ export default function LeadsPage() {
   }
 
   async function updateLeadStatus(leadId: string, newStatus: string) {
-    await supabase.from("leads").update({ status: newStatus }).eq("id", leadId);
+    await dbCall({ table: "leads", op: "update", data: { status: newStatus }, filter: { column: "id", value: leadId } });
     setStatusDropdownId(null);
     fetchLeads();
   }
@@ -127,20 +128,24 @@ export default function LeadsPage() {
     setConvertingLead(lead.id);
     try {
       // Create client from lead data
-      await supabase.from("clients").insert({
-        name: lead.name,
-        business_name: lead.business_name || lead.name,
-        email: lead.email || null,
-        phone: lead.phone || null,
-        business_type: lead.business_type || null,
-        status: "onboarding",
-        plan: null,
-        monthly_fee: lead.sage_analysis?.estimated_value_monthly || null,
-        notes: `Convertido desde lead. Problema original: ${lead.problem || "N/A"}`,
+      await dbCall({
+        table: "clients",
+        op: "insert",
+        data: {
+          name: lead.name,
+          business_name: lead.business_name || lead.name,
+          email: lead.email || null,
+          phone: lead.phone || null,
+          business_type: lead.business_type || null,
+          status: "onboarding",
+          plan: null,
+          monthly_fee: lead.sage_analysis?.estimated_value_monthly || null,
+          notes: `Convertido desde lead. Problema original: ${lead.problem || "N/A"}`,
+        },
       });
 
       // Mark lead as won
-      await supabase.from("leads").update({ status: "won" }).eq("id", lead.id);
+      await dbCall({ table: "leads", op: "update", data: { status: "won" }, filter: { column: "id", value: lead.id } });
 
       // Initialize onboarding
       try {

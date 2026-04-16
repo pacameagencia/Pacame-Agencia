@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { createHash, randomBytes, timingSafeEqual } from "crypto";
+import { createHash, timingSafeEqual } from "node:crypto";
 import { z } from "zod/v4";
+import { signDashboardToken, verifyDashboardTokenNode } from "@/lib/dashboard-auth-node";
 
 const loginSchema = z.object({
   action: z.literal("login"),
@@ -13,25 +14,18 @@ const logoutSchema = z.object({ action: z.literal("logout") });
 
 const authSchema = z.discriminatedUnion("action", [loginSchema, verifySchema, logoutSchema]);
 
-// Password — set DASHBOARD_PASSWORD in .env.local
 const DASHBOARD_PASSWORD = process.env.DASHBOARD_PASSWORD;
 
-function hashPassword(password: string): string {
-  return createHash("sha256").update(password).digest("hex");
+function hashPassword(password: string): Buffer {
+  return createHash("sha256").update(password).digest();
 }
 
-function verifyPassword(input: string, stored: string): boolean {
-  const inputHash = Buffer.from(hashPassword(input), "hex");
-  const storedHash = Buffer.from(hashPassword(stored), "hex");
-  return timingSafeEqual(inputHash, storedHash);
+function passwordsMatch(input: string, stored: string): boolean {
+  const a = hashPassword(input);
+  const b = hashPassword(stored);
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(a, b);
 }
-
-function generateToken(): string {
-  return randomBytes(32).toString("hex");
-}
-
-// In-memory token store (resets on deploy — acceptable for single-user dashboard)
-const validTokens = new Set<string>();
 
 export async function POST(request: NextRequest) {
   const parsed = authSchema.safeParse(await request.json());
@@ -47,15 +41,17 @@ export async function POST(request: NextRequest) {
     const { password } = parsed.data;
 
     if (!DASHBOARD_PASSWORD) {
-      return NextResponse.json({ error: "DASHBOARD_PASSWORD no configurado en el servidor" }, { status: 500 });
+      return NextResponse.json(
+        { error: "DASHBOARD_PASSWORD no configurado en el servidor" },
+        { status: 500 }
+      );
     }
 
-    if (!verifyPassword(password, DASHBOARD_PASSWORD)) {
+    if (!passwordsMatch(password, DASHBOARD_PASSWORD)) {
       return NextResponse.json({ error: "Password incorrecto" }, { status: 401 });
     }
 
-    const token = generateToken();
-    validTokens.add(token);
+    const token = signDashboardToken();
 
     const cookieStore = await cookies();
     cookieStore.set("pacame_auth", token, {
@@ -73,7 +69,7 @@ export async function POST(request: NextRequest) {
     const cookieStore = await cookies();
     const token = cookieStore.get("pacame_auth")?.value;
 
-    if (!token || !validTokens.has(token)) {
+    if (!verifyDashboardTokenNode(token)) {
       return NextResponse.json({ authenticated: false }, { status: 401 });
     }
 
@@ -82,12 +78,6 @@ export async function POST(request: NextRequest) {
 
   if (action === "logout") {
     const cookieStore = await cookies();
-    const token = cookieStore.get("pacame_auth")?.value;
-
-    if (token) {
-      validTokens.delete(token);
-    }
-
     cookieStore.delete("pacame_auth");
     return NextResponse.json({ ok: true });
   }

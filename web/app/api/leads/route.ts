@@ -114,13 +114,21 @@ export async function POST(request: NextRequest) {
               status: "contacted",
             });
 
-            await supabase.from("commercials").update({
-              total_referrals: (await supabase.from("commercials").select("total_referrals").eq("id", partner.id).single()).data?.total_referrals + 1,
-            }).eq("id", partner.id);
+            const { data: current } = await supabase
+              .from("commercials")
+              .select("total_referrals")
+              .eq("id", partner.id)
+              .single();
+            const currentCount = (current?.total_referrals as number | null) ?? 0;
+            await supabase
+              .from("commercials")
+              .update({ total_referrals: currentCount + 1 })
+              .eq("id", partner.id);
           }
         }
-      } catch {
-        // Referral association failure is non-blocking
+      } catch (err) {
+        // Referral association failure is non-blocking, but log it
+        console.warn("[leads] referral association failed:", err instanceof Error ? err.message : "unknown");
       }
     }
 

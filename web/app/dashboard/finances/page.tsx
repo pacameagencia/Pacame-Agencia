@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
+import { dbCall } from "@/lib/dashboard-db";
 import { DollarSign, TrendingUp, TrendingDown, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -41,12 +42,16 @@ export default function FinancesPage() {
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    await supabase.from("finances").insert({
-      type: form.type,
-      category: form.category || null,
-      amount: Number(form.amount),
-      description: form.description || null,
-      invoice_number: form.invoice_number || null,
+    await dbCall({
+      table: "finances",
+      op: "insert",
+      data: {
+        type: form.type,
+        category: form.category || null,
+        amount: Number(form.amount),
+        description: form.description || null,
+        invoice_number: form.invoice_number || null,
+      },
     });
     setForm({ type: "income", category: "", amount: "", description: "", invoice_number: "" });
     setShowForm(false);

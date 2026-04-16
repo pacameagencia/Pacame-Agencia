@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
+import { dbCall } from "@/lib/dashboard-db";
 import { Settings, Save, Check, Database, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -72,7 +73,7 @@ export default function SettingsPage() {
       jsonValue = rawValue;
     }
 
-    await supabase.from("config").update({ value: jsonValue, updated_at: new Date().toISOString() }).eq("key", key);
+    await dbCall({ table: "config", op: "update", data: { value: jsonValue, updated_at: new Date().toISOString() }, filter: { column: "key", value: key } });
 
     setConfig((prev) => ({
       ...prev,
