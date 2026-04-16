@@ -285,7 +285,7 @@ Responde SOLO JSON: {"subject": "...", "body": "..."}`;
     try {
       const res = await llmChat(
         [{ role: "user", content: prompt }],
-        { tier: "economy", maxTokens: 1200 }
+        { tier: "economy", maxTokens: 1200, agentId: "copy", source: "nurture" }
       );
 
       const personalized = extractJSON(res.content);

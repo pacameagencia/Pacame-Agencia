@@ -230,7 +230,7 @@ async function autoRespondDM(
         { role: "system", content: systemPrompt },
         { role: "user", content: incomingMessage },
       ],
-      { tier: "economy", maxTokens: 200 }
+      { tier: "economy", maxTokens: 200, agentId: "pulse", source: "instagram-dm" }
     );
 
     if (!res.content) return;

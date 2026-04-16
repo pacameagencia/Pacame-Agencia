@@ -49,9 +49,15 @@ const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY || "";
 
 /** Modelo Nebius por tier */
 const NEBIUS_TIER_MODELS: Record<"standard" | "economy", string> = {
-  standard: NEBIUS_MODELS["deepseek-v3.2-fast"],
+  // Standard: deepseek-v3.2 regular (la variante -fast tiene rate limit
+  // agresivo en nuestra cuenta y devolvia 429). La regular funciona sin
+  // restricciones y cuesta menos, solo es un pelin mas lenta.
+  standard: NEBIUS_MODELS["deepseek-v3.2"],
   economy: NEBIUS_MODELS["llama-3.1-8b"],
 };
+
+/** Modelos Nebius alternativos para retry si el principal devuelve 429 */
+const NEBIUS_STANDARD_FALLBACK = NEBIUS_MODELS["llama-3.3-70b"];
 
 /** Modelo Claude por tier */
 const CLAUDE_TIER_MODELS: Record<LLMTier, string> = {
@@ -69,9 +75,13 @@ const PRICING_USD_PER_1M: Record<string, { in: number; out: number }> = {
   // Claude
   "claude-sonnet-4-6":          { in: 3.0,  out: 15.0 },
   "claude-haiku-4-5-20251001":  { in: 1.0,  out: 5.0 },
-  // Nebius (DeepSeek V3.2 fast + Llama 3.1 8B fast)
-  "deepseek-ai/DeepSeek-V3.2-fast": { in: 0.25, out: 0.85 },
-  "meta-llama/Meta-Llama-3.1-8B-Instruct-fast": { in: 0.03, out: 0.09 },
+  // Nebius — precios publicos aproximados (input / output por 1M tokens)
+  "deepseek-ai/DeepSeek-V3.2":                { in: 0.30, out: 1.00 },
+  "deepseek-ai/DeepSeek-V3.2-fast":           { in: 0.40, out: 1.30 },
+  "meta-llama/Meta-Llama-3.1-8B-Instruct":    { in: 0.03, out: 0.09 },
+  "meta-llama/Llama-3.3-70B-Instruct":        { in: 0.13, out: 0.40 },
+  "Qwen/Qwen3-32B":                           { in: 0.10, out: 0.30 },
+  "Qwen/Qwen3-30B-A3B-Instruct-2507":         { in: 0.10, out: 0.30 },
 };
 
 function estimateCostUSD(model: string, tokensIn: number, tokensOut: number): number {
@@ -133,24 +143,37 @@ async function llmChatInternal(
 
   // Standard/Economy → Nebius primero, fallback a Claude Haiku
   if (forceProvider !== "claude") {
-    try {
-      const nebiusModel = NEBIUS_TIER_MODELS[tier as "standard" | "economy"] || NEBIUS_TIER_MODELS.economy;
-      const started = Date.now();
-      const res = await nebiusChat(
-        messages as NebiusMessage[],
-        { model: nebiusModel, maxTokens, temperature }
-      );
-      return {
-        content: res.content,
-        provider: "nebius",
-        model: res.model,
-        tokensIn: res.tokensIn,
-        tokensOut: res.tokensOut,
-        latencyMs: Date.now() - started,
-        fallback: false,
-      };
-    } catch (err) {
-      console.warn(`[llm] Nebius fallo (${tier}), fallback a Claude:`, (err as Error).message);
+    const primaryModel =
+      NEBIUS_TIER_MODELS[tier as "standard" | "economy"] || NEBIUS_TIER_MODELS.economy;
+    const retryModels: string[] = [primaryModel];
+    if (tier === "standard") retryModels.push(NEBIUS_STANDARD_FALLBACK);
+
+    for (const model of retryModels) {
+      try {
+        const started = Date.now();
+        const res = await nebiusChat(
+          messages as NebiusMessage[],
+          { model, maxTokens, temperature }
+        );
+        return {
+          content: res.content,
+          provider: "nebius",
+          model: res.model,
+          tokensIn: res.tokensIn,
+          tokensOut: res.tokensOut,
+          latencyMs: Date.now() - started,
+          fallback: model !== primaryModel,
+        };
+      } catch (err) {
+        const msg = (err as Error).message;
+        // Si es 429 (rate limit) probamos el siguiente modelo Nebius.
+        // Si no, caemos a Claude directamente.
+        if (!msg.includes("429") && !msg.includes("rate limit")) {
+          console.warn(`[llm] Nebius fallo (${tier}, ${model}), fallback a Claude:`, msg);
+          break;
+        }
+        console.warn(`[llm] Nebius 429 (${model}), intentando siguiente`);
+      }
     }
   }
 
