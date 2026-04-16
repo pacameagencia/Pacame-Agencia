@@ -1,9 +1,14 @@
 import Stripe from "stripe";
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-03-31.basil",
-  typescript: true,
-});
+// Build-time tolerant: placeholder key prevents the SDK from throwing at import.
+// Runtime calls will fail clearly if STRIPE_SECRET_KEY is missing in production.
+export const stripe = new Stripe(
+  process.env.STRIPE_SECRET_KEY || "sk_test_placeholder_for_build",
+  {
+    apiVersion: "2025-03-31.basil",
+    typescript: true,
+  }
+);
 
 // Productos PACAME con precios base (en centimos EUR)
 export const PACAME_PRODUCTS = {
