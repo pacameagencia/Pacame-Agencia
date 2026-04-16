@@ -421,7 +421,13 @@ export async function POST(request: NextRequest) {
       ...messages.map((m) => ({ role: m.role, content: m.content })),
     ];
 
-    const result = await llmChat(llmMessages, { tier, maxTokens: 2048 });
+    const result = await llmChat(llmMessages, {
+      tier,
+      maxTokens: 2048,
+      agentId: agent.toLowerCase(),
+      source: "chat",
+      metadata: { conversation_id: convId },
+    });
     const assistantMessage = result.content || "Sin respuesta";
 
     // Save assistant message to conversation metadata
