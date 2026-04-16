@@ -1,6 +1,9 @@
 "use client";
 
-import CheckoutButton from "@/components/CheckoutButton";
+import { useState } from "react";
+import { CreditCard, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import CheckoutFlow from "@/components/checkout/CheckoutFlow";
 
 // Map service items to Stripe products and starting prices
 const serviceStripeMap: Record<string, { product: string; amount: number; recurring: boolean }> = {
@@ -31,20 +34,35 @@ interface Props {
 }
 
 export default function ServiceCheckoutButton({ serviceName, serviceCategory, featured, accentColor }: Props) {
+  const [showCheckout, setShowCheckout] = useState(false);
   const mapping = serviceStripeMap[serviceName];
 
   if (!mapping) return null;
 
+  const serviceSlug = serviceName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
   return (
-    <CheckoutButton
-      product={mapping.product}
-      amount={mapping.amount}
-      recurring={mapping.recurring}
-      label={`Desde ${mapping.amount}\u00A0\u20AC${mapping.recurring ? "/mes" : ""}`}
-      description={`${serviceName} — ${serviceCategory}`}
-      variant="outline"
-      size="sm"
-      className={featured && accentColor ? `border-[${accentColor}] text-[${accentColor}]` : ""}
-    />
+    <>
+      <Button
+        variant={featured ? "gradient" : "outline"}
+        size="sm"
+        className={`group rounded-full ${featured && accentColor ? `border-[${accentColor}] text-[${accentColor}]` : ""}`}
+        onClick={() => setShowCheckout(true)}
+      >
+        <CreditCard className="w-4 h-4" />
+        Desde {mapping.amount}&nbsp;&euro;{mapping.recurring ? "/mes" : ""}
+        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+      </Button>
+
+      <CheckoutFlow
+        isOpen={showCheckout}
+        onClose={() => setShowCheckout(false)}
+        serviceSlug={serviceSlug}
+        serviceName={`${serviceName} — ${serviceCategory}`}
+        servicePrice={mapping.amount}
+        recurring={mapping.recurring}
+        product={mapping.product}
+      />
+    </>
   );
 }

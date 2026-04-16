@@ -8,39 +8,50 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 // Productos PACAME con precios base (en centimos EUR)
 export const PACAME_PRODUCTS = {
   landing: {
-    name: "Landing Page",
-    description: "Diseno y desarrollo de landing page profesional",
+    name: "Landing Page Profesional",
+    description:
+      "Pagina de aterrizaje de alto rendimiento: diseno responsive, copywriting persuasivo, formulario de contacto, SEO optimizado y hosting incluido 12 meses. Entrega en 2-3 dias laborables.",
     minPrice: 30000, // 300€
   },
   web: {
-    name: "Web Corporativa",
-    description: "Diseno y desarrollo de web corporativa completa",
+    name: "Web Corporativa Completa",
+    description:
+      "Sitio web corporativo de 3-5 paginas: diseno personalizado, contenido optimizado para SEO, formularios, integraciones, blog listo para publicar y panel de administracion. Entrega en 5-7 dias laborables.",
     minPrice: 80000, // 800€
   },
   social_monthly: {
-    name: "Gestion RRSS Mensual",
-    description: "Gestion profesional de redes sociales con IA",
+    name: "Gestion de Redes Sociales — Plan Mensual",
+    description:
+      "Gestion profesional de tus redes sociales: 12-20 publicaciones/mes, diseno grafico, copywriting, calendario editorial, analisis de metricas y reporting mensual.",
     minPrice: 19700, // 197€/mes
     recurring: true,
   },
   pack_web_social: {
-    name: "Pack Web + RRSS",
-    description: "Web corporativa + gestion mensual de RRSS (15% dto)",
+    name: "Pack Web + Redes Sociales",
+    description:
+      "Solucion digital completa: web corporativa profesional + gestion mensual de redes sociales con 15% de descuento. Ideal para lanzar tu presencia digital de cero a profesional.",
     minPrice: 80000, // web base
     recurring: true,
     discount: 15,
   },
   seo_monthly: {
-    name: "SEO Mensual",
-    description: "Estrategia SEO y optimizacion continua",
+    name: "Posicionamiento SEO — Plan Mensual",
+    description:
+      "Estrategia SEO profesional: auditoria tecnica, optimizacion on-page, articulos optimizados, link building, schema markup y reporting avanzado con metricas reales.",
     minPrice: 29700, // 297€/mes
     recurring: true,
   },
   custom: {
-    name: "Servicio Personalizado",
-    description: "Servicio a medida segun necesidades del cliente",
+    name: "Servicio a Medida",
+    description:
+      "Proyecto personalizado adaptado a las necesidades de tu negocio. Incluye analisis previo, propuesta detallada y seguimiento dedicado por el equipo de PACAME.",
     minPrice: 0,
   },
 } as const;
 
 export type ProductKey = keyof typeof PACAME_PRODUCTS;
+
+export function getProductDisplayName(key: string): string {
+  const product = PACAME_PRODUCTS[key as ProductKey];
+  return product?.name || key;
+}

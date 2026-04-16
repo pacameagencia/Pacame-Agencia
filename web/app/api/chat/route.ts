@@ -3,6 +3,7 @@ import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { fireSynapse, recordStimulus, rememberMemory } from "@/lib/neural";
+import { llmChat, type LLMTier } from "@/lib/llm";
 
 // Rate limit: max 30 requests per 10 minutes (Claude API costs money)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -44,7 +45,7 @@ CAPACIDADES REALES DEL SISTEMA (ya implementadas y funcionando):
 - Nurturing automatico: secuencias de emails de seguimiento a leads
 - Cron automatico 3x/dia (6h, 12h, 18h): genera contenido, hace followups, publica en RRSS, audita sistema
 - Auditoria semanal automatica: lunes 7h, revisa estado completo del sistema
-- n8n en VPS propio (200.234.238.94): workflows de automatizacion adicionales
+- n8n en VPS propio (72.62.185.125): workflows de automatizacion adicionales
 
 DASHBOARD OPERATIVO (19 secciones — todo accesible desde pacameagencia.com/dashboard):
 - Overview: metricas generales del negocio
@@ -83,21 +84,19 @@ APIs PENDIENTES DE CONFIGURAR (codigo 100% listo, falta que Pablo meta la API ke
 
 `;
 
-// Model routing: data-heavy agents use Haiku (cheaper), strategy/creative use Sonnet
-const MODEL_ROUTING: Record<string, string> = {
-  DIOS: "claude-sonnet-4-6",      // Orchestrator needs reasoning
-  SAGE: "claude-sonnet-4-6",      // Strategy needs depth
-  NOVA: "claude-sonnet-4-6",      // Creative needs quality
-  ATLAS: "claude-haiku-4-5-20251001", // SEO data processing
-  NEXUS: "claude-sonnet-4-6",     // Growth strategy
-  PIXEL: "claude-sonnet-4-6",     // Code generation needs quality
-  CORE: "claude-sonnet-4-6",      // Backend code needs quality
-  PULSE: "claude-haiku-4-5-20251001", // Social media content
-  COPY: "claude-sonnet-4-6",      // Copywriting needs quality
-  LENS: "claude-haiku-4-5-20251001",  // Analytics data processing
+// Tier routing: premium = Claude Sonnet, standard = Nebius DeepSeek V3.2 (con fallback a Claude)
+const AGENT_CHAT_TIER: Record<string, LLMTier> = {
+  DIOS: "premium",     // Orchestrator needs reasoning → Claude
+  SAGE: "premium",     // Strategy needs depth → Claude
+  NOVA: "premium",     // Creative needs quality → Claude
+  ATLAS: "standard",   // SEO → Nebius DeepSeek V3.2
+  NEXUS: "premium",    // Growth strategy → Claude
+  PIXEL: "premium",    // Code generation → Claude
+  CORE: "premium",     // Backend code → Claude
+  PULSE: "standard",   // Social media → Nebius DeepSeek V3.2
+  COPY: "standard",    // Copywriting → Nebius DeepSeek V3.2
+  LENS: "standard",    // Analytics → Nebius DeepSeek V3.2
 };
-
-const DEFAULT_MODEL = "claude-sonnet-4-6";
 
 const agentPrompts: Record<string, { role: string; color: string; prompt: string }> = {
   DIOS: {
@@ -252,7 +251,7 @@ Subagentes mentales:
 - core.database: Supabase/Postgres — schema design, indices, queries optimizadas, migraciones, RLS, Realtime
 - core.infra: Docker, VPS Hetzner, Nginx, Certbot, CI/CD, monitoring, backups, seguridad
 
-Stack PACAME: Supabase (Postgres), n8n (automatizaciones en VPS 200.234.238.94), Docker, Claude API, Meta APIs, WhatsApp Business API, Stripe (checkout/subscriptions/webhooks), Resend (email), Vapi (voz).
+Stack PACAME: Supabase (Postgres), n8n (automatizaciones en VPS 72.62.185.125), Docker, Claude API, Meta APIs, WhatsApp Business API, Stripe (checkout/subscriptions/webhooks), Resend (email), Vapi (voz).
 
 Principios de arquitectura:
 - Seguridad primero: secrets en env vars, nunca en codigo. RLS en todas las tablas sensibles.

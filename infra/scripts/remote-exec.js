@@ -1,11 +1,22 @@
 // Helper script to execute commands on VPS via SSH
 const { Client } = require("ssh2");
 
+const fs = require("fs");
+const path = require("path");
+
+const sshKeyPath = path.join(
+  process.env.USERPROFILE || process.env.HOME || "",
+  ".ssh",
+  "hostinger_vps"
+);
+
 const config = {
-  host: "200.234.238.94",
+  host: "72.62.185.125",
   port: 22,
   username: "root",
-  password: process.argv[3] || "",
+  ...(fs.existsSync(sshKeyPath)
+    ? { privateKey: fs.readFileSync(sshKeyPath) }
+    : { password: process.argv[3] || "" }),
 };
 
 const command = process.argv[2] || "echo hello";

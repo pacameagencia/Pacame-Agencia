@@ -38,6 +38,9 @@ export default function PackageCheckoutButton({ packageId, packageName, featured
       >
         o hablar primero sin compromiso
       </Link>
+      <p className="text-center text-[10px] text-pacame-white/20 font-body mt-2">
+        Pago seguro via Stripe &middot; Cancela cuando quieras
+      </p>
     </div>
   );
 }

@@ -4,6 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { Star, Send, CheckCircle2, Loader2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ScrollReveal from "@/components/ui/scroll-reveal";
+import MagneticButton from "@/components/effects/MagneticButton";
+import { ShinyButton } from "@/components/ui/shiny-button";
+import Celebration from "@/components/effects/Celebration";
 
 export default function ReviewPage() {
   const [rating, setRating] = useState(0);
@@ -47,6 +51,7 @@ export default function ReviewPage() {
         <div className="relative z-10 max-w-xl mx-auto px-4 sm:px-6">
           {state === "sent" ? (
             <div className="rounded-3xl glass p-10 text-center">
+              <Celebration />
               <div className="w-16 h-16 rounded-full bg-lime-pulse/20 flex items-center justify-center mx-auto mb-6">
                 <CheckCircle2 className="w-8 h-8 text-lime-pulse" />
               </div>
@@ -65,7 +70,7 @@ export default function ReviewPage() {
             </div>
           ) : (
             <>
-              <div className="text-center mb-8">
+              <ScrollReveal className="text-center mb-8">
                 <p className="font-mono text-electric-violet text-sm mb-4 uppercase tracking-widest">
                   Tu opinion
                 </p>
@@ -75,7 +80,7 @@ export default function ReviewPage() {
                 <p className="text-pacame-white/60 font-body">
                   Tu resena ayuda a otros negocios a tomar la decision correcta.
                 </p>
-              </div>
+              </ScrollReveal>
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Rating */}
@@ -112,7 +117,7 @@ export default function ReviewPage() {
                       name="name"
                       required
                       placeholder="Tu nombre"
-                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 input-premium outline-none transition-colors"
                     />
                   </div>
                   <div>
@@ -120,7 +125,7 @@ export default function ReviewPage() {
                     <input
                       name="role"
                       placeholder="CEO de MiEmpresa"
-                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 input-premium outline-none transition-colors"
                     />
                   </div>
                 </div>
@@ -130,7 +135,7 @@ export default function ReviewPage() {
                     <label className="block text-sm font-body text-pacame-white/70 mb-2">Servicio contratado</label>
                     <select
                       name="service"
-                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors appearance-none"
+                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm input-premium outline-none transition-colors appearance-none"
                     >
                       <option value="">Selecciona</option>
                       <option value="Web Corporativa">Web Corporativa</option>
@@ -152,7 +157,7 @@ export default function ReviewPage() {
                     <input
                       name="city"
                       placeholder="Madrid"
-                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 input-premium outline-none transition-colors"
                     />
                   </div>
                 </div>
@@ -164,29 +169,45 @@ export default function ReviewPage() {
                     required
                     rows={4}
                     placeholder="Cuentanos como fue trabajar con PACAME, que resultados obtuviste..."
-                    className="w-full px-4 py-3 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 input-premium outline-none transition-colors resize-none"
                   />
                 </div>
 
-                <Button
-                  type="submit"
-                  variant="gradient"
-                  size="xl"
-                  className="w-full group"
-                  disabled={state === "sending" || rating === 0}
-                >
-                  {state === "sending" ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Enviando...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      Enviar resena
-                    </>
-                  )}
-                </Button>
+                {state === "sending" || rating === 0 ? (
+                  <Button
+                    type="submit"
+                    variant="gradient"
+                    size="xl"
+                    className="w-full"
+                    disabled={state === "sending" || rating === 0}
+                  >
+                    {state === "sending" ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Enviando...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        Enviar resena
+                      </>
+                    )}
+                  </Button>
+                ) : (
+                  <MagneticButton>
+                    <ShinyButton
+                      gradientFrom="#D4A853"
+                      gradientTo="#7C3AED"
+                      gradientOpacity={0.8}
+                      className="group w-full h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
+                    >
+                      <button type="submit" className="flex items-center gap-2 text-pacame-white w-full justify-center">
+                        <Send className="w-4 h-4" />
+                        Enviar resena
+                      </button>
+                    </ShinyButton>
+                  </MagneticButton>
+                )}
 
                 <p className="text-xs text-pacame-white/30 font-body text-center">
                   Tu resena sera revisada antes de publicarse.{" "}

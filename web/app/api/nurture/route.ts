@@ -4,10 +4,9 @@ import { sequences } from "@/lib/data/email-sequences";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { sendEmail, wrapEmailTemplate } from "@/lib/resend";
 import { verifyInternalAuth } from "@/lib/api-auth";
+import { llmChat, extractJSON } from "@/lib/llm";
 
 const supabase = createServerSupabase();
-
-const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
 // Interpolate template variables
 function interpolate(template: string, vars: Record<string, string>): string {
@@ -248,9 +247,6 @@ export async function POST(request: NextRequest) {
   // --- Personalize email with AI ---
   if (action === "personalize") {
     const { lead_id, email_template, context } = body;
-    if (!CLAUDE_API_KEY) {
-      return NextResponse.json({ error: "CLAUDE_API_KEY not configured" }, { status: 500 });
-    }
 
     const { data: lead } = await supabase
       .from("leads")
@@ -287,30 +283,13 @@ REGLAS:
 Responde SOLO JSON: {"subject": "...", "body": "..."}`;
 
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": CLAUDE_API_KEY,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: "claude-haiku-4-5-20251001",
-          max_tokens: 1200,
-          messages: [{ role: "user", content: prompt }],
-        }),
-      });
+      const res = await llmChat(
+        [{ role: "user", content: prompt }],
+        { tier: "economy", maxTokens: 1200 }
+      );
 
-      const data = await res.json();
-      const text = data.content?.[0]?.text || "";
-      const jsonStart = text.indexOf("{");
-      const jsonEnd = text.lastIndexOf("}") + 1;
-      let personalized: Record<string, unknown> | null = null;
-      if (jsonStart >= 0) {
-        try { personalized = JSON.parse(text.slice(jsonStart, jsonEnd)); } catch { /* AI devolvio JSON invalido */ }
-      }
-
-      return NextResponse.json({ personalized, tokens: data.usage?.output_tokens || 0 });
+      const personalized = extractJSON(res.content);
+      return NextResponse.json({ personalized, tokens: res.tokensOut, provider: res.provider });
     } catch (error) {
       return NextResponse.json({ error: String(error) }, { status: 500 });
     }

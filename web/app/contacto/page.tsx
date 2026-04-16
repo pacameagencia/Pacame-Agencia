@@ -8,6 +8,12 @@ import {
   Send, CheckCircle2, Loader2, Gift, AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
+import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
+import GoldenDivider from "@/components/effects/GoldenDivider";
+import MagneticButton from "@/components/effects/MagneticButton";
+import { ShinyButton } from "@/components/ui/shiny-button";
+import Celebration from "@/components/effects/Celebration";
 
 const services = [
   "Desarrollo Web",
@@ -130,25 +136,25 @@ function ContactoForm() {
     <div className="bg-pacame-black min-h-screen">
       {/* Hero */}
       <section className="relative pt-36 pb-20 overflow-hidden">
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-olympus-radial pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
+        <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+          <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-5 uppercase tracking-[0.2em]">
             Contacto
           </p>
-          <h1 className="font-heading font-bold text-display text-pacame-white mb-6 text-balance">
+          <h1 className="font-accent font-bold text-display text-pacame-white mb-6 text-balance">
             Cuentanos tu problema.{" "}
-            <span className="gradient-text-vivid">Nosotros lo resolvemos.</span>
+            <span className="gradient-text-aurora">Nosotros lo resolvemos.</span>
           </h1>
           <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto font-light">
             30 minutos. Sin compromiso. Sin presupuestos ciegos.
           </p>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Form + info */}
       <section className="section-padding relative">
-        <div className="absolute top-0 inset-x-0 section-divider" />
+        <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
             {/* Form */}
@@ -164,6 +170,7 @@ function ContactoForm() {
               )}
               {formState === "sent" ? (
                 <div className="rounded-3xl glass p-10 sm:p-14 text-center">
+                  <Celebration />
                   <div className="w-16 h-16 rounded-full bg-lime-pulse/20 flex items-center justify-center mx-auto mb-6">
                     <CheckCircle2 className="w-8 h-8 text-lime-pulse" />
                   </div>
@@ -212,7 +219,7 @@ function ContactoForm() {
                         onBlur={(e) => handleBlur("name", e.target.value)}
                         aria-invalid={!!errors.name}
                         aria-describedby={errors.name ? "error-name" : undefined}
-                        className={`w-full h-12 px-4 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors ${errors.name ? "border-red-500/50" : "border-white/[0.08]"}`}
+                        className={`w-full h-12 px-4 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors ${errors.name ? "border-red-500/50" : "border-white/[0.08]"}`}
                       />
                       {errors.name && <p id="error-name" className="text-xs text-red-400 font-body mt-1.5">{errors.name}</p>}
                     </div>
@@ -229,7 +236,7 @@ function ContactoForm() {
                         onBlur={(e) => handleBlur("email", e.target.value)}
                         aria-invalid={!!errors.email}
                         aria-describedby={errors.email ? "error-email" : undefined}
-                        className={`w-full h-12 px-4 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors ${errors.email ? "border-red-500/50" : "border-white/[0.08]"}`}
+                        className={`w-full h-12 px-4 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors ${errors.email ? "border-red-500/50" : "border-white/[0.08]"}`}
                       />
                       {errors.email && <p id="error-email" className="text-xs text-red-400 font-body mt-1.5">{errors.email}</p>}
                     </div>
@@ -245,7 +252,7 @@ function ContactoForm() {
                         name="company"
                         type="text"
                         placeholder="Nombre de tu empresa (opcional)"
-                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors"
                       />
                     </div>
                     <div>
@@ -257,7 +264,7 @@ function ContactoForm() {
                         name="phone"
                         type="tel"
                         placeholder="+34 600 000 000 (opcional)"
-                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors"
                       />
                     </div>
                   </div>
@@ -276,8 +283,8 @@ function ContactoForm() {
                           aria-pressed={selectedServices.includes(service)}
                           className={`px-4 py-2 rounded-full text-sm font-body border transition-all duration-200 ${
                             selectedServices.includes(service)
-                              ? "bg-electric-violet/20 border-electric-violet text-electric-violet"
-                              : "bg-transparent border-white/10 text-pacame-white/60 hover:border-white/20 hover:text-pacame-white/70"
+                              ? "bg-olympus-gold/15 border-olympus-gold text-olympus-gold"
+                              : "bg-transparent border-white/10 text-pacame-white/60 hover:border-olympus-gold/30 hover:text-pacame-white/70"
                           }`}
                         >
                           {service}
@@ -291,7 +298,7 @@ function ContactoForm() {
                     <label htmlFor="contact-budget" className="block text-sm font-body text-pacame-white/70 mb-2">
                       Presupuesto orientativo
                     </label>
-                    <select id="contact-budget" name="budget" className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors appearance-none">
+                    <select id="contact-budget" name="budget" className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm input-premium outline-none transition-colors appearance-none">
                       <option value="">Selecciona un rango</option>
                       {budgets.map((b) => (
                         <option key={b} value={b}>
@@ -315,35 +322,42 @@ function ContactoForm() {
                       onBlur={(e) => handleBlur("message", e.target.value)}
                       aria-invalid={!!errors.message}
                       aria-describedby={errors.message ? "error-message" : undefined}
-                      className={`w-full px-4 py-3 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors resize-none ${errors.message ? "border-red-500/50" : "border-white/[0.08]"}`}
+                      className={`w-full px-4 py-3 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors resize-none ${errors.message ? "border-red-500/50" : "border-white/[0.08]"}`}
                     />
                     {errors.message && <p id="error-message" className="text-xs text-red-400 font-body mt-1.5">{errors.message}</p>}
                   </div>
 
-                  <Button
-                    type="submit"
-                    variant="gradient"
-                    size="xl"
-                    className="w-full sm:w-auto group"
-                    disabled={formState === "sending"}
-                  >
-                    {formState === "sending" ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Enviando...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4" />
-                        Enviar mensaje
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </>
-                    )}
-                  </Button>
+                  {formState === "sending" ? (
+                    <Button
+                      type="submit"
+                      variant="gradient"
+                      size="xl"
+                      className="w-full sm:w-auto"
+                      disabled
+                    >
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Enviando...
+                    </Button>
+                  ) : (
+                    <MagneticButton>
+                      <ShinyButton
+                        gradientFrom="#D4A853"
+                        gradientTo="#7C3AED"
+                        gradientOpacity={0.8}
+                        className="group min-w-[220px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
+                      >
+                        <button type="submit" className="flex items-center gap-2 text-pacame-white w-full h-full justify-center">
+                          <Send className="w-4 h-4" />
+                          Enviar mensaje
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </button>
+                      </ShinyButton>
+                    </MagneticButton>
+                  )}
 
                   <p className="text-xs text-pacame-white/60 font-body">
                     Al enviar este formulario aceptas nuestra{" "}
-                    <Link href="/privacidad" className="text-electric-violet/70 hover:underline">
+                    <Link href="/privacidad" className="text-olympus-gold/70 hover:underline">
                       política de privacidad
                     </Link>
                     .
@@ -355,18 +369,21 @@ function ContactoForm() {
             {/* Sidebar info */}
             <div className="lg:col-span-2 space-y-6">
               {/* Direct contact */}
-              <div className="glass rounded-2xl p-6">
+              <ScrollReveal delay={0.1}>
+              <CardTilt tiltMaxAngle={6} scale={1.02}>
+              <CardTiltContent>
+              <div className="glass rounded-2xl p-6 border border-olympus-gold/10">
                 <h3 className="font-heading font-bold text-lg text-pacame-white mb-5">
                   Contacto directo
                 </h3>
                 <ul className="space-y-4">
                   <li className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-electric-violet/15 flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-4 h-4 text-electric-violet" />
+                    <div className="w-10 h-10 rounded-xl bg-olympus-gold/15 flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-4 h-4 text-olympus-gold" />
                     </div>
                     <div>
                       <p className="text-xs text-pacame-white/60 font-body">Email</p>
-                      <a href="mailto:hola@pacameagencia.com" className="text-sm text-pacame-white font-body hover:text-electric-violet transition-colors">
+                      <a href="mailto:hola@pacameagencia.com" className="text-sm text-pacame-white font-body hover:text-olympus-gold transition-colors">
                         hola@pacameagencia.com
                       </a>
                     </div>
@@ -391,8 +408,14 @@ function ContactoForm() {
                   </li>
                 </ul>
               </div>
+              </CardTiltContent>
+              </CardTilt>
+              </ScrollReveal>
 
               {/* FAQ mini */}
+              <ScrollReveal delay={0.2}>
+              <CardTilt tiltMaxAngle={6} scale={1.02}>
+              <CardTiltContent>
               <div className="glass rounded-2xl p-6">
                 <h3 className="font-heading font-bold text-lg text-pacame-white mb-5">
                   Preguntas frecuentes
@@ -427,9 +450,15 @@ function ContactoForm() {
                   ))}
                 </div>
               </div>
+              </CardTiltContent>
+              </CardTilt>
+              </ScrollReveal>
 
               {/* Trust */}
-              <div className="rounded-2xl bg-brand-gradient p-6 relative overflow-hidden">
+              <ScrollReveal delay={0.3}>
+              <CardTilt tiltMaxAngle={6} scale={1.02}>
+              <CardTiltContent>
+              <div className="rounded-2xl p-6 relative overflow-hidden border border-olympus-gold/20" style={{ background: "linear-gradient(135deg, #7C3AED 0%, #D4A853 50%, #06B6D4 100%)" }}>
                 <div className="absolute inset-0 bg-black/20" />
                 <div className="relative z-10">
                   <Calendar className="w-6 h-6 text-white mb-3" />
@@ -446,6 +475,9 @@ function ContactoForm() {
                   </Button>
                 </div>
               </div>
+              </CardTiltContent>
+              </CardTilt>
+              </ScrollReveal>
             </div>
           </div>
         </div>

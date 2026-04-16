@@ -13,6 +13,10 @@ export interface Agent {
   skills: string[];
   personality: string;
   deliverables: string[];
+  /** Titulo mitologico — dominio olimpico */
+  mythTitle: string;
+  /** Elemento visual asociado */
+  element: "light" | "earth" | "fire" | "water" | "air" | "aether";
 }
 
 export const agents: Agent[] = [
@@ -41,6 +45,8 @@ export const agents: Agent[] = [
       "Templates para redes sociales",
       "Guía de estilo web",
     ],
+    mythTitle: "Guardiana de la Marca",
+    element: "light",
   },
   {
     id: "atlas",
@@ -67,6 +73,8 @@ export const agents: Agent[] = [
       "Reporting mensual de rankings",
       "Schema markup implementado",
     ],
+    mythTitle: "El Titan del Posicionamiento",
+    element: "earth",
   },
   {
     id: "nexus",
@@ -93,6 +101,8 @@ export const agents: Agent[] = [
       "A/B testing continuo",
       "Dashboard de métricas en vivo",
     ],
+    mythTitle: "El Forjador de Embudos",
+    element: "fire",
   },
   {
     id: "pixel",
@@ -119,6 +129,8 @@ export const agents: Agent[] = [
       "Core Web Vitals en verde",
       "Diseño 100% responsive",
     ],
+    mythTitle: "El Arquitecto Digital",
+    element: "water",
   },
   {
     id: "core",
@@ -145,6 +157,8 @@ export const agents: Agent[] = [
       "Autenticación y autorización",
       "Deploy y CI/CD configurado",
     ],
+    mythTitle: "El Guardian de la Infraestructura",
+    element: "earth",
   },
   {
     id: "pulse",
@@ -171,6 +185,8 @@ export const agents: Agent[] = [
       "Reporting de engagement",
       "Estrategia de crecimiento",
     ],
+    mythTitle: "La Voz del Agora",
+    element: "air",
   },
   {
     id: "sage",
@@ -197,5 +213,7 @@ export const agents: Agent[] = [
       "Definición de KPIs",
       "Reporting ejecutivo mensual",
     ],
+    mythTitle: "El Oraculo Estratega",
+    element: "aether",
   },
 ];

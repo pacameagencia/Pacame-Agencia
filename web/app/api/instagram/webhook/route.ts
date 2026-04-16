@@ -3,9 +3,9 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { sendInstagramDM, INSTAGRAM_VERIFY_TOKEN, isConfigured } from "@/lib/instagram";
 import { notifyHotLead } from "@/lib/telegram";
+import { llmChat } from "@/lib/llm";
 
 const supabase = createServerSupabase();
-const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
 /**
  * Instagram Webhook
@@ -147,8 +147,8 @@ async function handleDirectMessage(event: MessagingEvent) {
     }
   }
 
-  // Auto-respond with AI
-  if (CLAUDE_API_KEY && isConfigured() && messageText.length > 2) {
+  // Auto-respond with AI (Nebius economy → Claude fallback)
+  if (isConfigured() && messageText.length > 2) {
     await autoRespondDM(senderId, messageText, contactName, leadId);
   }
 }
@@ -197,8 +197,6 @@ async function autoRespondDM(
   contactName: string,
   leadId: string | null
 ) {
-  if (!CLAUDE_API_KEY) return;
-
   // Get conversation history
   const { data: history } = await supabase
     .from("conversations")
@@ -227,30 +225,20 @@ async function autoRespondDM(
     (historyText ? `HISTORIAL:\n${historyText}\n\n` : "");
 
   try {
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": CLAUDE_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-haiku-4-5-20251001",
-        max_tokens: 200,
-        system: systemPrompt,
-        messages: [{ role: "user", content: incomingMessage }],
-      }),
-    });
+    const res = await llmChat(
+      [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: incomingMessage },
+      ],
+      { tier: "economy", maxTokens: 200 }
+    );
 
-    const data = await res.json();
-    const reply = data.content?.[0]?.text;
-
-    if (!reply) return;
+    if (!res.content) return;
 
     // Small delay for natural feel
     await new Promise((r) => setTimeout(r, 1500 + Math.random() * 2500));
 
-    const result = await sendInstagramDM(recipientId, reply);
+    const result = await sendInstagramDM(recipientId, res.content);
 
     if (result.success) {
       await supabase.from("conversations").insert({
@@ -258,10 +246,10 @@ async function autoRespondDM(
         channel: "instagram",
         direction: "outbound",
         sender: "pacame",
-        message: reply,
+        message: res.content,
         message_type: "text",
         mode: "auto",
-        metadata: { ig_message_id: result.messageId, ai_generated: true },
+        metadata: { ig_message_id: result.messageId, ai_generated: true, provider: res.provider },
       });
     }
   } catch (err) {

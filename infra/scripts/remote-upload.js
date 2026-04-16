@@ -3,7 +3,7 @@ const { Client } = require("ssh2");
 const fs = require("fs");
 
 const config = {
-  host: "200.234.238.94",
+  host: "72.62.185.125",
   port: 22,
   username: "root",
   password: process.argv[4] || "",

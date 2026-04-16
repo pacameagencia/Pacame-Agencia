@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
       amount,
       description,
       recurring,
+      coupon,
       success_url: customSuccessUrl,
       cancel_url: customCancelUrl,
       services,
@@ -41,6 +42,7 @@ export async function POST(request: NextRequest) {
       amount: number;
       description?: string;
       recurring?: boolean;
+      coupon?: string;
       success_url?: string;
       cancel_url?: string;
       services?: string;
@@ -84,7 +86,11 @@ export async function POST(request: NextRequest) {
     const lineItem: {
       price_data: {
         currency: string;
-        product_data: { name: string; description: string };
+        product_data: {
+          name: string;
+          description: string;
+          images?: string[];
+        };
         unit_amount: number;
         recurring?: { interval: "month" };
       };
@@ -95,6 +101,7 @@ export async function POST(request: NextRequest) {
         product_data: {
           name: productName,
           description: productDesc,
+          images: ["https://pacameagencia.com/opengraph-image"],
         },
         unit_amount: amountCents,
       },
@@ -114,7 +121,6 @@ export async function POST(request: NextRequest) {
       : `${origin}/dashboard/payments?cancelled=true`;
 
     const sessionParams: Parameters<typeof stripe.checkout.sessions.create>[0] = {
-      payment_method_types: ["card"],
       mode: isRecurring ? "subscription" : "payment",
       line_items: [lineItem],
       customer_email: email,
@@ -132,6 +138,13 @@ export async function POST(request: NextRequest) {
       cancel_url: customCancelUrl || defaultCancelUrl,
       locale: "es",
     };
+
+    // Discounts: auto-apply coupon if provided, otherwise allow manual promo codes
+    if (coupon) {
+      sessionParams.discounts = [{ coupon }];
+    } else {
+      sessionParams.allow_promotion_codes = true;
+    }
 
     // For one-time payments, create invoice for records
     if (!isRecurring) {

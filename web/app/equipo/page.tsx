@@ -7,12 +7,25 @@ import {
 import { Button } from "@/components/ui/button";
 import { agents } from "@/lib/data/agents";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
+import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
+import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
+import GoldenDivider from "@/components/effects/GoldenDivider";
+import MagneticButton from "@/components/effects/MagneticButton";
+import { ShinyButton } from "@/components/ui/shiny-button";
 
 export const metadata: Metadata = {
-  title: "El Equipo — 7 Agentes IA + 1 Humano",
+  title: "El Equipo — 7 Agentes IA + 1 Humano | PACAME",
   description:
     "Conoce al equipo de PACAME: 7 agentes IA especializados en branding, SEO, desarrollo web, ads, social media, backend y estrategia. Liderados por Pablo Calleja.",
   alternates: { canonical: "https://pacameagencia.com/equipo" },
+  openGraph: {
+    title: "El Equipo PACAME — 7 Agentes IA + Pablo Calleja",
+    description: "7 agentes IA especializados + 1 humano al mando. Conoce quién trabaja en tu proyecto.",
+    url: "https://pacameagencia.com/equipo",
+    siteName: "PACAME",
+    type: "website",
+    locale: "es_ES",
+  },
 };
 
 const iconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
@@ -60,35 +73,35 @@ export default function EquipoPage() {
       />
       {/* Hero */}
       <section className="relative pt-36 pb-24 overflow-hidden">
-        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-olympus-radial pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
-            El equipo
+        <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+          <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-5 uppercase tracking-[0.2em]">
+            El Panteon
           </p>
-          <h1 className="font-heading font-bold text-display text-pacame-white mb-6 text-balance">
+          <h1 className="font-accent font-bold text-display text-pacame-white mb-6 text-balance">
             No es un chatbot.{" "}
-            <span className="gradient-text-vivid">Es un equipo completo.</span>
+            <span className="gradient-text-aurora">Es un equipo completo.</span>
           </h1>
           <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto font-light text-balance">
             7 agentes IA, cada uno experto en su campo. Supervisados por Pablo Calleja.
             Lo que una agencia tarda semanas, nosotros lo entregamos en dias.
           </p>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Agents detailed */}
       <section className="section-padding relative">
-        <div className="absolute top-0 inset-x-0 section-divider" />
+        <div className="px-6"><GoldenDivider variant="laurel" /></div>
 
         <div className="max-w-6xl mx-auto px-6">
           <div className="space-y-6">
-            {agents.map((agent) => {
+            {agents.map((agent, agentIdx) => {
               const Icon = iconMap[agent.icon];
               return (
+                <ScrollReveal key={agent.id} delay={agentIdx * 0.08}>
                 <div
-                  key={agent.id}
-                  className="rounded-2xl bg-dark-card border border-white/[0.06] hover:border-white/[0.1] transition-all duration-500 ease-apple overflow-hidden"
+                  className="rounded-2xl bg-dark-card border border-white/[0.06] hover:border-olympus-gold/15 transition-all duration-500 ease-apple overflow-hidden card-golden-shine"
                 >
                   <div className="grid grid-cols-1 lg:grid-cols-5 gap-0">
                     {/* Agent identity */}
@@ -102,11 +115,14 @@ export default function EquipoPage() {
                         </div>
                         <div>
                           <h2
-                            className="font-heading font-bold text-2xl"
+                            className="font-accent font-bold text-2xl"
                             style={{ color: agent.color }}
                           >
                             {agent.name}
                           </h2>
+                          <p className="text-[11px] text-olympus-gold/50 font-body italic mb-0.5">
+                            {agent.mythTitle}
+                          </p>
                           <p className="text-xs text-pacame-white/50 font-body uppercase tracking-wider">
                             {agent.role}
                           </p>
@@ -158,11 +174,15 @@ export default function EquipoPage() {
                     </div>
                   </div>
                 </div>
+                </ScrollReveal>
               );
             })}
 
             {/* Pablo card */}
-            <div className="rounded-2xl bg-brand-gradient overflow-hidden relative">
+            <ScrollReveal delay={0.2}>
+            <CardTilt tiltMaxAngle={4} scale={1.01}>
+            <CardTiltContent>
+            <div className="rounded-2xl overflow-hidden relative border border-olympus-gold/30" style={{ background: "linear-gradient(135deg, #7C3AED 0%, #D4A853 50%, #06B6D4 100%)" }}>
               <div className="absolute inset-0 bg-black/20" />
               <div className="relative z-10 grid grid-cols-1 lg:grid-cols-5 gap-0">
                 <div className="lg:col-span-2 p-8 lg:p-10 flex flex-col justify-center">
@@ -206,21 +226,24 @@ export default function EquipoPage() {
                 </div>
               </div>
             </div>
+            </CardTiltContent>
+            </CardTilt>
+            </ScrollReveal>
           </div>
         </div>
       </section>
 
       {/* How they work together */}
       <section className="section-padding relative">
-        <div className="absolute top-0 inset-x-0 section-divider" />
+        <div className="px-6"><GoldenDivider variant="line" /></div>
 
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-neon-cyan mb-4 uppercase tracking-[0.2em]">
+        <ScrollReveal className="max-w-4xl mx-auto px-6 text-center">
+          <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
             El sistema
           </p>
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-6 text-balance">
+          <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
             Trabajan en red.{" "}
-            <span className="gradient-text-vivid">No en silos.</span>
+            <span className="gradient-text-gold">No en silos.</span>
           </h2>
           <p className="text-lg text-pacame-white/60 font-body max-w-2xl mx-auto mb-14">
             Cuando Pixel construye tu web, Atlas ya ha optimizado la estructura SEO.
@@ -229,6 +252,8 @@ export default function EquipoPage() {
           </p>
 
           {/* Flow */}
+          <CardTilt tiltMaxAngle={4} scale={1.01}>
+          <CardTiltContent>
           <div className="rounded-2xl border border-white/[0.06] bg-dark-card p-8 sm:p-10 text-left">
             <div className="space-y-5">
               {[
@@ -259,26 +284,35 @@ export default function EquipoPage() {
               ))}
             </div>
           </div>
-        </div>
+          </CardTiltContent>
+          </CardTilt>
+        </ScrollReveal>
       </section>
 
       {/* CTA */}
       <section className="section-padding bg-pacame-black text-center">
-        <div className="max-w-2xl mx-auto px-6">
+        <ScrollReveal className="max-w-2xl mx-auto px-6">
           <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
             Quieres que el equipo trabaje para ti?
           </h2>
           <p className="text-lg text-pacame-white/60 font-body mb-10">
             Cuentanos tu problema y te decimos como lo resolvemos, quien lo resuelve y cuanto cuesta.
           </p>
-          <Button variant="gradient" size="xl" asChild className="group rounded-full shadow-glow-violet">
-            <Link href="/contacto">
-              <MessageSquare className="w-5 h-5" />
-              Hablar con el equipo
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
-        </div>
+          <MagneticButton>
+            <ShinyButton
+              gradientFrom="#D4A853"
+              gradientTo="#7C3AED"
+              gradientOpacity={0.8}
+              className="group min-w-[280px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
+            >
+              <Link href="/contacto" className="flex items-center gap-2 text-pacame-white">
+                <MessageSquare className="w-5 h-5" />
+                Hablar con el equipo
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </ShinyButton>
+          </MagneticButton>
+        </ScrollReveal>
       </section>
     </div>
   );

@@ -3,6 +3,8 @@ import { blogPosts } from "@/lib/data/blog-posts";
 import NewsletterForm from "@/components/NewsletterForm";
 import BlogFilteredList from "@/components/BlogFilteredList";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
+import ScrollReveal from "@/components/ui/scroll-reveal";
+import GoldenDivider from "@/components/effects/GoldenDivider";
 
 function BlogListJsonLd() {
   const schema = {
@@ -65,7 +67,7 @@ export default function BlogPage() {
       <section className="relative pt-36 pb-20 overflow-hidden">
         <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-electric-violet/[0.04] rounded-full blur-[200px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
             Blog
           </p>
@@ -76,14 +78,16 @@ export default function BlogPage() {
           <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto font-light">
             Articulos escritos por nuestro equipo de agentes IA. Practicos, sin relleno y con datos reales.
           </p>
-        </div>
+        </ScrollReveal>
       </section>
 
       <BlogFilteredList posts={blogPosts} />
 
+      <div className="max-w-4xl mx-auto px-6"><GoldenDivider variant="laurel" /></div>
+
       {/* Newsletter CTA */}
       <section className="section-padding bg-pacame-black text-center">
-        <div className="max-w-2xl mx-auto px-6">
+        <ScrollReveal className="max-w-2xl mx-auto px-6">
           <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
             Quieres recibir los mejores articulos?
           </h2>
@@ -91,7 +95,7 @@ export default function BlogPage() {
             Un email semanal con lo mejor del blog. Sin spam. Solo contenido que hace crecer tu negocio.
           </p>
           <NewsletterForm />
-        </div>
+        </ScrollReveal>
       </section>
     </div>
   );

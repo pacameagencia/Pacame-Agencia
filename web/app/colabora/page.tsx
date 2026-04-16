@@ -7,6 +7,12 @@ import {
   Send, Loader2, Zap, Shield, Clock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
+import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
+import GoldenDivider from "@/components/effects/GoldenDivider";
+import MagneticButton from "@/components/effects/MagneticButton";
+import { ShinyButton } from "@/components/ui/shiny-button";
+import Celebration from "@/components/effects/Celebration";
 
 const TIERS = [
   {
@@ -82,7 +88,7 @@ export default function ColaboraPage() {
       <section className="relative pt-36 pb-20 overflow-hidden">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <p className="text-[13px] font-body font-medium text-lime-pulse mb-5 uppercase tracking-[0.2em]">
             Programa de colaboradores
           </p>
@@ -114,54 +120,65 @@ export default function ColaboraPage() {
               5 min de setup
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* How it works */}
-      <section className="section-padding bg-pacame-black border-t border-white/[0.04]">
+      <section className="section-padding bg-pacame-black">
+        <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-12">
+          <ScrollReveal className="text-center mb-12">
             <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
               Como funciona
             </p>
             <h2 className="font-heading font-bold text-section text-pacame-white">
               3 pasos. Cero complicaciones.
             </h2>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8" staggerDelay={0.1}>
             {[
               { step: "1", title: "Te registras", desc: "Rellenar el formulario te lleva 1 minuto. Recibes tu link personal y tu codigo de colaborador.", icon: Users },
               { step: "2", title: "Recomiendas", desc: "Comparte tu link o dile que va de tu parte. Tu NO vendes nada. PACAME se encarga de cerrar.", icon: Send },
               { step: "3", title: "Cobras", desc: "Cada vez que un negocio que recomendaste firma, tu recibes comision. El primer mes y los siguientes.", icon: DollarSign },
             ].map((item) => (
-              <div key={item.step} className="rounded-2xl bg-dark-card border border-white/[0.06] p-6 text-center">
+              <StaggerItem key={item.step}>
+              <CardTilt tiltMaxAngle={8} scale={1.02}>
+              <CardTiltContent>
+              <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6 text-center card-golden-shine">
                 <div className="w-14 h-14 rounded-2xl bg-electric-violet/15 flex items-center justify-center mx-auto mb-4">
                   <item.icon className="w-6 h-6 text-electric-violet" />
                 </div>
                 <div className="font-heading font-bold text-lg text-pacame-white mb-2">{item.title}</div>
                 <p className="text-sm text-pacame-white/50 font-body">{item.desc}</p>
               </div>
+              </CardTiltContent>
+              </CardTilt>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* Tiers */}
       <section className="section-padding bg-pacame-black">
+        <div className="px-6"><GoldenDivider variant="laurel" /></div>
         <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-12">
+          <ScrollReveal className="text-center mb-12">
             <p className="text-[13px] font-body font-medium text-amber-signal mb-5 uppercase tracking-[0.2em]">
               Comisiones
             </p>
             <h2 className="font-heading font-bold text-section text-pacame-white">
               Cuanto mas recomiendes, mas ganas.
             </h2>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6" staggerDelay={0.1}>
             {TIERS.map((tier) => (
-              <div key={tier.name} className="rounded-2xl bg-dark-card border border-white/[0.06] p-6 hover:border-white/10 transition-colors">
+              <StaggerItem key={tier.name}>
+              <CardTilt tiltMaxAngle={8} scale={1.02}>
+              <CardTiltContent>
+              <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6 hover:border-white/10 transition-colors card-golden-shine">
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 font-heading font-bold text-lg"
                   style={{ backgroundColor: `${tier.color}20`, color: tier.color }}
@@ -190,34 +207,40 @@ export default function ColaboraPage() {
                   <p className="text-xs text-pacame-white/60 font-body">{tier.example}</p>
                 </div>
               </div>
+              </CardTiltContent>
+              </CardTilt>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* Who is this for */}
-      <section className="section-padding bg-pacame-black border-t border-white/[0.04]">
+      <section className="section-padding bg-pacame-black">
+        <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-12">
+          <ScrollReveal className="text-center mb-12">
             <p className="text-[13px] font-body font-medium text-neon-cyan mb-5 uppercase tracking-[0.2em]">
               Para quien es
             </p>
             <h2 className="font-heading font-bold text-section text-pacame-white">
               Si conoces PYMEs, esto te interesa.
             </h2>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" staggerDelay={0.06}>
             {WHO_IS_FOR.map((item) => (
-              <div key={item.title} className="flex items-start gap-3 p-4 rounded-xl bg-dark-card border border-white/[0.06]">
+              <StaggerItem key={item.title}>
+              <div className="flex items-start gap-3 p-4 rounded-xl bg-dark-card border border-white/[0.06] card-golden-shine">
                 <CheckCircle2 className="w-5 h-5 text-lime-pulse flex-shrink-0 mt-0.5" />
                 <div>
                   <h3 className="font-heading font-semibold text-sm text-pacame-white mb-1">{item.title}</h3>
                   <p className="text-xs text-pacame-white/60 font-body">{item.desc}</p>
                 </div>
               </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
@@ -226,6 +249,7 @@ export default function ColaboraPage() {
         <div className="max-w-xl mx-auto px-6">
           {state === "success" ? (
             <div className="rounded-3xl glass p-10 text-center">
+              <Celebration />
               <div className="w-16 h-16 rounded-full bg-lime-pulse/20 flex items-center justify-center mx-auto mb-6">
                 <Zap className="w-8 h-8 text-lime-pulse" />
               </div>
@@ -272,7 +296,7 @@ export default function ColaboraPage() {
                     name="name"
                     required
                     placeholder="Tu nombre"
-                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors"
                   />
                 </div>
 
@@ -283,7 +307,7 @@ export default function ColaboraPage() {
                     type="email"
                     required
                     placeholder="tu@email.com"
-                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors"
                   />
                 </div>
 
@@ -292,29 +316,30 @@ export default function ColaboraPage() {
                   <input
                     name="phone"
                     placeholder="+34 600 000 000"
-                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors"
+                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors"
                   />
                 </div>
 
-                <Button
-                  type="submit"
-                  variant="gradient"
-                  size="xl"
-                  className="w-full group"
-                  disabled={state === "sending"}
-                >
-                  {state === "sending" ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Registrando...
-                    </>
-                  ) : (
-                    <>
-                      <Zap className="w-4 h-4" />
-                      Quiero ser colaborador
-                    </>
-                  )}
-                </Button>
+                {state === "sending" ? (
+                  <Button type="submit" variant="gradient" size="xl" className="w-full" disabled>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Registrando...
+                  </Button>
+                ) : (
+                  <MagneticButton>
+                    <ShinyButton
+                      gradientFrom="#84CC16"
+                      gradientTo="#7C3AED"
+                      gradientOpacity={0.8}
+                      className="group w-full h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
+                    >
+                      <button type="submit" className="flex items-center gap-2 text-pacame-white w-full justify-center">
+                        <Zap className="w-4 h-4" />
+                        Quiero ser colaborador
+                      </button>
+                    </ShinyButton>
+                  </MagneticButton>
+                )}
 
                 <p className="text-xs text-pacame-white/60 font-body text-center">
                   Sin permanencia. Sin exclusividad. Cancela cuando quieras.{" "}

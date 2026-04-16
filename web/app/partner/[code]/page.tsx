@@ -8,6 +8,9 @@ import {
   Loader2, ArrowRight, Share2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
+import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
+import GoldenDivider from "@/components/effects/GoldenDivider";
 
 interface PartnerData {
   name: string;
@@ -111,7 +114,7 @@ export default function PartnerDashboardPage() {
         <div className="absolute inset-0 bg-grid" />
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[250px] rounded-full blur-[140px] pointer-events-none" style={{ backgroundColor: `${tier.color}15` }} />
 
-        <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 text-center">
+        <ScrollReveal className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <div className="w-20 h-20 rounded-2xl mx-auto mb-5 flex items-center justify-center" style={{ backgroundColor: `${tier.color}20` }}>
             <Award className="w-10 h-10" style={{ color: tier.color }} />
           </div>
@@ -123,36 +126,52 @@ export default function PartnerDashboardPage() {
           >
             Tier {data.tier}
           </span>
-        </div>
+        </ScrollReveal>
       </section>
 
       <section className="max-w-4xl mx-auto px-4 sm:px-6 pb-20 space-y-6">
         {/* KPIs */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-            <Users className="w-5 h-5 text-neon-cyan mx-auto mb-2" />
-            <div className="font-heading font-bold text-2xl text-neon-cyan">{data.total_referrals}</div>
-            <div className="text-xs text-pacame-white/40 font-body">Referidos</div>
-          </div>
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-            <CheckCircle2 className="w-5 h-5 text-lime-pulse mx-auto mb-2" />
-            <div className="font-heading font-bold text-2xl text-lime-pulse">{data.total_conversions}</div>
-            <div className="text-xs text-pacame-white/40 font-body">Convertidos</div>
-          </div>
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-            <DollarSign className="w-5 h-5 text-amber-signal mx-auto mb-2" />
-            <div className="font-heading font-bold text-2xl text-amber-signal">{Number(data.total_earned).toLocaleString("es-ES")}€</div>
-            <div className="text-xs text-pacame-white/40 font-body">Total ganado</div>
-          </div>
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-            <TrendingUp className="w-5 h-5 text-electric-violet mx-auto mb-2" />
-            <div className="font-heading font-bold text-2xl text-electric-violet">{pendingCommissions.toLocaleString("es-ES")}€</div>
-            <div className="text-xs text-pacame-white/40 font-body">Pendiente cobro</div>
-          </div>
-        </div>
+        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4" staggerDelay={0.08}>
+          <StaggerItem>
+            <CardTilt tiltMaxAngle={8}>
+              <CardTiltContent className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
+                <Users className="w-5 h-5 text-neon-cyan mx-auto mb-2" />
+                <div className="font-heading font-bold text-2xl text-neon-cyan">{data.total_referrals}</div>
+                <div className="text-xs text-pacame-white/40 font-body">Referidos</div>
+              </CardTiltContent>
+            </CardTilt>
+          </StaggerItem>
+          <StaggerItem>
+            <CardTilt tiltMaxAngle={8}>
+              <CardTiltContent className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
+                <CheckCircle2 className="w-5 h-5 text-lime-pulse mx-auto mb-2" />
+                <div className="font-heading font-bold text-2xl text-lime-pulse">{data.total_conversions}</div>
+                <div className="text-xs text-pacame-white/40 font-body">Convertidos</div>
+              </CardTiltContent>
+            </CardTilt>
+          </StaggerItem>
+          <StaggerItem>
+            <CardTilt tiltMaxAngle={8}>
+              <CardTiltContent className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
+                <DollarSign className="w-5 h-5 text-amber-signal mx-auto mb-2" />
+                <div className="font-heading font-bold text-2xl text-amber-signal">{Number(data.total_earned).toLocaleString("es-ES")}€</div>
+                <div className="text-xs text-pacame-white/40 font-body">Total ganado</div>
+              </CardTiltContent>
+            </CardTilt>
+          </StaggerItem>
+          <StaggerItem>
+            <CardTilt tiltMaxAngle={8}>
+              <CardTiltContent className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
+                <TrendingUp className="w-5 h-5 text-electric-violet mx-auto mb-2" />
+                <div className="font-heading font-bold text-2xl text-electric-violet">{pendingCommissions.toLocaleString("es-ES")}€</div>
+                <div className="text-xs text-pacame-white/40 font-body">Pendiente cobro</div>
+              </CardTiltContent>
+            </CardTilt>
+          </StaggerItem>
+        </StaggerContainer>
 
         {/* Share links */}
-        <div className="rounded-2xl glass p-6">
+        <ScrollReveal delay={0.1} className="rounded-2xl glass p-6">
           <h2 className="font-heading font-semibold text-lg text-pacame-white mb-4">Tu enlace de referido</h2>
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1 flex items-center gap-3 px-4 py-3 rounded-xl bg-dark-card border border-white/[0.08]">
@@ -170,11 +189,11 @@ export default function PartnerDashboardPage() {
           <p className="text-xs text-pacame-white/30 font-body mt-3">
             Comparte este enlace. Cuando alguien contrate, tu ganas un <strong className="text-pacame-white/50">{data.commission_first_pct}% del primer pago</strong> + <strong className="text-pacame-white/50">{data.commission_recurring_pct}% recurrente</strong>.
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Tier progress */}
         {data.next_tier && (
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+          <ScrollReveal delay={0.15} className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
             <h2 className="font-heading font-semibold text-pacame-white mb-3">Progreso al siguiente tier</h2>
             <div className="flex items-center gap-4 mb-3">
               <span className="text-xs font-heading font-bold uppercase" style={{ color: tier.color }}>{data.tier}</span>
@@ -194,11 +213,11 @@ export default function PartnerDashboardPage() {
             <p className="text-xs text-pacame-white/40 font-body">
               {data.next_tier.conversions_needed - data.total_conversions} conversiones mas para subir a {data.next_tier.name}. Conseguiras comisiones mas altas.
             </p>
-          </div>
+          </ScrollReveal>
         )}
 
         {/* Recent referrals */}
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+        <ScrollReveal delay={0.1} className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
           <h2 className="font-heading font-semibold text-pacame-white mb-4">Tus referidos</h2>
           {(data.referrals || []).length === 0 ? (
             <div className="text-center py-8">
@@ -230,11 +249,11 @@ export default function PartnerDashboardPage() {
               ))}
             </div>
           )}
-        </div>
+        </ScrollReveal>
 
         {/* Commissions */}
         {(data.commissions || []).length > 0 && (
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+          <ScrollReveal delay={0.15} className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
             <h2 className="font-heading font-semibold text-pacame-white mb-4">Historial de comisiones</h2>
             <div className="space-y-2">
               {data.commissions.map((c) => (
@@ -261,11 +280,13 @@ export default function PartnerDashboardPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </ScrollReveal>
         )}
 
+        <GoldenDivider variant="line" />
+
         {/* CTA */}
-        <div className="text-center pt-4">
+        <ScrollReveal className="text-center pt-4">
           <p className="text-xs text-pacame-white/50 font-body mb-4">
             ¿Dudas? Contacta con nosotros en{" "}
             <a href="mailto:hola@pacameagencia.com" className="text-electric-violet/60 hover:underline">hola@pacameagencia.com</a>
@@ -276,7 +297,7 @@ export default function PartnerDashboardPage() {
               Ir a pacameagencia.com
             </Link>
           </Button>
-        </div>
+        </ScrollReveal>
       </section>
     </div>
   );
