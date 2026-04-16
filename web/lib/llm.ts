@@ -12,6 +12,7 @@
  */
 
 import { nebiusChat, NEBIUS_MODELS, type NebiusMessage } from "./nebius";
+import { createServerSupabase } from "./supabase/server";
 
 export type LLMTier = "titan" | "premium" | "standard" | "economy";
 
@@ -26,6 +27,12 @@ export interface LLMOptions {
   temperature?: number;
   /** Forzar proveedor (omitir routing) */
   forceProvider?: "claude" | "nebius";
+  /** Tracking: agente que origina la llamada (para observabilidad) */
+  agentId?: string;
+  /** Tracking: origen de la llamada (chat | cron | proposal | webhook | ...) */
+  source?: string;
+  /** Metadata extra para persistir en agent_llm_usage */
+  metadata?: Record<string, unknown>;
 }
 
 export interface LLMResult {
@@ -54,10 +61,66 @@ const CLAUDE_TIER_MODELS: Record<LLMTier, string> = {
   economy: "claude-haiku-4-5-20251001",
 };
 
+// -------------------------------------------------------------------
+// PRICING — USD per 1M tokens (input / output). Valores aproximados
+// para estimacion de coste en dashboard de observabilidad.
+// -------------------------------------------------------------------
+const PRICING_USD_PER_1M: Record<string, { in: number; out: number }> = {
+  // Claude
+  "claude-sonnet-4-6":          { in: 3.0,  out: 15.0 },
+  "claude-haiku-4-5-20251001":  { in: 1.0,  out: 5.0 },
+  // Nebius (DeepSeek V3.2 fast + Llama 3.1 8B fast)
+  "deepseek-ai/DeepSeek-V3.2-fast": { in: 0.25, out: 0.85 },
+  "meta-llama/Meta-Llama-3.1-8B-Instruct-fast": { in: 0.03, out: 0.09 },
+};
+
+function estimateCostUSD(model: string, tokensIn: number, tokensOut: number): number {
+  const p = PRICING_USD_PER_1M[model];
+  if (!p) return 0;
+  return +(((tokensIn * p.in) + (tokensOut * p.out)) / 1_000_000).toFixed(6);
+}
+
+async function logUsage(
+  result: LLMResult,
+  opts: LLMOptions,
+): Promise<void> {
+  try {
+    const supabase = createServerSupabase();
+    const cost = estimateCostUSD(result.model, result.tokensIn, result.tokensOut);
+    await supabase.from("agent_llm_usage").insert({
+      agent_id: opts.agentId || "unknown",
+      provider: result.provider,
+      model: result.model,
+      tier: opts.tier,
+      tokens_in: result.tokensIn,
+      tokens_out: result.tokensOut,
+      cost_usd: cost,
+      latency_ms: result.latencyMs,
+      fallback: result.fallback,
+      source: opts.source || null,
+      metadata: opts.metadata || {},
+    });
+  } catch {
+    // Logging nunca rompe el flujo principal
+  }
+}
+
 /**
  * Llamada unificada a LLM con routing y fallback automatico.
+ * Ademas persiste cada llamada en `agent_llm_usage` para el dashboard
+ * de observabilidad (tokens, coste USD, latencia, fallbacks).
  */
 export async function llmChat(
+  messages: LLMMessage[],
+  opts: LLMOptions
+): Promise<LLMResult> {
+  const result = await llmChatInternal(messages, opts);
+  // Fire-and-forget: no bloquea el flujo principal
+  logUsage(result, opts);
+  return result;
+}
+
+async function llmChatInternal(
   messages: LLMMessage[],
   opts: LLMOptions
 ): Promise<LLMResult> {

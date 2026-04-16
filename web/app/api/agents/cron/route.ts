@@ -39,7 +39,7 @@ async function callClaude(prompt: string, maxTokens = 800, agentId = "dios"): Pr
   try {
     const res = await llmChat(
       [{ role: "user", content: prompt }],
-      { tier, maxTokens }
+      { tier, maxTokens, agentId, source: "cron" }
     );
     return res.content;
   } catch {
