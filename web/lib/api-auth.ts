@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { verifyDashboardTokenNode } from "@/lib/dashboard-auth-node";
 
 /**
  * Verify that an internal API request is authorized.
  * Accepts:
  * - Bearer token matching CRON_SECRET (for Vercel cron / n8n)
- * - Dashboard auth cookie (for calls from the dashboard)
+ * - Dashboard auth cookie with valid HMAC signature (dashboard UI)
  */
 export function verifyInternalAuth(request: NextRequest): NextResponse | null {
   // 1. Check Bearer token (Vercel cron, n8n, external triggers)
@@ -14,14 +15,15 @@ export function verifyInternalAuth(request: NextRequest): NextResponse | null {
     return null; // authorized
   }
 
-  // 2. Check dashboard cookie (calls from the dashboard UI)
+  // 2. Check signed dashboard cookie (calls from the dashboard UI)
   const dashboardCookie = request.cookies.get("pacame_auth")?.value;
-  if (dashboardCookie) {
-    return null; // authorized (cookie validity checked by middleware)
+  if (verifyDashboardTokenNode(dashboardCookie)) {
+    return null; // authorized with valid signature
   }
 
   // 3. No CRON_SECRET configured = dev mode, allow through
-  if (!cronSecret) {
+  // (Prod always has CRON_SECRET, so this only matches local dev.)
+  if (!cronSecret && process.env.NODE_ENV !== "production") {
     return null;
   }
 
