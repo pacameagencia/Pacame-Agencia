@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
+import { dbCall } from "@/lib/dashboard-db";
 import { Bell, Check, AlertTriangle, Info, Zap, CheckCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -67,14 +68,14 @@ export default function NotificationsPage() {
   }
 
   async function markAsRead(id: string) {
-    await supabase.from("notifications").update({ read_by_pablo: true }).eq("id", id);
+    await dbCall({ table: "notifications", op: "update", data: { read_by_pablo: true }, filter: { column: "id", value: id } });
     setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read_by_pablo: true } : n)));
   }
 
   async function markAllRead() {
     const unreadIds = notifications.filter((n) => !n.read_by_pablo).map((n) => n.id);
     if (unreadIds.length === 0) return;
-    await supabase.from("notifications").update({ read_by_pablo: true }).in("id", unreadIds);
+    await dbCall({ table: "notifications", op: "update", data: { read_by_pablo: true }, filterIn: { column: "id", values: unreadIds } });
     setNotifications((prev) => prev.map((n) => ({ ...n, read_by_pablo: true })));
   }
 

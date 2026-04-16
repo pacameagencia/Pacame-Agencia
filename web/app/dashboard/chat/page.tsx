@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase/client";
+import { dbCall } from "@/lib/dashboard-db";
 import {
   Sparkles, Globe, TrendingUp, Layout, Terminal, Heart, Compass,
   Pencil, Send, Bot, Loader2, ChevronDown, MessageSquare, Plus, Trash2,
@@ -95,7 +96,7 @@ export default function ChatPage() {
 
   async function deleteConversation(convId: string, e: React.MouseEvent) {
     e.stopPropagation();
-    await supabase.from("conversations").delete().eq("id", convId);
+    await dbCall({ table: "conversations", op: "delete", filter: { column: "id", value: convId } });
     if (activeConversationId === convId) {
       newConversation();
     }

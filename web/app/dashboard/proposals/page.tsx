@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
+import { dbCall } from "@/lib/dashboard-db";
 import {
   FileCheck, Plus, X, Send, Eye, Clock, CheckCircle2,
   XCircle, RefreshCw, ExternalLink, Sparkles,
@@ -144,13 +145,17 @@ export default function ProposalsPage() {
     const totalOnetime = form.services.filter((s) => s.type === "onetime").reduce((sum, s) => sum + s.price, 0);
     const totalMonthly = form.services.filter((s) => s.type === "monthly").reduce((sum, s) => sum + s.price, 0);
 
-    await supabase.from("proposals").insert({
-      lead_id: form.lead_id || null,
-      brief_original: form.brief,
-      services_proposed: form.services,
-      total_onetime: totalOnetime,
-      total_monthly: totalMonthly,
-      status: "ready",
+    await dbCall({
+      table: "proposals",
+      op: "insert",
+      data: {
+        lead_id: form.lead_id || null,
+        brief_original: form.brief,
+        services_proposed: form.services,
+        total_onetime: totalOnetime,
+        total_monthly: totalMonthly,
+        status: "ready",
+      },
     });
 
     setForm({ lead_id: "", brief: "", services: [] });

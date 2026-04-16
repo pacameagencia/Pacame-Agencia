@@ -95,12 +95,13 @@ export default function PublicProposalPage() {
         return;
       }
 
-      // Mark as viewed if currently "sent"
+      // Mark as viewed via public tracking endpoint (no anon writes)
       if (data.status === "sent") {
-        supabase.from("proposals").update({
-          status: "viewed",
-          viewed_at: new Date().toISOString(),
-        }).eq("id", id).then(() => {});
+        fetch("/api/proposals/track-view", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+        }).catch(() => {});
       }
 
       setProposal({
