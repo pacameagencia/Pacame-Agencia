@@ -408,7 +408,7 @@ Responde SOLO JSON:
 
       // Generar idea de blog post si hay menos de 10 posts
       let blogGenerated = false;
-      if ((blogCount || 0) < 15 && CLAUDE_API_KEY) {
+      if ((blogCount || 0) < 15) {
         // Get existing titles to avoid duplicates
         const { data: existingPosts } = await supabase
           .from("content")
@@ -901,19 +901,16 @@ Responde SOLO JSON: {"subject":"asunto","body":"cuerpo del email (max 200 palabr
         supabaseOk = false;
       }
 
-      // Check Claude API health
+      // Check LLM health (Claude + Nebius via dispatcher)
       let claudeOk = false;
-      if (CLAUDE_API_KEY) {
-        try {
-          const res = await fetch("https://api.anthropic.com/v1/messages", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "x-api-key": CLAUDE_API_KEY, "anthropic-version": "2023-06-01" },
-            body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: 10, messages: [{ role: "user", content: "ping" }] }),
-          });
-          claudeOk = res.ok;
-        } catch {
-          claudeOk = false;
-        }
+      try {
+        const ping = await llmChat(
+          [{ role: "user", content: "Responde OK" }],
+          { tier: "economy", maxTokens: 10 }
+        );
+        claudeOk = ping.content.length > 0;
+      } catch {
+        claudeOk = false;
       }
 
       // Count unread notifications
@@ -1005,9 +1002,8 @@ Responde SOLO JSON: {"subject":"asunto","body":"cuerpo del email (max 200 palabr
       let moderated = 0;
 
       for (const review of pendingReviews || []) {
-        if (CLAUDE_API_KEY) {
-          try {
-            const text = await callClaude(`Eres Nova, directora creativa de PACAME. Modera esta resena de cliente.
+        try {
+          const text = await callClaude(`Eres Nova, directora creativa de PACAME. Modera esta resena de cliente.
 
 Resena:
 - Nombre: ${review.name}
@@ -1022,20 +1018,24 @@ Decide si publicarla. Criterios:
 
 Responde SOLO JSON: {"action":"publish|reject","reason":"razon breve"}`, 200, "nova");
 
-            const decision = extractJSON(text);
-            if (decision) {
-              const newStatus = decision.action === "publish" ? "published" : "rejected";
-              await supabase.from("reviews").update({
-                status: newStatus,
-                published_at: newStatus === "published" ? new Date().toISOString() : null,
-              }).eq("id", review.id);
-              moderated++;
-            }
-          } catch {
-            // Skip
+          const decision = extractJSON(text);
+          if (decision) {
+            const newStatus = decision.action === "publish" ? "published" : "rejected";
+            await supabase.from("reviews").update({
+              status: newStatus,
+              published_at: newStatus === "published" ? new Date().toISOString() : null,
+            }).eq("id", review.id);
+            moderated++;
+          } else if (review.rating >= 4) {
+            // Fallback sin IA: auto-publicar si rating >= 4
+            await supabase.from("reviews").update({
+              status: "published",
+              published_at: new Date().toISOString(),
+            }).eq("id", review.id);
+            moderated++;
           }
-        } else {
-          // Sin IA: auto-publicar si rating >= 4
+        } catch {
+          // Sin respuesta IA: auto-publicar si rating >= 4
           if (review.rating >= 4) {
             await supabase.from("reviews").update({
               status: "published",
@@ -1558,7 +1558,7 @@ Responde en texto plano, 2 frases max. Primera frase: que esta pasando. Segunda:
   // =============================================
   // RESEARCH PHASE — Agents proactively discover opportunities
   // =============================================
-  if (CLAUDE_API_KEY) {
+  {
     try {
       // Gather context for research
       const monthStart = new Date();
