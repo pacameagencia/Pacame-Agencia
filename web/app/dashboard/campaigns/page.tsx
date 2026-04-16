@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
+import { dbCall } from "@/lib/dashboard-db";
 import {
   Megaphone, Plus, X, Play, Pause, TrendingUp,
   Target, DollarSign, BarChart3, Eye, MousePointerClick,
@@ -80,14 +81,18 @@ export default function CampaignsPage() {
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    await supabase.from("ad_campaigns").insert({
-      client_id: form.client_id || null,
-      platform: form.platform,
-      campaign_name: form.campaign_name,
-      objective: form.objective,
-      budget_daily: form.budget_daily ? Number(form.budget_daily) : null,
-      budget_total: form.budget_total ? Number(form.budget_total) : null,
-      landing_url: form.landing_url || null,
+    await dbCall({
+      table: "ad_campaigns",
+      op: "insert",
+      data: {
+        client_id: form.client_id || null,
+        platform: form.platform,
+        campaign_name: form.campaign_name,
+        objective: form.objective,
+        budget_daily: form.budget_daily ? Number(form.budget_daily) : null,
+        budget_total: form.budget_total ? Number(form.budget_total) : null,
+        landing_url: form.landing_url || null,
+      },
     });
     setForm({ client_id: "", platform: "meta", campaign_name: "", objective: "conversions", budget_daily: "", budget_total: "", landing_url: "" });
     setShowForm(false);
@@ -97,7 +102,7 @@ export default function CampaignsPage() {
 
   async function toggleStatus(id: string, current: string) {
     const next = current === "active" ? "paused" : "active";
-    await supabase.from("ad_campaigns").update({ status: next }).eq("id", id);
+    await dbCall({ table: "ad_campaigns", op: "update", data: { status: next }, filter: { column: "id", value: id } });
     fetchData();
   }
 

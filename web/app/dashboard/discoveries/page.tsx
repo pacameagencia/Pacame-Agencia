@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
+import { dbCall } from "@/lib/dashboard-db";
 import {
   Lightbulb, TrendingUp, Zap, Eye, Target, BarChart3,
   Pencil, Brain, Sparkles, Globe, Heart, Compass, Terminal,
@@ -91,13 +92,18 @@ export default function DiscoveriesPage() {
 
     const currentMeta = (discovery.metadata as Record<string, unknown>) || {};
 
-    await supabase.from("agent_activities").update({
-      metadata: {
-        ...currentMeta,
-        discovery_status: newStatus,
-        reviewed_at: newStatus !== "new" ? new Date().toISOString() : null,
+    await dbCall({
+      table: "agent_activities",
+      op: "update",
+      data: {
+        metadata: {
+          ...currentMeta,
+          discovery_status: newStatus,
+          reviewed_at: newStatus !== "new" ? new Date().toISOString() : null,
+        },
       },
-    }).eq("id", id);
+      filter: { column: "id", value: id },
+    });
 
     setDiscoveries(prev =>
       prev.map(d => d.id === id ? {
