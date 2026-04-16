@@ -50,3 +50,8 @@ export const PACAME_PRODUCTS = {
 } as const;
 
 export type ProductKey = keyof typeof PACAME_PRODUCTS;
+
+export function getProductDisplayName(key: string): string {
+  const product = PACAME_PRODUCTS[key as ProductKey];
+  return product?.name || key;
+}

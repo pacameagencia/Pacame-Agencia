@@ -5,6 +5,8 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { notifyPayment } from "@/lib/telegram";
+import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 const supabase = createServerSupabase();
 
@@ -94,6 +96,40 @@ export async function POST(request: NextRequest) {
               // Link payment to client
               if (financeRecord?.id) {
                 await supabase.from("finances").update({ client_id: clientId }).eq("id", financeRecord.id);
+              }
+
+              // Auto-create account with temporary password
+              const tempPassword = crypto.randomBytes(4).toString("hex"); // 8 chars
+              const passwordHash = await bcrypt.hash(tempPassword, 10);
+              await supabase.from("clients").update({
+                password_hash: passwordHash,
+                onboarding_completed: false,
+              }).eq("id", clientId);
+
+              // Send account credentials email
+              const clientEmail = lead.email || session.customer_email;
+              if (clientEmail) {
+                await sendEmail({
+                  to: clientEmail,
+                  subject: "Tu cuenta PACAME esta lista",
+                  html: wrapEmailTemplate(
+                    `Hola ${lead.name.split(" ")[0]},\n\n` +
+                    `Tu cuenta en el portal PACAME ha sido creada automaticamente.\n\n` +
+                    `<strong>Email:</strong> ${clientEmail}\n` +
+                    `<strong>Password temporal:</strong> ${tempPassword}\n\n` +
+                    `Te recomendamos cambiar tu password la primera vez que accedas.\n\n` +
+                    `Un saludo,\nPablo Calleja\nPACAME`,
+                    {
+                      cta: "Acceder a mi portal",
+                      ctaUrl: "https://pacameagencia.com/portal",
+                      preheader: "Tu cuenta PACAME esta lista — accede a tu portal de cliente",
+                    }
+                  ),
+                  tags: [
+                    { name: "type", value: "account_created" },
+                    { name: "client_id", value: clientId },
+                  ],
+                });
               }
             }
           }

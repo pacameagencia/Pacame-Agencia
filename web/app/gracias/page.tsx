@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CheckCircle, ArrowRight, MessageCircle } from "lucide-react";
+import { CheckCircle, ArrowRight, MessageCircle, UserCheck, Mail as MailIcon, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
 import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
@@ -63,6 +63,46 @@ export default function GraciasPage() {
               </StaggerItem>
             ))}
           </StaggerContainer>
+        </div>
+        </CardTiltContent>
+        </CardTilt>
+
+        {/* Portal account card */}
+        <CardTilt tiltMaxAngle={4} scale={1.01}>
+        <CardTiltContent>
+        <div className="bg-dark-card border border-lime-pulse/10 rounded-2xl p-7 mb-10 text-left">
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-lime-pulse/10 flex items-center justify-center">
+              <UserCheck className="w-5 h-5 text-lime-pulse" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="font-heading font-semibold text-lg text-pacame-white mb-2">
+                Tu cuenta ha sido creada
+              </h2>
+              <div className="space-y-3">
+                <div className="flex items-start gap-2.5">
+                  <MailIcon className="w-4 h-4 text-pacame-white/40 mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-pacame-white/60 font-body">
+                    Revisa tu email — te hemos enviado tus credenciales de acceso
+                  </p>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <ExternalLink className="w-4 h-4 text-pacame-white/40 mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-pacame-white/60 font-body">
+                    Accede a tu portal para personalizar tu experiencia
+                  </p>
+                </div>
+              </div>
+              <div className="mt-5">
+                <Button variant="gradient" size="lg" asChild className="gap-2">
+                  <Link href="/portal">
+                    Ir a mi portal
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
         </CardTiltContent>
         </CardTilt>
