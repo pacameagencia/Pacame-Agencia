@@ -16,6 +16,9 @@ web/build/
 !.env.example
 !.env.local.example
 
+# Credenciales (NUNCA subir)
+CREDENCIALES-PACAME.md
+
 # OS
 .DS_Store
 Thumbs.db

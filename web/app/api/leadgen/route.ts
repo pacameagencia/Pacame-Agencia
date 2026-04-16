@@ -3,11 +3,11 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { findEmailsFromWebsite } from "@/lib/email-enrichment";
+import { llmChat, extractJSON } from "@/lib/llm";
 
 const supabase = createServerSupabase();
 
 const APIFY_API_KEY = process.env.APIFY_API_KEY;
-const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 const APIFY_ACTOR = "nwua9Gu5YrADL7ZDj"; // Google Maps Scraper
 
 // POST: Launch a new lead gen campaign
@@ -178,10 +178,6 @@ export async function POST(request: NextRequest) {
 
   // --- ACTION: GENERATE OUTREACH ---
   if (action === "outreach") {
-    if (!CLAUDE_API_KEY) {
-      return NextResponse.json({ error: "CLAUDE_API_KEY not configured" }, { status: 500 });
-    }
-
     const { lead, audit } = body;
     const issuesText = (audit?.issues || []).join(", ");
 
@@ -208,33 +204,13 @@ Responde SOLO JSON valido:
 {"email_1": {"subject": "...", "body": "..."}, "email_2": {"subject": "...", "body": "..."}, "email_3": {"subject": "...", "body": "..."}}`;
 
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": CLAUDE_API_KEY,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: "claude-haiku-4-5-20251001",
-          max_tokens: 1200,
-          messages: [{ role: "user", content: prompt }],
-        }),
-      });
+      const res = await llmChat(
+        [{ role: "user", content: prompt }],
+        { tier: "standard", maxTokens: 1200 }
+      );
 
-      const data = await res.json();
-      const text = data.content?.[0]?.text || "";
-      const jsonStart = text.indexOf("{");
-      const jsonEnd = text.lastIndexOf("}") + 1;
-      let emails: Record<string, unknown> | null = null;
-      if (jsonStart >= 0) {
-        try { emails = JSON.parse(text.slice(jsonStart, jsonEnd)); } catch { /* AI devolvio JSON invalido */ }
-      }
-
-      return NextResponse.json({
-        emails,
-        tokens: data.usage?.output_tokens || 0,
-      });
+      const emails = extractJSON(res.content);
+      return NextResponse.json({ emails, tokens: res.tokensOut, provider: res.provider });
     } catch (error) {
       return NextResponse.json({ error: String(error) }, { status: 500 });
     }

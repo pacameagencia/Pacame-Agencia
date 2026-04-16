@@ -1,0 +1,177 @@
+/**
+ * PACAME — Dispatcher LLM Unificado
+ *
+ * Enruta tareas al modelo mas eficiente segun coste/calidad.
+ * Fallback automatico: Nebius → Claude Haiku si falla.
+ *
+ * Tiers:
+ *   titan   → Claude Opus/Sonnet (estrategia, decisiones criticas)
+ *   premium → Claude Sonnet (propuestas, auditorias complejas)
+ *   standard → Nebius DeepSeek/Qwen (content, outreach, copy)
+ *   economy → Nebius Llama 8B (clasificacion, DMs, personalizacion)
+ */
+
+import { nebiusChat, NEBIUS_MODELS, type NebiusMessage } from "./nebius";
+
+export type LLMTier = "titan" | "premium" | "standard" | "economy";
+
+export interface LLMMessage {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
+
+export interface LLMOptions {
+  tier: LLMTier;
+  maxTokens?: number;
+  temperature?: number;
+  /** Forzar proveedor (omitir routing) */
+  forceProvider?: "claude" | "nebius";
+}
+
+export interface LLMResult {
+  content: string;
+  provider: "claude" | "nebius" | "gemma";
+  model: string;
+  tokensIn: number;
+  tokensOut: number;
+  latencyMs: number;
+  fallback: boolean;
+}
+
+const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY || "";
+
+/** Modelo Nebius por tier */
+const NEBIUS_TIER_MODELS: Record<"standard" | "economy", string> = {
+  standard: NEBIUS_MODELS["deepseek-v3.2-fast"],
+  economy: NEBIUS_MODELS["llama-3.1-8b"],
+};
+
+/** Modelo Claude por tier */
+const CLAUDE_TIER_MODELS: Record<LLMTier, string> = {
+  titan: "claude-sonnet-4-6",
+  premium: "claude-sonnet-4-6",
+  standard: "claude-haiku-4-5-20251001",
+  economy: "claude-haiku-4-5-20251001",
+};
+
+/**
+ * Llamada unificada a LLM con routing y fallback automatico.
+ */
+export async function llmChat(
+  messages: LLMMessage[],
+  opts: LLMOptions
+): Promise<LLMResult> {
+  const { tier, maxTokens = 1024, temperature = 0.7, forceProvider } = opts;
+
+  // Titan/Premium → Claude directo (sin fallback a Nebius)
+  if ((tier === "titan" || tier === "premium") && forceProvider !== "nebius") {
+    return callClaude(messages, CLAUDE_TIER_MODELS[tier], maxTokens, temperature);
+  }
+
+  // Standard/Economy → Nebius primero, fallback a Claude Haiku
+  if (forceProvider !== "claude") {
+    try {
+      const nebiusModel = NEBIUS_TIER_MODELS[tier as "standard" | "economy"] || NEBIUS_TIER_MODELS.economy;
+      const started = Date.now();
+      const res = await nebiusChat(
+        messages as NebiusMessage[],
+        { model: nebiusModel, maxTokens, temperature }
+      );
+      return {
+        content: res.content,
+        provider: "nebius",
+        model: res.model,
+        tokensIn: res.tokensIn,
+        tokensOut: res.tokensOut,
+        latencyMs: Date.now() - started,
+        fallback: false,
+      };
+    } catch (err) {
+      console.warn(`[llm] Nebius fallo (${tier}), fallback a Claude:`, (err as Error).message);
+    }
+  }
+
+  // Fallback a Claude
+  return callClaude(messages, CLAUDE_TIER_MODELS[tier], maxTokens, temperature, true);
+}
+
+/**
+ * Llamada directa a Claude Anthropic API.
+ */
+async function callClaude(
+  messages: LLMMessage[],
+  model: string,
+  maxTokens: number,
+  temperature: number,
+  isFallback = false
+): Promise<LLMResult> {
+  if (!CLAUDE_API_KEY) {
+    throw new Error("[llm] CLAUDE_API_KEY no configurada");
+  }
+
+  const started = Date.now();
+
+  // Separar system del resto (Claude API usa campo system aparte)
+  const systemMsg = messages.find((m) => m.role === "system");
+  const chatMessages = messages.filter((m) => m.role !== "system");
+
+  const body: Record<string, unknown> = {
+    model,
+    max_tokens: maxTokens,
+    messages: chatMessages.map((m) => ({ role: m.role, content: m.content })),
+  };
+  if (systemMsg) {
+    body.system = systemMsg.content;
+  }
+  if (temperature !== 0.7) {
+    body.temperature = temperature;
+  }
+
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": CLAUDE_API_KEY,
+      "anthropic-version": "2023-06-01",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`[llm] Claude HTTP ${res.status}: ${text.slice(0, 200)}`);
+  }
+
+  const data = await res.json();
+  const content = data.content?.[0]?.text?.trim() || "";
+  const usage = data.usage || {};
+
+  return {
+    content,
+    provider: "claude",
+    model: data.model || model,
+    tokensIn: usage.input_tokens ?? 0,
+    tokensOut: usage.output_tokens ?? 0,
+    latencyMs: Date.now() - started,
+    fallback: isFallback,
+  };
+}
+
+/**
+ * Helper: extraer JSON de respuesta LLM (los modelos a veces meten texto extra).
+ */
+export function extractJSON<T = Record<string, unknown>>(text: string): T | null {
+  // Intentar array
+  const arrStart = text.indexOf("[");
+  const arrEnd = text.lastIndexOf("]") + 1;
+  if (arrStart >= 0 && arrEnd > arrStart) {
+    try { return JSON.parse(text.slice(arrStart, arrEnd)) as T; } catch { /* continue */ }
+  }
+  // Intentar objeto
+  const objStart = text.indexOf("{");
+  const objEnd = text.lastIndexOf("}") + 1;
+  if (objStart >= 0 && objEnd > objStart) {
+    try { return JSON.parse(text.slice(objStart, objEnd)) as T; } catch { /* continue */ }
+  }
+  return null;
+}

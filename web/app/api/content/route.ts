@@ -3,10 +3,9 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { generateContentImage } from "@/lib/image-generation";
+import { llmChat, extractJSON } from "@/lib/llm";
 
 const supabase = createServerSupabase();
-
-const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
 export async function POST(request: NextRequest) {
   const authError = verifyInternalAuth(request);
@@ -17,10 +16,6 @@ export async function POST(request: NextRequest) {
 
   // --- Generate weekly content calendar ---
   if (action === "generate_calendar") {
-    if (!CLAUDE_API_KEY) {
-      return NextResponse.json({ error: "CLAUDE_API_KEY not configured" }, { status: 500 });
-    }
-
     const { client_id, platform, week_start, brand_context } = body;
 
     const prompt = `Eres Pulse, Head of Social Media de PACAME.
@@ -51,28 +46,12 @@ Responde SOLO JSON valido:
 [{"day": "lunes", "type": "reel", "title": "...", "hook": "...", "copy": "...", "cta": "...", "hashtags": ["..."], "best_time": "10:00"}]`;
 
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": CLAUDE_API_KEY,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: "claude-haiku-4-5-20251001",
-          max_tokens: 3000,
-          messages: [{ role: "user", content: prompt }],
-        }),
-      });
+      const res = await llmChat(
+        [{ role: "user", content: prompt }],
+        { tier: "standard", maxTokens: 3000 }
+      );
 
-      const data = await res.json();
-      const text = data.content?.[0]?.text || "";
-      const jsonStart = text.indexOf("[");
-      const jsonEnd = text.lastIndexOf("]") + 1;
-      let calendar: Array<Record<string, string | string[]>> = [];
-      if (jsonStart >= 0) {
-        try { calendar = JSON.parse(text.slice(jsonStart, jsonEnd)); } catch { /* AI devolvio JSON invalido */ }
-      }
+      let calendar: Array<Record<string, string | string[]>> = extractJSON(res.content) || [];
 
       // Save to content table
       if (calendar.length > 0 && client_id) {
@@ -97,14 +76,15 @@ Responde SOLO JSON valido:
         agentId: "pulse",
         type: "delivery",
         title: `Calendario semanal generado`,
-        description: `${calendar.length} posts para ${platform || "instagram"}. Pendientes de revision.`,
-        metadata: { platform, posts_count: calendar.length, tokens: data.usage?.output_tokens },
+        description: `${calendar.length} posts para ${platform || "instagram"}. Via ${res.provider}/${res.model}.`,
+        metadata: { platform, posts_count: calendar.length, tokens: res.tokensOut, provider: res.provider, fallback: res.fallback },
       });
 
       return NextResponse.json({
         calendar,
-        tokens: data.usage?.output_tokens || 0,
+        tokens: res.tokensOut,
         posts_saved: calendar.length,
+        provider: res.provider,
       });
     } catch (error) {
       return NextResponse.json({ error: String(error) }, { status: 500 });
@@ -113,10 +93,6 @@ Responde SOLO JSON valido:
 
   // --- Generate individual post ---
   if (action === "generate_post") {
-    if (!CLAUDE_API_KEY) {
-      return NextResponse.json({ error: "CLAUDE_API_KEY not configured" }, { status: 500 });
-    }
-
     const { platform, content_type, topic, brand_context } = body;
 
     const prompt = `Eres Copy, el copywriter de PACAME.
@@ -128,30 +104,13 @@ CONTEXTO DE MARCA: ${brand_context || "PACAME — agencia digital IA para PYMEs"
 Responde SOLO JSON: {"title": "...", "copy": "...", "hook": "...", "cta": "...", "hashtags": ["..."], "image_prompt": "descripcion de imagen ideal para este post"}`;
 
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": CLAUDE_API_KEY,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: "claude-haiku-4-5-20251001",
-          max_tokens: 800,
-          messages: [{ role: "user", content: prompt }],
-        }),
-      });
+      const res = await llmChat(
+        [{ role: "user", content: prompt }],
+        { tier: "standard", maxTokens: 800 }
+      );
 
-      const data = await res.json();
-      const text = data.content?.[0]?.text || "";
-      const jsonStart = text.indexOf("{");
-      const jsonEnd = text.lastIndexOf("}") + 1;
-      let post: Record<string, unknown> | null = null;
-      if (jsonStart >= 0) {
-        try { post = JSON.parse(text.slice(jsonStart, jsonEnd)); } catch { /* AI devolvio JSON invalido */ }
-      }
-
-      return NextResponse.json({ post, tokens: data.usage?.output_tokens || 0 });
+      const post = extractJSON(res.content);
+      return NextResponse.json({ post, tokens: res.tokensOut, provider: res.provider });
     } catch (error) {
       return NextResponse.json({ error: String(error) }, { status: 500 });
     }

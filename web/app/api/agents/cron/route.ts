@@ -9,39 +9,43 @@ import { publishContent, getConfiguredPlatforms } from "@/lib/social-publish";
 import { findEmailsFromWebsite } from "@/lib/email-enrichment";
 import { generateContentImage } from "@/lib/image-generation";
 import { fireSynapse, recordStimulus, rememberMemory, startThoughtChain, endThoughtChain, recordDiscovery } from "@/lib/neural";
+import { llmChat, extractJSON as llmExtractJSON, type LLMTier } from "@/lib/llm";
 
 const supabase = createServerSupabase();
 
-const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
+/**
+ * LLM call unificada para el cron. Usa Nebius (standard/economy) con fallback a Claude.
+ * Agentes de contenido (COPY, PULSE, ATLAS) → standard (DeepSeek V3.2)
+ * Agentes estrategicos (SAGE, DIOS) → premium (Claude Sonnet)
+ */
+const AGENT_TIER: Record<string, LLMTier> = {
+  sage: "premium",     // Cualificacion leads — necesita precision
+  dios: "premium",     // Orquestacion — necesita razonamiento
+  nova: "standard",    // Branding — creativo pero no critico
+  atlas: "standard",   // SEO/blog — volumen
+  nexus: "standard",   // Growth — analisis de datos
+  pixel: "economy",    // Health checks — simple
+  core: "economy",     // Health checks — simple
+  pulse: "standard",   // Social media — creativo
+  copy: "standard",    // Copywriting — volumen
+  lens: "standard",    // Analytics — datos
+};
 
-async function callClaude(prompt: string, maxTokens = 800): Promise<string> {
-  if (!CLAUDE_API_KEY) return "";
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": CLAUDE_API_KEY,
-      "anthropic-version": "2023-06-01",
-    },
-    body: JSON.stringify({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: maxTokens,
-      messages: [{ role: "user", content: prompt }],
-    }),
-  });
-  const data = await res.json();
-  return data.content?.[0]?.text || "";
+async function callClaude(prompt: string, maxTokens = 800, agentId = "dios"): Promise<string> {
+  const tier = AGENT_TIER[agentId] || "standard";
+  try {
+    const res = await llmChat(
+      [{ role: "user", content: prompt }],
+      { tier, maxTokens }
+    );
+    return res.content;
+  } catch {
+    return "";
+  }
 }
 
 function extractJSON(text: string): Record<string, unknown> | null {
-  const start = text.indexOf("{");
-  const end = text.lastIndexOf("}") + 1;
-  if (start < 0) return null;
-  try {
-    return JSON.parse(text.slice(start, end));
-  } catch {
-    return null;
-  }
+  return llmExtractJSON(text);
 }
 
 /**
@@ -104,7 +108,7 @@ Cualifica este lead:
 - Fuente: ${lead.source || "web"}
 
 Responde SOLO JSON:
-{"score":1-5,"temperature":"cold|warm|hot","recommended_services":["servicio1"],"estimated_value_onetime":0,"estimated_value_monthly":0,"priority_action":"accion concreta","notes":"analisis breve","followup_message":"mensaje corto personalizado para enviar por email/whatsapp"}`);
+{"score":1-5,"temperature":"cold|warm|hot","recommended_services":["servicio1"],"estimated_value_onetime":0,"estimated_value_monthly":0,"priority_action":"accion concreta","notes":"analisis breve","followup_message":"mensaje corto personalizado para enviar por email/whatsapp"}`, 800, "sage");
 
           const analysis = extractJSON(text);
           if (analysis) {
@@ -213,7 +217,7 @@ CATALOGO PACAME:
 - Embudo Completo: 1500€ puntual
 
 Responde SOLO JSON:
-{"services":[{"name":"nombre","type":"onetime|monthly","price":0}],"total_onetime":0,"total_monthly":0,"brief":"resumen de 2-3 frases de la propuesta para el cliente"}`, 1000);
+{"services":[{"name":"nombre","type":"onetime|monthly","price":0}],"total_onetime":0,"total_monthly":0,"brief":"resumen de 2-3 frases de la propuesta para el cliente"}`, 1000, "sage");
 
           const proposal = extractJSON(text);
           if (proposal && Array.isArray(proposal.services)) {
@@ -423,7 +427,7 @@ Genera 1 blog post SEO optimizado para PYMEs espanolas. Tema que atraiga trafico
 Enfocate en keywords long-tail con intencion de compra.
 
 Responde SOLO JSON:
-{"title":"titulo SEO optimizado","body":"contenido completo del post, minimo 800 palabras, con H2s, listas, datos, y CTAs a PACAME. Usa markdown.","hashtags":"keyword1, keyword2, keyword3","cta":"texto del CTA final"}`, 2000);
+{"title":"titulo SEO optimizado","body":"contenido completo del post, minimo 800 palabras, con H2s, listas, datos, y CTAs a PACAME. Usa markdown.","hashtags":"keyword1, keyword2, keyword3","cta":"texto del CTA final"}`, 2000, "atlas");
 
           const post = extractJSON(text);
           if (post && post.title && post.body) {
@@ -501,7 +505,7 @@ Responde SOLO JSON:
       let postsGenerated = 0;
       const needed = Math.max(0, 5 - (weekContent || 0));
 
-      if (needed > 0 && CLAUDE_API_KEY) {
+      if (needed > 0) {
         try {
           const text = await callClaude(`Eres Pulse, Head of Social Media de PACAME (agencia digital IA para PYMEs en Espana).
 
@@ -512,7 +516,7 @@ Temas: casos de exito, tips para PYMEs, detras de escenas de los agentes IA, dat
 Tono: cercano, directo, sin humo. Tutea. Emojis con moderacion.
 
 Responde SOLO JSON array:
-[{"platform":"instagram|linkedin","content_type":"carousel|post|reel_script","title":"titulo corto","body":"contenido completo del post","hashtags":"#tag1 #tag2","cta":"texto CTA","image_prompt":"descripcion para generar imagen"}]`, 1500);
+[{"platform":"instagram|linkedin","content_type":"carousel|post|reel_script","title":"titulo corto","body":"contenido completo del post","hashtags":"#tag1 #tag2","cta":"texto CTA","image_prompt":"descripcion para generar imagen"}]`, 1500, "pulse");
 
           // Extract array
           const arrStart = text.indexOf("[");
@@ -701,7 +705,7 @@ Responde SOLO JSON array:
         }
 
         // Generar email personalizado con IA
-        if (CLAUDE_API_KEY) {
+        {
           try {
             const text = await callClaude(`Eres Copy, copywriter de PACAME. Escribe un email de nurturing (paso ${step}/4) para:
 - Nombre: ${lead.name}
@@ -710,7 +714,7 @@ Responde SOLO JSON array:
 
 Paso ${step}: ${step === 1 ? "Explicar diferencial PACAME (IA + humano, 60-80% mas barato)" : step === 2 ? "Compartir caso de exito relevante" : "Ultima oportunidad, pregunta directa"}
 
-Responde SOLO JSON: {"subject":"asunto","body":"cuerpo del email (max 200 palabras, tutea, cercano)"}`, 600);
+Responde SOLO JSON: {"subject":"asunto","body":"cuerpo del email (max 200 palabras, tutea, cercano)"}`, 600, "copy");
 
             const email = extractJSON(text);
             if (email) {
@@ -1016,7 +1020,7 @@ Decide si publicarla. Criterios:
 - Rating < 3: guardar como feedback interno, no publicar
 - Spam/contenido inapropiado: rechazar
 
-Responde SOLO JSON: {"action":"publish|reject","reason":"razon breve"}`, 200);
+Responde SOLO JSON: {"action":"publish|reject","reason":"razon breve"}`, 200, "nova");
 
             const decision = extractJSON(text);
             if (decision) {
@@ -1108,7 +1112,7 @@ Tareas:
 4. Mejora hashtags para alcance
 
 Responde SOLO JSON:
-{"title":"titulo mejorado","body":"cuerpo mejorado completo","cta":"CTA mejorado","hashtags":"hashtags mejorados","changes_summary":"resumen de 1 frase de que cambiaste"}`, 1500);
+{"title":"titulo mejorado","body":"cuerpo mejorado completo","cta":"CTA mejorado","hashtags":"hashtags mejorados","changes_summary":"resumen de 1 frase de que cambiaste"}`, 1500, "copy");
 
           const improved_content = extractJSON(text);
           if (improved_content && improved_content.body) {
@@ -1156,7 +1160,7 @@ Genera 2 variantes de copy (A/B test). Formato para ${campaign.platform || "meta
 Tono PACAME: directo, cercano, sin humo.
 
 Responde SOLO JSON:
-[{"variant":"A","headline":"titular corto","primary_text":"texto principal del anuncio","cta":"texto del boton"},{"variant":"B","headline":"titular alternativo","primary_text":"texto alternativo","cta":"texto del boton"}]`, 800);
+[{"variant":"A","headline":"titular corto","primary_text":"texto principal del anuncio","cta":"texto del boton"},{"variant":"B","headline":"titular alternativo","primary_text":"texto alternativo","cta":"texto del boton"}]`, 800, "copy");
 
           const arrStart = text.indexOf("[");
           const arrEnd = text.lastIndexOf("]") + 1;
@@ -1306,7 +1310,7 @@ Responde SOLO JSON:
 
       // 3. GENERAR INFORME con IA si hay datos suficientes
       let aiInsight = "";
-      if (CLAUDE_API_KEY && (totalLeads || 0) > 0) {
+      if ((totalLeads || 0) > 0) {
         try {
           aiInsight = await callClaude(`Eres Lens, analytics de PACAME. Genera un insight accionable en 2 frases.
 
@@ -1320,7 +1324,7 @@ KPIs del mes:
 - Propuestas: ${proposalsMonth} (${proposalsAccepted} aceptadas)
 ${anomalies.length > 0 ? `- ANOMALIAS: ${anomalies.join("; ")}` : ""}
 
-Responde en texto plano, 2 frases max. Primera frase: que esta pasando. Segunda: que hacer.`, 200);
+Responde en texto plano, 2 frases max. Primera frase: que esta pasando. Segunda: que hacer.`, 200, "lens");
         } catch {
           // Skip AI insight
         }
@@ -1685,7 +1689,7 @@ Responde SOLO JSON: {"type":"trend|technique|optimization","title":"titulo corto
       for (const ra of selectedAgents) {
         try {
           updateAgentStatus(ra.id, "reviewing", "Investigando oportunidades");
-          const text = await callClaude(ra.prompt, 400);
+          const text = await callClaude(ra.prompt, 400, ra.id);
           const discovery = extractJSON(text);
 
           if (discovery && discovery.title && discovery.description) {

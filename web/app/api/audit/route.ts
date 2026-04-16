@@ -2,10 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod/v4";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
+import { llmChat, extractJSON } from "@/lib/llm";
 
 const supabase = createServerSupabase();
-
-const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
 const auditSchema = z.object({
   url: z.url("URL no valida"),
@@ -34,22 +33,12 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Try to generate audit with Claude
-    if (CLAUDE_API_KEY) {
-      try {
-        const res = await fetch("https://api.anthropic.com/v1/messages", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": CLAUDE_API_KEY,
-            "anthropic-version": "2023-06-01",
-          },
-          body: JSON.stringify({
-            model: "claude-haiku-4-5-20251001",
-            max_tokens: 1200,
-            messages: [{
-              role: "user",
-              content: `Eres un auditor web experto. Genera una auditoria web simulada pero realista para: ${url}
+    // Generate audit with LLM (Nebius → Claude fallback)
+    try {
+      const res = await llmChat(
+        [{
+          role: "user",
+          content: `Eres un auditor web experto. Genera una auditoria web simulada pero realista para: ${url}
 
 Responde SOLO JSON valido con esta estructura exacta:
 {
@@ -66,31 +55,24 @@ Responde SOLO JSON valido con esta estructura exacta:
 }
 
 Haz el analisis realista para el tipo de negocio que parece ser. Score general entre 30-65 para que vean que hay margen de mejora. Todos los textos en espanol.`,
-            }],
-          }),
+        }],
+        { tier: "standard", maxTokens: 1200 }
+      );
+
+      const audit = extractJSON(res.content);
+      if (audit && typeof audit === "object" && "score" in audit) {
+        logAgentActivity({
+          agentId: "atlas",
+          type: "task_completed",
+          title: `Auditoria web: ${url}`,
+          description: `Score: ${(audit as Record<string, unknown>).score}/100. Via ${res.provider}. ${email ? `Lead: ${email}` : "Sin email."}`,
+          metadata: { url, email, score: (audit as Record<string, unknown>).score, provider: res.provider },
         });
 
-        const data = await res.json();
-        const text = data.content?.[0]?.text || "";
-        const jsonStart = text.indexOf("{");
-        const jsonEnd = text.lastIndexOf("}") + 1;
-
-        if (jsonStart >= 0) {
-          const audit = JSON.parse(text.slice(jsonStart, jsonEnd));
-
-          logAgentActivity({
-            agentId: "atlas",
-            type: "task_completed",
-            title: `Auditoria web: ${url}`,
-            description: `Score: ${audit.score}/100. ${email ? `Lead capturado: ${email}` : "Sin email."}`,
-            metadata: { url, email, score: audit.score },
-          });
-
-          return NextResponse.json({ audit });
-        }
-      } catch {
-        // Fall through to fallback
+        return NextResponse.json({ audit });
       }
+    } catch {
+      // Fall through to fallback
     }
 
     // Fallback: generate deterministic audit based on URL

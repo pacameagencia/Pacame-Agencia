@@ -175,8 +175,8 @@ export async function POST(request: NextRequest) {
           });
         }
 
-        // Notify Pablo (email + Telegram)
-        notifyPablo(
+        // Notify Pablo (email + Telegram) — MUST await in serverless
+        await notifyPablo(
           `Nuevo pago: ${amount}€ de ${customerName}`,
           wrapEmailTemplate(
             `<strong>${customerName}</strong> ha pagado <strong>${amount}€</strong> por ${metadata.product || "servicio"}.\n\n` +
@@ -185,9 +185,9 @@ export async function POST(request: NextRequest) {
             { cta: "Ver en dashboard", ctaUrl: "https://pacameagencia.com/dashboard/clients" }
           )
         );
-        notifyPayment(customerName, amount, metadata.product || "servicio");
+        await notifyPayment(customerName, amount, metadata.product || "servicio");
 
-        logAgentActivity({
+        await logAgentActivity({
           agentId: "sage",
           type: "delivery",
           title: `Pago recibido: ${amount}€`,
