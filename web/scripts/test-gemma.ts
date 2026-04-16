@@ -43,6 +43,23 @@ async function main() {
   );
   console.log("categoria:", tag);
 
+  // 4. Router unificado: tier economy → Gemma
+  console.log("\n[4/5] llmChat tier=economy (deberia usar Gemma)");
+  const { llmChat } = await import("../lib/llm");
+  const eco = await llmChat(
+    [{ role: "user", content: "Clasifica en fiscal/legal/ventas: 'Necesito declarar IVA'" }],
+    { tier: "economy", maxTokens: 20 }
+  );
+  console.log(`provider=${eco.provider} model=${eco.model} content="${eco.content}"`);
+
+  // 5. Router con skipGemma → debe caer a Nebius
+  console.log("\n[5/5] llmChat tier=economy skipGemma=true (deberia usar Nebius)");
+  const skip = await llmChat(
+    [{ role: "user", content: "Clasifica en fiscal/legal/ventas: 'Necesito declarar IVA'" }],
+    { tier: "economy", maxTokens: 20, skipGemma: true }
+  );
+  console.log(`provider=${skip.provider} model=${skip.model} content="${skip.content}"`);
+
   console.log("\n=== OK ===");
 }
 
