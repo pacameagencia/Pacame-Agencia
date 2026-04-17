@@ -81,17 +81,27 @@ export async function POST(_request: NextRequest) {
   const domainStatus = await fetchResendDomains();
 
   // 2. Try to send — this is the real signal
-  const subject = `PACAME email health check — ${new Date().toISOString()}`;
+  // Plain ASCII subject (no em-dash) to avoid encoding issues in some clients.
+  const timestamp = new Date().toISOString();
+  const subject = `Hola Pablo - prueba de entrega PACAME (${timestamp.slice(0, 16)})`;
   const html = wrapEmailTemplate(
-    `Test automático del pipeline de email de PACAME.\n\n` +
-      `Si estás leyendo esto, el envío a Gmail funciona y el dominio está OK en Resend.\n\n` +
-      `Timestamp: ${new Date().toISOString()}\n` +
-      `Origen: /api/email/health-check\n` +
-      `Destino: ${TARGET_EMAIL}`,
+    `Hola Pablo,\n\n` +
+      `Este es un mensaje de prueba para confirmar que el envio de emails desde PACAME funciona correctamente.\n\n` +
+      `Si lo estas leyendo, significa que:\n` +
+      `- El dominio pacameagencia.com esta verificado en Resend\n` +
+      `- SPF, DKIM y DMARC estan configurados\n` +
+      `- Los emails llegan a tu bandeja (o al menos a Gmail)\n\n` +
+      `Si lo encuentras en Spam o Promociones, por favor marcalo como "No es spam" y muevelo a Recibidos. Eso entrena a Gmail para futuros envios.\n\n` +
+      `Detalles tecnicos:\n` +
+      `- Timestamp: ${timestamp}\n` +
+      `- Destino: ${TARGET_EMAIL}\n` +
+      `- Remitente: hola@pacameagencia.com\n\n` +
+      `Un saludo,\n` +
+      `El equipo PACAME`,
     {
-      cta: "Abrir dashboard",
+      cta: "Abrir dashboard PACAME",
       ctaUrl: "https://pacameagencia.com/dashboard",
-      preheader: "Test de Resend — pipeline operativo",
+      preheader: "Prueba de entrega del sistema de email de PACAME",
     }
   );
 
