@@ -1,0 +1,131 @@
+{
+  "name": "PACAME — RSS to Social (reproposito automatico)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "hours", "hoursInterval": 4 }] }
+      },
+      "id": "cron-4h",
+      "name": "Cada 4h",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=={{ $env.SUPABASE_URL }}/rest/v1/clients?status=eq.active&rss_feed_url=not.is.null&select=id,business_name,rss_feed_url,brand_guidelines,last_rss_check",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_KEY }}" }
+          ]
+        }
+      },
+      "id": "get-clients",
+      "name": "Clientes con RSS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": { "batchSize": 1, "options": {} },
+      "id": "split",
+      "name": "Por cliente",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.rss_feed_url }}",
+        "options": {}
+      },
+      "id": "read-rss",
+      "name": "Leer RSS",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [660, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const client = $('Por cliente').item.json;\nconst items = $input.all();\nconst lastCheck = client.last_rss_check ? new Date(client.last_rss_check).getTime() : 0;\n\nconst newItems = items\n  .map(i => i.json)\n  .filter(item => new Date(item.pubDate || item.isoDate || 0).getTime() > lastCheck)\n  .slice(0, 2);\n\nreturn newItems.map(item => ({\n  json: {\n    client_id: client.id,\n    client_name: client.business_name,\n    brand_guidelines: client.brand_guidelines,\n    title: item.title,\n    link: item.link,\n    content: (item.contentSnippet || item.content || '').slice(0, 1500),\n    pub_date: item.pubDate || item.isoDate,\n  }\n}));"
+      },
+      "id": "filter-new",
+      "name": "Filtrar posts nuevos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{ $env.CLAUDE_API_KEY }}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-haiku-4-5-20251001\",\n  \"max_tokens\": 1200,\n  \"system\": \"Eres Pulse + Copy de PACAME. Reproposita un articulo de blog en 3 piezas de contenido para RRSS. Responde SOLO JSON valido.\",\n  \"messages\": [{\"role\": \"user\", \"content\": \"Cliente: {{ $json.client_name }}\\nGuidelines: {{ JSON.stringify($json.brand_guidelines) }}\\n\\nArticulo:\\nTitulo: {{ $json.title }}\\nContenido: {{ $json.content }}\\nURL: {{ $json.link }}\\n\\nGenera JSON:\\n{\\n  \\\"twitter\\\": {\\\"text\\\": \\\"(max 280 car, hook + 1 idea + link)\\\"},\\n  \\\"linkedin\\\": {\\\"text\\\": \\\"(post 800-1200 car, hook fuerte, 3-4 bullets, CTA suave)\\\"},\\n  \\\"instagram\\\": {\\\"caption\\\": \\\"(carrusel, hook + desarrollo en parrafos cortos, CTA + hashtags)\\\", \\\"slides\\\": [\\\"slide1\\\", \\\"slide2\\\", \\\"slide3\\\", \\\"slide4\\\"]}\\n}\"}]\n}"
+      },
+      "id": "repurpose",
+      "name": "Claude reproposita",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const article = $('Filtrar posts nuevos').item.json;\nconst claudeResp = $input.first().json;\nconst text = claudeResp.content?.[0]?.text || '{}';\nlet posts = {};\ntry {\n  const match = text.match(/\\{[\\s\\S]*\\}/);\n  posts = match ? JSON.parse(match[0]) : {};\n} catch(e) { posts = {}; }\n\nconst rows = [];\nif (posts.twitter?.text) rows.push({ client_id: article.client_id, platform: 'twitter', content_type: 'post', body: posts.twitter.text, source_url: article.link, status: 'pending_review' });\nif (posts.linkedin?.text) rows.push({ client_id: article.client_id, platform: 'linkedin', content_type: 'post', body: posts.linkedin.text, source_url: article.link, status: 'pending_review' });\nif (posts.instagram?.caption) rows.push({ client_id: article.client_id, platform: 'instagram', content_type: 'carousel', body: posts.instagram.caption, metadata: { slides: posts.instagram.slides || [] }, source_url: article.link, status: 'pending_review' });\n\nreturn rows.map(r => ({ json: r }));"
+      },
+      "id": "to-rows",
+      "name": "Explode en rows",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1320, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=={{ $env.SUPABASE_URL }}/rest/v1/content",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=minimal" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}"
+      },
+      "id": "save",
+      "name": "Guardar en content",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1540, 0]
+    }
+  ],
+  "connections": {
+    "Cada 4h": { "main": [[{ "node": "Clientes con RSS", "type": "main", "index": 0 }]] },
+    "Clientes con RSS": { "main": [[{ "node": "Por cliente", "type": "main", "index": 0 }]] },
+    "Por cliente": { "main": [[{ "node": "Leer RSS", "type": "main", "index": 0 }]] },
+    "Leer RSS": { "main": [[{ "node": "Filtrar posts nuevos", "type": "main", "index": 0 }]] },
+    "Filtrar posts nuevos": { "main": [[{ "node": "Claude reproposita", "type": "main", "index": 0 }]] },
+    "Claude reproposita": { "main": [[{ "node": "Explode en rows", "type": "main", "index": 0 }]] },
+    "Explode en rows": { "main": [[{ "node": "Guardar en content", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1", "timezone": "Europe/Madrid" },
+  "meta": {
+    "description": "Cada 4h lee el RSS de cada cliente activo y reproposita los articulos nuevos en 3 piezas (Twitter, LinkedIn, Instagram carrusel). Guarda en tabla content con status='pending_review' para moderacion.\n\nENV: SUPABASE_URL, SUPABASE_SERVICE_KEY, CLAUDE_API_KEY.\nCampos requeridos en clients: rss_feed_url, last_rss_check."
+  }
+}
