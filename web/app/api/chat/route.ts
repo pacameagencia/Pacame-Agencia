@@ -416,31 +416,19 @@ export async function POST(request: NextRequest) {
   ];
 
   try {
-    const response = await fetch(CLAUDE_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": CLAUDE_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: MODEL_ROUTING[agent.toUpperCase()] || DEFAULT_MODEL,
-        max_tokens: 2048,
-        system: SYSTEM_CONTEXT + agentConfig.prompt,
-        messages,
-      }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.text();
-      return NextResponse.json(
-        { error: `Claude API error: ${response.status}`, details: errorData },
-        { status: response.status || 500 }
-      );
-    }
-
-    const data = await response.json();
-    const assistantMessage = data.content?.[0]?.text || "Sin respuesta";
+    const tier: LLMTier = AGENT_CHAT_TIER[agent.toUpperCase()] || "standard";
+    const llmResult = await llmChat(
+      [
+        { role: "system", content: SYSTEM_CONTEXT + agentConfig.prompt },
+        ...messages,
+      ],
+      { tier, maxTokens: 2048 }
+    );
+    const assistantMessage = llmResult.content || "Sin respuesta";
+    const data = {
+      model: llmResult.model,
+      usage: { input_tokens: llmResult.tokensIn, output_tokens: llmResult.tokensOut },
+    };
 
     // Save assistant message to conversation metadata
     if (convId) {

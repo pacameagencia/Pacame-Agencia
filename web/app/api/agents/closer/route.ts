@@ -6,7 +6,7 @@ import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { alertPablo } from "@/lib/telegram";
 import { llmChat, extractJSON } from "@/lib/llm";
 import {
-  fireSynapse, recordStimulus, rememberMemory, reinforceSpecialization,
+  fireSynapse, recordStimulus, rememberMemory,
   startThoughtChain, endThoughtChain, addChainStep, recallMemories,
 } from "@/lib/neural";
 
@@ -385,10 +385,8 @@ Responde SOLO JSON: {"subject":"asunto","body":"cuerpo"}`,
       intensity: proposalsSent > 0 || urgencyAlerts > 0 ? 0.8 : 0.4,
     });
     fireSynapse("dios", "sage", "orchestrates", true);
-    if (proposalsSent > 0) reinforceSpecialization("sage", "closing", true);
     if (followupsSent > 0) {
       fireSynapse("sage", "copy", "delegates_to", true);
-      reinforceSpecialization("copy", "followup_copy", true);
     }
 
     rememberMemory({
