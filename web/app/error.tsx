@@ -1,15 +1,26 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, RefreshCw, Home } from "lucide-react";
+import { RefreshCw, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { captureException } from "@/lib/observability/sentry";
 
 export default function Error({
+  error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  // Report a Sentry con el digest para cross-reference con server logs
+  useEffect(() => {
+    void captureException(error, {
+      tags: { boundary: "app-error" },
+      extra: { digest: error.digest },
+    });
+  }, [error]);
+
   return (
     <div className="bg-pacame-black min-h-screen flex items-center justify-center relative overflow-hidden">
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-red-500/[0.04] rounded-full blur-[200px] pointer-events-none" />

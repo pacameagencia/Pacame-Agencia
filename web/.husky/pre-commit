@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+# PACAME pre-commit hook — enforce quality gate en local.
+# Instala con: cd web && npm install (ejecuta "prepare" → husky)
+
+cd web
+npx lint-staged
