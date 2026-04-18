@@ -14,6 +14,39 @@ import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
 import GoldenDivider from "@/components/effects/GoldenDivider";
 import MagneticButton from "@/components/effects/MagneticButton";
 import { ShinyButton } from "@/components/ui/shiny-button";
+import MarketplaceGrid from "@/components/marketplace/MarketplaceGrid";
+import { createServerSupabase } from "@/lib/supabase/server";
+
+// Revalidate every 60s — catalog edits reflect within 1 min
+export const revalidate = 60;
+
+async function fetchMarketplaceData() {
+  try {
+    const supabase = createServerSupabase();
+    const [{ data: products }, { data: categories }] = await Promise.all([
+      supabase
+        .from("service_catalog")
+        .select(
+          "id, slug, name, tagline, price_cents, currency, agent_id, delivery_sla_hours, revisions_included, features, category, tags, is_featured, cover_image_url"
+        )
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true }),
+      supabase
+        .from("service_categories")
+        .select("slug, name, description, icon, sort_order")
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true }),
+    ]);
+
+    return {
+      products: products || [],
+      categories: categories || [],
+    };
+  } catch (err) {
+    console.error("[servicios] marketplace fetch failed:", err);
+    return { products: [], categories: [] };
+  }
+}
 
 export const metadata: Metadata = {
   title: "Servicios — Diseño Web, SEO, Ads, Social Media y Branding | PACAME",
@@ -84,7 +117,8 @@ function ServicesJsonLd() {
   );
 }
 
-export default function ServiciosPage() {
+export default async function ServiciosPage() {
+  const marketplace = await fetchMarketplaceData();
   return (
     <div className="bg-pacame-black min-h-screen">
       <BreadcrumbJsonLd
@@ -112,6 +146,12 @@ export default function ServiciosPage() {
 
           {/* Jump nav */}
           <div className="flex flex-wrap justify-center gap-2">
+            <a
+              href="#marketplace"
+              className="px-4 py-2 rounded-full text-sm font-body border border-olympus-gold/30 text-olympus-gold bg-olympus-gold/10 transition-all duration-300 hover:translate-y-[-1px]"
+            >
+              Marketplace Express
+            </a>
             {services.map((s) => {
               const catColor = serviceCategories.find((c) => c.id === s.id)?.color || "#7C3AED";
               return (
@@ -132,6 +172,17 @@ export default function ServiciosPage() {
           </div>
         </ScrollReveal>
       </section>
+
+      {/* Marketplace Express (DB-backed) */}
+      {marketplace.products.length > 0 && (
+        <div id="marketplace">
+          <MarketplaceGrid
+            products={marketplace.products as Parameters<typeof MarketplaceGrid>[0]["products"]}
+            categories={marketplace.categories as Parameters<typeof MarketplaceGrid>[0]["categories"]}
+          />
+          <GoldenDivider />
+        </div>
+      )}
 
       {/* Services */}
       {services.map((service, sIdx) => {

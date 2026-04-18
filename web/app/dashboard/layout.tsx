@@ -7,7 +7,7 @@ import {
   DollarSign, Settings, ChevronLeft, Menu, X,
   MessageSquare, Bell, ClipboardCheck, CreditCard,
   Megaphone, FileCheck, Phone, Rocket, Building2, Award, LogOut,
-  TrendingUp, MessageCircle, Lightbulb, Network,
+  TrendingUp, MessageCircle, Lightbulb, Network, ShoppingBag, Package,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -20,6 +20,8 @@ const navItems = [
   { label: "Clientes", href: "/dashboard/clients", icon: Users },
   { label: "Leads", href: "/dashboard/leads", icon: UserPlus },
   { label: "Lead Gen", href: "/dashboard/leadgen", icon: Rocket },
+  { label: "Marketplace", href: "/dashboard/catalog", icon: Package },
+  { label: "Pedidos", href: "/dashboard/orders", icon: ShoppingBag },
   { label: "Contenido", href: "/dashboard/content", icon: FileText },
   { label: "Campanas", href: "/dashboard/campaigns", icon: Megaphone },
   { label: "Propuestas", href: "/dashboard/proposals", icon: FileCheck },
