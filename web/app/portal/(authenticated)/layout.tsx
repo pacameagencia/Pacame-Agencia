@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import PortalSidebar from "@/components/portal/PortalSidebar";
+import { ToastProvider } from "@/components/ui/toast";
 
 async function getAuthClient() {
   const cookieStore = await cookies();
@@ -60,21 +61,23 @@ export default async function PortalAuthenticatedLayout({
         } as React.CSSProperties
       }
     >
-      <PortalSidebar
-        clientName={clientName}
-        logoUrl={logoUrl}
-        primaryColor={primaryColor}
-        unreadCount={unreadCount ?? 0}
-      />
+      <ToastProvider>
+        <PortalSidebar
+          clientName={clientName}
+          logoUrl={logoUrl}
+          primaryColor={primaryColor}
+          unreadCount={unreadCount ?? 0}
+        />
 
-      {/* Main content area */}
-      <main className="lg:pl-64 min-h-screen">
-        {/* Mobile top bar spacing */}
-        <div className="h-14 lg:hidden" />
-        <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
-          {children}
-        </div>
-      </main>
+        {/* Main content area */}
+        <main className="lg:pl-64 min-h-screen">
+          {/* Mobile top bar spacing */}
+          <div className="h-14 lg:hidden" />
+          <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
+            {children}
+          </div>
+        </main>
+      </ToastProvider>
     </div>
   );
 }
