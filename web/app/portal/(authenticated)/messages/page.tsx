@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, MessageSquare, Send, Bot, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ui/scroll-reveal";
+import { useToast } from "@/components/ui/toast";
 
 interface Message {
   id: string;
@@ -15,6 +16,7 @@ interface Message {
 }
 
 export default function MessagesPage() {
+  const { toast } = useToast();
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
@@ -88,8 +90,11 @@ export default function MessagesPage() {
       setNewMessage("");
       await fetchMessages(false);
       inputRef.current?.focus();
+      toast({ variant: "success", title: "Mensaje enviado", description: "El equipo de PACAME lo verá en breve." });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al enviar");
+      const msg = err instanceof Error ? err.message : "Error al enviar";
+      setError(msg);
+      toast({ variant: "error", title: "No se pudo enviar", description: msg });
     } finally {
       setSending(false);
     }
