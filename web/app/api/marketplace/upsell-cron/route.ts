@@ -62,6 +62,115 @@ const UPSELL_MAP: Record<string, UpsellMapping> = {
     hook: "La auditoria SEO te muestra el quien. El plan Growth es el como: ejecutamos nosotros las acciones recomendadas cada mes.",
     targetLabel: "plan mensual Growth",
   },
+  // ── Productos nuevos (migracion 020) ──
+  "bio-instagram": {
+    targetSlugs: ["post-instagram"],
+    campaign: "bio_to_post",
+    hook: "Bio nueva + 0 posts nuevos = 0 engagement. Con un post publicado hoy empiezas a captar seguidores manana.",
+    targetLabel: "1 post Instagram",
+  },
+  "post-tiktok": {
+    targetSlugs: ["subscription-pro"],
+    campaign: "tiktok_to_subscription",
+    hook: "Un guion TikTok por semana es lo que marca la diferencia. Plan Pro te garantiza 4 posts al mes con consistencia.",
+    targetLabel: "plan mensual Pro",
+  },
+  "post-linkedin": {
+    targetSlugs: ["subscription-pro"],
+    campaign: "linkedin_to_subscription",
+    hook: "LinkedIn recompensa la constancia. Con el plan Pro publicas 4 posts/mes y empiezas a ser nombre en tu sector.",
+    targetLabel: "plan mensual Pro",
+  },
+  "caption-optimization": {
+    targetSlugs: ["post-instagram", "post-tiktok"],
+    campaign: "caption_to_content",
+    hook: "Optimizar caption esta bien. Crear contenido nuevo es lo que sube las metricas. Te recomiendo un post fresco.",
+    targetLabel: "post IG o TikTok",
+  },
+  "thank-you-page": {
+    targetSlugs: ["email-sequence-5"],
+    campaign: "ty_to_sequence",
+    hook: "La pagina gracias capta al usuario. La secuencia email de 5 pasos convierte su interes en venta durante el mes siguiente.",
+    targetLabel: "secuencia email 5 pasos",
+  },
+  "404-page": {
+    targetSlugs: ["landing-1page"],
+    campaign: "404_to_landing",
+    hook: "404 arreglada — ahora que la web no pierde usuarios, toca convertir a los que llegan. Landing 1 pagina optimizada.",
+    targetLabel: "landing 1 pagina",
+  },
+  "color-palette": {
+    targetSlugs: ["logo-express", "brand-guidelines-mini"],
+    campaign: "colors_to_brand",
+    hook: "Paleta lista. Cierra la identidad con logo + guidelines para que todo el equipo tire en la misma direccion.",
+    targetLabel: "logo + brand guidelines",
+  },
+  "brand-guidelines-mini": {
+    targetSlugs: ["landing-1page"],
+    campaign: "brand_to_web",
+    hook: "Tienes la marca. Ahora una web que refleje esa marca: landing 1 pagina con tu identidad aplicada.",
+    targetLabel: "landing 1 pagina",
+  },
+  "meta-tags-optimization": {
+    targetSlugs: ["schema-markup-setup", "subscription-growth"],
+    campaign: "meta_to_schema",
+    hook: "Meta tags + schema markup = combo perfecto para rich snippets y CTR. El plan Growth incluye ambos cada mes.",
+    targetLabel: "schema markup o plan Growth",
+  },
+  "schema-markup-setup": {
+    targetSlugs: ["seo-audit-pdf"],
+    campaign: "schema_to_audit",
+    hook: "Schema listo. Para subir el ranking falta auditoria SEO completa que te diga donde estan los bloqueos tecnicos.",
+    targetLabel: "auditoria SEO",
+  },
+  "meta-pixel-setup": {
+    targetSlugs: ["utm-strategy", "ga4-setup"],
+    campaign: "pixel_to_tracking",
+    hook: "Pixel Meta ya trackea. Te falta la estrategia UTM + GA4 para saber que canal trae cada euro. Paquete analytics completo.",
+    targetLabel: "UTM + GA4 tracking",
+  },
+  "utm-strategy": {
+    targetSlugs: ["ga4-setup"],
+    campaign: "utm_to_ga4",
+    hook: "UTMs listas. Ahora GA4 para leer esos datos — dashboard + conversiones + audiencias remarketing.",
+    targetLabel: "setup GA4",
+  },
+  "whatsapp-button": {
+    targetSlugs: ["contact-form-setup", "post-instagram"],
+    campaign: "wa_to_funnel",
+    hook: "Boton WhatsApp activo. Ahora formulario pro + contenido social para llenar ese WhatsApp.",
+    targetLabel: "formulario + post",
+  },
+  "contact-form-setup": {
+    targetSlugs: ["email-sequence-5"],
+    campaign: "form_to_nurturing",
+    hook: "Formulario captura leads. Secuencia email los convierte. 5 emails automaticos que venden mientras duermes.",
+    targetLabel: "secuencia email 5 pasos",
+  },
+  "google-business-setup": {
+    targetSlugs: ["subscription-pro"],
+    campaign: "gbp_to_subscription",
+    hook: "Ficha Google optimizada — pero necesitas resenas fresh cada mes para subir en maps. Plan Pro incluye gestion continua.",
+    targetLabel: "plan mensual Pro",
+  },
+  "ga4-setup": {
+    targetSlugs: ["subscription-growth"],
+    campaign: "ga4_to_growth",
+    hook: "GA4 instalado. El proximo paso es accionar esos datos mensualmente — informe + ads optimizadas = plan Growth.",
+    targetLabel: "plan mensual Growth",
+  },
+  "email-sequence-5": {
+    targetSlugs: ["newsletter-1-month", "subscription-pro"],
+    campaign: "sequence_to_newsletter",
+    hook: "Secuencia lista para autoplay. Complementa con newsletter mensual para mantener la lista caliente entre lanzamientos.",
+    targetLabel: "newsletter mensual o plan Pro",
+  },
+  "newsletter-1-month": {
+    targetSlugs: ["subscription-pro"],
+    campaign: "newsletter_to_subscription",
+    hook: "Una newsletter bien, pero 4 al mes es como se construye audiencia real. Plan Pro te garantiza consistencia.",
+    targetLabel: "plan mensual Pro",
+  },
 };
 
 interface OrderRow {
