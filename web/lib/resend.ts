@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { getLogger } from "@/lib/observability/logger";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -19,7 +20,7 @@ interface SendEmailParams {
  */
 export async function sendEmail({ to, subject, html, replyTo, tags }: SendEmailParams): Promise<string | null> {
   if (!process.env.RESEND_API_KEY) {
-    console.error("[Resend] RESEND_API_KEY not configured");
+    getLogger().error("[Resend] RESEND_API_KEY not configured");
     return null;
   }
 
@@ -34,13 +35,13 @@ export async function sendEmail({ to, subject, html, replyTo, tags }: SendEmailP
     });
 
     if (error) {
-      console.error("[Resend] Error:", error);
+      getLogger().error({ err: error }, "[Resend] Error");
       return null;
     }
 
     return data?.id || null;
   } catch (err) {
-    console.error("[Resend] Exception:", err);
+    getLogger().error({ err }, "[Resend] Exception");
     return null;
   }
 }

@@ -73,12 +73,14 @@ export const NEBIUS_MODELS = {
 
 export type NebiusModelAlias = keyof typeof NEBIUS_MODELS;
 
+import { getLogger } from "@/lib/observability/logger";
+
 const NEBIUS_URL =
   process.env.NEBIUS_API_URL || "https://api.tokenfactory.nebius.com/v1";
 const NEBIUS_KEY = process.env.NEBIUS_API_KEY || "";
 
 if (!NEBIUS_KEY && typeof process !== "undefined") {
-  console.warn(
+  getLogger().warn(
     "[nebius] NEBIUS_API_KEY no definido; las llamadas fallaran con 401"
   );
 }

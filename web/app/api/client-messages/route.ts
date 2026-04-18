@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { getLogger } from "@/lib/observability/logger";
 
 async function getAuthClient() {
   const cookieStore = await cookies();
@@ -40,7 +41,7 @@ export async function GET(request: NextRequest) {
     .range(offset, offset + limit - 1);
 
   if (error) {
-    console.error("Fetch messages error:", error);
+    getLogger().error({ err: error }, "Fetch messages error");
     return NextResponse.json({ error: "Error al cargar mensajes" }, { status: 500 });
   }
 
@@ -92,13 +93,13 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (insertError) {
-      console.error("Insert message error:", insertError);
+      getLogger().error({ err: insertError }, "Insert message error");
       return NextResponse.json({ error: "Error al enviar mensaje" }, { status: 500 });
     }
 
     return NextResponse.json({ message: newMessage });
   } catch (err) {
-    console.error("Send message error:", err);
+    getLogger().error({ err }, "Send message error");
     return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
   }
 }
@@ -130,13 +131,13 @@ export async function PATCH(request: NextRequest) {
       .neq("sender", "client");
 
     if (updateError) {
-      console.error("Mark read error:", updateError);
+      getLogger().error({ err: updateError }, "Mark read error (update)");
       return NextResponse.json({ error: "Error al marcar como leidos" }, { status: 500 });
     }
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error("Mark read error:", err);
+    getLogger().error({ err }, "Mark read error (exception)");
     return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
   }
 }

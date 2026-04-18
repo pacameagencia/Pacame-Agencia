@@ -35,12 +35,14 @@ export interface GemmaResponse {
   tokensPerSec: number;
 }
 
+import { getLogger } from "@/lib/observability/logger";
+
 const GEMMA_URL =
   process.env.GEMMA_API_URL || "https://gemma.pacameagencia.com";
 const GEMMA_TOKEN = process.env.GEMMA_API_TOKEN || "";
 
 if (!GEMMA_TOKEN && typeof process !== "undefined") {
-  console.warn(
+  getLogger().warn(
     "[gemma] GEMMA_API_TOKEN no definido; las llamadas fallaran con 401"
   );
 }

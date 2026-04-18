@@ -3,6 +3,11 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { sendWhatsApp, markAsRead, isWhatsAppConfigured, WHATSAPP_VERIFY_TOKEN } from "@/lib/whatsapp";
 import { llmChat } from "@/lib/llm";
 import { notifyPablo, wrapEmailTemplate } from "@/lib/resend";
+import {
+  webhookLimiter,
+  isTrustedWebhookSource,
+} from "@/lib/security/rate-limit";
+import { getLogger } from "@/lib/observability/logger";
 
 /**
  * PACAME Contact — WhatsApp Business API webhook
@@ -64,6 +69,19 @@ export async function POST(request: NextRequest) {
 
   if (!phoneNumberId) {
     return NextResponse.json({ ok: true });
+  }
+
+  // Rate limit 300/min por instance (phoneNumberId). Bypass si la firma
+  // x-hub-signature-256 de Meta esta presente (fuente confiable).
+  if (!isTrustedWebhookSource(request)) {
+    const rl = await webhookLimiter.limit(`wa:${phoneNumberId}`);
+    if (!rl.success) {
+      const retrySec = Math.max(1, Math.ceil((rl.reset - Date.now()) / 1000));
+      return NextResponse.json(
+        { error: "Too many requests", retry_after: retrySec },
+        { status: 429, headers: { "Retry-After": String(retrySec) } }
+      );
+    }
   }
 
   // Match app_instance by config.whatsapp_phone_id
@@ -208,7 +226,7 @@ export async function POST(request: NextRequest) {
       );
       aiReply = res.content;
     } catch (err) {
-      console.error("[pacame-contact] LLM error:", err);
+      getLogger().error({ err }, "[pacame-contact] LLM error");
     }
 
     if (!aiReply) {

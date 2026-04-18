@@ -5,6 +5,8 @@
  * Falls back gracefully if not configured.
  */
 
+import { getLogger } from "@/lib/observability/logger";
+
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN?.trim();
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID?.trim();
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY?.trim();
@@ -22,7 +24,7 @@ export async function downloadTelegramFile(fileId: string): Promise<{ buffer: Bu
     const fileData = await fileRes.json();
 
     if (!fileData.ok || !fileData.result?.file_path) {
-      console.error("[Telegram Media] getFile failed:", fileData);
+      getLogger().error({ fileData }, "[Telegram Media] getFile failed");
       return null;
     }
 
@@ -33,14 +35,14 @@ export async function downloadTelegramFile(fileId: string): Promise<{ buffer: Bu
     const downloadRes = await fetch(downloadUrl);
 
     if (!downloadRes.ok) {
-      console.error("[Telegram Media] Download failed:", downloadRes.status);
+      getLogger().error({ status: downloadRes.status }, "[Telegram Media] Download failed");
       return null;
     }
 
     const arrayBuffer = await downloadRes.arrayBuffer();
     return { buffer: Buffer.from(arrayBuffer), filePath };
   } catch (err) {
-    console.error("[Telegram Media] Error downloading file:", err);
+    getLogger().error({ err }, "[Telegram Media] Error downloading file");
     return null;
   }
 }
@@ -51,7 +53,7 @@ export async function downloadTelegramFile(fileId: string): Promise<{ buffer: Bu
  */
 export async function transcribeAudio(audioBuffer: Buffer, fileName: string = "audio.ogg"): Promise<string | null> {
   if (!OPENAI_API_KEY) {
-    console.error("[Telegram Media] OPENAI_API_KEY not configured for transcription");
+    getLogger().error("[Telegram Media] OPENAI_API_KEY not configured for transcription");
     return null;
   }
 
@@ -72,14 +74,14 @@ export async function transcribeAudio(audioBuffer: Buffer, fileName: string = "a
 
     if (!res.ok) {
       const errText = await res.text();
-      console.error("[Telegram Media] Whisper API error:", res.status, errText);
+      getLogger().error({ status: res.status, errText }, "[Telegram Media] Whisper API error");
       return null;
     }
 
     const data = await res.json();
     return data.text || null;
   } catch (err) {
-    console.error("[Telegram Media] Transcription error:", err);
+    getLogger().error({ err }, "[Telegram Media] Transcription error");
     return null;
   }
 }
@@ -93,7 +95,7 @@ export async function generateImage(
   options: { size?: "1024x1024" | "1792x1024" | "1024x1792"; quality?: "standard" | "hd" } = {}
 ): Promise<string | null> {
   if (!OPENAI_API_KEY) {
-    console.error("[Telegram Media] OPENAI_API_KEY not configured for image generation");
+    getLogger().error("[Telegram Media] OPENAI_API_KEY not configured for image generation");
     return null;
   }
 
@@ -115,14 +117,14 @@ export async function generateImage(
 
     if (!res.ok) {
       const errText = await res.text();
-      console.error("[Telegram Media] DALL-E API error:", res.status, errText);
+      getLogger().error({ status: res.status, errText }, "[Telegram Media] DALL-E API error");
       return null;
     }
 
     const data = await res.json();
     return data.data?.[0]?.url || null;
   } catch (err) {
-    console.error("[Telegram Media] Image generation error:", err);
+    getLogger().error({ err }, "[Telegram Media] Image generation error");
     return null;
   }
 }
@@ -167,7 +169,7 @@ export async function sendTelegramPhoto(
       return res.ok;
     }
   } catch (err) {
-    console.error("[Telegram Media] Error sending photo:", err);
+    getLogger().error({ err }, "[Telegram Media] Error sending photo");
     return false;
   }
 }
@@ -209,7 +211,7 @@ export async function sendTelegramVideo(
       return res.ok;
     }
   } catch (err) {
-    console.error("[Telegram Media] Error sending video:", err);
+    getLogger().error({ err }, "[Telegram Media] Error sending video");
     return false;
   }
 }
@@ -238,7 +240,7 @@ export async function sendTelegramDocument(
     });
     return res.ok;
   } catch (err) {
-    console.error("[Telegram Media] Error sending document:", err);
+    getLogger().error({ err }, "[Telegram Media] Error sending document");
     return false;
   }
 }

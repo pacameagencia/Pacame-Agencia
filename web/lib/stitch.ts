@@ -9,6 +9,7 @@
  */
 
 import { stitch } from "@google/stitch-sdk";
+import { getLogger } from "@/lib/observability/logger";
 
 const STITCH_API_KEY = process.env.STITCH_API_KEY?.trim();
 const STITCH_PROJECT_ID = process.env.STITCH_PROJECT_ID?.trim();
@@ -75,7 +76,7 @@ export async function generateDesign(
       projectId: project.id,
     };
   } catch (err) {
-    console.error("[Stitch] Error generating design:", err);
+    getLogger().error({ err }, "[Stitch] Error generating design");
     return {
       success: false,
       error: err instanceof Error ? err.message : "Error desconocido de Stitch",
@@ -111,7 +112,7 @@ export async function editDesign(
       projectId,
     };
   } catch (err) {
-    console.error("[Stitch] Error editing design:", err);
+    getLogger().error({ err }, "[Stitch] Error editing design");
     return {
       success: false,
       error: err instanceof Error ? err.message : "Error desconocido",
@@ -156,7 +157,7 @@ export async function generateVariants(
 
     return { success: true, variants: results };
   } catch (err) {
-    console.error("[Stitch] Error generating variants:", err);
+    getLogger().error({ err }, "[Stitch] Error generating variants");
     return {
       success: false,
       error: err instanceof Error ? err.message : "Error desconocido",

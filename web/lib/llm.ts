@@ -15,6 +15,7 @@
 
 import { nebiusChat, NEBIUS_MODELS, type NebiusMessage } from "./nebius";
 import { gemmaChat, type GemmaMessage } from "./gemma";
+import { getLogger } from "@/lib/observability/logger";
 
 export type LLMTier = "titan" | "premium" | "standard" | "economy";
 
@@ -88,7 +89,7 @@ export async function llmChat(
     try {
       return await callGemma(messages, maxTokens, temperature, false);
     } catch (err) {
-      console.warn("[llm] Gemma fallo (economy), fallback a Nebius:", (err as Error).message);
+      getLogger().warn({ err: err as Error }, "[llm] Gemma fallo (economy), fallback a Nebius");
     }
   }
 
@@ -110,7 +111,7 @@ export async function llmChat(
       fallback: tier === "economy", // marca fallback si veniamos de Gemma
     };
   } catch (err) {
-    console.warn(`[llm] Nebius fallo (${tier}), fallback a Claude:`, (err as Error).message);
+    getLogger().warn({ err: err as Error, tier }, "[llm] Nebius fallo, fallback a Claude");
   }
 
   // Ultimo fallback: Claude

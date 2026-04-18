@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { exchangeCodeForToken } from "@/lib/instagram";
 import { notifyHotLead } from "@/lib/telegram";
+import { getLogger } from "@/lib/observability/logger";
 
 /**
  * Instagram OAuth Callback
@@ -45,7 +46,7 @@ export async function GET(request: NextRequest) {
     );
   } catch (err) {
     const message = err instanceof Error ? err.message : "Token exchange failed";
-    console.error("[Instagram OAuth]", message);
+    getLogger().error({ message }, "[Instagram OAuth]");
 
     return NextResponse.redirect(
       new URL(`/dashboard?ig_error=${encodeURIComponent(message)}`, request.url)

@@ -1,3 +1,5 @@
+import { getLogger } from "@/lib/observability/logger";
+
 /**
  * PACAME — Auto-QA reviewer
  *
@@ -130,7 +132,7 @@ export async function reviewDeliverable(
     const totalTokens = (llm.tokensIn || 0) + (llm.tokensOut || 0);
     costUsd = +(totalTokens * 0.0000008).toFixed(6);
   } catch (err) {
-    console.error("[qa] llmChat fallo:", err);
+    getLogger().error({ err }, "[qa] llmChat fallo");
     // Si el LLM falla, no bloqueamos la entrega — aprobamos pero marcamos concern
     const fallback: QAResult = {
       score: threshold, // justo en el umbral para no bloquear
@@ -207,6 +209,6 @@ async function persistQACheck(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const _unused = deliverables.length; // keep arg for future per-deliverable granularity
   } catch (err) {
-    console.error("[qa] persist delivery_qa_checks fallo:", err);
+    getLogger().error({ err }, "[qa] persist delivery_qa_checks fallo");
   }
 }

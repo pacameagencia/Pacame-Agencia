@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { getAuthedClient } from "@/lib/client-auth";
 import { sendEmail } from "@/lib/resend";
 import { escalationLowRating } from "@/lib/email-templates/escalation";
+import { ordersLimiter, getClientIp } from "@/lib/security/rate-limit";
 
 const PABLO_EMAIL = "hola@pacameagencia.com";
 
 export const dynamic = "force-dynamic";
+
+const ReviewSchema = z.object({
+  rating: z.number().int().min(1).max(5),
+  review_text: z.string().max(2000).optional(),
+  email: z.string().email().optional(),
+});
 
 /**
  * POST /api/orders/[id]/review
@@ -18,18 +26,29 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const supabase = createServerSupabase();
-  const body = await request.json().catch(() => null);
 
-  const rating = Number(body?.rating);
-  const reviewText = (body?.review_text as string | undefined)?.trim() || null;
-
-  if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+  // Rate limit
+  const ip = getClientIp(request);
+  const rl = await ordersLimiter.limit(`${ip}:${id}`);
+  if (!rl.success) {
+    const retrySec = Math.max(1, Math.ceil((rl.reset - Date.now()) / 1000));
     return NextResponse.json(
-      { error: "Rating debe ser un entero entre 1 y 5" },
+      { error: "Too many requests", retry_after: retrySec },
+      { status: 429, headers: { "Retry-After": String(retrySec) } }
+    );
+  }
+
+  const supabase = createServerSupabase();
+  const raw = await request.json().catch(() => null);
+  const parsed = ReviewSchema.safeParse(raw);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Validation failed", issues: parsed.error.issues },
       { status: 400 }
     );
   }
+  const { rating, review_text: reviewTextRaw, email: bodyEmail } = parsed.data;
+  const reviewText = reviewTextRaw?.trim() || null;
 
   const { data: order, error: orderErr } = await supabase
     .from("orders")
@@ -43,7 +62,7 @@ export async function POST(
 
   const client = await getAuthedClient(request);
   const authedByClient = client && order.client_id === client.id;
-  const fallbackEmail = body?.email as string | undefined;
+  const fallbackEmail = bodyEmail;
   const authedByEmail =
     fallbackEmail &&
     order.customer_email &&

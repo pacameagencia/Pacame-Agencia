@@ -4,6 +4,7 @@ import { logAgentActivity } from "@/lib/agent-logger";
 import { sendInstagramDM, INSTAGRAM_VERIFY_TOKEN, isConfigured } from "@/lib/instagram";
 import { notifyHotLead } from "@/lib/telegram";
 import { llmChat } from "@/lib/llm";
+import { getLogger } from "@/lib/observability/logger";
 
 const supabase = createServerSupabase();
 
@@ -253,6 +254,6 @@ async function autoRespondDM(
       });
     }
   } catch (err) {
-    console.error("[Instagram] Auto-respond error:", err);
+    getLogger().error({ err }, "[Instagram] Auto-respond error");
   }
 }

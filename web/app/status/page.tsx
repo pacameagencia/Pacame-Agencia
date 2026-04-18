@@ -1,7 +1,8 @@
 import { createServerSupabase } from "@/lib/supabase/server";
+import { headers } from "next/headers";
 
 export const revalidate = 60;
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Status — PACAME",
@@ -99,15 +100,61 @@ async function loadStatus(): Promise<{
 
   const llmColor: LightColor = agentTasksLastHour > 0 ? "green" : "yellow";
 
+  // Probe real de /api/health — da color de verdad a DB/Stripe/Resend.
+  // Cache-bust: no-store para que cada SSR vea el estado actual.
+  type HealthPayload = {
+    checks: {
+      supabase: { status: string; latency_ms?: number };
+      stripe: { status: string };
+      upstash: { status: string };
+      resend: { status: string };
+    };
+  };
+  let healthData: HealthPayload | null = null;
+  try {
+    const hdrs = await headers();
+    const host = hdrs.get("host") || "localhost:3000";
+    const protocol = host.startsWith("localhost") ? "http" : "https";
+    const res = await fetch(`${protocol}://${host}/api/health`, {
+      cache: "no-store",
+    });
+    if (res.ok || res.status === 503) {
+      healthData = (await res.json()) as HealthPayload;
+    }
+  } catch {
+    healthData = null;
+  }
+
+  const dbColor: LightColor =
+    healthData?.checks.supabase.status === "ok"
+      ? "green"
+      : healthData?.checks.supabase.status === "fail"
+        ? "red"
+        : "yellow";
+  const stripeColor: LightColor =
+    healthData?.checks.stripe.status === "ok"
+      ? "green"
+      : healthData?.checks.stripe.status === "fail"
+        ? "red"
+        : paymentsColor; // fallback a metrica de fallos 24h
+  const emailColor: LightColor =
+    healthData?.checks.resend.status === "ok"
+      ? "green"
+      : healthData?.checks.resend.status === "unconfigured"
+        ? "yellow"
+        : "green";
+
   const lights: Light[] = [
     {
       key: "payments",
       label: "Pagos Stripe",
-      color: paymentsColor,
+      color: stripeColor,
       detail:
-        paymentFailed24h === 0
-          ? "Sin fallos en 24h"
-          : `${paymentFailed24h} fallo${paymentFailed24h > 1 ? "s" : ""} en 24h`,
+        healthData?.checks.stripe.status === "fail"
+          ? "API Stripe no responde"
+          : paymentFailed24h === 0
+            ? "Sin fallos en 24h"
+            : `${paymentFailed24h} fallo${paymentFailed24h > 1 ? "s" : ""} en 24h`,
     },
     {
       key: "delivery",
@@ -121,8 +168,11 @@ async function loadStatus(): Promise<{
     {
       key: "email",
       label: "Email (Resend)",
-      color: "green",
-      detail: "Sin alertas — tracking detallado en roadmap",
+      color: emailColor,
+      detail:
+        healthData?.checks.resend.status === "unconfigured"
+          ? "RESEND_API_KEY sin configurar"
+          : "Operativo",
     },
     {
       key: "whatsapp",
@@ -142,8 +192,13 @@ async function loadStatus(): Promise<{
     {
       key: "db",
       label: "Supabase DB",
-      color: "green",
-      detail: "Render OK → DB OK",
+      color: dbColor,
+      detail:
+        healthData?.checks.supabase.status === "ok"
+          ? `Respuesta en ${healthData.checks.supabase.latency_ms ?? 0}ms`
+          : healthData?.checks.supabase.status === "fail"
+            ? "DB lenta o caida"
+            : "Probe no disponible",
     },
   ];
 

@@ -1,6 +1,7 @@
 import { BaseDelivery } from "../base";
 import { generateImage } from "@/lib/image-generation";
 import type { DeliveryContext, DeliveryResult } from "../types";
+import { getLogger } from "@/lib/observability/logger";
 
 /**
  * Delivery: Post Instagram
@@ -90,7 +91,7 @@ Responde SOLO JSON valido.`;
         // Estimamos 0.02 USD si llego imagen.
         if (imageUrl) imageCost = 0.02;
       } catch (err) {
-        console.warn("[post-instagram] image generation failed:", err);
+        getLogger().warn({ err }, "[post-instagram] image generation failed");
         // Continue without image — deliver text+hashtags and let client re-request
       }
     }

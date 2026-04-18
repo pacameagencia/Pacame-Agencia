@@ -1,5 +1,6 @@
 import { llmChat, extractJSON, type LLMTier } from "@/lib/llm";
 import { generateImage } from "@/lib/image-generation";
+import { getLogger } from "@/lib/observability/logger";
 import type {
   DeliveryContext,
   DeliveryResult,
@@ -175,7 +176,7 @@ export class GenericRunner implements ServiceDelivery {
         );
         if (imageUrl) imageCost = 0.02;
       } catch (err) {
-        console.warn(`[runner ${this.slug}] image gen failed:`, err);
+        getLogger().warn({ err, slug: this.slug }, "[runner] image gen failed");
       }
     }
 

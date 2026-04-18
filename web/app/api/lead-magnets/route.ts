@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { sendEmail, wrapEmailTemplate } from "@/lib/resend";
 import { notifyHotLead } from "@/lib/telegram";
+import { getLogger } from "@/lib/observability/logger";
 
 interface LeadMagnetBody {
   slug: string;
@@ -50,7 +51,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (leadError) {
-      console.error("[LeadMagnets] Error creating lead:", leadError);
+      getLogger().error({ err: leadError }, "[LeadMagnets] Error creating lead");
       // Continue even if lead creation fails (might be duplicate)
     }
 
@@ -62,7 +63,7 @@ export async function POST(req: NextRequest) {
 
     if (incrementError) {
       // Table or function might not exist yet — log but don't fail
-      console.warn("[LeadMagnets] Could not increment downloads:", incrementError.message);
+      getLogger().warn({ errMessage: incrementError.message }, "[LeadMagnets] Could not increment downloads");
     }
 
     // 3. Send confirmation email
@@ -95,7 +96,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[LeadMagnets] Unhandled error:", err);
+    getLogger().error({ err }, "[LeadMagnets] Unhandled error");
     return NextResponse.json(
       { error: "Error interno del servidor" },
       { status: 500 }

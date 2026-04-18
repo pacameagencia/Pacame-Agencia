@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { notifyPablo, wrapEmailTemplate } from "@/lib/resend";
+import { getLogger } from "@/lib/observability/logger";
 
 const supabase = createServerSupabase();
 
@@ -185,7 +186,7 @@ ${transcript.slice(0, 3000)}
     // Acknowledge unknown event types
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error("[Vapi Webhook] Error:", err);
+    getLogger().error({ err }, "[Vapi Webhook] Error");
     // Always return 200 to prevent Vapi from retrying
     return NextResponse.json({ ok: true });
   }

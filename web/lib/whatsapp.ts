@@ -1,3 +1,5 @@
+import { getLogger } from "@/lib/observability/logger";
+
 const WHATSAPP_PHONE_ID = process.env.WHATSAPP_PHONE_ID;
 const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
 const WHATSAPP_VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN || "pacame_wa_verify_2026";
@@ -49,7 +51,7 @@ export async function sendWhatsApp(
   message: string
 ): Promise<WhatsAppMessageResult> {
   if (!WHATSAPP_PHONE_ID || !WHATSAPP_TOKEN) {
-    console.warn("[WhatsApp] Not configured — WHATSAPP_PHONE_ID or WHATSAPP_TOKEN missing");
+    getLogger().warn("[WhatsApp] Not configured — WHATSAPP_PHONE_ID or WHATSAPP_TOKEN missing");
     return { success: false, error: "WhatsApp not configured" };
   }
 
@@ -76,7 +78,7 @@ export async function sendWhatsApp(
 
     if (!res.ok) {
       const err = await res.json();
-      console.error("[WhatsApp] API error:", err);
+      getLogger().error({ err }, "[WhatsApp] API error");
       return {
         success: false,
         error: err.error?.message || `HTTP ${res.status}`,
@@ -88,7 +90,7 @@ export async function sendWhatsApp(
 
     return { success: true, message_id: messageId };
   } catch (err) {
-    console.error("[WhatsApp] Exception:", err);
+    getLogger().error({ err }, "[WhatsApp] Exception");
     return {
       success: false,
       error: err instanceof Error ? err.message : "Unknown error",

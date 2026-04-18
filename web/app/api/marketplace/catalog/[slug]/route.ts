@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { getLogger } from "@/lib/observability/logger";
 
 /**
  * GET /api/marketplace/catalog/[slug]
@@ -23,7 +24,7 @@ export async function GET(
       .maybeSingle();
 
     if (error) {
-      console.error("[marketplace/catalog/:slug] error:", error);
+      getLogger().error({ err: error }, "[marketplace/catalog/:slug] error");
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
     if (!data) {
@@ -32,7 +33,7 @@ export async function GET(
 
     return NextResponse.json({ product: data });
   } catch (err) {
-    console.error("[marketplace/catalog/:slug] exception:", err);
+    getLogger().error({ err }, "[marketplace/catalog/:slug] exception");
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 }

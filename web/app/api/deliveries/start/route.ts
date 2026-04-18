@@ -7,6 +7,7 @@ import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { notifyPayment } from "@/lib/telegram";
 import { reviewDeliverable } from "@/lib/delivery/qa";
 import { escalationQARejected } from "@/lib/email-templates/escalation";
+import { getLogger } from "@/lib/observability/logger";
 
 // Allow long-running deliveries (image generation via Freepik can take ~2 min)
 export const maxDuration = 300;
@@ -82,8 +83,9 @@ export async function POST(request: NextRequest) {
       // Generic declarative runner — no code needed for this product
       delivery = buildRunner(order.service_slug, displayName, runnerType, runnerConfig);
       if (!delivery) {
-        console.warn(
-          `[orchestrator] runner_type '${runnerType}' no soportado aun — fallback a registry`
+        getLogger().warn(
+          { runnerType },
+          "[orchestrator] runner_type no soportado aun, fallback a registry",
         );
       }
     }
@@ -217,7 +219,7 @@ export async function POST(request: NextRequest) {
 
     const { error: delErr } = await supabase.from("deliverables").insert(deliverableRows);
     if (delErr) {
-      console.error("[deliveries/start] insert deliverables failed:", delErr);
+      getLogger().error({ err: delErr }, "[deliveries/start] insert deliverables failed");
     }
 
     // ===== AUTO-QA REVIEWER =====
@@ -302,7 +304,7 @@ export async function POST(request: NextRequest) {
       } catch (qaErr) {
         // Si el QA mismo falla, logueamos pero seguimos con la entrega
         // (el reviewer ya tiene su propio fallback interno).
-        console.error("[deliveries/start] QA review crashed:", qaErr);
+        getLogger().error({ err: qaErr }, "[deliveries/start] QA review crashed");
       }
     }
 
@@ -392,7 +394,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Internal error";
-    console.error("[deliveries/start] fatal error:", err);
+    getLogger().error({ err }, "[deliveries/start] fatal error");
     if (orderId) {
       await supabase
         .from("pending_reconciliation")

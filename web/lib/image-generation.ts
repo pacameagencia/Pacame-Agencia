@@ -5,6 +5,7 @@
  */
 
 import { generateMystic, waitForTask } from "@/lib/freepik";
+import { getLogger } from "@/lib/observability/logger";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY?.trim();
 const FREEPIK_API_KEY = process.env.FREEPIK_API_KEY?.trim();
@@ -48,7 +49,7 @@ export async function generateImage(prompt: string, platform = "instagram"): Pro
         return result.generated[0];
       }
     } catch (err) {
-      console.error("[ImageGen] Freepik Mystic failed, trying DALL-E:", err);
+      getLogger().error({ err }, "[ImageGen] Freepik Mystic failed, trying DALL-E");
     }
   }
 
@@ -67,7 +68,7 @@ export async function generateImage(prompt: string, platform = "instagram"): Pro
         if (url) return url;
       }
     } catch (err) {
-      console.error("[ImageGen] DALL-E failed, trying Pollinations:", err);
+      getLogger().error({ err }, "[ImageGen] DALL-E failed, trying Pollinations");
     }
   }
 

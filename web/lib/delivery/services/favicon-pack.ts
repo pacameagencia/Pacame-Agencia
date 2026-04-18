@@ -2,6 +2,7 @@ import { BaseDelivery } from "../base";
 import { generateImage } from "@/lib/image-generation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import type { DeliveryContext, DeliveryResult } from "../types";
+import { getLogger } from "@/lib/observability/logger";
 
 /**
  * Delivery: Favicon Pack
@@ -250,7 +251,7 @@ export class FaviconPackDelivery extends BaseDelivery {
         files[variant.name] = buf;
       } catch (err) {
         // Ultimo fallback: reutilizar el baseBuffer como esta
-        console.warn(`[favicon-pack] fallback failed for ${variant.name}:`, err);
+        getLogger().warn({ err, variant: variant.name }, "[favicon-pack] fallback failed");
         files[variant.name] = baseBuffer;
       }
     }

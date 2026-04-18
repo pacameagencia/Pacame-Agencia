@@ -2,6 +2,7 @@
 // Used server-side by API routes to automatically track what each agent does
 
 import { createClient } from "@supabase/supabase-js";
+import { getLogger } from "@/lib/observability/logger";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -50,8 +51,12 @@ export async function logAgentActivity({ agentId, type, title, description, meta
         last_activity: new Date().toISOString(),
       }, { onConflict: "agent_id" });
     }
-  } catch {
-    // Non-blocking — don't fail the main operation if logging fails
+  } catch (err) {
+    // Non-blocking para el caller, pero SIEMPRE logeamos el error.
+    getLogger({ agentId, fn: "logAgentActivity" }).warn(
+      { err: err instanceof Error ? err : new Error(String(err)) },
+      "agent_logger.insert_failed",
+    );
   }
 }
 
@@ -63,8 +68,11 @@ export async function updateAgentStatus(agentId: string, status: string, current
       current_task: currentTask ?? null,
       last_activity: new Date().toISOString(),
     }, { onConflict: "agent_id" });
-  } catch {
-    // Non-blocking
+  } catch (err) {
+    getLogger({ agentId, fn: "updateAgentStatus" }).warn(
+      { err: err instanceof Error ? err : new Error(String(err)) },
+      "agent_logger.status_upsert_failed",
+    );
   }
 }
 
@@ -83,8 +91,11 @@ export async function incrementAgentTasks(agentId: string) {
         tasks_completed: (data.tasks_completed || 0) + 1,
       }).eq("agent_id", agentId.toLowerCase());
     }
-  } catch {
-    // Non-blocking
+  } catch (err) {
+    getLogger({ agentId, fn: "incrementAgentTasks" }).warn(
+      { err: err instanceof Error ? err : new Error(String(err)) },
+      "agent_logger.increment_failed",
+    );
   }
 }
 
@@ -148,8 +159,11 @@ export async function logAgentDiscovery({
       metadata: { discovery_type: type, impact, confidence },
       created_at: new Date().toISOString(),
     });
-  } catch {
-    // Non-blocking
+  } catch (err) {
+    getLogger({ agentId, fn: "logAgentDiscovery" }).warn(
+      { err: err instanceof Error ? err : new Error(String(err)) },
+      "agent_logger.discovery_failed",
+    );
   }
 }
 
@@ -186,7 +200,10 @@ export async function logAgentHandoff(
       metadata: { handoff: true, target: toAgent.toLowerCase(), synapse_type: synapseType, success },
       created_at: new Date().toISOString(),
     });
-  } catch {
-    // Non-blocking
+  } catch (err) {
+    getLogger({ fromAgent, toAgent, fn: "logAgentHandoff" }).warn(
+      { err: err instanceof Error ? err : new Error(String(err)) },
+      "agent_logger.handoff_failed",
+    );
   }
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { getLogger } from "@/lib/observability/logger";
 
 interface CheckoutBody {
   name: string;
@@ -103,7 +104,7 @@ export async function POST(req: NextRequest) {
       leadId = lead?.id ?? null;
     } catch {
       // If leads table doesn't exist yet, continue without it
-      console.warn("[checkout-flow] Could not save lead — table may not exist");
+      getLogger().warn("[checkout-flow] Could not save lead — table may not exist");
     }
 
     // 2. Save checkout session record
@@ -134,8 +135,8 @@ export async function POST(req: NextRequest) {
       dbRecordId = dbRecord?.id ?? null;
     } catch {
       // If table doesn't exist yet, continue — Stripe session is the priority
-      console.warn(
-        "[checkout-flow] Could not save checkout session — table may not exist"
+      getLogger().warn(
+        "[checkout-flow] Could not save checkout session — table may not exist",
       );
     }
 
@@ -197,7 +198,7 @@ export async function POST(req: NextRequest) {
       checkout_session_id: dbRecordId,
     });
   } catch (err) {
-    console.error("[checkout-flow] Error:", err);
+    getLogger().error({ err }, "[checkout-flow] Error");
     const message =
       err instanceof Error ? err.message : "Error interno del servidor";
     return NextResponse.json({ error: message }, { status: 500 });
@@ -242,14 +243,14 @@ export async function PATCH(req: NextRequest) {
         { onConflict: "email" }
       );
     } catch {
-      console.warn(
-        "[checkout-flow] Could not save partial progress — table may not exist"
+      getLogger().warn(
+        "[checkout-flow] Could not save partial progress — table may not exist",
       );
     }
 
     return NextResponse.json({ ok: true, step });
   } catch (err) {
-    console.error("[checkout-flow] PATCH error:", err);
+    getLogger().error({ err }, "[checkout-flow] PATCH error");
     const message =
       err instanceof Error ? err.message : "Error interno del servidor";
     return NextResponse.json({ error: message }, { status: 500 });

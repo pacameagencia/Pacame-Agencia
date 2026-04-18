@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { getAuthedClient } from "@/lib/client-auth";
+import { ordersLimiter, getClientIp } from "@/lib/security/rate-limit";
+import { getLogger } from "@/lib/observability/logger";
 
 export const dynamic = "force-dynamic";
+
+const InputsSchema = z.object({
+  inputs: z.record(z.string(), z.unknown()),
+  email: z.string().email().optional(),
+});
 
 /**
  * POST /api/orders/[id]/inputs
@@ -13,16 +21,29 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+
+  // Rate limit: 60/min por IP+orderId
+  const ip = getClientIp(request);
+  const rl = await ordersLimiter.limit(`${ip}:${id}`);
+  if (!rl.success) {
+    const retrySec = Math.max(1, Math.ceil((rl.reset - Date.now()) / 1000));
+    return NextResponse.json(
+      { error: "Too many requests", retry_after: retrySec },
+      { status: 429, headers: { "Retry-After": String(retrySec) } }
+    );
+  }
+
   const supabase = createServerSupabase();
 
-  const body = await request.json().catch(() => null);
-  if (!body || typeof body !== "object") {
-    return NextResponse.json({ error: "Body requerido" }, { status: 400 });
+  const raw = await request.json().catch(() => null);
+  const parsed = InputsSchema.safeParse(raw);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Validation failed", issues: parsed.error.issues },
+      { status: 400 }
+    );
   }
-  const inputs = body.inputs as Record<string, unknown> | undefined;
-  if (!inputs || typeof inputs !== "object") {
-    return NextResponse.json({ error: "inputs requerido" }, { status: 400 });
-  }
+  const { inputs, email: fallbackEmail } = parsed.data;
 
   // Load order + validate ownership
   const { data: order, error: orderErr } = await supabase
@@ -37,7 +58,6 @@ export async function POST(
 
   const client = await getAuthedClient(request);
   const authedByClient = client && order.client_id === client.id;
-  const fallbackEmail = (body.email as string | undefined) || null;
   const authedByEmail =
     fallbackEmail &&
     order.customer_email &&
@@ -99,13 +119,12 @@ export async function POST(
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (cronSecret) headers.Authorization = `Bearer ${cronSecret}`;
 
-  // Do NOT await — we want to return 200 immediately so the client UI unblocks.
   fetch(`${origin}/api/deliveries/start`, {
     method: "POST",
     headers,
     body: JSON.stringify({ order_id: id }),
   }).catch((err) => {
-    console.error("[orders/inputs] fire-and-forget dispatch failed:", err);
+    getLogger().error({ err }, "[orders/inputs] fire-and-forget dispatch failed");
   });
 
   return NextResponse.json({ ok: true, order_id: id });

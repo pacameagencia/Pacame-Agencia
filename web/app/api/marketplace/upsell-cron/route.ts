@@ -3,6 +3,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { llmChat } from "@/lib/llm";
 import { sendEmail, wrapEmailTemplate } from "@/lib/resend";
+import { getLogger } from "@/lib/observability/logger";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
@@ -96,7 +97,7 @@ export async function GET(request: NextRequest) {
     .limit(100);
 
   if (error) {
-    console.error("[upsell-cron] query fallo:", error);
+    getLogger().error({ err: error }, "[upsell-cron] query fallo");
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
@@ -169,7 +170,7 @@ export async function GET(request: NextRequest) {
           subject = trimmed;
         }
       } catch (err) {
-        console.warn("[upsell-cron] subject LLM fallo (uso fallback):", (err as Error).message);
+        getLogger().warn({ err: err as Error }, "[upsell-cron] subject LLM fallo (uso fallback)");
       }
 
       const catalogUrl = `https://pacameagencia.com/servicios/${mapping.targetSlugs[0]}?code=UPSELL15&ref=upsell`;
@@ -214,12 +215,12 @@ export async function GET(request: NextRequest) {
         sent_at: new Date().toISOString(),
       });
       if (insErr) {
-        console.error("[upsell-cron] insert upsell_campaigns fallo:", insErr);
+        getLogger().error({ err: insErr }, "[upsell-cron] insert upsell_campaigns fallo");
       }
 
       results.push({ order_id: order.id, sent: !!emailId });
     } catch (err) {
-      console.error("[upsell-cron] order fallo:", order.id, err);
+      getLogger().error({ err, orderId: order.id }, "[upsell-cron] order fallo");
       results.push({ order_id: order.id, sent: false, reason: (err as Error).message.slice(0, 120) });
     }
   }

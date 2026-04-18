@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { getAuthedClient } from "@/lib/client-auth";
 import { sendEmail } from "@/lib/resend";
 import { escalationThirdRevision } from "@/lib/email-templates/escalation";
+import { ordersLimiter, getClientIp } from "@/lib/security/rate-limit";
+import { getLogger } from "@/lib/observability/logger";
 
 const PABLO_EMAIL = "hola@pacameagencia.com";
 
@@ -10,6 +13,11 @@ export const dynamic = "force-dynamic";
 
 const NEGATIVE_KEYWORDS =
   /\b(no me gusta|horrible|cancelar|devolver|refund|reembolso|malisimo|malo|no sirve|pesimo|terrible|lo odio|hate)\b/i;
+
+const RevisionSchema = z.object({
+  feedback: z.string().min(10).max(2000),
+  email: z.string().email().optional(),
+});
 
 /**
  * POST /api/orders/[id]/revision
@@ -22,11 +30,31 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const supabase = createServerSupabase();
-  const body = await request.json().catch(() => null);
-  const feedback = (body?.feedback as string | undefined)?.trim();
 
-  if (!feedback || feedback.length < 10) {
+  // Rate limit
+  const ip = getClientIp(request);
+  const rl = await ordersLimiter.limit(`${ip}:${id}`);
+  if (!rl.success) {
+    const retrySec = Math.max(1, Math.ceil((rl.reset - Date.now()) / 1000));
+    return NextResponse.json(
+      { error: "Too many requests", retry_after: retrySec },
+      { status: 429, headers: { "Retry-After": String(retrySec) } }
+    );
+  }
+
+  const supabase = createServerSupabase();
+  const raw = await request.json().catch(() => null);
+  const parsed = RevisionSchema.safeParse(raw);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Validation failed", issues: parsed.error.issues },
+      { status: 400 }
+    );
+  }
+  const { feedback: feedbackRaw, email: bodyEmail } = parsed.data;
+  const feedback = feedbackRaw.trim();
+
+  if (feedback.length < 10) {
     return NextResponse.json(
       { error: "Necesitamos al menos 10 caracteres de feedback para revisar." },
       { status: 400 }
@@ -45,7 +73,7 @@ export async function POST(
 
   const client = await getAuthedClient(request);
   const authedByClient = client && order.client_id === client.id;
-  const fallbackEmail = body?.email as string | undefined;
+  const fallbackEmail = bodyEmail;
   const authedByEmail =
     fallbackEmail &&
     order.customer_email &&
@@ -136,7 +164,7 @@ export async function POST(
       headers,
       body: JSON.stringify({ order_id: id, revision: nextRevision, feedback }),
     }).catch((err) => {
-      console.error("[orders/revision] re-dispatch failed:", err);
+      getLogger().error({ err }, "[orders/revision] re-dispatch failed");
     });
   }
 

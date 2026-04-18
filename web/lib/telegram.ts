@@ -1,3 +1,5 @@
+import { getLogger } from "@/lib/observability/logger";
+
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN?.trim();
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID?.trim();
 const TELEGRAM_API = "https://api.telegram.org";
@@ -16,7 +18,7 @@ export async function sendTelegram(
   options: TelegramSendOptions = {}
 ): Promise<boolean> {
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-    console.warn("[Telegram] Bot token or chat ID not configured");
+    getLogger().warn("[Telegram] Bot token or chat ID not configured");
     return false;
   }
 
@@ -37,13 +39,13 @@ export async function sendTelegram(
 
     if (!res.ok) {
       const err = await res.json();
-      console.error("[Telegram] Error:", err);
+      getLogger().error({ err }, "[Telegram] Error");
       return false;
     }
 
     return true;
   } catch (err) {
-    console.error("[Telegram] Exception:", err);
+    getLogger().error({ err }, "[Telegram] Exception");
     return false;
   }
 }

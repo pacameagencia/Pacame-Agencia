@@ -3,6 +3,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { sendSms, validateTwilioSignature } from "@/lib/sms";
 import { notifyHotLead } from "@/lib/telegram";
+import { getLogger } from "@/lib/observability/logger";
 
 const supabase = createServerSupabase();
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
@@ -228,7 +229,7 @@ async function generateSmsReply(
 
     return reply;
   } catch (err) {
-    console.error("[SMS] Auto-respond error:", err);
+    getLogger().error({ err }, "[SMS] Auto-respond error");
     return null;
   }
 }

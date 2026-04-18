@@ -2,11 +2,40 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe, PACAME_PRODUCTS, type ProductKey } from "@/lib/stripe";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { checkoutLimiter, getClientIp } from "@/lib/security/rate-limit";
 
 const supabase = createServerSupabase();
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
+  // Rate limit: 20/min por IP — proteccion contra abuso de checkout.
+  const ip = getClientIp(request);
+  const rl = await checkoutLimiter.limit(ip);
+  if (!rl.success) {
+    const retrySec = Math.max(1, Math.ceil((rl.reset - Date.now()) / 1000));
+    return NextResponse.json(
+      { error: "Too many requests", retry_after: retrySec },
+      { status: 429, headers: { "Retry-After": String(retrySec) } }
+    );
+  }
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
+
+  // Validacion minima del body (union flexible, no rompe callers legacy).
+  const hasSomething =
+    body && typeof body === "object" &&
+    (body.product || body.service_slug || body.plan_slug || body.app_slug ||
+     body.proposal_id || body.amount);
+  if (!hasSomething) {
+    return NextResponse.json(
+      { error: "Falta product/service_slug/plan_slug/app_slug/proposal_id" },
+      { status: 400 }
+    );
+  }
 
   // Public checkout from proposal pages, marketplace, website "Buy Now", plans or apps
   const isProposalCheckout = !!body.proposal_id;

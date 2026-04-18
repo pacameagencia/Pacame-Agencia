@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { sendEmail, wrapEmailTemplate } from "@/lib/resend";
+import { getLogger } from "@/lib/observability/logger";
 
 /**
  * Cron endpoint for abandoned checkout recovery.
@@ -37,9 +38,9 @@ export async function GET(req: NextRequest) {
       .gt("created_at", sevenDaysAgo);
 
     if (sessionsError) {
-      console.error(
-        "[CheckoutRecover] Error querying sessions:",
-        sessionsError
+      getLogger().error(
+        { err: sessionsError },
+        "[CheckoutRecover] Error querying sessions",
       );
       return NextResponse.json(
         { error: "Error querying sessions", details: sessionsError.message },
@@ -77,9 +78,9 @@ export async function GET(req: NextRequest) {
         });
 
       if (insertError) {
-        console.warn(
-          "[CheckoutRecover] Error inserting abandoned checkout:",
-          insertError.message
+        getLogger().warn(
+          { errMessage: insertError.message },
+          "[CheckoutRecover] Error inserting abandoned checkout",
         );
         continue;
       }
@@ -123,7 +124,7 @@ export async function GET(req: NextRequest) {
       message: `Recovery emails sent: ${sentCount}`,
     });
   } catch (err) {
-    console.error("[CheckoutRecover] Unhandled error:", err);
+    getLogger().error({ err }, "[CheckoutRecover] Unhandled error");
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
