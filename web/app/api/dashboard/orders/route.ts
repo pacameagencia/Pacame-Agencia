@@ -1,16 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
-import { verifyInternalAuth } from "@/lib/api-auth";
+import { requireRole, hasPermission } from "@/lib/security/rbac";
 
 export const dynamic = "force-dynamic";
 
 /**
  * GET /api/dashboard/orders?filter=all|processing|delivered|escalated|inputs_pending
  * Returns orders + aggregated KPIs.
+ *
+ * RBAC: admin o staff con permiso orders.view_all.
  */
 export async function GET(request: NextRequest) {
-  const authError = verifyInternalAuth(request);
-  if (authError) return authError;
+  const sessionOrResp = await requireRole(request, ["admin", "staff"]);
+  if (sessionOrResp instanceof NextResponse) return sessionOrResp;
+  if (!(await hasPermission(sessionOrResp, "orders.view_all"))) {
+    return NextResponse.json(
+      { error: "Forbidden", permission_required: "orders.view_all" },
+      { status: 403 }
+    );
+  }
 
   const filter = request.nextUrl.searchParams.get("filter") || "all";
   const supabase = createServerSupabase();

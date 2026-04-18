@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { createServerSupabase } from "@/lib/supabase/server";
 import crypto from "crypto";
 import { getLogger } from "@/lib/observability/logger";
+import { auditLog } from "@/lib/security/audit";
 
 async function getAuthClient() {
   const cookieStore = await cookies();
@@ -198,6 +199,14 @@ export async function DELETE(request: NextRequest) {
       getLogger().error({ err: deleteError }, "Delete DB error");
       return NextResponse.json({ error: "Error al eliminar registro" }, { status: 500 });
     }
+
+    // Auditar borrado de fichero por el cliente.
+    void auditLog({
+      actor: { type: "client", id: client.id },
+      action: "client_file.delete",
+      resource: { type: "client_file", id: fileId },
+      request,
+    });
 
     return NextResponse.json({ ok: true });
   } catch (err) {

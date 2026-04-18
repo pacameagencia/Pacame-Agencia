@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { getAuthedClient } from "@/lib/client-auth";
+import { getAdminSession } from "@/lib/security/rbac";
 
 export const dynamic = "force-dynamic";
 
@@ -28,14 +29,24 @@ export async function GET(
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
 
-  // Auth check: either the logged-in client owns it, OR the request has the correct customer_email
+  // Auth check: tres vias validas
+  //  1. Cliente autenticado Y dueno del pedido (client_id coincide).
+  //  2. Email en query-string coincide con customer_email (fallback magico).
+  //  3. Admin/staff autenticado via cookie dashboard.
+  // Cliente A intentando leer pedidos de cliente B => 403 (no 401, nos permite
+  // distinguir "no auth" de "auth pero sin permiso").
   const client = await getAuthedClient(request);
+  const admin = await getAdminSession(request);
   const authedByClient = client && order.client_id === client.id;
   const fallbackEmail = request.nextUrl.searchParams.get("email");
   const authedByEmail =
     fallbackEmail && order.customer_email && fallbackEmail.toLowerCase() === order.customer_email.toLowerCase();
 
-  if (!authedByClient && !authedByEmail) {
+  if (!authedByClient && !authedByEmail && !admin) {
+    // Si hay cliente autenticado pero NO es dueno del pedido => ownership fail.
+    if (client && order.client_id && order.client_id !== client.id) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

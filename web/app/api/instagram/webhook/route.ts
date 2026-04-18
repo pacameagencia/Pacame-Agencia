@@ -5,8 +5,31 @@ import { sendInstagramDM, INSTAGRAM_VERIFY_TOKEN, isConfigured } from "@/lib/ins
 import { notifyHotLead } from "@/lib/telegram";
 import { llmChat } from "@/lib/llm";
 import { getLogger } from "@/lib/observability/logger";
+import { createHmac, timingSafeEqual } from "node:crypto";
 
 const supabase = createServerSupabase();
+
+/**
+ * Verifica HMAC-SHA256 de Meta. Header: x-hub-signature-256: sha256=<hex>
+ * App secret: INSTAGRAM_APP_SECRET (o META_APP_SECRET como fallback).
+ * Si no hay secret configurado: log warn pero permite (modo dev).
+ */
+function verifyInstagramSignature(rawBody: string, signatureHeader: string | null): boolean {
+  const secret = process.env.INSTAGRAM_APP_SECRET || process.env.META_APP_SECRET;
+  if (!secret) {
+    getLogger().warn({}, "[instagram] INSTAGRAM_APP_SECRET not configured — skipping HMAC verify");
+    return true; // dev-mode permissive
+  }
+  if (!signatureHeader) return false;
+  const expected = "sha256=" + createHmac("sha256", secret).update(rawBody, "utf8").digest("hex");
+  try {
+    const a = Buffer.from(signatureHeader);
+    const b = Buffer.from(expected);
+    return a.length === b.length && timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Instagram Webhook
@@ -31,16 +54,28 @@ export async function GET(request: NextRequest) {
 
 // --- Incoming messages & comments ---
 export async function POST(request: NextRequest) {
-  const body = await request.json();
+  const rawBody = await request.text();
+  const signature = request.headers.get("x-hub-signature-256");
+  if (!verifyInstagramSignature(rawBody, signature)) {
+    getLogger().warn({}, "[instagram] invalid signature");
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  let body: Record<string, unknown>;
+  try {
+    body = JSON.parse(rawBody);
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
 
   // Instagram webhooks follow the same Meta structure as WhatsApp
-  const entry = body.entry?.[0];
+  const entry = (body.entry as Array<Record<string, unknown>> | undefined)?.[0];
   if (!entry) {
     return NextResponse.json({ ok: true });
   }
 
   // Handle messaging (DMs)
-  const messaging = entry.messaging;
+  const messaging = entry.messaging as MessagingEvent[] | undefined;
   if (messaging?.length) {
     for (const event of messaging) {
       await handleDirectMessage(event);
@@ -48,11 +83,11 @@ export async function POST(request: NextRequest) {
   }
 
   // Handle comment changes
-  const changes = entry.changes;
+  const changes = entry.changes as Array<{ field?: string; value?: Record<string, unknown> }> | undefined;
   if (changes?.length) {
     for (const change of changes) {
-      if (change.field === "comments") {
-        await handleComment(change.value);
+      if (change.field === "comments" && change.value) {
+        await handleComment(change.value as unknown as CommentValue);
       }
     }
   }

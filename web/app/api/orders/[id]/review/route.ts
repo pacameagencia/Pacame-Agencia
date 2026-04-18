@@ -5,6 +5,7 @@ import { getAuthedClient } from "@/lib/client-auth";
 import { sendEmail } from "@/lib/resend";
 import { escalationLowRating } from "@/lib/email-templates/escalation";
 import { ordersLimiter, getClientIp } from "@/lib/security/rate-limit";
+import { auditLog } from "@/lib/security/audit";
 
 const PABLO_EMAIL = "hola@pacameagencia.com";
 
@@ -93,6 +94,15 @@ export async function POST(
     title: `Rating ${rating}/5`,
     message: reviewText || `Cliente valoro el entregable con ${rating}/5`,
     payload: { rating, escalated: rating < 3 },
+  });
+
+  // Auditar la review del cliente.
+  void auditLog({
+    actor: { type: "client", id: client?.id || null },
+    action: "order.reviewed",
+    resource: { type: "order", id },
+    metadata: { rating, escalated: rating < 3 },
+    request,
   });
 
   if (rating < 3) {

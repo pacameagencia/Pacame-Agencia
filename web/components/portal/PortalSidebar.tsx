@@ -17,6 +17,7 @@ import {
   ShoppingBag,
   Crown,
   Boxes,
+  ShieldCheck,
 } from "lucide-react";
 
 interface PortalSidebarProps {
@@ -36,6 +37,7 @@ const navItems = [
   { label: "Mensajes", href: "/portal/messages", icon: MessageSquare, badge: true },
   { label: "Pagos", href: "/portal/payments", icon: Receipt },
   { label: "Ajustes", href: "/portal/settings", icon: Settings },
+  { label: "Privacidad", href: "/portal/privacy", icon: ShieldCheck },
 ];
 
 export default function PortalSidebar({

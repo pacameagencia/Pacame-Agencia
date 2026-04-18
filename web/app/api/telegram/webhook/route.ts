@@ -17,13 +17,17 @@ import { getLogger } from "@/lib/observability/logger";
  * it would overwrite this webhook and break the bot.
  */
 export async function POST(request: NextRequest) {
-  // Verify this comes from Telegram (basic token check)
+  // Verify this comes from Telegram. Acepta:
+  //  1. Header "x-telegram-bot-api-secret-token" (estandar Telegram setWebhook)
+  //  2. Query param "?secret=..." (compat legacy)
   const secret = process.env.TELEGRAM_WEBHOOK_SECRET?.trim();
   if (secret) {
-    const url = new URL(request.url);
-    const token = url.searchParams.get("secret");
-    if (token !== secret) {
-      return NextResponse.json({ ok: false }, { status: 403 });
+    const headerToken = request.headers.get("x-telegram-bot-api-secret-token");
+    const queryToken = new URL(request.url).searchParams.get("secret");
+    const ok = headerToken === secret || queryToken === secret;
+    if (!ok) {
+      getLogger().warn({}, "telegram webhook invalid secret");
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
   }
 

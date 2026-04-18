@@ -14,6 +14,7 @@ import {
   verifySession,
 } from "@/lib/security/admin-sessions";
 import { authLimiter, getClientIp } from "@/lib/security/rate-limit";
+import { auditLog } from "@/lib/security/audit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -88,6 +89,12 @@ export async function POST(request: NextRequest) {
     }
 
     if (!verifyPassword(password, DASHBOARD_PASSWORD)) {
+      // Auditar intento fallido (fire-and-forget, no bloquea la respuesta).
+      void auditLog({
+        actor: { type: "admin", id: "pablo" },
+        action: "auth.login_failed",
+        request,
+      });
       return NextResponse.json({ error: "Password incorrecto" }, { status: 401 });
     }
 
@@ -122,6 +129,13 @@ export async function POST(request: NextRequest) {
       sameSite: "lax",
       maxAge: SESSION_TTL_SECONDS,
       path: "/",
+    });
+
+    // Auditar login exitoso.
+    void auditLog({
+      actor: { type: "admin", id: "pablo" },
+      action: "auth.login",
+      request,
     });
 
     return NextResponse.json({ ok: true });
@@ -165,6 +179,14 @@ export async function POST(request: NextRequest) {
     }
 
     cookieStore.delete(ADMIN_COOKIE);
+
+    // Auditar logout.
+    void auditLog({
+      actor: { type: "admin", id: "pablo" },
+      action: "auth.logout",
+      request,
+    });
+
     return NextResponse.json({ ok: true });
   }
 

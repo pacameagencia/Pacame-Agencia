@@ -6,6 +6,7 @@ import { sendEmail } from "@/lib/resend";
 import { escalationThirdRevision } from "@/lib/email-templates/escalation";
 import { ordersLimiter, getClientIp } from "@/lib/security/rate-limit";
 import { getLogger } from "@/lib/observability/logger";
+import { auditLog } from "@/lib/security/audit";
 
 const PABLO_EMAIL = "hola@pacameagencia.com";
 
@@ -124,6 +125,19 @@ export async function POST(
     title: `Revision #${nextRevision}`,
     message: feedback.slice(0, 300),
     payload: { revision_id: revision?.id, sentiment },
+  });
+
+  // Auditar la solicitud de revision.
+  void auditLog({
+    actor: { type: "client", id: client?.id || null },
+    action: "order.revision_requested",
+    resource: { type: "order", id },
+    metadata: {
+      revision_number: nextRevision,
+      sentiment,
+      feedback_length: feedback.length,
+    },
+    request,
   });
 
   // If negative keywords or >= 3 revisions → extra alert to Pablo
