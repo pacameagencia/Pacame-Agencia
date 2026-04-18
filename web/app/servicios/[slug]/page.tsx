@@ -21,6 +21,9 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+// Revalidate cada 5 min — pagina de detalle de servicio
+export const revalidate = 300;
+
 // Allow on-demand rendering for marketplace slugs not in the static list
 export const dynamicParams = true;
 

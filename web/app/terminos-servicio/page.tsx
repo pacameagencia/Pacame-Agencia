@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
+// ISR: terminos de servicio — 1h cache
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Terminos de Servicio — PACAME",
   description: "Terminos y condiciones de contratacion de los servicios de PACAME Agencia Digital.",

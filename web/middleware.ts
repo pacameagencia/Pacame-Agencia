@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ulid } from "ulid";
+import { needsCsrfCheck, verifyCsrf } from "@/lib/security/csrf";
 
 // Edge-safe JSON logger (middleware corre en runtime edge).
 // Emitimos el mismo shape que lib/observability/logger.ts para consistencia.
@@ -48,6 +49,28 @@ export function middleware(request: NextRequest) {
     return res;
   };
 
+  // ─── CSRF check para mutaciones en /api/** ──────────────
+  // Flag CSRF_ENFORCE=true activa el check. Durante rollout usa "warn"
+  // para loggear violaciones sin bloquear, y "enforce" cuando frontend este listo.
+  const csrfMode = process.env.CSRF_MODE || "warn";
+  if (needsCsrfCheck(request)) {
+    const ok = verifyCsrf(request);
+    if (!ok) {
+      edgeLog("warn", {
+        requestId,
+        method: request.method,
+        path: pathname,
+        msg: "csrf.mismatch",
+        mode: csrfMode,
+      });
+      if (csrfMode === "enforce") {
+        return withReqId(
+          NextResponse.json({ error: "CSRF token invalid" }, { status: 403 }),
+        );
+      }
+    }
+  }
+
   // ─── Dashboard protection (admin) ────────────────────────
   if (pathname.startsWith("/dashboard")) {
     const token = request.cookies.get("pacame_auth")?.value;
@@ -82,5 +105,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/portal/:path*"],
+  matcher: ["/dashboard/:path*", "/portal/:path*", "/api/:path*"],
 };

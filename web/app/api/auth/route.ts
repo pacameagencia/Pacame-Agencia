@@ -131,6 +131,17 @@ export async function POST(request: NextRequest) {
       path: "/",
     });
 
+    // CSRF double-submit cookie (no httpOnly — el frontend la lee para header x-csrf-token)
+    const { generateCsrfToken, CSRF_COOKIE } = await import("@/lib/security/csrf");
+    const csrfToken = generateCsrfToken();
+    cookieStore.set(CSRF_COOKIE, csrfToken, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: SESSION_TTL_SECONDS,
+      path: "/",
+    });
+
     // Auditar login exitoso.
     void auditLog({
       actor: { type: "admin", id: "pablo" },
@@ -138,7 +149,7 @@ export async function POST(request: NextRequest) {
       request,
     });
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, csrf_token: csrfToken });
   }
 
   // ─── VERIFY ────────────────────────────────────────────────────

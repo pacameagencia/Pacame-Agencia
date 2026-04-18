@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
+// ISR: politica de privacidad — 1h cache
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Politica de Privacidad — PACAME",
   description: "Politica de privacidad y proteccion de datos de PACAME, conforme al RGPD.",

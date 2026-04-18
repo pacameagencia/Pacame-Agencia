@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+
+// ISR: short-link landing — 1h cache
+export const revalidate = 3600;
+
 import {
   getSalesPage,
   getAllSalesPageSlugs,

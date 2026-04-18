@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
+// ISR: aviso legal — 1h cache
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Aviso Legal — PACAME",
   description: "Aviso legal e informacion sobre el titular de pacameagencia.com.",

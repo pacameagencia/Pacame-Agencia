@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { blogPosts } from "@/lib/data/blog-posts";
 import NewsletterForm from "@/components/NewsletterForm";
+
+// ISR: indice de blog — 1h cache
+export const revalidate = 3600;
 import BlogFilteredList from "@/components/BlogFilteredList";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import ScrollReveal from "@/components/ui/scroll-reveal";

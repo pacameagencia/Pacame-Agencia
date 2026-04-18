@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+// ISR: post de blog — 1h cache
+export const revalidate = 3600;
 import { ArrowLeft, Clock, ArrowRight, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/lib/data/blog-posts";

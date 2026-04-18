@@ -8,6 +8,7 @@ import {
   MessageSquare, Bell, ClipboardCheck, CreditCard,
   Megaphone, FileCheck, Phone, Rocket, Building2, Award, LogOut,
   TrendingUp, MessageCircle, Lightbulb, Network, ShoppingBag, Package,
+  BookOpen,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -36,6 +37,7 @@ const navItems = [
   { label: "Pagos", href: "/dashboard/payments", icon: CreditCard },
   { label: "Finanzas", href: "/dashboard/finances", icon: DollarSign },
   { label: "Notificaciones", href: "/dashboard/notifications", icon: Bell },
+  { label: "API Docs", href: "/docs/api", icon: BookOpen },
   { label: "Config", href: "/dashboard/settings", icon: Settings },
 ];
 

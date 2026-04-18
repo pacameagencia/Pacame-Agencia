@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+// ISR: pagina de contenido SEO programatica — 1h cache
+export const revalidate = 3600;
 import {
   Check, ArrowRight, MessageSquare, Phone, Clock,
   CheckCircle2, HelpCircle,

@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Hero from "@/components/sections/Hero";
+
+// ISR: landing principal — 1h cache
+export const revalidate = 3600;
 import ServicesSection from "@/components/sections/ServicesSection";
 
 const NichesSection = dynamic(() => import("@/components/sections/NichesSection"));

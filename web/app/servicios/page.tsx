@@ -17,8 +17,8 @@ import { ShinyButton } from "@/components/ui/shiny-button";
 import MarketplaceGrid from "@/components/marketplace/MarketplaceGrid";
 import { createServerSupabase } from "@/lib/supabase/server";
 
-// Revalidate every 60s — catalog edits reflect within 1 min
-export const revalidate = 60;
+// Revalidate cada 5 min — catalogo dinamico pero sin hammer DB
+export const revalidate = 300;
 
 async function fetchMarketplaceData() {
   try {

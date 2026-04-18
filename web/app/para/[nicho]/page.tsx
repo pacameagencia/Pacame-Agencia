@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+// ISR: landing programatica por nicho — 1h cache
+export const revalidate = 3600;
 import { Check, ArrowRight, AlertTriangle, Zap, MessageCircle, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { niches, getAllNicheSlugs, getNicheBySlug } from "@/lib/data/niches";

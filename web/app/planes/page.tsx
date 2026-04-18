@@ -5,7 +5,7 @@ import AppAddonsGrid, { type AppAddonData } from "@/components/plans/AppAddonsGr
 import type { PlanCardData } from "@/components/plans/PlanCard";
 import { Star, Shield, Sparkles } from "lucide-react";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Planes PACAME — Tu equipo digital desde 29€/mes",

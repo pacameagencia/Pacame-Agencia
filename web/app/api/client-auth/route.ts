@@ -25,6 +25,15 @@ function setCookie(response: NextResponse, token: string): NextResponse {
     path: "/",
     maxAge: TOKEN_MAX_AGE,
   });
+  // CSRF double-submit cookie (no httpOnly — el frontend la lee)
+  const csrfToken = crypto.randomBytes(32).toString("hex");
+  response.cookies.set("pacame_csrf", csrfToken, {
+    httpOnly: false,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: TOKEN_MAX_AGE,
+  });
   return response;
 }
 

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
+// ISR: politica de cookies — 1h cache
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Politica de Cookies — PACAME",
   description: "Politica de cookies del sitio web pacameagencia.com, conforme al RGPD y la LSSI-CE.",
