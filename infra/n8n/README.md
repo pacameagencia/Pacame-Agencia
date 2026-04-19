@@ -52,6 +52,28 @@ CLEARBIT_API_KEY=...
 
 Tras añadir variables: `cd ~/pacame/n8n && docker compose restart n8n`.
 
+### Estado actual (live)
+
+| Workflow | Active | ENV keys |
+|---|---|---|
+| 05 external-cron-trigger | ✅ activo | `PACAME_WEBHOOK_SECRET` + `CRON_SECRET` (ambos configurados) |
+| 06 google-reviews-monitor | ✅ activo | `GOOGLE_PLACES_API_KEY` (configurado) |
+| 07 lead-enrichment | ⏸ inactivo | faltan `HUNTER_API_KEY` + `CLEARBIT_API_KEY` |
+| 08, 09, 10 | ⏸ inactivo | listos, solo toggle desde UI |
+
+Verificación end-to-end del workflow 06 (17/04/2026):
+- 2 clientes test (`Restaurante La Tasca`, `Gimnasio FitZone`) con `google_place_id` real asignado
+- Google Places devuelve reviews ES (La Gran Tasca 2071 reviews, FitnessZone 197)
+- Claude Haiku 4.5 genera respuestas naturales en tono apropiado
+- Primera fila en `external_reviews` insertada correctamente
+
+Webhook activo del workflow 05:
+```
+POST https://n8n.pacameagencia.com/webhook/pacame-cron
+X-PACAME-SECRET: pacame-ext-778e23895062bf44c76efb6c
+Body: {"agent":"sage"}  (opcional; omitir → ciclo completo)
+```
+
 ---
 
 ## Activación
