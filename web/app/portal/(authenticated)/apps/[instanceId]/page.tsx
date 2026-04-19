@@ -74,6 +74,11 @@ export default async function AppDashboardPage({
     redirect(`/portal/apps/${instanceId}/setup`);
   }
 
+  // PACAME Agenda has dedicated dashboard — redirect
+  if (instance.app_slug === "pacame-agenda") {
+    redirect(`/portal/apps/${instanceId}/agenda`);
+  }
+
   // KPIs
   const startOfMonth = new Date();
   startOfMonth.setDate(1);

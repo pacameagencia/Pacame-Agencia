@@ -43,6 +43,10 @@
     {
       "path": "/api/marketplace/brain-cron",
       "schedule": "0 7 * * 1-5"
+    },
+    {
+      "path": "/api/apps/pacame-agenda/reminders-cron",
+      "schedule": "0 18 * * *"
     }
   ]
 }
