@@ -39,6 +39,10 @@
     {
       "path": "/api/marketplace/outreach-followup-cron",
       "schedule": "0 14 * * 1-5"
+    },
+    {
+      "path": "/api/marketplace/brain-cron",
+      "schedule": "0 7 * * 1-5"
     }
   ]
 }
