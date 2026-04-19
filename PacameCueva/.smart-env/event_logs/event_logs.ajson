@@ -1,0 +1,2 @@
+
+"event_logs:sources:deleted": {"key":"sources:deleted","ct":809,"first_at":1776591170689,"last_at":1776591172532,"class_name":"EventLog","event_sources":{"obsidian:vault.delete":809}},
