@@ -3,6 +3,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import PlansGrid from "@/components/plans/PlansGrid";
 import AppAddonsGrid, { type AppAddonData } from "@/components/plans/AppAddonsGrid";
 import type { PlanCardData } from "@/components/plans/PlanCard";
+import ComparePricingTable from "@/components/plans/ComparePricingTable";
 import { Star, Shield, Sparkles } from "lucide-react";
 
 export const revalidate = 300;
@@ -123,6 +124,11 @@ export default async function PlanesPage() {
             <PlansGrid plans={plans} />
           )}
         </div>
+      </section>
+
+      {/* Comparativa detallada Stripe-style */}
+      <section className="px-4 py-20 bg-gradient-to-b from-transparent to-white/[0.02]">
+        <ComparePricingTable />
       </section>
 
       {/* Apps addons */}
