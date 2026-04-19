@@ -8,7 +8,7 @@ import {
   MessageSquare, Bell, ClipboardCheck, CreditCard,
   Megaphone, FileCheck, Phone, Rocket, Building2, Award, LogOut,
   TrendingUp, MessageCircle, Lightbulb, Network, ShoppingBag, Package,
-  BookOpen,
+  BookOpen, Target,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -21,6 +21,7 @@ const navItems = [
   { label: "Clientes", href: "/dashboard/clients", icon: Users },
   { label: "Leads", href: "/dashboard/leads", icon: UserPlus },
   { label: "Lead Gen", href: "/dashboard/leadgen", icon: Rocket },
+  { label: "Outreach", href: "/dashboard/outreach", icon: Target },
   { label: "Marketplace", href: "/dashboard/catalog", icon: Package },
   { label: "Pedidos", href: "/dashboard/orders", icon: ShoppingBag },
   { label: "Contenido", href: "/dashboard/content", icon: FileText },

@@ -31,6 +31,14 @@
     {
       "path": "/api/gdpr/purge-cron",
       "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/marketplace/outreach-cron",
+      "schedule": "0 10 * * 1-5"
+    },
+    {
+      "path": "/api/marketplace/outreach-followup-cron",
+      "schedule": "0 14 * * 1-5"
     }
   ]
 }
