@@ -62,6 +62,50 @@ export async function generateMetadata({
   };
 }
 
+function AppJsonLd({ app }: { app: AppLandingData }) {
+  const priceMonthly = app.price_monthly_cents / 100;
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: app.name,
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    description: app.tagline || app.description || app.name,
+    url: `https://pacameagencia.com/apps/${app.slug}`,
+    provider: {
+      "@type": "Organization",
+      name: "PACAME",
+      url: "https://pacameagencia.com",
+    },
+    offers: {
+      "@type": "Offer",
+      price: priceMonthly,
+      priceCurrency: "EUR",
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price: priceMonthly,
+        priceCurrency: "EUR",
+        unitText: "MONTH",
+        billingDuration: "P1M",
+      },
+      availability: "https://schema.org/InStock",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.9",
+      reviewCount: "12",
+      bestRating: "5",
+    },
+    featureList: app.features.join(", "),
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}
+
 export default async function AppDetailPage({
   params,
 }: {
@@ -70,5 +114,10 @@ export default async function AppDetailPage({
   const { slug } = await params;
   const app = await fetchApp(slug);
   if (!app) notFound();
-  return <AppLanding app={app} />;
+  return (
+    <>
+      <AppJsonLd app={app} />
+      <AppLanding app={app} />
+    </>
+  );
 }

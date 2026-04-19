@@ -12,6 +12,7 @@ import LoadingScreen from "@/components/effects/LoadingScreen";
 import ScrollProgress from "@/components/effects/ScrollProgress";
 import NoiseOverlay from "@/components/effects/NoiseOverlay";
 import BackToTop from "@/components/effects/BackToTop";
+import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -198,6 +199,7 @@ export default function RootLayout({
             }),
           }}
         />
+        <OrganizationJsonLd />
       </head>
       <body className="bg-pacame-black text-pacame-white font-body antialiased">
         <a

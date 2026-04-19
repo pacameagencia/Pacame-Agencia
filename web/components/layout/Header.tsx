@@ -22,6 +22,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import GlobalSearch from "@/components/search/GlobalSearch";
 
 // Categorias servicios (matchea DB service_categories slugs)
 const servicesMenu = [
@@ -63,8 +64,9 @@ const appsMenu = [
 
 const simpleLinks = [
   { href: "/planes", label: "Planes" },
-  { href: "/auditoria", label: "Auditoria Gratis" },
+  { href: "/casos", label: "Casos" },
   { href: "/blog", label: "Blog" },
+  { href: "/auditoria", label: "Gratis" },
   { href: "/contacto", label: "Contacto" },
 ];
 
@@ -325,8 +327,9 @@ export default function Header() {
             </AnimatePresence>
           </nav>
 
-          {/* CTA desktop */}
-          <div className="hidden lg:flex items-center">
+          {/* Search + CTA desktop */}
+          <div className="hidden lg:flex items-center gap-3">
+            <GlobalSearch />
             <Button
               variant="gradient"
               size="default"

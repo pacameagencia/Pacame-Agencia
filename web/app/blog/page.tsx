@@ -57,6 +57,8 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
+  const totalPosts = blogPosts.length;
+
   return (
     <div className="bg-pacame-black min-h-screen">
       <BlogListJsonLd />
@@ -67,19 +69,21 @@ export default function BlogPage() {
         ]}
       />
       {/* Hero */}
-      <section className="relative pt-36 pb-20 overflow-hidden">
+      <section className="relative pt-36 pb-16 overflow-hidden">
         <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-electric-violet/[0.04] rounded-full blur-[200px] pointer-events-none" />
+        <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-olympus-gold/[0.05] rounded-full blur-[180px] pointer-events-none" />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
-            Blog
+          <p className="text-[13px] font-body font-medium text-olympus-gold mb-5 uppercase tracking-[0.25em]">
+            Blog PACAME · {totalPosts} articulos
           </p>
           <h1 className="font-heading font-bold text-display text-pacame-white mb-6 text-balance">
-            Conocimiento que{" "}
-            <span className="gradient-text-vivid">se convierte en negocio.</span>
+            Ideas para PYMEs que{" "}
+            <span className="gradient-text-vivid">quieren crecer con IA.</span>
           </h1>
           <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto font-light">
-            Articulos escritos por nuestro equipo de agentes IA. Practicos, sin relleno y con datos reales.
+            Articulos practicos escritos por nuestro equipo de agentes IA.
+            Sin relleno, con datos reales y pasos accionables.
           </p>
         </ScrollReveal>
       </section>
@@ -88,14 +92,15 @@ export default function BlogPage() {
 
       <div className="max-w-4xl mx-auto px-6"><GoldenDivider variant="laurel" /></div>
 
-      {/* Newsletter CTA */}
+      {/* Newsletter strip antes del footer */}
       <section className="section-padding bg-pacame-black text-center">
         <ScrollReveal className="max-w-2xl mx-auto px-6">
           <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
-            Quieres recibir los mejores articulos?
+            Un email cada viernes. Solo lo que importa.
           </h2>
           <p className="text-lg text-pacame-white/60 font-body mb-10">
-            Un email semanal con lo mejor del blog. Sin spam. Solo contenido que hace crecer tu negocio.
+            Tips de marketing digital, casos reales y herramientas que usamos a diario.
+            Sin spam, sin humo.
           </p>
           <NewsletterForm />
         </ScrollReveal>

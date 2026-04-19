@@ -6,9 +6,31 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/dashboard/", "/api/", "/login"],
+        disallow: [
+          "/dashboard/",
+          "/api/",
+          "/portal/",
+          "/login",
+          "/monitoring",
+          "/docs/",
+          "/*?utm_*",
+          "/*?session_id=*",
+        ],
+      },
+      {
+        userAgent: "GPTBot",
+        allow: "/",
+      },
+      {
+        userAgent: "ClaudeBot",
+        allow: "/",
+      },
+      {
+        userAgent: "PerplexityBot",
+        allow: "/",
       },
     ],
     sitemap: "https://pacameagencia.com/sitemap.xml",
+    host: "https://pacameagencia.com",
   };
 }
