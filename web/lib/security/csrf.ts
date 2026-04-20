@@ -26,15 +26,23 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { randomBytes } from "node:crypto";
 
 export const CSRF_COOKIE = "pacame_csrf";
 export const CSRF_HEADER = "x-csrf-token";
 const CSRF_TTL_SECONDS = 30 * 24 * 3600;
 
-/** Genera un token aleatorio de 32 bytes hex. */
+/**
+ * Genera un token aleatorio de 32 bytes hex.
+ * Usa WebCrypto (globalThis.crypto.getRandomValues) — funciona en Node, Edge
+ * runtime y navegadores por igual. Evita `node:crypto` que rompe el build de
+ * middleware edge en Next 16.
+ */
 export function generateCsrfToken(): string {
-  return randomBytes(32).toString("hex");
+  const bytes = new Uint8Array(32);
+  globalThis.crypto.getRandomValues(bytes);
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 /**
