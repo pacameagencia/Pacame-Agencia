@@ -285,7 +285,8 @@ Responde SOLO JSON: {"subject": "...", "body": "..."}`;
     try {
       const res = await llmChat(
         [{ role: "user", content: prompt }],
-        { tier: "economy", maxTokens: 1200, agentId: "copy", source: "nurture" }
+        // Premium para personalizacion alta — output directo a leads
+        { tier: "premium", maxTokens: 1200, callSite: "nurture/personalize" }
       );
 
       const personalized = extractJSON(res.content);

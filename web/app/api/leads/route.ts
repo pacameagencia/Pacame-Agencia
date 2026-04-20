@@ -6,6 +6,7 @@ import { notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { notifyHotLead } from "@/lib/telegram";
 import { sendLeadWelcome, isWhatsAppConfigured } from "@/lib/whatsapp";
 import { fireSynapse, recordStimulus, startThoughtChain, rememberMemory } from "@/lib/neural";
+import { getLogger } from "@/lib/observability/logger";
 
 const leadSchema = z.object({
   name: z.string().min(2, "Nombre debe tener al menos 2 caracteres").max(100),
@@ -133,7 +134,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (dbError) {
-      console.error("Supabase error:", dbError);
+      getLogger().error({ err: dbError }, "Supabase error");
       // Aun con error de DB, intentamos n8n
     }
 

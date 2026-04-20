@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, MessageSquare } from "lucide-react";
+
+// ISR: FAQ — 1h cache
+export const revalidate = 3600;
 import { Button } from "@/components/ui/button";
 import FaqAccordion from "@/components/FaqAccordion";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";

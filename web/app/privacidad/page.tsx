@@ -2,10 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
+// ISR: politica de privacidad — 1h cache
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Politica de Privacidad — PACAME",
-  description: "Politica de privacidad y proteccion de datos de PACAME, conforme al RGPD.",
-  robots: { index: false, follow: false },
+  description:
+    "Politica de privacidad y proteccion de datos de PACAME Agencia Digital, conforme al RGPD, la LOPDGDD y la LSSI. Derechos del usuario, bases legales y encargados del tratamiento.",
+  alternates: { canonical: "https://pacameagencia.com/privacidad" },
+  robots: { index: true, follow: true },
 };
 
 export default function PrivacidadPage() {
@@ -18,105 +23,692 @@ export default function PrivacidadPage() {
         ]}
       />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="font-heading font-bold text-3xl text-pacame-white mb-8">
-          Politica de Privacidad
-        </h1>
-        <div className="prose prose-invert prose-sm max-w-none font-body text-pacame-white/70 space-y-6">
+        {/* Hero */}
+        <header className="mb-12">
+          <h1 className="font-heading font-bold text-4xl text-pacame-white mb-3">
+            Politica de Privacidad
+          </h1>
+          <p className="text-pacame-white/60 text-sm">
+            Ultima actualizacion: 19 abril 2026
+          </p>
+        </header>
 
-          <p className="text-pacame-white/60 text-xs">Ultima actualizacion: Abril 2026</p>
-
-          <h2 className="font-heading font-semibold text-lg text-pacame-white">1. Responsable del tratamiento</h2>
+        <div className="prose prose-invert prose-sm max-w-none font-body text-pacame-white/80 space-y-8 leading-relaxed">
           <p>
-            Pablo Calleja (&quot;PACAME&quot;)<br />
-            Email: <a href="mailto:hola@pacameagencia.com" className="text-electric-violet hover:underline">hola@pacameagencia.com</a><br />
-            Ubicacion: Madrid, Espana
+            En PACAME nos tomamos la privacidad muy en serio. Esta politica explica que
+            datos personales tratamos, con que finalidad, durante cuanto tiempo y con
+            quien los compartimos. Se aplica a todos los servicios prestados a traves
+            de <span className="text-pacame-white/90">pacameagencia.com</span>, el
+            marketplace de servicios digitales, las aplicaciones productizadas y los
+            planes mensuales.
           </p>
 
-          <h2 className="font-heading font-semibold text-lg text-pacame-white">2. Datos que recopilamos</h2>
-          <p>Recopilamos los siguientes datos personales cuando utilizas nuestros servicios:</p>
-          <ul className="list-disc list-inside space-y-1 text-pacame-white/60">
-            <li>Nombre y apellidos</li>
-            <li>Direccion de correo electronico</li>
-            <li>Numero de telefono (si lo proporcionas)</li>
-            <li>Nombre de empresa</li>
-            <li>Informacion sobre tu proyecto o necesidades digitales</li>
-            <li>Datos de navegacion (cookies analiticas, con tu consentimiento)</li>
-          </ul>
+          {/* 1 */}
+          <section>
+            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+              1. Responsable del tratamiento
+            </h2>
+            <ul className="list-none space-y-1 text-pacame-white/75">
+              <li>
+                <strong className="text-pacame-white">Titular:</strong> Pablo Calleja
+                (&quot;PACAME&quot; o &quot;PACAME Agencia Digital&quot;).
+              </li>
+              <li>
+                <strong className="text-pacame-white">NIF:</strong>{" "}
+                <span className="text-pacame-white/60">[NIF_PENDIENTE_PABLO]</span>
+              </li>
+              <li>
+                <strong className="text-pacame-white">Domicilio:</strong>{" "}
+                <span className="text-pacame-white/60">
+                  [DOMICILIO_FISCAL_PENDIENTE_PABLO]
+                </span>
+                , Madrid, Espana.
+              </li>
+              <li>
+                <strong className="text-pacame-white">Email de contacto:</strong>{" "}
+                <a
+                  href="mailto:hola@pacameagencia.com"
+                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  hola@pacameagencia.com
+                </a>
+              </li>
+              <li>
+                <strong className="text-pacame-white">WhatsApp:</strong> +34 722 669 381
+              </li>
+              <li>
+                <strong className="text-pacame-white">Delegado de proteccion de datos (DPO):</strong>{" "}
+                al tratarse de una empresa unipersonal que no realiza tratamientos a
+                gran escala de categorias especiales, PACAME no esta obligada a
+                designar un DPO formal conforme al articulo 37 del RGPD. Las
+                consultas relativas a proteccion de datos se canalizan a
+                <a
+                  href="mailto:hola@pacameagencia.com"
+                  className="ml-1 text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  hola@pacameagencia.com
+                </a>
+                .
+              </li>
+            </ul>
+          </section>
 
-          <h2 className="font-heading font-semibold text-lg text-pacame-white">3. Finalidad del tratamiento</h2>
-          <p>Utilizamos tus datos para:</p>
-          <ul className="list-disc list-inside space-y-1 text-pacame-white/60">
-            <li>Responder a tus consultas y solicitudes de presupuesto</li>
-            <li>Prestarte los servicios contratados</li>
-            <li>Enviarte comunicaciones comerciales (solo con tu consentimiento previo)</li>
-            <li>Mejorar nuestros servicios y la experiencia de usuario</li>
-          </ul>
+          {/* 2 */}
+          <section>
+            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+              2. Finalidades del tratamiento
+            </h2>
+            <p>
+              Tratamos datos personales unicamente para las finalidades legitimas y
+              explicitas descritas a continuacion, agrupadas por tipo de interesado:
+            </p>
 
-          <h2 className="font-heading font-semibold text-lg text-pacame-white">4. Base legal</h2>
-          <p>
-            El tratamiento de tus datos se basa en tu consentimiento explicito (al enviar el formulario de contacto),
-            la ejecucion de un contrato (cuando contratas nuestros servicios), y nuestro interes legitimo en mejorar
-            la calidad del servicio.
-          </p>
+            <h3 className="font-heading font-medium text-lg text-pacame-white mt-6 mb-2">
+              2.1. Clientes (contratacion de servicios)
+            </h3>
+            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+              <li>Gestion de la relacion contractual y prestacion de los servicios.</li>
+              <li>Facturacion, cobro y cumplimiento de obligaciones fiscales.</li>
+              <li>Comunicaciones operativas (entregas, revisiones, soporte).</li>
+              <li>Atencion al cliente y resolucion de incidencias.</li>
+              <li>
+                Envio de comunicaciones comerciales de servicios similares (articulo
+                21.2 LSSI) con posibilidad de oposicion en cualquier momento.
+              </li>
+            </ul>
 
-          <h2 className="font-heading font-semibold text-lg text-pacame-white">5. Uso de inteligencia artificial</h2>
-          <p>
-            PACAME utiliza agentes de inteligencia artificial para gestionar consultas, generar contenido y
-            optimizar servicios. Los datos que compartas pueden ser procesados por estos sistemas de IA.
-            Toda decision significativa es supervisada por un humano (Pablo Calleja).
-            En ningun caso se utilizan tus datos para entrenar modelos de IA de terceros.
-          </p>
+            <h3 className="font-heading font-medium text-lg text-pacame-white mt-6 mb-2">
+              2.2. Usuarios finales de aplicaciones productizadas
+            </h3>
+            <p>
+              Ciertas aplicaciones de PACAME (por ejemplo, el sistema de reservas
+              PACAME Agenda) son utilizadas por los usuarios finales de nuestros
+              clientes. En estos casos PACAME actua como{" "}
+              <strong className="text-pacame-white">encargado del tratamiento</strong>{" "}
+              en nombre del cliente (que es el responsable del tratamiento). Las
+              finalidades se limitan a ejecutar el servicio que el cliente ofrece a
+              sus propios usuarios.
+            </p>
 
-          <h2 className="font-heading font-semibold text-lg text-pacame-white">6. Almacenamiento y seguridad</h2>
-          <p>
-            Tus datos se almacenan en Supabase, con servidores en la Union Europea, con encriptacion en transito
-            y en reposo. Aplicamos medidas de seguridad tecnicas y organizativas para proteger tus datos.
-          </p>
+            <h3 className="font-heading font-medium text-lg text-pacame-white mt-6 mb-2">
+              2.3. Contactos comerciales y leads de prospeccion (outreach B2B)
+            </h3>
+            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+              <li>
+                Contacto comercial inicial dirigido a profesionales y empresas,
+                utilizando exclusivamente datos profesionales de fuentes publicas
+                (Google Maps, directorios sectoriales, webs corporativas).
+              </li>
+              <li>
+                Calificacion automatica del lead mediante IA supervisada por Pablo
+                Calleja.
+              </li>
+              <li>
+                Envio de propuestas personalizadas por email o WhatsApp Business.
+              </li>
+            </ul>
 
-          <h2 className="font-heading font-semibold text-lg text-pacame-white">7. Tus derechos</h2>
-          <p>Tienes derecho a:</p>
-          <ul className="list-disc list-inside space-y-1 text-pacame-white/60">
-            <li><strong className="text-pacame-white/80">Acceso:</strong> solicitar una copia de tus datos personales</li>
-            <li><strong className="text-pacame-white/80">Rectificacion:</strong> corregir datos inexactos</li>
-            <li><strong className="text-pacame-white/80">Supresion:</strong> solicitar la eliminacion de tus datos</li>
-            <li><strong className="text-pacame-white/80">Portabilidad:</strong> recibir tus datos en formato estructurado</li>
-            <li><strong className="text-pacame-white/80">Oposicion:</strong> oponerte al tratamiento de tus datos</li>
-            <li><strong className="text-pacame-white/80">Limitacion:</strong> restringir el tratamiento en determinadas circunstancias</li>
-          </ul>
-          <p>
-            Para ejercer cualquiera de estos derechos, escribe a{" "}
-            <a href="mailto:hola@pacameagencia.com" className="text-electric-violet hover:underline">hola@pacameagencia.com</a>.
-            Responderemos en un plazo maximo de 30 dias.
-          </p>
+            <h3 className="font-heading font-medium text-lg text-pacame-white mt-6 mb-2">
+              2.4. Suscriptores del newsletter y usuarios del formulario de contacto
+            </h3>
+            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+              <li>Responder a consultas realizadas a traves de formularios.</li>
+              <li>
+                Envio periodico de contenido sobre marketing digital e IA aplicada a
+                PYMEs (previo consentimiento explicito).
+              </li>
+            </ul>
+          </section>
 
-          <h2 className="font-heading font-semibold text-lg text-pacame-white">8. Cookies</h2>
-          <p>
-            Utilizamos cookies estrictamente necesarias para el funcionamiento del sitio.
-            Las cookies analiticas solo se activan con tu consentimiento explicito.
-            Puedes gestionar tus preferencias de cookies en cualquier momento.
-          </p>
+          {/* 3 */}
+          <section>
+            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+              3. Bases legales que legitiman el tratamiento
+            </h2>
+            <ul className="list-disc pl-6 space-y-2 text-pacame-white/70">
+              <li>
+                <strong className="text-pacame-white">Ejecucion de contrato</strong>{" "}
+                (art. 6.1.b RGPD): para clientes que han contratado cualquier
+                servicio, app o plan mensual. Incluye facturacion, soporte y
+                entregables.
+              </li>
+              <li>
+                <strong className="text-pacame-white">Consentimiento</strong> (art.
+                6.1.a RGPD): para suscripciones a newsletter, cookies no esenciales,
+                llamadas mediante agentes de voz IA y cualquier comunicacion
+                comercial fuera del supuesto del 21.2 LSSI.
+              </li>
+              <li>
+                <strong className="text-pacame-white">Interes legitimo</strong> (art.
+                6.1.f RGPD): contacto comercial B2B a profesionales en el ambito de
+                sus funciones, prevencion del fraude, mejora del servicio y
+                seguridad. En todos los casos PACAME realiza una ponderacion previa
+                para garantizar que prevalecen los intereses del responsable sobre
+                los derechos del interesado, y permite oposicion sencilla.
+              </li>
+              <li>
+                <strong className="text-pacame-white">Obligacion legal</strong> (art.
+                6.1.c RGPD): cumplimiento de normativa fiscal, contable y mercantil
+                espanola.
+              </li>
+            </ul>
+          </section>
 
-          <h2 className="font-heading font-semibold text-lg text-pacame-white">9. Terceros</h2>
-          <p>Compartimos datos con los siguientes proveedores, todos conforme al RGPD:</p>
-          <ul className="list-disc list-inside space-y-1 text-pacame-white/60">
-            <li>Supabase (base de datos — servidores UE)</li>
-            <li>Stripe (procesamiento de pagos)</li>
-            <li>Anthropic/Claude (procesamiento de IA)</li>
-            <li>Vercel (alojamiento web)</li>
-          </ul>
+          {/* 4 */}
+          <section>
+            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+              4. Datos que recogemos
+            </h2>
 
-          <h2 className="font-heading font-semibold text-lg text-pacame-white">10. Contacto</h2>
-          <p>
-            Si tienes preguntas sobre esta politica o sobre el tratamiento de tus datos, contacta con nosotros
-            en <a href="mailto:hola@pacameagencia.com" className="text-electric-violet hover:underline">hola@pacameagencia.com</a>.
-          </p>
-          <p>
-            Tambien puedes presentar una reclamacion ante la Agencia Espanola de Proteccion de Datos (AEPD)
-            en <span className="text-pacame-white/60">www.aepd.es</span>.
-          </p>
+            <h3 className="font-heading font-medium text-lg text-pacame-white mt-4 mb-2">
+              4.1. Clientes
+            </h3>
+            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+              <li>Nombre y apellidos, razon social, NIF/CIF.</li>
+              <li>Email, telefono, direccion postal y fiscal.</li>
+              <li>
+                Informacion sobre el negocio (sector, tamano, objetivos, URL, redes).
+              </li>
+              <li>
+                Datos de pago gestionados exclusivamente por Stripe (PACAME no
+                almacena numeros de tarjeta).
+              </li>
+              <li>
+                Credenciales o accesos que el cliente decida compartir para ejecutar
+                el encargo (se rigen por contrato de encargo de tratamiento y
+                politica de aislamiento).
+              </li>
+            </ul>
 
-          <div className="pt-8 border-t border-white/[0.06]">
-            <Link href="/" className="text-sm text-electric-violet hover:underline font-body">
+            <h3 className="font-heading font-medium text-lg text-pacame-white mt-6 mb-2">
+              4.2. Usuarios finales de apps
+            </h3>
+            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+              <li>Nombre, email y telefono cuando el cliente asi lo configura.</li>
+              <li>Metadata de uso (reservas, mensajes, interacciones).</li>
+            </ul>
+
+            <h3 className="font-heading font-medium text-lg text-pacame-white mt-6 mb-2">
+              4.3. Contactos B2B de prospeccion
+            </h3>
+            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+              <li>Nombre del negocio, email corporativo y telefono profesional.</li>
+              <li>Informacion publica accesible en fuentes abiertas.</li>
+            </ul>
+
+            <h3 className="font-heading font-medium text-lg text-pacame-white mt-6 mb-2">
+              4.4. Navegacion
+            </h3>
+            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+              <li>Direccion IP, identificador de sesion, agente de usuario.</li>
+              <li>Cookies tecnicas, analiticas y de funcionalidad (ver seccion 10).</li>
+            </ul>
+          </section>
+
+          {/* 5 */}
+          <section>
+            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+              5. Categorias de destinatarios y encargados del tratamiento
+            </h2>
+            <p>
+              Para prestar los servicios de forma adecuada, PACAME contrata a
+              terceros que actuan como encargados del tratamiento. Todos ellos estan
+              sometidos a contrato de encargo (art. 28 RGPD):
+            </p>
+            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+              <li>
+                <strong className="text-pacame-white">Supabase</strong> (base de
+                datos, autenticacion) — servidores en la UE (region eu-west-3).{" "}
+                <a
+                  href="https://supabase.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  Politica
+                </a>
+                .
+              </li>
+              <li>
+                <strong className="text-pacame-white">Stripe Payments Europe</strong>{" "}
+                (pagos, certificado PCI-DSS Level 1).{" "}
+                <a
+                  href="https://stripe.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  Politica
+                </a>
+                .
+              </li>
+              <li>
+                <strong className="text-pacame-white">Resend</strong> (envio de
+                emails transaccionales).{" "}
+                <a
+                  href="https://resend.com/legal/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  Politica
+                </a>
+                .
+              </li>
+              <li>
+                <strong className="text-pacame-white">Meta Platforms Ireland</strong>{" "}
+                (WhatsApp Business API, App PACAME Contact).{" "}
+                <a
+                  href="https://www.whatsapp.com/legal/business-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  Politica
+                </a>
+                .
+              </li>
+              <li>
+                <strong className="text-pacame-white">Vapi</strong> (llamadas de voz
+                con IA, solo con opt-in explicito).{" "}
+                <a
+                  href="https://vapi.ai/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  Politica
+                </a>
+                .
+              </li>
+              <li>
+                <strong className="text-pacame-white">Upstash</strong> (rate limiting
+                Redis).{" "}
+                <a
+                  href="https://upstash.com/trust/privacy.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  Politica
+                </a>
+                .
+              </li>
+              <li>
+                <strong className="text-pacame-white">Sentry</strong> (monitorizacion
+                de errores, PII redactada en origen).{" "}
+                <a
+                  href="https://sentry.io/privacy/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  Politica
+                </a>
+                .
+              </li>
+              <li>
+                <strong className="text-pacame-white">Apify</strong> (scraping de
+                datos publicos B2B — Google Maps).{" "}
+                <a
+                  href="https://apify.com/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  Politica
+                </a>
+                .
+              </li>
+              <li>
+                <strong className="text-pacame-white">Anthropic</strong>,{" "}
+                <strong className="text-pacame-white">OpenAI</strong> y{" "}
+                <strong className="text-pacame-white">Nebius</strong> (modelos de
+                lenguaje LLM utilizados por los agentes internos). Los proveedores
+                confirman por contrato que los datos transmitidos no se utilizan
+                para entrenamiento. Politicas:{" "}
+                <a
+                  href="https://www.anthropic.com/legal/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  Anthropic
+                </a>
+                ,{" "}
+                <a
+                  href="https://openai.com/policies/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  OpenAI
+                </a>
+                ,{" "}
+                <a
+                  href="https://nebius.com/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  Nebius
+                </a>
+                .
+              </li>
+              <li>
+                <strong className="text-pacame-white">Vercel</strong> (hosting del
+                frontend, CDN).{" "}
+                <a
+                  href="https://vercel.com/legal/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                >
+                  Politica
+                </a>
+                .
+              </li>
+            </ul>
+            <p className="mt-4">
+              Tambien comunicamos datos a autoridades publicas cuando existe
+              obligacion legal (Agencia Tributaria, Seguridad Social, Cuerpos y
+              Fuerzas de Seguridad a requerimiento judicial).
+            </p>
+          </section>
+
+          {/* 6 */}
+          <section>
+            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+              6. Transferencias internacionales de datos
+            </h2>
+            <p>
+              Algunos proveedores pueden procesar datos fuera del Espacio Economico
+              Europeo (principalmente Estados Unidos): Stripe, Sentry, Apify,
+              Anthropic, OpenAI, Nebius y Vapi. En todos los casos las
+              transferencias se protegen mediante:
+            </p>
+            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+              <li>
+                Las <strong className="text-pacame-white">Clausulas Contractuales
+                Tipo</strong> (SCC, Standard Contractual Clauses) aprobadas por la
+                Comision Europea.
+              </li>
+              <li>
+                Medidas complementarias tecnicas y organizativas (cifrado en
+                transito y reposo, segregacion logica, minimizacion de datos).
+              </li>
+              <li>
+                Certificaciones equivalentes cuando procede (por ejemplo, el EU-US
+                Data Privacy Framework cuando el proveedor esta adherido).
+              </li>
+            </ul>
+            <p>
+              El usuario puede solicitar copia de las garantias aplicables escribiendo
+              a{" "}
+              <a
+                href="mailto:hola@pacameagencia.com"
+                className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+              >
+                hola@pacameagencia.com
+              </a>
+              .
+            </p>
+          </section>
+
+          {/* 7 */}
+          <section>
+            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+              7. Plazos de conservacion
+            </h2>
+            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+              <li>
+                <strong className="text-pacame-white">Clientes activos:</strong>{" "}
+                mientras dure la relacion contractual.
+              </li>
+              <li>
+                <strong className="text-pacame-white">Clientes inactivos:</strong>{" "}
+                hasta 5 anos tras la ultima interaccion (art. 30 del Codigo de
+                Comercio y LOPDGDD para obligaciones fiscales).
+              </li>
+              <li>
+                <strong className="text-pacame-white">Leads de prospeccion B2B:</strong>{" "}
+                hasta 2 anos desde el ultimo contacto, salvo oposicion anterior.
+              </li>
+              <li>
+                <strong className="text-pacame-white">Newsletter:</strong> hasta que
+                el interesado revoque el consentimiento (cada email incluye enlace
+                de baja).
+              </li>
+              <li>
+                <strong className="text-pacame-white">Solicitudes de supresion RGPD:</strong>{" "}
+                los datos se eliminan en un plazo maximo de 30 dias desde la
+                confirmacion, salvo que una obligacion legal obligue a conservarlos
+                (en cuyo caso se bloquean).
+              </li>
+              <li>
+                <strong className="text-pacame-white">Logs tecnicos y seguridad:</strong>{" "}
+                hasta 12 meses.
+              </li>
+            </ul>
+          </section>
+
+          {/* 8 */}
+          <section>
+            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+              8. Derechos del usuario
+            </h2>
+            <p>
+              El usuario puede ejercer en cualquier momento los siguientes derechos
+              reconocidos por el RGPD y la LOPDGDD:
+            </p>
+            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+              <li>
+                <strong className="text-pacame-white">Acceso:</strong> obtener
+                confirmacion y copia de los datos tratados.
+              </li>
+              <li>
+                <strong className="text-pacame-white">Rectificacion:</strong>{" "}
+                corregir datos inexactos o incompletos.
+              </li>
+              <li>
+                <strong className="text-pacame-white">Supresion</strong>{" "}
+                (&quot;derecho al olvido&quot;): solicitar la eliminacion cuando ya no
+                sean necesarios.
+              </li>
+              <li>
+                <strong className="text-pacame-white">Oposicion:</strong> oponerse
+                al tratamiento basado en interes legitimo o marketing directo.
+              </li>
+              <li>
+                <strong className="text-pacame-white">Limitacion:</strong> restringir
+                el tratamiento en los supuestos del art. 18 RGPD.
+              </li>
+              <li>
+                <strong className="text-pacame-white">Portabilidad:</strong> recibir
+                los datos en formato estructurado, de uso comun y lectura mecanica.
+              </li>
+              <li>
+                <strong className="text-pacame-white">
+                  No ser objeto de decisiones automatizadas
+                </strong>{" "}
+                con efectos juridicos significativos.
+              </li>
+              <li>
+                <strong className="text-pacame-white">Retirada del consentimiento</strong>{" "}
+                en cualquier momento, sin efectos retroactivos.
+              </li>
+            </ul>
+            <p className="mt-4">
+              Los clientes pueden gestionar buena parte de estos derechos de forma
+              autonoma desde su panel:{" "}
+              <Link
+                href="/portal/privacy"
+                className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+              >
+                /portal/privacy
+              </Link>
+              . Para cualquier otro caso basta con escribir a{" "}
+              <a
+                href="mailto:hola@pacameagencia.com"
+                className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+              >
+                hola@pacameagencia.com
+              </a>{" "}
+              acreditando la identidad. Responderemos en un plazo maximo de 30 dias
+              (prorrogable a 60 en casos complejos).
+            </p>
+          </section>
+
+          {/* 9 */}
+          <section>
+            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+              9. Decisiones automatizadas y elaboracion de perfiles
+            </h2>
+            <p>
+              PACAME utiliza agentes de inteligencia artificial para tareas
+              operativas: generar borradores de propuestas comerciales, calificar
+              leads entrantes, redactar contenido, sugerir entregables tecnicos o
+              asistir en la atencion al cliente. Es importante que el usuario sepa
+              lo siguiente:
+            </p>
+            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+              <li>
+                Ninguna decision con efectos juridicos significativos o que afecte
+                de forma equivalente al interesado se toma de forma totalmente
+                automatizada.
+              </li>
+              <li>
+                Pablo Calleja supervisa personalmente el output de los agentes
+                antes de cualquier comunicacion relevante al cliente.
+              </li>
+              <li>
+                Los datos transmitidos a los proveedores de LLM no se utilizan para
+                entrenar sus modelos (clausula contractual explicita).
+              </li>
+              <li>
+                El usuario tiene derecho a solicitar intervencion humana y a
+                impugnar cualquier decision apoyada en IA.
+              </li>
+            </ul>
+          </section>
+
+          {/* 10 */}
+          <section>
+            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+              10. Cookies
+            </h2>
+            <p>
+              El sitio utiliza cookies tecnicas, analiticas y de funcionalidad.
+              Consulta el detalle completo y las opciones de configuracion en
+              nuestra{" "}
+              <Link
+                href="/cookies"
+                className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+              >
+                Politica de Cookies
+              </Link>
+              .
+            </p>
+          </section>
+
+          {/* 11 */}
+          <section>
+            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+              11. Menores de edad
+            </h2>
+            <p>
+              Los servicios de PACAME no estan dirigidos a menores de 16 anos. No
+              recabamos conscientemente datos de menores de esa edad. Si detectamos
+              que un registro pertenece a un menor, procedemos a su eliminacion
+              inmediata. Si un tutor tiene sospechas, puede contactar con nosotros a{" "}
+              <a
+                href="mailto:hola@pacameagencia.com"
+                className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+              >
+                hola@pacameagencia.com
+              </a>
+              .
+            </p>
+          </section>
+
+          {/* 12 */}
+          <section>
+            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+              12. Cambios en esta politica
+            </h2>
+            <p>
+              PACAME puede actualizar esta politica para reflejar cambios
+              normativos, tecnicos u operativos. La version vigente siempre estara
+              publicada en esta URL con su fecha de ultima actualizacion. Si el
+              cambio es material (nuevos tratamientos, nuevos encargados relevantes,
+              cambios en bases legales), notificaremos a los clientes activos por
+              email con una antelacion minima de 15 dias.
+            </p>
+          </section>
+
+          {/* 13 */}
+          <section>
+            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+              13. Reclamaciones ante la autoridad de control
+            </h2>
+            <p>
+              Si el usuario considera que el tratamiento de sus datos no se ajusta
+              a la normativa vigente, tiene derecho a presentar una reclamacion
+              ante la{" "}
+              <strong className="text-pacame-white">
+                Agencia Espanola de Proteccion de Datos (AEPD)
+              </strong>
+              , con domicilio en calle Jorge Juan 6, 28001 Madrid, o en{" "}
+              <a
+                href="https://www.aepd.es"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+              >
+                www.aepd.es
+              </a>
+              . Antes de acudir a la autoridad de control, agradecemos al usuario
+              que intente resolver la cuestion con nosotros a traves de{" "}
+              <a
+                href="mailto:hola@pacameagencia.com"
+                className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+              >
+                hola@pacameagencia.com
+              </a>
+              .
+            </p>
+          </section>
+
+          {/* Cross-links */}
+          <div className="pt-10 border-t border-white/[0.06] flex flex-wrap gap-4">
+            <Link
+              href="/aviso-legal"
+              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+            >
+              Aviso Legal
+            </Link>
+            <Link
+              href="/terminos-servicio"
+              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+            >
+              Terminos de Servicio
+            </Link>
+            <Link
+              href="/cookies"
+              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+            >
+              Cookies
+            </Link>
+            <Link
+              href="/accesibilidad"
+              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+            >
+              Accesibilidad
+            </Link>
+            <Link
+              href="/"
+              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+            >
               Volver al inicio
             </Link>
           </div>

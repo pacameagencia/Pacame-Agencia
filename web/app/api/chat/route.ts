@@ -3,7 +3,7 @@ import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { fireSynapse, recordStimulus, rememberMemory } from "@/lib/neural";
-import { llmChat, type LLMTier, type LLMMessage } from "@/lib/llm";
+import { llmChat, type LLMTier } from "@/lib/llm";
 
 // Rate limit: max 30 requests per 10 minutes (Claude API costs money)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -24,6 +24,7 @@ function isRateLimited(key: string): boolean {
 const supabase = createServerSupabase();
 
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
+const CLAUDE_API_URL = "https://api.anthropic.com/v1/messages";
 
 // Shared system context — every agent knows it's part of a REAL deployed platform
 const SYSTEM_CONTEXT = `CONTEXTO DEL SISTEMA PACAME (lee esto antes de responder):
@@ -85,16 +86,16 @@ APIs PENDIENTES DE CONFIGURAR (codigo 100% listo, falta que Pablo meta la API ke
 
 // Tier routing: premium = Claude Sonnet, standard = Nebius DeepSeek V3.2 (con fallback a Claude)
 const AGENT_CHAT_TIER: Record<string, LLMTier> = {
-  DIOS: "premium",     // Orchestrator needs reasoning → Claude
-  SAGE: "premium",     // Strategy needs depth → Claude
-  NOVA: "premium",     // Creative needs quality → Claude
-  ATLAS: "standard",   // SEO → Nebius DeepSeek V3.2
-  NEXUS: "premium",    // Growth strategy → Claude
-  PIXEL: "premium",    // Code generation → Claude
-  CORE: "premium",     // Backend code → Claude
-  PULSE: "standard",   // Social media → Nebius DeepSeek V3.2
-  COPY: "standard",    // Copywriting → Nebius DeepSeek V3.2
-  LENS: "standard",    // Analytics → Nebius DeepSeek V3.2
+  DIOS: "reasoning",   // Orchestrator → Opus extended thinking (decisiones criticas)
+  SAGE: "premium",     // Strategy → Claude Sonnet
+  NOVA: "premium",     // Creative → Claude Sonnet
+  ATLAS: "premium",    // SEO → Claude Sonnet (antes standard — upgrade)
+  NEXUS: "premium",    // Growth → Claude Sonnet
+  PIXEL: "premium",    // Code → Claude Sonnet
+  CORE: "premium",     // Backend → Claude Sonnet
+  PULSE: "premium",    // Social (antes standard — upgrade, cliente-facing)
+  COPY: "premium",     // Copy (antes standard — upgrade, cliente-facing)
+  LENS: "premium",     // Analytics (antes standard — upgrade, insights cliente)
 };
 
 const agentPrompts: Record<string, { role: string; color: string; prompt: string }> = {
@@ -416,19 +417,18 @@ export async function POST(request: NextRequest) {
 
   try {
     const tier: LLMTier = AGENT_CHAT_TIER[agent.toUpperCase()] || "premium";
-    const llmMessages: LLMMessage[] = [
-      { role: "system", content: SYSTEM_CONTEXT + agentConfig.prompt },
-      ...messages.map((m) => ({ role: m.role, content: m.content })),
-    ];
-
-    const result = await llmChat(llmMessages, {
-      tier,
-      maxTokens: 2048,
-      agentId: agent.toLowerCase(),
-      source: "chat",
-      metadata: { conversation_id: convId },
-    });
-    const assistantMessage = result.content || "Sin respuesta";
+    const llmResult = await llmChat(
+      [
+        { role: "system", content: SYSTEM_CONTEXT + agentConfig.prompt },
+        ...messages,
+      ],
+      { tier, maxTokens: 2048, callSite: `chat/agent_${agent.toLowerCase()}` }
+    );
+    const assistantMessage = llmResult.content || "Sin respuesta";
+    const data = {
+      model: llmResult.model,
+      usage: { input_tokens: llmResult.tokensIn, output_tokens: llmResult.tokensOut },
+    };
 
     // Save assistant message to conversation metadata
     if (convId) {
@@ -445,8 +445,8 @@ export async function POST(request: NextRequest) {
           role: "assistant",
           content: assistantMessage,
           agent: agent.toUpperCase(),
-          model: result.model,
-          tokens: result.tokensOut,
+          model: data.model,
+          tokens: data.usage?.output_tokens || 0,
           ts: new Date().toISOString(),
         });
         supabase.from("conversations").update({
@@ -464,7 +464,7 @@ export async function POST(request: NextRequest) {
       type: "update",
       title: `Consulta respondida`,
       description: `${message.slice(0, 100)}${message.length > 100 ? "..." : ""}`,
-      metadata: { tokens: result.tokensOut, model: result.model, provider: result.provider, conversation_id: convId },
+      metadata: { tokens: data.usage?.output_tokens, model: data.model, conversation_id: convId },
     });
 
     // Neural: registrar estimulo del usuario y sinapsis DIOS→agente
@@ -475,7 +475,7 @@ export async function POST(request: NextRequest) {
       agentId: agentLower,
       type: "episodic",
       title: `Chat: ${message.slice(0, 60)}`,
-      content: `Consulta respondida. Tokens: ${result.tokensOut}. Modelo: ${result.model} (${result.provider}).`,
+      content: `Consulta respondida. Tokens: ${data.usage?.output_tokens || 0}. Modelo: ${data.model}.`,
       importance: 0.3,
       tags: ["chat", "consulta"],
     });
@@ -483,14 +483,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       message: assistantMessage,
       agent: agent.toUpperCase(),
-      model: result.model,
-      provider: result.provider,
-      usage: { input_tokens: result.tokensIn, output_tokens: result.tokensOut },
+      model: data.model,
+      usage: data.usage,
       conversation_id: convId,
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "Error al conectar con LLM", details: String(error) },
+      { error: "Error al conectar con Claude API", details: String(error) },
       { status: 500 }
     );
   }

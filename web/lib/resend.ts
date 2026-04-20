@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { getLogger } from "@/lib/observability/logger";
 
 // Build-time tolerant: placeholder key avoids throwing during page-data collection.
 // Runtime calls still check RESEND_API_KEY before sending.
@@ -61,7 +62,7 @@ export async function sendEmail({
   unsubscribe = true,
 }: SendEmailParams): Promise<string | null> {
   if (!process.env.RESEND_API_KEY) {
-    console.error("[Resend] RESEND_API_KEY not configured");
+    getLogger().error("[Resend] RESEND_API_KEY not configured");
     return null;
   }
 
@@ -89,13 +90,13 @@ export async function sendEmail({
     });
 
     if (error) {
-      console.error("[Resend] Error:", error);
+      getLogger().error({ err: error }, "[Resend] Error");
       return null;
     }
 
     return data?.id || null;
   } catch (err) {
-    console.error("[Resend] Exception:", err);
+    getLogger().error({ err }, "[Resend] Exception");
     return null;
   }
 }

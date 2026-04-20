@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+
+// ISR: portfolio — 1h cache
+export const revalidate = 3600;
+
 import {
   ArrowRight, TrendingUp, Clock, Star,
   Monitor, Search, Share2, Megaphone, Palette, MessageSquare,

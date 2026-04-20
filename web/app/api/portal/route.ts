@@ -4,6 +4,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { sendEmail, wrapEmailTemplate } from "@/lib/resend";
 import crypto from "crypto";
 import { z } from "zod/v4";
+import { getLogger } from "@/lib/observability/logger";
 
 const requestAccessSchema = z.object({
   action: z.literal("request_access"),
@@ -408,7 +409,7 @@ export async function PATCH(request: NextRequest) {
           .eq("client_id", client.id);
 
         if (error) {
-          console.error("Update brand settings error:", error);
+          getLogger().error({ err: error }, "Update brand settings error");
           return NextResponse.json({ error: "Error al guardar ajustes" }, { status: 500 });
         }
       } else {
@@ -417,7 +418,7 @@ export async function PATCH(request: NextRequest) {
           .insert({ client_id: client.id, ...updateData });
 
         if (error) {
-          console.error("Insert brand settings error:", error);
+          getLogger().error({ err: error }, "Insert brand settings error");
           return NextResponse.json({ error: "Error al crear ajustes" }, { status: 500 });
         }
       }
@@ -440,7 +441,7 @@ export async function PATCH(request: NextRequest) {
         .eq("id", client.id);
 
       if (error) {
-        console.error("Complete onboarding error:", error);
+        getLogger().error({ err: error }, "Complete onboarding error");
         return NextResponse.json({ error: "Error al completar onboarding" }, { status: 500 });
       }
 
@@ -449,7 +450,7 @@ export async function PATCH(request: NextRequest) {
 
     return NextResponse.json({ error: "Accion no valida" }, { status: 400 });
   } catch (err) {
-    console.error("PATCH portal error:", err);
+    getLogger().error({ err }, "PATCH portal error");
     return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
   }
 }

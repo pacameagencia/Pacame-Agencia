@@ -1,20 +1,35 @@
 /**
- * PACAME — Dispatcher LLM Unificado
+ * PACAME — Dispatcher LLM Unificado (quality-first)
  *
- * Enruta tareas al modelo mas eficiente segun coste/calidad.
- * Fallback automatico: Nebius → Claude Haiku si falla.
+ * Routing segun (tier, strategy):
+ *   reasoning → Claude Opus extended thinking → Nebius Qwen-80B-Thinking fallback
+ *   titan     → Claude Opus primary → Nebius Kimi-K2.5 fallback (quality-first)
+ *   premium   → Claude Sonnet primary → Nebius Qwen-235B fallback (quality-first)
+ *   standard  → Nebius Qwen-80B primary → Claude Haiku fallback
+ *   economy   → Gemma self-hosted → Nebius Qwen-30B → Claude Haiku
  *
- * Tiers:
- *   titan   → Claude Opus/Sonnet (estrategia, decisiones criticas)
- *   premium → Claude Sonnet (propuestas, auditorias complejas)
- *   standard → Nebius DeepSeek/Qwen (content, outreach, copy)
- *   economy → Nebius Llama 8B (clasificacion, DMs, personalizacion)
+ * cost-first (opt-in): titan/premium pasan a Nebius primary.
+ *
+ * Observabilidad: cada call se registra en `llm_calls` via recordLlmCall (async fire-and-forget).
+ * Budget: cada call verifica cap diario por tier; si se excede, degrada al tier inferior.
  */
 
-import { nebiusChat, NEBIUS_MODELS, type NebiusMessage } from "./nebius";
-import { createServerSupabase } from "./supabase/server";
+import { nebiusChat, type NebiusMessage } from "./nebius";
+import { gemmaChat, type GemmaMessage } from "./gemma";
+import { getLogger } from "@/lib/observability/logger";
+import {
+  resolveTierToModel,
+  resolveStrategy,
+  degradeTier,
+  type LLMTier,
+  type LLMStrategy,
+  type LLMProvider,
+  type ResolverEnv,
+} from "./llm/resolver";
+import { recordLlmCall, estimateCostUsd } from "./llm/observability";
+import { checkBudget, LlmBudgetExceeded } from "./llm/budget-guard";
 
-export type LLMTier = "titan" | "premium" | "standard" | "economy";
+export type { LLMTier, LLMStrategy } from "./llm/resolver";
 
 export interface LLMMessage {
   role: "system" | "user" | "assistant";
@@ -25,179 +40,273 @@ export interface LLMOptions {
   tier: LLMTier;
   maxTokens?: number;
   temperature?: number;
+  /** Override strategy por call (default: env LLM_STRATEGY o quality-first) */
+  strategy?: LLMStrategy;
   /** Forzar proveedor (omitir routing) */
-  forceProvider?: "claude" | "nebius";
-  /** Tracking: agente que origina la llamada (para observabilidad) */
+  forceProvider?: LLMProvider;
+  /** Saltar Gemma aunque el tier sea economy */
+  skipGemma?: boolean;
+  /** Saltar budget check (emergencia) */
+  skipBudgetCheck?: boolean;
+  /** Etiqueta para observability (ej. "outreach/cold_email") */
+  callSite?: string;
+  /** Cliente/actor para attribution */
+  actorId?: string | null;
+  /**
+   * Compat retro (pre-Sprint 17): alias de callSite cuando se quiere
+   * preservar el agente origen ("copy", "atlas", ...). Se mapea a callSite
+   * si callSite no esta definido.
+   */
   agentId?: string;
-  /** Tracking: origen de la llamada (chat | cron | proposal | webhook | ...) */
+  /** Compat retro: alias de callSite (origen chat|cron|proposal|webhook...) */
   source?: string;
-  /** Metadata extra para persistir en agent_llm_usage */
+  /** Metadata extra para llm_calls.metadata */
   metadata?: Record<string, unknown>;
 }
 
 export interface LLMResult {
   content: string;
-  provider: "claude" | "nebius" | "gemma";
+  provider: LLMProvider;
   model: string;
   tokensIn: number;
   tokensOut: number;
+  tokensThinking?: number;
+  /** Extended thinking content (solo reasoning tier + Claude) */
+  thinkingContent?: string;
   latencyMs: number;
   fallback: boolean;
+  tier: LLMTier;
+  strategy: LLMStrategy;
+  costUsd: number;
+  degraded?: LLMTier | null;
 }
 
-const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY || "";
-
-/** Modelo Nebius por tier */
-const NEBIUS_TIER_MODELS: Record<"standard" | "economy", string> = {
-  // Standard: deepseek-v3.2 regular (la variante -fast tiene rate limit
-  // agresivo en nuestra cuenta y devolvia 429). La regular funciona sin
-  // restricciones y cuesta menos, solo es un pelin mas lenta.
-  standard: NEBIUS_MODELS["deepseek-v3.2"],
-  economy: NEBIUS_MODELS["llama-3.1-8b"],
-};
-
-/** Modelos Nebius alternativos para retry si el principal devuelve 429 */
-const NEBIUS_STANDARD_FALLBACK = NEBIUS_MODELS["llama-3.3-70b"];
-
-/** Modelo Claude por tier */
-const CLAUDE_TIER_MODELS: Record<LLMTier, string> = {
-  titan: "claude-sonnet-4-6",
-  premium: "claude-sonnet-4-6",
-  standard: "claude-haiku-4-5-20251001",
-  economy: "claude-haiku-4-5-20251001",
-};
-
-// -------------------------------------------------------------------
-// PRICING — USD per 1M tokens (input / output). Valores aproximados
-// para estimacion de coste en dashboard de observabilidad.
-// -------------------------------------------------------------------
-const PRICING_USD_PER_1M: Record<string, { in: number; out: number }> = {
-  // Claude
-  "claude-sonnet-4-6":          { in: 3.0,  out: 15.0 },
-  "claude-haiku-4-5-20251001":  { in: 1.0,  out: 5.0 },
-  // Nebius — precios publicos aproximados (input / output por 1M tokens)
-  "deepseek-ai/DeepSeek-V3.2":                { in: 0.30, out: 1.00 },
-  "deepseek-ai/DeepSeek-V3.2-fast":           { in: 0.40, out: 1.30 },
-  "meta-llama/Meta-Llama-3.1-8B-Instruct":    { in: 0.03, out: 0.09 },
-  "meta-llama/Llama-3.3-70B-Instruct":        { in: 0.13, out: 0.40 },
-  "Qwen/Qwen3-32B":                           { in: 0.10, out: 0.30 },
-  "Qwen/Qwen3-30B-A3B-Instruct-2507":         { in: 0.10, out: 0.30 },
-};
-
-function estimateCostUSD(model: string, tokensIn: number, tokensOut: number): number {
-  const p = PRICING_USD_PER_1M[model];
-  if (!p) return 0;
-  return +(((tokensIn * p.in) + (tokensOut * p.out)) / 1_000_000).toFixed(6);
-}
-
-async function logUsage(
-  result: LLMResult,
-  opts: LLMOptions,
-): Promise<void> {
-  try {
-    const supabase = createServerSupabase();
-    const cost = estimateCostUSD(result.model, result.tokensIn, result.tokensOut);
-    await supabase.from("agent_llm_usage").insert({
-      agent_id: opts.agentId || "unknown",
-      provider: result.provider,
-      model: result.model,
-      tier: opts.tier,
-      tokens_in: result.tokensIn,
-      tokens_out: result.tokensOut,
-      cost_usd: cost,
-      latency_ms: result.latencyMs,
-      fallback: result.fallback,
-      source: opts.source || null,
-      metadata: opts.metadata || {},
-    });
-  } catch {
-    // Logging nunca rompe el flujo principal
-  }
+function getClaudeApiKey(): string {
+  return process.env.CLAUDE_API_KEY || "";
 }
 
 /**
- * Llamada unificada a LLM con routing y fallback automatico.
- * Ademas persiste cada llamada en `agent_llm_usage` para el dashboard
- * de observabilidad (tokens, coste USD, latencia, fallbacks).
+ * Entry point unificado.
+ * Maneja: strategy resolution, budget, provider fallback chain, observability,
+ * auto-degrade on budget exceeded.
  */
 export async function llmChat(
   messages: LLMMessage[],
   opts: LLMOptions
 ): Promise<LLMResult> {
-  const result = await llmChatInternal(messages, opts);
-  // Fire-and-forget: no bloquea el flujo principal
-  logUsage(result, opts);
-  return result;
-}
+  const startAll = Date.now();
+  const {
+    maxTokens = 1024,
+    temperature = 0.7,
+    forceProvider,
+    skipGemma,
+    skipBudgetCheck,
+    actorId = null,
+    metadata,
+  } = opts;
 
-async function llmChatInternal(
-  messages: LLMMessage[],
-  opts: LLMOptions
-): Promise<LLMResult> {
-  const { tier, maxTokens = 1024, temperature = 0.7, forceProvider } = opts;
+  // callSite = explicit > agentId/source combo (compat retro) > "unknown"
+  const callSite =
+    opts.callSite ||
+    [opts.agentId, opts.source].filter(Boolean).join("/") ||
+    "unknown";
 
-  // Titan/Premium → Claude directo (sin fallback a Nebius)
-  if ((tier === "titan" || tier === "premium") && forceProvider !== "nebius") {
-    return callClaude(messages, CLAUDE_TIER_MODELS[tier], maxTokens, temperature);
-  }
+  const envShim: ResolverEnv = {
+    CLAUDE_MODEL_REASONING: process.env.CLAUDE_MODEL_REASONING,
+    CLAUDE_MODEL_TITAN: process.env.CLAUDE_MODEL_TITAN,
+    CLAUDE_MODEL_PREMIUM: process.env.CLAUDE_MODEL_PREMIUM,
+    CLAUDE_MODEL_STANDARD: process.env.CLAUDE_MODEL_STANDARD,
+    CLAUDE_MODEL_ECONOMY: process.env.CLAUDE_MODEL_ECONOMY,
+    NEBIUS_MODEL_REASONING: process.env.NEBIUS_MODEL_REASONING,
+    NEBIUS_MODEL_TITAN: process.env.NEBIUS_MODEL_TITAN,
+    NEBIUS_MODEL_PREMIUM: process.env.NEBIUS_MODEL_PREMIUM,
+    NEBIUS_MODEL_STANDARD: process.env.NEBIUS_MODEL_STANDARD,
+    NEBIUS_MODEL_ECONOMY: process.env.NEBIUS_MODEL_ECONOMY,
+    LLM_STRATEGY: process.env.LLM_STRATEGY,
+    LLM_THINKING_BUDGET_TOKENS: process.env.LLM_THINKING_BUDGET_TOKENS,
+  };
+  const strategy = resolveStrategy(opts.strategy, envShim);
 
-  // Standard/Economy → Nebius primero, fallback a Claude Haiku
-  if (forceProvider !== "claude") {
-    const primaryModel =
-      NEBIUS_TIER_MODELS[tier as "standard" | "economy"] || NEBIUS_TIER_MODELS.economy;
-    const retryModels: string[] = [primaryModel];
-    if (tier === "standard") retryModels.push(NEBIUS_STANDARD_FALLBACK);
-
-    for (const model of retryModels) {
-      try {
-        const started = Date.now();
-        const res = await nebiusChat(
-          messages as NebiusMessage[],
-          { model, maxTokens, temperature }
+  // Budget check + auto-degrade
+  let tier: LLMTier = opts.tier;
+  let degraded: LLMTier | null = null;
+  if (!forceProvider) {
+    const budget = await checkBudget(tier, { skipBudgetCheck });
+    if (!budget.allowed) {
+      const nextTier = degradeTier(tier);
+      if (nextTier) {
+        getLogger().warn(
+          { from: tier, to: nextTier, spent: budget.spentEur, cap: budget.capEur },
+          "[llm] budget exceeded, auto-degrade tier"
         );
-        return {
-          content: res.content,
-          provider: "nebius",
-          model: res.model,
-          tokensIn: res.tokensIn,
-          tokensOut: res.tokensOut,
-          latencyMs: Date.now() - started,
-          fallback: model !== primaryModel,
-        };
-      } catch (err) {
-        const msg = (err as Error).message;
-        // Si es 429 (rate limit) probamos el siguiente modelo Nebius.
-        // Si no, caemos a Claude directamente.
-        if (!msg.includes("429") && !msg.includes("rate limit")) {
-          console.warn(`[llm] Nebius fallo (${tier}, ${model}), fallback a Claude:`, msg);
-          break;
-        }
-        console.warn(`[llm] Nebius 429 (${model}), intentando siguiente`);
+        degraded = tier;
+        tier = nextTier;
+      } else {
+        throw new LlmBudgetExceeded(tier, budget.spentEur, budget.capEur);
       }
     }
   }
 
-  // Fallback a Claude
-  return callClaude(messages, CLAUDE_TIER_MODELS[tier], maxTokens, temperature, true);
+  // Resolver tier → provider order + models + extras
+  const resolved = resolveTierToModel(tier, strategy, envShim);
+
+  // Si forceProvider, saltamos chain y vamos directo
+  const providerOrder: LLMProvider[] = forceProvider
+    ? [forceProvider]
+    : resolved.providerOrder.filter(
+        (p) => !(p === "gemma" && (skipGemma || tier !== "economy"))
+      );
+
+  const log = getLogger();
+  let lastError: Error | null = null;
+
+  for (let i = 0; i < providerOrder.length; i++) {
+    const provider = providerOrder[i];
+    const isPrimary = i === 0;
+    try {
+      const result = await callProvider(provider, {
+        messages,
+        model: resolved.models[provider] || "",
+        maxTokens,
+        temperature,
+        extras: isPrimary ? resolved.extras : undefined,
+      });
+      const cost = estimateCostUsd(
+        result.model,
+        result.tokensIn,
+        result.tokensOut,
+        result.tokensThinking || 0
+      );
+      const final: LLMResult = {
+        ...result,
+        latencyMs: Date.now() - startAll,
+        fallback: !isPrimary,
+        tier,
+        strategy,
+        costUsd: cost,
+        degraded,
+      };
+      recordLlmCall({
+        call_site: callSite,
+        tier,
+        strategy,
+        provider: result.provider,
+        model: result.model,
+        tokens_in: result.tokensIn,
+        tokens_out: result.tokensOut,
+        tokens_thinking: result.tokensThinking || 0,
+        cost_usd: cost,
+        latency_ms: final.latencyMs,
+        fallback_used: !isPrimary,
+        success: true,
+        actor_id: actorId,
+        metadata: { ...(metadata || {}), degraded, agentId: opts.agentId, source: opts.source },
+      });
+      return final;
+    } catch (err) {
+      lastError = err as Error;
+      log.warn(
+        { err, provider, tier, isPrimary, callSite },
+        `[llm] provider ${provider} fallo${isPrimary ? " (primary)" : " (fallback)"}`
+      );
+    }
+  }
+
+  // Todos los providers fallaron — registrar y lanzar
+  recordLlmCall({
+    call_site: callSite,
+    tier,
+    strategy,
+    provider: providerOrder[providerOrder.length - 1] || "claude",
+    model: "unknown",
+    tokens_in: 0,
+    tokens_out: 0,
+    cost_usd: 0,
+    latency_ms: Date.now() - startAll,
+    fallback_used: true,
+    success: false,
+    error_message: lastError?.message?.slice(0, 500) || "all providers failed",
+    actor_id: actorId,
+    metadata: { ...(metadata || {}), degraded, agentId: opts.agentId, source: opts.source },
+  });
+  throw lastError || new Error("[llm] all providers failed");
 }
 
-/**
- * Llamada directa a Claude Anthropic API.
- */
+// ─── Provider wrappers ──────────────────────────────────────────
+
+interface ProviderCallArgs {
+  messages: LLMMessage[];
+  model: string;
+  maxTokens: number;
+  temperature: number;
+  extras?: { extendedThinking?: { budgetTokens: number } };
+}
+
+async function callProvider(
+  provider: LLMProvider,
+  args: ProviderCallArgs
+): Promise<Omit<LLMResult, "latencyMs" | "fallback" | "tier" | "strategy" | "costUsd">> {
+  if (provider === "gemma") {
+    return callGemma(args.messages, args.maxTokens, args.temperature);
+  }
+  if (provider === "nebius") {
+    return callNebius(args.messages, args.model, args.maxTokens, args.temperature);
+  }
+  return callClaude(
+    args.messages,
+    args.model,
+    args.maxTokens,
+    args.temperature,
+    args.extras?.extendedThinking?.budgetTokens
+  );
+}
+
+async function callGemma(
+  messages: LLMMessage[],
+  maxTokens: number,
+  temperature: number
+): Promise<Omit<LLMResult, "latencyMs" | "fallback" | "tier" | "strategy" | "costUsd">> {
+  const res = await gemmaChat(messages as GemmaMessage[], { maxTokens, temperature });
+  if (!res.content || res.content.length === 0) {
+    throw new Error("[llm] Gemma devolvio respuesta vacia");
+  }
+  return {
+    content: res.content,
+    provider: "gemma",
+    model: res.model,
+    tokensIn: res.tokensIn,
+    tokensOut: res.tokensOut,
+  };
+}
+
+async function callNebius(
+  messages: LLMMessage[],
+  model: string,
+  maxTokens: number,
+  temperature: number
+): Promise<Omit<LLMResult, "latencyMs" | "fallback" | "tier" | "strategy" | "costUsd">> {
+  const res = await nebiusChat(messages as NebiusMessage[], { model, maxTokens, temperature });
+  return {
+    content: res.content,
+    provider: "nebius",
+    model: res.model,
+    tokensIn: res.tokensIn,
+    tokensOut: res.tokensOut,
+  };
+}
+
 async function callClaude(
   messages: LLMMessage[],
   model: string,
   maxTokens: number,
   temperature: number,
-  isFallback = false
-): Promise<LLMResult> {
-  if (!CLAUDE_API_KEY) {
+  thinkingBudgetTokens = 0
+): Promise<Omit<LLMResult, "latencyMs" | "fallback" | "tier" | "strategy" | "costUsd">> {
+  const apiKey = getClaudeApiKey();
+  if (!apiKey) {
     throw new Error("[llm] CLAUDE_API_KEY no configurada");
   }
 
-  const started = Date.now();
-
-  // Separar system del resto (Claude API usa campo system aparte)
   const systemMsg = messages.find((m) => m.role === "system");
   const chatMessages = messages.filter((m) => m.role !== "system");
 
@@ -206,10 +315,16 @@ async function callClaude(
     max_tokens: maxTokens,
     messages: chatMessages.map((m) => ({ role: m.role, content: m.content })),
   };
-  if (systemMsg) {
-    body.system = systemMsg.content;
-  }
-  if (temperature !== 0.7) {
+  if (systemMsg) body.system = systemMsg.content;
+
+  // Extended thinking — cuando se activa, temperature debe ser 1
+  if (thinkingBudgetTokens > 0) {
+    body.thinking = { type: "enabled", budget_tokens: thinkingBudgetTokens };
+    body.temperature = 1;
+    if (maxTokens < thinkingBudgetTokens + 1024) {
+      body.max_tokens = thinkingBudgetTokens + 1024;
+    }
+  } else if (temperature !== 0.7) {
     body.temperature = temperature;
   }
 
@@ -217,7 +332,7 @@ async function callClaude(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": CLAUDE_API_KEY,
+      "x-api-key": apiKey,
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify(body),
@@ -229,7 +344,12 @@ async function callClaude(
   }
 
   const data = await res.json();
-  const content = data.content?.[0]?.text?.trim() || "";
+  const blocks: Array<{ type: string; text?: string; thinking?: string }> =
+    data.content || [];
+  const textBlock = blocks.find((b) => b.type === "text");
+  const thinkingBlock = blocks.find((b) => b.type === "thinking");
+  const content = (textBlock?.text || "").trim();
+  const thinkingContent = thinkingBlock?.thinking || undefined;
   const usage = data.usage || {};
 
   return {
@@ -238,8 +358,13 @@ async function callClaude(
     model: data.model || model,
     tokensIn: usage.input_tokens ?? 0,
     tokensOut: usage.output_tokens ?? 0,
-    latencyMs: Date.now() - started,
-    fallback: isFallback,
+    tokensThinking:
+      usage.cache_creation_input_tokens && thinkingBudgetTokens > 0
+        ? thinkingBudgetTokens
+        : thinkingContent
+        ? Math.round((thinkingContent.length || 0) / 4)
+        : 0,
+    thinkingContent,
   };
 }
 
@@ -247,13 +372,11 @@ async function callClaude(
  * Helper: extraer JSON de respuesta LLM (los modelos a veces meten texto extra).
  */
 export function extractJSON<T = Record<string, unknown>>(text: string): T | null {
-  // Intentar array
   const arrStart = text.indexOf("[");
   const arrEnd = text.lastIndexOf("]") + 1;
   if (arrStart >= 0 && arrEnd > arrStart) {
     try { return JSON.parse(text.slice(arrStart, arrEnd)) as T; } catch { /* continue */ }
   }
-  // Intentar objeto
   const objStart = text.indexOf("{");
   const objEnd = text.lastIndexOf("}") + 1;
   if (objStart >= 0 && objEnd > objStart) {
@@ -261,3 +384,5 @@ export function extractJSON<T = Record<string, unknown>>(text: string): T | null
   }
   return null;
 }
+
+export { LlmBudgetExceeded } from "./llm/budget-guard";

@@ -3,6 +3,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { sendTelegram } from "@/lib/telegram";
 import { processMessage } from "@/lib/telegram-assistant";
 import { downloadTelegramFile, transcribeAudio } from "@/lib/telegram-media";
+import { getLogger } from "@/lib/observability/logger";
 
 /**
  * Telegram Bot Webhook — receives messages from Pablo via Telegram.
@@ -16,13 +17,17 @@ import { downloadTelegramFile, transcribeAudio } from "@/lib/telegram-media";
  * it would overwrite this webhook and break the bot.
  */
 export async function POST(request: NextRequest) {
-  // Verify this comes from Telegram (basic token check)
+  // Verify this comes from Telegram. Acepta:
+  //  1. Header "x-telegram-bot-api-secret-token" (estandar Telegram setWebhook)
+  //  2. Query param "?secret=..." (compat legacy)
   const secret = process.env.TELEGRAM_WEBHOOK_SECRET?.trim();
   if (secret) {
-    const url = new URL(request.url);
-    const token = url.searchParams.get("secret");
-    if (token !== secret) {
-      return NextResponse.json({ ok: false }, { status: 403 });
+    const headerToken = request.headers.get("x-telegram-bot-api-secret-token");
+    const queryToken = new URL(request.url).searchParams.get("secret");
+    const ok = headerToken === secret || queryToken === secret;
+    if (!ok) {
+      getLogger().warn({}, "telegram webhook invalid secret");
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
   }
 
@@ -66,7 +71,7 @@ export async function POST(request: NextRequest) {
       await sendTelegram(`📝 <b>Transcripcion:</b>\n"${transcription}"`);
       await processMessage(transcription);
     } catch (err) {
-      console.error("[Telegram Voice] Error:", err);
+      getLogger().error({ err }, "[Telegram Voice] Error");
       await sendTelegram(`Error procesando audio: ${err instanceof Error ? err.message : "desconocido"}`);
     }
     return NextResponse.json({ ok: true });
@@ -95,7 +100,7 @@ export async function POST(request: NextRequest) {
         await processMessage(context);
       }
     } catch (err) {
-      console.error("[Telegram Photo] Error:", err);
+      getLogger().error({ err }, "[Telegram Photo] Error");
       await sendTelegram(`Error procesando foto: ${err instanceof Error ? err.message : "desconocido"}`);
     }
     return NextResponse.json({ ok: true });
@@ -108,7 +113,7 @@ export async function POST(request: NextRequest) {
     try {
       await processMessage(`[Pablo envio un documento: "${docName}"${caption ? `, con mensaje: "${caption}"` : ""}. Confirmale que lo recibiste y preguntale que necesita.]`);
     } catch (err) {
-      console.error("[Telegram Doc] Error:", err);
+      getLogger().error({ err }, "[Telegram Doc] Error");
       await sendTelegram(`Error procesando documento: ${err instanceof Error ? err.message : "desconocido"}`);
     }
     return NextResponse.json({ ok: true });
@@ -126,7 +131,7 @@ export async function POST(request: NextRequest) {
     try {
       await processMessage(text);
     } catch (err) {
-      console.error("[Telegram AI] Error:", err);
+      getLogger().error({ err }, "[Telegram AI] Error");
       try {
         await sendTelegram(`Error procesando mensaje: ${err instanceof Error ? err.message : "desconocido"}`);
       } catch { /* silent */ }
@@ -141,7 +146,7 @@ export async function POST(request: NextRequest) {
   try {
     supabase = createServerSupabase();
   } catch (err) {
-    console.error("[Telegram Webhook] Failed to create Supabase client:", err);
+    getLogger().error({ err }, "[Telegram Webhook] Failed to create Supabase client");
     await sendTelegram("Error: no se pudo conectar a la base de datos.");
     return NextResponse.json({ ok: true });
   }
@@ -289,7 +294,7 @@ export async function POST(request: NextRequest) {
       }
     }
   } catch (err) {
-    console.error("[Telegram Webhook] Error:", err);
+    getLogger().error({ err }, "[Telegram Webhook] Error");
     try {
       await sendTelegram(`Error: ${err instanceof Error ? err.message : "desconocido"}`);
     } catch { /* silent */ }

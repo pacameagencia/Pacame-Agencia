@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import LeadMagnetForm from "./LeadMagnetForm";
 
+// ISR: lead magnet — 1h cache
+export const revalidate = 3600;
+
 interface LeadMagnetConfig {
   slug: string;
   headline: string;

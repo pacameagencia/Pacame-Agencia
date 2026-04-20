@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+
+// ISR: pagina de equipo — 1h cache
+export const revalidate = 3600;
+
 import {
   Sparkles, Globe, TrendingUp, Layout, Terminal, Heart, Compass,
   ArrowRight, CheckCircle2, MessageSquare,

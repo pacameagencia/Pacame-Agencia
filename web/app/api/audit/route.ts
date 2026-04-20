@@ -56,7 +56,7 @@ Responde SOLO JSON valido con esta estructura exacta:
 
 Haz el analisis realista para el tipo de negocio que parece ser. Score general entre 30-65 para que vean que hay margen de mejora. Todos los textos en espanol.`,
         }],
-        { tier: "standard", maxTokens: 1200, agentId: "atlas", source: "audit" }
+        { tier: "reasoning", maxTokens: 8000, callSite: "audit/web_report" }
       );
 
       const audit = extractJSON(res.content);

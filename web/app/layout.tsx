@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
@@ -12,6 +12,8 @@ import LoadingScreen from "@/components/effects/LoadingScreen";
 import ScrollProgress from "@/components/effects/ScrollProgress";
 import NoiseOverlay from "@/components/effects/NoiseOverlay";
 import BackToTop from "@/components/effects/BackToTop";
+import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
+import ReferralCookieTracker from "@/components/referral/ReferralCookieTracker";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -106,6 +108,26 @@ export const metadata: Metadata = {
   verification: {
     google: "B2h8SzjtvgC881Mq7jebvGxsYkLM2OQ5mqUcVs6wgyo",
   },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "PACAME",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" },
+    { media: "(prefers-color-scheme: light)", color: "#D4A574" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -198,6 +220,7 @@ export default function RootLayout({
             }),
           }}
         />
+        <OrganizationJsonLd />
       </head>
       <body className="bg-pacame-black text-pacame-white font-body antialiased">
         <a
@@ -218,6 +241,7 @@ export default function RootLayout({
         <SageChatWidget />
         <CookieConsent />
         <GoogleAnalytics />
+        <ReferralCookieTracker />
       </body>
     </html>
   );

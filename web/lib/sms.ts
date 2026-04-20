@@ -1,3 +1,5 @@
+import { getLogger } from "@/lib/observability/logger";
+
 const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
 const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
 const TWILIO_PHONE_NUMBER = process.env.TWILIO_SMS_NUMBER || process.env.TWILIO_PHONE_NUMBER || "+16624995056";
@@ -23,7 +25,7 @@ export function isSmsConfigured(): boolean {
  */
 export async function sendSms(to: string, body: string): Promise<SmsResult> {
   if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
-    console.warn("[SMS] Not configured — TWILIO_ACCOUNT_SID or TWILIO_AUTH_TOKEN missing");
+    getLogger().warn("[SMS] Not configured — TWILIO_ACCOUNT_SID or TWILIO_AUTH_TOKEN missing");
     return { success: false, error: "SMS not configured" };
   }
 
@@ -55,13 +57,13 @@ export async function sendSms(to: string, body: string): Promise<SmsResult> {
     const data = await res.json() as { sid?: string; message?: string; code?: number };
 
     if (!res.ok) {
-      console.error("[SMS] Twilio error:", data);
+      getLogger().error({ data }, "[SMS] Twilio error");
       return { success: false, error: data.message || `HTTP ${res.status}` };
     }
 
     return { success: true, message_sid: data.sid };
   } catch (err) {
-    console.error("[SMS] Exception:", err);
+    getLogger().error({ err }, "[SMS] Exception");
     return {
       success: false,
       error: err instanceof Error ? err.message : "Unknown error",

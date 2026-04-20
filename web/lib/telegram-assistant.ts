@@ -1,5 +1,6 @@
 import { createServerSupabase } from "@/lib/supabase/server";
 import { sendTelegram } from "@/lib/telegram";
+import { getLogger } from "@/lib/observability/logger";
 import { generateImage, sendTelegramPhoto, sendTelegramVideo } from "@/lib/telegram-media";
 import { sendTelegramDocument } from "@/lib/telegram-media";
 import {
@@ -1790,7 +1791,7 @@ async function getMemoryMode(): Promise<"bot_memory" | "config"> {
     // Table not found: PostgREST returns PGRST205, Postgres returns 42P01
     if (error && (error.code === "42P01" || error.code === "PGRST205" || error.message?.includes("not find"))) {
       memoryTableMode = "config";
-      console.log("[Memory] bot_memory table not found, using config table as fallback.");
+      getLogger().info("[Memory] bot_memory table not found, using config table as fallback.");
     } else {
       memoryTableMode = error ? "config" : "bot_memory";
     }
@@ -1839,7 +1840,7 @@ async function loadMemories(): Promise<string> {
     if (error || !data?.length) return "";
     return formatMemories(data);
   } catch (err) {
-    console.error("[Memory] Error loading memories:", err);
+    getLogger().error({ err }, "[Memory] Error loading memories");
     return "";
   }
 }
@@ -2062,7 +2063,7 @@ async function loadHistory(): Promise<ClaudeMessage[]> {
 
     return history;
   } catch (err) {
-    console.error("[Telegram Memory] Error loading history:", err);
+    getLogger().error({ err }, "[Telegram Memory] Error loading history");
     return [];
   }
 }
@@ -2082,7 +2083,7 @@ async function saveMessage(direction: "inbound" | "outbound", message: string): 
       mode: "auto",
     });
   } catch (err) {
-    console.error("[Telegram Memory] Error saving message:", err);
+    getLogger().error({ err }, "[Telegram Memory] Error saving message");
   }
 }
 
@@ -2476,9 +2477,9 @@ async function seedProjectKnowledge(): Promise<void> {
       updated_at: new Date().toISOString(),
     }, { onConflict: "key" });
 
-    console.log("[Neural] Project knowledge seeded successfully — 16 base memories.");
+    getLogger().info("[Neural] Project knowledge seeded successfully — 16 base memories.");
   } catch (err) {
-    console.error("[Neural] Error seeding knowledge:", err);
+    getLogger().error({ err }, "[Neural] Error seeding knowledge");
   }
 }
 
@@ -2615,7 +2616,7 @@ RED NEURONAL — INSTRUCCIONES DE APRENDIZAJE CONTINUO:
     // Auto-extract memories even on exhausted rounds
     extractAndSaveMemories(userMessage, finalResponse || exhaustedMsg).catch(() => {});
   } catch (err) {
-    console.error("[Telegram Assistant] Error:", err);
+    getLogger().error({ err }, "[Telegram Assistant] Error");
     await sendTelegram(`Error procesando mensaje: ${err instanceof Error ? err.message : "desconocido"}`);
   }
 }

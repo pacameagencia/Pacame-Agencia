@@ -3,6 +3,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { sendWhatsApp, markAsRead, WHATSAPP_VERIFY_TOKEN } from "@/lib/whatsapp";
 import { notifyHotLead } from "@/lib/telegram";
+import { getLogger } from "@/lib/observability/logger";
 
 const supabase = createServerSupabase();
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
@@ -261,6 +262,6 @@ async function autoRespond(
       });
     }
   } catch (err) {
-    console.error("[WhatsApp] Auto-respond error:", err);
+    getLogger().error({ err }, "[WhatsApp] Auto-respond error");
   }
 }

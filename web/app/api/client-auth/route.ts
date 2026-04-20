@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { sendEmail, wrapEmailTemplate } from "@/lib/resend";
+import { clientAuthLimiter, getClientIp } from "@/lib/security/rate-limit";
+import { getLogger } from "@/lib/observability/logger";
 
 type ActionPayload =
   | { action: "login"; email: string; password: string }
@@ -18,6 +20,15 @@ const TOKEN_MAX_AGE = 30 * 24 * 60 * 60; // 30 days in seconds
 function setCookie(response: NextResponse, token: string): NextResponse {
   response.cookies.set(COOKIE_NAME, token, {
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: TOKEN_MAX_AGE,
+  });
+  // CSRF double-submit cookie (no httpOnly — el frontend la lee)
+  const csrfToken = crypto.randomBytes(32).toString("hex");
+  response.cookies.set("pacame_csrf", csrfToken, {
+    httpOnly: false,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
@@ -45,6 +56,33 @@ export async function POST(request: NextRequest) {
   try {
     const body = (await request.json()) as ActionPayload;
     const supabase = createServerSupabase();
+
+    // Rate limit solo para acciones sensibles (login/reset). Verify/logout
+    // son baratas y el 429 aqui desloguearia al usuario en cada refresco.
+    const sensitiveActions = new Set<string>([
+      "login",
+      "reset-request",
+      "reset-confirm",
+      "change-password",
+    ]);
+    if (sensitiveActions.has(body.action)) {
+      const ip = getClientIp(request);
+      const email = (body as { email?: string }).email?.toLowerCase() || "anon";
+      const rl = await clientAuthLimiter.limit(`${ip}:${email}`);
+      if (!rl.success) {
+        const retrySec = Math.max(1, Math.ceil((rl.reset - Date.now()) / 1000));
+        return NextResponse.json(
+          {
+            error: "Demasiados intentos. Espera unos minutos e intentalo de nuevo.",
+            retry_after: retrySec,
+          },
+          {
+            status: 429,
+            headers: { "Retry-After": String(retrySec) },
+          }
+        );
+      }
+    }
 
     switch (body.action) {
       // ─── LOGIN ──────────────────────────────────────────────
@@ -99,7 +137,7 @@ export async function POST(request: NextRequest) {
           .eq("id", client.id);
 
         if (updateError) {
-          console.error("[client-auth] login update error:", updateError);
+          getLogger().error({ err: updateError }, "[client-auth] login update error");
           return NextResponse.json(
             { error: "Error interno al iniciar sesion" },
             { status: 500 }
@@ -263,7 +301,7 @@ export async function POST(request: NextRequest) {
           .eq("id", client.id);
 
         if (updateError) {
-          console.error("[client-auth] reset-confirm update error:", updateError);
+          getLogger().error({ err: updateError }, "[client-auth] reset-confirm update error");
           return NextResponse.json(
             { error: "Error al actualizar el password" },
             { status: 500 }
@@ -337,7 +375,7 @@ export async function POST(request: NextRequest) {
           .eq("id", client.id);
 
         if (updateError) {
-          console.error("[client-auth] change-password update error:", updateError);
+          getLogger().error({ err: updateError }, "[client-auth] change-password update error");
           return NextResponse.json(
             { error: "Error al cambiar el password" },
             { status: 500 }
@@ -355,7 +393,7 @@ export async function POST(request: NextRequest) {
       }
     }
   } catch (err) {
-    console.error("[client-auth] Unexpected error:", err);
+    getLogger().error({ err }, "[client-auth] Unexpected error");
     return NextResponse.json(
       { error: "Error interno del servidor" },
       { status: 500 }

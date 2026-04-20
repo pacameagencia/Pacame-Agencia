@@ -1,41 +1,83 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import Hero from "@/components/sections/Hero";
-import ServicesSection from "@/components/sections/ServicesSection";
+import HomeHero from "@/components/sections/home/HomeHero";
 
-const NichesSection = dynamic(() => import("@/components/sections/NichesSection"));
-const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks"));
-const ComparisonSection = dynamic(() => import("@/components/sections/ComparisonSection"));
-const TestimonialsSection = dynamic(() => import("@/components/sections/TestimonialsSection"));
-const PricingSection = dynamic(() => import("@/components/sections/PricingSection"));
-const AgentsSection = dynamic(() => import("@/components/sections/AgentsSection"));
-const BlogPreview = dynamic(() => import("@/components/sections/BlogPreview"));
-const CTASection = dynamic(() => import("@/components/sections/CTASection"));
-const TrustLogos = dynamic(() => import("@/components/sections/TrustLogos"));
-const GuaranteesSection = dynamic(() => import("@/components/sections/GuaranteesSection"));
+// ISR: home — 1h cache
+export const revalidate = 3600;
+
+// Secciones diferidas para no bloquear First Paint del hero
+const LogosBar = dynamic(() => import("@/components/sections/home/LogosBar"));
+const HowItWorksStripe = dynamic(
+  () => import("@/components/sections/home/HowItWorksStripe")
+);
+const ProductLines = dynamic(
+  () => import("@/components/sections/home/ProductLines")
+);
+const StatsFatBar = dynamic(
+  () => import("@/components/sections/home/StatsFatBar")
+);
+const HomeTestimonials = dynamic(
+  () => import("@/components/sections/home/HomeTestimonials")
+);
+const PricingPreview = dynamic(
+  () => import("@/components/sections/home/PricingPreview")
+);
+const BigFinalCTA = dynamic(
+  () => import("@/components/sections/home/BigFinalCTA")
+);
+const GoldenDivider = dynamic(
+  () => import("@/components/effects/GoldenDivider")
+);
 
 export const metadata: Metadata = {
-  title: "PACAME — Tu equipo digital completo. Potenciado por IA, liderado por humanos.",
+  title: "PACAME — Tu equipo digital, sin contratarlo | 24 productos · 4 planes · 2 apps",
   description:
-    "Agencia digital con 7 agentes IA especializados. Diseno web desde 300 EUR, SEO, publicidad digital, redes sociales y branding para PYMEs en Espana. 60% mas barato que una agencia, 3x mas rapido.",
+    "Agencia digital IA para PYMEs. 24 productos desde 99€, 4 planes desde 29€/mes y apps productizadas. Pago Stripe, entrega en horas, garantia 100%, sin permanencia.",
   alternates: { canonical: "https://pacameagencia.com" },
+  openGraph: {
+    title: "PACAME — Tu equipo digital, sin contratarlo",
+    description:
+      "24 productos, 4 planes mensuales, 2 apps. Calidad enterprise, velocidad IA, precio transparente.",
+    url: "https://pacameagencia.com",
+    siteName: "PACAME",
+    type: "website",
+    locale: "es_ES",
+  },
 };
 
 export default function HomePage() {
   return (
     <>
-      <Hero />
-      <TrustLogos />
-      <ServicesSection />
-      <NichesSection />
-      <HowItWorks />
-      <ComparisonSection />
-      <TestimonialsSection />
-      <PricingSection />
-      <AgentsSection />
-      <GuaranteesSection />
-      <BlogPreview />
-      <CTASection />
+      {/* A. Hero premium con stats live + trust badges */}
+      <HomeHero />
+
+      {/* B. Logos bar social proof (sectores placeholder) */}
+      <LogosBar />
+
+      {/* C. Como funciona — 4 pasos Stripe style */}
+      <HowItWorksStripe />
+
+      {/* D. 3 lineas producto — Marketplace / Planes / Apps */}
+      <ProductLines />
+
+      {/* E. Stats platform fat bar — KPIs animados */}
+      <StatsFatBar />
+
+      {/* Separador dorado */}
+      <div className="px-6 bg-pacame-black">
+        <div className="max-w-5xl mx-auto">
+          <GoldenDivider variant="star" />
+        </div>
+      </div>
+
+      {/* F. Testimonials */}
+      <HomeTestimonials />
+
+      {/* G. Pricing preview */}
+      <PricingPreview />
+
+      {/* H. Final BIG CTA */}
+      <BigFinalCTA />
     </>
   );
 }

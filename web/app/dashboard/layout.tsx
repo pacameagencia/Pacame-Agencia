@@ -7,7 +7,8 @@ import {
   DollarSign, Settings, ChevronLeft, Menu, X,
   MessageSquare, Bell, ClipboardCheck, CreditCard,
   Megaphone, FileCheck, Phone, Rocket, Building2, Award, LogOut,
-  TrendingUp, MessageCircle, Lightbulb, Network,
+  TrendingUp, MessageCircle, Lightbulb, Network, ShoppingBag, Package,
+  BookOpen, Target, Brain, Heart, Wallet, Banknote,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -20,10 +21,17 @@ const navItems = [
   { label: "Clientes", href: "/dashboard/clients", icon: Users },
   { label: "Leads", href: "/dashboard/leads", icon: UserPlus },
   { label: "Lead Gen", href: "/dashboard/leadgen", icon: Rocket },
+  { label: "Outreach", href: "/dashboard/outreach", icon: Target },
+  { label: "Cerebro", href: "/dashboard/brain", icon: Brain },
+  { label: "Growth Loop", href: "/dashboard/growth", icon: Heart },
+  { label: "LLM Costs", href: "/dashboard/llm-costs", icon: Banknote },
+  { label: "Marketplace", href: "/dashboard/catalog", icon: Package },
+  { label: "Pedidos", href: "/dashboard/orders", icon: ShoppingBag },
   { label: "Contenido", href: "/dashboard/content", icon: FileText },
   { label: "Campanas", href: "/dashboard/campaigns", icon: Megaphone },
   { label: "Propuestas", href: "/dashboard/proposals", icon: FileCheck },
   { label: "Referidos", href: "/dashboard/referrals", icon: Award },
+  { label: "Payouts", href: "/dashboard/payouts", icon: Wallet },
   { label: "Llamadas", href: "/dashboard/calls", icon: Phone },
   { label: "WhatsApp", href: "/dashboard/conversations", icon: MessageCircle },
   { label: "Comercial", href: "/dashboard/commercial", icon: TrendingUp },
@@ -34,6 +42,7 @@ const navItems = [
   { label: "Pagos", href: "/dashboard/payments", icon: CreditCard },
   { label: "Finanzas", href: "/dashboard/finances", icon: DollarSign },
   { label: "Notificaciones", href: "/dashboard/notifications", icon: Bell },
+  { label: "API Docs", href: "/docs/api", icon: BookOpen },
   { label: "Config", href: "/dashboard/settings", icon: Settings },
 ];
 

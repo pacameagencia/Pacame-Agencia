@@ -14,6 +14,10 @@ import {
   LogOut,
   Menu,
   X,
+  ShoppingBag,
+  Crown,
+  Boxes,
+  ShieldCheck,
 } from "lucide-react";
 
 interface PortalSidebarProps {
@@ -25,11 +29,15 @@ interface PortalSidebarProps {
 
 const navItems = [
   { label: "Dashboard", href: "/portal/dashboard", icon: LayoutDashboard },
+  { label: "Mis pedidos", href: "/portal/orders", icon: ShoppingBag },
+  { label: "Suscripcion", href: "/portal/subscription", icon: Crown },
+  { label: "Mis apps", href: "/portal/apps", icon: Boxes },
   { label: "Proyectos", href: "/portal/projects", icon: FolderKanban },
   { label: "Archivos", href: "/portal/files", icon: FileUp },
   { label: "Mensajes", href: "/portal/messages", icon: MessageSquare, badge: true },
   { label: "Pagos", href: "/portal/payments", icon: Receipt },
   { label: "Ajustes", href: "/portal/settings", icon: Settings },
+  { label: "Privacidad", href: "/portal/privacy", icon: ShieldCheck },
 ];
 
 export default function PortalSidebar({

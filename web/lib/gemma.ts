@@ -18,6 +18,12 @@ export interface GemmaOptions {
   temperature?: number;
   maxTokens?: number;
   stream?: boolean;
+  /**
+   * Gemma 4 genera cadena de razonamiento (thinking) por defecto.
+   * Para produccion lo apagamos: consume tokens y latencia sin aportar al
+   * output final. Activa solo en tareas complejas (estrategia, debugging).
+   */
+  think?: boolean;
 }
 
 export interface GemmaResponse {
@@ -29,20 +35,22 @@ export interface GemmaResponse {
   tokensPerSec: number;
 }
 
+import { getLogger } from "@/lib/observability/logger";
+
 const GEMMA_URL =
   process.env.GEMMA_API_URL || "https://gemma.pacameagencia.com";
 const GEMMA_TOKEN = process.env.GEMMA_API_TOKEN || "";
 
 if (!GEMMA_TOKEN && typeof process !== "undefined") {
-  console.warn(
+  getLogger().warn(
     "[gemma] GEMMA_API_TOKEN no definido; las llamadas fallaran con 401"
   );
 }
 
 /**
  * Llamada basica a Gemma con mensajes tipo chat.
- * Convierte mensajes a un prompt unico porque Ollama /api/generate es mas
- * predecible con modelos pequenos que /api/chat.
+ * Usa /api/chat de Ollama — gemma4:e2b requiere chat template con markers
+ * <start_of_turn> y el endpoint /api/chat los aplica automaticamente.
  */
 export async function gemmaChat(
   messages: GemmaMessage[],
@@ -51,19 +59,11 @@ export async function gemmaChat(
   const model = opts.model || "gemma4:e2b";
   const temperature = opts.temperature ?? 0.7;
   const maxTokens = opts.maxTokens ?? 512;
-
-  // Convertir mensajes a prompt estilo Gemma (con markers)
-  const prompt = messages
-    .map((m) => {
-      if (m.role === "system") return `<start_of_turn>system\n${m.content}<end_of_turn>`;
-      if (m.role === "user") return `<start_of_turn>user\n${m.content}<end_of_turn>`;
-      return `<start_of_turn>model\n${m.content}<end_of_turn>`;
-    })
-    .join("\n") + "\n<start_of_turn>model\n";
+  const think = opts.think ?? false;
 
   const started = Date.now();
 
-  const res = await fetch(`${GEMMA_URL}/api/generate`, {
+  const res = await fetch(`${GEMMA_URL}/api/chat`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -71,12 +71,12 @@ export async function gemmaChat(
     },
     body: JSON.stringify({
       model,
-      prompt,
+      messages,
       stream: false,
+      think,
       options: {
         temperature,
         num_predict: maxTokens,
-        stop: ["<end_of_turn>", "<start_of_turn>"],
       },
     }),
   });
@@ -92,8 +92,11 @@ export async function gemmaChat(
   const evalNs = data.eval_duration ?? 1;
   const tokensPerSec = evalNs > 0 ? (tokensOut / evalNs) * 1e9 : 0;
 
+  // Ollama /api/chat devuelve { message: { role, content } }
+  const content = (data.message?.content || data.response || "").trim();
+
   return {
-    content: (data.response || "").trim(),
+    content,
     model,
     latencyMs,
     tokensIn: data.prompt_eval_count ?? 0,

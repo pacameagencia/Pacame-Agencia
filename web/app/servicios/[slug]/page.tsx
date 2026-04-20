@@ -12,28 +12,88 @@ import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
 import GoldenDivider from "@/components/effects/GoldenDivider";
 import MagneticButton from "@/components/effects/MagneticButton";
 import { ShinyButton } from "@/components/ui/shiny-button";
+import { createServerSupabase } from "@/lib/supabase/server";
+import ExpressServicePage, {
+  type ExpressProduct,
+} from "@/components/marketplace/ExpressServicePage";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
+// Revalidate cada 5 min — pagina de detalle de servicio
+export const revalidate = 300;
+
+// Allow on-demand rendering for marketplace slugs not in the static list
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   return getAllServiceSlugs().map((slug) => ({ slug }));
+}
+
+async function fetchMarketplaceProduct(slug: string): Promise<ExpressProduct | null> {
+  try {
+    const supabase = createServerSupabase();
+    const { data } = await supabase
+      .from("service_catalog")
+      .select(
+        "slug, name, tagline, description, price_cents, currency, agent_id, delivery_sla_hours, revisions_included, features, faq, cover_image_url, is_active"
+      )
+      .eq("slug", slug)
+      .eq("is_active", true)
+      .maybeSingle();
+    if (!data) return null;
+    return {
+      slug: data.slug as string,
+      name: data.name as string,
+      tagline: (data.tagline as string) || null,
+      description: (data.description as string) || null,
+      price_cents: data.price_cents as number,
+      currency: (data.currency as string) || "eur",
+      agent_id: data.agent_id as string,
+      delivery_sla_hours: data.delivery_sla_hours as number,
+      revisions_included: (data.revisions_included as number) ?? 2,
+      features: (data.features as string[]) || [],
+      faq: (data.faq as { q: string; a: string }[]) || [],
+      cover_image_url: (data.cover_image_url as string) || null,
+    };
+  } catch {
+    return null;
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const result = getServiceBySlug(slug);
-  if (!result) return {};
-  const { service, item } = result;
-  return {
-    title: `${item.name} — ${service.name} | PACAME`,
-    description: `${item.longDescription.slice(0, 155)}...`,
-    alternates: { canonical: `https://pacameagencia.com/servicios/${item.slug}` },
-    openGraph: {
+  if (result) {
+    const { service, item } = result;
+    return {
       title: `${item.name} — ${service.name} | PACAME`,
-      description: item.description,
-      url: `https://pacameagencia.com/servicios/${item.slug}`,
+      description: `${item.longDescription.slice(0, 155)}...`,
+      alternates: { canonical: `https://pacameagencia.com/servicios/${item.slug}` },
+      openGraph: {
+        title: `${item.name} — ${service.name} | PACAME`,
+        description: item.description,
+        url: `https://pacameagencia.com/servicios/${item.slug}`,
+        siteName: "PACAME",
+        type: "website",
+        locale: "es_ES",
+      },
+    };
+  }
+
+  // Fallback: marketplace product
+  const mk = await fetchMarketplaceProduct(slug);
+  if (!mk) return {};
+  const description = mk.tagline || mk.description || mk.name;
+  return {
+    title: `${mk.name} — ${(mk.price_cents / 100).toFixed(0)}€ | PACAME`,
+    description: description.slice(0, 155),
+    alternates: { canonical: `https://pacameagencia.com/servicios/${mk.slug}` },
+    openGraph: {
+      title: `${mk.name} | PACAME`,
+      description,
+      url: `https://pacameagencia.com/servicios/${mk.slug}`,
       siteName: "PACAME",
       type: "website",
       locale: "es_ES",
@@ -44,7 +104,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ServiceDetailPage({ params }: Props) {
   const { slug } = await params;
   const result = getServiceBySlug(slug);
-  if (!result) notFound();
+  if (!result) {
+    // Try marketplace catalog before 404
+    const mk = await fetchMarketplaceProduct(slug);
+    if (mk) {
+      return <ExpressServicePage product={mk} />;
+    }
+    notFound();
+  }
   const { service, item } = result;
 
   // Get related agents

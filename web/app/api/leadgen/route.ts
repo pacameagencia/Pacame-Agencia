@@ -206,7 +206,7 @@ Responde SOLO JSON valido:
     try {
       const res = await llmChat(
         [{ role: "user", content: prompt }],
-        { tier: "standard", maxTokens: 1200, agentId: "nexus", source: "leadgen-outreach" }
+        { tier: "premium", maxTokens: 1200, callSite: "leadgen/email_sequence" }
       );
 
       const emails = extractJSON(res.content);

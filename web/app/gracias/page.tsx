@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, ArrowRight, MessageCircle, UserCheck, Mail as MailIcon, ExternalLink } from "lucide-react";
+
+// ISR: thank-you page — 1h cache
+export const revalidate = 3600;
 import { Button } from "@/components/ui/button";
 import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
 import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";

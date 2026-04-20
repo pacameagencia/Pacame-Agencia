@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
+// ISR: pagina estatica legal/accesibilidad — 1h cache
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Declaracion de Accesibilidad — PACAME",
   description: "Compromiso de accesibilidad web de PACAME. Conformidad con WCAG 2.1 nivel AA.",
