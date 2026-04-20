@@ -1,18 +1,17 @@
 ---
 type: synapse
 title: ATLAS collaborates_with COPY
+agent: ATLAS
 tags:
   - type/synapse
   - synapse/collaborates_with
-  - type/synapse-strong
   - agent/ATLAS
-  - agent/COPY
-created: '2026-04-19T14:26:26.437Z'
-neural_id: 4adf7419-7f18-48ca-9e69-1f4bddf4cb41
-weight: 1
-fire_count: 9
-success_count: 9
-updated: '2026-04-19T12:30:17.201781+00:00'
+created: '2026-04-20T08:48:13.769Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\07-Sinapsis\ATLAS-COPY-collaborates_with.md
+neural_id: 3b9c13ce-0c6c-457e-b495-0ecdb6b303d8
+updated: '2026-04-20T08:48:13.769Z'
 ---
 > **ATLAS → COPY** vía `collaborates_with`
 

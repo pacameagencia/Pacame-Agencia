@@ -1,18 +1,17 @@
 ---
 type: synapse
 title: DIOS orchestrates NEXUS
+agent: DIOS
 tags:
   - type/synapse
   - synapse/orchestrates
-  - type/synapse-strong
   - agent/DIOS
-  - agent/NEXUS
-created: '2026-04-19T14:26:26.453Z'
-neural_id: 021af255-585d-40c9-aa8e-d8bea6e45412
-weight: 1
-fire_count: 14
-success_count: 14
-updated: '2026-04-19T12:31:44.954188+00:00'
+created: '2026-04-20T08:48:13.965Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\07-Sinapsis\DIOS-NEXUS-orchestrates.md
+neural_id: 459a164f-1ef8-46cd-8f33-2315572ac41c
+updated: '2026-04-20T08:48:13.965Z'
 ---
 > **DIOS → NEXUS** vía `orchestrates`
 

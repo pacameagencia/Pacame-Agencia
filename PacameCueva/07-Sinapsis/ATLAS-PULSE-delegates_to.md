@@ -1,18 +1,17 @@
 ---
 type: synapse
 title: ATLAS delegates_to PULSE
+agent: ATLAS
 tags:
   - type/synapse
   - synapse/delegates_to
-  - type/synapse-strong
   - agent/ATLAS
-  - agent/PULSE
-created: '2026-04-19T14:26:26.407Z'
-neural_id: f35127a9-7008-4fdb-99a9-38a4170b84da
-weight: 1
-fire_count: 9
-success_count: 9
-updated: '2026-04-19T12:30:17.204931+00:00'
+created: '2026-04-20T08:48:13.766Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\07-Sinapsis\ATLAS-PULSE-delegates_to.md
+neural_id: 3d84ad68-6f34-43f9-b67f-139f787cac2d
+updated: '2026-04-20T08:48:13.766Z'
 ---
 > **ATLAS → PULSE** vía `delegates_to`
 

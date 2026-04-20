@@ -1,18 +1,17 @@
 ---
 type: synapse
 title: NOVA reports_to DIOS
+agent: NOVA
 tags:
   - type/synapse
   - synapse/reports_to
-  - type/synapse-strong
   - agent/NOVA
-  - agent/DIOS
-created: '2026-04-19T14:26:26.491Z'
-neural_id: 65973bca-7479-4853-98dc-727688855933
-weight: 0.83
-fire_count: 4
-success_count: 4
-updated: '2026-04-16T18:33:19.63228+00:00'
+created: '2026-04-20T08:48:13.792Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\07-Sinapsis\NOVA-DIOS-reports_to.md
+neural_id: eb311562-658b-4c0d-b7a5-57cc5d167bc4
+updated: '2026-04-20T08:48:13.792Z'
 ---
 > **NOVA → DIOS** vía `reports_to`
 

@@ -1,18 +1,17 @@
 ---
 type: synapse
 title: DIOS delegates_to PULSE
+agent: DIOS
 tags:
   - type/synapse
   - synapse/delegates_to
-  - type/synapse-weak
   - agent/DIOS
-  - agent/PULSE
-created: '2026-04-19T14:26:26.514Z'
-neural_id: b377b236-9a59-463e-9c80-1b4439004574
-weight: 0.55
-fire_count: 1
-success_count: 1
-updated: '2026-04-16T16:37:27.793405+00:00'
+created: '2026-04-20T08:48:13.966Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\07-Sinapsis\DIOS-PULSE-delegates_to.md
+neural_id: 6c6ec775-236e-406f-871d-8f2918ebdda8
+updated: '2026-04-20T08:48:13.966Z'
 ---
 > **DIOS → PULSE** vía `delegates_to`
 

@@ -1,18 +1,17 @@
 ---
 type: synapse
 title: COPY reports_to DIOS
+agent: COPY
 tags:
   - type/synapse
   - synapse/reports_to
-  - type/synapse-strong
   - agent/COPY
-  - agent/DIOS
-created: '2026-04-19T14:26:26.498Z'
-neural_id: 34ee7461-5c7a-4af8-8005-67a6563ea4e3
-weight: 0.79
-fire_count: 2
-success_count: 2
-updated: '2026-04-17T12:49:59.278299+00:00'
+created: '2026-04-20T08:48:13.966Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\07-Sinapsis\COPY-DIOS-reports_to.md
+neural_id: 798cb9ff-1196-427d-bfe3-d7088ed8790a
+updated: '2026-04-20T08:48:13.966Z'
 ---
 > **COPY → DIOS** vía `reports_to`
 
