@@ -511,14 +511,21 @@ export async function semanticSearchNodes(
   if (!vec) return [];
   try {
     const supabase = createServerSupabase();
+    // Supabase-js convierte el array a pgvector automáticamente si lo pasamos
+    // como string literal "[0.1,0.2,...]". El array directo falla con type mismatch.
+    const literal = `[${vec.join(",")}]`;
     const { data, error } = await supabase.rpc("semantic_search_nodes", {
-      query_embedding: `[${vec.join(",")}]`,
+      query_embedding: literal,
       match_count: options.matchCount ?? 8,
       filter_type: options.type ?? null,
     });
-    if (error) return [];
+    if (error) {
+      console.warn("[semanticSearchNodes]", error.message);
+      return [];
+    }
     return (data || []) as SemanticHit[];
-  } catch {
+  } catch (e) {
+    console.warn("[semanticSearchNodes] exception:", (e as Error).message);
     return [];
   }
 }
@@ -531,14 +538,19 @@ export async function semanticSearchMemories(
   if (!vec) return [];
   try {
     const supabase = createServerSupabase();
+    const literal = `[${vec.join(",")}]`;
     const { data, error } = await supabase.rpc("semantic_search_memories", {
-      query_embedding: `[${vec.join(",")}]`,
+      query_embedding: literal,
       match_count: options.matchCount ?? 5,
       filter_agent: options.agentId ?? null,
     });
-    if (error) return [];
+    if (error) {
+      console.warn("[semanticSearchMemories]", error.message);
+      return [];
+    }
     return (data || []) as SemanticHit[];
-  } catch {
+  } catch (e) {
+    console.warn("[semanticSearchMemories] exception:", (e as Error).message);
     return [];
   }
 }
