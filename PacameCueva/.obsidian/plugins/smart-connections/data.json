@@ -10,5 +10,6 @@
   "custom_api_url": "http://72.62.185.125:11434/v1",
   "language": "es",
   "log_render_interval": 5000,
-  "installed_at": 1776727992008
+  "installed_at": 1776727992008,
+  "last_version": "4.3.0"
 }

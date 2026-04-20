@@ -24,6 +24,63 @@ Agencia digital que resuelve problemas digitales para PYMEs en Espana. 10 agente
 
 ---
 
+## 🧠 PROTOCOLO CEREBRO PACAME (OBLIGATORIO, precede a cualquier generación)
+
+**Antes de responder a CUALQUIER petición creativa/estratégica (web, post, ads, copy, branding, propuesta, diseño, guión, estrategia, dashboard, sql, carrusel, etc.) EJECUTAR este checklist sin excepción. Omitir pasos = respuesta genérica = fallar.**
+
+1. **Identifica el agente PACAME** según las palabras clave del input. Tabla rápida:
+   - `web`, `landing`, `hero`, `componente`, `formulario`, `frontend`, `React`, `Next.js`, `UI` → **PIXEL** (`agents/04-PIXEL.md`)
+   - `carrusel`, `post`, `story`, `reel`, `Instagram`, `TikTok`, `social` → **PULSE** (`agents/06-PULSE.md`)
+   - `logo`, `identidad`, `paleta`, `tipografía`, `banner`, `mockup`, `brand` → **NOVA** (`agents/01-NOVA.md`)
+   - `ads`, `campaña`, `funnel`, `CRO`, `lead-magnet`, `Meta Ads`, `Google Ads`, `ROAS` → **NEXUS** (`agents/03-NEXUS.md`)
+   - `SEO`, `blog`, `artículo`, `keyword`, `orgánico`, `meta-description`, `sitemap` → **ATLAS** (`agents/02-ATLAS.md`)
+   - `copy`, `hook`, `subject`, `guión`, `email`, `titular`, `CTA`, `newsletter` → **COPY** (`agents/08-COPY.md`)
+   - `propuesta`, `presupuesto`, `cliente nuevo`, `cotización`, `pricing`, `estrategia`, `pivot` → **SAGE** (`agents/07-SAGE.md`)
+   - `dashboard`, `métrica`, `KPI`, `GA4`, `reporte`, `cohort`, `LTV`, `CAC`, `churn` → **LENS** (`agents/09-LENS.md`)
+   - `API`, `Supabase`, `migration`, `deploy`, `infra`, `webhook`, `cron`, `VPS`, `n8n`, `edge-function` → **CORE** (`agents/05-CORE.md`)
+   - Multi-agente / orquestación / no sabes → **DIOS** (`agents/DIOS.md` o `agents/00-DIOS.md`)
+
+2. **LEE el `.md` completo** del agente identificado (no el resumen — el archivo completo) para cargar su persona, tono, competencias, ejemplos.
+
+3. **Carga los skills relevantes**. Tabla por tipo de tarea:
+   - Branding → skill `branding`, `design-system`, `ui-designer`
+   - Web/frontend → skill `web-development`, `frontend-design`, `figma-to-code`, `theme-factory`, `visual-design-exploration`
+   - Carrusel/post → skill `social-media`, `ad-creative`, `infographics`, `canvas-design`
+   - Ads/CRO → skill `ads-campaign`, `landing-page-generator`, `paid-ads`
+   - Copy → skill `copywriting`, `marketing-psychology`, `cold-email`
+   - Propuesta → skill `client-proposal`, `contract-and-proposal-writer`
+   - SEO → skill `seo-audit`, `programmatic-seo`, `content-strategy`
+   - Dashboard → skill `analytics-report`, `d3-viz`, `data:build-dashboard`
+   - Deploy → skill `deploy-workflow`, `docker-deployment`
+   - Si dudas → ejecuta `SELECT label FROM knowledge_nodes WHERE node_type='skill' ORDER BY embedding <=> '<query-embed>' LIMIT 5;` vía `/api/neural/query`.
+
+4. **Carga brand/tone PACAME** (mandatorio si output público): tono directo, cercano, sin humo, tutear siempre, frases cortas, verbos activos, números concretos, cierre con próximo paso accionable. Contacto: `hola@pacameagencia.com` | WhatsApp `+34 722 669 381`.
+
+5. **Usa MCPs específicos cuando aplique**:
+   - Visual → `mcp__Figma__*`, `mcp__Canva__*`, `mcp__Claude_in_Chrome__*` (referencia competencia)
+   - Data → `mcp__3c7cb4c1-c1c5-4ce8-88c3-fea3adbdfcf1__execute_sql` (Supabase)
+   - Imagen → skill `imagen` (Gemini) + `mcp__e1c45596-*` (Canva)
+   - Voz → skill `elevenlabs` + MCP ElevenLabs
+   - Pagos → `mcp__78d1b60c-*` (Stripe)
+   - Leads/prospecting → `mcp__Vibe_Prospecting__*`
+
+6. **Usa el mejor modelo disponible para la tarea**:
+   - Creatividad / decisión crítica → Claude Sonnet 4.6 o Opus 4.7 (`tier: titan/premium`)
+   - Volumen / outreach → DeepSeek-V3.2 671B (`tier: standard`)
+   - Clasificación / parse → Gemma 4 e2b VPS (`tier: economy`, gratis)
+   - Vía `llmChat()` de `web/lib/llm.ts`.
+
+7. **Registra aprendizaje** (vía endpoints existentes):
+   - Intercambio útil → `POST /api/neural/execute` con `store_memory:true`
+   - Pattern nuevo → `recordDiscovery()` en la respuesta o línea `DISCOVERY: …` al final del output
+   - Delegación exitosa → `fireSynapse('dios','<agent>','delegates_to',true)`
+
+8. **NUNCA output genérico**. Si falta contexto crítico (industria, cliente, briefing, assets), **pregunta 2-3 datos al usuario** antes de generar. Pedir brief bien hecho > generar relleno.
+
+**Regla dura**: si saltas del input a la generación sin pasar por los 8 pasos, estás rompiendo el contrato PACAME. Parar y releer este bloque.
+
+---
+
 ## Tech Stack
 - **Frontend:** Next.js 15, React 19, TypeScript, TailwindCSS, Radix UI, Framer Motion
 - **Backend:** Supabase (Postgres + RLS + Realtime), Stripe, Claude API

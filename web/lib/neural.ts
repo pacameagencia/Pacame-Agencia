@@ -222,6 +222,16 @@ export interface RememberParams {
 export async function rememberMemory(p: RememberParams): Promise<string | null> {
   try {
     const supabase = createServerSupabase();
+    // Auto-embed: si no viene explicito, genera vector(768) via Ollama VPS.
+    // No-bloqueante: si Ollama falla, se guarda sin embedding.
+    let embeddingLiteral: string | null = null;
+    if (!p.embedding) {
+      const text = `${p.title}\n${p.content}`.slice(0, 4000);
+      const vec = await embed(text);
+      if (vec) embeddingLiteral = `[${vec.join(",")}]`;
+    } else if (Array.isArray(p.embedding)) {
+      embeddingLiteral = `[${(p.embedding as number[]).join(",")}]`;
+    }
     const { data, error } = await supabase
       .from("agent_memories")
       .insert({
@@ -234,7 +244,7 @@ export async function rememberMemory(p: RememberParams): Promise<string | null> 
         tags: p.tags ?? [],
         related_entity_type: p.relatedEntityType ?? null,
         related_entity_id: p.relatedEntityId ?? null,
-        embedding: p.embedding ?? null,
+        embedding: embeddingLiteral,
         metadata: p.metadata ?? {},
       })
       .select("id")
@@ -302,6 +312,10 @@ export interface RecordDiscoveryParams {
 export async function recordDiscovery(p: RecordDiscoveryParams): Promise<string | null> {
   try {
     const supabase = createServerSupabase();
+    // Auto-embed: discoveries son la base del aprendizaje. Siempre intentar indexar.
+    const text = `${p.title}\n${p.description || ""}\n${p.suggestedAction || ""}`.slice(0, 4000);
+    const vec = await embed(text);
+    const embeddingLiteral = vec ? `[${vec.join(",")}]` : null;
     const { data, error } = await supabase
       .from("agent_discoveries")
       .insert({
@@ -315,6 +329,7 @@ export async function recordDiscovery(p: RecordDiscoveryParams): Promise<string 
         actionable: p.actionable ?? true,
         suggested_action: p.suggestedAction ?? null,
         thought_chain_id: p.thoughtChainId ?? null,
+        embedding: embeddingLiteral,
         metadata: p.metadata ?? {},
       })
       .select("id")
@@ -597,15 +612,49 @@ export interface RouteResult {
 }
 
 const AGENT_HINT_MAP: Record<string, AgentId> = {
+  // NOVA — branding e identidad visual
   branding: "nova", identidad: "nova", logo: "nova", visual: "nova",
+  banner: "nova", paleta: "nova", tipografia: "nova", "manual-marca": "nova",
+  "brand-guidelines": "nova", mockup: "nova", moodboard: "nova",
+  // ATLAS — SEO + contenido orgánico
   seo: "atlas", contenido: "atlas", organico: "atlas", blog: "atlas",
+  articulo: "atlas", keyword: "atlas", "meta-description": "atlas",
+  sitemap: "atlas", "search-console": "atlas", ahrefs: "atlas", semrush: "atlas",
+  // NEXUS — ads, embudos, CRO
   ads: "nexus", embudo: "nexus", cro: "nexus", lead: "nexus", funnel: "nexus",
+  "landing-page": "nexus", "lead-magnet": "nexus", conversion: "nexus",
+  "meta-ads": "nexus", "google-ads": "nexus", "tiktok-ads": "nexus",
+  campaña: "nexus", retargeting: "nexus", roas: "nexus",
+  // PIXEL — frontend + diseño web
   frontend: "pixel", web: "pixel", design: "pixel", ui: "pixel", next: "pixel",
+  landing: "pixel", hero: "pixel", componente: "pixel", formulario: "pixel",
+  "tailwind": "pixel", react: "pixel", figma: "pixel", animacion: "pixel",
+  portfolio: "pixel", vercel: "pixel",
+  // CORE — backend, APIs, infra
   backend: "core", api: "core", infra: "core", supabase: "core", deploy: "core",
+  sql: "core", migration: "core", rls: "core", "edge-function": "core",
+  webhook: "core", cron: "core", docker: "core", vps: "core", nginx: "core",
+  n8n: "core",
+  // PULSE — social media
   social: "pulse", instagram: "pulse", tiktok: "pulse", reels: "pulse",
+  carrusel: "pulse", post: "pulse", story: "pulse", "video-corto": "pulse",
+  "community-management": "pulse", engagement: "pulse", hashtag: "pulse",
+  linkedin: "pulse", twitter: "pulse",
+  // SAGE — estrategia, pricing, propuestas
   estrategia: "sage", pricing: "sage", consejo: "sage", proposal: "sage",
+  propuesta: "sage", presupuesto: "sage", "cliente-nuevo": "sage",
+  cotizacion: "sage", roadmap: "sage", okr: "sage", "post-mortem": "sage",
+  pivot: "sage",
+  // COPY — copywriting
   copy: "copy", texto: "copy", email: "copy", cta: "copy",
+  guion: "copy", hook: "copy", titular: "copy", subject: "copy",
+  "email-marketing": "copy", newsletter: "copy", "video-script": "copy",
+  "sales-page": "copy",
+  // LENS — analytics
   analytics: "lens", dashboard: "lens", metrica: "lens", kpi: "lens",
+  reporte: "lens", "google-analytics": "lens", ga4: "lens",
+  "looker-studio": "lens", "data-studio": "lens", cohort: "lens",
+  "churn-rate": "lens", ltv: "lens", cac: "lens",
 };
 
 function agentHintFromText(t: string): AgentId | null {

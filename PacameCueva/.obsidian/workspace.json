@@ -69,16 +69,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "01-Agentes/01-nova.md",
+                "file": "_dashboards/Actividad.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "01-nova"
+              "title": "Actividad"
+            }
+          },
+          {
+            "id": "f1af29186e510cca",
+            "type": "leaf",
+            "state": {
+              "type": "smart-release-notes-view",
+              "state": {},
+              "icon": "file-text",
+              "title": "Release Notes"
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 5
       }
     ],
     "direction": "vertical"
@@ -292,7 +302,7 @@
             }
           }
         ],
-        "currentTab": 11
+        "currentTab": 10
       }
     ],
     "direction": "horizontal",
@@ -316,8 +326,9 @@
       "smart-connections:Smart Lookup: Open lookup view": false
     }
   },
-  "active": "fd4bf1bd15c0b29c",
+  "active": "b948365e63b69da7",
   "lastOpenFiles": [
+    "01-Agentes/01-nova.md",
     "_dashboards/Hubs.md",
     "_dashboards/Agentes.md",
     "_dashboards/Actividad.md",
@@ -343,7 +354,6 @@
     "conflict-files-obsidian-git.md",
     "08-Memorias/SAGE/2026-04-18-descubrimiento-paquete-presencia-digital-completa-a-precio-f.md",
     "08-Memorias/NEXUS/2026-04-19-descubrimiento-canibalizacion-de-fuentes-de-lead.md",
-    "_dashboards/Decay.md",
     "_templates/memoria.md.tmp.19164.1776608842109",
     "_dashboards/Decay.md.tmp.19164.1776608835957",
     "_dashboards/Agentes.md.tmp.19164.1776608828936",
