@@ -448,3 +448,221 @@ export async function reinforceSpecialization(
     // no-op: el refuerzo no debe romper el flujo de cierre
   }
 }
+
+// ============================================================================
+// EMBEDDINGS + SEMANTIC SEARCH (bloque 1 cerebro con pgvector + Ollama VPS)
+// ============================================================================
+
+const OLLAMA_URL = process.env.PACAME_OLLAMA_URL || "http://72.62.185.125:11434";
+const OLLAMA_MODEL = process.env.PACAME_EMBED_MODEL || "nomic-embed-text";
+
+/**
+ * Genera un embedding 768-dim via Ollama VPS (nomic-embed-text).
+ * Devuelve null si el modelo no responde; el flujo principal no se rompe.
+ */
+export async function embed(text: string): Promise<number[] | null> {
+  if (!text || text.trim().length < 3) return null;
+  try {
+    const r = await fetch(`${OLLAMA_URL}/api/embeddings`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ model: OLLAMA_MODEL, prompt: text.slice(0, 8000) }),
+    });
+    if (!r.ok) return null;
+    const j = (await r.json()) as { embedding: number[] };
+    return Array.isArray(j.embedding) && j.embedding.length === 768 ? j.embedding : null;
+  } catch {
+    return null;
+  }
+}
+
+export interface SemanticHit {
+  id: string;
+  node_type?: string;
+  label?: string;
+  title?: string;
+  content?: string;
+  owner_agent?: string | null;
+  agent_id?: string | null;
+  importance?: number | null;
+  similarity: number;
+}
+
+export async function semanticSearchNodes(
+  query: string,
+  options: { matchCount?: number; type?: string } = {}
+): Promise<SemanticHit[]> {
+  const vec = await embed(query);
+  if (!vec) return [];
+  try {
+    const supabase = createServerSupabase();
+    const { data, error } = await supabase.rpc("semantic_search_nodes", {
+      query_embedding: `[${vec.join(",")}]`,
+      match_count: options.matchCount ?? 8,
+      filter_type: options.type ?? null,
+    });
+    if (error) return [];
+    return (data || []) as SemanticHit[];
+  } catch {
+    return [];
+  }
+}
+
+export async function semanticSearchMemories(
+  query: string,
+  options: { matchCount?: number; agentId?: string } = {}
+): Promise<SemanticHit[]> {
+  const vec = await embed(query);
+  if (!vec) return [];
+  try {
+    const supabase = createServerSupabase();
+    const { data, error } = await supabase.rpc("semantic_search_memories", {
+      query_embedding: `[${vec.join(",")}]`,
+      match_count: options.matchCount ?? 5,
+      filter_agent: options.agentId ?? null,
+    });
+    if (error) return [];
+    return (data || []) as SemanticHit[];
+  } catch {
+    return [];
+  }
+}
+
+// ============================================================================
+// LLM CALLS LOGGER — registra cada llamada Claude/OpenAI/Ollama
+// ============================================================================
+
+export interface LlmCallParams {
+  callSite: string;
+  provider: string;
+  model: string;
+  tokensIn?: number;
+  tokensOut?: number;
+  tokensThinking?: number;
+  costUsd?: number;
+  latencyMs?: number;
+  success?: boolean;
+  errorMessage?: string | null;
+  tier?: string;
+  strategy?: string;
+  fallbackUsed?: boolean;
+  requestId?: string;
+  actorId?: string | null;
+  metadata?: Record<string, unknown>;
+}
+
+export async function logLlmCall(p: LlmCallParams): Promise<string | null> {
+  try {
+    const supabase = createServerSupabase();
+    const { data, error } = await supabase
+      .from("llm_calls")
+      .insert({
+        call_site: p.callSite,
+        provider: p.provider,
+        model: p.model,
+        tokens_in: p.tokensIn ?? 0,
+        tokens_out: p.tokensOut ?? 0,
+        tokens_thinking: p.tokensThinking ?? 0,
+        cost_usd: p.costUsd ?? 0,
+        latency_ms: p.latencyMs ?? 0,
+        success: p.success ?? true,
+        error_message: p.errorMessage ?? null,
+        tier: p.tier ?? "default",
+        strategy: p.strategy ?? "default",
+        fallback_used: p.fallbackUsed ?? false,
+        request_id: p.requestId ?? null,
+        actor_id: p.actorId ?? null,
+        metadata: p.metadata ?? {},
+      })
+      .select("id")
+      .single();
+    if (error || !data) return null;
+    return data.id as string;
+  } catch {
+    return null;
+  }
+}
+
+// ============================================================================
+// ROUTER NEURAL — el orquestador (nervio central)
+// ============================================================================
+
+export interface RouteResult {
+  agent: AgentId | string;
+  skill?: { label: string; id: string; similarity: number } | null;
+  memories: SemanticHit[];
+  discoveries: SemanticHit[];
+  context: string;
+  stimulus_id?: string | null;
+}
+
+const AGENT_HINT_MAP: Record<string, AgentId> = {
+  branding: "nova", identidad: "nova", logo: "nova", visual: "nova",
+  seo: "atlas", contenido: "atlas", organico: "atlas", blog: "atlas",
+  ads: "nexus", embudo: "nexus", cro: "nexus", lead: "nexus", funnel: "nexus",
+  frontend: "pixel", web: "pixel", design: "pixel", ui: "pixel", next: "pixel",
+  backend: "core", api: "core", infra: "core", supabase: "core", deploy: "core",
+  social: "pulse", instagram: "pulse", tiktok: "pulse", reels: "pulse",
+  estrategia: "sage", pricing: "sage", consejo: "sage", proposal: "sage",
+  copy: "copy", texto: "copy", email: "copy", cta: "copy",
+  analytics: "lens", dashboard: "lens", metrica: "lens", kpi: "lens",
+};
+
+function agentHintFromText(t: string): AgentId | null {
+  const low = t.toLowerCase();
+  for (const [k, v] of Object.entries(AGENT_HINT_MAP)) {
+    if (low.includes(k)) return v;
+  }
+  return null;
+}
+
+/**
+ * Orquestador central: dado un input del mundo exterior, decide agente + skill
+ * + contexto cerebral. No ejecuta Claude: devuelve el bundle para el caller.
+ */
+export async function routeInput(params: {
+  input: string;
+  source?: StimulusSource;
+  channel?: string;
+  agentHint?: string;
+}): Promise<RouteResult> {
+  const { input } = params;
+  const stimulus_id = await recordStimulus({
+    source: params.source ?? "external_api",
+    channel: params.channel ?? null,
+    signal: input.slice(0, 200),
+    payload: { full_input: input.slice(0, 2000) },
+    intensity: 0.6,
+  });
+  const agent = (params.agentHint as AgentId)
+    || agentHintFromText(input)
+    || "dios";
+  const [skillHits, memories, discoveries] = await Promise.all([
+    semanticSearchNodes(input, { matchCount: 3, type: "skill" }),
+    semanticSearchMemories(input, { matchCount: 5, agentId: agent }),
+    semanticSearchNodes(input, { matchCount: 3, type: "discovery" }),
+  ]);
+  const skill = skillHits[0] ? {
+    label: skillHits[0].label || "",
+    id: skillHits[0].id,
+    similarity: skillHits[0].similarity,
+  } : null;
+  const contextLines: string[] = [];
+  if (skill) contextLines.push(`Skill sugerido: ${skill.label} (similarity ${skill.similarity.toFixed(2)})`);
+  if (memories.length) {
+    contextLines.push(`\nMemorias relevantes del agente ${agent.toUpperCase()}:`);
+    memories.forEach(m => contextLines.push(`- ${m.title}: ${(m.content || "").slice(0, 200)}`));
+  }
+  if (discoveries.length) {
+    contextLines.push(`\nDiscoveries relacionados:`);
+    discoveries.forEach(d => contextLines.push(`- ${d.label}: ${(d.content || "").slice(0, 200)}`));
+  }
+  return {
+    agent,
+    skill,
+    memories,
+    discoveries,
+    context: contextLines.join("\n"),
+    stimulus_id,
+  };
+}
