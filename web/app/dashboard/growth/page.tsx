@@ -94,6 +94,7 @@ export default function GrowthPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
+  const [marking, setMarking] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
     try {
@@ -114,6 +115,25 @@ export default function GrowthPage() {
     const id = setInterval(fetchData, 60000);
     return () => clearInterval(id);
   }, [fetchData]);
+
+  const markContacted = useCallback(
+    async (id: string) => {
+      setMarking(id);
+      try {
+        const res = await fetch(`/api/dashboard/nps/${id}/followup`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+        });
+        if (!res.ok) throw new Error(`status ${res.status}`);
+        await fetchData();
+      } catch (err) {
+        alert(`Error: ${(err as Error).message}`);
+      } finally {
+        setMarking(null);
+      }
+    },
+    [fetchData]
+  );
 
   if (loading && !data) {
     return (
@@ -307,9 +327,18 @@ export default function GrowthPage() {
                       {d.client_email_snapshot || d.client_id}
                     </span>
                   </div>
-                  <span className="text-[11px] text-pacame-white/40 font-body">
-                    {timeAgo(d.submitted_at)}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] text-pacame-white/40 font-body">
+                      {timeAgo(d.submitted_at)}
+                    </span>
+                    <button
+                      onClick={() => markContacted(d.id)}
+                      disabled={marking === d.id}
+                      className="px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.08] text-[11px] text-pacame-white/70 hover:bg-white/[0.08] disabled:opacity-50 transition"
+                    >
+                      {marking === d.id ? "..." : "Marcar contactado"}
+                    </button>
+                  </div>
                 </div>
                 {d.feedback && (
                   <div className="text-sm text-pacame-white/70 italic border-l-2 border-red-500/40 pl-3 mt-2">

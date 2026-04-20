@@ -8,7 +8,7 @@ import {
   MessageSquare, Bell, ClipboardCheck, CreditCard,
   Megaphone, FileCheck, Phone, Rocket, Building2, Award, LogOut,
   TrendingUp, MessageCircle, Lightbulb, Network, ShoppingBag, Package,
-  BookOpen, Target, Brain, Heart,
+  BookOpen, Target, Brain, Heart, Wallet,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -30,6 +30,7 @@ const navItems = [
   { label: "Campanas", href: "/dashboard/campaigns", icon: Megaphone },
   { label: "Propuestas", href: "/dashboard/proposals", icon: FileCheck },
   { label: "Referidos", href: "/dashboard/referrals", icon: Award },
+  { label: "Payouts", href: "/dashboard/payouts", icon: Wallet },
   { label: "Llamadas", href: "/dashboard/calls", icon: Phone },
   { label: "WhatsApp", href: "/dashboard/conversations", icon: MessageCircle },
   { label: "Comercial", href: "/dashboard/commercial", icon: TrendingUp },
