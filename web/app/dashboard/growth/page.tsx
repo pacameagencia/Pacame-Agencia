@@ -14,6 +14,8 @@ import {
   Copy,
   CheckCircle2,
 } from "lucide-react";
+import NpsGauge from "@/components/growth/NpsGauge";
+import AnimatedNumber from "@/components/ui/AnimatedNumber";
 
 interface LifecycleRow {
   email_type: string;
@@ -152,11 +154,6 @@ export default function GrowthPage() {
   }
 
   const nps = data?.nps;
-  const npsColor =
-    !nps?.nps_score ? "text-pacame-white/40" :
-    nps.nps_score >= 50 ? "text-lime-pulse" :
-    nps.nps_score >= 20 ? "text-amber-signal" :
-    "text-red-400";
 
   return (
     <div className="space-y-6 max-w-7xl">
@@ -179,64 +176,89 @@ export default function GrowthPage() {
         </button>
       </div>
 
-      {/* KPI hero: NPS score */}
+      {/* KPI hero: NPS score con gauge SVG */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 md:col-span-2">
-          <div className="flex items-start justify-between mb-3">
+        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 md:col-span-2 relative overflow-hidden">
+          <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-olympus-gold/[0.04] blur-3xl pointer-events-none" />
+          <div className="flex items-start justify-between mb-3 relative">
             <div>
               <div className="text-xs uppercase tracking-wider text-pacame-white/40 font-mono mb-1">
                 NPS Score (30d)
               </div>
-              <div className={`font-heading font-bold text-5xl ${npsColor}`}>
-                {nps?.nps_score !== null && nps?.nps_score !== undefined
-                  ? nps.nps_score.toString()
-                  : "—"}
-              </div>
-              <div className="text-xs text-pacame-white/40 mt-2">
-                Basado en {nps?.responses || 0} respuestas · media {nps?.avg_score?.toFixed(1) || "—"}/10
+              <div className="text-xs text-pacame-white/40 mt-1">
+                Basado en {nps?.responses || 0} respuestas · media{" "}
+                {nps?.avg_score?.toFixed(1) || "—"}/10
               </div>
             </div>
             <Heart className="w-6 h-6 text-pacame-white/20" />
           </div>
-          {/* Breakdown bar */}
-          {nps && nps.responses > 0 && (
-            <div>
-              <div className="flex h-2 rounded-full overflow-hidden bg-white/[0.04]">
-                <div
-                  className="bg-lime-pulse"
-                  style={{ width: `${(nps.promoters / nps.responses) * 100}%` }}
-                  title={`${nps.promoters} promoters`}
-                />
-                <div
-                  className="bg-amber-signal"
-                  style={{ width: `${(nps.passives / nps.responses) * 100}%` }}
-                  title={`${nps.passives} passives`}
-                />
-                <div
-                  className="bg-red-500"
-                  style={{ width: `${(nps.detractors / nps.responses) * 100}%` }}
-                  title={`${nps.detractors} detractors`}
-                />
+          <div className="flex flex-col md:flex-row items-center gap-4 relative">
+            <NpsGauge score={nps?.nps_score ?? null} size={220} />
+            {/* Breakdown bar */}
+            {nps && nps.responses > 0 && (
+              <div className="flex-1 w-full min-w-0">
+                <div className="flex h-2 rounded-full overflow-hidden bg-white/[0.04]">
+                  <div
+                    className="bg-lime-pulse transition-all duration-700 ease-out"
+                    style={{ width: `${(nps.promoters / nps.responses) * 100}%` }}
+                    title={`${nps.promoters} promoters`}
+                  />
+                  <div
+                    className="bg-amber-signal transition-all duration-700 ease-out"
+                    style={{ width: `${(nps.passives / nps.responses) * 100}%` }}
+                    title={`${nps.passives} passives`}
+                  />
+                  <div
+                    className="bg-red-500 transition-all duration-700 ease-out"
+                    style={{ width: `${(nps.detractors / nps.responses) * 100}%` }}
+                    title={`${nps.detractors} detractors`}
+                  />
+                </div>
+                <div className="grid grid-cols-3 mt-3 gap-2 text-[11px] font-body">
+                  <div className="p-2 rounded-lg bg-lime-pulse/5 border border-lime-pulse/20">
+                    <div className="text-lime-pulse font-heading font-bold text-lg">
+                      <AnimatedNumber value={nps.promoters} />
+                    </div>
+                    <div className="text-lime-pulse/70 uppercase tracking-wider text-[10px]">
+                      Promoters
+                    </div>
+                  </div>
+                  <div className="p-2 rounded-lg bg-amber-signal/5 border border-amber-signal/20">
+                    <div className="text-amber-signal font-heading font-bold text-lg">
+                      <AnimatedNumber value={nps.passives} />
+                    </div>
+                    <div className="text-amber-signal/70 uppercase tracking-wider text-[10px]">
+                      Passives
+                    </div>
+                  </div>
+                  <div className="p-2 rounded-lg bg-red-500/5 border border-red-500/20">
+                    <div className="text-red-400 font-heading font-bold text-lg">
+                      <AnimatedNumber value={nps.detractors} />
+                    </div>
+                    <div className="text-red-400/70 uppercase tracking-wider text-[10px]">
+                      Detractors
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="flex justify-between mt-2 text-[11px] text-pacame-white/50 font-body">
-                <span className="text-lime-pulse">● {nps.promoters} Promoters</span>
-                <span className="text-amber-signal">● {nps.passives} Passives</span>
-                <span className="text-red-400">● {nps.detractors} Detractors</span>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
+        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 relative overflow-hidden">
+          {(data?.detractors_unaddressed.length || 0) > 0 && (
+            <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-red-500/10 blur-2xl pointer-events-none animate-pulse" />
+          )}
           <AlertTriangle className="w-5 h-5 text-red-400 mb-2" />
           <div className="font-heading font-bold text-3xl text-red-400">
-            {data?.detractors_unaddressed.length || 0}
+            <AnimatedNumber value={data?.detractors_unaddressed.length || 0} />
           </div>
           <div className="text-xs text-pacame-white/40 font-body mt-1">
             Detractores sin contacto
           </div>
           {(data?.detractors_unaddressed.length || 0) > 0 && (
-            <div className="text-[11px] text-red-400/80 mt-2">
+            <div className="text-[11px] text-red-400/80 mt-2 flex items-center gap-1">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
               Llama en &lt;24h o se van
             </div>
           )}
@@ -245,7 +267,7 @@ export default function GrowthPage() {
         <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
           <Award className="w-5 h-5 text-olympus-gold mb-2" />
           <div className="font-heading font-bold text-3xl text-olympus-gold">
-            {data?.referrals_top.length || 0}
+            <AnimatedNumber value={data?.referrals_top.length || 0} />
           </div>
           <div className="text-xs text-pacame-white/40 font-body mt-1">
             Referrers activos
@@ -284,7 +306,7 @@ export default function GrowthPage() {
                   {LIFECYCLE_LABEL[type]}
                 </div>
                 <div className="font-heading font-bold text-2xl text-pacame-white">
-                  {sent}
+                  <AnimatedNumber value={sent} />
                 </div>
                 <div className="text-xs text-pacame-white/50 font-body mt-0.5">enviados</div>
                 <div className="flex justify-between mt-3 pt-3 border-t border-white/[0.04] text-[11px] font-body">
