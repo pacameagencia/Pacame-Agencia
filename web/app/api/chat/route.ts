@@ -3,7 +3,7 @@ import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { fireSynapse, recordStimulus, rememberMemory } from "@/lib/neural";
-import { llmChat, type LLMTier } from "@/lib/llm";
+import { llmChat, type LLMTier, type LLMMessage } from "@/lib/llm";
 
 // Rate limit: max 30 requests per 10 minutes (Claude API costs money)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -24,7 +24,6 @@ function isRateLimited(key: string): boolean {
 const supabase = createServerSupabase();
 
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
-const CLAUDE_API_URL = "https://api.anthropic.com/v1/messages";
 
 // Shared system context — every agent knows it's part of a REAL deployed platform
 const SYSTEM_CONTEXT = `CONTEXTO DEL SISTEMA PACAME (lee esto antes de responder):
@@ -416,31 +415,20 @@ export async function POST(request: NextRequest) {
   ];
 
   try {
-    const response = await fetch(CLAUDE_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": CLAUDE_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: MODEL_ROUTING[agent.toUpperCase()] || DEFAULT_MODEL,
-        max_tokens: 2048,
-        system: SYSTEM_CONTEXT + agentConfig.prompt,
-        messages,
-      }),
+    const tier: LLMTier = AGENT_CHAT_TIER[agent.toUpperCase()] || "premium";
+    const llmMessages: LLMMessage[] = [
+      { role: "system", content: SYSTEM_CONTEXT + agentConfig.prompt },
+      ...messages.map((m) => ({ role: m.role, content: m.content })),
+    ];
+
+    const result = await llmChat(llmMessages, {
+      tier,
+      maxTokens: 2048,
+      agentId: agent.toLowerCase(),
+      source: "chat",
+      metadata: { conversation_id: convId },
     });
-
-    if (!response.ok) {
-      const errorData = await response.text();
-      return NextResponse.json(
-        { error: `Claude API error: ${response.status}`, details: errorData },
-        { status: response.status || 500 }
-      );
-    }
-
-    const data = await response.json();
-    const assistantMessage = data.content?.[0]?.text || "Sin respuesta";
+    const assistantMessage = result.content || "Sin respuesta";
 
     // Save assistant message to conversation metadata
     if (convId) {
@@ -457,8 +445,8 @@ export async function POST(request: NextRequest) {
           role: "assistant",
           content: assistantMessage,
           agent: agent.toUpperCase(),
-          model: data.model,
-          tokens: data.usage?.output_tokens || 0,
+          model: result.model,
+          tokens: result.tokensOut,
           ts: new Date().toISOString(),
         });
         supabase.from("conversations").update({
@@ -476,7 +464,7 @@ export async function POST(request: NextRequest) {
       type: "update",
       title: `Consulta respondida`,
       description: `${message.slice(0, 100)}${message.length > 100 ? "..." : ""}`,
-      metadata: { tokens: data.usage?.output_tokens, model: data.model, conversation_id: convId },
+      metadata: { tokens: result.tokensOut, model: result.model, provider: result.provider, conversation_id: convId },
     });
 
     // Neural: registrar estimulo del usuario y sinapsis DIOS→agente
@@ -487,7 +475,7 @@ export async function POST(request: NextRequest) {
       agentId: agentLower,
       type: "episodic",
       title: `Chat: ${message.slice(0, 60)}`,
-      content: `Consulta respondida. Tokens: ${data.usage?.output_tokens || 0}. Modelo: ${data.model}.`,
+      content: `Consulta respondida. Tokens: ${result.tokensOut}. Modelo: ${result.model} (${result.provider}).`,
       importance: 0.3,
       tags: ["chat", "consulta"],
     });
@@ -495,13 +483,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       message: assistantMessage,
       agent: agent.toUpperCase(),
-      model: data.model,
-      usage: data.usage,
+      model: result.model,
+      provider: result.provider,
+      usage: { input_tokens: result.tokensIn, output_tokens: result.tokensOut },
       conversation_id: convId,
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "Error al conectar con Claude API", details: String(error) },
+      { error: "Error al conectar con LLM", details: String(error) },
       { status: 500 }
     );
   }

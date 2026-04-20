@@ -1,0 +1,165 @@
+{
+  "name": "PACAME — Lead Enrichment (al crear lead)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pacame-enrich-lead",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook nuevo lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "pacame-enrich-lead"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "conditions": [
+            {
+              "id": "has-email",
+              "leftValue": "={{ $json.body.email }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty" }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "check-email",
+      "name": "Tiene email?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.hunter.io/v2/domain-search?domain={{ $json.body.email.split('@')[1] }}&api_key={{ $env.HUNTER_API_KEY }}&limit=5",
+        "options": {}
+      },
+      "id": "hunter",
+      "name": "Hunter.io domain search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, -100],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://clearbit.com/api/v2/companies/find?domain={{ $('Webhook nuevo lead').item.json.body.email.split('@')[1] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.CLEARBIT_API_KEY }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "clearbit",
+      "name": "Clearbit company info",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 100],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $('Webhook nuevo lead').item.json.body;\nconst hunter = $('Hunter.io domain search').item?.json?.data || {};\nconst clearbit = $('Clearbit company info').item?.json || {};\n\nreturn [{\n  json: {\n    lead_id: lead.id,\n    email: lead.email,\n    enriched: {\n      company_domain: hunter.domain || null,\n      company_name: hunter.organization || clearbit.name || null,\n      company_description: clearbit.description || null,\n      sector: clearbit.category?.industry || null,\n      employees_estimate: clearbit.metrics?.employees || null,\n      country: clearbit.geo?.country || null,\n      city: clearbit.geo?.city || null,\n      linkedin: clearbit.linkedin?.handle ? `https://linkedin.com/company/${clearbit.linkedin.handle}` : null,\n      twitter: clearbit.twitter?.handle || null,\n      tech_stack: clearbit.tech || [],\n      alternative_contacts: (hunter.emails || []).slice(0, 3).map(e => ({ email: e.value, name: `${e.first_name || ''} ${e.last_name || ''}`.trim(), position: e.position })),\n    }\n  }\n}];"
+      },
+      "id": "merge",
+      "name": "Merge enrichment",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 0]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=={{ $env.SUPABASE_URL }}/rest/v1/leads?id=eq.{{ $json.lead_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=minimal" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"business_name\": \"{{ $json.enriched.company_name }}\",\n  \"sector\": \"{{ $json.enriched.sector }}\",\n  \"city\": \"{{ $json.enriched.city }}\",\n  \"enrichment_data\": {{ JSON.stringify($json.enriched) }}\n}",
+        "options": {}
+      },
+      "id": "update-lead",
+      "name": "Update lead en Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://pacameagencia.com/api/agents/cron",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.CRON_SECRET }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"agent\":\"sage\"}",
+        "options": { "timeout": 60000 }
+      },
+      "id": "trigger-sage",
+      "name": "Disparar Sage para cualificar",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"ok\":true,\"enriched\":{{ JSON.stringify($('Merge enrichment').item.json.enriched) }}}",
+        "options": {}
+      },
+      "id": "respond-ok",
+      "name": "200 OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1320, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"ok\":false,\"error\":\"email_required\"}",
+        "options": { "responseCode": 400 }
+      },
+      "id": "respond-400",
+      "name": "400 sin email",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [440, 250]
+    }
+  ],
+  "connections": {
+    "Webhook nuevo lead": { "main": [[{ "node": "Tiene email?", "type": "main", "index": 0 }]] },
+    "Tiene email?": { "main": [[{ "node": "Hunter.io domain search", "type": "main", "index": 0 }, { "node": "Clearbit company info", "type": "main", "index": 0 }], [{ "node": "400 sin email", "type": "main", "index": 0 }]] },
+    "Hunter.io domain search": { "main": [[{ "node": "Merge enrichment", "type": "main", "index": 0 }]] },
+    "Clearbit company info": { "main": [[{ "node": "Merge enrichment", "type": "main", "index": 0 }]] },
+    "Merge enrichment": { "main": [[{ "node": "Update lead en Supabase", "type": "main", "index": 0 }]] },
+    "Update lead en Supabase": { "main": [[{ "node": "Disparar Sage para cualificar", "type": "main", "index": 0 }]] },
+    "Disparar Sage para cualificar": { "main": [[{ "node": "200 OK", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1", "timezone": "Europe/Madrid" },
+  "meta": {
+    "description": "Webhook POST /webhook/pacame-enrich-lead {id,email,...}. Enriquece el lead con Hunter.io (contactos alternativos del dominio) + Clearbit (empresa, sector, tech stack, tamano). Actualiza Supabase y dispara SAGE para cualificacion neural.\n\nENV: HUNTER_API_KEY, CLEARBIT_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_KEY, CRON_SECRET.\nCampos Supabase: leads.enrichment_data (jsonb)."
+  }
+}

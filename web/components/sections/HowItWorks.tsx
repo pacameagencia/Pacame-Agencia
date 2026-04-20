@@ -79,7 +79,7 @@ function AnimatedPath() {
 
 export default function HowItWorks() {
   return (
-    <section className="section-padding bg-[#0A0A0A] relative">
+    <section className="section-padding bg-paper relative">
       {/* Golden divider */}
       <div className="px-6">
         <GoldenDivider variant="line" />

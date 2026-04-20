@@ -1,0 +1,144 @@
+{
+  "name": "PACAME — Reporte semanal por cliente (Lunes 09:00)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "cronExpression", "expression": "0 9 * * 1" }] }
+      },
+      "id": "cron-monday",
+      "name": "Lunes 09:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=={{ $env.SUPABASE_URL }}/rest/v1/clients?status=eq.active&select=id,business_name,contact_email,contact_name,plan",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_KEY }}" }
+          ]
+        }
+      },
+      "id": "get-clients",
+      "name": "Clientes activos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": { "batchSize": 1, "options": {} },
+      "id": "split",
+      "name": "Por cliente",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=={{ $env.SUPABASE_URL }}/rest/v1/content?client_id=eq.{{ $json.id }}&created_at=gte.{{ $now.minus({days: 7}).toISO() }}&select=platform,content_type,status",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_KEY }}" }
+          ]
+        }
+      },
+      "id": "fetch-content",
+      "name": "Contenido 7d",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, -100]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=={{ $env.SUPABASE_URL }}/rest/v1/leads?client_id=eq.{{ $('Por cliente').item.json.id }}&created_at=gte.{{ $now.minus({days: 7}).toISO() }}&select=id,score,status,source",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_KEY }}" }
+          ]
+        }
+      },
+      "id": "fetch-leads",
+      "name": "Leads 7d",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 100]
+    },
+    {
+      "parameters": {
+        "jsCode": "const client = $('Por cliente').item.json;\nconst content = $('Contenido 7d').item.json || [];\nconst leads = $('Leads 7d').item.json || [];\n\nconst contentByPlatform = {};\ncontent.forEach(c => {\n  contentByPlatform[c.platform] = (contentByPlatform[c.platform] || 0) + 1;\n});\n\nconst hotLeads = leads.filter(l => (l.score || 0) >= 4).length;\nconst qualified = leads.filter(l => l.status === 'qualified').length;\n\nreturn [{\n  json: {\n    client_id: client.id,\n    client_name: client.business_name,\n    contact_email: client.contact_email,\n    contact_name: client.contact_name || 'equipo',\n    plan: client.plan,\n    summary: {\n      content_published: content.filter(c => c.status === 'published').length,\n      content_pending: content.filter(c => c.status === 'pending_review').length,\n      by_platform: contentByPlatform,\n      new_leads: leads.length,\n      hot_leads: hotLeads,\n      qualified_leads: qualified,\n      sources: [...new Set(leads.map(l => l.source).filter(Boolean))],\n    }\n  }\n}];"
+      },
+      "id": "aggregate",
+      "name": "Agregar metricas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{ $env.CLAUDE_API_KEY }}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-haiku-4-5-20251001\",\n  \"max_tokens\": 1200,\n  \"system\": \"Eres Lens, analista de PACAME. Escribe un email de reporte semanal al cliente en espanol, tono cercano pero profesional. HTML simple (<h2>, <p>, <ul>). Max 300 palabras. Cierra con proximos pasos claros.\",\n  \"messages\": [{\"role\": \"user\", \"content\": \"Cliente: {{ $json.client_name }}\\nContacto: {{ $json.contact_name }}\\nPlan: {{ $json.plan }}\\n\\nMetricas semana:\\n- Contenido publicado: {{ $json.summary.content_published }}\\n- Contenido pendiente revision: {{ $json.summary.content_pending }}\\n- Por plataforma: {{ JSON.stringify($json.summary.by_platform) }}\\n- Leads nuevos: {{ $json.summary.new_leads }}\\n- Leads calientes: {{ $json.summary.hot_leads }}\\n- Leads cualificados: {{ $json.summary.qualified_leads }}\\n- Fuentes: {{ $json.summary.sources.join(', ') }}\\n\\nGenera el email HTML.\"}]\n}"
+      },
+      "id": "generate-email",
+      "name": "Generar email con Claude",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.resend.com/emails",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.RESEND_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from\": \"PACAME <hola@pacameagencia.com>\",\n  \"to\": [\"{{ $('Agregar metricas').item.json.contact_email }}\"],\n  \"subject\": \"Tu semana en PACAME — {{ $('Agregar metricas').item.json.client_name }}\",\n  \"html\": {{ JSON.stringify($json.content[0].text) }}\n}"
+      },
+      "id": "send-email",
+      "name": "Enviar via Resend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1320, 0]
+    }
+  ],
+  "connections": {
+    "Lunes 09:00": { "main": [[{ "node": "Clientes activos", "type": "main", "index": 0 }]] },
+    "Clientes activos": { "main": [[{ "node": "Por cliente", "type": "main", "index": 0 }]] },
+    "Por cliente": { "main": [[{ "node": "Contenido 7d", "type": "main", "index": 0 }, { "node": "Leads 7d", "type": "main", "index": 0 }]] },
+    "Contenido 7d": { "main": [[{ "node": "Agregar metricas", "type": "main", "index": 0 }]] },
+    "Leads 7d": { "main": [[{ "node": "Agregar metricas", "type": "main", "index": 0 }]] },
+    "Agregar metricas": { "main": [[{ "node": "Generar email con Claude", "type": "main", "index": 0 }]] },
+    "Generar email con Claude": { "main": [[{ "node": "Enviar via Resend", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1", "timezone": "Europe/Madrid" },
+  "meta": {
+    "description": "Cada lunes 09:00 itera clientes activos, agrega metricas de la semana (contenido publicado/pendiente + leads nuevos/calientes/cualificados) desde Supabase, las pasa a Claude Haiku para redactar un email HTML y lo envia via Resend.\n\nENV: SUPABASE_URL, SUPABASE_SERVICE_KEY, CLAUDE_API_KEY, RESEND_API_KEY.\nClave comercial: el cliente recibe un reporte cada lunes sin que nadie lo redacte."
+  }
+}

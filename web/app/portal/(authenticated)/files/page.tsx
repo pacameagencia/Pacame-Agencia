@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
+import { useToast } from "@/components/ui/toast";
 
 interface ClientFile {
   id: string;
@@ -43,6 +44,7 @@ function formatFileSize(bytes: number): string {
 }
 
 export default function FilesPage() {
+  const { toast } = useToast();
   const [files, setFiles] = useState<ClientFile[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -90,8 +92,15 @@ export default function FilesPage() {
         }
       }
       await fetchFiles();
+      toast({
+        variant: "success",
+        title: fileList.length === 1 ? "Archivo subido" : `${fileList.length} archivos subidos`,
+        description: "Tu equipo PACAME ya puede verlo.",
+      });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al subir");
+      const msg = err instanceof Error ? err.message : "Error al subir";
+      setError(msg);
+      toast({ variant: "error", title: "Error al subir", description: msg });
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -108,8 +117,11 @@ export default function FilesPage() {
       });
       if (!res.ok) throw new Error("Error al eliminar");
       setFiles((prev) => prev.filter((f) => f.id !== fileId));
+      toast({ variant: "success", title: "Archivo eliminado" });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al eliminar");
+      const msg = err instanceof Error ? err.message : "Error al eliminar";
+      setError(msg);
+      toast({ variant: "error", title: "No se pudo eliminar", description: msg });
     } finally {
       setDeletingId(null);
     }

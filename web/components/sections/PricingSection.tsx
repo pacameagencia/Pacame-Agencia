@@ -20,7 +20,7 @@ const packagePrices: Record<string, { amount: number; product: string; descripti
 
 export default function PricingSection() {
   return (
-    <section className="section-padding bg-[#0A0A0A] relative" id="paquetes">
+    <section className="section-padding bg-paper relative" id="paquetes">
       {/* Golden divider */}
       <div className="px-6">
         <GoldenDivider variant="laurel" />

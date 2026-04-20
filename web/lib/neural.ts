@@ -426,3 +426,25 @@ export async function decayMemories(): Promise<number> {
     return 0;
   }
 }
+
+// ============================================================================
+// REFUERZO DE ESPECIALIZACIÓN — usado por agents/closer tras cierres exitosos
+// ============================================================================
+
+export async function reinforceSpecialization(
+  agentId: string,
+  topic: string,
+  score: number | boolean = 1
+): Promise<void> {
+  try {
+    const numericScore = typeof score === "boolean" ? (score ? 1 : 0) : score;
+    const supabase = createServerSupabase();
+    await supabase.rpc("reinforce_specialization", {
+      p_agent_id: agentId,
+      p_topic: topic,
+      p_score: numericScore,
+    });
+  } catch {
+    // no-op: el refuerzo no debe romper el flujo de cierre
+  }
+}

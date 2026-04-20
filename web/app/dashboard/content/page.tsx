@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
+import { dbCall } from "@/lib/dashboard-db";
 import {
   FileText, Check, X, Instagram, Linkedin, Facebook,
   Twitter, Clock, Bot, ChevronDown, Image, Send, Loader2,
@@ -53,7 +54,7 @@ export default function ContentReviewPage() {
   const [publishing, setPublishing] = useState<string | null>(null);
 
   async function updateStatus(id: string, status: string) {
-    await supabase.from("content").update({ status }).eq("id", id);
+    await dbCall({ table: "content", op: "update", data: { status }, filter: { column: "id", value: id } });
     setItems((prev) => prev.map((i) => (i.id === id ? { ...i, status } : i)));
   }
 

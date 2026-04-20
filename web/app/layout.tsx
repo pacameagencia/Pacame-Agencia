@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
+import { Fraunces, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -13,17 +13,21 @@ import ScrollProgress from "@/components/effects/ScrollProgress";
 import NoiseOverlay from "@/components/effects/NoiseOverlay";
 import BackToTop from "@/components/effects/BackToTop";
 
-const spaceGrotesk = Space_Grotesk({
+// Fraunces: serif expressivo mediterráneo, variable axes (SOFT/WONK/opsz)
+// Con `axes`, no pasamos weight/style (los gestiona el sistema variable)
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-space-grotesk",
+  style: ["normal", "italic"],
+  variable: "--font-fraunces",
   display: "swap",
+  axes: ["SOFT", "WONK", "opsz"],
 });
 
-const inter = Inter({
+// Instrument Sans: humanista moderna, contraste tipográfico con Fraunces
+const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-instrument-sans",
   display: "swap",
 });
 
@@ -34,12 +38,10 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const playfairDisplay = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-playfair",
-  display: "swap",
-});
+// Backcompat vars (para no romper referencias existentes)
+const spaceGrotesk = { variable: "--font-space-grotesk" };
+const inter = { variable: "--font-inter" };
+const playfairDisplay = { variable: "--font-playfair" };
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://pacameagencia.com"),
@@ -116,7 +118,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable} dark`}
+      className={`${fraunces.variable} ${instrumentSans.variable} ${jetbrainsMono.variable}`}
     >
       <head>
         <script
@@ -199,10 +201,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-pacame-black text-pacame-white font-body antialiased">
+      <body className="bg-paper text-ink font-body antialiased">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-electric-violet focus:text-white focus:rounded-lg focus:text-sm focus:font-body"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-terracotta-500 focus:text-paper focus:rounded-sm focus:text-sm focus:font-body"
         >
           Saltar al contenido
         </a>

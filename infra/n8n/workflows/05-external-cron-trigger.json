@@ -1,0 +1,130 @@
+{
+  "name": "PACAME — External Cron Trigger (webhook -> /api/agents/cron)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pacame-cron",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": false
+        }
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "pacame-cron"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "auth-check",
+              "leftValue": "={{ $json.headers['x-pacame-secret'] }}",
+              "rightValue": "={{ $env.PACAME_WEBHOOK_SECRET }}",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "auth-gate",
+      "name": "Validar Secret",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://pacameagencia.com/api/agents/cron",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.CRON_SECRET }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"agent\": \"{{ $('Webhook').item.json.body.agent || '' }}\"\n}",
+        "options": {
+          "timeout": 290000
+        }
+      },
+      "id": "fire-cron",
+      "name": "Disparar Cron PACAME",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, -80]
+    },
+    {
+      "parameters": {
+        "jsCode": "const r = $input.first().json;\nconst summary = {\n  triggered_at: new Date().toISOString(),\n  ok: r.ok === true,\n  agent: $('Webhook').item.json.body?.agent || 'all',\n  results: r.results || r,\n};\nreturn [{ json: summary }];"
+      },
+      "id": "build-summary",
+      "name": "Build Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, -80]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "respond-ok",
+      "name": "200 OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [880, -80]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": false,\n  \"error\": \"unauthorized\"\n}",
+        "options": {
+          "responseCode": 401
+        }
+      },
+      "id": "respond-401",
+      "name": "401 Unauthorized",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [440, 120]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Validar Secret", "type": "main", "index": 0 }]]
+    },
+    "Validar Secret": {
+      "main": [
+        [{ "node": "Disparar Cron PACAME", "type": "main", "index": 0 }],
+        [{ "node": "401 Unauthorized", "type": "main", "index": 0 }]
+      ]
+    },
+    "Disparar Cron PACAME": {
+      "main": [[{ "node": "Build Summary", "type": "main", "index": 0 }]]
+    },
+    "Build Summary": {
+      "main": [[{ "node": "200 OK", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Madrid"
+  },
+  "meta": {
+    "description": "Expone un webhook HTTPS en n8n (VPS Hostinger) protegido con X-PACAME-SECRET. Al llegar un POST valido dispara el ciclo neural completo de PACAME (opcionalmente un unico agente si body.agent viene poblado) y devuelve el summary JSON.\n\nENV requeridas en n8n:\n  - PACAME_WEBHOOK_SECRET  : secret para validar el header X-PACAME-SECRET entrante\n  - CRON_SECRET            : el mismo Bearer que Vercel usa para /api/agents/cron\n\nUso:\n  POST https://n8n.pacameagencia.com/webhook/pacame-cron\n    Header X-PACAME-SECRET: <PACAME_WEBHOOK_SECRET>\n    Body   {\"agent\":\"sage\"}   (opcional, omitir para ciclo completo)\n\nCasos de uso:\n  - Slack slash command /pacame-sync\n  - Telegram bot admin command /ciclo\n  - Dashboard button 'Disparar ciclo' desde un navegador fuera de Vercel\n  - GitHub Action post-deploy"
+  }
+}

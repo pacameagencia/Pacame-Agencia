@@ -11,10 +11,14 @@
  *   premium → Claude Sonnet (propuestas, auditorias complejas)
  *   standard → Nebius DeepSeek/Qwen (content, outreach, copy)
  *   economy → Gemma 4 e2b VPS (clasificacion, DMs, personalizacion) — gratis
+ *
+ * Ademas persiste cada llamada en `agent_llm_usage` para el dashboard
+ * de observabilidad (tokens, coste USD, latencia, fallbacks).
  */
 
 import { nebiusChat, NEBIUS_MODELS, type NebiusMessage } from "./nebius";
 import { gemmaChat, type GemmaMessage } from "./gemma";
+import { createServerSupabase } from "./supabase/server";
 
 export type LLMTier = "titan" | "premium" | "standard" | "economy";
 
@@ -35,6 +39,12 @@ export interface LLMOptions {
    * razonamiento que e2b (2B params) no maneja bien.
    */
   skipGemma?: boolean;
+  /** Tracking: agente que origina la llamada (para observabilidad) */
+  agentId?: string;
+  /** Tracking: origen de la llamada (chat | cron | proposal | webhook | ...) */
+  source?: string;
+  /** Metadata extra para persistir en agent_llm_usage */
+  metadata?: Record<string, unknown>;
 }
 
 export interface LLMResult {
@@ -49,27 +59,89 @@ export interface LLMResult {
 
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY || "";
 
-/** Modelo Nebius por tier — TODO pasa por Nebius primero (mas barato) */
+/** Modelo Nebius por tier — TODO pasa por Nebius primero (mas barato que Claude) */
 const NEBIUS_TIER_MODELS: Record<LLMTier, string> = {
   titan: NEBIUS_MODELS["deepseek-v3.2"],           // 671B MoE — rival de Opus
-  premium: NEBIUS_MODELS["deepseek-v3.2-fast"],     // 671B fast — rival de Sonnet
-  standard: NEBIUS_MODELS["qwen-3-32b"],            // 32B — buen balance
+  premium: NEBIUS_MODELS["deepseek-v3.2"],          // 671B — rival de Sonnet (usar regular, -fast tiene rate limit agresivo)
+  standard: NEBIUS_MODELS["deepseek-v3.2"],         // igual standard usa DeepSeek
   economy: NEBIUS_MODELS["llama-3.1-8b"],           // 8B — ultra-barato
 };
 
-/** Modelo Claude por tier — solo como fallback si Nebius falla */
+/** Modelos Nebius alternativos para retry si el principal devuelve 429 */
+const NEBIUS_STANDARD_FALLBACK = NEBIUS_MODELS["llama-3.3-70b"];
+
+/** Modelo Claude por tier — solo como fallback si Nebius+Gemma fallan */
 const CLAUDE_FALLBACK_MODELS: Record<LLMTier, string> = {
-  titan: "claude-opus-4-6",
+  titan: "claude-sonnet-4-6",
   premium: "claude-sonnet-4-6",
   standard: "claude-haiku-4-5-20251001",
   economy: "claude-haiku-4-5-20251001",
 };
 
+// -------------------------------------------------------------------
+// PRICING — USD per 1M tokens (input / output). Valores aproximados
+// para estimacion de coste en dashboard de observabilidad.
+// -------------------------------------------------------------------
+const PRICING_USD_PER_1M: Record<string, { in: number; out: number }> = {
+  // Claude
+  "claude-sonnet-4-6":          { in: 3.0,  out: 15.0 },
+  "claude-haiku-4-5-20251001":  { in: 1.0,  out: 5.0 },
+  // Nebius — precios publicos aproximados (input / output por 1M tokens)
+  "deepseek-ai/DeepSeek-V3.2":                { in: 0.30, out: 1.00 },
+  "deepseek-ai/DeepSeek-V3.2-fast":           { in: 0.40, out: 1.30 },
+  "meta-llama/Meta-Llama-3.1-8B-Instruct":    { in: 0.03, out: 0.09 },
+  "meta-llama/Llama-3.3-70B-Instruct":        { in: 0.13, out: 0.40 },
+  "Qwen/Qwen3-32B":                           { in: 0.10, out: 0.30 },
+  "Qwen/Qwen3-30B-A3B-Instruct-2507":         { in: 0.10, out: 0.30 },
+};
+
+function estimateCostUSD(model: string, tokensIn: number, tokensOut: number): number {
+  const p = PRICING_USD_PER_1M[model];
+  if (!p) return 0;
+  return +(((tokensIn * p.in) + (tokensOut * p.out)) / 1_000_000).toFixed(6);
+}
+
+async function logUsage(
+  result: LLMResult,
+  opts: LLMOptions,
+): Promise<void> {
+  try {
+    const supabase = createServerSupabase();
+    const cost = estimateCostUSD(result.model, result.tokensIn, result.tokensOut);
+    await supabase.from("agent_llm_usage").insert({
+      agent_id: opts.agentId || "unknown",
+      provider: result.provider,
+      model: result.model,
+      tier: opts.tier,
+      tokens_in: result.tokensIn,
+      tokens_out: result.tokensOut,
+      cost_usd: cost,
+      latency_ms: result.latencyMs,
+      fallback: result.fallback,
+      source: opts.source || null,
+      metadata: opts.metadata || {},
+    });
+  } catch {
+    // Logging nunca rompe el flujo principal
+  }
+}
+
 /**
  * Llamada unificada a LLM con routing y fallback automatico.
- * TODOS los tiers intentan Nebius primero → fallback a Claude.
+ * TODOS los tiers intentan Nebius/Gemma primero → fallback a Claude.
+ * Cada llamada se persiste en `agent_llm_usage`.
  */
 export async function llmChat(
+  messages: LLMMessage[],
+  opts: LLMOptions
+): Promise<LLMResult> {
+  const result = await llmChatInternal(messages, opts);
+  // Fire-and-forget: no bloquea el flujo principal
+  logUsage(result, opts);
+  return result;
+}
+
+async function llmChatInternal(
   messages: LLMMessage[],
   opts: LLMOptions
 ): Promise<LLMResult> {
@@ -92,25 +164,39 @@ export async function llmChat(
     }
   }
 
-  // Nebius para el resto de tiers y como fallback de Gemma
-  try {
-    const nebiusModel = NEBIUS_TIER_MODELS[tier];
-    const started = Date.now();
-    const res = await nebiusChat(
-      messages as NebiusMessage[],
-      { model: nebiusModel, maxTokens, temperature }
-    );
-    return {
-      content: res.content,
-      provider: "nebius",
-      model: res.model,
-      tokensIn: res.tokensIn,
-      tokensOut: res.tokensOut,
-      latencyMs: Date.now() - started,
-      fallback: tier === "economy", // marca fallback si veniamos de Gemma
-    };
-  } catch (err) {
-    console.warn(`[llm] Nebius fallo (${tier}), fallback a Claude:`, (err as Error).message);
+  // Nebius con retry por rate-limit (forceProvider === "claude" ya retornó arriba)
+  const primaryModel = NEBIUS_TIER_MODELS[tier];
+  const retryModels: string[] = [primaryModel];
+  if (tier === "standard" || tier === "premium" || tier === "titan") {
+    retryModels.push(NEBIUS_STANDARD_FALLBACK);
+  }
+
+  for (const model of retryModels) {
+    try {
+      const started = Date.now();
+      const res = await nebiusChat(
+        messages as NebiusMessage[],
+        { model, maxTokens, temperature }
+      );
+      return {
+        content: res.content,
+        provider: "nebius",
+        model: res.model,
+        tokensIn: res.tokensIn,
+        tokensOut: res.tokensOut,
+        latencyMs: Date.now() - started,
+        fallback: model !== primaryModel || tier === "economy",
+      };
+    } catch (err) {
+      const msg = (err as Error).message;
+      // Si es 429 (rate limit) probamos el siguiente modelo Nebius.
+      // Si no, caemos a Claude directamente.
+      if (!msg.includes("429") && !msg.includes("rate limit")) {
+        console.warn(`[llm] Nebius fallo (${tier}, ${model}), fallback a Claude:`, msg);
+        break;
+      }
+      console.warn(`[llm] Nebius 429 (${model}), intentando siguiente`);
+    }
   }
 
   // Ultimo fallback: Claude

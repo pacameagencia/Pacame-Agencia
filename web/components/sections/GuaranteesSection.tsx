@@ -48,7 +48,7 @@ export default function GuaranteesSection() {
   const prefersReduced = useReducedMotion();
 
   return (
-    <section className="section-padding relative bg-[#0A0A0A]">
+    <section className="section-padding relative bg-paper">
       <div className="px-6">
         <GoldenDivider variant="laurel" />
       </div>

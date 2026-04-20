@@ -6,9 +6,16 @@ import { createServerSupabase } from "@/lib/supabase/server";
 const supabase = createServerSupabase();
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
+  // Parse body defensively — malformed JSON should return 400, not 500.
+  let body: Record<string, unknown>;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Body JSON invalido" }, { status: 400 });
+  }
 
-  // Public checkout from proposal pages or website "Buy Now" buttons
+  // Public checkout from proposal pages or website "Buy Now" buttons.
+  // Any other caller must present the dashboard HMAC cookie or CRON_SECRET.
   const isProposalCheckout = !!body.proposal_id;
   const isPublicCheckout = body.source === "public";
 

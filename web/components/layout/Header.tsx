@@ -5,35 +5,29 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "/servicios", label: "Servicios" },
-  { href: "/auditoria", label: "Auditoria Gratis" },
+  { href: "/auditoria", label: "Auditoría" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/equipo", label: "Equipo" },
-  { href: "/blog", label: "Blog" },
+  { href: "/blog", label: "Diario" },
   { href: "/contacto", label: "Contacto" },
 ];
 
-function PacameLogo() {
+function PacameMark() {
+  // Sello circular modernista (8-pointed star) — no más logo SaaS con gradiente
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-      <defs>
-        <linearGradient id="logo-grad" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#7C3AED" />
-          <stop offset="50%" stopColor="#D4A853" />
-          <stop offset="100%" stopColor="#06B6D4" />
-        </linearGradient>
-      </defs>
-      <rect width="28" height="28" rx="7" fill="url(#logo-grad)" />
-      {/* Stylized P with constellation dots */}
-      <path d="M9 21V7H14.5C17 7 19 9 19 11.5C19 14 17 16 14.5 16H12.5" stroke="white" strokeWidth="2.2" strokeLinecap="round" fill="none" />
-      {/* Constellation dots */}
-      <circle cx="20" cy="8" r="1" fill="white" opacity="0.6" />
-      <circle cx="22" cy="12" r="0.7" fill="white" opacity="0.4" />
-      <circle cx="9" cy="22" r="0.7" fill="white" opacity="0.4" />
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+      <circle cx="18" cy="18" r="17" fill="none" stroke="#1A1813" strokeWidth="1.5" />
+      <circle cx="18" cy="18" r="14" fill="none" stroke="#B54E30" strokeWidth="1" />
+      {/* 8-pointed star */}
+      <path
+        d="M18 5 L20 16 L31 18 L20 20 L18 31 L16 20 L5 18 L16 16 Z"
+        fill="#B54E30"
+      />
+      <circle cx="18" cy="18" r="2" fill="#E8B730" />
     </svg>
   );
 }
@@ -52,76 +46,76 @@ export default function Header() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-apple",
-        scrolled
-          ? "bg-[#0A0A0A]/80 backdrop-blur-xl py-3"
-          : "bg-transparent py-5"
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-editorial",
+        scrolled ? "bg-paper/95 backdrop-blur-sm py-3 border-b border-ink/10" : "bg-paper/0 py-5"
       )}
     >
-      {/* Golden border on scroll */}
-      {scrolled && (
-        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/20 to-transparent" />
-      )}
-
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="transition-transform duration-300 group-hover:scale-105">
-              <PacameLogo />
+          {/* Logo — sello modernista */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="transition-transform duration-500 ease-editorial group-hover:rotate-12">
+              <PacameMark />
             </div>
-            <span className="font-heading font-bold text-lg text-pacame-white tracking-tight">
-              PACAME
-            </span>
+            <div className="flex flex-col leading-none">
+              <span className="font-display font-medium text-xl text-ink tracking-tight">
+                PACAME
+              </span>
+              <span className="font-mono text-[9px] text-ink-mute tracking-[0.25em] uppercase mt-0.5">
+                Est. 2026 · Madrid
+              </span>
+            </div>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1" role="navigation" aria-label="Navegacion principal">
+          <nav
+            className="hidden md:flex items-center gap-7"
+            role="navigation"
+            aria-label="Navegación principal"
+          >
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "relative px-3.5 py-2 rounded-full text-[13px] font-medium font-body transition-all duration-300",
+                  "relative text-[14px] font-sans font-medium tracking-tight transition-colors duration-300",
                   pathname === link.href
-                    ? "text-pacame-white"
-                    : "text-pacame-white/50 hover:text-pacame-white/80"
+                    ? "text-terracotta-500"
+                    : "text-ink hover:text-terracotta-500"
                 )}
               >
+                {link.label}
                 {pathname === link.href && (
-                  <motion.div
-                    className="absolute inset-0 rounded-full bg-white/[0.07] border border-olympus-gold/10"
+                  <motion.span
+                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-terracotta-500"
                     layoutId="activeNav"
-                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 32 }}
                   />
                 )}
-                <span className="relative z-10">{link.label}</span>
               </Link>
             ))}
           </nav>
 
-          {/* CTA */}
+          {/* CTA — botón estilo sello */}
           <div className="hidden md:flex items-center">
-            <Button
-              variant="gradient"
-              size="default"
-              asChild
-              className="rounded-full text-[13px] px-5 h-9 hover:shadow-glow-gold/30 transition-shadow duration-500"
+            <Link
+              href="/contacto"
+              className="group relative inline-flex items-center gap-2 px-5 py-2.5 bg-terracotta-500 text-paper font-sans font-medium text-[13px] tracking-wide transition-all duration-300 hover:bg-terracotta-600 rounded-sm"
+              style={{ boxShadow: "3px 3px 0 #1A1813" }}
             >
-              <Link href="/contacto">
-                Hablar con el equipo
-              </Link>
-            </Button>
+              Hablar con el equipo
+              <span className="w-4 h-px bg-paper group-hover:w-6 transition-all duration-300" />
+            </Link>
           </div>
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 rounded-full text-pacame-white/60 hover:text-pacame-white transition-colors"
+            className="md:hidden p-2 text-ink hover:text-terracotta-500 transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? "Cerrar menu de navegacion" : "Abrir menu de navegacion"}
+            aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={mobileOpen}
           >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
@@ -133,10 +127,10 @@ export default function Header() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+              transition={{ duration: 0.3, ease: [0.7, 0, 0.3, 1] }}
             >
-              <div className="h-px bg-gradient-to-r from-transparent via-olympus-gold/20 to-transparent mb-4" />
-              <nav className="flex flex-col gap-0.5" aria-label="Navegacion movil">
+              <div className="h-px bg-ink/15 mb-4" />
+              <nav className="flex flex-col" aria-label="Navegación móvil">
                 {navLinks.map((link, i) => (
                   <motion.div
                     key={link.href}
@@ -148,22 +142,28 @@ export default function Header() {
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
                       className={cn(
-                        "px-4 py-3 rounded-xl text-[15px] font-medium font-body transition-all block",
+                        "px-1 py-4 text-[18px] font-display font-medium block border-b border-ink/10 transition-colors",
                         pathname === link.href
-                          ? "text-pacame-white bg-white/[0.06] border-l-2 border-olympus-gold/40"
-                          : "text-pacame-white/50 hover:text-pacame-white"
+                          ? "text-terracotta-500"
+                          : "text-ink hover:text-terracotta-500"
                       )}
                     >
+                      <span className="font-mono text-[11px] text-ink-mute mr-3 tracking-widest">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
                       {link.label}
                     </Link>
                   </motion.div>
                 ))}
-                <div className="mt-4 px-4">
-                  <Button variant="gradient" size="default" className="w-full rounded-full" asChild>
-                    <Link href="/contacto" onClick={() => setMobileOpen(false)}>
-                      Hablar con el equipo
-                    </Link>
-                  </Button>
+                <div className="mt-6">
+                  <Link
+                    href="/contacto"
+                    onClick={() => setMobileOpen(false)}
+                    className="block w-full text-center px-5 py-4 bg-terracotta-500 text-paper font-sans font-medium rounded-sm"
+                    style={{ boxShadow: "3px 3px 0 #1A1813" }}
+                  >
+                    Hablar con el equipo
+                  </Link>
                 </div>
               </nav>
             </motion.div>

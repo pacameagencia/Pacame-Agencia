@@ -48,7 +48,7 @@ Responde SOLO JSON valido:
     try {
       const res = await llmChat(
         [{ role: "user", content: prompt }],
-        { tier: "standard", maxTokens: 3000 }
+        { tier: "standard", maxTokens: 3000, agentId: "pulse", source: "content-calendar" }
       );
 
       let calendar: Array<Record<string, string | string[]>> = extractJSON(res.content) || [];
@@ -106,7 +106,7 @@ Responde SOLO JSON: {"title": "...", "copy": "...", "hook": "...", "cta": "...",
     try {
       const res = await llmChat(
         [{ role: "user", content: prompt }],
-        { tier: "standard", maxTokens: 800 }
+        { tier: "standard", maxTokens: 800, agentId: "copy", source: "content-post" }
       );
 
       const post = extractJSON(res.content);

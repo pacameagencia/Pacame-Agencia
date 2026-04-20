@@ -287,7 +287,7 @@ Responde SOLO JSON: {"subject": "...", "body": "..."}`;
         [{ role: "user", content: prompt }],
         // skipGemma: 1200 tokens con JSON estricto sobre plantilla requiere
         // razonamiento que Gemma e2b no maneja bien. Nebius Llama 8B lo hace mejor.
-        { tier: "economy", maxTokens: 1200, skipGemma: true }
+        { tier: "economy", maxTokens: 1200, skipGemma: true, agentId: "copy", source: "nurture" }
       );
 
       const personalized = extractJSON(res.content);
