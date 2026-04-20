@@ -1,7 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, Loader2, Mail, TrendingUp, ArrowRight } from "lucide-react";
+import {
+  Check,
+  Copy,
+  Loader2,
+  Mail,
+  TrendingUp,
+  ArrowRight,
+  MessageCircle,
+  Send,
+  Linkedin,
+  Twitter,
+  Share2,
+} from "lucide-react";
 
 interface CodeData {
   code: string;
@@ -57,6 +69,68 @@ export default function RefiereClient() {
   if (data) {
     const link = `https://pacameagencia.com?ref=${data.code}`;
     const eur = (c: number) => `${(c / 100).toLocaleString("es-ES")}€`;
+
+    const messageText =
+      `He probado PACAME (agencia digital con IA — web, SEO, ads...) y la verdad es que curra bien. ` +
+      `Con mi link tienes -${data.discount_pct}% en tu primera compra: ${link}`;
+    const encoded = encodeURIComponent(messageText);
+    const linkEnc = encodeURIComponent(link);
+
+    const shareTargets: Array<{
+      label: string;
+      color: string;
+      icon: React.ElementType;
+      href: string;
+    }> = [
+      {
+        label: "WhatsApp",
+        color: "bg-[#25D366]/15 text-[#25D366] hover:bg-[#25D366]/25 border-[#25D366]/30",
+        icon: MessageCircle,
+        href: `https://wa.me/?text=${encoded}`,
+      },
+      {
+        label: "Telegram",
+        color: "bg-[#2AABEE]/15 text-[#2AABEE] hover:bg-[#2AABEE]/25 border-[#2AABEE]/30",
+        icon: Send,
+        href: `https://t.me/share/url?url=${linkEnc}&text=${encoded}`,
+      },
+      {
+        label: "LinkedIn",
+        color: "bg-[#0A66C2]/15 text-[#0A66C2] hover:bg-[#0A66C2]/25 border-[#0A66C2]/30",
+        icon: Linkedin,
+        href: `https://www.linkedin.com/sharing/share-offsite/?url=${linkEnc}`,
+      },
+      {
+        label: "X (Twitter)",
+        color: "bg-white/[0.06] text-pacame-white hover:bg-white/[0.1] border-white/[0.12]",
+        icon: Twitter,
+        href: `https://twitter.com/intent/tweet?text=${encoded}`,
+      },
+      {
+        label: "Email",
+        color: "bg-olympus-gold/15 text-olympus-gold hover:bg-olympus-gold/25 border-olympus-gold/30",
+        icon: Mail,
+        href: `mailto:?subject=${encodeURIComponent(
+          "Tengo un -" + data.discount_pct + "% para ti en PACAME"
+        )}&body=${encoded}`,
+      },
+    ];
+
+    async function nativeShare() {
+      try {
+        if (typeof navigator !== "undefined" && "share" in navigator) {
+          await (navigator as Navigator & {
+            share: (d: { title: string; text: string; url: string }) => Promise<void>;
+          }).share({
+            title: "PACAME — Agencia Digital IA",
+            text: messageText,
+            url: link,
+          });
+        }
+      } catch {
+        // ignore cancel
+      }
+    }
     return (
       <div className="max-w-2xl mx-auto">
         <div className="rounded-2xl bg-gradient-to-br from-olympus-gold/10 via-amber-500/5 to-transparent border border-olympus-gold/30 p-8">
@@ -71,7 +145,7 @@ export default function RefiereClient() {
             para ti
           </div>
 
-          <div className="flex flex-col gap-2 mb-6">
+          <div className="flex flex-col gap-2 mb-5">
             <div className="flex items-center gap-2 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
               <input
                 type="text"
@@ -93,6 +167,38 @@ export default function RefiereClient() {
                   </>
                 )}
               </button>
+            </div>
+          </div>
+
+          {/* Share targets */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[11px] uppercase tracking-wider text-pacame-white/40 font-mono">
+                Compartir directamente
+              </span>
+              {typeof navigator !== "undefined" && "share" in navigator && (
+                <button
+                  type="button"
+                  onClick={nativeShare}
+                  className="text-[11px] text-pacame-white/60 hover:text-pacame-white inline-flex items-center gap-1"
+                >
+                  <Share2 className="w-3 h-3" /> Menu del sistema
+                </button>
+              )}
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+              {shareTargets.map((t) => (
+                <a
+                  key={t.label}
+                  href={t.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border text-xs font-semibold transition ${t.color}`}
+                >
+                  <t.icon className="w-3.5 h-3.5" />
+                  {t.label}
+                </a>
+              ))}
             </div>
           </div>
 

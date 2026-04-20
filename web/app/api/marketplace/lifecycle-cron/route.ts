@@ -4,6 +4,7 @@ import { verifyInternalAuth } from "@/lib/api-auth";
 import { sendEmail, wrapEmailTemplate } from "@/lib/resend";
 import { getLogger } from "@/lib/observability/logger";
 import { randomBytes } from "node:crypto";
+import { pickVariant, type Variant } from "@/lib/lifecycle/variant-picker";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
@@ -227,6 +228,18 @@ export async function GET(request: NextRequest) {
 
   const clients = (clientsRaw || []) as ClientRow[];
 
+  // Load active variants una vez por ciclo — agrupar por email_type
+  const { data: variantsRaw } = await supabase
+    .from("lifecycle_variants")
+    .select("email_type, variant_key, subject, preheader, weight, is_active")
+    .eq("is_active", true);
+  const variantsByType = new Map<EmailType, Variant[]>();
+  for (const v of (variantsRaw || []) as (Variant & { email_type: EmailType })[]) {
+    const arr = variantsByType.get(v.email_type) || [];
+    arr.push(v);
+    variantsByType.set(v.email_type, arr);
+  }
+
   const summary: Record<EmailType, { candidates: number; sent: number; skipped: number }> = {
     welcome_d0: { candidates: 0, sent: 0, skipped: 0 },
     tips_d2: { candidates: 0, sent: 0, skipped: 0 },
@@ -269,21 +282,29 @@ export async function GET(request: NextRequest) {
       const email = buildEmail(type, client, evaluation.extra);
       if (!client.email) continue;
 
+      // A/B variant: si hay variants activas para este tipo, override subject/preheader
+      const variants = variantsByType.get(type) || [];
+      const picked = variants.length > 0 ? pickVariant(variants, client.id, type) : null;
+      const subjectToSend = picked?.subject || email.subject;
+      const preheaderToSend = picked?.preheader || email.preheader;
+      const variantKey = picked?.variant_key || null;
+
       const html = wrapEmailTemplate(email.body, {
         cta: email.cta,
         ctaUrl: email.ctaUrl,
-        preheader: email.preheader,
+        preheader: preheaderToSend,
       });
 
       try {
         const resendId = await sendEmail({
           to: client.email,
-          subject: email.subject,
+          subject: subjectToSend,
           html,
           tags: [
             { name: "type", value: "lifecycle" },
             { name: "lifecycle_type", value: type },
             { name: "client_id", value: client.id },
+            ...(variantKey ? [{ name: "variant", value: variantKey }] : []),
           ],
         });
 
@@ -293,6 +314,7 @@ export async function GET(request: NextRequest) {
           email_type: type,
           trigger_event: evaluation.reason,
           resend_email_id: resendId,
+          variant_key: variantKey,
         });
         if (insErr && !/duplicate|unique/i.test(insErr.message)) {
           log.error({ err: insErr, clientId: client.id, type }, "[lifecycle-cron] insert fallo");
