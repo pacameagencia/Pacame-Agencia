@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ShoppingCart, Loader2, ArrowRight } from "lucide-react";
+import { getReferralCode } from "@/lib/referral-client";
 
 interface Props {
   serviceSlug: string;
@@ -26,6 +27,7 @@ export default function ExpressBuyButton({ serviceSlug, serviceName, priceCents 
         body: JSON.stringify({
           service_slug: serviceSlug,
           source: "public",
+          ref: getReferralCode() || undefined,
         }),
       });
 

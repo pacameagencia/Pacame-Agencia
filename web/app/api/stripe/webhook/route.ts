@@ -268,6 +268,43 @@ export async function POST(request: NextRequest) {
               } else if (newOrder?.id) {
                 marketplaceOrderId = newOrder.id as string;
 
+                // Referral attribution — si vino con ?ref=CODE, registra comision
+                const refCode = (metadata.referral_code || "").toString().toUpperCase();
+                if (refCode && amountCents > 0) {
+                  try {
+                    const { data: rc } = await supabase
+                      .from("referral_codes")
+                      .select("code, referrer_client_id:client_id, commission_pct")
+                      .eq("code", refCode)
+                      .eq("is_active", true)
+                      .maybeSingle();
+                    if (rc && rc.referrer_client_id !== clientId) {
+                      const commissionCents = Math.round(
+                        (amountCents * (rc.commission_pct as number)) / 100
+                      );
+                      await supabase.from("referrals").insert({
+                        referral_code: rc.code,
+                        referrer_client_id: rc.referrer_client_id,
+                        referred_client_id: clientId || null,
+                        order_id: marketplaceOrderId,
+                        referred_email:
+                          session.customer_email || metadata.client_email || null,
+                        amount_cents: amountCents,
+                        commission_cents: commissionCents,
+                        status: "pending",
+                      });
+                    }
+                  } catch (err) {
+                    // No rompemos el flujo de order si falla la attribution
+                    await supabase.from("pending_reconciliation").insert({
+                      source: "referral_attribution",
+                      reference_id: marketplaceOrderId,
+                      error_message: (err as Error).message,
+                      payload: { session_id: session.id, refCode },
+                    });
+                  }
+                }
+
                 // Record initial events
                 await supabase.from("order_events").insert([
                   {

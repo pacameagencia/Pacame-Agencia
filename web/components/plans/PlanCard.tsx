@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CheckCircle2, Loader2, Sparkles } from "lucide-react";
+import { getReferralCode } from "@/lib/referral-client";
 
 export interface PlanCardData {
   slug: string;
@@ -44,6 +45,7 @@ export default function PlanCard({ plan, interval, featured }: Props) {
           plan_slug: plan.slug,
           billing_interval: interval,
           source: "public",
+          ref: getReferralCode() || undefined,
         }),
       });
       const data = await res.json();

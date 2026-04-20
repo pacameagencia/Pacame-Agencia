@@ -33,7 +33,7 @@ export async function GET(
   const supabase = createServerSupabase();
   const { data, error } = await supabase
     .from("nps_surveys")
-    .select("id, score, category, responded_at, client_id, order_id")
+    .select("id, score, category, submitted_at, client_id")
     .eq("token", token)
     .maybeSingle();
 
@@ -45,7 +45,7 @@ export async function GET(
 
   return NextResponse.json({
     ok: true,
-    already_responded: !!data.responded_at,
+    already_responded: !!data.submitted_at,
     score: data.score ?? null,
     category: data.category ?? null,
   });
@@ -81,7 +81,7 @@ export async function POST(
   // Lookup first — necesitamos saber si ya respondio (idempotencia) + datos cliente
   const { data: existing, error: selErr } = await supabase
     .from("nps_surveys")
-    .select("id, score, responded_at, client_id, clients:client_id(name, email)")
+    .select("id, score, submitted_at, client_id, clients:client_id(name, email)")
     .eq("token", token)
     .maybeSingle();
 
@@ -95,12 +95,13 @@ export async function POST(
     );
   }
 
-  // Update — trigger DB setea category + responded_at
+  // Update — trigger DB setea category automaticamente
   const { data: updated, error: upErr } = await supabase
     .from("nps_surveys")
     .update({
       score,
       feedback: feedback || null,
+      submitted_at: new Date().toISOString(),
     })
     .eq("token", token)
     .select("id, score, category")

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, ArrowRight } from "lucide-react";
+import { getReferralCode } from "@/lib/referral-client";
 
 interface Props {
   appSlug: string;
@@ -40,6 +41,7 @@ export default function AppBuyButton({
           app_slug: appSlug,
           billing_interval: billingInterval,
           source: "public",
+          ref: getReferralCode() || undefined,
         }),
       });
       const data = await res.json();

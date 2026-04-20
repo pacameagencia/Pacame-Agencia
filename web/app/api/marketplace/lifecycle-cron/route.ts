@@ -291,9 +291,8 @@ export async function GET(request: NextRequest) {
         const { error: insErr } = await supabase.from("lifecycle_emails_sent").insert({
           client_id: client.id,
           email_type: type,
-          order_id: evaluation.extra?.orderId || null,
-          subject: email.subject,
-          resend_id: resendId,
+          trigger_event: evaluation.reason,
+          resend_email_id: resendId,
         });
         if (insErr && !/duplicate|unique/i.test(insErr.message)) {
           log.error({ err: insErr, clientId: client.id, type }, "[lifecycle-cron] insert fallo");
@@ -304,7 +303,12 @@ export async function GET(request: NextRequest) {
           await supabase.from("nps_surveys").insert({
             token: evaluation.extra.npsToken,
             client_id: client.id,
-            order_id: evaluation.extra.orderId || null,
+            client_email_snapshot: client.email,
+            context: {
+              source: "lifecycle_d7",
+              order_id: evaluation.extra.orderId || null,
+              order_slug: evaluation.extra.lastOrderSlug || null,
+            },
           });
         }
 

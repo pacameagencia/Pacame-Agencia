@@ -69,6 +69,7 @@ export async function POST(request: NextRequest) {
       plan_slug,
       app_slug,
       billing_interval: rawBillingInterval,
+      ref: referralCode,
     } = body as {
       product?: ProductKey | string;
       client_name?: string;
@@ -87,6 +88,7 @@ export async function POST(request: NextRequest) {
       plan_slug?: string;
       app_slug?: string;
       billing_interval?: "month" | "year";
+      ref?: string;
     };
 
     const billingInterval: "month" | "year" =
@@ -301,6 +303,7 @@ export async function POST(request: NextRequest) {
         app_slug: app_slug || "",
         app_id: appId || "",
         billing_interval: billingInterval,
+        referral_code: (referralCode || "").toString().toUpperCase().slice(0, 32),
         pacame_source: isPlanCheckout
           ? "subscription"
           : isAppCheckout

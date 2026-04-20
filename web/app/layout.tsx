@@ -13,6 +13,7 @@ import ScrollProgress from "@/components/effects/ScrollProgress";
 import NoiseOverlay from "@/components/effects/NoiseOverlay";
 import BackToTop from "@/components/effects/BackToTop";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
+import ReferralCookieTracker from "@/components/referral/ReferralCookieTracker";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -240,6 +241,7 @@ export default function RootLayout({
         <SageChatWidget />
         <CookieConsent />
         <GoogleAnalytics />
+        <ReferralCookieTracker />
       </body>
     </html>
   );
