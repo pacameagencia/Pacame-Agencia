@@ -6,6 +6,13 @@ import { pingUpstash } from "@/lib/security/rate-limit";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+/**
+ * GET /api/health
+ *
+ * Dependency + env check completo. Devuelve 503 si supabase/stripe caen,
+ * 200 OK en caso contrario. Cache-Control no-store para uptime monitors.
+ */
+
 type CheckStatus = "ok" | "fail" | "unconfigured";
 
 interface Check {
@@ -23,7 +30,9 @@ interface HealthResponse {
     stripe: Check;
     upstash: Check;
     resend: Check;
+    voice_server: Check;
   };
+  env: Record<string, boolean>;
 }
 
 async function withTimeout<T>(promise: PromiseLike<T>, ms: number): Promise<T> {
@@ -64,7 +73,6 @@ async function checkStripe(): Promise<Check> {
     if (!process.env.STRIPE_SECRET_KEY) {
       return { status: "unconfigured" };
     }
-    // Stripe Node SDK no permite retrieve() sin id; usamos balance como liveness check
     await withTimeout(stripe.balance.retrieve(), 3_000);
     return { status: "ok", latency_ms: Date.now() - start };
   } catch (err) {
@@ -98,16 +106,49 @@ async function checkUpstash(): Promise<Check> {
 }
 
 function checkResend(): Check {
-  // No hacemos ping real para no gastar quota — solo comprobamos env.
   if (process.env.RESEND_API_KEY) return { status: "ok" };
   return { status: "unconfigured" };
 }
 
+async function checkVoiceServer(): Promise<Check> {
+  const url = process.env.VOICE_SERVER_URL;
+  if (!url) return { status: "unconfigured" };
+  const start = Date.now();
+  try {
+    const res = await fetch(`${url}/health`, { signal: AbortSignal.timeout(3000) });
+    return {
+      status: res.ok ? "ok" : "fail",
+      latency_ms: Date.now() - start,
+    };
+  } catch (err) {
+    return {
+      status: "fail",
+      latency_ms: Date.now() - start,
+      error: err instanceof Error ? err.message : String(err),
+    };
+  }
+}
+
 export async function GET() {
-  const [supabaseRes, stripeRes, upstashRes] = await Promise.allSettled([
+  const envPresent: Record<string, boolean> = {
+    CLAUDE_API_KEY: !!process.env.CLAUDE_API_KEY,
+    NEBIUS_API_KEY: !!process.env.NEBIUS_API_KEY,
+    SUPABASE_URL: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+    SUPABASE_SERVICE_ROLE_KEY: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+    STRIPE_SECRET_KEY: !!process.env.STRIPE_SECRET_KEY,
+    STRIPE_WEBHOOK_SECRET: !!process.env.STRIPE_WEBHOOK_SECRET,
+    RESEND_API_KEY: !!process.env.RESEND_API_KEY,
+    DASHBOARD_PASSWORD: !!process.env.DASHBOARD_PASSWORD,
+    CRON_SECRET: !!process.env.CRON_SECRET,
+    TELEGRAM_BOT_TOKEN: !!process.env.TELEGRAM_BOT_TOKEN,
+    LLM_STRATEGY: !!process.env.LLM_STRATEGY,
+  };
+
+  const [supabaseRes, stripeRes, upstashRes, voiceRes] = await Promise.allSettled([
     checkSupabase(),
     checkStripe(),
     checkUpstash(),
+    checkVoiceServer(),
   ]);
 
   const checks = {
@@ -124,15 +165,19 @@ export async function GET() {
         ? upstashRes.value
         : { status: "fail" as const, error: "check-crash" },
     resend: checkResend(),
+    voice_server:
+      voiceRes.status === "fulfilled"
+        ? voiceRes.value
+        : { status: "fail" as const, error: "check-crash" },
   };
 
-  // Criticos: supabase + stripe. Si caen → 503.
   const criticalDown =
     checks.supabase.status === "fail" || checks.stripe.status === "fail";
   const anyDegraded =
     checks.upstash.status === "fail" ||
     checks.resend.status === "unconfigured" ||
-    checks.upstash.status === "unconfigured";
+    checks.upstash.status === "unconfigured" ||
+    checks.voice_server.status === "fail";
 
   const status: HealthResponse["status"] = criticalDown
     ? "down"
@@ -145,6 +190,7 @@ export async function GET() {
     version: process.env.VERCEL_GIT_COMMIT_SHA || process.env.GIT_SHA || null,
     timestamp: new Date().toISOString(),
     checks,
+    env: envPresent,
   };
 
   return NextResponse.json(payload, {

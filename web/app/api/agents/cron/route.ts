@@ -11,6 +11,9 @@ import { generateContentImage } from "@/lib/image-generation";
 import { fireSynapse, recordStimulus, rememberMemory, startThoughtChain, endThoughtChain, recordDiscovery } from "@/lib/neural";
 import { llmChat, extractJSON as llmExtractJSON, type LLMTier } from "@/lib/llm";
 
+// Vercel: el cron completo puede llegar a 250s con 10 agentes. Subimos el techo a 5 min.
+export const maxDuration = 300;
+
 const supabase = createServerSupabase();
 
 /**
@@ -36,7 +39,7 @@ async function callClaude(prompt: string, maxTokens = 800, agentId = "dios"): Pr
   try {
     const res = await llmChat(
       [{ role: "user", content: prompt }],
-      { tier, maxTokens }
+      { tier, maxTokens, agentId, source: "cron" }
     );
     return res.content;
   } catch {

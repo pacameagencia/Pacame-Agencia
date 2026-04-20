@@ -21,6 +21,10 @@
       "schedule": "0 3 * * *"
     },
     {
+      "path": "/api/agents/maintenance",
+      "schedule": "0 4 * * 1"
+    },
+    {
       "path": "/api/marketplace/upsell-cron",
       "schedule": "0 9 * * *"
     },

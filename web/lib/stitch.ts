@@ -8,14 +8,20 @@
  * Optional: STITCH_PROJECT_ID (reuse a project, otherwise creates one per generation)
  */
 
-import { stitch } from "@google/stitch-sdk";
-import { getLogger } from "@/lib/observability/logger";
+// Dynamic import avoids evaluating the SDK at build time when STITCH_API_KEY is not set.
+// The SDK's top-level code throws "Neither apiKey nor config.authenticator provided"
+// when imported without credentials, which breaks Next.js page-data collection.
 
 const STITCH_API_KEY = process.env.STITCH_API_KEY?.trim();
 const STITCH_PROJECT_ID = process.env.STITCH_PROJECT_ID?.trim();
 
 export function isStitchConfigured(): boolean {
   return !!STITCH_API_KEY;
+}
+
+async function loadStitch() {
+  const mod = await import("@google/stitch-sdk");
+  return mod.stitch;
 }
 
 type DeviceType = "MOBILE" | "DESKTOP" | "TABLET" | "AGNOSTIC";
@@ -45,6 +51,7 @@ export async function generateDesign(
   }
 
   try {
+    const stitch = await loadStitch();
     const projectId = options.projectId || STITCH_PROJECT_ID;
     let project;
 
@@ -76,7 +83,7 @@ export async function generateDesign(
       projectId: project.id,
     };
   } catch (err) {
-    getLogger().error({ err }, "[Stitch] Error generating design");
+    console.error("[Stitch] Error generating design:", err);
     return {
       success: false,
       error: err instanceof Error ? err.message : "Error desconocido de Stitch",
@@ -97,6 +104,7 @@ export async function editDesign(
   }
 
   try {
+    const stitch = await loadStitch();
     const project = stitch.project(projectId);
     const screen = await project.getScreen(screenId);
     const edited = await screen.edit(editPrompt);
@@ -112,7 +120,7 @@ export async function editDesign(
       projectId,
     };
   } catch (err) {
-    getLogger().error({ err }, "[Stitch] Error editing design");
+    console.error("[Stitch] Error editing design:", err);
     return {
       success: false,
       error: err instanceof Error ? err.message : "Error desconocido",
@@ -137,6 +145,7 @@ export async function generateVariants(
   }
 
   try {
+    const stitch = await loadStitch();
     const project = stitch.project(projectId);
     const screen = await project.getScreen(screenId);
     const variants = await screen.variants(prompt, {
@@ -157,7 +166,7 @@ export async function generateVariants(
 
     return { success: true, variants: results };
   } catch (err) {
-    getLogger().error({ err }, "[Stitch] Error generating variants");
+    console.error("[Stitch] Error generating variants:", err);
     return {
       success: false,
       error: err instanceof Error ? err.message : "Error desconocido",

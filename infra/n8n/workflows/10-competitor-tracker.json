@@ -1,0 +1,157 @@
+{
+  "name": "PACAME — Competitor Tracker (scraping + IA)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "cronExpression", "expression": "0 7 * * *" }] }
+      },
+      "id": "cron-daily",
+      "name": "Diario 07:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=={{ $env.SUPABASE_URL }}/rest/v1/competitors?active=eq.true&select=id,name,url,last_snapshot_hash,client_id",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_KEY }}" }
+          ]
+        }
+      },
+      "id": "get-competitors",
+      "name": "Competidores activos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": { "batchSize": 1, "options": {} },
+      "id": "split",
+      "name": "Por competidor",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.url }}",
+        "options": {
+          "response": { "response": { "responseFormat": "text" } },
+          "timeout": 30000
+        }
+      },
+      "id": "fetch-html",
+      "name": "Fetch HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 0],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\nconst competitor = $('Por competidor').item.json;\nconst html = $input.first().json.data || $input.first().json || '';\nconst htmlString = typeof html === 'string' ? html : JSON.stringify(html);\n\n// Extract visible text (simple stripping)\nconst text = htmlString\n  .replace(/<script[\\s\\S]*?<\\/script>/gi, '')\n  .replace(/<style[\\s\\S]*?<\\/style>/gi, '')\n  .replace(/<[^>]+>/g, ' ')\n  .replace(/\\s+/g, ' ')\n  .trim()\n  .slice(0, 4000);\n\nconst hash = crypto.createHash('sha256').update(text).digest('hex');\nconst changed = hash !== competitor.last_snapshot_hash;\n\nreturn [{\n  json: {\n    competitor_id: competitor.id,\n    competitor_name: competitor.name,\n    competitor_url: competitor.url,\n    client_id: competitor.client_id,\n    hash,\n    changed,\n    text_sample: text,\n    prev_hash: competitor.last_snapshot_hash,\n  }\n}];"
+      },
+      "id": "diff",
+      "name": "Diff hash",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "conditions": [
+            { "id": "changed", "leftValue": "={{ $json.changed }}", "rightValue": true, "operator": { "type": "boolean", "operation": "true", "singleValue": true } }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "if-changed",
+      "name": "Cambio detectado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1100, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{ $env.CLAUDE_API_KEY }}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-haiku-4-5-20251001\",\n  \"max_tokens\": 600,\n  \"system\": \"Eres Sage, CSO de PACAME. Analiza si un cambio en la web de un competidor es relevante comercialmente (nuevo servicio, pricing, promocion, pivot) o cosmetico. Responde SOLO JSON: {\\\"relevance\\\":\\\"high|medium|low|none\\\",\\\"what_changed\\\":\\\"...\\\",\\\"actionable_insight\\\":\\\"...\\\"}.\",\n  \"messages\": [{\"role\": \"user\", \"content\": \"Competidor: {{ $json.competitor_name }} ({{ $json.competitor_url }})\\n\\nTexto actual (muestra):\\n{{ $json.text_sample }}\"}]\n}"
+      },
+      "id": "analyze",
+      "name": "Claude analiza cambio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1320, -80]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=={{ $env.SUPABASE_URL }}/rest/v1/competitors?id=eq.{{ $('Diff hash').item.json.competitor_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=minimal" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"last_snapshot_hash\": \"{{ $('Diff hash').item.json.hash }}\",\n  \"last_change_at\": \"{{ $now.toISO() }}\",\n  \"last_analysis\": {{ JSON.stringify($json.content[0].text) }}\n}"
+      },
+      "id": "update-db",
+      "name": "Update competitor",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1540, -80]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"chat_id\": \"{{ $env.TELEGRAM_CHAT_ID }}\",\n  \"parse_mode\": \"HTML\",\n  \"text\": \"🔍 <b>{{ $('Diff hash').item.json.competitor_name }}</b> cambio su web\\n\\n<a href=\\\"{{ $('Diff hash').item.json.competitor_url }}\\\">Ver web</a>\\n\\n<code>{{ $('Claude analiza cambio').item.json.content[0].text.replace(/\\n/g, ' ').slice(0, 600) }}</code>\"\n}",
+        "options": {}
+      },
+      "id": "notify",
+      "name": "Alerta Telegram",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1760, -80]
+    }
+  ],
+  "connections": {
+    "Diario 07:00": { "main": [[{ "node": "Competidores activos", "type": "main", "index": 0 }]] },
+    "Competidores activos": { "main": [[{ "node": "Por competidor", "type": "main", "index": 0 }]] },
+    "Por competidor": { "main": [[{ "node": "Fetch HTML", "type": "main", "index": 0 }]] },
+    "Fetch HTML": { "main": [[{ "node": "Diff hash", "type": "main", "index": 0 }]] },
+    "Diff hash": { "main": [[{ "node": "Cambio detectado?", "type": "main", "index": 0 }]] },
+    "Cambio detectado?": { "main": [[{ "node": "Claude analiza cambio", "type": "main", "index": 0 }], []] },
+    "Claude analiza cambio": { "main": [[{ "node": "Update competitor", "type": "main", "index": 0 }]] },
+    "Update competitor": { "main": [[{ "node": "Alerta Telegram", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1", "timezone": "Europe/Madrid" },
+  "meta": {
+    "description": "Cada dia 07:00 hace scraping ligero de las webs en tabla competitors, compara hash SHA256 del texto visible con el snapshot anterior. Si hay cambio, Claude Haiku clasifica la relevancia comercial (pricing, servicios, pivot) y manda alerta a Telegram solo si es relevante.\n\nENV: SUPABASE_URL, SUPABASE_SERVICE_KEY, CLAUDE_API_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID.\nTabla: competitors(id, client_id, name, url, last_snapshot_hash, last_change_at, last_analysis, active)."
+  }
+}

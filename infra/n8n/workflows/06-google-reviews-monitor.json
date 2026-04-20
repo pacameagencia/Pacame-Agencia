@@ -1,0 +1,140 @@
+{
+  "name": "PACAME — Google Reviews Monitor (por cliente)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "hours", "hoursInterval": 2 }] }
+      },
+      "id": "cron-2h",
+      "name": "Cada 2 horas",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/clients?status=eq.active&google_place_id=not.is.null&select=id,business_name,google_place_id,last_review_check",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_KEY }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-clients",
+      "name": "Clientes con Google Place ID",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": { "batchSize": 1, "options": {} },
+      "id": "split",
+      "name": "Por cada cliente",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://maps.googleapis.com/maps/api/place/details/json?place_id={{ $json.google_place_id }}&fields=reviews,rating,user_ratings_total&key={{ $env.GOOGLE_PLACES_API_KEY }}&language=es",
+        "options": {}
+      },
+      "id": "fetch-reviews",
+      "name": "Fetch Reviews",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const client = $('Por cada cliente').item.json;\nconst data = $input.first().json.result || {};\nconst reviews = (data.reviews || []);\nconst lastCheck = client.last_review_check ? new Date(client.last_review_check).getTime() / 1000 : 0;\n\nconst newReviews = reviews.filter(r => (r.time || 0) > lastCheck);\n\nreturn newReviews.map(r => ({\n  json: {\n    client_id: client.id,\n    client_name: client.business_name,\n    author: r.author_name,\n    rating: r.rating,\n    text: r.text || '(sin texto)',\n    time_iso: new Date((r.time || 0) * 1000).toISOString(),\n    relative: r.relative_time_description,\n    is_negative: r.rating <= 3,\n  }\n}));"
+      },
+      "id": "filter-new",
+      "name": "Filtrar reviews nuevos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{ $env.CLAUDE_API_KEY }}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-haiku-4-5-20251001\",\n  \"max_tokens\": 400,\n  \"system\": \"Eres Copy, copywriter de PACAME. Genera una respuesta profesional y empatica a una resena de Google Maps. Maximo 60 palabras, tono {{ $json.is_negative ? 'empatico-resolutivo' : 'agradecido-calido' }}, firma con el nombre del negocio.\",\n  \"messages\": [{\"role\": \"user\", \"content\": \"Negocio: {{ $json.client_name }}\\nResena (rating {{ $json.rating }}/5) de {{ $json.author }}:\\n\\\"{{ $json.text }}\\\"\\n\\nGenera respuesta sugerida.\"}]\n}",
+        "options": {}
+      },
+      "id": "ai-reply",
+      "name": "Respuesta IA sugerida",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"chat_id\": \"{{ $env.TELEGRAM_CHAT_ID }}\",\n  \"parse_mode\": \"HTML\",\n  \"text\": \"{{ $('Filtrar reviews nuevos').item.json.is_negative ? '⚠️' : '⭐' }} <b>Review {{ $('Filtrar reviews nuevos').item.json.rating }}/5</b> en {{ $('Filtrar reviews nuevos').item.json.client_name }}\\n\\nPor {{ $('Filtrar reviews nuevos').item.json.author }} ({{ $('Filtrar reviews nuevos').item.json.relative }}):\\n<i>{{ $('Filtrar reviews nuevos').item.json.text.slice(0, 300) }}</i>\\n\\n<b>Respuesta sugerida:</b>\\n{{ $json.content[0].text.replace(/\\n/g, ' ') }}\"\n}",
+        "options": {}
+      },
+      "id": "notify",
+      "name": "Telegram alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1320, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/external_reviews",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=minimal" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"client_id\": \"{{ $('Filtrar reviews nuevos').item.json.client_id }}\",\n  \"author\": \"{{ $('Filtrar reviews nuevos').item.json.author }}\",\n  \"rating\": {{ $('Filtrar reviews nuevos').item.json.rating }},\n  \"text\": \"{{ $('Filtrar reviews nuevos').item.json.text }}\",\n  \"ai_suggested_reply\": \"{{ $json.content[0].text }}\",\n  \"platform\": \"google\",\n  \"external_created_at\": \"{{ $('Filtrar reviews nuevos').item.json.time_iso }}\"\n}",
+        "options": {}
+      },
+      "id": "save",
+      "name": "Guardar en Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1540, 0]
+    }
+  ],
+  "connections": {
+    "Cada 2 horas": { "main": [[{ "node": "Clientes con Google Place ID", "type": "main", "index": 0 }]] },
+    "Clientes con Google Place ID": { "main": [[{ "node": "Por cada cliente", "type": "main", "index": 0 }]] },
+    "Por cada cliente": { "main": [[{ "node": "Fetch Reviews", "type": "main", "index": 0 }]] },
+    "Fetch Reviews": { "main": [[{ "node": "Filtrar reviews nuevos", "type": "main", "index": 0 }]] },
+    "Filtrar reviews nuevos": { "main": [[{ "node": "Respuesta IA sugerida", "type": "main", "index": 0 }]] },
+    "Respuesta IA sugerida": { "main": [[{ "node": "Telegram alert", "type": "main", "index": 0 }]] },
+    "Telegram alert": { "main": [[{ "node": "Guardar en Supabase", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1", "timezone": "Europe/Madrid" },
+  "meta": {
+    "description": "Monitoriza Google Maps cada 2h. Cuando aparece review nueva: clasifica tono, genera respuesta sugerida con Claude Haiku, alerta a Telegram con la respuesta lista para copy-paste, y la guarda en Supabase (tabla reviews). Critico para hostelería/servicios locales.\n\nENV: GOOGLE_PLACES_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_KEY, CLAUDE_API_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID.\nTabla Supabase requerida: reviews(id, client_id, author, rating, text, ai_suggested_reply, platform, external_created_at, created_at).\nCampo requerido en clients: google_place_id, last_review_check."
+  }
+}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ulid } from "ulid";
 import { needsCsrfCheck, verifyCsrf } from "@/lib/security/csrf";
+import { verifyDashboardTokenEdge } from "@/lib/dashboard-auth";
 
 // Edge-safe JSON logger (middleware corre en runtime edge).
 // Emitimos el mismo shape que lib/observability/logger.ts para consistencia.
@@ -18,15 +19,13 @@ function edgeLog(level: "info" | "warn" | "error", payload: Record<string, unkno
   );
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // ─── Request ID propagation ──────────────────────────────────────────
-  // Respetamos el que venga del cliente/proxy si ya esta presente.
   const incomingReqId = request.headers.get("x-request-id");
   const requestId = incomingReqId && incomingReqId.trim().length > 0 ? incomingReqId : ulid();
 
-  // Log estructurado de la request.
   const ip =
     request.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
     request.headers.get("x-real-ip") ||
@@ -39,19 +38,15 @@ export function middleware(request: NextRequest) {
     msg: "http.request",
   });
 
-  // Prepara headers mutables para propagar a la request downstream.
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-request-id", requestId);
 
-  // Helper para construir responses con el requestId setado.
   const withReqId = (res: NextResponse): NextResponse => {
     res.headers.set("x-request-id", requestId);
     return res;
   };
 
   // ─── CSRF check para mutaciones en /api/** ──────────────
-  // Flag CSRF_ENFORCE=true activa el check. Durante rollout usa "warn"
-  // para loggear violaciones sin bloquear, y "enforce" cuando frontend este listo.
   const csrfMode = process.env.CSRF_MODE || "warn";
   if (needsCsrfCheck(request)) {
     const ok = verifyCsrf(request);
@@ -72,10 +67,12 @@ export function middleware(request: NextRequest) {
   }
 
   // ─── Dashboard protection (admin) ────────────────────────
+  // Merge S3 compliance + HMAC-signed tokens (PR #9)
   if (pathname.startsWith("/dashboard")) {
     const token = request.cookies.get("pacame_auth")?.value;
+    const ok = await verifyDashboardTokenEdge(token);
 
-    if (!token) {
+    if (!ok) {
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("from", pathname);
       return withReqId(NextResponse.redirect(loginUrl));
@@ -86,7 +83,6 @@ export function middleware(request: NextRequest) {
 
   // ─── Portal protection (clients) ────────────────────────
   if (pathname.startsWith("/portal")) {
-    // Allow login page and reset-password without auth
     if (pathname === "/portal" || pathname === "/portal/reset-password") {
       return withReqId(NextResponse.next({ request: { headers: requestHeaders } }));
     }

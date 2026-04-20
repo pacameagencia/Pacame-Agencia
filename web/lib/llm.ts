@@ -52,6 +52,14 @@ export interface LLMOptions {
   callSite?: string;
   /** Cliente/actor para attribution */
   actorId?: string | null;
+  /**
+   * Compat retro (pre-Sprint 17): alias de callSite cuando se quiere
+   * preservar el agente origen ("copy", "atlas", ...). Se mapea a callSite
+   * si callSite no esta definido.
+   */
+  agentId?: string;
+  /** Compat retro: alias de callSite (origen chat|cron|proposal|webhook...) */
+  source?: string;
   /** Metadata extra para llm_calls.metadata */
   metadata?: Record<string, unknown>;
 }
@@ -93,10 +101,15 @@ export async function llmChat(
     forceProvider,
     skipGemma,
     skipBudgetCheck,
-    callSite = "unknown",
     actorId = null,
     metadata,
   } = opts;
+
+  // callSite = explicit > agentId/source combo (compat retro) > "unknown"
+  const callSite =
+    opts.callSite ||
+    [opts.agentId, opts.source].filter(Boolean).join("/") ||
+    "unknown";
 
   const envShim: ResolverEnv = {
     CLAUDE_MODEL_REASONING: process.env.CLAUDE_MODEL_REASONING,
@@ -187,7 +200,7 @@ export async function llmChat(
         fallback_used: !isPrimary,
         success: true,
         actor_id: actorId,
-        metadata: { ...(metadata || {}), degraded },
+        metadata: { ...(metadata || {}), degraded, agentId: opts.agentId, source: opts.source },
       });
       return final;
     } catch (err) {
@@ -214,7 +227,7 @@ export async function llmChat(
     success: false,
     error_message: lastError?.message?.slice(0, 500) || "all providers failed",
     actor_id: actorId,
-    metadata: { ...(metadata || {}), degraded },
+    metadata: { ...(metadata || {}), degraded, agentId: opts.agentId, source: opts.source },
   });
   throw lastError || new Error("[llm] all providers failed");
 }
@@ -307,9 +320,7 @@ async function callClaude(
   // Extended thinking — cuando se activa, temperature debe ser 1
   if (thinkingBudgetTokens > 0) {
     body.thinking = { type: "enabled", budget_tokens: thinkingBudgetTokens };
-    // Claude exige temperature=1 con extended thinking
     body.temperature = 1;
-    // max_tokens debe ser mayor que thinking budget
     if (maxTokens < thinkingBudgetTokens + 1024) {
       body.max_tokens = thinkingBudgetTokens + 1024;
     }
@@ -333,7 +344,6 @@ async function callClaude(
   }
 
   const data = await res.json();
-  // Extraer content + thinking_content (si hay)
   const blocks: Array<{ type: string; text?: string; thinking?: string }> =
     data.content || [];
   const textBlock = blocks.find((b) => b.type === "text");
@@ -352,7 +362,7 @@ async function callClaude(
       usage.cache_creation_input_tokens && thinkingBudgetTokens > 0
         ? thinkingBudgetTokens
         : thinkingContent
-        ? Math.round((thinkingContent.length || 0) / 4) // estimacion basada en chars
+        ? Math.round((thinkingContent.length || 0) / 4)
         : 0,
     thinkingContent,
   };

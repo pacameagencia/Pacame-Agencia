@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
+import { dbCall } from "@/lib/dashboard-db";
 import { ClipboardCheck, CheckCircle2, Circle, Plus, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -80,20 +81,22 @@ export default function OnboardingPage() {
         category: group.category,
       }))
     );
-    await supabase.from("onboarding_checklist").insert(items);
+    await dbCall({ table: "onboarding_checklist", op: "insert", data: items });
     await fetchChecklist(selectedClient.id);
     setInitializingChecklist(false);
   }
 
   async function toggleItem(item: ChecklistItem) {
     const newCompleted = !item.completed;
-    await supabase
-      .from("onboarding_checklist")
-      .update({
+    await dbCall({
+      table: "onboarding_checklist",
+      op: "update",
+      data: {
         completed: newCompleted,
         completed_at: newCompleted ? new Date().toISOString() : null,
-      })
-      .eq("id", item.id);
+      },
+      filter: { column: "id", value: item.id },
+    });
     setChecklist((prev) =>
       prev.map((i) =>
         i.id === item.id ? { ...i, completed: newCompleted, completed_at: newCompleted ? new Date().toISOString() : null } : i

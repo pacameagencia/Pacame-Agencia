@@ -5,8 +5,8 @@ import { createClient } from "@supabase/supabase-js";
 import { getLogger } from "@/lib/observability/logger";
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
 );
 
 type ActivityType = "task_started" | "task_completed" | "insight" | "alert" | "update" | "delivery";

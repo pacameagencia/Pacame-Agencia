@@ -772,11 +772,14 @@ export async function POST(request: NextRequest) {
             }
 
             if (items.length > 0) {
-              await supabase.from("onboarding_checklist").insert(items);
+              const { error: obError } = await supabase.from("onboarding_checklist").insert(items);
+              if (obError) {
+                console.warn("[stripe/webhook] onboarding_checklist insert failed:", obError.message);
+              }
               await supabase.from("clients").update({ status: "onboarding" }).eq("id", clientId);
             }
-          } catch {
-            // Non-blocking
+          } catch (err) {
+            console.warn("[stripe/webhook] onboarding auto-launch failed:", err instanceof Error ? err.message : "unknown");
           }
         } else if (clientId) {
           // No service types specified — just activate

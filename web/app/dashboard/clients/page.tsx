@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
+import { dbCall } from "@/lib/dashboard-db";
 import { Users, Plus, Building2, Mail, Phone, Globe, X, Edit3, Trash2, Check, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -71,9 +72,9 @@ export default function ClientsPage() {
     };
 
     if (editingId) {
-      await supabase.from("clients").update(payload).eq("id", editingId);
+      await dbCall({ table: "clients", op: "update", data: payload, filter: { column: "id", value: editingId } });
     } else {
-      await supabase.from("clients").insert(payload);
+      await dbCall({ table: "clients", op: "insert", data: payload });
     }
 
     setForm(emptyForm);
@@ -100,13 +101,13 @@ export default function ClientsPage() {
   }
 
   async function updateStatus(clientId: string, newStatus: string) {
-    await supabase.from("clients").update({ status: newStatus }).eq("id", clientId);
+    await dbCall({ table: "clients", op: "update", data: { status: newStatus }, filter: { column: "id", value: clientId } });
     setStatusDropdownId(null);
     fetchClients();
   }
 
   async function deleteClient(clientId: string) {
-    await supabase.from("clients").delete().eq("id", clientId);
+    await dbCall({ table: "clients", op: "delete", filter: { column: "id", value: clientId } });
     fetchClients();
   }
 
