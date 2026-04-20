@@ -242,9 +242,8 @@ REGLAS:
 
 Responde SOLO JSON: {"subject":"asunto","body":"cuerpo"}`,
           }],
-          // skipGemma: email followup requiere tono PACAME y JSON limpio
-          // Gemma e2b genera respuestas genericas y JSON con fences markdown
-          { tier: "economy", maxTokens: 300, skipGemma: true }
+          // Premium: email followup post-propuesta = conversion critica
+          { tier: "premium", maxTokens: 300, callSite: "closer/followup" }
         );
 
         const emailData = extractJSON(res.content);

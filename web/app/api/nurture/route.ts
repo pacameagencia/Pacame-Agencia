@@ -285,9 +285,8 @@ Responde SOLO JSON: {"subject": "...", "body": "..."}`;
     try {
       const res = await llmChat(
         [{ role: "user", content: prompt }],
-        // skipGemma: 1200 tokens con JSON estricto sobre plantilla requiere
-        // razonamiento que Gemma e2b no maneja bien. Nebius Llama 8B lo hace mejor.
-        { tier: "economy", maxTokens: 1200, skipGemma: true }
+        // Premium para personalizacion alta — output directo a leads
+        { tier: "premium", maxTokens: 1200, callSite: "nurture/personalize" }
       );
 
       const personalized = extractJSON(res.content);

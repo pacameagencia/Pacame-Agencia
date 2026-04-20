@@ -222,7 +222,7 @@ export async function POST(request: NextRequest) {
           { role: "system", content: systemPrompt },
           { role: "user", content: messageText },
         ],
-        { tier: "standard", maxTokens: 400, temperature: 0.7 }
+        { tier: "premium", maxTokens: 1200, temperature: 0.7, callSite: "app/pacame-contact" }
       );
       aiReply = res.content;
     } catch (err) {

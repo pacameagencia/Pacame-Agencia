@@ -157,9 +157,10 @@ REGLAS:
 - Tuteo espanol. JSON ONLY.`;
 
   const result = await llmChat([{ role: "user", content: prompt }], {
-    tier: "titan",
-    maxTokens: 3500,
+    tier: "reasoning",
+    maxTokens: 8000, // thinking budget 5000 + 3000 output
     temperature: 0.85,
+    callSite: "strategist/daily_plan",
   });
 
   const parsed = extractJSON<StrategistPlan>(result.content);

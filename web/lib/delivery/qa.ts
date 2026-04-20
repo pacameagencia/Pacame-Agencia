@@ -124,7 +124,7 @@ export async function reviewDeliverable(
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
       ],
-      { tier: "standard", maxTokens: 600, temperature: 0.2 }
+      { tier: "standard", maxTokens: 600, temperature: 0.2, callSite: "delivery/qa_score" }
     );
     content = llm.content;
     modelUsed = `${llm.provider}:${llm.model}`;

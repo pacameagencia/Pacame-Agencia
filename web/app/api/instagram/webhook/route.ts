@@ -266,7 +266,7 @@ async function autoRespondDM(
         { role: "system", content: systemPrompt },
         { role: "user", content: incomingMessage },
       ],
-      { tier: "economy", maxTokens: 200 }
+      { tier: "economy", maxTokens: 200, callSite: "instagram/dm_reply" }
     );
 
     if (!res.content) return;

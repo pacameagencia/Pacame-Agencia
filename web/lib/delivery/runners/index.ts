@@ -35,8 +35,9 @@ export interface RunnerConfig {
 /** Rough LLM cost estimate per tier */
 function estimateLLMCost(tier: LLMTier, tokensIn: number, tokensOut: number): number {
   const rates: Record<LLMTier, { in: number; out: number }> = {
-    titan: { in: 0.003, out: 0.009 },
-    premium: { in: 0.001, out: 0.003 },
+    reasoning: { in: 0.015, out: 0.075 },
+    titan: { in: 0.015, out: 0.075 },
+    premium: { in: 0.003, out: 0.015 },
     standard: { in: 0.0003, out: 0.0009 },
     economy: { in: 0.00005, out: 0.00015 },
   };
@@ -97,7 +98,7 @@ export class GenericRunner implements ServiceDelivery {
     const template = this.config.prompt_template;
     if (!template) throw new Error("llm_text requires runner_config.prompt_template");
 
-    const tier: LLMTier = this.config.tier || "standard";
+    const tier: LLMTier = this.config.tier || "premium";
     const data = sanitizeInputs(ctx.inputs);
     const prompt = renderTemplate(template, data);
 
@@ -108,6 +109,7 @@ export class GenericRunner implements ServiceDelivery {
         tier,
         maxTokens: this.config.maxTokens ?? 1200,
         temperature: this.config.temperature ?? 0.7,
+        callSite: `delivery/llm_text/${this.slug}`,
       }
     );
     await ctx.onProgress(90, "Finalizando...");
@@ -138,7 +140,7 @@ export class GenericRunner implements ServiceDelivery {
     const template = this.config.prompt_template;
     if (!template) throw new Error("llm_structured requires runner_config.prompt_template");
 
-    const tier: LLMTier = this.config.tier || "standard";
+    const tier: LLMTier = this.config.tier || "premium";
     const data = sanitizeInputs(ctx.inputs);
     const prompt = renderTemplate(template, data);
 
@@ -149,6 +151,7 @@ export class GenericRunner implements ServiceDelivery {
         tier,
         maxTokens: this.config.maxTokens ?? 1400,
         temperature: this.config.temperature ?? 0.85,
+        callSite: `delivery/llm_structured/${this.slug}`,
       }
     );
 
@@ -338,6 +341,7 @@ export class GenericRunner implements ServiceDelivery {
         tier,
         maxTokens: this.config.maxTokens ?? 6000,
         temperature: this.config.temperature ?? 0.6,
+        callSite: `delivery/html_zip/${this.slug}`,
       }
     );
 

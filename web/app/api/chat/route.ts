@@ -86,16 +86,16 @@ APIs PENDIENTES DE CONFIGURAR (codigo 100% listo, falta que Pablo meta la API ke
 
 // Tier routing: premium = Claude Sonnet, standard = Nebius DeepSeek V3.2 (con fallback a Claude)
 const AGENT_CHAT_TIER: Record<string, LLMTier> = {
-  DIOS: "premium",     // Orchestrator needs reasoning → Claude
-  SAGE: "premium",     // Strategy needs depth → Claude
-  NOVA: "premium",     // Creative needs quality → Claude
-  ATLAS: "standard",   // SEO → Nebius DeepSeek V3.2
-  NEXUS: "premium",    // Growth strategy → Claude
-  PIXEL: "premium",    // Code generation → Claude
-  CORE: "premium",     // Backend code → Claude
-  PULSE: "standard",   // Social media → Nebius DeepSeek V3.2
-  COPY: "standard",    // Copywriting → Nebius DeepSeek V3.2
-  LENS: "standard",    // Analytics → Nebius DeepSeek V3.2
+  DIOS: "reasoning",   // Orchestrator → Opus extended thinking (decisiones criticas)
+  SAGE: "premium",     // Strategy → Claude Sonnet
+  NOVA: "premium",     // Creative → Claude Sonnet
+  ATLAS: "premium",    // SEO → Claude Sonnet (antes standard — upgrade)
+  NEXUS: "premium",    // Growth → Claude Sonnet
+  PIXEL: "premium",    // Code → Claude Sonnet
+  CORE: "premium",     // Backend → Claude Sonnet
+  PULSE: "premium",    // Social (antes standard — upgrade, cliente-facing)
+  COPY: "premium",     // Copy (antes standard — upgrade, cliente-facing)
+  LENS: "premium",     // Analytics (antes standard — upgrade, insights cliente)
 };
 
 const agentPrompts: Record<string, { role: string; color: string; prompt: string }> = {
@@ -416,13 +416,13 @@ export async function POST(request: NextRequest) {
   ];
 
   try {
-    const tier: LLMTier = AGENT_CHAT_TIER[agent.toUpperCase()] || "standard";
+    const tier: LLMTier = AGENT_CHAT_TIER[agent.toUpperCase()] || "premium";
     const llmResult = await llmChat(
       [
         { role: "system", content: SYSTEM_CONTEXT + agentConfig.prompt },
         ...messages,
       ],
-      { tier, maxTokens: 2048 }
+      { tier, maxTokens: 2048, callSite: `chat/agent_${agent.toLowerCase()}` }
     );
     const assistantMessage = llmResult.content || "Sin respuesta";
     const data = {

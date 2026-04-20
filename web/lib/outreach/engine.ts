@@ -347,9 +347,10 @@ Responde SOLO JSON.`;
 
   try {
     const result = await llmChat([{ role: "user", content: prompt }], {
-      tier: "standard",
+      tier: "premium",
       maxTokens: 800,
       temperature: 0.85,
+      callSite: "outreach/cold_email",
     });
     const parsed = extractJSON<{ subject: string; body: string }>(result.content);
     if (!parsed?.subject || !parsed?.body) {
@@ -408,9 +409,10 @@ FORMATO JSON: {"subject":"max 50 chars","body":"texto"}. SOLO JSON.`;
 
   try {
     const result = await llmChat([{ role: "user", content: prompt }], {
-      tier: "economy",
+      tier: "premium",
       maxTokens: 500,
       temperature: 0.8,
+      callSite: "outreach/followup",
     });
     const parsed = extractJSON<{ subject: string; body: string }>(result.content);
     if (!parsed?.subject || !parsed?.body) return null;

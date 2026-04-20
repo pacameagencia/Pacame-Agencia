@@ -272,7 +272,7 @@ export async function GET(request: NextRequest) {
                 `Genera UN subject line para el email, tipo "Hola ${firstName}, despues de tu logo — ¿siguiente paso?". Maximo 60 chars. Solo el subject.`,
             },
           ],
-          { tier: "economy", maxTokens: 40, temperature: 0.8 }
+          { tier: "economy", maxTokens: 40, temperature: 0.8, callSite: "upsell/subject_line" }
         );
         const trimmed = llm.content.replace(/^["'\s]+|["'\s]+$/g, "").split("\n")[0];
         if (trimmed && trimmed.length >= 8 && trimmed.length <= 80) {
