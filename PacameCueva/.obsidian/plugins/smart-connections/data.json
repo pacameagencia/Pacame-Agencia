@@ -1,0 +1,13 @@
+{
+  "embedding_model": "text-embedding-ada-002",
+  "api_key": "ollama",
+  "embed_input_min_chars": 50,
+  "show_full_path": false,
+  "expanded_view": true,
+  "group_nearest_by_file": true,
+  "smart_chat_model": "gpt-4o",
+  "chat_open_on_load": false,
+  "custom_api_url": "http://72.62.185.125:11434/v1",
+  "language": "es",
+  "log_render_interval": 5000
+}

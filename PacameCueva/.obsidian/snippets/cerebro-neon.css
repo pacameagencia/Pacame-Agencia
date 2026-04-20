@@ -1,0 +1,84 @@
+/* ============================================
+   PACAME — Cerebro Neón (Obsidian theme snippet)
+   Activa en: Settings → Appearance → CSS snippets
+   ============================================ */
+
+/* Variables neón */
+:root {
+  --brain-agent:        #ff4d6d;
+  --brain-subspec:      #ff8c42;
+  --brain-skill:        #4da6ff;
+  --brain-workflow:     #4dff8c;
+  --brain-memory:       #c9c9c9;
+  --brain-synapse:      #ffd84d;
+  --brain-discovery:    #ff4dff;
+  --brain-client:       #4dffff;
+  --brain-bg-deep:      #0b0b14;
+  --brain-bg-soft:      #141422;
+  --brain-glow:         0 0 12px currentColor, 0 0 24px rgba(192,77,255,0.4);
+}
+
+/* Fondo app */
+.theme-dark {
+  --background-primary: var(--brain-bg-deep);
+  --background-primary-alt: var(--brain-bg-soft);
+  --background-secondary: #0f0f1a;
+}
+
+/* Headings con glow sutil */
+.cm-header-1, h1 { color: #c04dff; text-shadow: 0 0 8px rgba(192,77,255,0.5); }
+.cm-header-2, h2 { color: #4da6ff; }
+.cm-header-3, h3 { color: #ffd84d; }
+
+/* Tags coloreados por tipo (Obsidian tag pills) */
+.tag[href="#type/agent"],      a.tag[href="#type/agent"]      { color: var(--brain-agent); border-color: var(--brain-agent); }
+.tag[href="#type/subspecialist"], a.tag[href="#type/subspecialist"] { color: var(--brain-subspec); border-color: var(--brain-subspec); }
+.tag[href="#type/skill"],      a.tag[href="#type/skill"]      { color: var(--brain-skill); border-color: var(--brain-skill); }
+.tag[href="#type/workflow"],   a.tag[href="#type/workflow"]   { color: var(--brain-workflow); border-color: var(--brain-workflow); }
+.tag[href="#type/memory"],     a.tag[href="#type/memory"]     { color: var(--brain-memory); border-color: var(--brain-memory); }
+.tag[href="#type/synapse"],    a.tag[href="#type/synapse"]    { color: var(--brain-synapse); border-color: var(--brain-synapse); }
+.tag[href="#type/discovery"],  a.tag[href="#type/discovery"]  { color: var(--brain-discovery); border-color: var(--brain-discovery); text-shadow: var(--brain-glow); }
+.tag[href="#type/client"],     a.tag[href="#type/client"]     { color: var(--brain-client); border-color: var(--brain-client); }
+
+/* Dashboards HUD (cssclasses: brain-hud) */
+.brain-hud .markdown-preview-view,
+.brain-hud .markdown-reading-view {
+  background: radial-gradient(ellipse at top left, rgba(192,77,255,0.08), transparent 40%),
+              radial-gradient(ellipse at bottom right, rgba(77,166,255,0.08), transparent 40%),
+              var(--brain-bg-deep);
+}
+
+.brain-hud table {
+  border: 1px solid rgba(192,77,255,0.3);
+  box-shadow: 0 0 20px rgba(192,77,255,0.15);
+  background: rgba(20,20,34,0.8);
+  backdrop-filter: blur(4px);
+}
+
+.brain-hud th {
+  background: rgba(192,77,255,0.15);
+  color: #c04dff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85em;
+  border-bottom: 1px solid rgba(192,77,255,0.4);
+}
+
+.brain-hud tr:hover td {
+  background: rgba(77,166,255,0.08);
+}
+
+/* Graph view: nodos con glow (3D Graph respeta CSS vars) */
+.graph-view.color-fill {
+  fill: var(--brain-agent);
+}
+
+/* Kanban neón per-columna */
+.kanban-plugin__lane-wrapper { background: rgba(20,20,34,0.6); }
+.kanban-plugin__item { border-left: 3px solid var(--brain-synapse); transition: border-color 0.2s; }
+.kanban-plugin__item:hover { border-left-color: #c04dff; box-shadow: 0 0 12px rgba(192,77,255,0.3); }
+
+/* Callouts Sinapsis */
+.callout[data-callout="synapse"] { --callout-color: 255, 216, 77; --callout-icon: lucide-zap; }
+.callout[data-callout="memory"]  { --callout-color: 201, 201, 201; --callout-icon: lucide-brain; }
+.callout[data-callout="discovery"] { --callout-color: 255, 77, 255; --callout-icon: lucide-lightbulb; }

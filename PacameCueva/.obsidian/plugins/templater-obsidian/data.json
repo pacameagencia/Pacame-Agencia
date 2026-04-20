@@ -1,0 +1,13 @@
+{
+  "template_folder": "_templates",
+  "auto_jump_to_cursor": true,
+  "use_system_commands": false,
+  "trigger_on_file_creation": true,
+  "enable_folder_templates": true,
+  "folder_templates": [
+    { "folder": "08-Memorias", "template": "_templates/memoria.md" },
+    { "folder": "06-Clientes", "template": "_templates/cliente.md" }
+  ],
+  "syntax_highlighting": true,
+  "enabled_templates_hotkeys": []
+}

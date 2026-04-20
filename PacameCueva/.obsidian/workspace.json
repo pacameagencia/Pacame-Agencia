@@ -1,0 +1,380 @@
+{
+  "main": {
+    "id": "aa923583be4d5178",
+    "type": "split",
+    "children": [
+      {
+        "id": "a088551a047a20ad",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dd24353eeaa7a877",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "_dashboards/Red.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Red"
+            }
+          },
+          {
+            "id": "e83d504fa809bad3",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "08-Memorias/CORE/2026-04-16-supabase-first-principle.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2026-04-16-supabase-first-principle"
+            }
+          },
+          {
+            "id": "539221351e3067d1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "_dashboards/Actividad.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Actividad"
+            }
+          },
+          {
+            "id": "e03670b0a97c7560",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "_dashboards/Actividad.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Actividad"
+            }
+          },
+          {
+            "id": "fd4bf1bd15c0b29c",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Vista gráfica"
+            }
+          },
+          {
+            "id": "d416c29c1ab9fc84",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "conflict-files-obsidian-git.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "conflict-files-obsidian-git"
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "ecdd49b8a136fe67",
+    "type": "split",
+    "children": [
+      {
+        "id": "60d790faa69867e8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "963a2e9f7d1f4ee4",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de archivos"
+            }
+          },
+          {
+            "id": "eb4886bac7b894a6",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Buscar"
+            }
+          },
+          {
+            "id": "a9efc38d620152a2",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "3c8a5af07e25da6d",
+    "type": "split",
+    "children": [
+      {
+        "id": "35f032b0c2f5b8cb",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e0bb706fece385fc",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Enlaces entrantes"
+            }
+          },
+          {
+            "id": "d7bad581610dec23",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Enlaces salientes"
+            }
+          },
+          {
+            "id": "52cca8f659e47e5a",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "3903a473d924a65d",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas las propiedades"
+            }
+          },
+          {
+            "id": "6ce061668df89ea1",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Esquema"
+            }
+          },
+          {
+            "id": "6b9f53c7197ceae7",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {},
+              "icon": "calendar-with-checkmark",
+              "title": "Calendar"
+            }
+          },
+          {
+            "id": "ee8228e817afb88b",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Nueva pestaña"
+            }
+          },
+          {
+            "id": "44670cba442e3c09",
+            "type": "leaf",
+            "state": {
+              "type": "juggl_nodes",
+              "state": {},
+              "icon": "ag-node-list",
+              "title": "Juggl nodes"
+            }
+          },
+          {
+            "id": "bc351e66333585c3",
+            "type": "leaf",
+            "state": {
+              "type": "juggl_style",
+              "state": {},
+              "icon": "ag-style",
+              "title": "Juggl style"
+            }
+          },
+          {
+            "id": "bc1dc7c9759a4d9d",
+            "type": "leaf",
+            "state": {
+              "type": "footnotes",
+              "state": {
+                "file": "Bienvenido.md"
+              },
+              "icon": "lucide-file-signature",
+              "title": "Notas al pie"
+            }
+          },
+          {
+            "id": "b948365e63b69da7",
+            "type": "leaf",
+            "state": {
+              "type": "smart-connections-view",
+              "state": {},
+              "icon": "smart-connections",
+              "title": "Connections"
+            }
+          },
+          {
+            "id": "42feeb6cb947671c",
+            "type": "leaf",
+            "state": {
+              "type": "graph-analysis",
+              "state": {},
+              "icon": "GA-ICON",
+              "title": "Graph Analysis"
+            }
+          }
+        ],
+        "currentTab": 11
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Crear nueva base": false,
+      "zk-prefixer:Crear nueva nota única": false,
+      "audio-recorder:Iniciar/Detener la grabación": false,
+      "markdown-importer:Abrir el importador de Markdown": false,
+      "random-note:Abrir nota al azar": false,
+      "publish:Publicar cambios...": false,
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "templater-obsidian:Templater": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "obsidian-git:Open Git source control": false,
+      "obsidian-kanban:Create new board": false,
+      "remotely-save:Remotely Save": false,
+      "omnisearch:Omnisearch": false,
+      "copilot:Open Copilot Chat": false,
+      "3d-graph:3D Graph": false,
+      "juggl:Juggl global graph": false,
+      "smart-connections:Smart Connections: Open connections view": false,
+      "smart-connections:Smart Connections: Open random connection": false,
+      "smart-connections:Smart Lookup: Open lookup view": false,
+      "workspaces:Gestionar disposiciones de espacio de trabajo": false
+    }
+  },
+  "active": "d416c29c1ab9fc84",
+  "lastOpenFiles": [
+    "conflict-files-obsidian-git.md",
+    "08-Memorias/SAGE/2026-04-18-descubrimiento-paquete-presencia-digital-completa-a-precio-f.md",
+    "_dashboards/Actividad.md",
+    "08-Memorias/NEXUS/2026-04-19-descubrimiento-canibalizacion-de-fuentes-de-lead.md",
+    "_dashboards/Agentes.md",
+    "_dashboards/Decay.md",
+    "08-Memorias/DIOS/2026-04-19-cron-2026-04-19t1232-10-agentes.md",
+    "08-Memorias/CORE/2026-04-16-supabase-first-principle.md",
+    "08-Memorias/CORE/2026-04-16-secrets-management.md",
+    "08-Memorias/ATLAS/2026-04-19-descubrimiento-guia-definitiva-de-precios-automatizacion-por.md",
+    "08-Memorias/ATLAS/2026-04-18-descubrimiento-calculadora-de-presupuesto-seoia-para-pymes.md",
+    "08-Memorias/ATLAS/2026-04-16-chat-di-hola-en-3-palabras.md",
+    "08-Memorias/ATLAS/2026-04-16-content-to-conversion.md",
+    "08-Memorias/ATLAS/2026-04-17-descubrimiento-caso-de-exito-en-video-caso-real-de-una-pyme-.md",
+    "_dashboards/Hubs.md",
+    "07-Sinapsis/PIXEL-CORE-collaborates_with.md",
+    "07-Sinapsis/DIOS-CORE-orchestrates.md",
+    "_dashboards/Red.md",
+    "_templates/cliente.md",
+    "_templates/diario.md",
+    "_templates/memoria.md",
+    "_templates/memoria.md.tmp.19164.1776608842109",
+    "_dashboards/Decay.md.tmp.19164.1776608835957",
+    "_dashboards/Agentes.md.tmp.19164.1776608828936",
+    "_dashboards/Hubs.md.tmp.19164.1776608812782",
+    "08-Memorias/LENS/2026-04-16-measurement-plan-first.md",
+    "08-Memorias/LENS/2026-04-18-descubrimiento-desalineacion-critica-contenido-vs-fuentes-de.md",
+    "08-Memorias/LENS/2026-04-17-descubrimiento-foco-presupuestario-erroneo-y-mensaje-fragmen.md",
+    "08-Memorias/LENS/2026-04-16-kpi-framework-by-service.md",
+    "08-Memorias/LENS/2026-04-16-data-honesty-principle.md",
+    "08-Memorias/LENS",
+    "08-Memorias/NOVA",
+    "08-Memorias/COPY",
+    "08-Memorias/DIOS",
+    "08-Memorias/SAGE",
+    "08-Memorias/NEXUS"
+  ]
+}
