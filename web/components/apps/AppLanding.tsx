@@ -64,7 +64,7 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
     yearlyEur !== null ? (monthlyEur * 12 - yearlyEur).toFixed(0) : null;
 
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       {/* ─── HERO ─── */}
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-olympus-radial pointer-events-none opacity-60" />
@@ -73,32 +73,32 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
           <div className="text-center mb-10">
             <Link
               href="/apps"
-              className="inline-flex items-center gap-2 text-xs font-body text-pacame-white/40 hover:text-olympus-gold mb-6 transition"
+              className="inline-flex items-center gap-2 text-xs font-body text-ink/40 hover:text-accent-gold mb-6 transition"
             >
               ← Volver a apps
             </Link>
 
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-body font-semibold text-olympus-gold uppercase tracking-wider bg-olympus-gold/10 rounded-full px-3 py-1 mb-6 border border-olympus-gold/20">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-body font-semibold text-accent-gold uppercase tracking-wider bg-accent-gold/10 rounded-full px-3 py-1 mb-6 border border-accent-gold/20">
               <Sparkles className="w-3 h-3" />
               App productizada · Entregada por IA
             </span>
 
-            <h1 className="font-accent font-bold text-4xl sm:text-6xl text-pacame-white mb-6 text-balance">
+            <h1 className="font-accent font-bold text-4xl sm:text-6xl text-ink mb-6 text-balance">
               {app.name}
             </h1>
-            <p className="text-xl sm:text-2xl text-pacame-white/70 font-body max-w-3xl mx-auto mb-8 font-light">
+            <p className="text-xl sm:text-2xl text-ink/70 font-body max-w-3xl mx-auto mb-8 font-light">
               {app.tagline}
             </p>
 
             {/* Price + CTA */}
             <div className="inline-flex flex-col items-center gap-4 max-w-md mx-auto">
-              <div className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] rounded-full p-1">
+              <div className="flex items-center gap-2 bg-white/[0.04] border border-ink/[0.08] rounded-full p-1">
                 <button
                   onClick={() => setInterval("month")}
                   className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
                     interval === "month"
-                      ? "bg-olympus-gold text-pacame-black"
-                      : "text-pacame-white/60"
+                      ? "bg-accent-gold text-paper"
+                      : "text-ink/60"
                   }`}
                 >
                   Mensual
@@ -108,8 +108,8 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
                   disabled={!yearlyEur}
                   className={`px-4 py-1.5 rounded-full text-sm font-medium transition inline-flex items-center gap-1.5 disabled:opacity-40 ${
                     interval === "year"
-                      ? "bg-olympus-gold text-pacame-black"
-                      : "text-pacame-white/60"
+                      ? "bg-accent-gold text-paper"
+                      : "text-ink/60"
                   }`}
                 >
                   Anual
@@ -121,9 +121,9 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
                 </button>
               </div>
 
-              <div className="text-6xl font-heading font-bold text-pacame-white">
+              <div className="text-6xl font-heading font-bold text-ink">
                 {interval === "year" && yearlyEur ? `${Math.round(yearlyEur)}€` : `${monthlyEur}€`}
-                <span className="text-lg font-normal text-pacame-white/40 ml-1">
+                <span className="text-lg font-normal text-ink/40 ml-1">
                   /{interval === "month" ? "mes" : "año"}
                 </span>
               </div>
@@ -136,17 +136,17 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
                 billingInterval={interval}
                 className="w-full"
               />
-              <div className="flex items-center gap-4 text-xs text-pacame-white/50 font-body">
+              <div className="flex items-center gap-4 text-xs text-ink/50 font-body">
                 <span className="inline-flex items-center gap-1">
-                  <Shield className="w-3 h-3 text-olympus-gold" />
+                  <Shield className="w-3 h-3 text-accent-gold" />
                   Sin permanencia
                 </span>
                 <span className="inline-flex items-center gap-1">
-                  <Check className="w-3 h-3 text-olympus-gold" />
+                  <Check className="w-3 h-3 text-accent-gold" />
                   Cancel 1-click
                 </span>
                 <span className="inline-flex items-center gap-1">
-                  <Zap className="w-3 h-3 text-olympus-gold" />
+                  <Zap className="w-3 h-3 text-accent-gold" />
                   Setup 10 min
                 </span>
               </div>
@@ -156,7 +156,7 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
           {/* Long description */}
           {app.long_description && (
             <div className="max-w-3xl mx-auto">
-              <p className="text-lg text-pacame-white/70 font-body leading-relaxed text-center">
+              <p className="text-lg text-ink/70 font-body leading-relaxed text-center">
                 {app.long_description}
               </p>
             </div>
@@ -169,7 +169,7 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
         <section className="py-20 relative">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-12">
-              <h2 className="font-accent font-bold text-3xl sm:text-4xl text-pacame-white mb-4">
+              <h2 className="font-accent font-bold text-3xl sm:text-4xl text-ink mb-4">
                 Lo que te llevas
               </h2>
             </div>
@@ -179,15 +179,15 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
                 return (
                   <div
                     key={i}
-                    className="rounded-2xl p-6 bg-dark-card border border-white/[0.06] hover:border-olympus-gold/30 transition card-golden-shine"
+                    className="rounded-2xl p-6 bg-paper-deep border border-ink/[0.06] hover:border-accent-gold/30 transition card-golden-shine"
                   >
-                    <div className="w-11 h-11 rounded-xl bg-olympus-gold/10 border border-olympus-gold/20 flex items-center justify-center mb-4">
-                      <Icon className="w-5 h-5 text-olympus-gold" />
+                    <div className="w-11 h-11 rounded-xl bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center mb-4">
+                      <Icon className="w-5 h-5 text-accent-gold" />
                     </div>
-                    <h3 className="font-heading font-bold text-lg text-pacame-white mb-2">
+                    <h3 className="font-heading font-bold text-lg text-ink mb-2">
                       {b.title}
                     </h3>
-                    <p className="text-sm text-pacame-white/60 font-body leading-relaxed">
+                    <p className="text-sm text-ink/60 font-body leading-relaxed">
                       {b.description}
                     </p>
                   </div>
@@ -203,10 +203,10 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
         <section className="py-20 bg-white/[0.02] border-y border-white/[0.04]">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-12">
-              <h2 className="font-accent font-bold text-3xl sm:text-4xl text-pacame-white mb-4">
+              <h2 className="font-accent font-bold text-3xl sm:text-4xl text-ink mb-4">
                 Quien lo usa
               </h2>
-              <p className="text-pacame-white/60 font-body max-w-2xl mx-auto">
+              <p className="text-ink/60 font-body max-w-2xl mx-auto">
                 {app.name} esta optimizado para estos sectores — con templates pre-configurados.
               </p>
             </div>
@@ -214,15 +214,15 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
               {app.use_cases.map((uc, i) => (
                 <div
                   key={i}
-                  className="rounded-2xl p-6 bg-dark-card border border-white/[0.06]"
+                  className="rounded-2xl p-6 bg-paper-deep border border-ink/[0.06]"
                 >
-                  <div className="text-[10px] font-mono uppercase tracking-wider text-olympus-gold/60 mb-2">
+                  <div className="text-[10px] font-mono uppercase tracking-wider text-accent-gold/60 mb-2">
                     {uc.sector}
                   </div>
-                  <h3 className="font-heading font-bold text-lg text-pacame-white mb-2">
+                  <h3 className="font-heading font-bold text-lg text-ink mb-2">
                     {uc.title}
                   </h3>
-                  <p className="text-sm text-pacame-white/70 font-body leading-relaxed">
+                  <p className="text-sm text-ink/70 font-body leading-relaxed">
                     {uc.description}
                   </p>
                 </div>
@@ -237,7 +237,7 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
         <section className="py-20">
           <div className="max-w-4xl mx-auto px-6">
             <div className="text-center mb-10">
-              <h2 className="font-accent font-bold text-3xl sm:text-4xl text-pacame-white mb-4">
+              <h2 className="font-accent font-bold text-3xl sm:text-4xl text-ink mb-4">
                 Todo incluido
               </h2>
             </div>
@@ -247,8 +247,8 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
                   key={f}
                   className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02]"
                 >
-                  <Check className="w-5 h-5 text-olympus-gold flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-pacame-white/80 font-body">{f}</span>
+                  <Check className="w-5 h-5 text-accent-gold flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-ink/80 font-body">{f}</span>
                 </div>
               ))}
             </div>
@@ -260,14 +260,14 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
       {app.integrations.length > 0 && (
         <section className="py-16 bg-white/[0.02] border-y border-white/[0.04]">
           <div className="max-w-4xl mx-auto px-6 text-center">
-            <h3 className="text-xs font-mono uppercase tracking-wider text-pacame-white/40 mb-6">
+            <h3 className="text-xs font-mono uppercase tracking-wider text-ink/40 mb-6">
               Integra con
             </h3>
             <div className="flex flex-wrap items-center justify-center gap-3">
               {app.integrations.map((integ) => (
                 <span
                   key={integ}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] text-sm text-pacame-white/70 font-mono"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/[0.04] border border-ink/[0.08] text-sm text-ink/70 font-mono"
                 >
                   {integ.replace(/_/g, " ")}
                 </span>
@@ -282,8 +282,8 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
         <section className="py-20">
           <div className="max-w-3xl mx-auto px-6">
             <div className="text-center mb-10">
-              <h2 className="font-accent font-bold text-3xl sm:text-4xl text-pacame-white mb-4 inline-flex items-center gap-3">
-                <HelpCircle className="w-8 h-8 text-olympus-gold" />
+              <h2 className="font-accent font-bold text-3xl sm:text-4xl text-ink mb-4 inline-flex items-center gap-3">
+                <HelpCircle className="w-8 h-8 text-accent-gold" />
                 Preguntas frecuentes
               </h2>
             </div>
@@ -291,15 +291,15 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
               {app.faq.map((item, i) => (
                 <details
                   key={i}
-                  className="group rounded-xl p-5 bg-dark-card border border-white/[0.06]"
+                  className="group rounded-xl p-5 bg-paper-deep border border-ink/[0.06]"
                 >
-                  <summary className="cursor-pointer font-heading font-semibold text-pacame-white flex items-center justify-between gap-3">
+                  <summary className="cursor-pointer font-heading font-semibold text-ink flex items-center justify-between gap-3">
                     <span>{item.q}</span>
-                    <span className="text-olympus-gold group-open:rotate-45 transition-transform text-xl flex-shrink-0">
+                    <span className="text-accent-gold group-open:rotate-45 transition-transform text-xl flex-shrink-0">
                       +
                     </span>
                   </summary>
-                  <p className="mt-3 text-pacame-white/70 font-body text-sm leading-relaxed">
+                  <p className="mt-3 text-ink/70 font-body text-sm leading-relaxed">
                     {item.a}
                   </p>
                 </details>
@@ -313,10 +313,10 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
       <section className="py-24 relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-olympus-radial pointer-events-none" />
         <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
-          <h2 className="font-accent font-bold text-3xl sm:text-4xl text-pacame-white mb-4">
+          <h2 className="font-accent font-bold text-3xl sm:text-4xl text-ink mb-4">
             Empieza hoy
           </h2>
-          <p className="text-pacame-white/60 font-body mb-8">
+          <p className="text-ink/60 font-body mb-8">
             Sin permanencia. Sin setup fee. Cancela cuando quieras.
           </p>
           <AppBuyButton
@@ -327,8 +327,8 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
             billingInterval={interval}
             className="max-w-sm mx-auto"
           />
-          <div className="mt-6 text-sm text-pacame-white/50 font-body">
-            ¿Dudas? <a href="mailto:hola@pacameagencia.com" className="text-olympus-gold hover:underline">Escribe a Pablo</a>
+          <div className="mt-6 text-sm text-ink/50 font-body">
+            ¿Dudas? <a href="mailto:hola@pacameagencia.com" className="text-accent-gold hover:underline">Escribe a Pablo</a>
           </div>
         </div>
       </section>

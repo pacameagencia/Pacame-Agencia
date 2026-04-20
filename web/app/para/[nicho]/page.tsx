@@ -58,7 +58,7 @@ export default async function NichePage({ params }: Props) {
     .filter(Boolean);
 
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       <BreadcrumbJsonLd
         items={[
           { name: "Inicio", url: "https://pacameagencia.com" },
@@ -71,20 +71,20 @@ export default async function NichePage({ params }: Props) {
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-olympus-radial pointer-events-none" />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-6 uppercase tracking-[0.2em]">
+          <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-6 uppercase tracking-[0.2em]">
             Soluciones para {niche.namePlural}
           </p>
-          <h1 className="font-accent font-bold text-display text-pacame-white mb-6 whitespace-pre-line text-balance">
+          <h1 className="font-accent font-bold text-display text-ink mb-6 whitespace-pre-line text-balance">
             {niche.headline}
           </h1>
-          <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto mb-8 font-light leading-relaxed">
+          <p className="text-xl text-ink/60 font-body max-w-2xl mx-auto mb-8 font-light leading-relaxed">
             {niche.subheadline}
           </p>
 
           {/* Stat */}
-          <div className="inline-flex items-center gap-2 bg-electric-violet/10 border border-electric-violet/20 rounded-full px-5 py-2.5 mb-12">
-            <Zap className="w-4 h-4 text-olympus-gold" />
-            <span className="text-sm font-body text-olympus-gold font-medium">
+          <div className="inline-flex items-center gap-2 bg-brand-primary/10 border border-brand-primary/20 rounded-full px-5 py-2.5 mb-12">
+            <Zap className="w-4 h-4 text-accent-gold" />
+            <span className="text-sm font-body text-accent-gold font-medium">
               {niche.heroStat}
             </span>
           </div>
@@ -98,13 +98,13 @@ export default async function NichePage({ params }: Props) {
                 gradientOpacity={0.8}
                 className="group min-w-[240px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
               >
-                <Link href={`/contacto?service=${niche.recommendedServices[0]}`} className="flex items-center gap-2 text-pacame-white">
+                <Link href={`/contacto?service=${niche.recommendedServices[0]}`} className="flex items-center gap-2 text-ink">
                   Quiero mas clientes
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </ShinyButton>
             </MagneticButton>
-            <Button variant="outline" size="xl" asChild className="rounded-full min-w-[200px] border-white/[0.08] hover:border-white/20 hover:bg-white/[0.03]">
+            <Button variant="outline" size="xl" asChild className="rounded-full min-w-[200px] border-ink/[0.08] hover:border-white/20 hover:bg-white/[0.03]">
               <a href="https://wa.me/34722669381" target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-4 h-4" />
                 Hablar por WhatsApp
@@ -119,10 +119,10 @@ export default async function NichePage({ params }: Props) {
         <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-5xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
-            <p className="text-[13px] font-body font-medium text-rose-alert mb-4 uppercase tracking-[0.2em]">
+            <p className="text-[13px] font-body font-medium text-accent-burgundy-soft mb-4 uppercase tracking-[0.2em]">
               Te suena esto?
             </p>
-            <h2 className="font-heading font-bold text-section text-pacame-white mb-6 text-balance">
+            <h2 className="font-heading font-bold text-section text-ink mb-6 text-balance">
               Los problemas de{" "}
               <span className="gradient-text-gold">tu {niche.name}</span>
             </h2>
@@ -134,17 +134,17 @@ export default async function NichePage({ params }: Props) {
               <CardTilt tiltMaxAngle={6} scale={1.02}>
               <CardTiltContent>
               <div
-                className="rounded-2xl p-7 bg-dark-card border border-white/[0.06] hover:border-rose-alert/20 transition-colors duration-500"
+                className="rounded-2xl p-7 bg-paper-deep border border-ink/[0.06] hover:border-accent-burgundy-soft/20 transition-colors duration-500"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-rose-alert/10 flex items-center justify-center flex-shrink-0">
-                    <AlertTriangle className="w-5 h-5 text-rose-alert" />
+                  <div className="w-10 h-10 rounded-xl bg-accent-burgundy-soft/10 flex items-center justify-center flex-shrink-0">
+                    <AlertTriangle className="w-5 h-5 text-accent-burgundy-soft" />
                   </div>
                   <div>
-                    <h3 className="font-heading font-bold text-lg text-pacame-white mb-2">
+                    <h3 className="font-heading font-bold text-lg text-ink mb-2">
                       {pain.title}
                     </h3>
-                    <p className="text-sm text-pacame-white/50 font-body leading-relaxed">
+                    <p className="text-sm text-ink/50 font-body leading-relaxed">
                       {pain.description}
                     </p>
                   </div>
@@ -163,10 +163,10 @@ export default async function NichePage({ params }: Props) {
         <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-5xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
-            <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
+            <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-4 uppercase tracking-[0.2em]">
               La solucion
             </p>
-            <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
+            <h2 className="font-accent font-bold text-section text-ink mb-6 text-balance">
               Que hacemos por{" "}
               <span className="gradient-text-aurora">tu {niche.name}</span>
             </h2>
@@ -180,7 +180,7 @@ export default async function NichePage({ params }: Props) {
                 <CardTilt tiltMaxAngle={8} scale={1.02}>
                 <CardTiltContent>
                 <div
-                  className="rounded-2xl p-7 bg-dark-card border border-white/[0.06] hover:border-electric-violet/20 transition-colors duration-500 card-golden-shine"
+                  className="rounded-2xl p-7 bg-paper-deep border border-ink/[0.06] hover:border-brand-primary/20 transition-colors duration-500 card-golden-shine"
                 >
                   {/* Agent badge */}
                   {agent && (
@@ -195,17 +195,17 @@ export default async function NichePage({ params }: Props) {
                         <span className="text-xs font-heading font-semibold" style={{ color: agent.color }}>
                           {agent.name}
                         </span>
-                        <span className="text-[10px] text-pacame-white/30 font-body ml-1.5">
+                        <span className="text-[10px] text-ink/30 font-body ml-1.5">
                           se encarga
                         </span>
                       </div>
                     </div>
                   )}
 
-                  <h3 className="font-heading font-bold text-xl text-pacame-white mb-3">
+                  <h3 className="font-heading font-bold text-xl text-ink mb-3">
                     {solution.title}
                   </h3>
-                  <p className="text-sm text-pacame-white/50 font-body leading-relaxed">
+                  <p className="text-sm text-ink/50 font-body leading-relaxed">
                     {solution.description}
                   </p>
                 </div>
@@ -223,10 +223,10 @@ export default async function NichePage({ params }: Props) {
         <div className="px-6"><GoldenDivider variant="laurel" /></div>
         <div className="max-w-5xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
-            <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
+            <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-4 uppercase tracking-[0.2em]">
               Servicios recomendados
             </p>
-            <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
+            <h2 className="font-accent font-bold text-section text-ink mb-6 text-balance">
               Precios claros.{" "}
               <span className="gradient-text-gold">Sin sorpresas.</span>
             </h2>
@@ -241,27 +241,27 @@ export default async function NichePage({ params }: Props) {
                 <CardTilt tiltMaxAngle={8} scale={1.02}>
                 <CardTiltContent>
                 <div
-                  className="rounded-2xl p-7 bg-dark-card border border-white/[0.06] card-golden-shine"
+                  className="rounded-2xl p-7 bg-paper-deep border border-ink/[0.06] card-golden-shine"
                 >
-                  <h3 className="font-heading font-bold text-xl text-pacame-white mb-2">
+                  <h3 className="font-heading font-bold text-xl text-ink mb-2">
                     {service.name}
                   </h3>
-                  <p className="text-sm text-pacame-white/40 font-body mb-5">
+                  <p className="text-sm text-ink/40 font-body mb-5">
                     {featured.name}
                   </p>
                   <ul className="space-y-2 mb-6">
                     {featured.includes.slice(0, 4).map((inc) => (
                       <li key={inc} className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-olympus-gold mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-pacame-white/55 font-body">{inc}</span>
+                        <Check className="w-4 h-4 text-accent-gold mt-0.5 flex-shrink-0" />
+                        <span className="text-sm text-ink/55 font-body">{inc}</span>
                       </li>
                     ))}
                   </ul>
-                  <div className="border-t border-white/[0.06] pt-5">
-                    <div className="font-heading font-bold text-2xl text-pacame-white mb-1">
+                  <div className="border-t border-ink/[0.06] pt-5">
+                    <div className="font-heading font-bold text-2xl text-ink mb-1">
                       {featured.price}
                     </div>
-                    <div className="text-xs text-pacame-white/30 font-body mb-4">
+                    <div className="text-xs text-ink/30 font-body mb-4">
                       {featured.deadline}
                     </div>
                     <Button variant="outline" size="sm" asChild className="w-full rounded-full">
@@ -281,7 +281,7 @@ export default async function NichePage({ params }: Props) {
 
           {/* Recommended package */}
           <div className="max-w-md mx-auto text-center">
-            <p className="text-sm text-pacame-white/40 font-body mb-4">
+            <p className="text-sm text-ink/40 font-body mb-4">
               Quieres todo junto? Ahorra con un paquete:
             </p>
             <PackageCheckoutButton
@@ -298,10 +298,10 @@ export default async function NichePage({ params }: Props) {
         <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-3xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
-            <p className="text-[13px] font-body font-medium text-olympus-gold mb-4 uppercase tracking-[0.2em]">
+            <p className="text-[13px] font-body font-medium text-accent-gold mb-4 uppercase tracking-[0.2em]">
               Preguntas frecuentes
             </p>
-            <h2 className="font-heading font-bold text-section text-pacame-white mb-6 text-balance">
+            <h2 className="font-heading font-bold text-section text-ink mb-6 text-balance">
               Lo que nos preguntan{" "}
               <span className="gradient-text-gold">los {niche.namePlural}</span>
             </h2>
@@ -311,15 +311,15 @@ export default async function NichePage({ params }: Props) {
             {niche.faq.map((item, i) => (
               <ScrollReveal key={item.q} delay={i * 0.08}>
               <div
-                className="rounded-2xl p-7 bg-dark-card border border-white/[0.06] card-golden-shine"
+                className="rounded-2xl p-7 bg-paper-deep border border-ink/[0.06] card-golden-shine"
               >
                 <div className="flex items-start gap-3 mb-3">
-                  <HelpCircle className="w-5 h-5 text-olympus-gold flex-shrink-0 mt-0.5" />
-                  <h3 className="font-heading font-semibold text-lg text-pacame-white">
+                  <HelpCircle className="w-5 h-5 text-accent-gold flex-shrink-0 mt-0.5" />
+                  <h3 className="font-heading font-semibold text-lg text-ink">
                     {item.q}
                   </h3>
                 </div>
-                <p className="text-sm text-pacame-white/55 font-body leading-relaxed pl-8">
+                <p className="text-sm text-ink/55 font-body leading-relaxed pl-8">
                   {item.a}
                 </p>
               </div>
@@ -330,12 +330,12 @@ export default async function NichePage({ params }: Props) {
       </section>
 
       {/* Final CTA */}
-      <section className="section-padding bg-pacame-black text-center">
+      <section className="section-padding bg-paper text-center">
         <ScrollReveal className="max-w-2xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
+          <h2 className="font-heading font-bold text-section text-ink mb-4 text-balance">
             Tu {niche.name} merece mas clientes
           </h2>
-          <p className="text-pacame-white/60 font-body mb-10 text-lg leading-relaxed">
+          <p className="text-ink/60 font-body mb-10 text-lg leading-relaxed">
             Hablamos 30 minutos, analizamos tu situacion y te decimos exactamente que necesitas. Sin compromiso.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -346,13 +346,13 @@ export default async function NichePage({ params }: Props) {
                 gradientOpacity={0.8}
                 className="group min-w-[240px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
               >
-                <Link href={`/contacto?service=${niche.recommendedServices[0]}`} className="flex items-center gap-2 text-pacame-white">
+                <Link href={`/contacto?service=${niche.recommendedServices[0]}`} className="flex items-center gap-2 text-ink">
                   Quiero empezar
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </ShinyButton>
             </MagneticButton>
-            <Button variant="outline" size="xl" asChild className="rounded-full border-white/[0.08] hover:border-white/20">
+            <Button variant="outline" size="xl" asChild className="rounded-full border-ink/[0.08] hover:border-white/20">
               <a href="https://wa.me/34722669381" target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-4 h-4" />
                 WhatsApp directo

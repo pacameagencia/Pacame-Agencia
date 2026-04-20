@@ -61,7 +61,7 @@ export default function CatalogAdminPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-3">
-            <Package className="w-7 h-7 text-olympus-gold" />
+            <Package className="w-7 h-7 text-accent-gold" />
             Catalogo Marketplace
           </h1>
           <p className="text-white/60 text-sm mt-1">
@@ -71,7 +71,7 @@ export default function CatalogAdminPage() {
         </div>
         <Link
           href="/dashboard/catalog/new"
-          className="inline-flex items-center gap-2 bg-olympus-gold text-black font-semibold px-5 py-2.5 rounded-xl hover:bg-olympus-gold/90 transition"
+          className="inline-flex items-center gap-2 bg-accent-gold text-black font-semibold px-5 py-2.5 rounded-xl hover:bg-accent-gold/90 transition"
         >
           <Plus className="w-4 h-4" />
           Nuevo producto
@@ -81,19 +81,19 @@ export default function CatalogAdminPage() {
       {loading ? (
         <p className="text-white/50">Cargando productos...</p>
       ) : products.length === 0 ? (
-        <div className="rounded-2xl p-12 bg-white/[0.03] border border-white/[0.06] text-center">
+        <div className="rounded-2xl p-12 bg-white/[0.03] border border-ink/[0.06] text-center">
           <Package className="w-12 h-12 text-white/30 mx-auto mb-4" />
           <p className="text-white/60 mb-4">Aun no tienes productos.</p>
           <Link
             href="/dashboard/catalog/new"
-            className="inline-flex items-center gap-2 bg-olympus-gold text-black font-semibold px-5 py-2.5 rounded-xl"
+            className="inline-flex items-center gap-2 bg-accent-gold text-black font-semibold px-5 py-2.5 rounded-xl"
           >
             <Plus className="w-4 h-4" />
             Crear el primero
           </Link>
         </div>
       ) : (
-        <div className="rounded-2xl border border-white/[0.06] overflow-hidden">
+        <div className="rounded-2xl border border-ink/[0.06] overflow-hidden">
           <table className="w-full text-sm">
             <thead className="bg-white/[0.03] text-xs uppercase text-white/50">
               <tr>
@@ -112,7 +112,7 @@ export default function CatalogAdminPage() {
                   <td className="p-3">
                     <div className="flex items-center gap-2">
                       {p.is_featured && (
-                        <Star className="w-3.5 h-3.5 text-olympus-gold fill-olympus-gold" />
+                        <Star className="w-3.5 h-3.5 text-accent-gold fill-accent-gold" />
                       )}
                       <div>
                         <div className="font-semibold text-white">{p.name}</div>
@@ -126,7 +126,7 @@ export default function CatalogAdminPage() {
                       className={`inline-flex items-center gap-1 text-[10px] font-mono uppercase px-2 py-1 rounded-full border ${
                         p.runner_type === "custom"
                           ? "border-orange-400/30 text-orange-300 bg-orange-400/10"
-                          : "border-olympus-gold/30 text-olympus-gold bg-olympus-gold/10"
+                          : "border-accent-gold/30 text-accent-gold bg-accent-gold/10"
                       }`}
                     >
                       {p.runner_type === "custom" ? (
@@ -164,7 +164,7 @@ export default function CatalogAdminPage() {
                         title={p.is_featured ? "Quitar destacado" : "Destacar"}
                       >
                         <Star
-                          className={`w-3.5 h-3.5 ${p.is_featured ? "text-olympus-gold fill-olympus-gold" : "text-white/50"}`}
+                          className={`w-3.5 h-3.5 ${p.is_featured ? "text-accent-gold fill-accent-gold" : "text-white/50"}`}
                         />
                       </button>
                       <button
@@ -180,7 +180,7 @@ export default function CatalogAdminPage() {
                       </button>
                       <Link
                         href={`/dashboard/catalog/${p.id}`}
-                        className="p-1.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] transition text-white/60 hover:text-olympus-gold"
+                        className="p-1.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] transition text-white/60 hover:text-accent-gold"
                         title="Editar"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
@@ -188,7 +188,7 @@ export default function CatalogAdminPage() {
                       <Link
                         href={`/servicios/${p.slug}`}
                         target="_blank"
-                        className="p-1.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] transition text-white/60 hover:text-olympus-gold"
+                        className="p-1.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] transition text-white/60 hover:text-accent-gold"
                         title="Ver pagina publica"
                       >
                         <ArrowRight className="w-3.5 h-3.5" />

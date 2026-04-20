@@ -21,7 +21,7 @@ import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
 type Tab = "login" | "magic";
 
 const inputClass =
-  "w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white placeholder:text-pacame-white/25 font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors";
+  "w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink placeholder:text-ink/25 font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors";
 
 const tabVariants = {
   hidden: { opacity: 0, y: 12 },
@@ -33,8 +33,8 @@ export default function PortalPage() {
   return (
     <Suspense
       fallback={
-        <div className="bg-pacame-black min-h-screen flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-electric-violet" />
+        <div className="bg-paper min-h-screen flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
         </div>
       }
     >
@@ -121,7 +121,7 @@ function PortalLoginContent() {
   }
 
   return (
-    <div className="bg-pacame-black min-h-screen flex items-center justify-center px-6">
+    <div className="bg-paper min-h-screen flex items-center justify-center px-6">
       <ScrollReveal className="w-full max-w-md">
         {/* Logo + header */}
         <motion.div
@@ -133,10 +133,10 @@ function PortalLoginContent() {
           <div className="inline-flex w-14 h-14 rounded-2xl bg-brand-gradient items-center justify-center mb-4 shadow-glow-violet">
             <span className="text-white font-heading font-bold text-xl">P</span>
           </div>
-          <h1 className="font-heading font-bold text-3xl text-pacame-white">
+          <h1 className="font-heading font-bold text-3xl text-ink">
             Portal de cliente
           </h1>
-          <p className="text-sm text-pacame-white/50 font-body mt-2">
+          <p className="text-sm text-ink/50 font-body mt-2">
             Accede a tu proyecto, contenido y pagos
           </p>
         </motion.div>
@@ -146,9 +146,9 @@ function PortalLoginContent() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="mb-6 p-3 rounded-xl bg-lime-pulse/10 border border-lime-pulse/20 text-center"
+            className="mb-6 p-3 rounded-xl bg-mint/10 border border-mint/20 text-center"
           >
-            <p className="text-sm text-lime-pulse font-body">
+            <p className="text-sm text-mint font-body">
               Password actualizado correctamente. Inicia sesion con tu nuevo password.
             </p>
           </motion.div>
@@ -156,7 +156,7 @@ function PortalLoginContent() {
 
         {/* Card */}
         <CardTilt tiltMaxAngle={3} scale={1.005}>
-          <CardTiltContent className="rounded-2xl bg-dark-card border border-white/[0.06] p-6 sm:p-8">
+          <CardTiltContent className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6 sm:p-8">
             {/* Tab switcher */}
             <div className="flex rounded-xl bg-white/[0.04] p-1 mb-6">
               <button
@@ -164,8 +164,8 @@ function PortalLoginContent() {
                 onClick={() => setActiveTab("login")}
                 className={`flex-1 py-2.5 px-3 rounded-lg text-sm font-body font-medium transition-all ${
                   activeTab === "login"
-                    ? "bg-white/[0.08] text-pacame-white shadow-sm"
-                    : "text-pacame-white/40 hover:text-pacame-white/60"
+                    ? "bg-white/[0.08] text-ink shadow-sm"
+                    : "text-ink/40 hover:text-ink/60"
                 }`}
               >
                 <Lock className="w-3.5 h-3.5 inline-block mr-1.5 -mt-0.5" />
@@ -176,8 +176,8 @@ function PortalLoginContent() {
                 onClick={() => setActiveTab("magic")}
                 className={`flex-1 py-2.5 px-3 rounded-lg text-sm font-body font-medium transition-all ${
                   activeTab === "magic"
-                    ? "bg-white/[0.08] text-pacame-white shadow-sm"
-                    : "text-pacame-white/40 hover:text-pacame-white/60"
+                    ? "bg-white/[0.08] text-ink shadow-sm"
+                    : "text-ink/40 hover:text-ink/60"
                 }`}
               >
                 <Sparkles className="w-3.5 h-3.5 inline-block mr-1.5 -mt-0.5" />
@@ -200,12 +200,12 @@ function PortalLoginContent() {
                   <div>
                     <label
                       htmlFor="login-email"
-                      className="block text-xs text-pacame-white/40 font-body mb-1.5"
+                      className="block text-xs text-ink/40 font-body mb-1.5"
                     >
                       Email
                     </label>
                     <div className="relative">
-                      <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/25" />
+                      <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/25" />
                       <input
                         id="login-email"
                         type="email"
@@ -222,12 +222,12 @@ function PortalLoginContent() {
                   <div>
                     <label
                       htmlFor="login-password"
-                      className="block text-xs text-pacame-white/40 font-body mb-1.5"
+                      className="block text-xs text-ink/40 font-body mb-1.5"
                     >
                       Password
                     </label>
                     <div className="relative">
-                      <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/25" />
+                      <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/25" />
                       <input
                         id="login-password"
                         type={showPassword ? "text" : "password"}
@@ -241,7 +241,7 @@ function PortalLoginContent() {
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-pacame-white/25 hover:text-pacame-white/50 transition-colors"
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink/25 hover:text-ink/50 transition-colors"
                         tabIndex={-1}
                       >
                         {showPassword ? (
@@ -257,7 +257,7 @@ function PortalLoginContent() {
                     <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="text-xs text-rose-alert font-body text-center"
+                      className="text-xs text-accent-burgundy-soft font-body text-center"
                     >
                       {loginError}
                     </motion.p>
@@ -281,7 +281,7 @@ function PortalLoginContent() {
                   <div className="text-center">
                     <Link
                       href="/portal/reset-password"
-                      className="text-xs text-electric-violet/60 hover:text-electric-violet font-body transition-colors"
+                      className="text-xs text-brand-primary/60 hover:text-brand-primary font-body transition-colors"
                     >
                       Olvidaste tu password?
                     </Link>
@@ -297,11 +297,11 @@ function PortalLoginContent() {
                 >
                   {magicSent ? (
                     <div className="text-center py-4">
-                      <Mail className="w-8 h-8 text-lime-pulse mx-auto mb-3" />
-                      <h2 className="font-heading font-semibold text-pacame-white mb-2">
+                      <Mail className="w-8 h-8 text-mint mx-auto mb-3" />
+                      <h2 className="font-heading font-semibold text-ink mb-2">
                         Enlace enviado
                       </h2>
-                      <p className="text-sm text-pacame-white/50 font-body">
+                      <p className="text-sm text-ink/50 font-body">
                         Si tu email esta registrado, recibiras un enlace de acceso
                         en tu bandeja de entrada. Revisa tambien spam.
                       </p>
@@ -311,12 +311,12 @@ function PortalLoginContent() {
                       <div>
                         <label
                           htmlFor="magic-email"
-                          className="block text-xs text-pacame-white/40 font-body mb-1.5"
+                          className="block text-xs text-ink/40 font-body mb-1.5"
                         >
                           Email
                         </label>
                         <div className="relative">
-                          <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/25" />
+                          <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/25" />
                           <input
                             id="magic-email"
                             type="email"
@@ -330,7 +330,7 @@ function PortalLoginContent() {
                         </div>
                       </div>
 
-                      <p className="text-xs text-pacame-white/30 font-body">
+                      <p className="text-xs text-ink/30 font-body">
                         Te enviaremos un enlace magico para acceder sin password.
                       </p>
 
@@ -338,7 +338,7 @@ function PortalLoginContent() {
                         <motion.p
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          className="text-xs text-rose-alert font-body text-center"
+                          className="text-xs text-accent-burgundy-soft font-body text-center"
                         >
                           {magicError}
                         </motion.p>
@@ -371,7 +371,7 @@ function PortalLoginContent() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="flex items-center gap-2 justify-center mt-6 text-xs text-pacame-white/30 font-body"
+          className="flex items-center gap-2 justify-center mt-6 text-xs text-ink/30 font-body"
         >
           <Shield className="w-3.5 h-3.5" />
           Portal seguro PACAME

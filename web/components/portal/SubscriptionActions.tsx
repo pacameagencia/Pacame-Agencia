@@ -39,14 +39,14 @@ export default function SubscriptionActions({ customerEmail }: Props) {
       <button
         onClick={openPortal}
         disabled={loading}
-        className="inline-flex items-center gap-2 bg-olympus-gold hover:bg-olympus-gold/90 disabled:opacity-50 text-pacame-black font-heading font-semibold px-5 py-2.5 rounded-xl transition"
+        className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 disabled:opacity-50 text-paper font-heading font-semibold px-5 py-2.5 rounded-xl transition"
       >
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ExternalLink className="w-4 h-4" />}
         Gestionar suscripcion
       </button>
       <Link
         href="/planes?upgrade=1"
-        className="inline-flex items-center gap-2 bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 text-pacame-white font-heading font-medium px-5 py-2.5 rounded-xl transition"
+        className="inline-flex items-center gap-2 bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 text-ink font-heading font-medium px-5 py-2.5 rounded-xl transition"
       >
         Cambiar plan
       </Link>

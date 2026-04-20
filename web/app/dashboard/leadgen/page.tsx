@@ -218,11 +218,11 @@ export default function LeadGenPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading font-bold text-2xl text-pacame-white flex items-center gap-2">
-            <Rocket className="w-6 h-6 text-electric-violet" />
+          <h1 className="font-heading font-bold text-2xl text-ink flex items-center gap-2">
+            <Rocket className="w-6 h-6 text-brand-primary" />
             Lead Gen Outbound
           </h1>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">
+          <p className="text-sm text-ink/40 font-body mt-1">
             Scrape, audita, cualifica y contacta negocios en toda Espana
           </p>
         </div>
@@ -262,10 +262,10 @@ export default function LeadGenPage() {
             key={s.key}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-body whitespace-nowrap ${
               step === s.key
-                ? "bg-electric-violet/20 text-electric-violet border border-electric-violet/30"
+                ? "bg-brand-primary/20 text-brand-primary border border-brand-primary/30"
                 : leads.length > 0 && ["config"].indexOf(s.key) >= 0
-                ? "bg-lime-pulse/10 text-lime-pulse/60 border border-lime-pulse/20"
-                : "text-pacame-white/30 border border-white/[0.06]"
+                ? "bg-mint/10 text-mint/60 border border-mint/20"
+                : "text-ink/30 border border-ink/[0.06]"
             }`}
           >
             <s.icon className="w-3.5 h-3.5" />
@@ -278,9 +278,9 @@ export default function LeadGenPage() {
       {step === "config" && (
         <div className="space-y-6">
           {/* Niche selection */}
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
-            <h2 className="font-heading font-semibold text-pacame-white mb-4 flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-neon-cyan" />
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
+            <h2 className="font-heading font-semibold text-ink mb-4 flex items-center gap-2">
+              <Building2 className="w-4 h-4 text-mint" />
               Tipo de negocio
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
@@ -290,8 +290,8 @@ export default function LeadGenPage() {
                   onClick={() => toggleNiche(n.id)}
                   className={`px-3 py-2.5 rounded-xl text-sm font-body border transition-all text-left ${
                     selectedNiches.includes(n.id)
-                      ? "bg-electric-violet/15 border-electric-violet/40 text-electric-violet"
-                      : "bg-transparent border-white/[0.06] text-pacame-white/50 hover:border-white/15 hover:text-pacame-white/70"
+                      ? "bg-brand-primary/15 border-brand-primary/40 text-brand-primary"
+                      : "bg-transparent border-ink/[0.06] text-ink/50 hover:border-white/15 hover:text-ink/70"
                   }`}
                 >
                   <span className="mr-1.5">{n.icon}</span> {n.name}
@@ -301,9 +301,9 @@ export default function LeadGenPage() {
           </div>
 
           {/* City selection */}
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
-            <h2 className="font-heading font-semibold text-pacame-white mb-4 flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-lime-pulse" />
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
+            <h2 className="font-heading font-semibold text-ink mb-4 flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-mint" />
               Ciudad
             </h2>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
@@ -313,8 +313,8 @@ export default function LeadGenPage() {
                   onClick={() => toggleCity(c.id)}
                   className={`px-3 py-2 rounded-xl text-sm font-body border transition-all ${
                     selectedCities.includes(c.id)
-                      ? "bg-lime-pulse/15 border-lime-pulse/40 text-lime-pulse"
-                      : "bg-transparent border-white/[0.06] text-pacame-white/50 hover:border-white/15 hover:text-pacame-white/70"
+                      ? "bg-mint/15 border-mint/40 text-mint"
+                      : "bg-transparent border-ink/[0.06] text-ink/50 hover:border-white/15 hover:text-ink/70"
                   }`}
                 >
                   {c.name}
@@ -326,12 +326,12 @@ export default function LeadGenPage() {
           {/* Settings + launch */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <label className="text-sm text-pacame-white/50 font-body">
+              <label className="text-sm text-ink/50 font-body">
                 Max resultados:
                 <select
                   value={maxPerSearch}
                   onChange={(e) => setMaxPerSearch(Number(e.target.value))}
-                  className="ml-2 bg-dark-card border border-white/[0.08] text-pacame-white rounded-lg px-2 py-1 text-sm"
+                  className="ml-2 bg-paper-deep border border-ink/[0.08] text-ink rounded-lg px-2 py-1 text-sm"
                 >
                   <option value={10}>10</option>
                   <option value={20}>20</option>
@@ -340,7 +340,7 @@ export default function LeadGenPage() {
                   <option value={100}>100</option>
                 </select>
               </label>
-              <span className="text-xs text-pacame-white/30 font-body">
+              <span className="text-xs text-ink/30 font-body">
                 {selectedNiches.length} nicho(s) x {selectedCities.length} ciudad(es) = {selectedNiches.length * selectedCities.length} busquedas
               </span>
             </div>
@@ -361,33 +361,33 @@ export default function LeadGenPage() {
 
       {/* SCRAPING STEP */}
       {step === "scraping" && (
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
-          <Loader2 className="w-10 h-10 text-electric-violet animate-spin mx-auto mb-4" />
-          <h2 className="font-heading font-bold text-xl text-pacame-white mb-2">
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-12 text-center">
+          <Loader2 className="w-10 h-10 text-brand-primary animate-spin mx-auto mb-4" />
+          <h2 className="font-heading font-bold text-xl text-ink mb-2">
             Scrapeando Google Maps...
           </h2>
-          <p className="text-sm text-pacame-white/40 font-body mb-4">
+          <p className="text-sm text-ink/40 font-body mb-4">
             Buscando negocios. Esto puede tardar 1-3 minutos.
           </p>
           {runId && (
-            <p className="text-xs text-pacame-white/20 font-mono">Run ID: {runId}</p>
+            <p className="text-xs text-ink/20 font-mono">Run ID: {runId}</p>
           )}
         </div>
       )}
 
       {/* AUDITING STEP */}
       {step === "auditing" && (
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
-          <Search className="w-10 h-10 text-neon-cyan animate-pulse mx-auto mb-4" />
-          <h2 className="font-heading font-bold text-xl text-pacame-white mb-2">
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-12 text-center">
+          <Search className="w-10 h-10 text-mint animate-pulse mx-auto mb-4" />
+          <h2 className="font-heading font-bold text-xl text-ink mb-2">
             Auditando webs...
           </h2>
-          <p className="text-sm text-pacame-white/40 font-body">
+          <p className="text-sm text-ink/40 font-body">
             {auditProgress.done} / {auditProgress.total} webs analizadas
           </p>
           <div className="mt-4 w-64 mx-auto bg-white/[0.06] rounded-full h-2">
             <div
-              className="h-2 rounded-full bg-neon-cyan transition-all duration-300"
+              className="h-2 rounded-full bg-mint transition-all duration-300"
               style={{ width: `${auditProgress.total ? (auditProgress.done / auditProgress.total) * 100 : 0}%` }}
             />
           </div>
@@ -396,17 +396,17 @@ export default function LeadGenPage() {
 
       {/* OUTREACH STEP */}
       {step === "outreach" && (
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
-          <Mail className="w-10 h-10 text-electric-violet animate-pulse mx-auto mb-4" />
-          <h2 className="font-heading font-bold text-xl text-pacame-white mb-2">
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-12 text-center">
+          <Mail className="w-10 h-10 text-brand-primary animate-pulse mx-auto mb-4" />
+          <h2 className="font-heading font-bold text-xl text-ink mb-2">
             Generando emails personalizados...
           </h2>
-          <p className="text-sm text-pacame-white/40 font-body">
+          <p className="text-sm text-ink/40 font-body">
             {outreachProgress.done} / {outreachProgress.total} negocios
           </p>
           <div className="mt-4 w-64 mx-auto bg-white/[0.06] rounded-full h-2">
             <div
-              className="h-2 rounded-full bg-electric-violet transition-all duration-300"
+              className="h-2 rounded-full bg-brand-primary transition-all duration-300"
               style={{ width: `${outreachProgress.total ? (outreachProgress.done / outreachProgress.total) * 100 : 0}%` }}
             />
           </div>
@@ -418,21 +418,21 @@ export default function LeadGenPage() {
         <div className="space-y-4">
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="rounded-xl bg-dark-card border border-white/[0.06] p-4">
-              <p className="text-2xl font-heading font-bold text-pacame-white">{leads.length}</p>
-              <p className="text-xs text-pacame-white/40 font-body">Negocios encontrados</p>
+            <div className="rounded-xl bg-paper-deep border border-ink/[0.06] p-4">
+              <p className="text-2xl font-heading font-bold text-ink">{leads.length}</p>
+              <p className="text-xs text-ink/40 font-body">Negocios encontrados</p>
             </div>
-            <div className="rounded-xl bg-dark-card border border-white/[0.06] p-4">
-              <p className="text-2xl font-heading font-bold text-neon-cyan">{leads.filter((l) => l.website).length}</p>
-              <p className="text-xs text-pacame-white/40 font-body">Con website</p>
+            <div className="rounded-xl bg-paper-deep border border-ink/[0.06] p-4">
+              <p className="text-2xl font-heading font-bold text-mint">{leads.filter((l) => l.website).length}</p>
+              <p className="text-xs text-ink/40 font-body">Con website</p>
             </div>
-            <div className="rounded-xl bg-dark-card border border-white/[0.06] p-4">
-              <p className="text-2xl font-heading font-bold text-lime-pulse">{qualifiedLeads.length}</p>
-              <p className="text-xs text-pacame-white/40 font-body">Oportunidades (web &lt;80)</p>
+            <div className="rounded-xl bg-paper-deep border border-ink/[0.06] p-4">
+              <p className="text-2xl font-heading font-bold text-mint">{qualifiedLeads.length}</p>
+              <p className="text-xs text-ink/40 font-body">Oportunidades (web &lt;80)</p>
             </div>
-            <div className="rounded-xl bg-dark-card border border-white/[0.06] p-4">
-              <p className="text-2xl font-heading font-bold text-electric-violet">{leads.filter((l) => l.emails).length}</p>
-              <p className="text-xs text-pacame-white/40 font-body">Emails generados</p>
+            <div className="rounded-xl bg-paper-deep border border-ink/[0.06] p-4">
+              <p className="text-2xl font-heading font-bold text-brand-primary">{leads.filter((l) => l.emails).length}</p>
+              <p className="text-xs text-ink/40 font-body">Emails generados</p>
             </div>
           </div>
 
@@ -441,7 +441,7 @@ export default function LeadGenPage() {
             {leads.map((lead) => (
               <div
                 key={lead.name + lead.address}
-                className="rounded-xl bg-dark-card border border-white/[0.06] hover:border-white/10 transition-all"
+                className="rounded-xl bg-paper-deep border border-ink/[0.06] hover:border-white/10 transition-all"
               >
                 <div
                   className="p-4 cursor-pointer"
@@ -454,7 +454,7 @@ export default function LeadGenPage() {
                           <div
                             className={`w-10 h-10 rounded-lg flex items-center justify-center text-xs font-bold font-heading ${
                               lead.auditScore >= 80
-                                ? "bg-lime-pulse/20 text-lime-pulse"
+                                ? "bg-mint/20 text-mint"
                                 : lead.auditScore >= 50
                                 ? "bg-yellow-500/20 text-yellow-400"
                                 : "bg-red-500/20 text-red-400"
@@ -464,15 +464,15 @@ export default function LeadGenPage() {
                           </div>
                         ) : (
                           <div className="w-10 h-10 rounded-lg bg-white/[0.04] flex items-center justify-center">
-                            <Building2 className="w-4 h-4 text-pacame-white/30" />
+                            <Building2 className="w-4 h-4 text-ink/30" />
                           </div>
                         )}
                       </div>
                       <div className="min-w-0">
-                        <h3 className="font-heading font-semibold text-sm text-pacame-white truncate">
+                        <h3 className="font-heading font-semibold text-sm text-ink truncate">
                           {lead.name}
                         </h3>
-                        <p className="text-xs text-pacame-white/40 font-body truncate">
+                        <p className="text-xs text-ink/40 font-body truncate">
                           {lead.category} · {lead.address}
                         </p>
                       </div>
@@ -485,7 +485,7 @@ export default function LeadGenPage() {
                         </span>
                       )}
                       {lead.emails && (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-electric-violet/20 text-electric-violet font-body">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-brand-primary/20 text-brand-primary font-body">
                           emails listos
                         </span>
                       )}
@@ -495,7 +495,7 @@ export default function LeadGenPage() {
                           target="_blank"
                           rel="noopener"
                           onClick={(e) => e.stopPropagation()}
-                          className="text-pacame-white/30 hover:text-neon-cyan transition-colors"
+                          className="text-ink/30 hover:text-mint transition-colors"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>
@@ -510,25 +510,25 @@ export default function LeadGenPage() {
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-body">
                       {lead.phone && (
                         <div>
-                          <span className="text-pacame-white/30">Telefono</span>
-                          <p className="text-pacame-white/70">{lead.phone}</p>
+                          <span className="text-ink/30">Telefono</span>
+                          <p className="text-ink/70">{lead.phone}</p>
                         </div>
                       )}
                       {lead.website && (
                         <div>
-                          <span className="text-pacame-white/30">Website</span>
-                          <p className="text-neon-cyan/70 truncate">{lead.website}</p>
+                          <span className="text-ink/30">Website</span>
+                          <p className="text-mint/70 truncate">{lead.website}</p>
                         </div>
                       )}
                       {lead.auditScore !== undefined && (
                         <div>
-                          <span className="text-pacame-white/30">Score web</span>
-                          <p className="text-pacame-white/70">{lead.auditScore}/100</p>
+                          <span className="text-ink/30">Score web</span>
+                          <p className="text-ink/70">{lead.auditScore}/100</p>
                         </div>
                       )}
                       {lead.auditIssues && lead.auditIssues.length > 0 && (
                         <div>
-                          <span className="text-pacame-white/30">Problemas</span>
+                          <span className="text-ink/30">Problemas</span>
                           <p className="text-red-400/70">{lead.auditIssues.length} issues</p>
                         </div>
                       )}
@@ -549,14 +549,14 @@ export default function LeadGenPage() {
 
                     {lead.emails && (
                       <div className="space-y-2">
-                        <p className="text-[11px] text-electric-violet font-body font-medium">Secuencia de emails:</p>
+                        <p className="text-[11px] text-brand-primary font-body font-medium">Secuencia de emails:</p>
                         {Object.entries(lead.emails).map(([key, email]) => (
-                          <div key={key} className="bg-electric-violet/5 rounded-lg p-3">
-                            <p className="text-xs font-body font-medium text-pacame-white/80 mb-1">
+                          <div key={key} className="bg-brand-primary/5 rounded-lg p-3">
+                            <p className="text-xs font-body font-medium text-ink/80 mb-1">
                               <Mail className="w-3 h-3 inline mr-1" />
                               {email.subject}
                             </p>
-                            <p className="text-[11px] text-pacame-white/50 font-body whitespace-pre-line leading-relaxed">
+                            <p className="text-[11px] text-ink/50 font-body whitespace-pre-line leading-relaxed">
                               {email.body}
                             </p>
                           </div>

@@ -16,22 +16,22 @@ export const metadata: Metadata = {
 
 export default function RefierePage() {
   return (
-    <main className="min-h-screen bg-pacame-black pt-24 pb-20">
+    <main className="min-h-screen bg-paper pt-24 pb-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
         <div className="text-center mb-14">
-          <div className="inline-block px-3 py-1 mb-4 rounded-full bg-olympus-gold/10 border border-olympus-gold/30 text-[11px] text-olympus-gold font-mono uppercase tracking-wider">
+          <div className="inline-block px-3 py-1 mb-4 rounded-full bg-accent-gold/10 border border-accent-gold/30 text-[11px] text-accent-gold font-mono uppercase tracking-wider">
             Programa de referidos · Clientes
           </div>
-          <h1 className="font-heading font-bold text-5xl md:text-6xl text-pacame-white leading-tight mb-5">
+          <h1 className="font-heading font-bold text-5xl md:text-6xl text-ink leading-tight mb-5">
             Gana dinero<br />
-            <span className="bg-gradient-to-r from-olympus-gold to-amber-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-accent-gold to-amber-400 bg-clip-text text-transparent">
               refiriendo a PACAME
             </span>
           </h1>
-          <p className="text-pacame-white/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Tu amigo entra con un <strong className="text-pacame-white">10% de descuento</strong>.
-            Tu te llevas el <strong className="text-olympus-gold">15% de comision</strong> de
+          <p className="text-ink/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+            Tu amigo entra con un <strong className="text-ink">10% de descuento</strong>.
+            Tu te llevas el <strong className="text-accent-gold">15% de comision</strong> de
             cada euro que facture, cada mes. Sin tope.
           </p>
         </div>
@@ -57,15 +57,15 @@ export default function RefierePage() {
           ].map((step) => (
             <div
               key={step.n}
-              className="p-6 rounded-2xl bg-dark-card border border-white/[0.06]"
+              className="p-6 rounded-2xl bg-paper-deep border border-ink/[0.06]"
             >
-              <div className="w-10 h-10 rounded-xl bg-olympus-gold/10 border border-olympus-gold/30 flex items-center justify-center text-olympus-gold font-heading font-bold text-lg mb-4">
+              <div className="w-10 h-10 rounded-xl bg-accent-gold/10 border border-accent-gold/30 flex items-center justify-center text-accent-gold font-heading font-bold text-lg mb-4">
                 {step.n}
               </div>
-              <div className="font-heading font-semibold text-pacame-white text-lg mb-2">
+              <div className="font-heading font-semibold text-ink text-lg mb-2">
                 {step.t}
               </div>
-              <p className="text-sm text-pacame-white/60 leading-relaxed">{step.d}</p>
+              <p className="text-sm text-ink/60 leading-relaxed">{step.d}</p>
             </div>
           ))}
         </div>
@@ -75,7 +75,7 @@ export default function RefierePage() {
 
         {/* FAQ */}
         <div className="mt-14 max-w-3xl mx-auto">
-          <h2 className="font-heading font-bold text-2xl text-pacame-white mb-6 text-center">
+          <h2 className="font-heading font-bold text-2xl text-ink mb-6 text-center">
             Preguntas frecuentes
           </h2>
           <div className="space-y-4">
@@ -99,12 +99,12 @@ export default function RefierePage() {
             ].map((f, i) => (
               <div
                 key={i}
-                className="p-5 rounded-xl bg-dark-card border border-white/[0.06]"
+                className="p-5 rounded-xl bg-paper-deep border border-ink/[0.06]"
               >
-                <div className="font-heading font-semibold text-pacame-white mb-2">
+                <div className="font-heading font-semibold text-ink mb-2">
                   {f.q}
                 </div>
-                <div className="text-sm text-pacame-white/60 leading-relaxed">{f.a}</div>
+                <div className="text-sm text-ink/60 leading-relaxed">{f.a}</div>
               </div>
             ))}
           </div>

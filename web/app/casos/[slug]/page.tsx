@@ -74,7 +74,7 @@ export default async function CaseStudyPage({
   const canonical = `https://pacameagencia.com/casos/${slug}`;
 
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       <BreadcrumbJsonLd
         items={[
           { name: "Inicio", url: "https://pacameagencia.com" },
@@ -124,7 +124,7 @@ export default async function CaseStudyPage({
         <div className="max-w-6xl mx-auto px-6">
           <Link
             href="/casos"
-            className="inline-flex items-center gap-2 text-sm text-pacame-white/50 hover:text-olympus-gold font-body transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-sm text-ink/50 hover:text-accent-gold font-body transition-colors mb-8"
           >
             <ArrowLeft className="w-4 h-4" />
             Todos los casos
@@ -133,16 +133,16 @@ export default async function CaseStudyPage({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div>
               <div className="flex flex-wrap items-center gap-3 mb-5">
-                <span className="flex items-center gap-1.5 text-xs text-pacame-white/60 font-body">
-                  <Briefcase className="w-3.5 h-3.5 text-olympus-gold" />
+                <span className="flex items-center gap-1.5 text-xs text-ink/60 font-body">
+                  <Briefcase className="w-3.5 h-3.5 text-accent-gold" />
                   {cs.sector}
                 </span>
-                <span className="flex items-center gap-1.5 text-xs text-pacame-white/60 font-body">
-                  <MapPin className="w-3.5 h-3.5 text-olympus-gold" />
+                <span className="flex items-center gap-1.5 text-xs text-ink/60 font-body">
+                  <MapPin className="w-3.5 h-3.5 text-accent-gold" />
                   {cs.city}
                 </span>
-                <span className="flex items-center gap-1.5 text-xs text-pacame-white/60 font-body">
-                  <Calendar className="w-3.5 h-3.5 text-olympus-gold" />
+                <span className="flex items-center gap-1.5 text-xs text-ink/60 font-body">
+                  <Calendar className="w-3.5 h-3.5 text-accent-gold" />
                   {new Date(cs.publishedAt).toLocaleDateString("es-ES", {
                     month: "long",
                     year: "numeric",
@@ -150,17 +150,17 @@ export default async function CaseStudyPage({
                 </span>
               </div>
 
-              <h1 className="font-heading font-bold text-display text-pacame-white mb-6 text-balance leading-tight">
+              <h1 className="font-heading font-bold text-display text-ink mb-6 text-balance leading-tight">
                 {cs.clientName}
               </h1>
-              <p className="text-xl text-pacame-white/70 font-body font-light leading-relaxed mb-6">
+              <p className="text-xl text-ink/70 font-body font-light leading-relaxed mb-6">
                 {cs.summary}
               </p>
               <div className="flex flex-wrap gap-2">
                 {cs.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-xs px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-pacame-white/70 font-body"
+                    className="text-xs px-3 py-1 rounded-full bg-white/[0.04] border border-ink/[0.08] text-ink/70 font-body"
                   >
                     #{tag}
                   </span>
@@ -170,15 +170,15 @@ export default async function CaseStudyPage({
 
             {/* Cover metric card */}
             <div
-              className="relative aspect-square rounded-3xl overflow-hidden flex items-center justify-center border border-white/[0.08] shadow-2xl"
+              className="relative aspect-square rounded-3xl overflow-hidden flex items-center justify-center border border-ink/[0.08] shadow-2xl"
               style={{ background: cs.coverGradient }}
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(0,0,0,0.1),rgba(0,0,0,0.55))]" />
               <div className="relative text-center px-6">
-                <p className="text-[20vw] md:text-[14vw] lg:text-[10rem] font-heading font-bold text-pacame-white leading-none">
+                <p className="text-[20vw] md:text-[14vw] lg:text-[10rem] font-heading font-bold text-ink leading-none">
                   {cs.metricHeadline}
                 </p>
-                <p className="text-sm md:text-base text-pacame-white/95 font-body font-medium uppercase tracking-[0.2em] mt-4">
+                <p className="text-sm md:text-base text-ink/95 font-body font-medium uppercase tracking-[0.2em] mt-4">
                   {cs.metricSubtitle}
                 </p>
               </div>
@@ -194,33 +194,33 @@ export default async function CaseStudyPage({
       {/* Problema */}
       <section className="py-20">
         <ScrollReveal className="max-w-3xl mx-auto px-6">
-          <p className="text-[11px] uppercase tracking-[0.25em] text-rose-alert font-body font-medium mb-4">
+          <p className="text-[11px] uppercase tracking-[0.25em] text-accent-burgundy-soft font-body font-medium mb-4">
             El problema
           </p>
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-6 text-balance">
+          <h2 className="font-heading font-bold text-section text-ink mb-6 text-balance">
             Lo que nos encontramos
           </h2>
-          <p className="text-lg text-pacame-white/70 font-body leading-relaxed">
+          <p className="text-lg text-ink/70 font-body leading-relaxed">
             {cs.problem}
           </p>
         </ScrollReveal>
       </section>
 
       {/* Solucion */}
-      <section className="py-20 bg-dark-card/30 border-y border-white/[0.04]">
+      <section className="py-20 bg-paper-deep/30 border-y border-white/[0.04]">
         <ScrollReveal className="max-w-3xl mx-auto px-6">
-          <p className="text-[11px] uppercase tracking-[0.25em] text-olympus-gold font-body font-medium mb-4">
+          <p className="text-[11px] uppercase tracking-[0.25em] text-accent-gold font-body font-medium mb-4">
             La solucion PACAME
           </p>
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-6 text-balance">
+          <h2 className="font-heading font-bold text-section text-ink mb-6 text-balance">
             Lo que hicimos
           </h2>
-          <p className="text-lg text-pacame-white/70 font-body leading-relaxed mb-10">
+          <p className="text-lg text-ink/70 font-body leading-relaxed mb-10">
             {cs.solution}
           </p>
 
-          <div className="rounded-2xl bg-pacame-black/60 border border-white/[0.06] p-6">
-            <p className="text-xs uppercase tracking-[0.2em] text-olympus-gold/80 font-body font-medium mb-4">
+          <div className="rounded-2xl bg-ink/60 border border-ink/[0.06] p-6">
+            <p className="text-xs uppercase tracking-[0.2em] text-accent-gold/80 font-body font-medium mb-4">
               Productos usados
             </p>
             <ul className="space-y-2">
@@ -228,12 +228,12 @@ export default async function CaseStudyPage({
                 <li key={p.href}>
                   <Link
                     href={p.href}
-                    className="group flex items-center justify-between py-2 border-b border-white/[0.04] last:border-b-0 hover:border-olympus-gold/20 transition-colors"
+                    className="group flex items-center justify-between py-2 border-b border-white/[0.04] last:border-b-0 hover:border-accent-gold/20 transition-colors"
                   >
-                    <span className="text-sm text-pacame-white font-body group-hover:text-olympus-gold transition-colors">
+                    <span className="text-sm text-ink font-body group-hover:text-accent-gold transition-colors">
                       {p.name}
                     </span>
-                    <ArrowRight className="w-4 h-4 text-pacame-white/40 group-hover:text-olympus-gold group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-ink/40 group-hover:text-accent-gold group-hover:translate-x-1 transition-all" />
                   </Link>
                 </li>
               ))}
@@ -246,10 +246,10 @@ export default async function CaseStudyPage({
       <section className="py-24">
         <div className="max-w-5xl mx-auto px-6">
           <ScrollReveal className="text-center mb-14">
-            <p className="text-[11px] uppercase tracking-[0.25em] text-olympus-gold font-body font-medium mb-4">
+            <p className="text-[11px] uppercase tracking-[0.25em] text-accent-gold font-body font-medium mb-4">
               Resultados
             </p>
-            <h2 className="font-heading font-bold text-section text-pacame-white text-balance">
+            <h2 className="font-heading font-bold text-section text-ink text-balance">
               Los numeros que importan
             </h2>
           </ScrollReveal>
@@ -260,15 +260,15 @@ export default async function CaseStudyPage({
           >
             {cs.results.map((m) => (
               <StaggerItem key={m.label}>
-                <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6 text-center h-full">
+                <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6 text-center h-full">
                   <p className="font-heading font-bold text-4xl md:text-5xl gradient-text-gold leading-none mb-3">
                     {m.value}
                   </p>
-                  <p className="text-sm text-pacame-white font-body font-medium mb-1">
+                  <p className="text-sm text-ink font-body font-medium mb-1">
                     {m.label}
                   </p>
                   {m.hint && (
-                    <p className="text-[11px] text-pacame-white/50 font-body">
+                    <p className="text-[11px] text-ink/50 font-body">
                       {m.hint}
                     </p>
                   )}
@@ -280,17 +280,17 @@ export default async function CaseStudyPage({
       </section>
 
       {/* Quote */}
-      <section className="py-24 bg-dark-card/30 border-y border-white/[0.04]">
+      <section className="py-24 bg-paper-deep/30 border-y border-white/[0.04]">
         <ScrollReveal className="max-w-3xl mx-auto px-6 text-center">
-          <Quote className="w-10 h-10 text-olympus-gold mx-auto mb-6 opacity-70" />
-          <blockquote className="font-heading font-medium text-2xl md:text-3xl text-pacame-white leading-snug text-balance mb-8">
+          <Quote className="w-10 h-10 text-accent-gold mx-auto mb-6 opacity-70" />
+          <blockquote className="font-heading font-medium text-2xl md:text-3xl text-ink leading-snug text-balance mb-8">
             &ldquo;{cs.quote}&rdquo;
           </blockquote>
           <cite className="not-italic block">
-            <p className="text-base text-pacame-white font-body font-medium">
+            <p className="text-base text-ink font-body font-medium">
               {cs.quoteAuthor}
             </p>
-            <p className="text-sm text-pacame-white/50 font-body">
+            <p className="text-sm text-ink/50 font-body">
               {cs.quoteRole}
             </p>
           </cite>
@@ -302,14 +302,14 @@ export default async function CaseStudyPage({
         <ScrollReveal>
           <CardTilt tiltMaxAngle={3}>
             <CardTiltContent className="max-w-4xl mx-auto px-6">
-              <div className="rounded-3xl bg-gradient-to-br from-olympus-gold/10 via-dark-card to-electric-violet/10 border border-olympus-gold/20 p-10 md:p-14 text-center card-golden-shine">
-                <p className="text-[11px] uppercase tracking-[0.25em] text-olympus-gold font-body font-medium mb-4">
+              <div className="rounded-3xl bg-gradient-to-br from-accent-gold/10 via-dark-card to-brand-primary/10 border border-accent-gold/20 p-10 md:p-14 text-center card-golden-shine">
+                <p className="text-[11px] uppercase tracking-[0.25em] text-accent-gold font-body font-medium mb-4">
                   Tu turno
                 </p>
-                <h3 className="font-heading font-bold text-3xl md:text-4xl text-pacame-white mb-4 text-balance">
+                <h3 className="font-heading font-bold text-3xl md:text-4xl text-ink mb-4 text-balance">
                   Tienes un negocio parecido? Prueba PACAME.
                 </h3>
-                <p className="text-base md:text-lg text-pacame-white/60 font-body mb-10 max-w-xl mx-auto">
+                <p className="text-base md:text-lg text-ink/60 font-body mb-10 max-w-xl mx-auto">
                   Diagnostico gratuito en 24 horas. Te decimos que funciona para
                   tu sector y cuanto cuesta hacerlo bien.
                 </p>
@@ -322,7 +322,7 @@ export default async function CaseStudyPage({
                   >
                     <Link
                       href="/contacto"
-                      className="flex items-center gap-2 text-pacame-white"
+                      className="flex items-center gap-2 text-ink"
                     >
                       Pedir mi diagnostico
                       <ArrowRight className="w-4 h-4" />
@@ -340,7 +340,7 @@ export default async function CaseStudyPage({
         <section className="pb-24">
           <div className="max-w-5xl mx-auto px-6">
             <ScrollReveal>
-              <h3 className="font-heading font-bold text-xl text-pacame-white mb-8 text-center">
+              <h3 className="font-heading font-bold text-xl text-ink mb-8 text-center">
                 Mas casos de exito
               </h3>
             </ScrollReveal>
@@ -349,7 +349,7 @@ export default async function CaseStudyPage({
                 <Link
                   key={rc.slug}
                   href={`/casos/${rc.slug}`}
-                  className="group block rounded-2xl bg-dark-card border border-white/[0.06] p-6 hover:border-olympus-gold/20 transition-all"
+                  className="group block rounded-2xl bg-paper-deep border border-ink/[0.06] p-6 hover:border-accent-gold/20 transition-all"
                 >
                   <div className="flex items-start justify-between mb-3">
                     <span
@@ -362,12 +362,12 @@ export default async function CaseStudyPage({
                     >
                       {rc.metricHeadline}
                     </span>
-                    <ArrowRight className="w-4 h-4 text-pacame-white/40 group-hover:text-olympus-gold group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-ink/40 group-hover:text-accent-gold group-hover:translate-x-1 transition-all" />
                   </div>
-                  <h4 className="font-heading font-semibold text-base text-pacame-white group-hover:text-olympus-gold transition-colors mb-2">
+                  <h4 className="font-heading font-semibold text-base text-ink group-hover:text-accent-gold transition-colors mb-2">
                     {rc.clientName}
                   </h4>
-                  <p className="text-sm text-pacame-white/60 font-body line-clamp-2">
+                  <p className="text-sm text-ink/60 font-body line-clamp-2">
                     {rc.summary}
                   </p>
                 </Link>

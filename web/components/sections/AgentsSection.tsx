@@ -27,10 +27,10 @@ export default function AgentsSection() {
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         {/* Header */}
         <ScrollReveal className="text-center mb-20">
-          <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
+          <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-4 uppercase tracking-[0.2em]">
             {agents.length} agentes + {TOTAL_AGENTS - agents.length} sub-especialistas
           </p>
-          <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
+          <h2 className="font-accent font-bold text-section text-ink mb-6 text-balance">
             El Panteon{" "}
             <FancyText
               className="font-accent font-bold text-section text-white/10"
@@ -42,7 +42,7 @@ export default function AgentsSection() {
               PACAME.
             </FancyText>
           </h2>
-          <p className="text-lg text-pacame-white/40 max-w-2xl mx-auto font-body">
+          <p className="text-lg text-ink/40 max-w-2xl mx-auto font-body">
             {agents.length} agentes principales + {TOTAL_AGENTS - agents.length} sub-especialistas en {divisions.length} divisiones.
             Coordinados por Pablo para resolver cualquier problema digital.
           </p>
@@ -56,7 +56,7 @@ export default function AgentsSection() {
               <CardTiltContent>
               <Link href="/equipo" className="block h-full">
                 <motion.div
-                  className="group rounded-2xl p-6 card-apple h-full relative overflow-hidden border-t border-olympus-gold/10 hover:border-olympus-gold/25 transition-colors duration-500"
+                  className="group rounded-2xl p-6 card-apple h-full relative overflow-hidden border-t border-accent-gold/10 hover:border-accent-gold/25 transition-colors duration-500"
                   whileHover={{ y: -4 }}
                   transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
                 >
@@ -75,7 +75,7 @@ export default function AgentsSection() {
                     </div>
                     {/* Online dot */}
                     <div className="absolute -bottom-0.5 -right-0.5">
-                      <span className="block w-3 h-3 rounded-full bg-lime-pulse border-2 border-dark-card" />
+                      <span className="block w-3 h-3 rounded-full bg-mint border-2 border-dark-card" />
                     </div>
                   </div>
 
@@ -87,13 +87,13 @@ export default function AgentsSection() {
                     >
                       {agent.name}
                     </h3>
-                    <p className="text-[11px] text-olympus-gold/50 font-body mb-2 italic">
+                    <p className="text-[11px] text-accent-gold/50 font-body mb-2 italic">
                       {agent.mythTitle}
                     </p>
-                    <p className="text-xs text-pacame-white/35 font-body mb-3 uppercase tracking-wider">
+                    <p className="text-xs text-ink/35 font-body mb-3 uppercase tracking-wider">
                       {agent.role}
                     </p>
-                    <p className="text-sm text-pacame-white/50 font-body leading-relaxed line-clamp-3">
+                    <p className="text-sm text-ink/50 font-body leading-relaxed line-clamp-3">
                       {agent.simpleDescription}
                     </p>
 
@@ -102,7 +102,7 @@ export default function AgentsSection() {
                       {agent.benefits.slice(0, 2).map((benefit) => (
                         <li
                           key={benefit}
-                          className="text-[11px] text-pacame-white/35 font-body flex items-start gap-1.5"
+                          className="text-[11px] text-ink/35 font-body flex items-start gap-1.5"
                         >
                           <span style={{ color: agent.color }} className="mt-0.5">&#x2713;</span>
                           {benefit}
@@ -122,12 +122,12 @@ export default function AgentsSection() {
             <CardTilt tiltMaxAngle={8} scale={1.02}>
             <CardTiltContent>
             <motion.div
-              className="group rounded-2xl p-6 h-full relative overflow-hidden border border-olympus-gold/30 bg-dark-card"
+              className="group rounded-2xl p-6 h-full relative overflow-hidden border border-accent-gold/30 bg-paper-deep"
               whileHover={{ y: -4 }}
               transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
             >
               {/* Golden glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-olympus-gold/[0.06] to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-accent-gold/[0.06] to-transparent pointer-events-none" />
 
               <div className="relative">
                 <div className="relative mb-5">
@@ -142,14 +142,14 @@ export default function AgentsSection() {
                   </svg>
                 </div>
 
-                <h3 className="font-accent font-bold text-lg text-pacame-white mb-0.5">Pablo</h3>
-                <p className="text-[11px] text-olympus-gold/60 font-body mb-2 italic">
+                <h3 className="font-accent font-bold text-lg text-ink mb-0.5">Pablo</h3>
+                <p className="text-[11px] text-accent-gold/60 font-body mb-2 italic">
                   El Arquitecto
                 </p>
-                <p className="text-xs text-pacame-white/35 font-body mb-3 uppercase tracking-wider">
+                <p className="text-xs text-ink/35 font-body mb-3 uppercase tracking-wider">
                   CEO — El humano del equipo
                 </p>
-                <p className="text-sm text-pacame-white/50 font-body leading-relaxed">
+                <p className="text-sm text-ink/50 font-body leading-relaxed">
                   Supervisa cada entrega. Garantiza que los resultados superen las expectativas.
                 </p>
               </div>
@@ -167,7 +167,7 @@ export default function AgentsSection() {
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
-          <Button variant="outline" size="lg" asChild className="group rounded-full border-olympus-gold/20 hover:border-olympus-gold/40 hover:bg-olympus-gold/5">
+          <Button variant="outline" size="lg" asChild className="group rounded-full border-accent-gold/20 hover:border-accent-gold/40 hover:bg-accent-gold/5">
             <Link href="/servicios">
               Ver servicios y precios
             </Link>

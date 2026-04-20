@@ -29,7 +29,7 @@ function AccordionItem({
   const panelId = `faq-panel-${itemId}`;
 
   return (
-    <div className="rounded-2xl bg-dark-card border border-white/[0.06] hover:border-white/10 transition-all overflow-hidden">
+    <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] hover:border-white/10 transition-all overflow-hidden">
       <button
         id={triggerId}
         onClick={onToggle}
@@ -37,11 +37,11 @@ function AccordionItem({
         aria-expanded={isOpen}
         aria-controls={panelId}
       >
-        <h3 className="font-heading font-semibold text-lg text-pacame-white pr-4">
+        <h3 className="font-heading font-semibold text-lg text-ink pr-4">
           {faq.question}
         </h3>
         <ChevronDown
-          className={`w-5 h-5 text-pacame-white/40 flex-shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+          className={`w-5 h-5 text-ink/40 flex-shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
         />
       </button>
       <section
@@ -50,7 +50,7 @@ function AccordionItem({
         className={`grid transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
       >
         <div className="overflow-hidden">
-          <p className="text-sm text-pacame-white/60 font-body leading-relaxed px-6 pb-6">
+          <p className="text-sm text-ink/60 font-body leading-relaxed px-6 pb-6">
             {faq.answer}
           </p>
         </div>
@@ -75,7 +75,7 @@ export default function FaqAccordion({
       {categories.map((category, catIdx) => (
         <section
           key={category.title}
-          className={`section-padding ${catIdx % 2 === 0 ? "bg-pacame-black border-t border-white/[0.04]" : "bg-pacame-black"}`}
+          className={`section-padding ${catIdx % 2 === 0 ? "bg-paper border-t border-white/[0.04]" : "bg-paper"}`}
         >
           <div className="max-w-4xl mx-auto px-6">
             <h2

@@ -133,20 +133,20 @@ function ContactoForm() {
   }
 
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       {/* Hero */}
       <section className="relative pt-36 pb-20 overflow-hidden">
         <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-olympus-radial pointer-events-none" />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-5 uppercase tracking-[0.2em]">
+          <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-5 uppercase tracking-[0.2em]">
             Contacto
           </p>
-          <h1 className="font-accent font-bold text-display text-pacame-white mb-6 text-balance">
+          <h1 className="font-accent font-bold text-display text-ink mb-6 text-balance">
             Cuentanos tu problema.{" "}
             <span className="gradient-text-aurora">Nosotros lo resolvemos.</span>
           </h1>
-          <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto font-light">
+          <p className="text-xl text-ink/60 font-body max-w-2xl mx-auto font-light">
             30 minutos. Sin compromiso. Sin presupuestos ciegos.
           </p>
         </ScrollReveal>
@@ -160,27 +160,27 @@ function ContactoForm() {
             {/* Form */}
             <div className="lg:col-span-3">
               {refCode && (
-                <div className="rounded-2xl bg-lime-pulse/10 border border-lime-pulse/20 p-4 mb-6 flex items-center gap-3">
-                  <Gift className="w-5 h-5 text-lime-pulse flex-shrink-0" />
+                <div className="rounded-2xl bg-mint/10 border border-mint/20 p-4 mb-6 flex items-center gap-3">
+                  <Gift className="w-5 h-5 text-mint flex-shrink-0" />
                   <div>
-                    <p className="text-sm font-heading font-semibold text-lime-pulse">Vienes recomendado — 10% de descuento aplicado</p>
-                    <p className="text-xs text-pacame-white/60 font-body">Codigo: {refCode}</p>
+                    <p className="text-sm font-heading font-semibold text-mint">Vienes recomendado — 10% de descuento aplicado</p>
+                    <p className="text-xs text-ink/60 font-body">Codigo: {refCode}</p>
                   </div>
                 </div>
               )}
               {formState === "sent" ? (
                 <div className="rounded-3xl glass p-10 sm:p-14 text-center">
                   <Celebration />
-                  <div className="w-16 h-16 rounded-full bg-lime-pulse/20 flex items-center justify-center mx-auto mb-6">
-                    <CheckCircle2 className="w-8 h-8 text-lime-pulse" />
+                  <div className="w-16 h-16 rounded-full bg-mint/20 flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle2 className="w-8 h-8 text-mint" />
                   </div>
-                  <h2 className="font-heading font-bold text-2xl text-pacame-white mb-3">
+                  <h2 className="font-heading font-bold text-2xl text-ink mb-3">
                     Mensaje recibido
                   </h2>
-                  <p className="text-pacame-white/60 font-body mb-8">
+                  <p className="text-ink/60 font-body mb-8">
                     Pablo te responderá en menos de 2 horas. Si es urgente,
                     escríbenos a{" "}
-                    <a href="mailto:hola@pacameagencia.com" className="text-electric-violet hover:underline">
+                    <a href="mailto:hola@pacameagencia.com" className="text-brand-primary hover:underline">
                       hola@pacameagencia.com
                     </a>
                   </p>
@@ -188,7 +188,7 @@ function ContactoForm() {
                     <Button variant="outline" asChild className="rounded-full">
                       <Link href="/blog">Leer el blog mientras esperas</Link>
                     </Button>
-                    <Button variant="outline" asChild className="rounded-full border-white/[0.06]">
+                    <Button variant="outline" asChild className="rounded-full border-ink/[0.06]">
                       <Link href="/portfolio">Ver nuestro portfolio</Link>
                     </Button>
                   </div>
@@ -200,14 +200,14 @@ function ContactoForm() {
                       <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                       <div>
                         <p className="text-sm font-heading font-semibold text-red-400">Error al enviar</p>
-                        <p className="text-xs text-pacame-white/60 font-body">Intentalo de nuevo o escribenos a hola@pacameagencia.com</p>
+                        <p className="text-xs text-ink/60 font-body">Intentalo de nuevo o escribenos a hola@pacameagencia.com</p>
                       </div>
                     </div>
                   )}
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
-                      <label htmlFor="contact-name" className="block text-sm font-body text-pacame-white/70 mb-2">
+                      <label htmlFor="contact-name" className="block text-sm font-body text-ink/70 mb-2">
                         Nombre *
                       </label>
                       <input
@@ -219,12 +219,12 @@ function ContactoForm() {
                         onBlur={(e) => handleBlur("name", e.target.value)}
                         aria-invalid={!!errors.name}
                         aria-describedby={errors.name ? "error-name" : undefined}
-                        className={`w-full h-12 px-4 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors ${errors.name ? "border-red-500/50" : "border-white/[0.08]"}`}
+                        className={`w-full h-12 px-4 rounded-xl bg-paper-deep border text-ink font-body text-sm placeholder:text-ink/50 input-premium outline-none transition-colors ${errors.name ? "border-red-500/50" : "border-ink/[0.08]"}`}
                       />
                       {errors.name && <p id="error-name" className="text-xs text-red-400 font-body mt-1.5">{errors.name}</p>}
                     </div>
                     <div>
-                      <label htmlFor="contact-email" className="block text-sm font-body text-pacame-white/70 mb-2">
+                      <label htmlFor="contact-email" className="block text-sm font-body text-ink/70 mb-2">
                         Email *
                       </label>
                       <input
@@ -236,7 +236,7 @@ function ContactoForm() {
                         onBlur={(e) => handleBlur("email", e.target.value)}
                         aria-invalid={!!errors.email}
                         aria-describedby={errors.email ? "error-email" : undefined}
-                        className={`w-full h-12 px-4 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors ${errors.email ? "border-red-500/50" : "border-white/[0.08]"}`}
+                        className={`w-full h-12 px-4 rounded-xl bg-paper-deep border text-ink font-body text-sm placeholder:text-ink/50 input-premium outline-none transition-colors ${errors.email ? "border-red-500/50" : "border-ink/[0.08]"}`}
                       />
                       {errors.email && <p id="error-email" className="text-xs text-red-400 font-body mt-1.5">{errors.email}</p>}
                     </div>
@@ -244,7 +244,7 @@ function ContactoForm() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
-                      <label htmlFor="contact-company" className="block text-sm font-body text-pacame-white/70 mb-2">
+                      <label htmlFor="contact-company" className="block text-sm font-body text-ink/70 mb-2">
                         Empresa
                       </label>
                       <input
@@ -252,11 +252,11 @@ function ContactoForm() {
                         name="company"
                         type="text"
                         placeholder="Nombre de tu empresa (opcional)"
-                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors"
+                        className="w-full h-12 px-4 rounded-xl bg-paper-deep border border-ink/[0.08] text-ink font-body text-sm placeholder:text-ink/50 input-premium outline-none transition-colors"
                       />
                     </div>
                     <div>
-                      <label htmlFor="contact-phone" className="block text-sm font-body text-pacame-white/70 mb-2">
+                      <label htmlFor="contact-phone" className="block text-sm font-body text-ink/70 mb-2">
                         Teléfono
                       </label>
                       <input
@@ -264,14 +264,14 @@ function ContactoForm() {
                         name="phone"
                         type="tel"
                         placeholder="+34 600 000 000 (opcional)"
-                        className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors"
+                        className="w-full h-12 px-4 rounded-xl bg-paper-deep border border-ink/[0.08] text-ink font-body text-sm placeholder:text-ink/50 input-premium outline-none transition-colors"
                       />
                     </div>
                   </div>
 
                   {/* Service selector */}
                   <fieldset>
-                    <legend className="block text-sm font-body text-pacame-white/70 mb-3">
+                    <legend className="block text-sm font-body text-ink/70 mb-3">
                       ¿Qué necesitas? (selecciona uno o varios)
                     </legend>
                     <div className="flex flex-wrap gap-2" role="group">
@@ -283,8 +283,8 @@ function ContactoForm() {
                           aria-pressed={selectedServices.includes(service)}
                           className={`px-4 py-2 rounded-full text-sm font-body border transition-all duration-200 ${
                             selectedServices.includes(service)
-                              ? "bg-olympus-gold/15 border-olympus-gold text-olympus-gold"
-                              : "bg-transparent border-white/10 text-pacame-white/60 hover:border-olympus-gold/30 hover:text-pacame-white/70"
+                              ? "bg-accent-gold/15 border-accent-gold text-accent-gold"
+                              : "bg-transparent border-white/10 text-ink/60 hover:border-accent-gold/30 hover:text-ink/70"
                           }`}
                         >
                           {service}
@@ -295,10 +295,10 @@ function ContactoForm() {
 
                   {/* Budget */}
                   <div>
-                    <label htmlFor="contact-budget" className="block text-sm font-body text-pacame-white/70 mb-2">
+                    <label htmlFor="contact-budget" className="block text-sm font-body text-ink/70 mb-2">
                       Presupuesto orientativo
                     </label>
-                    <select id="contact-budget" name="budget" className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm input-premium outline-none transition-colors appearance-none">
+                    <select id="contact-budget" name="budget" className="w-full h-12 px-4 rounded-xl bg-paper-deep border border-ink/[0.08] text-ink font-body text-sm input-premium outline-none transition-colors appearance-none">
                       <option value="">Selecciona un rango</option>
                       {budgets.map((b) => (
                         <option key={b} value={b}>
@@ -310,7 +310,7 @@ function ContactoForm() {
 
                   {/* Message */}
                   <div>
-                    <label htmlFor="contact-message" className="block text-sm font-body text-pacame-white/70 mb-2">
+                    <label htmlFor="contact-message" className="block text-sm font-body text-ink/70 mb-2">
                       Cuéntanos tu proyecto *
                     </label>
                     <textarea
@@ -322,7 +322,7 @@ function ContactoForm() {
                       onBlur={(e) => handleBlur("message", e.target.value)}
                       aria-invalid={!!errors.message}
                       aria-describedby={errors.message ? "error-message" : undefined}
-                      className={`w-full px-4 py-3 rounded-xl bg-dark-card border text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors resize-none ${errors.message ? "border-red-500/50" : "border-white/[0.08]"}`}
+                      className={`w-full px-4 py-3 rounded-xl bg-paper-deep border text-ink font-body text-sm placeholder:text-ink/50 input-premium outline-none transition-colors resize-none ${errors.message ? "border-red-500/50" : "border-ink/[0.08]"}`}
                     />
                     {errors.message && <p id="error-message" className="text-xs text-red-400 font-body mt-1.5">{errors.message}</p>}
                   </div>
@@ -346,7 +346,7 @@ function ContactoForm() {
                         gradientOpacity={0.8}
                         className="group min-w-[220px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
                       >
-                        <button type="submit" className="flex items-center gap-2 text-pacame-white w-full h-full justify-center">
+                        <button type="submit" className="flex items-center gap-2 text-ink w-full h-full justify-center">
                           <Send className="w-4 h-4" />
                           Enviar mensaje
                           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -355,9 +355,9 @@ function ContactoForm() {
                     </MagneticButton>
                   )}
 
-                  <p className="text-xs text-pacame-white/60 font-body">
+                  <p className="text-xs text-ink/60 font-body">
                     Al enviar este formulario aceptas nuestra{" "}
-                    <Link href="/privacidad" className="text-olympus-gold/70 hover:underline">
+                    <Link href="/privacidad" className="text-accent-gold/70 hover:underline">
                       política de privacidad
                     </Link>
                     .
@@ -372,38 +372,38 @@ function ContactoForm() {
               <ScrollReveal delay={0.1}>
               <CardTilt tiltMaxAngle={6} scale={1.02}>
               <CardTiltContent>
-              <div className="glass rounded-2xl p-6 border border-olympus-gold/10">
-                <h3 className="font-heading font-bold text-lg text-pacame-white mb-5">
+              <div className="glass rounded-2xl p-6 border border-accent-gold/10">
+                <h3 className="font-heading font-bold text-lg text-ink mb-5">
                   Contacto directo
                 </h3>
                 <ul className="space-y-4">
                   <li className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-olympus-gold/15 flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-4 h-4 text-olympus-gold" />
+                    <div className="w-10 h-10 rounded-xl bg-accent-gold/15 flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-4 h-4 text-accent-gold" />
                     </div>
                     <div>
-                      <p className="text-xs text-pacame-white/60 font-body">Email</p>
-                      <a href="mailto:hola@pacameagencia.com" className="text-sm text-pacame-white font-body hover:text-olympus-gold transition-colors">
+                      <p className="text-xs text-ink/60 font-body">Email</p>
+                      <a href="mailto:hola@pacameagencia.com" className="text-sm text-ink font-body hover:text-accent-gold transition-colors">
                         hola@pacameagencia.com
                       </a>
                     </div>
                   </li>
                   <li className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-neon-cyan/15 flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-4 h-4 text-neon-cyan" />
+                    <div className="w-10 h-10 rounded-xl bg-mint/15 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-4 h-4 text-mint" />
                     </div>
                     <div>
-                      <p className="text-xs text-pacame-white/60 font-body">Ubicación</p>
-                      <p className="text-sm text-pacame-white font-body">Madrid, España (remoto)</p>
+                      <p className="text-xs text-ink/60 font-body">Ubicación</p>
+                      <p className="text-sm text-ink font-body">Madrid, España (remoto)</p>
                     </div>
                   </li>
                   <li className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-lime-pulse/15 flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-4 h-4 text-lime-pulse" />
+                    <div className="w-10 h-10 rounded-xl bg-mint/15 flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-4 h-4 text-mint" />
                     </div>
                     <div>
-                      <p className="text-xs text-pacame-white/60 font-body">Tiempo de respuesta</p>
-                      <p className="text-sm text-pacame-white font-body">Menos de 2 horas</p>
+                      <p className="text-xs text-ink/60 font-body">Tiempo de respuesta</p>
+                      <p className="text-sm text-ink font-body">Menos de 2 horas</p>
                     </div>
                   </li>
                 </ul>
@@ -417,7 +417,7 @@ function ContactoForm() {
               <CardTilt tiltMaxAngle={6} scale={1.02}>
               <CardTiltContent>
               <div className="glass rounded-2xl p-6">
-                <h3 className="font-heading font-bold text-lg text-pacame-white mb-5">
+                <h3 className="font-heading font-bold text-lg text-ink mb-5">
                   Preguntas frecuentes
                 </h3>
                 <div className="space-y-5">
@@ -440,10 +440,10 @@ function ContactoForm() {
                     },
                   ].map((faq) => (
                     <div key={faq.q}>
-                      <p className="text-sm font-heading font-semibold text-pacame-white mb-1">
+                      <p className="text-sm font-heading font-semibold text-ink mb-1">
                         {faq.q}
                       </p>
-                      <p className="text-xs text-pacame-white/60 font-body leading-relaxed">
+                      <p className="text-xs text-ink/60 font-body leading-relaxed">
                         {faq.a}
                       </p>
                     </div>
@@ -458,7 +458,7 @@ function ContactoForm() {
               <ScrollReveal delay={0.3}>
               <CardTilt tiltMaxAngle={6} scale={1.02}>
               <CardTiltContent>
-              <div className="rounded-2xl p-6 relative overflow-hidden border border-olympus-gold/20" style={{ background: "linear-gradient(135deg, #7C3AED 0%, #D4A853 50%, #06B6D4 100%)" }}>
+              <div className="rounded-2xl p-6 relative overflow-hidden border border-accent-gold/20" style={{ background: "linear-gradient(135deg, #7C3AED 0%, #D4A853 50%, #06B6D4 100%)" }}>
                 <div className="absolute inset-0 bg-black/20" />
                 <div className="relative z-10">
                   <Calendar className="w-6 h-6 text-white mb-3" />

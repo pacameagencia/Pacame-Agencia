@@ -57,7 +57,7 @@ function CasesListJsonLd() {
 
 export default function CasosPage() {
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       <CasesListJsonLd />
       <BreadcrumbJsonLd
         items={[
@@ -68,18 +68,18 @@ export default function CasosPage() {
 
       {/* Hero */}
       <section className="relative pt-36 pb-16 overflow-hidden">
-        <div className="absolute top-1/3 right-1/3 w-[500px] h-[500px] bg-olympus-gold/[0.05] rounded-full blur-[200px] pointer-events-none" />
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-electric-violet/[0.04] rounded-full blur-[180px] pointer-events-none" />
+        <div className="absolute top-1/3 right-1/3 w-[500px] h-[500px] bg-accent-gold/[0.05] rounded-full blur-[200px] pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-brand-primary/[0.04] rounded-full blur-[180px] pointer-events-none" />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-olympus-gold mb-5 uppercase tracking-[0.25em]">
+          <p className="text-[13px] font-body font-medium text-accent-gold mb-5 uppercase tracking-[0.25em]">
             Casos de exito
           </p>
-          <h1 className="font-heading font-bold text-display text-pacame-white mb-6 text-balance">
+          <h1 className="font-heading font-bold text-display text-ink mb-6 text-balance">
             Resultados reales de{" "}
             <span className="gradient-text-vivid">negocios reales.</span>
           </h1>
-          <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto font-light">
+          <p className="text-xl text-ink/60 font-body max-w-2xl mx-auto font-light">
             Nada de lorem ipsum. Estos son tres negocios como el tuyo que
             crecieron gracias a los agentes IA de PACAME.
           </p>
@@ -100,7 +100,7 @@ export default function CasosPage() {
                   <CardTiltContent className="h-full">
                     <Link
                       href={`/casos/${cs.slug}`}
-                      className="group block h-full rounded-2xl bg-dark-card border border-white/[0.06] overflow-hidden hover:border-olympus-gold/30 transition-all duration-300 card-golden-shine"
+                      className="group block h-full rounded-2xl bg-paper-deep border border-ink/[0.06] overflow-hidden hover:border-accent-gold/30 transition-all duration-300 card-golden-shine"
                     >
                       {/* Cover gradient */}
                       <div
@@ -109,17 +109,17 @@ export default function CasosPage() {
                       >
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0.2),rgba(0,0,0,0.6))]" />
                         <div className="relative text-center px-6">
-                          <p className="text-[9vw] md:text-[5vw] lg:text-6xl font-heading font-bold text-pacame-white leading-none">
+                          <p className="text-[9vw] md:text-[5vw] lg:text-6xl font-heading font-bold text-ink leading-none">
                             {cs.metricHeadline}
                           </p>
-                          <p className="text-xs text-pacame-white/90 font-body font-medium uppercase tracking-[0.15em] mt-2">
+                          <p className="text-xs text-ink/90 font-body font-medium uppercase tracking-[0.15em] mt-2">
                             {cs.metricSubtitle}
                           </p>
                         </div>
                       </div>
 
                       <div className="p-6">
-                        <div className="flex items-center gap-3 text-xs text-pacame-white/50 font-body mb-3">
+                        <div className="flex items-center gap-3 text-xs text-ink/50 font-body mb-3">
                           <span className="flex items-center gap-1">
                             <Briefcase className="w-3 h-3" />
                             {cs.sector}
@@ -129,10 +129,10 @@ export default function CasosPage() {
                             {cs.city}
                           </span>
                         </div>
-                        <h3 className="font-heading font-bold text-lg text-pacame-white mb-3 leading-snug group-hover:text-olympus-gold transition-colors">
+                        <h3 className="font-heading font-bold text-lg text-ink mb-3 leading-snug group-hover:text-accent-gold transition-colors">
                           {cs.clientName}
                         </h3>
-                        <p className="text-sm text-pacame-white/60 font-body leading-relaxed line-clamp-3 mb-5">
+                        <p className="text-sm text-ink/60 font-body leading-relaxed line-clamp-3 mb-5">
                           {cs.summary}
                         </p>
                         <div className="flex items-center justify-between pt-4 border-t border-white/[0.04]">
@@ -140,13 +140,13 @@ export default function CasosPage() {
                             {cs.tags.slice(0, 2).map((tag) => (
                               <span
                                 key={tag}
-                                className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.04] text-pacame-white/50 font-body"
+                                className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.04] text-ink/50 font-body"
                               >
                                 {tag}
                               </span>
                             ))}
                           </div>
-                          <ArrowRight className="w-4 h-4 text-pacame-white/40 group-hover:text-olympus-gold group-hover:translate-x-1 transition-all" />
+                          <ArrowRight className="w-4 h-4 text-ink/40 group-hover:text-accent-gold group-hover:translate-x-1 transition-all" />
                         </div>
                       </div>
                     </Link>
@@ -163,12 +163,12 @@ export default function CasosPage() {
       </div>
 
       {/* CTA bottom */}
-      <section className="section-padding bg-pacame-black">
+      <section className="section-padding bg-paper">
         <ScrollReveal className="max-w-3xl mx-auto px-6 text-center">
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
+          <h2 className="font-heading font-bold text-section text-ink mb-4 text-balance">
             Tu negocio podria ser el proximo caso de exito.
           </h2>
-          <p className="text-lg text-pacame-white/60 font-body mb-10 max-w-xl mx-auto">
+          <p className="text-lg text-ink/60 font-body mb-10 max-w-xl mx-auto">
             Diagnostico digital gratuito. Te decimos exactamente que hay que
             mover y cuanto cuesta moverlo.
           </p>
@@ -181,7 +181,7 @@ export default function CasosPage() {
             >
               <Link
                 href="/contacto"
-                className="flex items-center gap-2 text-pacame-white"
+                className="flex items-center gap-2 text-ink"
               >
                 Pedir diagnostico gratis
                 <ArrowRight className="w-4 h-4" />

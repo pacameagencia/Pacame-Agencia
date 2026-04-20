@@ -11,28 +11,28 @@ export default function UnsubscribePage({
   searchParams: Promise<{ email?: string }>;
 }) {
   return (
-    <main className="min-h-screen bg-pacame-black flex items-center justify-center px-6 py-16">
-      <div className="max-w-md w-full bg-dark-card border border-white/[0.06] rounded-2xl p-8 space-y-6">
-        <h1 className="font-heading font-bold text-2xl text-pacame-white">
+    <main className="min-h-screen bg-paper flex items-center justify-center px-6 py-16">
+      <div className="max-w-md w-full bg-paper-deep border border-ink/[0.06] rounded-2xl p-8 space-y-6">
+        <h1 className="font-heading font-bold text-2xl text-ink">
           Te has dado de baja
         </h1>
-        <p className="text-pacame-white/70 font-body text-sm leading-relaxed">
+        <p className="text-ink/70 font-body text-sm leading-relaxed">
           Ya no recibirás comunicaciones comerciales de PACAME. Solo te
           enviaremos mensajes esenciales relacionados con tu cuenta o servicios
           contratados.
         </p>
-        <p className="text-pacame-white/50 font-body text-xs leading-relaxed">
+        <p className="text-ink/50 font-body text-xs leading-relaxed">
           Si prefieres gestionarlo manualmente o quieres volver a suscribirte,
           escríbenos a{" "}
-          <a href="mailto:hola@pacameagencia.com" className="text-electric-violet underline">
+          <a href="mailto:hola@pacameagencia.com" className="text-brand-primary underline">
             hola@pacameagencia.com
           </a>
           .
         </p>
-        <div className="pt-4 border-t border-white/[0.06]">
+        <div className="pt-4 border-t border-ink/[0.06]">
           <a
             href="/"
-            className="text-xs text-pacame-white/50 hover:text-pacame-white/80 font-body"
+            className="text-xs text-ink/50 hover:text-ink/80 font-body"
           >
             ← Volver a pacameagencia.com
           </a>

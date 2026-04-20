@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function TerminosServicioPage() {
   return (
-    <div className="bg-pacame-black min-h-screen pt-32 pb-20">
+    <div className="bg-paper min-h-screen pt-32 pb-20">
       <BreadcrumbJsonLd
         items={[
           { name: "Inicio", url: "https://pacameagencia.com" },
@@ -28,26 +28,26 @@ export default function TerminosServicioPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
         <header className="mb-12">
-          <h1 className="font-heading font-bold text-4xl text-pacame-white mb-3">
+          <h1 className="font-heading font-bold text-4xl text-ink mb-3">
             Terminos de Servicio
           </h1>
-          <p className="text-pacame-white/60 text-sm">
+          <p className="text-ink/60 text-sm">
             Ultima actualizacion: 19 abril 2026
           </p>
         </header>
 
-        <div className="prose prose-invert prose-sm max-w-none font-body text-pacame-white/80 space-y-8 leading-relaxed">
+        <div className="prose prose-invert prose-sm max-w-none font-body text-ink/80 space-y-8 leading-relaxed">
           <p>
             Los presentes Terminos de Servicio regulan el acceso y uso de los
             servicios, aplicaciones y planes ofrecidos por PACAME a traves del
-            dominio <span className="text-pacame-white/90">pacameagencia.com</span>.
+            dominio <span className="text-ink/90">pacameagencia.com</span>.
             Al contratar o utilizar cualquiera de ellos el cliente acepta
             integramente estas condiciones.
           </p>
 
           {/* 1 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               1. Aceptacion
             </h2>
             <p>
@@ -57,14 +57,14 @@ export default function TerminosServicioPage() {
               integra y sin reservas de estos Terminos, asi como de la{" "}
               <Link
                 href="/privacidad"
-                className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                className="text-accent-gold/80 hover:text-accent-gold underline underline-offset-2"
               >
                 Politica de Privacidad
               </Link>{" "}
               y la{" "}
               <Link
                 href="/cookies"
-                className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                className="text-accent-gold/80 hover:text-accent-gold underline underline-offset-2"
               >
                 Politica de Cookies
               </Link>
@@ -75,30 +75,30 @@ export default function TerminosServicioPage() {
 
           {/* 2 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               2. Objeto del contrato
             </h2>
             <p>
               PACAME, titularidad de Pablo Calleja (NIF{" "}
-              <span className="text-pacame-white/60">[NIF_PENDIENTE_PABLO]</span>),
+              <span className="text-ink/60">[NIF_PENDIENTE_PABLO]</span>),
               pone a disposicion del cliente los siguientes servicios, prestados
               con apoyo de agentes de inteligencia artificial supervisados por
               personal humano:
             </p>
-            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+            <ul className="list-disc pl-6 space-y-1 text-ink/70">
               <li>
-                <strong className="text-pacame-white">Marketplace de servicios digitales:</strong>{" "}
+                <strong className="text-ink">Marketplace de servicios digitales:</strong>{" "}
                 paquetes productizados de branding, web, SEO, ads, copywriting,
                 automatizaciones, analytics y estrategia.
               </li>
               <li>
-                <strong className="text-pacame-white">Apps productizadas:</strong>{" "}
+                <strong className="text-ink">Apps productizadas:</strong>{" "}
                 aplicaciones operadas por PACAME (por ejemplo PACAME Agenda,
                 chatbots, asistentes de voz) puestas a disposicion del cliente en
                 modalidad SaaS.
               </li>
               <li>
-                <strong className="text-pacame-white">Planes mensuales:</strong>{" "}
+                <strong className="text-ink">Planes mensuales:</strong>{" "}
                 servicios recurrentes de gestion integral (contenido, anuncios,
                 SEO, asistencia, etc.) facturados periodicamente.
               </li>
@@ -107,10 +107,10 @@ export default function TerminosServicioPage() {
 
           {/* 3 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               3. Registro y cuenta de cliente
             </h2>
-            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+            <ul className="list-disc pl-6 space-y-1 text-ink/70">
               <li>
                 El cliente debe ser mayor de edad y actuar en su propio nombre o en
                 nombre de una persona juridica con capacidad suficiente.
@@ -133,14 +133,14 @@ export default function TerminosServicioPage() {
 
           {/* 4 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               4. Productos y entregables generados con IA
             </h2>
             <p>
               PACAME utiliza sistemas de inteligencia artificial como herramienta
               de produccion. El cliente debe ser consciente de lo siguiente:
             </p>
-            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+            <ul className="list-disc pl-6 space-y-1 text-ink/70">
               <li>
                 El resultado final es revisado y validado por personal humano antes
                 de su entrega.
@@ -167,10 +167,10 @@ export default function TerminosServicioPage() {
 
           {/* 5 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               5. Precios, pagos, Stripe e impuestos
             </h2>
-            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+            <ul className="list-disc pl-6 space-y-1 text-ink/70">
               <li>
                 Los precios se muestran en euros (EUR). Salvo indicacion en
                 contrario, se entienden con el IVA espanol aplicable del 21%
@@ -180,7 +180,7 @@ export default function TerminosServicioPage() {
               </li>
               <li>
                 Los pagos se procesan a traves de{" "}
-                <strong className="text-pacame-white">Stripe Payments Europe</strong>
+                <strong className="text-ink">Stripe Payments Europe</strong>
                 , certificado PCI-DSS Level 1. PACAME no almacena datos completos de
                 tarjeta.
               </li>
@@ -201,29 +201,29 @@ export default function TerminosServicioPage() {
 
           {/* 6 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               6. Suscripciones: renovacion, cancelacion y reembolsos
             </h2>
-            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+            <ul className="list-disc pl-6 space-y-1 text-ink/70">
               <li>
                 Las suscripciones se renuevan automaticamente al final de cada
                 periodo (mensual o anual) al mismo precio vigente, salvo subida
                 comunicada con 30 dias de antelacion.
               </li>
               <li>
-                <strong className="text-pacame-white">Sin permanencia:</strong> el
+                <strong className="text-ink">Sin permanencia:</strong> el
                 cliente puede cancelar en cualquier momento desde su portal o
                 escribiendo a{" "}
                 <a
                   href="mailto:hola@pacameagencia.com"
-                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                  className="text-accent-gold/80 hover:text-accent-gold underline underline-offset-2"
                 >
                   hola@pacameagencia.com
                 </a>
                 . La cancelacion surte efecto al finalizar el periodo ya facturado.
               </li>
               <li>
-                <strong className="text-pacame-white">Derecho de desistimiento:</strong>{" "}
+                <strong className="text-ink">Derecho de desistimiento:</strong>{" "}
                 los consumidores tienen 14 dias naturales para desistir sin
                 justificacion. No obstante, si el cliente ha solicitado el inicio
                 inmediato del servicio y este ya se ha ejecutado total o
@@ -245,25 +245,25 @@ export default function TerminosServicioPage() {
 
           {/* 7 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               7. Propiedad intelectual
             </h2>
-            <ul className="list-disc pl-6 space-y-2 text-pacame-white/70">
+            <ul className="list-disc pl-6 space-y-2 text-ink/70">
               <li>
-                <strong className="text-pacame-white">Plataforma PACAME:</strong> la
+                <strong className="text-ink">Plataforma PACAME:</strong> la
                 infraestructura, codigo fuente, diseno del portal, marca, agentes
                 IA, workflows internos y documentacion son propiedad exclusiva de
                 PACAME. El contrato no transfiere ningun derecho sobre ellos.
               </li>
               <li>
-                <strong className="text-pacame-white">Entregables contratados:</strong>{" "}
+                <strong className="text-ink">Entregables contratados:</strong>{" "}
                 una vez abonado el precio integro, el cliente adquiere los derechos
                 de uso, reproduccion, transformacion y distribucion con caracter
                 mundial y sin limite temporal sobre los entregables concretos del
                 encargo (por ejemplo logo, textos, paginas web, piezas creativas).
               </li>
               <li>
-                <strong className="text-pacame-white">Contenido generado por IA:</strong>{" "}
+                <strong className="text-ink">Contenido generado por IA:</strong>{" "}
                 en los entregables en los que intervienen modelos generativos,
                 PACAME transfiere al cliente todos los derechos que legalmente
                 puedan atribuirse a dichos resultados. No obstante, conforme a la
@@ -274,7 +274,7 @@ export default function TerminosServicioPage() {
                 resulte infractor de derechos de tercero.
               </li>
               <li>
-                <strong className="text-pacame-white">Materiales del cliente:</strong>{" "}
+                <strong className="text-ink">Materiales del cliente:</strong>{" "}
                 el cliente garantiza ser titular o licenciatario de los materiales
                 aportados (textos, imagenes, marcas) y exime a PACAME de cualquier
                 reclamacion derivada de su uso.
@@ -289,14 +289,14 @@ export default function TerminosServicioPage() {
 
           {/* 8 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               8. Uso permitido y restricciones
             </h2>
             <p>
               El cliente se compromete a utilizar los servicios conforme a la ley,
               estos Terminos y la buena fe. En particular, queda prohibido:
             </p>
-            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+            <ul className="list-disc pl-6 space-y-1 text-ink/70">
               <li>
                 Revender, sublicenciar o comercializar los servicios o agentes IA
                 de PACAME sin acuerdo escrito.
@@ -324,13 +324,13 @@ export default function TerminosServicioPage() {
 
           {/* 9 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               9. Disponibilidad del servicio y SLA
             </h2>
-            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+            <ul className="list-disc pl-6 space-y-1 text-ink/70">
               <li>
                 PACAME trabaja para mantener una disponibilidad objetivo del{" "}
-                <strong className="text-pacame-white">99,9%</strong> mensual en el
+                <strong className="text-ink">99,9%</strong> mensual en el
                 portal y las apps productizadas, en modalidad &quot;best-effort&quot;.
               </li>
               <li>
@@ -343,7 +343,7 @@ export default function TerminosServicioPage() {
                 PACAME mantiene un estado publico en{" "}
                 <Link
                   href="/status"
-                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                  className="text-accent-gold/80 hover:text-accent-gold underline underline-offset-2"
                 >
                   /status
                 </Link>
@@ -354,14 +354,14 @@ export default function TerminosServicioPage() {
 
           {/* 10 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               10. Limitacion de responsabilidad
             </h2>
             <p>
               En la maxima medida permitida por el Derecho imperativo, la
               responsabilidad agregada de PACAME frente al cliente por cualquier
               reclamacion derivada del contrato o relacionada con el se limita al{" "}
-              <strong className="text-pacame-white">
+              <strong className="text-ink">
                 importe efectivamente abonado por el cliente en los 12 meses
                 anteriores
               </strong>{" "}
@@ -377,7 +377,7 @@ export default function TerminosServicioPage() {
 
           {/* 11 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               11. Indemnizacion
             </h2>
             <p>
@@ -392,7 +392,7 @@ export default function TerminosServicioPage() {
 
           {/* 12 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               12. Modificacion del servicio
             </h2>
             <p>
@@ -406,10 +406,10 @@ export default function TerminosServicioPage() {
 
           {/* 13 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               13. Terminacion
             </h2>
-            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+            <ul className="list-disc pl-6 space-y-1 text-ink/70">
               <li>
                 El cliente puede terminar el contrato en cualquier momento segun lo
                 previsto en la seccion 6.
@@ -430,7 +430,7 @@ export default function TerminosServicioPage() {
 
           {/* 14 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               14. Ley aplicable y jurisdiccion
             </h2>
             <p>
@@ -444,7 +444,7 @@ export default function TerminosServicioPage() {
                 href="https://ec.europa.eu/consumers/odr"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                className="text-accent-gold/80 hover:text-accent-gold underline underline-offset-2"
               >
                 ec.europa.eu/consumers/odr
               </a>
@@ -454,18 +454,18 @@ export default function TerminosServicioPage() {
 
           {/* 15 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               15. Contacto
             </h2>
             <p>
               Para cualquier cuestion relacionada con estos Terminos:
             </p>
-            <ul className="list-none space-y-1 text-pacame-white/75">
+            <ul className="list-none space-y-1 text-ink/75">
               <li>
                 Email:{" "}
                 <a
                   href="mailto:hola@pacameagencia.com"
-                  className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                  className="text-accent-gold/80 hover:text-accent-gold underline underline-offset-2"
                 >
                   hola@pacameagencia.com
                 </a>
@@ -476,28 +476,28 @@ export default function TerminosServicioPage() {
           </section>
 
           {/* Cross-links */}
-          <div className="pt-10 border-t border-white/[0.06] flex flex-wrap gap-4">
+          <div className="pt-10 border-t border-ink/[0.06] flex flex-wrap gap-4">
             <Link
               href="/privacidad"
-              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+              className="text-xs text-ink/50 hover:text-ink/80 transition-colors"
             >
               Politica de Privacidad
             </Link>
             <Link
               href="/aviso-legal"
-              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+              className="text-xs text-ink/50 hover:text-ink/80 transition-colors"
             >
               Aviso Legal
             </Link>
             <Link
               href="/cookies"
-              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+              className="text-xs text-ink/50 hover:text-ink/80 transition-colors"
             >
               Cookies
             </Link>
             <Link
               href="/accesibilidad"
-              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+              className="text-xs text-ink/50 hover:text-ink/80 transition-colors"
             >
               Accesibilidad
             </Link>

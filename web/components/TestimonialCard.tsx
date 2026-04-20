@@ -15,7 +15,7 @@ export default function TestimonialCard({
 }: TestimonialCardProps) {
   return (
     <CardTilt className={className} tiltMaxAngle={8}>
-      <CardTiltContent className="rounded-2xl bg-dark-card border border-white/[0.06] p-6 hover:border-olympus-gold/20 transition-colors h-full flex flex-col">
+      <CardTiltContent className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6 hover:border-accent-gold/20 transition-colors h-full flex flex-col">
         {/* Star rating */}
         <div className="flex gap-1 mb-4">
           {Array.from({ length: 5 }, (_, i) => (
@@ -23,7 +23,7 @@ export default function TestimonialCard({
               key={i}
               className={`w-4 h-4 ${
                 i < testimonial.rating
-                  ? "fill-olympus-gold text-olympus-gold"
+                  ? "fill-accent-gold text-accent-gold"
                   : "fill-transparent text-white/20"
               }`}
             />
@@ -31,15 +31,15 @@ export default function TestimonialCard({
         </div>
 
         {/* Quote */}
-        <blockquote className="text-pacame-white/80 font-body text-sm leading-relaxed italic flex-1">
+        <blockquote className="text-ink/80 font-body text-sm leading-relaxed italic flex-1">
           &ldquo;{testimonial.quote}&rdquo;
         </blockquote>
 
         {/* Author */}
-        <div className="mt-6 pt-4 border-t border-white/[0.06]">
+        <div className="mt-6 pt-4 border-t border-ink/[0.06]">
           <div className="flex items-center gap-3">
             {/* Avatar placeholder */}
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-electric-violet to-olympus-gold flex items-center justify-center text-white font-heading font-bold text-sm flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-primary to-accent-gold flex items-center justify-center text-white font-heading font-bold text-sm flex-shrink-0">
               {testimonial.name
                 .split(" ")
                 .map((n) => n[0])
@@ -47,10 +47,10 @@ export default function TestimonialCard({
                 .slice(0, 2)}
             </div>
             <div>
-              <p className="text-pacame-white font-heading font-semibold text-sm">
+              <p className="text-ink font-heading font-semibold text-sm">
                 {testimonial.name}
               </p>
-              <p className="text-pacame-white/50 font-body text-xs">
+              <p className="text-ink/50 font-body text-xs">
                 {testimonial.role}, {testimonial.company}
               </p>
             </div>

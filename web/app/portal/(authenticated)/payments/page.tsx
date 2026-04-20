@@ -55,7 +55,7 @@ export default function PaymentsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-electric-violet" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
       </div>
     );
   }
@@ -63,10 +63,10 @@ export default function PaymentsPage() {
   if (error || !data) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-        <p className="text-pacame-white/60 font-body mb-4">{error ?? "Sin datos"}</p>
+        <p className="text-ink/60 font-body mb-4">{error ?? "Sin datos"}</p>
         <button
           onClick={() => { setLoading(true); setError(null); fetchPayments(); }}
-          className="text-sm text-electric-violet font-body hover:underline"
+          className="text-sm text-brand-primary font-body hover:underline"
         >
           Reintentar
         </button>
@@ -81,10 +81,10 @@ export default function PaymentsPage() {
       {/* Header */}
       <ScrollReveal>
         <div className="flex items-center gap-3 mb-1">
-          <Receipt className="w-6 h-6 text-olympus-gold" />
-          <h1 className="font-heading font-bold text-2xl text-pacame-white">Pagos</h1>
+          <Receipt className="w-6 h-6 text-accent-gold" />
+          <h1 className="font-heading font-bold text-2xl text-ink">Pagos</h1>
         </div>
-        <p className="text-sm text-pacame-white/50 font-body">
+        <p className="text-sm text-ink/50 font-body">
           Historial de facturacion y pagos
         </p>
       </ScrollReveal>
@@ -92,14 +92,14 @@ export default function PaymentsPage() {
       {/* Summary cards */}
       <StaggerContainer className="grid sm:grid-cols-2 gap-4" staggerDelay={0.06}>
         <StaggerItem>
-          <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-6">
+          <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-6">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-olympus-gold/10 flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-olympus-gold" />
+              <div className="w-10 h-10 rounded-xl bg-accent-gold/10 flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-accent-gold" />
               </div>
               <div>
-                <p className="text-[11px] text-pacame-white/40 font-body">Total invertido</p>
-                <p className="font-heading font-bold text-2xl text-pacame-white">
+                <p className="text-[11px] text-ink/40 font-body">Total invertido</p>
+                <p className="font-heading font-bold text-2xl text-ink">
                   {totalSpent.toLocaleString("es-ES", { minimumFractionDigits: 2 })}€
                 </p>
               </div>
@@ -107,14 +107,14 @@ export default function PaymentsPage() {
           </div>
         </StaggerItem>
         <StaggerItem>
-          <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-6">
+          <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-6">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-electric-violet/10 flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-electric-violet" />
+              <div className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center">
+                <Calendar className="w-5 h-5 text-brand-primary" />
               </div>
               <div>
-                <p className="text-[11px] text-pacame-white/40 font-body">Pagos realizados</p>
-                <p className="font-heading font-bold text-2xl text-pacame-white">{paymentsCount}</p>
+                <p className="text-[11px] text-ink/40 font-body">Pagos realizados</p>
+                <p className="font-heading font-bold text-2xl text-ink">{paymentsCount}</p>
               </div>
             </div>
           </div>
@@ -124,14 +124,14 @@ export default function PaymentsPage() {
       {/* Payments list */}
       <ScrollReveal delay={0.1}>
         {payments.length === 0 ? (
-          <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-12 text-center">
-            <Receipt className="w-12 h-12 text-pacame-white/10 mx-auto mb-3" />
-            <p className="text-sm text-pacame-white/30 font-body">Aun no hay pagos registrados</p>
+          <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-12 text-center">
+            <Receipt className="w-12 h-12 text-ink/10 mx-auto mb-3" />
+            <p className="text-sm text-ink/30 font-body">Aun no hay pagos registrados</p>
           </div>
         ) : (
-          <div className="bg-dark-card border border-white/[0.06] rounded-2xl overflow-hidden">
+          <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl overflow-hidden">
             {/* Table header - desktop */}
-            <div className="hidden sm:grid sm:grid-cols-12 gap-4 px-6 py-3 border-b border-white/[0.04] text-[10px] text-pacame-white/30 font-body uppercase tracking-wider">
+            <div className="hidden sm:grid sm:grid-cols-12 gap-4 px-6 py-3 border-b border-white/[0.04] text-[10px] text-ink/30 font-body uppercase tracking-wider">
               <span className="col-span-5">Concepto</span>
               <span className="col-span-2 text-center">Fecha</span>
               <span className="col-span-2 text-center">Estado</span>
@@ -151,13 +151,13 @@ export default function PaymentsPage() {
                     {/* Mobile layout */}
                     <div className="sm:hidden space-y-2">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm text-pacame-white font-body">{payment.description}</p>
-                        <span className="font-heading font-bold text-pacame-white">
+                        <p className="text-sm text-ink font-body">{payment.description}</p>
+                        <span className="font-heading font-bold text-ink">
                           {Number(payment.amount).toLocaleString("es-ES", { minimumFractionDigits: 2 })}€
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-[11px] text-pacame-white/30 font-body">
+                        <span className="text-[11px] text-ink/30 font-body">
                           {new Date(payment.date).toLocaleDateString("es-ES", {
                             day: "numeric",
                             month: "short",
@@ -176,10 +176,10 @@ export default function PaymentsPage() {
 
                     {/* Desktop layout */}
                     <div className="hidden sm:grid sm:grid-cols-12 gap-4 items-center">
-                      <p className="col-span-5 text-sm text-pacame-white font-body">
+                      <p className="col-span-5 text-sm text-ink font-body">
                         {payment.description}
                       </p>
-                      <span className="col-span-2 text-center text-xs text-pacame-white/40 font-body">
+                      <span className="col-span-2 text-center text-xs text-ink/40 font-body">
                         {new Date(payment.date).toLocaleDateString("es-ES", {
                           day: "numeric",
                           month: "short",
@@ -195,7 +195,7 @@ export default function PaymentsPage() {
                           {cfg.label}
                         </span>
                       </div>
-                      <span className="col-span-3 text-right font-heading font-bold text-pacame-white">
+                      <span className="col-span-3 text-right font-heading font-bold text-ink">
                         {Number(payment.amount).toLocaleString("es-ES", { minimumFractionDigits: 2 })}€
                       </span>
                     </div>

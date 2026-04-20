@@ -40,7 +40,7 @@ function PostCard({
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group block rounded-2xl bg-dark-card border border-white/[0.06] hover:border-white/10 overflow-hidden transition-all duration-300 hover:-translate-y-1"
+      className="group block rounded-2xl bg-paper-deep border border-ink/[0.06] hover:border-white/10 overflow-hidden transition-all duration-300 hover:-translate-y-1"
     >
       <div
         className={featured ? "h-1.5 w-full" : "h-1 w-full"}
@@ -60,31 +60,31 @@ function PostCard({
           >
             {post.category}
           </span>
-          <div className="flex items-center gap-1.5 text-xs text-pacame-white/40 font-body">
+          <div className="flex items-center gap-1.5 text-xs text-ink/40 font-body">
             <Clock className="w-3 h-3" />
             {post.readTime}
           </div>
           {featured && (
-            <span className="text-xs text-pacame-white/30 font-body">
+            <span className="text-xs text-ink/30 font-body">
               {post.date}
             </span>
           )}
         </div>
 
         <h3
-          className={`font-heading font-bold text-pacame-white leading-snug group-hover:text-electric-violet transition-colors ${featured ? "text-2xl mb-3" : "text-lg mb-3"}`}
+          className={`font-heading font-bold text-ink leading-snug group-hover:text-brand-primary transition-colors ${featured ? "text-2xl mb-3" : "text-lg mb-3"}`}
         >
           {post.title}
         </h3>
 
         <p
-          className={`text-sm text-pacame-white/60 font-body leading-relaxed ${featured ? "mb-6" : "mb-5 line-clamp-3"}`}
+          className={`text-sm text-ink/60 font-body leading-relaxed ${featured ? "mb-6" : "mb-5 line-clamp-3"}`}
         >
           {post.excerpt}
         </p>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-pacame-white/40 font-body">
+          <div className="flex items-center gap-2 text-xs text-ink/40 font-body">
             <span
               className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold font-heading"
               style={{
@@ -96,7 +96,7 @@ function PostCard({
             </span>
             {featured ? `por ${post.agentName}` : `${post.agentName} · ${post.date}`}
           </div>
-          <ArrowRight className="w-4 h-4 text-pacame-white/30 group-hover:text-electric-violet group-hover:translate-x-1 transition-all" />
+          <ArrowRight className="w-4 h-4 text-ink/30 group-hover:text-brand-primary group-hover:translate-x-1 transition-all" />
         </div>
       </div>
     </Link>
@@ -148,7 +148,7 @@ export default function BlogFilteredList({ posts }: { posts: BlogPost[] }) {
         <div className="absolute top-0 inset-x-0 section-divider" />
         <div className="max-w-6xl mx-auto px-6">
           {filtered.length === 0 && (
-            <p className="text-center text-pacame-white/40 font-body py-16">
+            <p className="text-center text-ink/40 font-body py-16">
               No hay articulos en esta categoria todavia.
             </p>
           )}

@@ -17,7 +17,7 @@ export default async function NpsPage({
   const { token } = await params;
 
   return (
-    <main className="min-h-screen bg-pacame-black flex items-center justify-center px-4 py-16">
+    <main className="min-h-screen bg-paper flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-2xl">
         <NpsForm token={token} />
       </div>

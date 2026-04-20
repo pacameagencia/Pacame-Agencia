@@ -123,7 +123,7 @@ export default async function ServiceDetailPage({ params }: Props) {
   const relatedItems = service.items.filter((i) => i.slug !== item.slug).slice(0, 2);
 
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       <BreadcrumbJsonLd
         items={[
           { name: "Inicio", url: "https://pacameagencia.com" },
@@ -138,37 +138,37 @@ export default async function ServiceDetailPage({ params }: Props) {
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm font-body text-pacame-white/30 mb-8">
-            <Link href="/servicios" className="hover:text-pacame-white/50 transition-colors">
+          <div className="flex items-center gap-2 text-sm font-body text-ink/30 mb-8">
+            <Link href="/servicios" className="hover:text-ink/50 transition-colors">
               Servicios
             </Link>
             <span>/</span>
-            <Link href={`/servicios#${service.id}`} className="hover:text-pacame-white/50 transition-colors">
+            <Link href={`/servicios#${service.id}`} className="hover:text-ink/50 transition-colors">
               {service.name}
             </Link>
             <span>/</span>
-            <span className="text-pacame-white/50">{item.name}</span>
+            <span className="text-ink/50">{item.name}</span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Left: Content */}
             <div className="lg:col-span-2">
               {item.featured && (
-                <span className="inline-block text-[11px] font-body font-semibold text-olympus-gold uppercase tracking-wider bg-olympus-gold/10 rounded-full px-3 py-1 mb-4 border border-olympus-gold/20">
+                <span className="inline-block text-[11px] font-body font-semibold text-accent-gold uppercase tracking-wider bg-accent-gold/10 rounded-full px-3 py-1 mb-4 border border-accent-gold/20">
                   Mas contratado
                 </span>
               )}
-              <h1 className="font-accent font-bold text-4xl sm:text-5xl text-pacame-white mb-4">
+              <h1 className="font-accent font-bold text-4xl sm:text-5xl text-ink mb-4">
                 {item.name}
               </h1>
-              <p className="text-xl text-pacame-white/60 font-body leading-relaxed mb-8">
+              <p className="text-xl text-ink/60 font-body leading-relaxed mb-8">
                 {item.longDescription}
               </p>
 
               {/* Who works on this */}
               {relatedAgents.length > 0 && (
                 <div className="flex items-center gap-3">
-                  <Users className="w-4 h-4 text-pacame-white/30" />
+                  <Users className="w-4 h-4 text-ink/30" />
                   <div className="flex items-center gap-2">
                     {relatedAgents.map((agent) => agent && (
                       <Link
@@ -180,7 +180,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                         {agent.name}
                       </Link>
                     ))}
-                    <span className="text-xs text-pacame-white/30 font-body">trabajan en esto</span>
+                    <span className="text-xs text-ink/30 font-body">trabajan en esto</span>
                   </div>
                 </div>
               )}
@@ -190,11 +190,11 @@ export default async function ServiceDetailPage({ params }: Props) {
             <div className="lg:col-span-1">
               <CardTilt tiltMaxAngle={6} scale={1.02}>
               <CardTiltContent>
-              <div className="rounded-2xl p-7 bg-dark-card border border-white/[0.06] sticky top-28 card-golden-shine">
-                <div className="font-heading font-bold text-3xl text-pacame-white mb-1">
+              <div className="rounded-2xl p-7 bg-paper-deep border border-ink/[0.06] sticky top-28 card-golden-shine">
+                <div className="font-heading font-bold text-3xl text-ink mb-1">
                   {item.price}
                 </div>
-                <div className="flex items-center gap-1.5 text-sm text-pacame-white/40 font-body mb-6">
+                <div className="flex items-center gap-1.5 text-sm text-ink/40 font-body mb-6">
                   <Clock className="w-3.5 h-3.5" />
                   {item.deadline}
                 </div>
@@ -209,7 +209,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                 </div>
                 <Link
                   href={`/contacto?service=${service.id}`}
-                  className="block text-center text-xs text-pacame-white/30 hover:text-pacame-white/50 font-body transition-colors"
+                  className="block text-center text-xs text-ink/30 hover:text-ink/50 font-body transition-colors"
                 >
                   o hablar primero sin compromiso
                 </Link>
@@ -226,16 +226,16 @@ export default async function ServiceDetailPage({ params }: Props) {
         <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-4xl mx-auto px-6">
           <ScrollReveal>
-          <h2 className="font-heading font-bold text-2xl text-pacame-white mb-8">
+          <h2 className="font-heading font-bold text-2xl text-ink mb-8">
             Que incluye
           </h2>
           </ScrollReveal>
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-4" staggerDelay={0.06}>
             {item.includes.map((inc) => (
               <StaggerItem key={inc}>
-              <div className="flex items-start gap-3 p-4 rounded-xl bg-dark-card border border-white/[0.04]">
-                <Check className="w-5 h-5 text-olympus-gold flex-shrink-0 mt-0.5" />
-                <span className="text-sm text-pacame-white/65 font-body">{inc}</span>
+              <div className="flex items-start gap-3 p-4 rounded-xl bg-paper-deep border border-white/[0.04]">
+                <Check className="w-5 h-5 text-accent-gold flex-shrink-0 mt-0.5" />
+                <span className="text-sm text-ink/65 font-body">{inc}</span>
               </div>
               </StaggerItem>
             ))}
@@ -243,14 +243,14 @@ export default async function ServiceDetailPage({ params }: Props) {
 
           {item.deliverables.length > 0 && (
             <div className="mt-10">
-              <h3 className="font-heading font-semibold text-lg text-pacame-white mb-5">
+              <h3 className="font-heading font-semibold text-lg text-ink mb-5">
                 Entregables exactos
               </h3>
               <div className="flex flex-wrap gap-2">
                 {item.deliverables.map((d) => (
                   <span
                     key={d}
-                    className="text-xs font-body px-3 py-1.5 rounded-full bg-electric-violet/8 text-olympus-gold/80 border border-olympus-gold/15"
+                    className="text-xs font-body px-3 py-1.5 rounded-full bg-brand-primary/8 text-accent-gold/80 border border-accent-gold/15"
                   >
                     {d}
                   </span>
@@ -267,7 +267,7 @@ export default async function ServiceDetailPage({ params }: Props) {
           <div className="px-6"><GoldenDivider variant="line" /></div>
           <div className="max-w-4xl mx-auto px-6">
             <ScrollReveal>
-            <h2 className="font-heading font-bold text-2xl text-pacame-white mb-10">
+            <h2 className="font-heading font-bold text-2xl text-ink mb-10">
               Como lo hacemos
             </h2>
             </ScrollReveal>
@@ -275,16 +275,16 @@ export default async function ServiceDetailPage({ params }: Props) {
               {item.process.map((step, i) => (
                 <ScrollReveal key={step.step} delay={i * 0.1}>
                 <div className="flex gap-5">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-olympus-gold/10 flex items-center justify-center">
-                    <span className="font-heading font-bold text-sm text-olympus-gold">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-accent-gold/10 flex items-center justify-center">
+                    <span className="font-heading font-bold text-sm text-accent-gold">
                       {i + 1}
                     </span>
                   </div>
                   <div className="pt-1">
-                    <h3 className="font-heading font-semibold text-lg text-pacame-white mb-1">
+                    <h3 className="font-heading font-semibold text-lg text-ink mb-1">
                       {step.step}
                     </h3>
-                    <p className="text-sm text-pacame-white/50 font-body">
+                    <p className="text-sm text-ink/50 font-body">
                       {step.description}
                     </p>
                   </div>
@@ -302,19 +302,19 @@ export default async function ServiceDetailPage({ params }: Props) {
           <div className="px-6"><GoldenDivider variant="line" /></div>
           <div className="max-w-4xl mx-auto px-6">
             <ScrollReveal>
-            <h2 className="font-heading font-bold text-2xl text-pacame-white mb-8">
+            <h2 className="font-heading font-bold text-2xl text-ink mb-8">
               Preguntas frecuentes
             </h2>
             </ScrollReveal>
             <div className="space-y-4">
               {item.faq.map((f, i) => (
                 <ScrollReveal key={f.q} delay={i * 0.08}>
-                <div className="rounded-2xl p-6 bg-dark-card border border-white/[0.06] card-golden-shine">
+                <div className="rounded-2xl p-6 bg-paper-deep border border-ink/[0.06] card-golden-shine">
                   <div className="flex items-start gap-3 mb-2">
-                    <HelpCircle className="w-5 h-5 text-olympus-gold flex-shrink-0 mt-0.5" />
-                    <h3 className="font-heading font-semibold text-pacame-white">{f.q}</h3>
+                    <HelpCircle className="w-5 h-5 text-accent-gold flex-shrink-0 mt-0.5" />
+                    <h3 className="font-heading font-semibold text-ink">{f.q}</h3>
                   </div>
-                  <p className="text-sm text-pacame-white/55 font-body pl-8">{f.a}</p>
+                  <p className="text-sm text-ink/55 font-body pl-8">{f.a}</p>
                 </div>
                 </ScrollReveal>
               ))}
@@ -329,7 +329,7 @@ export default async function ServiceDetailPage({ params }: Props) {
           <div className="px-6"><GoldenDivider variant="laurel" /></div>
           <div className="max-w-4xl mx-auto px-6">
             <ScrollReveal>
-            <h2 className="font-heading font-bold text-2xl text-pacame-white mb-8">
+            <h2 className="font-heading font-bold text-2xl text-ink mb-8">
               Tambien te puede interesar
             </h2>
             </ScrollReveal>
@@ -340,17 +340,17 @@ export default async function ServiceDetailPage({ params }: Props) {
                 <CardTiltContent>
                 <Link
                   href={`/servicios/${related.slug}`}
-                  className="group block rounded-2xl p-7 bg-dark-card border border-white/[0.06] hover:border-olympus-gold/20 transition-all duration-500 card-golden-shine"
+                  className="group block rounded-2xl p-7 bg-paper-deep border border-ink/[0.06] hover:border-accent-gold/20 transition-all duration-500 card-golden-shine"
                 >
-                  <h3 className="font-heading font-bold text-xl text-pacame-white mb-2">
+                  <h3 className="font-heading font-bold text-xl text-ink mb-2">
                     {related.name}
                   </h3>
-                  <p className="text-sm text-pacame-white/50 font-body mb-4">
+                  <p className="text-sm text-ink/50 font-body mb-4">
                     {related.description}
                   </p>
                   <div className="flex items-center justify-between">
-                    <span className="font-heading font-semibold text-pacame-white/70">{related.price}</span>
-                    <ArrowRight className="w-4 h-4 text-pacame-white/30 group-hover:translate-x-1 transition-transform" />
+                    <span className="font-heading font-semibold text-ink/70">{related.price}</span>
+                    <ArrowRight className="w-4 h-4 text-ink/30 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </Link>
                 </CardTiltContent>
@@ -363,12 +363,12 @@ export default async function ServiceDetailPage({ params }: Props) {
       )}
 
       {/* Final CTA */}
-      <section className="section-padding bg-pacame-black text-center">
+      <section className="section-padding bg-paper text-center">
         <ScrollReveal className="max-w-2xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
+          <h2 className="font-heading font-bold text-section text-ink mb-4 text-balance">
             Listo para empezar?
           </h2>
-          <p className="text-pacame-white/60 font-body mb-10 text-lg">
+          <p className="text-ink/60 font-body mb-10 text-lg">
             Contratalo ahora o hablamos primero. Sin compromiso.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -379,13 +379,13 @@ export default async function ServiceDetailPage({ params }: Props) {
                 gradientOpacity={0.8}
                 className="group min-w-[260px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
               >
-                <Link href={`/contacto?service=${service.id}`} className="flex items-center gap-2 text-pacame-white">
+                <Link href={`/contacto?service=${service.id}`} className="flex items-center gap-2 text-ink">
                   Hablar con el equipo
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </ShinyButton>
             </MagneticButton>
-            <Button variant="outline" size="xl" asChild className="rounded-full border-white/[0.08] hover:border-white/20">
+            <Button variant="outline" size="xl" asChild className="rounded-full border-ink/[0.08] hover:border-white/20">
               <Link href="/servicios">
                 Ver todos los servicios
               </Link>

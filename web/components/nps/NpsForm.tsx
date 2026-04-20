@@ -80,8 +80,8 @@ export default function NpsForm({ token }: { token: string }) {
 
   if (status === "loading") {
     return (
-      <div className="text-center py-20 text-pacame-white/50">
-        <Loader2 className="w-8 h-8 mx-auto mb-4 animate-spin text-olympus-gold" />
+      <div className="text-center py-20 text-ink/50">
+        <Loader2 className="w-8 h-8 mx-auto mb-4 animate-spin text-accent-gold" />
         Cargando encuesta...
       </div>
     );
@@ -89,18 +89,18 @@ export default function NpsForm({ token }: { token: string }) {
 
   if (status === "invalid") {
     return (
-      <div className="bg-dark-card border border-white/[0.08] rounded-2xl p-10 text-center">
-        <h1 className="text-2xl font-bold mb-3 text-pacame-white">Encuesta no encontrada</h1>
-        <p className="text-pacame-white/60 mb-6">
+      <div className="bg-paper-deep border border-ink/[0.08] rounded-2xl p-10 text-center">
+        <h1 className="text-2xl font-bold mb-3 text-ink">Encuesta no encontrada</h1>
+        <p className="text-ink/60 mb-6">
           El enlace no es valido o ha expirado. Si crees que es un error, escribenos a{" "}
-          <a className="text-olympus-gold" href="mailto:hola@pacameagencia.com">
+          <a className="text-accent-gold" href="mailto:hola@pacameagencia.com">
             hola@pacameagencia.com
           </a>
           .
         </p>
         <a
           href="/"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-olympus-gold text-pacame-black font-semibold text-sm"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-gold text-paper font-semibold text-sm"
         >
           Volver al inicio <ArrowRight className="w-4 h-4" />
         </a>
@@ -111,14 +111,14 @@ export default function NpsForm({ token }: { token: string }) {
   if (status === "already" || status === "submitted") {
     const isPromoter = finalCategory === "promoter";
     return (
-      <div className="bg-dark-card border border-white/[0.08] rounded-2xl p-10 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-olympus-gold/15 border border-olympus-gold/30 flex items-center justify-center mx-auto mb-5">
-          <Check className="w-8 h-8 text-olympus-gold" />
+      <div className="bg-paper-deep border border-ink/[0.08] rounded-2xl p-10 text-center">
+        <div className="w-16 h-16 rounded-2xl bg-accent-gold/15 border border-accent-gold/30 flex items-center justify-center mx-auto mb-5">
+          <Check className="w-8 h-8 text-accent-gold" />
         </div>
-        <h1 className="text-2xl font-bold mb-3 text-pacame-white">
+        <h1 className="text-2xl font-bold mb-3 text-ink">
           {status === "already" ? "Ya tenemos tu respuesta" : "Gracias por responder"}
         </h1>
-        <p className="text-pacame-white/60 mb-6 leading-relaxed">
+        <p className="text-ink/60 mb-6 leading-relaxed">
           {isPromoter
             ? "¡Gracias! Nos alegra muchisimo. Si puedes, comparte lo que te ha gustado con alguien que crees que le vendria bien PACAME."
             : "Tomamos nota. Cada respuesta nos ayuda a mejorar el servicio."}
@@ -128,7 +128,7 @@ export default function NpsForm({ token }: { token: string }) {
             href="https://g.page/r/pacameagencia/review"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-olympus-gold text-pacame-black font-semibold text-sm"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-gold text-paper font-semibold text-sm"
           >
             Dejar review en Google <ArrowRight className="w-4 h-4" />
           </a>
@@ -138,14 +138,14 @@ export default function NpsForm({ token }: { token: string }) {
   }
 
   return (
-    <div className="bg-dark-card border border-white/[0.08] rounded-2xl p-8 md:p-10">
-      <div className="text-xs uppercase tracking-[0.2em] text-olympus-gold/80 font-mono mb-3">
+    <div className="bg-paper-deep border border-ink/[0.08] rounded-2xl p-8 md:p-10">
+      <div className="text-xs uppercase tracking-[0.2em] text-accent-gold/80 font-mono mb-3">
         Encuesta PACAME
       </div>
-      <h1 className="text-3xl md:text-4xl font-bold text-pacame-white mb-3 leading-tight">
+      <h1 className="text-3xl md:text-4xl font-bold text-ink mb-3 leading-tight">
         ¿Que probabilidad hay de que nos recomiendes a alguien que conoces?
       </h1>
-      <p className="text-pacame-white/60 mb-8">
+      <p className="text-ink/60 mb-8">
         Del 0 (nada probable) al 10 (seguro que si). Solo 30 segundos.
       </p>
 
@@ -177,21 +177,21 @@ export default function NpsForm({ token }: { token: string }) {
           );
         })}
       </div>
-      <div className="flex justify-between text-[11px] text-pacame-white/40 mb-8 font-mono uppercase tracking-wider">
+      <div className="flex justify-between text-[11px] text-ink/40 mb-8 font-mono uppercase tracking-wider">
         <span>Nada probable</span>
         <span>Neutral</span>
         <span>Seguro</span>
       </div>
 
       {score !== null && (
-        <div className="text-center mb-6 text-pacame-white/70 text-sm">
-          Seleccionaste <strong className="text-olympus-gold">{score}</strong> —{" "}
+        <div className="text-center mb-6 text-ink/70 text-sm">
+          Seleccionaste <strong className="text-accent-gold">{score}</strong> —{" "}
           {SCORE_DESCRIPTORS[score]}
         </div>
       )}
 
-      <label className="block text-sm text-pacame-white/70 mb-2 font-medium">
-        ¿Por que ese numero? <span className="text-pacame-white/40">(opcional, pero nos ayuda)</span>
+      <label className="block text-sm text-ink/70 mb-2 font-medium">
+        ¿Por que ese numero? <span className="text-ink/40">(opcional, pero nos ayuda)</span>
       </label>
       <textarea
         value={feedback}
@@ -207,7 +207,7 @@ export default function NpsForm({ token }: { token: string }) {
         }
         rows={4}
         maxLength={2000}
-        className="w-full bg-white/[0.02] border border-white/[0.08] rounded-xl px-4 py-3 text-pacame-white placeholder:text-pacame-white/30 text-sm outline-none focus:border-olympus-gold/40 transition mb-6"
+        className="w-full bg-white/[0.02] border border-ink/[0.08] rounded-xl px-4 py-3 text-ink placeholder:text-ink/30 text-sm outline-none focus:border-accent-gold/40 transition mb-6"
       />
 
       {errorMsg && (
@@ -220,7 +220,7 @@ export default function NpsForm({ token }: { token: string }) {
         type="button"
         disabled={score === null || status === "submitting"}
         onClick={submit}
-        className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-olympus-gold text-pacame-black font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed transition hover:brightness-110"
+        className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-accent-gold text-paper font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed transition hover:brightness-110"
       >
         {status === "submitting" ? (
           <>
@@ -233,7 +233,7 @@ export default function NpsForm({ token }: { token: string }) {
         )}
       </button>
 
-      <p className="text-[11px] text-pacame-white/40 mt-6">
+      <p className="text-[11px] text-ink/40 mt-6">
         Tus datos se guardan cifrados. Nunca los compartimos con terceros. Si marcas 0-6, Pablo
         recibe un aviso para escribirte y entender que ha fallado.
       </p>

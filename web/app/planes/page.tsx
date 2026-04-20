@@ -78,34 +78,34 @@ export default async function PlanesPage() {
   const { plans, apps } = await fetchPlansAndApps();
 
   return (
-    <div className="min-h-screen bg-pacame-black text-pacame-white">
+    <div className="min-h-screen bg-paper text-ink">
       {/* Hero */}
       <section className="px-4 pt-24 pb-16 text-center">
         <div className="max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 text-xs font-body font-semibold uppercase tracking-wider text-olympus-gold mb-5">
+          <div className="inline-flex items-center gap-2 text-xs font-body font-semibold uppercase tracking-wider text-accent-gold mb-5">
             <Sparkles className="w-4 h-4" />
             Planes PACAME
           </div>
           <h1 className="font-heading font-bold text-4xl md:text-6xl leading-tight mb-5">
             Tu equipo digital completo.
             <br />
-            <span className="text-olympus-gold">
+            <span className="text-accent-gold">
               Mucho menos de lo que pagarias a una agencia.
             </span>
           </h1>
-          <p className="text-pacame-white/60 font-body text-lg max-w-2xl mx-auto mb-8">
+          <p className="text-ink/60 font-body text-lg max-w-2xl mx-auto mb-8">
             10 agentes IA especialistas + Pablo supervisando. Web, SEO, RRSS,
             Ads, Branding y Apps productizadas. Desde 29€/mes.
           </p>
 
           {/* Trust row */}
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm font-body text-pacame-white/60">
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm font-body text-ink/60">
             <div className="flex items-center gap-1.5">
-              <Star className="w-4 h-4 text-olympus-gold fill-olympus-gold" />
+              <Star className="w-4 h-4 text-accent-gold fill-accent-gold" />
               <span>4.9/5 (500+ PYMEs)</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <Shield className="w-4 h-4 text-olympus-gold" />
+              <Shield className="w-4 h-4 text-accent-gold" />
               <span>Garantia 7 dias</span>
             </div>
             <div>Sin permanencia</div>
@@ -117,7 +117,7 @@ export default async function PlanesPage() {
       <section className="px-4 pb-16">
         <div className="max-w-7xl mx-auto">
           {plans.length === 0 ? (
-            <p className="text-center text-pacame-white/50 font-body">
+            <p className="text-center text-ink/50 font-body">
               No hay planes disponibles ahora mismo.
             </p>
           ) : (
@@ -138,10 +138,10 @@ export default async function PlanesPage() {
       <section className="px-4 py-20 bg-gradient-to-b from-transparent to-white/[0.02]">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="font-heading font-bold text-3xl md:text-4xl text-pacame-white mb-2">
+            <h2 className="font-heading font-bold text-3xl md:text-4xl text-ink mb-2">
               Preguntas frecuentes
             </h2>
-            <p className="text-pacame-white/60 font-body">
+            <p className="text-ink/60 font-body">
               Todo lo que quieres saber antes de empezar.
             </p>
           </div>
@@ -149,17 +149,17 @@ export default async function PlanesPage() {
             {faqs.map((f, i) => (
               <details
                 key={i}
-                className="group rounded-2xl p-5 bg-dark-card border border-white/[0.06] hover:border-white/[0.12] transition"
+                className="group rounded-2xl p-5 bg-paper-deep border border-ink/[0.06] hover:border-ink/[0.12] transition"
               >
                 <summary className="flex items-center justify-between cursor-pointer list-none">
-                  <span className="font-heading font-semibold text-pacame-white">
+                  <span className="font-heading font-semibold text-ink">
                     {f.q}
                   </span>
-                  <span className="text-olympus-gold text-xl transition group-open:rotate-45">
+                  <span className="text-accent-gold text-xl transition group-open:rotate-45">
                     +
                   </span>
                 </summary>
-                <p className="text-pacame-white/60 font-body text-sm mt-3 leading-relaxed">
+                <p className="text-ink/60 font-body text-sm mt-3 leading-relaxed">
                   {f.a}
                 </p>
               </details>
@@ -171,13 +171,13 @@ export default async function PlanesPage() {
       {/* Final CTA */}
       <section className="px-4 py-20 text-center">
         <div className="max-w-2xl mx-auto">
-          <h2 className="font-heading font-bold text-3xl md:text-4xl text-pacame-white mb-3">
+          <h2 className="font-heading font-bold text-3xl md:text-4xl text-ink mb-3">
             Empieza hoy. Sin riesgo.
           </h2>
-          <p className="text-pacame-white/60 font-body mb-6">
+          <p className="text-ink/60 font-body mb-6">
             7 dias de garantia. Si no te convence, te devolvemos el dinero.
           </p>
-          <p className="text-olympus-gold font-body text-sm">
+          <p className="text-accent-gold font-body text-sm">
             +500 PYMEs ya confian en PACAME
           </p>
         </div>

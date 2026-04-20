@@ -183,8 +183,8 @@ export default function LeadsPage() {
     <div className="space-y-6 max-w-7xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading font-bold text-2xl text-pacame-white">Leads</h1>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">
+          <h1 className="font-heading font-bold text-2xl text-ink">Leads</h1>
+          <p className="text-sm text-ink/40 font-body mt-1">
             {loading ? "Cargando..." : `${leads.length} leads en pipeline · Valor estimado: ${totalValue.toLocaleString("es-ES")}€`}
           </p>
         </div>
@@ -204,13 +204,13 @@ export default function LeadsPage() {
             onClick={() => setFilter(s.key === filter ? "all" : s.key)}
             className={`rounded-xl p-3 text-center transition-all border ${
               filter === s.key
-                ? "bg-electric-violet/10 border-electric-violet/30"
-                : "bg-dark-card border-white/[0.06] hover:border-white/10"
+                ? "bg-brand-primary/10 border-brand-primary/30"
+                : "bg-paper-deep border-ink/[0.06] hover:border-white/10"
             }`}
           >
             <div className="text-lg">{s.icon}</div>
-            <div className="text-xl font-heading font-bold text-pacame-white mt-1">{pipelineCounts[s.key] || 0}</div>
-            <div className="text-[10px] text-pacame-white/40 font-body">{s.label}</div>
+            <div className="text-xl font-heading font-bold text-ink mt-1">{pipelineCounts[s.key] || 0}</div>
+            <div className="text-[10px] text-ink/40 font-body">{s.label}</div>
           </button>
         ))}
       </div>
@@ -226,13 +226,13 @@ export default function LeadsPage() {
             onClick={() => setFilter(f.key)}
             className={`px-3 py-1.5 rounded-lg text-xs font-body transition-all ${
               filter === f.key
-                ? "bg-electric-violet/20 text-electric-violet border border-electric-violet/30"
-                : "text-pacame-white/40 border border-white/[0.06] hover:border-white/10"
+                ? "bg-brand-primary/20 text-brand-primary border border-brand-primary/30"
+                : "text-ink/40 border border-ink/[0.06] hover:border-white/10"
             }`}
           >
             {f.label}
             {f.key !== "all" && pipelineCounts[f.key] > 0 && (
-              <span className="ml-1 text-pacame-white/30">{pipelineCounts[f.key]}</span>
+              <span className="ml-1 text-ink/30">{pipelineCounts[f.key]}</span>
             )}
           </button>
         ))}
@@ -241,9 +241,9 @@ export default function LeadsPage() {
       {/* Lead cards */}
       <div className="space-y-3">
         {!loading && filteredLeads.length === 0 && (
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
-            <UserPlus className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
-            <p className="text-sm text-pacame-white/40 font-body">Sin leads{filter !== "all" ? ` con estado "${statusLabels[filter]?.label || filter}"` : ""}</p>
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-12 text-center">
+            <UserPlus className="w-8 h-8 text-ink/20 mx-auto mb-3" />
+            <p className="text-sm text-ink/40 font-body">Sin leads{filter !== "all" ? ` con estado "${statusLabels[filter]?.label || filter}"` : ""}</p>
           </div>
         )}
         {filteredLeads.map((lead) => {
@@ -253,11 +253,11 @@ export default function LeadsPage() {
           const monthly = lead.sage_analysis?.estimated_value_monthly || 0;
           const canConvert = ["qualified", "proposal_sent", "proposal_viewed", "negotiating"].includes(lead.status);
           return (
-            <div key={lead.id} className="group rounded-2xl bg-dark-card border border-white/[0.06] hover:border-white/10 p-5 transition-all">
+            <div key={lead.id} className="group rounded-2xl bg-paper-deep border border-ink/[0.06] hover:border-white/10 p-5 transition-all">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-heading font-semibold text-pacame-white">{lead.name}</h3>
+                    <h3 className="font-heading font-semibold text-ink">{lead.name}</h3>
                     <ScoreBadge score={lead.score} />
 
                     {/* Status dropdown */}
@@ -271,7 +271,7 @@ export default function LeadsPage() {
                         <ChevronDown className="w-3 h-3" />
                       </button>
                       {statusDropdownId === lead.id && (
-                        <div className="absolute top-full left-0 mt-1 rounded-lg bg-dark-card border border-white/[0.1] shadow-xl z-10 overflow-hidden min-w-[160px]">
+                        <div className="absolute top-full left-0 mt-1 rounded-lg bg-paper-deep border border-ink/[0.1] shadow-xl z-10 overflow-hidden min-w-[160px]">
                           {Object.entries(statusLabels).map(([key, val]) => (
                             <button
                               key={key}
@@ -290,40 +290,40 @@ export default function LeadsPage() {
                     </div>
 
                     {lead.source && (
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.05] text-pacame-white/30 font-body">{lead.source}</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.05] text-ink/30 font-body">{lead.source}</span>
                     )}
                   </div>
 
                   <div className="flex items-center gap-4 mb-3 flex-wrap">
                     {lead.business_name && (
-                      <span className="flex items-center gap-1.5 text-xs text-pacame-white/50 font-body">
+                      <span className="flex items-center gap-1.5 text-xs text-ink/50 font-body">
                         <Building2 className="w-3 h-3" />{lead.business_name}
                       </span>
                     )}
                     {lead.email && (
-                      <a href={`mailto:${lead.email}`} className="flex items-center gap-1.5 text-xs text-pacame-white/50 hover:text-electric-violet/70 font-body transition-colors">
+                      <a href={`mailto:${lead.email}`} className="flex items-center gap-1.5 text-xs text-ink/50 hover:text-brand-primary/70 font-body transition-colors">
                         <Mail className="w-3 h-3" />{lead.email}
                       </a>
                     )}
                     {lead.phone && (
-                      <a href={`tel:${lead.phone}`} className="flex items-center gap-1.5 text-xs text-pacame-white/50 hover:text-electric-violet/70 font-body transition-colors">
+                      <a href={`tel:${lead.phone}`} className="flex items-center gap-1.5 text-xs text-ink/50 hover:text-brand-primary/70 font-body transition-colors">
                         <Phone className="w-3 h-3" />{lead.phone}
                       </a>
                     )}
-                    <span className="flex items-center gap-1.5 text-xs text-pacame-white/30 font-body">
+                    <span className="flex items-center gap-1.5 text-xs text-ink/30 font-body">
                       <Clock className="w-3 h-3" />
                       {new Date(lead.created_at).toLocaleDateString("es-ES")}
                     </span>
                   </div>
 
-                  {lead.problem && <p className="text-sm text-pacame-white/60 font-body mb-3">{lead.problem}</p>}
+                  {lead.problem && <p className="text-sm text-ink/60 font-body mb-3">{lead.problem}</p>}
 
                   <div className="flex items-center gap-2 flex-wrap">
                     {services.map((s: string) => (
-                      <span key={s} className="text-[10px] px-2 py-0.5 rounded-full bg-electric-violet/10 text-electric-violet/70 font-body">{s}</span>
+                      <span key={s} className="text-[10px] px-2 py-0.5 rounded-full bg-brand-primary/10 text-brand-primary/70 font-body">{s}</span>
                     ))}
                     {lead.budget && (
-                      <span className="text-xs text-pacame-white/30 font-body ml-2">Presupuesto: {lead.budget}</span>
+                      <span className="text-xs text-ink/30 font-body ml-2">Presupuesto: {lead.budget}</span>
                     )}
                   </div>
                 </div>
@@ -331,8 +331,8 @@ export default function LeadsPage() {
                 <div className="flex flex-col items-end gap-2 flex-shrink-0">
                   {(onetime > 0 || monthly > 0) && (
                     <div className="text-right">
-                      {onetime > 0 && <div className="text-sm font-heading font-bold text-lime-pulse">{onetime.toLocaleString("es-ES")}€</div>}
-                      {monthly > 0 && <div className="text-[11px] text-pacame-white/40 font-body">+ {monthly.toLocaleString("es-ES")}€/mes</div>}
+                      {onetime > 0 && <div className="text-sm font-heading font-bold text-mint">{onetime.toLocaleString("es-ES")}€</div>}
+                      {monthly > 0 && <div className="text-[11px] text-ink/40 font-body">+ {monthly.toLocaleString("es-ES")}€/mes</div>}
                     </div>
                   )}
 
@@ -342,13 +342,13 @@ export default function LeadsPage() {
                       <button
                         onClick={() => callLead(lead)}
                         disabled={callingLead === lead.id}
-                        className="p-1.5 rounded-lg bg-electric-violet/10 hover:bg-electric-violet/20 transition-colors disabled:opacity-50"
+                        className="p-1.5 rounded-lg bg-brand-primary/10 hover:bg-brand-primary/20 transition-colors disabled:opacity-50"
                         title="Llamar con Sage IA"
                       >
                         {callingLead === lead.id ? (
-                          <Loader2 className="w-3.5 h-3.5 text-electric-violet animate-spin" />
+                          <Loader2 className="w-3.5 h-3.5 text-brand-primary animate-spin" />
                         ) : (
-                          <Phone className="w-3.5 h-3.5 text-electric-violet" />
+                          <Phone className="w-3.5 h-3.5 text-brand-primary" />
                         )}
                       </button>
                     )}

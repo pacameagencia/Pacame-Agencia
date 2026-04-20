@@ -26,7 +26,7 @@ function actionBadge(action: string): string {
   if (action.endsWith(".update")) return "text-blue-400 bg-blue-400/10";
   if (action.endsWith(".create")) return "text-blue-400 bg-blue-400/10";
   if (action.endsWith(".logout"))
-    return "text-pacame-white/60 bg-white/5";
+    return "text-ink/60 bg-white/5";
   return "text-yellow-400 bg-yellow-400/10";
 }
 
@@ -92,57 +92,57 @@ export default function AuditPage() {
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold flex items-center gap-3 text-pacame-white">
-            <Shield className="w-7 h-7 text-olympus-gold" />
+          <h1 className="text-3xl font-bold flex items-center gap-3 text-ink">
+            <Shield className="w-7 h-7 text-accent-gold" />
             Audit log
           </h1>
-          <p className="text-sm text-pacame-white/50 mt-1">
+          <p className="text-sm text-ink/50 mt-1">
             Ultimas 100 acciones sensibles registradas.
           </p>
         </div>
       </div>
 
       {/* Filtros */}
-      <div className="bg-dark-elevated border border-white/[0.06] rounded-xl p-4 mb-6">
+      <div className="bg-paper-soft border border-ink/[0.06] rounded-xl p-4 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
           <input
             type="text"
             placeholder="actor_id"
             value={filterActorId}
             onChange={(e) => setFilterActorId(e.target.value)}
-            className="px-3 py-2 bg-pacame-black border border-white/[0.08] rounded-lg text-sm text-pacame-white placeholder:text-pacame-white/30 focus:outline-none focus:border-electric-violet/50"
+            className="px-3 py-2 bg-paper border border-ink/[0.08] rounded-lg text-sm text-ink placeholder:text-ink/30 focus:outline-none focus:border-brand-primary/50"
           />
           <input
             type="text"
             placeholder="action (substring)"
             value={filterAction}
             onChange={(e) => setFilterAction(e.target.value)}
-            className="px-3 py-2 bg-pacame-black border border-white/[0.08] rounded-lg text-sm text-pacame-white placeholder:text-pacame-white/30 focus:outline-none focus:border-electric-violet/50"
+            className="px-3 py-2 bg-paper border border-ink/[0.08] rounded-lg text-sm text-ink placeholder:text-ink/30 focus:outline-none focus:border-brand-primary/50"
           />
           <input
             type="text"
             placeholder="resource_type"
             value={filterResourceType}
             onChange={(e) => setFilterResourceType(e.target.value)}
-            className="px-3 py-2 bg-pacame-black border border-white/[0.08] rounded-lg text-sm text-pacame-white placeholder:text-pacame-white/30 focus:outline-none focus:border-electric-violet/50"
+            className="px-3 py-2 bg-paper border border-ink/[0.08] rounded-lg text-sm text-ink placeholder:text-ink/30 focus:outline-none focus:border-brand-primary/50"
           />
           <input
             type="date"
             value={filterFrom}
             onChange={(e) => setFilterFrom(e.target.value)}
-            className="px-3 py-2 bg-pacame-black border border-white/[0.08] rounded-lg text-sm text-pacame-white focus:outline-none focus:border-electric-violet/50"
+            className="px-3 py-2 bg-paper border border-ink/[0.08] rounded-lg text-sm text-ink focus:outline-none focus:border-brand-primary/50"
           />
           <input
             type="date"
             value={filterTo}
             onChange={(e) => setFilterTo(e.target.value)}
-            className="px-3 py-2 bg-pacame-black border border-white/[0.08] rounded-lg text-sm text-pacame-white focus:outline-none focus:border-electric-violet/50"
+            className="px-3 py-2 bg-paper border border-ink/[0.08] rounded-lg text-sm text-ink focus:outline-none focus:border-brand-primary/50"
           />
         </div>
         <div className="flex gap-2 mt-3">
           <button
             onClick={load}
-            className="flex items-center gap-2 px-4 py-2 bg-electric-violet/20 hover:bg-electric-violet/30 border border-electric-violet/30 rounded-lg text-sm text-electric-violet font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-brand-primary/20 hover:bg-brand-primary/30 border border-brand-primary/30 rounded-lg text-sm text-brand-primary font-medium transition-colors"
           >
             <Search className="w-4 h-4" />
             Filtrar
@@ -152,7 +152,7 @@ export default function AuditPage() {
               resetFilters();
               void load();
             }}
-            className="px-4 py-2 text-sm text-pacame-white/60 hover:text-pacame-white transition-colors"
+            className="px-4 py-2 text-sm text-ink/60 hover:text-ink transition-colors"
           >
             Limpiar
           </button>
@@ -167,10 +167,10 @@ export default function AuditPage() {
       )}
 
       {/* Tabla */}
-      <div className="bg-dark-elevated border border-white/[0.06] rounded-xl overflow-hidden">
+      <div className="bg-paper-soft border border-ink/[0.06] rounded-xl overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-white/[0.02] border-b border-white/[0.06]">
-            <tr className="text-left text-pacame-white/60">
+          <thead className="bg-white/[0.02] border-b border-ink/[0.06]">
+            <tr className="text-left text-ink/60">
               <th className="px-4 py-3 font-medium">Cuando</th>
               <th className="px-4 py-3 font-medium">Actor</th>
               <th className="px-4 py-3 font-medium">Accion</th>
@@ -182,26 +182,26 @@ export default function AuditPage() {
           <tbody className="divide-y divide-white/[0.04]">
             {loading && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-pacame-white/40">
+                <td colSpan={6} className="px-4 py-8 text-center text-ink/40">
                   Cargando...
                 </td>
               </tr>
             )}
             {!loading && entries.length === 0 && !error && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-pacame-white/40">
+                <td colSpan={6} className="px-4 py-8 text-center text-ink/40">
                   Sin entradas.
                 </td>
               </tr>
             )}
             {entries.map((e) => (
               <tr key={e.id} className="hover:bg-white/[0.02] transition-colors">
-                <td className="px-4 py-3 text-pacame-white/60 whitespace-nowrap">
+                <td className="px-4 py-3 text-ink/60 whitespace-nowrap">
                   {new Date(e.created_at).toLocaleString("es-ES")}
                 </td>
-                <td className="px-4 py-3 text-pacame-white">
+                <td className="px-4 py-3 text-ink">
                   <div className="font-medium">{e.actor_id || "—"}</div>
-                  <div className="text-xs text-pacame-white/40">{e.actor_type}</div>
+                  <div className="text-xs text-ink/40">{e.actor_type}</div>
                 </td>
                 <td className="px-4 py-3">
                   <span
@@ -212,11 +212,11 @@ export default function AuditPage() {
                     {e.action}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-pacame-white/60">
+                <td className="px-4 py-3 text-ink/60">
                   {e.resource_type ? (
                     <>
                       <div>{e.resource_type}</div>
-                      <div className="text-xs text-pacame-white/40 truncate max-w-[200px]">
+                      <div className="text-xs text-ink/40 truncate max-w-[200px]">
                         {e.resource_id || "—"}
                       </div>
                     </>
@@ -224,13 +224,13 @@ export default function AuditPage() {
                     "—"
                   )}
                 </td>
-                <td className="px-4 py-3 text-pacame-white/50 font-mono text-xs">
+                <td className="px-4 py-3 text-ink/50 font-mono text-xs">
                   {e.ip || "—"}
                 </td>
                 <td className="px-4 py-3 text-right">
                   <button
                     onClick={() => setModalEntry(e)}
-                    className="text-xs text-electric-violet hover:underline"
+                    className="text-xs text-brand-primary hover:underline"
                   >
                     ver metadata
                   </button>
@@ -248,27 +248,27 @@ export default function AuditPage() {
           onClick={() => setModalEntry(null)}
         >
           <div
-            className="bg-dark-elevated border border-white/[0.08] rounded-xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
+            className="bg-paper-soft border border-ink/[0.08] rounded-xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-ink/[0.06]">
               <div>
-                <div className="text-sm text-pacame-white/50">
+                <div className="text-sm text-ink/50">
                   {modalEntry.action}
                 </div>
-                <div className="text-xs text-pacame-white/30 mt-0.5">
+                <div className="text-xs text-ink/30 mt-0.5">
                   {new Date(modalEntry.created_at).toLocaleString("es-ES")}
                 </div>
               </div>
               <button
                 onClick={() => setModalEntry(null)}
-                className="text-pacame-white/40 hover:text-pacame-white"
+                className="text-ink/40 hover:text-ink"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
             <div className="p-5 overflow-auto">
-              <pre className="text-xs text-pacame-white/80 font-mono whitespace-pre-wrap break-all">
+              <pre className="text-xs text-ink/80 font-mono whitespace-pre-wrap break-all">
                 {JSON.stringify(
                   {
                     id: modalEntry.id,

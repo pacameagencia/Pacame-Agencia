@@ -52,7 +52,7 @@ export default async function OrderFormPage({
     // Fallback — allow empty submission
     return (
       <div className="max-w-2xl mx-auto p-6">
-        <p className="text-pacame-white">
+        <p className="text-ink">
           Servicio no encontrado. Ya hemos avisado a Pablo para que te atienda personalmente.
         </p>
       </div>
@@ -63,27 +63,27 @@ export default async function OrderFormPage({
     <div className="max-w-2xl mx-auto p-6">
       <Link
         href="/portal/orders"
-        className="inline-flex items-center gap-2 text-sm text-pacame-white/50 hover:text-pacame-white/80 font-body mb-6 transition"
+        className="inline-flex items-center gap-2 text-sm text-ink/50 hover:text-ink/80 font-body mb-6 transition"
       >
         <ArrowLeft className="w-4 h-4" />
         Mis pedidos
       </Link>
 
-      <div className="mb-6 flex items-center gap-2 text-xs font-body font-semibold text-olympus-gold uppercase tracking-wider bg-olympus-gold/10 rounded-full px-3 py-1 border border-olympus-gold/20 w-fit">
+      <div className="mb-6 flex items-center gap-2 text-xs font-body font-semibold text-accent-gold uppercase tracking-wider bg-accent-gold/10 rounded-full px-3 py-1 border border-accent-gold/20 w-fit">
         <Zap className="w-3 h-3" />
         Paso final — {catalog.delivery_sla_hours}h hasta tu entregable
       </div>
 
-      <h1 className="font-heading font-bold text-3xl text-pacame-white mb-2">
+      <h1 className="font-heading font-bold text-3xl text-ink mb-2">
         {catalog.name}
       </h1>
-      <p className="text-pacame-white/60 font-body mb-8">
+      <p className="text-ink/60 font-body mb-8">
         {catalog.tagline}. Cuentanos los detalles y arrancamos.
       </p>
 
-      <div className="rounded-2xl p-6 sm:p-8 bg-dark-card border border-white/[0.06]">
-        <div className="mb-6 flex items-center gap-2 text-sm font-body text-pacame-white/70">
-          <Sparkles className="w-4 h-4 text-olympus-gold" />
+      <div className="rounded-2xl p-6 sm:p-8 bg-paper-deep border border-ink/[0.06]">
+        <div className="mb-6 flex items-center gap-2 text-sm font-body text-ink/70">
+          <Sparkles className="w-4 h-4 text-accent-gold" />
           <span>
             Este formulario tarda 60 segundos. El agente empieza justo despues.
           </span>

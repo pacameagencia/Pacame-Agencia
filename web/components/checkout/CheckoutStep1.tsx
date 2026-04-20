@@ -17,9 +17,9 @@ interface CheckoutStep1Props {
 }
 
 const INPUT_CLASS =
-  "w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white placeholder:text-pacame-white/25 font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors";
+  "w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink placeholder:text-ink/25 font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors";
 
-const LABEL_CLASS = "text-sm text-pacame-white/70 font-body mb-2 block";
+const LABEL_CLASS = "text-sm text-ink/70 font-body mb-2 block";
 
 export default function CheckoutStep1({
   data,
@@ -42,10 +42,10 @@ export default function CheckoutStep1({
       transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
     >
       <div className="mb-8">
-        <h2 className="text-subsection font-heading text-pacame-white">
+        <h2 className="text-subsection font-heading text-ink">
           Cuentanos sobre ti
         </h2>
-        <p className="mt-2 text-sm font-body text-pacame-white/50">
+        <p className="mt-2 text-sm font-body text-ink/50">
           Necesitamos algunos datos para personalizar tu experiencia.
         </p>
       </div>
@@ -54,10 +54,10 @@ export default function CheckoutStep1({
         {/* Name */}
         <div>
           <label htmlFor="checkout-name" className={LABEL_CLASS}>
-            Nombre completo <span className="text-rose-alert">*</span>
+            Nombre completo <span className="text-accent-burgundy-soft">*</span>
           </label>
           <div className="relative">
-            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/20 pointer-events-none" />
+            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/20 pointer-events-none" />
             <input
               id="checkout-name"
               type="text"
@@ -74,10 +74,10 @@ export default function CheckoutStep1({
         {/* Email */}
         <div>
           <label htmlFor="checkout-email" className={LABEL_CLASS}>
-            Email profesional <span className="text-rose-alert">*</span>
+            Email profesional <span className="text-accent-burgundy-soft">*</span>
           </label>
           <div className="relative">
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/20 pointer-events-none" />
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/20 pointer-events-none" />
             <input
               id="checkout-email"
               type="email"
@@ -95,12 +95,12 @@ export default function CheckoutStep1({
         <div>
           <label htmlFor="checkout-phone" className={LABEL_CLASS}>
             Telefono{" "}
-            <span className="text-pacame-white/30 font-normal">
+            <span className="text-ink/30 font-normal">
               (recomendado)
             </span>
           </label>
           <div className="relative">
-            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/20 pointer-events-none" />
+            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/20 pointer-events-none" />
             <input
               id="checkout-phone"
               type="tel"

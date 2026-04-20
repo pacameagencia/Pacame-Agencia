@@ -102,24 +102,24 @@ export default function SieteErroresPage() {
   }
 
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       {/* Hero */}
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0 bg-grid" />
         <div className="absolute top-1/4 left-1/3 w-[500px] h-[300px] bg-red-500/8 rounded-full blur-[140px] pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-body text-pacame-white/60 mb-6">
-            <AlertTriangle className="w-3.5 h-3.5 text-amber-signal" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-body text-ink/60 mb-6">
+            <AlertTriangle className="w-3.5 h-3.5 text-accent-gold" />
             Guia gratuita
           </div>
 
-          <h1 className="font-heading font-bold text-[clamp(2rem,5vw,3.5rem)] text-pacame-white leading-tight mb-6">
+          <h1 className="font-heading font-bold text-[clamp(2rem,5vw,3.5rem)] text-ink leading-tight mb-6">
             7 errores que hacen que tu web
             <br />
             <span className="text-red-400">pierda clientes cada dia.</span>
           </h1>
-          <p className="text-lg text-pacame-white/60 font-body max-w-xl mx-auto mb-10">
+          <p className="text-lg text-ink/60 font-body max-w-xl mx-auto mb-10">
             El 78% de las PYMEs en Espana comete al menos 3 de estos errores.
             Lee esta guia en 5 minutos y descubre cuales te afectan a ti.
           </p>
@@ -138,18 +138,18 @@ export default function SieteErroresPage() {
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-4 mb-3">
-                    <h2 className="font-heading font-bold text-lg text-pacame-white">{error.title}</h2>
+                    <h2 className="font-heading font-bold text-lg text-ink">{error.title}</h2>
                     <div className="flex-shrink-0 text-right">
                       <div className="font-heading font-bold text-xl text-red-400">{error.stat}</div>
-                      <div className="text-[10px] text-pacame-white/50 font-body">{error.statLabel}</div>
+                      <div className="text-[10px] text-ink/50 font-body">{error.statLabel}</div>
                     </div>
                   </div>
 
-                  <p className="text-sm text-pacame-white/50 font-body mb-4 leading-relaxed">{error.problem}</p>
+                  <p className="text-sm text-ink/50 font-body mb-4 leading-relaxed">{error.problem}</p>
 
-                  <div className="flex items-start gap-2 p-3 rounded-xl bg-lime-pulse/5 border border-lime-pulse/10">
-                    <CheckCircle2 className="w-4 h-4 text-lime-pulse mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-lime-pulse/80 font-body">{error.solution}</p>
+                  <div className="flex items-start gap-2 p-3 rounded-xl bg-mint/5 border border-mint/10">
+                    <CheckCircle2 className="w-4 h-4 text-mint mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-mint/80 font-body">{error.solution}</p>
                   </div>
                 </div>
               </div>
@@ -200,7 +200,7 @@ export default function SieteErroresPage() {
                     type="submit"
                     variant="secondary"
                     size="lg"
-                    className="bg-white text-pacame-black hover:bg-white/90 font-heading font-bold"
+                    className="bg-white text-paper hover:bg-white/90 font-heading font-bold"
                     disabled={state === "sending"}
                   >
                     {state === "sending" ? (
@@ -220,7 +220,7 @@ export default function SieteErroresPage() {
 
         {/* After the CTA, additional trust elements */}
         <div className="mt-8 text-center">
-          <p className="text-xs text-pacame-white/50 font-body mb-4">
+          <p className="text-xs text-ink/50 font-body mb-4">
             ¿No quieres dar tu email? No pasa nada. Toda la info esta en esta pagina.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">

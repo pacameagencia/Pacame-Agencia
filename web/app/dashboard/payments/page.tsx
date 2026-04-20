@@ -162,8 +162,8 @@ export default function PaymentsPage() {
     <div className="space-y-6 max-w-5xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading font-bold text-2xl text-pacame-white">Pagos</h1>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">
+          <h1 className="font-heading font-bold text-2xl text-ink">Pagos</h1>
+          <p className="text-sm text-ink/40 font-body mt-1">
             {loading ? "Cargando..." : "Stripe Checkout · Links de pago · Suscripciones"}
           </p>
         </div>
@@ -190,29 +190,29 @@ export default function PaymentsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-          <CreditCard className="w-6 h-6 text-electric-violet mx-auto mb-2" />
-          <div className="font-heading font-bold text-2xl text-pacame-white">{monthTotal.toLocaleString("es-ES")}€</div>
-          <div className="text-xs text-pacame-white/40 font-body">Cobrado este mes</div>
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5 text-center">
+          <CreditCard className="w-6 h-6 text-brand-primary mx-auto mb-2" />
+          <div className="font-heading font-bold text-2xl text-ink">{monthTotal.toLocaleString("es-ES")}€</div>
+          <div className="text-xs text-ink/40 font-body">Cobrado este mes</div>
         </div>
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-          <Repeat className="w-6 h-6 text-lime-pulse mx-auto mb-2" />
-          <div className="font-heading font-bold text-2xl text-lime-pulse">{mrr.toLocaleString("es-ES")}€</div>
-          <div className="text-xs text-pacame-white/40 font-body">MRR (suscripciones)</div>
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5 text-center">
+          <Repeat className="w-6 h-6 text-mint mx-auto mb-2" />
+          <div className="font-heading font-bold text-2xl text-mint">{mrr.toLocaleString("es-ES")}€</div>
+          <div className="text-xs text-ink/40 font-body">MRR (suscripciones)</div>
         </div>
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-          <Users className="w-6 h-6 text-neon-cyan mx-auto mb-2" />
-          <div className="font-heading font-bold text-2xl text-neon-cyan">{activeSubscribers.length}</div>
-          <div className="text-xs text-pacame-white/40 font-body">Suscriptores activos</div>
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5 text-center">
+          <Users className="w-6 h-6 text-mint mx-auto mb-2" />
+          <div className="font-heading font-bold text-2xl text-mint">{activeSubscribers.length}</div>
+          <div className="text-xs text-ink/40 font-body">Suscriptores activos</div>
         </div>
       </div>
 
       {/* Generate payment link form */}
       {showForm && (
-        <form onSubmit={generatePaymentLink} className="rounded-2xl bg-dark-card border border-electric-violet/30 p-6 space-y-4">
+        <form onSubmit={generatePaymentLink} className="rounded-2xl bg-paper-deep border border-brand-primary/30 p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="font-heading font-semibold text-pacame-white">Generar link de pago</h2>
-            <button type="button" onClick={() => { setShowForm(false); setLinkGenerated(null); }} className="text-pacame-white/30 hover:text-pacame-white/60">
+            <h2 className="font-heading font-semibold text-ink">Generar link de pago</h2>
+            <button type="button" onClick={() => { setShowForm(false); setLinkGenerated(null); }} className="text-ink/30 hover:text-ink/60">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -222,7 +222,7 @@ export default function PaymentsPage() {
             <select
               value={form.product}
               onChange={(e) => handleProductChange(e.target.value)}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body focus:border-brand-primary/50 outline-none"
             >
               {PRODUCTS.map((p) => (
                 <option key={p.key} value={p.key}>
@@ -235,7 +235,7 @@ export default function PaymentsPage() {
             <select
               value={form.client_id}
               onChange={(e) => handleClientChange(e.target.value)}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body focus:border-brand-primary/50 outline-none"
             >
               <option value="">— Cliente (opcional) —</option>
               {clients.map((c) => (
@@ -248,7 +248,7 @@ export default function PaymentsPage() {
               required type="email" placeholder="Email del cliente *"
               value={form.client_email}
               onChange={(e) => setForm({ ...form, client_email: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
 
             {/* Name */}
@@ -256,7 +256,7 @@ export default function PaymentsPage() {
               placeholder="Nombre del cliente"
               value={form.client_name}
               onChange={(e) => setForm({ ...form, client_name: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
 
             {/* Amount */}
@@ -265,22 +265,22 @@ export default function PaymentsPage() {
                 required type="number" step="0.01" min="1" placeholder="Cantidad (€) *"
                 value={form.amount}
                 onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                className="w-full px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none pr-16"
+                className="w-full px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none pr-16"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-pacame-white/30 font-body">
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink/30 font-body">
                 {form.recurring ? "€/mes" : "€"}
               </span>
             </div>
 
             {/* Recurring toggle */}
-            <label className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] cursor-pointer">
+            <label className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] cursor-pointer">
               <input
                 type="checkbox"
                 checked={form.recurring}
                 onChange={(e) => setForm({ ...form, recurring: e.target.checked })}
-                className="w-4 h-4 rounded accent-electric-violet"
+                className="w-4 h-4 rounded accent-brand-primary"
               />
-              <span className="text-sm text-pacame-white/70 font-body">Pago recurrente (mensual)</span>
+              <span className="text-sm text-ink/70 font-body">Pago recurrente (mensual)</span>
             </label>
 
             {/* Description */}
@@ -288,7 +288,7 @@ export default function PaymentsPage() {
               placeholder="Descripcion (opcional)"
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
-              className="col-span-full px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="col-span-full px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
           </div>
 
@@ -310,7 +310,7 @@ export default function PaymentsPage() {
                 <input
                   readOnly
                   value={linkGenerated}
-                  className="flex-1 px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-xs text-pacame-white font-mono outline-none"
+                  className="flex-1 px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-xs text-ink font-mono outline-none"
                 />
                 <Button
                   type="button" size="sm" variant="gradient"
@@ -335,26 +335,26 @@ export default function PaymentsPage() {
 
       {/* Active subscribers */}
       {activeSubscribers.length > 0 && (
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] overflow-hidden">
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] overflow-hidden">
           <div className="px-5 py-3 border-b border-white/[0.04] bg-white/[0.02] flex items-center justify-between">
-            <h2 className="font-heading font-semibold text-sm text-pacame-white">Suscripciones activas</h2>
-            <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-lime-pulse/10 text-lime-pulse font-body">{activeSubscribers.length} activas</span>
+            <h2 className="font-heading font-semibold text-sm text-ink">Suscripciones activas</h2>
+            <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-mint/10 text-mint font-body">{activeSubscribers.length} activas</span>
           </div>
           <div className="divide-y divide-white/[0.04]">
             {activeSubscribers.map((client) => (
               <div key={client.id} className="px-5 py-3 flex items-center gap-4">
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-heading font-medium text-pacame-white">{client.business_name}</div>
-                  <div className="text-xs text-pacame-white/40 font-body">{client.plan || "Plan activo"} · {client.email}</div>
+                  <div className="text-sm font-heading font-medium text-ink">{client.business_name}</div>
+                  <div className="text-xs text-ink/40 font-body">{client.plan || "Plan activo"} · {client.email}</div>
                 </div>
                 <div className="text-right flex-shrink-0">
-                  <div className="text-sm font-heading font-bold text-lime-pulse">{Number(client.monthly_fee).toLocaleString("es-ES")}€</div>
-                  <div className="text-[11px] text-pacame-white/40 font-body">/mes</div>
+                  <div className="text-sm font-heading font-bold text-mint">{Number(client.monthly_fee).toLocaleString("es-ES")}€</div>
+                  <div className="text-[11px] text-ink/40 font-body">/mes</div>
                 </div>
                 {client.email && (
                   <button
                     onClick={() => openPortal(client.email)}
-                    className="text-xs text-electric-violet/70 hover:text-electric-violet font-body flex items-center gap-1"
+                    className="text-xs text-brand-primary/70 hover:text-brand-primary font-body flex items-center gap-1"
                   >
                     <ExternalLink className="w-3 h-3" />Portal
                   </button>
@@ -366,15 +366,15 @@ export default function PaymentsPage() {
       )}
 
       {/* Recent payments */}
-      <div className="rounded-2xl bg-dark-card border border-white/[0.06] overflow-hidden">
+      <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] overflow-hidden">
         <div className="px-5 py-3 border-b border-white/[0.04] bg-white/[0.02]">
-          <h2 className="font-heading font-semibold text-sm text-pacame-white">Ultimos cobros</h2>
+          <h2 className="font-heading font-semibold text-sm text-ink">Ultimos cobros</h2>
         </div>
         {!loading && payments.length === 0 ? (
           <div className="p-12 text-center">
-            <CreditCard className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
-            <p className="text-sm text-pacame-white/40 font-body">Sin cobros registrados</p>
-            <p className="text-xs text-pacame-white/50 font-body mt-1">Los pagos via Stripe apareceran aqui automaticamente</p>
+            <CreditCard className="w-8 h-8 text-ink/20 mx-auto mb-3" />
+            <p className="text-sm text-ink/40 font-body">Sin cobros registrados</p>
+            <p className="text-xs text-ink/50 font-body mt-1">Los pagos via Stripe apareceran aqui automaticamente</p>
           </div>
         ) : (
           <div className="divide-y divide-white/[0.04]">
@@ -384,12 +384,12 @@ export default function PaymentsPage() {
                   <CreditCard className="w-4 h-4 text-green-400" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-heading font-medium text-pacame-white truncate">{p.description || p.category}</div>
+                  <div className="text-sm font-heading font-medium text-ink truncate">{p.description || p.category}</div>
                   <div className="flex items-center gap-3 mt-0.5">
-                    <span className="text-xs text-pacame-white/30 font-body">{p.date}</span>
-                    {p.invoice_number && <span className="text-xs text-pacame-white/20 font-body">#{p.invoice_number}</span>}
+                    <span className="text-xs text-ink/30 font-body">{p.date}</span>
+                    {p.invoice_number && <span className="text-xs text-ink/20 font-body">#{p.invoice_number}</span>}
                     {p.category && (
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.05] text-pacame-white/40 font-body">{p.category}</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.05] text-ink/40 font-body">{p.category}</span>
                     )}
                   </div>
                 </div>

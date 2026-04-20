@@ -44,17 +44,17 @@ const productLines = [
 
 export default function ProductLines() {
   return (
-    <section className="section-padding bg-pacame-black relative">
+    <section className="section-padding bg-paper relative">
       <div className="max-w-6xl mx-auto px-6">
         <ScrollReveal className="text-center mb-16">
-          <p className="text-[12px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.22em]">
+          <p className="text-[12px] font-body font-medium text-accent-gold/70 mb-4 uppercase tracking-[0.22em]">
             Tres maneras de trabajar con nosotros
           </p>
-          <h2 className="font-accent font-bold text-section text-pacame-white mb-5 text-balance">
+          <h2 className="font-accent font-bold text-section text-ink mb-5 text-balance">
             Compra una vez.{" "}
             <span className="gradient-text-gold">Suscribete. O ambos.</span>
           </h2>
-          <p className="text-lg text-pacame-white/50 max-w-2xl mx-auto font-body">
+          <p className="text-lg text-ink/50 max-w-2xl mx-auto font-body">
             Flexibilidad maxima. Desde un logo puntual hasta tu equipo completo bajo demanda.
           </p>
         </ScrollReveal>
@@ -69,7 +69,7 @@ export default function ProductLines() {
                 <CardTiltContent>
                   <Link
                     href={line.href}
-                    className="group block rounded-3xl p-8 bg-dark-card border border-white/[0.06] hover:border-white/[0.15] transition-all duration-500 relative overflow-hidden h-full card-golden-shine"
+                    className="group block rounded-3xl p-8 bg-paper-deep border border-ink/[0.06] hover:border-white/[0.15] transition-all duration-500 relative overflow-hidden h-full card-golden-shine"
                     style={{
                       background: `linear-gradient(180deg, ${line.accent}0A 0%, transparent 40%), #161617`,
                     }}
@@ -86,22 +86,22 @@ export default function ProductLines() {
                         <line.Icon className="w-5 h-5" style={{ color: line.accent }} />
                       </div>
                       <div className="text-right">
-                        <div className="font-heading font-bold text-3xl text-pacame-white leading-none">
+                        <div className="font-heading font-bold text-3xl text-ink leading-none">
                           {line.stat}
                         </div>
-                        <div className="text-[10px] text-pacame-white/40 uppercase tracking-wider font-body mt-1">
+                        <div className="text-[10px] text-ink/40 uppercase tracking-wider font-body mt-1">
                           {line.statLabel}
                         </div>
                       </div>
                     </div>
 
-                    <h3 className="font-heading font-bold text-2xl text-pacame-white mb-2">
+                    <h3 className="font-heading font-bold text-2xl text-ink mb-2">
                       {line.title}
                     </h3>
-                    <p className="text-sm text-pacame-white/55 font-body mb-4 leading-relaxed">
+                    <p className="text-sm text-ink/55 font-body mb-4 leading-relaxed">
                       {line.tagline}
                     </p>
-                    <p className="text-xs text-pacame-white/35 font-body mb-10">
+                    <p className="text-xs text-ink/35 font-body mb-10">
                       {line.bullet}
                     </p>
 

@@ -40,12 +40,12 @@ export default function ConfirmDeletePage() {
   }, [token]);
 
   return (
-    <div className="min-h-screen bg-pacame-black flex items-center justify-center p-6">
-      <div className="max-w-md w-full rounded-2xl p-8 bg-dark-card border border-white/[0.06] text-center">
+    <div className="min-h-screen bg-paper flex items-center justify-center p-6">
+      <div className="max-w-md w-full rounded-2xl p-8 bg-paper-deep border border-ink/[0.06] text-center">
         {status === "loading" && (
           <>
-            <Loader2 className="w-12 h-12 text-olympus-gold animate-spin mx-auto mb-6" />
-            <h1 className="font-heading font-bold text-2xl text-pacame-white mb-2">
+            <Loader2 className="w-12 h-12 text-accent-gold animate-spin mx-auto mb-6" />
+            <h1 className="font-heading font-bold text-2xl text-ink mb-2">
               Confirmando...
             </h1>
           </>
@@ -53,13 +53,13 @@ export default function ConfirmDeletePage() {
         {status === "ok" && (
           <>
             <CheckCircle2 className="w-12 h-12 text-green-400 mx-auto mb-6" />
-            <h1 className="font-heading font-bold text-2xl text-pacame-white mb-3">
+            <h1 className="font-heading font-bold text-2xl text-ink mb-3">
               Peticion confirmada
             </h1>
-            <p className="text-pacame-white/70 font-body text-sm mb-6">{message}</p>
+            <p className="text-ink/70 font-body text-sm mb-6">{message}</p>
             <a
               href="/portal/privacy"
-              className="inline-block bg-olympus-gold text-pacame-black font-heading font-semibold px-6 py-3 rounded-xl hover:bg-olympus-gold/90 transition"
+              className="inline-block bg-accent-gold text-paper font-heading font-semibold px-6 py-3 rounded-xl hover:bg-accent-gold/90 transition"
             >
               Ir al portal
             </a>
@@ -68,13 +68,13 @@ export default function ConfirmDeletePage() {
         {status === "err" && (
           <>
             <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-6" />
-            <h1 className="font-heading font-bold text-2xl text-pacame-white mb-3">
+            <h1 className="font-heading font-bold text-2xl text-ink mb-3">
               No se pudo confirmar
             </h1>
-            <p className="text-pacame-white/70 font-body text-sm mb-6">{message}</p>
+            <p className="text-ink/70 font-body text-sm mb-6">{message}</p>
             <a
               href="/portal"
-              className="inline-block bg-olympus-gold text-pacame-black font-heading font-semibold px-6 py-3 rounded-xl hover:bg-olympus-gold/90 transition"
+              className="inline-block bg-accent-gold text-paper font-heading font-semibold px-6 py-3 rounded-xl hover:bg-accent-gold/90 transition"
             >
               Ir al portal
             </a>

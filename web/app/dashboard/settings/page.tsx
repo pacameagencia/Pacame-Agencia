@@ -91,8 +91,8 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6 max-w-4xl">
       <div>
-        <h1 className="font-heading font-bold text-2xl text-pacame-white">Configuracion</h1>
-        <p className="text-sm text-pacame-white/40 font-body mt-1">
+        <h1 className="font-heading font-bold text-2xl text-ink">Configuracion</h1>
+        <p className="text-sm text-ink/40 font-body mt-1">
           {loading ? "Cargando..." : `${Object.keys(config).length} parametros del sistema`}
         </p>
       </div>
@@ -101,9 +101,9 @@ export default function SettingsPage() {
         const rows = group.keys.filter((k) => config[k]);
         if (rows.length === 0 && !loading) return null;
         return (
-          <div key={group.title} className="rounded-2xl bg-dark-card border border-white/[0.06] overflow-hidden">
+          <div key={group.title} className="rounded-2xl bg-paper-deep border border-ink/[0.06] overflow-hidden">
             <div className="px-5 py-3 border-b border-white/[0.04] bg-white/[0.02]">
-              <h2 className="font-heading font-semibold text-sm text-pacame-white">{group.title}</h2>
+              <h2 className="font-heading font-semibold text-sm text-ink">{group.title}</h2>
             </div>
             <div className="divide-y divide-white/[0.04]">
               {rows.map((key) => {
@@ -117,22 +117,22 @@ export default function SettingsPage() {
                 return (
                   <div key={key} className="px-5 py-3 flex items-center gap-4">
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs font-mono text-electric-violet/70">{key}</div>
-                      {row.description && <div className="text-[11px] text-pacame-white/30 font-body mt-0.5">{row.description}</div>}
+                      <div className="text-xs font-mono text-brand-primary/70">{key}</div>
+                      {row.description && <div className="text-[11px] text-ink/30 font-body mt-0.5">{row.description}</div>}
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
                       <input
                         type={isSensitive ? "password" : "text"}
                         value={currentValue}
                         onChange={(e) => setEdited((prev) => ({ ...prev, [key]: e.target.value }))}
-                        className="w-56 px-3 py-1.5 rounded-lg bg-white/[0.05] border border-white/[0.08] text-xs text-pacame-white font-mono placeholder:text-pacame-white/20 focus:border-electric-violet/50 outline-none"
+                        className="w-56 px-3 py-1.5 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-xs text-ink font-mono placeholder:text-ink/20 focus:border-brand-primary/50 outline-none"
                       />
                       {isEdited && (
                         <Button size="sm" variant="gradient" onClick={() => saveKey(key)} className="h-7 px-2">
                           <Save className="w-3 h-3" />
                         </Button>
                       )}
-                      {isSaved && <Check className="w-4 h-4 text-lime-pulse" />}
+                      {isSaved && <Check className="w-4 h-4 text-mint" />}
                     </div>
                   </div>
                 );
@@ -174,9 +174,9 @@ function SeedSection() {
   }
 
   return (
-    <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
-      <h2 className="font-heading font-semibold text-sm text-pacame-white mb-3">Datos de demo</h2>
-      <p className="text-xs text-pacame-white/40 font-body mb-4">
+    <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
+      <h2 className="font-heading font-semibold text-sm text-ink mb-3">Datos de demo</h2>
+      <p className="text-xs text-ink/40 font-body mb-4">
         Poblar el dashboard con datos de ejemplo para demos y pruebas.
       </p>
       <div className="flex items-center gap-3">
@@ -185,7 +185,7 @@ function SeedSection() {
           {seeding ? "Sembrando datos..." : "Sembrar datos demo"}
         </Button>
         {seedResult && (
-          <span className="text-xs text-pacame-white/50 font-body">{seedResult}</span>
+          <span className="text-xs text-ink/50 font-body">{seedResult}</span>
         )}
       </div>
     </div>

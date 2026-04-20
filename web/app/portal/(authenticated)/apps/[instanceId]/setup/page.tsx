@@ -69,16 +69,16 @@ export default async function AppSetupPage({
       <div className="mb-6">
         <Link
           href="/portal/apps"
-          className="inline-flex items-center gap-1.5 text-sm font-body text-pacame-white/50 hover:text-pacame-white transition mb-4"
+          className="inline-flex items-center gap-1.5 text-sm font-body text-ink/50 hover:text-ink transition mb-4"
         >
           <ArrowLeft className="w-4 h-4" />
           Mis apps
         </Link>
-        <h1 className="font-heading font-bold text-3xl text-pacame-white mb-1 flex items-center gap-3">
-          <Boxes className="w-7 h-7 text-olympus-gold" />
+        <h1 className="font-heading font-bold text-3xl text-ink mb-1 flex items-center gap-3">
+          <Boxes className="w-7 h-7 text-accent-gold" />
           Configura {app.name}
         </h1>
-        <p className="text-pacame-white/60 font-body text-sm">
+        <p className="text-ink/60 font-body text-sm">
           {instance.status === "active"
             ? "Edita la configuracion de tu app en cualquier momento."
             : "Rellena estos datos para activar tu app."}

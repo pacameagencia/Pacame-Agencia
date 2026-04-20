@@ -128,13 +128,13 @@ export default function OnboardingPage() {
       >
         <Sparkles className="w-10 h-10 text-white" />
       </motion.div>
-      <h1 className="font-heading font-bold text-4xl text-pacame-white mb-4">
+      <h1 className="font-heading font-bold text-4xl text-ink mb-4">
         Bienvenido a{" "}
-        <span className="bg-gradient-to-r from-electric-violet to-cyan-spark bg-clip-text text-transparent">
+        <span className="bg-gradient-to-r from-brand-primary to-cyan-spark bg-clip-text text-transparent">
           PACAME
         </span>
       </h1>
-      <p className="text-pacame-white/50 font-body text-lg leading-relaxed mb-8">
+      <p className="text-ink/50 font-body text-lg leading-relaxed mb-8">
         Vamos a configurar tu portal en 2 minutos. Podras personalizar
         los colores, subir tu logo y preparar todo para que tu experiencia
         sea unica.
@@ -158,10 +158,10 @@ export default function OnboardingPage() {
       transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
       className="max-w-lg mx-auto"
     >
-      <h2 className="font-heading font-bold text-2xl text-pacame-white mb-2 text-center">
+      <h2 className="font-heading font-bold text-2xl text-ink mb-2 text-center">
         Tu identidad visual
       </h2>
-      <p className="text-sm text-pacame-white/40 font-body mb-8 text-center">
+      <p className="text-sm text-ink/40 font-body mb-8 text-center">
         Sube tu logo y elige los colores de tu marca
       </p>
 
@@ -169,17 +169,17 @@ export default function OnboardingPage() {
       <div className="flex flex-col items-center mb-8">
         <div
           onClick={() => logoInputRef.current?.click()}
-          className="w-28 h-28 rounded-full border-2 border-dashed border-white/[0.15] flex items-center justify-center cursor-pointer hover:border-electric-violet/50 transition-colors overflow-hidden mb-3"
+          className="w-28 h-28 rounded-full border-2 border-dashed border-white/[0.15] flex items-center justify-center cursor-pointer hover:border-brand-primary/50 transition-colors overflow-hidden mb-3"
         >
           {logoPreview ? (
             <img src={logoPreview} alt="Logo" className="w-full h-full object-cover" />
           ) : (
-            <Upload className="w-8 h-8 text-pacame-white/20" />
+            <Upload className="w-8 h-8 text-ink/20" />
           )}
         </div>
         <button
           onClick={() => logoInputRef.current?.click()}
-          className="text-xs text-electric-violet font-body hover:underline"
+          className="text-xs text-brand-primary font-body hover:underline"
         >
           {logoPreview ? "Cambiar logo" : "Subir logo"}
         </button>
@@ -195,7 +195,7 @@ export default function OnboardingPage() {
       {/* Colors */}
       <div className="grid grid-cols-2 gap-6 mb-8">
         <div>
-          <label className="block text-xs text-pacame-white/50 font-body mb-2 flex items-center gap-1.5">
+          <label className="block text-xs text-ink/50 font-body mb-2 flex items-center gap-1.5">
             <Palette className="w-3 h-3" /> Color primario
           </label>
           <div className="flex items-center gap-3">
@@ -207,7 +207,7 @@ export default function OnboardingPage() {
                 className="absolute inset-0 opacity-0 cursor-pointer w-10 h-10"
               />
               <div
-                className="w-10 h-10 rounded-xl border-2 border-white/[0.12]"
+                className="w-10 h-10 rounded-xl border-2 border-ink/[0.12]"
                 style={{ backgroundColor: primaryColor }}
               />
             </label>
@@ -215,13 +215,13 @@ export default function OnboardingPage() {
               type="text"
               value={primaryColor}
               onChange={(e) => setPrimaryColor(e.target.value)}
-              className="flex-1 px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors uppercase"
+              className="flex-1 px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors uppercase"
               maxLength={7}
             />
           </div>
         </div>
         <div>
-          <label className="block text-xs text-pacame-white/50 font-body mb-2 flex items-center gap-1.5">
+          <label className="block text-xs text-ink/50 font-body mb-2 flex items-center gap-1.5">
             <Palette className="w-3 h-3" /> Color secundario
           </label>
           <div className="flex items-center gap-3">
@@ -233,7 +233,7 @@ export default function OnboardingPage() {
                 className="absolute inset-0 opacity-0 cursor-pointer w-10 h-10"
               />
               <div
-                className="w-10 h-10 rounded-xl border-2 border-white/[0.12]"
+                className="w-10 h-10 rounded-xl border-2 border-ink/[0.12]"
                 style={{ backgroundColor: secondaryColor }}
               />
             </label>
@@ -241,7 +241,7 @@ export default function OnboardingPage() {
               type="text"
               value={secondaryColor}
               onChange={(e) => setSecondaryColor(e.target.value)}
-              className="flex-1 px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors uppercase"
+              className="flex-1 px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors uppercase"
               maxLength={7}
             />
           </div>
@@ -267,16 +267,16 @@ export default function OnboardingPage() {
       transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
       className="max-w-lg mx-auto"
     >
-      <h2 className="font-heading font-bold text-2xl text-pacame-white mb-2 text-center">
+      <h2 className="font-heading font-bold text-2xl text-ink mb-2 text-center">
         Cuentanos sobre tu empresa
       </h2>
-      <p className="text-sm text-pacame-white/40 font-body mb-8 text-center">
+      <p className="text-sm text-ink/40 font-body mb-8 text-center">
         Esto nos ayuda a personalizar tu experiencia
       </p>
 
       <div className="space-y-6 mb-8">
         <div>
-          <label className="block text-xs text-pacame-white/50 font-body mb-2 flex items-center gap-1.5">
+          <label className="block text-xs text-ink/50 font-body mb-2 flex items-center gap-1.5">
             <Type className="w-3 h-3" /> Tagline o slogan
           </label>
           <input
@@ -284,18 +284,18 @@ export default function OnboardingPage() {
             value={tagline}
             onChange={(e) => setTagline(e.target.value)}
             placeholder="Ej: Transformamos ideas en experiencias digitales"
-            className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white placeholder:text-pacame-white/25 font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors"
+            className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink placeholder:text-ink/25 font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors"
             maxLength={120}
           />
         </div>
         <div>
-          <label className="block text-xs text-pacame-white/50 font-body mb-2">
+          <label className="block text-xs text-ink/50 font-body mb-2">
             Sector
           </label>
           <select
             value={sector}
             onChange={(e) => setSector(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors appearance-none cursor-pointer"
+            className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors appearance-none cursor-pointer"
           >
             <option value="" className="bg-[#1a1a1a]">Selecciona un sector</option>
             {sectorOptions.map((s) => (
@@ -340,17 +340,17 @@ export default function OnboardingPage() {
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.3, type: "spring", stiffness: 200, damping: 15 }}
-        className="w-20 h-20 rounded-full bg-lime-pulse/20 flex items-center justify-center mx-auto mb-6"
+        className="w-20 h-20 rounded-full bg-mint/20 flex items-center justify-center mx-auto mb-6"
       >
-        <CheckCircle2 className="w-10 h-10 text-lime-pulse" />
+        <CheckCircle2 className="w-10 h-10 text-mint" />
       </motion.div>
-      <h1 className="font-heading font-bold text-3xl text-pacame-white mb-3">
+      <h1 className="font-heading font-bold text-3xl text-ink mb-3">
         Todo listo
       </h1>
-      <p className="text-pacame-white/50 font-body text-lg mb-4">
+      <p className="text-ink/50 font-body text-lg mb-4">
         Tu portal esta configurado. Redirigiendo al dashboard...
       </p>
-      <Loader2 className="w-5 h-5 animate-spin text-electric-violet mx-auto" />
+      <Loader2 className="w-5 h-5 animate-spin text-brand-primary mx-auto" />
     </motion.div>,
   ];
 

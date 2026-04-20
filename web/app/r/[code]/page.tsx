@@ -24,35 +24,35 @@ export default function ReferralLandingPage() {
   }, [code]);
 
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-grid" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-lime-pulse/10 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-mint/10 rounded-full blur-[140px] pointer-events-none" />
 
         <div className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-lime-pulse/20 flex items-center justify-center mx-auto mb-6">
-            <Gift className="w-8 h-8 text-lime-pulse" />
+          <div className="w-16 h-16 rounded-2xl bg-mint/20 flex items-center justify-center mx-auto mb-6">
+            <Gift className="w-8 h-8 text-mint" />
           </div>
 
-          <h1 className="font-heading font-bold text-[clamp(2rem,5vw,3rem)] text-pacame-white leading-tight mb-4">
+          <h1 className="font-heading font-bold text-[clamp(2rem,5vw,3rem)] text-ink leading-tight mb-4">
             Alguien que confía en nosotros
             <br />
             <span className="gradient-text">te recomienda PACAME.</span>
           </h1>
 
-          <p className="text-lg text-pacame-white/60 font-body max-w-lg mx-auto mb-8">
+          <p className="text-lg text-ink/60 font-body max-w-lg mx-auto mb-8">
             Tu contacto trabaja con nosotros y quiere que tu negocio también crezca.
-            Como vienes recomendado, ambos os lleváis un <strong className="text-lime-pulse">10% de descuento</strong>.
+            Como vienes recomendado, ambos os lleváis un <strong className="text-mint">10% de descuento</strong>.
           </p>
 
           {valid === false && (
-            <p className="text-xs text-amber-signal/60 font-body mb-4">
+            <p className="text-xs text-accent-gold/60 font-body mb-4">
               Codigo de referido no encontrado, pero puedes contactarnos igualmente.
             </p>
           )}
 
           <div className="rounded-2xl glass p-8 mb-8 text-left">
-            <h2 className="font-heading font-semibold text-lg text-pacame-white mb-4">
+            <h2 className="font-heading font-semibold text-lg text-ink mb-4">
               Lo que incluye tu ventaja de referido:
             </h2>
             <div className="space-y-3">
@@ -63,8 +63,8 @@ export default function ReferralLandingPage() {
                 "Tu contacto tambien recibe descuento",
               ].map((item) => (
                 <div key={item} className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-lime-pulse flex-shrink-0" />
-                  <span className="text-sm text-pacame-white/70 font-body">{item}</span>
+                  <CheckCircle2 className="w-5 h-5 text-mint flex-shrink-0" />
+                  <span className="text-sm text-ink/70 font-body">{item}</span>
                 </div>
               ))}
             </div>
@@ -85,8 +85,8 @@ export default function ReferralLandingPage() {
             </Button>
           </div>
 
-          <p className="text-xs text-pacame-white/50 font-body mt-6">
-            Codigo de referido: <span className="font-mono text-pacame-white/40">{code}</span>
+          <p className="text-xs text-ink/50 font-body mt-6">
+            Codigo de referido: <span className="font-mono text-ink/40">{code}</span>
           </p>
         </div>
       </section>

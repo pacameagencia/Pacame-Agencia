@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function CookiesPage() {
   return (
-    <div className="bg-pacame-black min-h-screen pt-32 pb-20">
+    <div className="bg-paper min-h-screen pt-32 pb-20">
       <BreadcrumbJsonLd
         items={[
           { name: "Inicio", url: "https://pacameagencia.com" },
@@ -25,15 +25,15 @@ export default function CookiesPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
         <header className="mb-12">
-          <h1 className="font-heading font-bold text-4xl text-pacame-white mb-3">
+          <h1 className="font-heading font-bold text-4xl text-ink mb-3">
             Politica de Cookies
           </h1>
-          <p className="text-pacame-white/60 text-sm">
+          <p className="text-ink/60 text-sm">
             Ultima actualizacion: 19 abril 2026
           </p>
         </header>
 
-        <div className="prose prose-invert prose-sm max-w-none font-body text-pacame-white/80 space-y-8 leading-relaxed">
+        <div className="prose prose-invert prose-sm max-w-none font-body text-ink/80 space-y-8 leading-relaxed">
           <p>
             Esta politica explica que son las cookies, cuales utiliza
             pacameagencia.com, con que finalidad y como el usuario puede aceptarlas,
@@ -43,7 +43,7 @@ export default function CookiesPage() {
 
           {/* 1 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               1. Que son las cookies
             </h2>
             <p>
@@ -58,7 +58,7 @@ export default function CookiesPage() {
 
           {/* 2 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               2. Tipos de cookies que utiliza PACAME
             </h2>
             <p>
@@ -67,7 +67,7 @@ export default function CookiesPage() {
             </p>
 
             {/* 2.1 Tecnicas */}
-            <h3 className="font-heading font-medium text-lg text-pacame-white mt-6 mb-2">
+            <h3 className="font-heading font-medium text-lg text-ink mt-6 mb-2">
               2.1. Cookies tecnicas (estrictamente necesarias)
             </h3>
             <p>
@@ -75,24 +75,24 @@ export default function CookiesPage() {
               deber de consentimiento previo conforme al art. 22.2 LSSI-CE.
             </p>
             <div className="overflow-x-auto my-4">
-              <table className="w-full text-sm border border-white/[0.06]">
+              <table className="w-full text-sm border border-ink/[0.06]">
                 <thead>
-                  <tr className="border-b border-white/[0.06] bg-white/[0.02]">
-                    <th className="text-left py-2 px-3 text-pacame-white/90 font-medium">
+                  <tr className="border-b border-ink/[0.06] bg-white/[0.02]">
+                    <th className="text-left py-2 px-3 text-ink/90 font-medium">
                       Nombre
                     </th>
-                    <th className="text-left py-2 px-3 text-pacame-white/90 font-medium">
+                    <th className="text-left py-2 px-3 text-ink/90 font-medium">
                       Duracion
                     </th>
-                    <th className="text-left py-2 px-3 text-pacame-white/90 font-medium">
+                    <th className="text-left py-2 px-3 text-ink/90 font-medium">
                       Proposito
                     </th>
-                    <th className="text-left py-2 px-3 text-pacame-white/90 font-medium">
+                    <th className="text-left py-2 px-3 text-ink/90 font-medium">
                       Proveedor
                     </th>
                   </tr>
                 </thead>
-                <tbody className="text-pacame-white/70">
+                <tbody className="text-ink/70">
                   <tr className="border-b border-white/[0.04]">
                     <td className="py-2 px-3">pacame_auth</td>
                     <td className="py-2 px-3">Sesion / 30 dias</td>
@@ -138,7 +138,7 @@ export default function CookiesPage() {
             </div>
 
             {/* 2.2 Funcionalidad */}
-            <h3 className="font-heading font-medium text-lg text-pacame-white mt-6 mb-2">
+            <h3 className="font-heading font-medium text-lg text-ink mt-6 mb-2">
               2.2. Cookies de funcionalidad y preferencias
             </h3>
             <p>
@@ -146,24 +146,24 @@ export default function CookiesPage() {
               cookies o las preferencias de idioma.
             </p>
             <div className="overflow-x-auto my-4">
-              <table className="w-full text-sm border border-white/[0.06]">
+              <table className="w-full text-sm border border-ink/[0.06]">
                 <thead>
-                  <tr className="border-b border-white/[0.06] bg-white/[0.02]">
-                    <th className="text-left py-2 px-3 text-pacame-white/90 font-medium">
+                  <tr className="border-b border-ink/[0.06] bg-white/[0.02]">
+                    <th className="text-left py-2 px-3 text-ink/90 font-medium">
                       Nombre
                     </th>
-                    <th className="text-left py-2 px-3 text-pacame-white/90 font-medium">
+                    <th className="text-left py-2 px-3 text-ink/90 font-medium">
                       Duracion
                     </th>
-                    <th className="text-left py-2 px-3 text-pacame-white/90 font-medium">
+                    <th className="text-left py-2 px-3 text-ink/90 font-medium">
                       Proposito
                     </th>
-                    <th className="text-left py-2 px-3 text-pacame-white/90 font-medium">
+                    <th className="text-left py-2 px-3 text-ink/90 font-medium">
                       Proveedor
                     </th>
                   </tr>
                 </thead>
-                <tbody className="text-pacame-white/70">
+                <tbody className="text-ink/70">
                   <tr className="border-b border-white/[0.04]">
                     <td className="py-2 px-3">CookieConsent</td>
                     <td className="py-2 px-3">12 meses</td>
@@ -177,7 +177,7 @@ export default function CookiesPage() {
             </div>
 
             {/* 2.3 Analiticas */}
-            <h3 className="font-heading font-medium text-lg text-pacame-white mt-6 mb-2">
+            <h3 className="font-heading font-medium text-lg text-ink mt-6 mb-2">
               2.3. Cookies analiticas
             </h3>
             <p>
@@ -186,24 +186,24 @@ export default function CookiesPage() {
               consentimiento explicito del usuario.
             </p>
             <div className="overflow-x-auto my-4">
-              <table className="w-full text-sm border border-white/[0.06]">
+              <table className="w-full text-sm border border-ink/[0.06]">
                 <thead>
-                  <tr className="border-b border-white/[0.06] bg-white/[0.02]">
-                    <th className="text-left py-2 px-3 text-pacame-white/90 font-medium">
+                  <tr className="border-b border-ink/[0.06] bg-white/[0.02]">
+                    <th className="text-left py-2 px-3 text-ink/90 font-medium">
                       Nombre
                     </th>
-                    <th className="text-left py-2 px-3 text-pacame-white/90 font-medium">
+                    <th className="text-left py-2 px-3 text-ink/90 font-medium">
                       Duracion
                     </th>
-                    <th className="text-left py-2 px-3 text-pacame-white/90 font-medium">
+                    <th className="text-left py-2 px-3 text-ink/90 font-medium">
                       Proposito
                     </th>
-                    <th className="text-left py-2 px-3 text-pacame-white/90 font-medium">
+                    <th className="text-left py-2 px-3 text-ink/90 font-medium">
                       Proveedor
                     </th>
                   </tr>
                 </thead>
-                <tbody className="text-pacame-white/70">
+                <tbody className="text-ink/70">
                   <tr className="border-b border-white/[0.04]">
                     <td className="py-2 px-3">_ga</td>
                     <td className="py-2 px-3">2 anos</td>
@@ -225,20 +225,20 @@ export default function CookiesPage() {
             </div>
 
             {/* 2.4 Terceros */}
-            <h3 className="font-heading font-medium text-lg text-pacame-white mt-6 mb-2">
+            <h3 className="font-heading font-medium text-lg text-ink mt-6 mb-2">
               2.4. Cookies de terceros
             </h3>
             <p>
               Algunas paginas concretas pueden cargar servicios de terceros que
               instalan sus propias cookies sujetas a sus respectivas politicas:
             </p>
-            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+            <ul className="list-disc pl-6 space-y-1 text-ink/70">
               <li>
-                <strong className="text-pacame-white">Stripe Checkout</strong>{" "}
+                <strong className="text-ink">Stripe Checkout</strong>{" "}
                 (pasarela de pagos) durante el proceso de compra.
               </li>
               <li>
-                <strong className="text-pacame-white">Meta / Facebook</strong>{" "}
+                <strong className="text-ink">Meta / Facebook</strong>{" "}
                 (pixel de remarketing) si y cuando este activo, previo
                 consentimiento.
               </li>
@@ -247,34 +247,34 @@ export default function CookiesPage() {
 
           {/* 3 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               3. Como aceptar, rechazar o gestionar las cookies
             </h2>
             <p>
               Al acceder por primera vez al sitio se muestra un banner de
               consentimiento con las opciones{" "}
-              <strong className="text-pacame-white">Aceptar todas</strong>,{" "}
-              <strong className="text-pacame-white">Rechazar no esenciales</strong>{" "}
-              y <strong className="text-pacame-white">Configurar</strong>. El
+              <strong className="text-ink">Aceptar todas</strong>,{" "}
+              <strong className="text-ink">Rechazar no esenciales</strong>{" "}
+              y <strong className="text-ink">Configurar</strong>. El
               usuario puede cambiar su decision en cualquier momento desde el mismo
               banner (que reaparece al eliminar la cookie CookieConsent) o
               configurando su navegador:
             </p>
-            <ul className="list-disc pl-6 space-y-1 text-pacame-white/70">
+            <ul className="list-disc pl-6 space-y-1 text-ink/70">
               <li>
-                <strong className="text-pacame-white">Chrome:</strong> Ajustes &gt;
+                <strong className="text-ink">Chrome:</strong> Ajustes &gt;
                 Privacidad y seguridad &gt; Cookies y otros datos de sitios.
               </li>
               <li>
-                <strong className="text-pacame-white">Firefox:</strong> Opciones
+                <strong className="text-ink">Firefox:</strong> Opciones
                 &gt; Privacidad &amp; Seguridad &gt; Cookies y datos del sitio.
               </li>
               <li>
-                <strong className="text-pacame-white">Safari:</strong> Preferencias
+                <strong className="text-ink">Safari:</strong> Preferencias
                 &gt; Privacidad.
               </li>
               <li>
-                <strong className="text-pacame-white">Edge:</strong> Configuracion
+                <strong className="text-ink">Edge:</strong> Configuracion
                 &gt; Cookies y permisos del sitio.
               </li>
             </ul>
@@ -286,7 +286,7 @@ export default function CookiesPage() {
 
           {/* 4 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               4. Transferencias internacionales
             </h2>
             <p>
@@ -297,7 +297,7 @@ export default function CookiesPage() {
               informacion en la{" "}
               <Link
                 href="/privacidad"
-                className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                className="text-accent-gold/80 hover:text-accent-gold underline underline-offset-2"
               >
                 Politica de Privacidad
               </Link>
@@ -307,7 +307,7 @@ export default function CookiesPage() {
 
           {/* 5 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               5. Actualizaciones de esta politica
             </h2>
             <p>
@@ -321,7 +321,7 @@ export default function CookiesPage() {
 
           {/* 6 */}
           <section>
-            <h2 className="font-heading font-semibold text-2xl text-olympus-gold mb-4">
+            <h2 className="font-heading font-semibold text-2xl text-accent-gold mb-4">
               6. Contacto
             </h2>
             <p>
@@ -329,7 +329,7 @@ export default function CookiesPage() {
               derechos, contacta con nosotros en{" "}
               <a
                 href="mailto:hola@pacameagencia.com"
-                className="text-olympus-gold/80 hover:text-olympus-gold underline underline-offset-2"
+                className="text-accent-gold/80 hover:text-accent-gold underline underline-offset-2"
               >
                 hola@pacameagencia.com
               </a>
@@ -338,34 +338,34 @@ export default function CookiesPage() {
           </section>
 
           {/* Cross-links */}
-          <div className="pt-10 border-t border-white/[0.06] flex flex-wrap gap-4">
+          <div className="pt-10 border-t border-ink/[0.06] flex flex-wrap gap-4">
             <Link
               href="/privacidad"
-              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+              className="text-xs text-ink/50 hover:text-ink/80 transition-colors"
             >
               Politica de Privacidad
             </Link>
             <Link
               href="/aviso-legal"
-              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+              className="text-xs text-ink/50 hover:text-ink/80 transition-colors"
             >
               Aviso Legal
             </Link>
             <Link
               href="/terminos-servicio"
-              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+              className="text-xs text-ink/50 hover:text-ink/80 transition-colors"
             >
               Terminos de Servicio
             </Link>
             <Link
               href="/accesibilidad"
-              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+              className="text-xs text-ink/50 hover:text-ink/80 transition-colors"
             >
               Accesibilidad
             </Link>
             <Link
               href="/"
-              className="text-xs text-pacame-white/50 hover:text-pacame-white/80 transition-colors"
+              className="text-xs text-ink/50 hover:text-ink/80 transition-colors"
             >
               Volver al inicio
             </Link>

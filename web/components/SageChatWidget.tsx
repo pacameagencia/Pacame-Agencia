@@ -145,7 +145,7 @@ export default function SageChatWidget() {
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Abrir chat con Sage"
-        className="fixed bottom-6 right-24 z-50 flex items-center gap-2 px-4 py-3 rounded-full bg-electric-violet text-white shadow-lg shadow-electric-violet/30 hover:scale-105 hover:shadow-xl hover:shadow-electric-violet/40 transition-all duration-200 font-body text-sm font-medium"
+        className="fixed bottom-6 right-24 z-50 flex items-center gap-2 px-4 py-3 rounded-full bg-brand-primary text-white shadow-lg shadow-brand-primary/30 hover:scale-105 hover:shadow-xl hover:shadow-brand-primary/40 transition-all duration-200 font-body text-sm font-medium"
       >
         <MessageSquare className="w-5 h-5" />
         <span className="hidden sm:inline">Habla con Sage</span>
@@ -154,24 +154,24 @@ export default function SageChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)] h-[520px] max-h-[calc(100vh-6rem)] rounded-2xl bg-dark-elevated border border-white/[0.08] shadow-2xl shadow-black/40 flex flex-col overflow-hidden">
+    <div className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)] h-[520px] max-h-[calc(100vh-6rem)] rounded-2xl bg-paper-soft border border-ink/[0.08] shadow-2xl shadow-black/40 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-white/[0.06] bg-dark-card">
-        <div className="w-9 h-9 rounded-xl bg-electric-violet/20 flex items-center justify-center flex-shrink-0">
-          <Bot className="w-5 h-5 text-electric-violet" />
+      <div className="flex items-center gap-3 px-4 py-3 border-b border-ink/[0.06] bg-paper-deep">
+        <div className="w-9 h-9 rounded-xl bg-brand-primary/20 flex items-center justify-center flex-shrink-0">
+          <Bot className="w-5 h-5 text-brand-primary" />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="text-sm font-heading font-semibold text-pacame-white">
+          <div className="text-sm font-heading font-semibold text-ink">
             Sage
           </div>
-          <div className="text-xs text-pacame-white/40 font-body flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-lime-pulse animate-pulse" />
+          <div className="text-xs text-ink/40 font-body flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-mint animate-pulse" />
             Estratega de PACAME
           </div>
         </div>
         <button
           onClick={() => setIsOpen(false)}
-          className="w-8 h-8 rounded-lg hover:bg-white/5 flex items-center justify-center text-pacame-white/40 hover:text-pacame-white/70 transition-colors"
+          className="w-8 h-8 rounded-lg hover:bg-white/5 flex items-center justify-center text-ink/40 hover:text-ink/70 transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
@@ -187,21 +187,21 @@ export default function SageChatWidget() {
             <div
               className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${
                 msg.role === "assistant"
-                  ? "bg-electric-violet/20"
-                  : "bg-neon-cyan/20"
+                  ? "bg-brand-primary/20"
+                  : "bg-mint/20"
               }`}
             >
               {msg.role === "assistant" ? (
-                <Bot className="w-3.5 h-3.5 text-electric-violet" />
+                <Bot className="w-3.5 h-3.5 text-brand-primary" />
               ) : (
-                <User className="w-3.5 h-3.5 text-neon-cyan" />
+                <User className="w-3.5 h-3.5 text-mint" />
               )}
             </div>
             <div
               className={`max-w-[75%] px-3.5 py-2.5 rounded-xl text-sm font-body leading-relaxed ${
                 msg.role === "assistant"
-                  ? "bg-dark-card text-pacame-white/80 rounded-tl-sm"
-                  : "bg-electric-violet/15 text-pacame-white rounded-tr-sm"
+                  ? "bg-paper-deep text-ink/80 rounded-tl-sm"
+                  : "bg-brand-primary/15 text-ink rounded-tr-sm"
               }`}
             >
               {msg.content}
@@ -210,11 +210,11 @@ export default function SageChatWidget() {
         ))}
         {isLoading && (
           <div className="flex gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-electric-violet/20 flex items-center justify-center flex-shrink-0">
-              <Bot className="w-3.5 h-3.5 text-electric-violet" />
+            <div className="w-7 h-7 rounded-lg bg-brand-primary/20 flex items-center justify-center flex-shrink-0">
+              <Bot className="w-3.5 h-3.5 text-brand-primary" />
             </div>
-            <div className="bg-dark-card px-4 py-3 rounded-xl rounded-tl-sm">
-              <Loader2 className="w-4 h-4 text-electric-violet animate-spin" />
+            <div className="bg-paper-deep px-4 py-3 rounded-xl rounded-tl-sm">
+              <Loader2 className="w-4 h-4 text-brand-primary animate-spin" />
             </div>
           </div>
         )}
@@ -222,11 +222,11 @@ export default function SageChatWidget() {
         {/* Lead capture form — inline in chat after engagement */}
         {showLeadForm && !leadCaptured && (
           <div className="flex gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-lime-pulse/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Bot className="w-3.5 h-3.5 text-lime-pulse" />
+            <div className="w-7 h-7 rounded-lg bg-mint/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Bot className="w-3.5 h-3.5 text-mint" />
             </div>
-            <div className="max-w-[85%] rounded-xl rounded-tl-sm bg-dark-card border border-lime-pulse/20 p-3.5">
-              <p className="text-xs text-pacame-white/70 font-body mb-3">
+            <div className="max-w-[85%] rounded-xl rounded-tl-sm bg-paper-deep border border-mint/20 p-3.5">
+              <p className="text-xs text-ink/70 font-body mb-3">
                 Me encanta tu proyecto! Dejame tu nombre y email para que Pablo pueda prepararte algo personalizado:
               </p>
               <form onSubmit={handleLeadSubmit} className="space-y-2">
@@ -236,7 +236,7 @@ export default function SageChatWidget() {
                   value={leadName}
                   onChange={(e) => setLeadName(e.target.value)}
                   required
-                  className="w-full h-8 px-3 rounded-lg bg-dark-elevated border border-white/[0.08] text-xs text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-lime-pulse/50 outline-none"
+                  className="w-full h-8 px-3 rounded-lg bg-paper-soft border border-ink/[0.08] text-xs text-ink font-body placeholder:text-ink/30 focus:border-mint/50 outline-none"
                 />
                 <input
                   type="email"
@@ -244,13 +244,13 @@ export default function SageChatWidget() {
                   value={leadEmail}
                   onChange={(e) => setLeadEmail(e.target.value)}
                   required
-                  className="w-full h-8 px-3 rounded-lg bg-dark-elevated border border-white/[0.08] text-xs text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-lime-pulse/50 outline-none"
+                  className="w-full h-8 px-3 rounded-lg bg-paper-soft border border-ink/[0.08] text-xs text-ink font-body placeholder:text-ink/30 focus:border-mint/50 outline-none"
                 />
                 <div className="flex items-center gap-2 pt-1">
                   <button
                     type="submit"
                     disabled={leadSubmitting}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-lime-pulse text-pacame-black text-xs font-heading font-semibold hover:bg-lime-pulse/90 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-mint text-paper text-xs font-heading font-semibold hover:bg-mint/90 transition-colors disabled:opacity-50"
                   >
                     {leadSubmitting ? <Loader2 className="w-3 h-3 animate-spin" /> : <ArrowRight className="w-3 h-3" />}
                     Enviar
@@ -258,7 +258,7 @@ export default function SageChatWidget() {
                   <button
                     type="button"
                     onClick={() => setShowLeadForm(false)}
-                    className="text-[10px] text-pacame-white/30 hover:text-pacame-white/50 transition-colors font-body"
+                    className="text-[10px] text-ink/30 hover:text-ink/50 transition-colors font-body"
                   >
                     Ahora no
                   </button>
@@ -272,7 +272,7 @@ export default function SageChatWidget() {
       </div>
 
       {/* Input */}
-      <div className="px-3 py-3 border-t border-white/[0.06] bg-dark-card">
+      <div className="px-3 py-3 border-t border-ink/[0.06] bg-paper-deep">
         <div className="flex items-center gap-2">
           <input
             ref={inputRef}
@@ -282,17 +282,17 @@ export default function SageChatWidget() {
             onKeyDown={handleKeyDown}
             placeholder="Escribe tu mensaje..."
             disabled={isLoading}
-            className="flex-1 h-10 px-3.5 rounded-xl bg-dark-elevated border border-white/[0.06] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet focus:ring-1 focus:ring-electric-violet outline-none transition-colors disabled:opacity-50"
+            className="flex-1 h-10 px-3.5 rounded-xl bg-paper-soft border border-ink/[0.06] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-colors disabled:opacity-50"
           />
           <button
             onClick={handleSend}
             disabled={!input.trim() || isLoading}
-            className="w-10 h-10 rounded-xl bg-electric-violet text-white flex items-center justify-center hover:bg-electric-violet/80 transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex-shrink-0"
+            className="w-10 h-10 rounded-xl bg-brand-primary text-white flex items-center justify-center hover:bg-brand-primary/80 transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex-shrink-0"
           >
             <Send className="w-4 h-4" />
           </button>
         </div>
-        <p className="text-[10px] text-pacame-white/20 font-body mt-1.5 text-center">
+        <p className="text-[10px] text-ink/20 font-body mt-1.5 text-center">
           Sage es una IA. Pablo supervisa las conversaciones.
         </p>
       </div>

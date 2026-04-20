@@ -24,7 +24,7 @@ const ToastContext = createContext<ToastContextValue | null>(null);
 const VARIANT_STYLES: Record<ToastVariant, { icon: React.ComponentType<{ className?: string }>; color: string; bg: string }> = {
   success: { icon: CheckCircle2, color: "text-green-400", bg: "bg-green-500/10 border-green-500/30" },
   error: { icon: XCircle, color: "text-red-400", bg: "bg-red-500/10 border-red-500/30" },
-  info: { icon: Info, color: "text-electric-violet", bg: "bg-electric-violet/10 border-electric-violet/30" },
+  info: { icon: Info, color: "text-brand-primary", bg: "bg-brand-primary/10 border-brand-primary/30" },
   warning: { icon: AlertTriangle, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/30" },
 };
 
@@ -83,16 +83,16 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                 <div className="flex items-start gap-3">
                   <Icon className={`w-5 h-5 flex-shrink-0 ${color}`} />
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm font-heading font-semibold text-pacame-white">{t.title}</div>
+                    <div className="text-sm font-heading font-semibold text-ink">{t.title}</div>
                     {t.description && (
-                      <div className="text-xs text-pacame-white/70 font-body mt-1 leading-relaxed">
+                      <div className="text-xs text-ink/70 font-body mt-1 leading-relaxed">
                         {t.description}
                       </div>
                     )}
                   </div>
                   <button
                     onClick={() => dismiss(t.id)}
-                    className="text-pacame-white/40 hover:text-pacame-white/80 transition-colors"
+                    className="text-ink/40 hover:text-ink/80 transition-colors"
                     aria-label="Cerrar notificación"
                   >
                     <X className="w-4 h-4" />

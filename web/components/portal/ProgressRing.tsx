@@ -94,7 +94,7 @@ export default function ProgressRing({
         >
           {displayCount}%
         </span>
-        <span className="text-[10px] text-pacame-white/40 font-body mt-0.5">completado</span>
+        <span className="text-[10px] text-ink/40 font-body mt-0.5">completado</span>
       </div>
     </div>
   );

@@ -68,7 +68,7 @@ export default function PortalSidebar({
             <img
               src={logoUrl}
               alt={clientName}
-              className="w-10 h-10 rounded-xl object-cover border border-white/[0.08]"
+              className="w-10 h-10 rounded-xl object-cover border border-ink/[0.08]"
             />
           ) : (
             <div
@@ -79,10 +79,10 @@ export default function PortalSidebar({
             </div>
           )}
           <div className="min-w-0">
-            <p className="font-heading font-semibold text-pacame-white text-sm truncate">
+            <p className="font-heading font-semibold text-ink text-sm truncate">
               {clientName}
             </p>
-            <p className="text-[11px] text-pacame-white/40 font-body">Portal de cliente</p>
+            <p className="text-[11px] text-ink/40 font-body">Portal de cliente</p>
           </div>
         </div>
       </div>
@@ -123,7 +123,7 @@ export default function PortalSidebar({
                 className={
                   active
                     ? "font-medium"
-                    : "text-pacame-white/60 group-hover:text-pacame-white transition-colors"
+                    : "text-ink/60 group-hover:text-ink transition-colors"
                 }
               >
                 {item.label}
@@ -142,10 +142,10 @@ export default function PortalSidebar({
       </nav>
 
       {/* Bottom: Logout */}
-      <div className="p-4 border-t border-white/[0.06]">
+      <div className="p-4 border-t border-ink/[0.06]">
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-body text-pacame-white/40 hover:text-rose-alert hover:bg-rose-alert/10 transition-all duration-200"
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-body text-ink/40 hover:text-accent-burgundy-soft hover:bg-accent-burgundy-soft/10 transition-all duration-200"
         >
           <LogOut className="w-[18px] h-[18px]" />
           Cerrar sesion
@@ -157,15 +157,15 @@ export default function PortalSidebar({
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-[#111112] border-r border-white/[0.06]">
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-[#111112] border-r border-ink/[0.06]">
         {sidebarContent}
       </aside>
 
       {/* Mobile hamburger */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 h-14 bg-[#111112]/95 backdrop-blur-xl border-b border-white/[0.06] flex items-center px-4">
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 h-14 bg-[#111112]/95 backdrop-blur-xl border-b border-ink/[0.06] flex items-center px-4">
         <button
           onClick={() => setMobileOpen(true)}
-          className="p-2 rounded-lg text-pacame-white/60 hover:text-pacame-white hover:bg-white/[0.06] transition-colors"
+          className="p-2 rounded-lg text-ink/60 hover:text-ink hover:bg-white/[0.06] transition-colors"
           aria-label="Abrir menu"
         >
           <Menu className="w-5 h-5" />
@@ -181,7 +181,7 @@ export default function PortalSidebar({
               P
             </div>
           )}
-          <span className="font-heading font-semibold text-pacame-white text-sm">
+          <span className="font-heading font-semibold text-ink text-sm">
             {clientName}
           </span>
         </div>
@@ -204,11 +204,11 @@ export default function PortalSidebar({
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed inset-y-0 left-0 z-50 w-72 bg-[#111112] border-r border-white/[0.06] lg:hidden"
+              className="fixed inset-y-0 left-0 z-50 w-72 bg-[#111112] border-r border-ink/[0.06] lg:hidden"
             >
               <button
                 onClick={() => setMobileOpen(false)}
-                className="absolute top-4 right-4 p-2 rounded-lg text-pacame-white/40 hover:text-pacame-white hover:bg-white/[0.06] transition-colors"
+                className="absolute top-4 right-4 p-2 rounded-lg text-ink/40 hover:text-ink hover:bg-white/[0.06] transition-colors"
                 aria-label="Cerrar menu"
               >
                 <X className="w-5 h-5" />

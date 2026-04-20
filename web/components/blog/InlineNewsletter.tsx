@@ -33,21 +33,21 @@ export default function InlineNewsletter() {
   }
 
   return (
-    <div className="rounded-2xl bg-gradient-to-br from-olympus-gold/10 to-electric-violet/10 border border-olympus-gold/20 p-5">
+    <div className="rounded-2xl bg-gradient-to-br from-accent-gold/10 to-brand-primary/10 border border-accent-gold/20 p-5">
       <div className="flex items-center gap-2 mb-3">
-        <Sparkles className="w-4 h-4 text-olympus-gold" />
-        <span className="text-xs font-body font-medium uppercase tracking-[0.15em] text-olympus-gold">
+        <Sparkles className="w-4 h-4 text-accent-gold" />
+        <span className="text-xs font-body font-medium uppercase tracking-[0.15em] text-accent-gold">
           Newsletter PACAME
         </span>
       </div>
-      <h4 className="font-heading font-bold text-base text-pacame-white mb-1 leading-snug">
+      <h4 className="font-heading font-bold text-base text-ink mb-1 leading-snug">
         Un email cada viernes
       </h4>
-      <p className="text-xs text-pacame-white/60 font-body mb-4 leading-relaxed">
+      <p className="text-xs text-ink/60 font-body mb-4 leading-relaxed">
         Tips de marketing digital y casos reales de PYMEs. Sin spam.
       </p>
       {status === "done" ? (
-        <div className="flex items-center gap-2 text-xs text-olympus-gold font-body">
+        <div className="flex items-center gap-2 text-xs text-accent-gold font-body">
           <CheckCircle2 className="w-4 h-4" />
           <span>Gracias, te has suscrito.</span>
         </div>
@@ -59,12 +59,12 @@ export default function InlineNewsletter() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="tu@empresa.com"
-            className="w-full h-10 px-3 rounded-lg bg-pacame-black/50 border border-white/[0.08] text-pacame-white text-sm font-body placeholder:text-pacame-white/30 focus:border-olympus-gold/50 outline-none transition-colors"
+            className="w-full h-10 px-3 rounded-lg bg-ink/50 border border-ink/[0.08] text-ink text-sm font-body placeholder:text-ink/30 focus:border-accent-gold/50 outline-none transition-colors"
           />
           <button
             type="submit"
             disabled={status === "sending"}
-            className="w-full h-10 rounded-lg bg-olympus-gold text-pacame-black font-body font-semibold text-sm hover:bg-olympus-gold/90 transition-colors disabled:opacity-60"
+            className="w-full h-10 rounded-lg bg-accent-gold text-paper font-body font-semibold text-sm hover:bg-accent-gold/90 transition-colors disabled:opacity-60"
           >
             {status === "sending" ? "Enviando..." : "Suscribirme"}
           </button>

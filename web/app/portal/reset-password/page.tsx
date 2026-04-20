@@ -23,7 +23,7 @@ import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
 type Step = "email" | "code" | "success";
 
 const inputClass =
-  "w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white placeholder:text-pacame-white/25 font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors";
+  "w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink placeholder:text-ink/25 font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors";
 
 const stepVariants = {
   hidden: { opacity: 0, x: 40 },
@@ -132,7 +132,7 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="bg-pacame-black min-h-screen flex items-center justify-center px-6">
+    <div className="bg-paper min-h-screen flex items-center justify-center px-6">
       <ScrollReveal className="w-full max-w-md">
         {/* Header */}
         <motion.div
@@ -144,10 +144,10 @@ export default function ResetPasswordPage() {
           <div className="inline-flex w-14 h-14 rounded-2xl bg-brand-gradient items-center justify-center mb-4 shadow-glow-violet">
             <KeyRound className="w-7 h-7 text-white" />
           </div>
-          <h1 className="font-heading font-bold text-3xl text-pacame-white">
+          <h1 className="font-heading font-bold text-3xl text-ink">
             Restablecer password
           </h1>
-          <p className="text-sm text-pacame-white/50 font-body mt-2">
+          <p className="text-sm text-ink/50 font-body mt-2">
             {step === "email" && "Introduce tu email para recibir un codigo de verificacion"}
             {step === "code" && "Introduce el codigo y tu nuevo password"}
             {step === "success" && "Password actualizado correctamente"}
@@ -155,7 +155,7 @@ export default function ResetPasswordPage() {
         </motion.div>
 
         <CardTilt tiltMaxAngle={3} scale={1.005}>
-          <CardTiltContent className="rounded-2xl bg-dark-card border border-white/[0.06] p-6 sm:p-8">
+          <CardTiltContent className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6 sm:p-8">
             <AnimatePresence mode="wait">
               {/* ─── Step 1: Email ─── */}
               {step === "email" && (
@@ -171,12 +171,12 @@ export default function ResetPasswordPage() {
                   <div>
                     <label
                       htmlFor="reset-email"
-                      className="block text-xs text-pacame-white/40 font-body mb-1.5"
+                      className="block text-xs text-ink/40 font-body mb-1.5"
                     >
                       Email de tu cuenta
                     </label>
                     <div className="relative">
-                      <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/25" />
+                      <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/25" />
                       <input
                         id="reset-email"
                         type="email"
@@ -194,7 +194,7 @@ export default function ResetPasswordPage() {
                     <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="text-xs text-rose-alert font-body text-center"
+                      className="text-xs text-accent-burgundy-soft font-body text-center"
                     >
                       {emailError}
                     </motion.p>
@@ -218,7 +218,7 @@ export default function ResetPasswordPage() {
                   <div className="text-center">
                     <Link
                       href="/portal"
-                      className="inline-flex items-center gap-1.5 text-xs text-pacame-white/40 hover:text-pacame-white/60 font-body transition-colors"
+                      className="inline-flex items-center gap-1.5 text-xs text-ink/40 hover:text-ink/60 font-body transition-colors"
                     >
                       <ArrowLeft className="w-3 h-3" />
                       Volver al login
@@ -238,17 +238,17 @@ export default function ResetPasswordPage() {
                   onSubmit={handleResetConfirm}
                   className="space-y-4"
                 >
-                  <div className="p-3 rounded-xl bg-electric-violet/5 border border-electric-violet/10 mb-2">
-                    <p className="text-xs text-electric-violet/70 font-body text-center">
+                  <div className="p-3 rounded-xl bg-brand-primary/5 border border-brand-primary/10 mb-2">
+                    <p className="text-xs text-brand-primary/70 font-body text-center">
                       Hemos enviado un codigo de 6 digitos a{" "}
-                      <span className="font-medium text-electric-violet">{email}</span>
+                      <span className="font-medium text-brand-primary">{email}</span>
                     </p>
                   </div>
 
                   <div>
                     <label
                       htmlFor="reset-code"
-                      className="block text-xs text-pacame-white/40 font-body mb-1.5"
+                      className="block text-xs text-ink/40 font-body mb-1.5"
                     >
                       Codigo de verificacion
                     </label>
@@ -270,12 +270,12 @@ export default function ResetPasswordPage() {
                   <div>
                     <label
                       htmlFor="new-password"
-                      className="block text-xs text-pacame-white/40 font-body mb-1.5"
+                      className="block text-xs text-ink/40 font-body mb-1.5"
                     >
                       Nuevo password
                     </label>
                     <div className="relative">
-                      <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/25" />
+                      <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/25" />
                       <input
                         id="new-password"
                         type={showNewPassword ? "text" : "password"}
@@ -290,7 +290,7 @@ export default function ResetPasswordPage() {
                       <button
                         type="button"
                         onClick={() => setShowNewPassword(!showNewPassword)}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-pacame-white/25 hover:text-pacame-white/50 transition-colors"
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink/25 hover:text-ink/50 transition-colors"
                         tabIndex={-1}
                       >
                         {showNewPassword ? (
@@ -305,12 +305,12 @@ export default function ResetPasswordPage() {
                   <div>
                     <label
                       htmlFor="confirm-password"
-                      className="block text-xs text-pacame-white/40 font-body mb-1.5"
+                      className="block text-xs text-ink/40 font-body mb-1.5"
                     >
                       Confirmar password
                     </label>
                     <div className="relative">
-                      <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/25" />
+                      <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/25" />
                       <input
                         id="confirm-password"
                         type={showConfirmPassword ? "text" : "password"}
@@ -325,7 +325,7 @@ export default function ResetPasswordPage() {
                       <button
                         type="button"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-pacame-white/25 hover:text-pacame-white/50 transition-colors"
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink/25 hover:text-ink/50 transition-colors"
                         tabIndex={-1}
                       >
                         {showConfirmPassword ? (
@@ -341,7 +341,7 @@ export default function ResetPasswordPage() {
                     <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="text-xs text-rose-alert font-body text-center"
+                      className="text-xs text-accent-burgundy-soft font-body text-center"
                     >
                       {codeError}
                     </motion.p>
@@ -366,7 +366,7 @@ export default function ResetPasswordPage() {
                     <button
                       type="button"
                       onClick={() => setStep("email")}
-                      className="inline-flex items-center gap-1.5 text-xs text-pacame-white/40 hover:text-pacame-white/60 font-body transition-colors"
+                      className="inline-flex items-center gap-1.5 text-xs text-ink/40 hover:text-ink/60 font-body transition-colors"
                     >
                       <ArrowLeft className="w-3 h-3" />
                       Usar otro email
@@ -385,13 +385,13 @@ export default function ResetPasswordPage() {
                   exit="exit"
                   className="text-center py-4"
                 >
-                  <div className="w-16 h-16 rounded-full bg-lime-pulse/10 flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle className="w-8 h-8 text-lime-pulse" />
+                  <div className="w-16 h-16 rounded-full bg-mint/10 flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="w-8 h-8 text-mint" />
                   </div>
-                  <h2 className="font-heading font-bold text-xl text-pacame-white mb-2">
+                  <h2 className="font-heading font-bold text-xl text-ink mb-2">
                     Password actualizado
                   </h2>
-                  <p className="text-sm text-pacame-white/50 font-body mb-6">
+                  <p className="text-sm text-ink/50 font-body mb-6">
                     Redirigiendo al login...
                   </p>
                   <Button variant="outline" size="lg" asChild className="gap-2">
@@ -411,7 +411,7 @@ export default function ResetPasswordPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="flex items-center gap-2 justify-center mt-6 text-xs text-pacame-white/30 font-body"
+          className="flex items-center gap-2 justify-center mt-6 text-xs text-ink/30 font-body"
         >
           <Shield className="w-3.5 h-3.5" />
           Portal seguro PACAME

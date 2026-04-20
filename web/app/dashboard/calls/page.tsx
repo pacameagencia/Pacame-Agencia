@@ -207,8 +207,8 @@ export default function CallsPage() {
     <div className="space-y-6 max-w-5xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading font-bold text-2xl text-pacame-white">Llamadas</h1>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">
+          <h1 className="font-heading font-bold text-2xl text-ink">Llamadas</h1>
+          <p className="text-sm text-ink/40 font-body mt-1">
             {loading ? "Cargando..." : `${totalCalls} llamadas · ${vapiCalls} via Vapi · ${positiveRate}% positivas`}
           </p>
         </div>
@@ -232,42 +232,42 @@ export default function CallsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-          <Phone className="w-6 h-6 text-electric-violet mx-auto mb-2" />
-          <div className="font-heading font-bold text-2xl text-pacame-white">{totalCalls}</div>
-          <div className="text-xs text-pacame-white/40 font-body">Total llamadas</div>
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5 text-center">
+          <Phone className="w-6 h-6 text-brand-primary mx-auto mb-2" />
+          <div className="font-heading font-bold text-2xl text-ink">{totalCalls}</div>
+          <div className="text-xs text-ink/40 font-body">Total llamadas</div>
         </div>
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-          <Clock className="w-6 h-6 text-neon-cyan mx-auto mb-2" />
-          <div className="font-heading font-bold text-2xl text-neon-cyan">{formatDuration(avgDuration)}</div>
-          <div className="text-xs text-pacame-white/40 font-body">Duracion media</div>
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5 text-center">
+          <Clock className="w-6 h-6 text-mint mx-auto mb-2" />
+          <div className="font-heading font-bold text-2xl text-mint">{formatDuration(avgDuration)}</div>
+          <div className="text-xs text-ink/40 font-body">Duracion media</div>
         </div>
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-          <ThumbsUp className="w-6 h-6 text-lime-pulse mx-auto mb-2" />
-          <div className="font-heading font-bold text-2xl text-lime-pulse">{positiveRate}%</div>
-          <div className="text-xs text-pacame-white/40 font-body">Sentimiento positivo</div>
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5 text-center">
+          <ThumbsUp className="w-6 h-6 text-mint mx-auto mb-2" />
+          <div className="font-heading font-bold text-2xl text-mint">{positiveRate}%</div>
+          <div className="text-xs text-ink/40 font-body">Sentimiento positivo</div>
         </div>
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 text-center">
-          <Bot className="w-6 h-6 text-electric-violet mx-auto mb-2" />
-          <div className="font-heading font-bold text-2xl text-pacame-white">{totalCost.toFixed(2)}€</div>
-          <div className="text-xs text-pacame-white/40 font-body">Coste Vapi</div>
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5 text-center">
+          <Bot className="w-6 h-6 text-brand-primary mx-auto mb-2" />
+          <div className="font-heading font-bold text-2xl text-ink">{totalCost.toFixed(2)}€</div>
+          <div className="text-xs text-ink/40 font-body">Coste Vapi</div>
         </div>
       </div>
 
       {/* Vapi Call Dialog */}
       {showCallDialog && (
-        <form onSubmit={handleInitiateCall} className="rounded-2xl bg-dark-card border border-electric-violet/30 p-6 space-y-4">
+        <form onSubmit={handleInitiateCall} className="rounded-2xl bg-paper-deep border border-brand-primary/30 p-6 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-electric-violet/20 flex items-center justify-center">
-                <Bot className="w-5 h-5 text-electric-violet" />
+              <div className="w-10 h-10 rounded-xl bg-brand-primary/20 flex items-center justify-center">
+                <Bot className="w-5 h-5 text-brand-primary" />
               </div>
               <div>
-                <h2 className="font-heading font-semibold text-pacame-white">Llamar con Sage (Vapi)</h2>
-                <p className="text-xs text-pacame-white/40 font-body">Sage hara un diagnostico del negocio por telefono</p>
+                <h2 className="font-heading font-semibold text-ink">Llamar con Sage (Vapi)</h2>
+                <p className="text-xs text-ink/40 font-body">Sage hara un diagnostico del negocio por telefono</p>
               </div>
             </div>
-            <button type="button" onClick={() => setShowCallDialog(false)} className="text-pacame-white/30 hover:text-pacame-white/60">
+            <button type="button" onClick={() => setShowCallDialog(false)} className="text-ink/30 hover:text-ink/60">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -276,7 +276,7 @@ export default function CallsPage() {
             <select
               value={callForm.contact_type}
               onChange={(e) => setCallForm({ ...callForm, contact_type: e.target.value as "lead" | "client", contact_id: "", phone_number: "" })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body focus:border-brand-primary/50 outline-none"
             >
               <option value="lead">Lead</option>
               <option value="client">Cliente</option>
@@ -284,7 +284,7 @@ export default function CallsPage() {
             <select
               value={callForm.contact_id}
               onChange={(e) => handleCallContactChange(e.target.value)}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body focus:border-brand-primary/50 outline-none"
             >
               <option value="">— Seleccionar contacto —</option>
               {contacts.filter((c) => c.type === callForm.contact_type).map((c) => (
@@ -297,12 +297,12 @@ export default function CallsPage() {
               value={callForm.phone_number}
               onChange={(e) => setCallForm({ ...callForm, phone_number: e.target.value })}
               required
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
             <select
               value={callForm.purpose}
               onChange={(e) => setCallForm({ ...callForm, purpose: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body focus:border-brand-primary/50 outline-none"
             >
               <option value="discovery">Diagnostico inicial</option>
               <option value="followup">Seguimiento</option>
@@ -317,7 +317,7 @@ export default function CallsPage() {
               {calling ? <Loader2 className="w-4 h-4 animate-spin" /> : <PhoneCall className="w-4 h-4" />}
               {calling ? "Iniciando llamada..." : "Iniciar llamada"}
             </Button>
-            <p className="text-xs text-pacame-white/30 font-body">
+            <p className="text-xs text-ink/30 font-body">
               Sage llamara al contacto y te enviara un resumen por email.
             </p>
           </div>
@@ -326,31 +326,31 @@ export default function CallsPage() {
 
       {/* Manual Log Form */}
       {showForm && (
-        <form onSubmit={handleCreate} className="rounded-2xl bg-dark-card border border-white/[0.08] p-6 space-y-4">
+        <form onSubmit={handleCreate} className="rounded-2xl bg-paper-deep border border-ink/[0.08] p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="font-heading font-semibold text-pacame-white">Registrar llamada manual</h2>
-            <button type="button" onClick={() => setShowForm(false)} className="text-pacame-white/30 hover:text-pacame-white/60">
+            <h2 className="font-heading font-semibold text-ink">Registrar llamada manual</h2>
+            <button type="button" onClick={() => setShowForm(false)} className="text-ink/30 hover:text-ink/60">
               <X className="w-4 h-4" />
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <select
               value={form.direction} onChange={(e) => setForm({ ...form, direction: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body focus:border-brand-primary/50 outline-none"
             >
               <option value="outbound">Saliente</option>
               <option value="inbound">Entrante</option>
             </select>
             <select
               value={form.contact_type} onChange={(e) => setForm({ ...form, contact_type: e.target.value as "lead" | "client", contact_id: "" })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body focus:border-brand-primary/50 outline-none"
             >
               <option value="lead">Lead</option>
               <option value="client">Cliente</option>
             </select>
             <select
               value={form.contact_id} onChange={(e) => setForm({ ...form, contact_id: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body focus:border-brand-primary/50 outline-none"
             >
               <option value="">— Contacto —</option>
               {contacts.filter((c) => c.type === form.contact_type).map((c) => (
@@ -360,16 +360,16 @@ export default function CallsPage() {
             <input
               placeholder="Proposito (ej: Diagnostico inicial)"
               value={form.purpose} onChange={(e) => setForm({ ...form, purpose: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
             <input
               type="number" placeholder="Duracion (segundos)"
               value={form.duration_seconds} onChange={(e) => setForm({ ...form, duration_seconds: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
             <select
               value={form.sentiment} onChange={(e) => setForm({ ...form, sentiment: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body focus:border-brand-primary/50 outline-none"
             >
               <option value="positive">Positivo</option>
               <option value="neutral">Neutral</option>
@@ -378,17 +378,17 @@ export default function CallsPage() {
             <input
               placeholder="Resultado de la llamada"
               value={form.outcome} onChange={(e) => setForm({ ...form, outcome: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
             <input
               placeholder="Siguiente accion"
               value={form.next_action} onChange={(e) => setForm({ ...form, next_action: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
             <textarea
               rows={3} placeholder="Resumen de la llamada"
               value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })}
-              className="col-span-full px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none resize-none"
+              className="col-span-full px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none resize-none"
             />
           </div>
           <Button type="submit" variant="gradient" size="sm" disabled={saving}>
@@ -405,8 +405,8 @@ export default function CallsPage() {
             onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded-lg text-xs font-body transition-colors ${
               filter === f
-                ? "bg-electric-violet/20 text-electric-violet border border-electric-violet/30"
-                : "bg-white/[0.03] text-pacame-white/40 border border-white/[0.06] hover:text-pacame-white/60"
+                ? "bg-brand-primary/20 text-brand-primary border border-brand-primary/30"
+                : "bg-white/[0.03] text-ink/40 border border-ink/[0.06] hover:text-ink/60"
             }`}
           >
             {f === "all" ? "Todas" : f === "outbound" ? "Salientes" : "Entrantes"}
@@ -417,10 +417,10 @@ export default function CallsPage() {
       {/* Call list */}
       <div className="space-y-2">
         {!loading && filteredCalls.length === 0 && (
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
-            <Phone className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
-            <p className="text-sm text-pacame-white/40 font-body">Sin llamadas registradas</p>
-            <p className="text-xs text-pacame-white/50 font-body mt-1">Usa &quot;Llamar con Sage&quot; para iniciar una llamada automatica</p>
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-12 text-center">
+            <Phone className="w-8 h-8 text-ink/20 mx-auto mb-3" />
+            <p className="text-sm text-ink/40 font-body">Sin llamadas registradas</p>
+            <p className="text-xs text-ink/50 font-body mt-1">Usa &quot;Llamar con Sage&quot; para iniciar una llamada automatica</p>
           </div>
         )}
         {filteredCalls.map((call) => {
@@ -429,57 +429,57 @@ export default function CallsPage() {
           const isExpanded = expandedId === call.id;
           const isVapi = !!call.vapi_call_id;
           return (
-            <div key={call.id} className={`rounded-xl bg-dark-card border transition-all ${isVapi ? "border-electric-violet/15 hover:border-electric-violet/30" : "border-white/[0.06] hover:border-white/10"}`}>
+            <div key={call.id} className={`rounded-xl bg-paper-deep border transition-all ${isVapi ? "border-brand-primary/15 hover:border-brand-primary/30" : "border-ink/[0.06] hover:border-white/10"}`}>
               <button
                 onClick={() => setExpandedId(isExpanded ? null : call.id)}
                 className="w-full flex items-center gap-4 p-4 text-left"
               >
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${isVapi ? "bg-electric-violet/20" : "bg-white/[0.05]"}`}>
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${isVapi ? "bg-brand-primary/20" : "bg-white/[0.05]"}`}>
                   {call.direction === "inbound" ? (
-                    <PhoneIncoming className="w-4 h-4 text-neon-cyan" />
+                    <PhoneIncoming className="w-4 h-4 text-mint" />
                   ) : (
-                    <PhoneOutgoing className={`w-4 h-4 ${isVapi ? "text-electric-violet" : "text-pacame-white/40"}`} />
+                    <PhoneOutgoing className={`w-4 h-4 ${isVapi ? "text-brand-primary" : "text-ink/40"}`} />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-heading font-medium text-pacame-white">{getContactName(call)}</span>
+                    <span className="text-sm font-heading font-medium text-ink">{getContactName(call)}</span>
                     <SentIcon className="w-3.5 h-3.5" style={{ color: sent.color }} />
                     {isVapi && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-electric-violet/15 text-electric-violet font-mono">Vapi</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-brand-primary/15 text-brand-primary font-mono">Vapi</span>
                     )}
                     {call.purpose && (
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.05] text-pacame-white/40 font-body">{call.purpose}</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.05] text-ink/40 font-body">{call.purpose}</span>
                     )}
                   </div>
-                  <div className="flex items-center gap-3 mt-0.5 text-xs text-pacame-white/30 font-body">
+                  <div className="flex items-center gap-3 mt-0.5 text-xs text-ink/30 font-body">
                     <span>{new Date(call.created_at).toLocaleDateString("es-ES")} {new Date(call.created_at).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })}</span>
                     {call.duration_seconds > 0 && <span><Clock className="w-3 h-3 inline mr-0.5" />{formatDuration(call.duration_seconds)}</span>}
                     {call.cost_eur > 0 && <span>{Number(call.cost_eur).toFixed(3)}€</span>}
                   </div>
                 </div>
                 {call.outcome && (
-                  <span className="text-xs text-pacame-white/50 font-body flex-shrink-0 max-w-[200px] truncate">{call.outcome}</span>
+                  <span className="text-xs text-ink/50 font-body flex-shrink-0 max-w-[200px] truncate">{call.outcome}</span>
                 )}
               </button>
               {isExpanded && (
                 <div className="px-4 pb-4 space-y-3 border-t border-white/[0.04] pt-3 ml-12">
                   {call.summary && (
                     <div>
-                      <div className="text-[11px] text-pacame-white/30 font-body mb-1">Resumen</div>
-                      <p className="text-sm text-pacame-white/70 font-body">{call.summary}</p>
+                      <div className="text-[11px] text-ink/30 font-body mb-1">Resumen</div>
+                      <p className="text-sm text-ink/70 font-body">{call.summary}</p>
                     </div>
                   )}
                   {call.next_action && (
                     <div>
-                      <div className="text-[11px] text-pacame-white/30 font-body mb-1">Siguiente accion</div>
-                      <p className="text-sm text-electric-violet/80 font-body">{call.next_action}</p>
+                      <div className="text-[11px] text-ink/30 font-body mb-1">Siguiente accion</div>
+                      <p className="text-sm text-brand-primary/80 font-body">{call.next_action}</p>
                     </div>
                   )}
                   {call.transcript && (
                     <div>
-                      <div className="text-[11px] text-pacame-white/30 font-body mb-1">Transcripcion</div>
-                      <p className="text-xs text-pacame-white/50 font-body whitespace-pre-wrap max-h-48 overflow-auto">{call.transcript}</p>
+                      <div className="text-[11px] text-ink/30 font-body mb-1">Transcripcion</div>
+                      <p className="text-xs text-ink/50 font-body whitespace-pre-wrap max-h-48 overflow-auto">{call.transcript}</p>
                     </div>
                   )}
                   {/* AI Summarize button for calls with transcripts but no summary */}
@@ -495,7 +495,7 @@ export default function CallsPage() {
                     </Button>
                   )}
                   {!call.transcript && !call.summary && (
-                    <div className="flex items-center gap-2 text-xs text-pacame-white/50 font-body">
+                    <div className="flex items-center gap-2 text-xs text-ink/50 font-body">
                       <AlertCircle className="w-3 h-3" />
                       Sin transcripcion ni resumen
                     </div>

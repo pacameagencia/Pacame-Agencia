@@ -90,7 +90,7 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <h4 className="font-body text-[11px] font-semibold text-olympus-gold/80 uppercase tracking-[0.18em] mb-5">
+      <h4 className="font-body text-[11px] font-semibold text-accent-gold/80 uppercase tracking-[0.18em] mb-5">
         {title}
       </h4>
       <ul className="space-y-3">
@@ -98,7 +98,7 @@ function FooterColumn({
           <li key={link.href}>
             <Link
               href={link.href}
-              className="text-sm text-pacame-white/55 hover:text-pacame-white transition-colors duration-300"
+              className="text-sm text-ink/55 hover:text-ink transition-colors duration-300"
             >
               {link.label}
             </Link>
@@ -113,18 +113,18 @@ export default function Footer() {
   return (
     <footer className="bg-[#0A0A0A] relative" role="contentinfo">
       {/* Top golden hairline */}
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/30 to-transparent" />
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/30 to-transparent" />
 
       {/* Newsletter strip — sobre el footer */}
       <div className="border-b border-white/[0.05]">
         <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
-              <h3 className="font-accent font-bold text-2xl sm:text-3xl text-pacame-white mb-2 text-balance">
+              <h3 className="font-accent font-bold text-2xl sm:text-3xl text-ink mb-2 text-balance">
                 Recibe <span className="gradient-text-gold">consejos digitales</span>{" "}
                 cada semana
               </h3>
-              <p className="text-sm text-pacame-white/50 font-body max-w-md">
+              <p className="text-sm text-ink/50 font-body max-w-md">
                 Guias practicas de SEO, Ads, Web y RRSS para PYMEs. Sin spam, cancela cuando quieras.
               </p>
             </div>
@@ -142,11 +142,11 @@ export default function Footer() {
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2.5 mb-5">
               <PacameLogo />
-              <span className="font-heading font-bold text-lg text-pacame-white">
+              <span className="font-heading font-bold text-lg text-ink">
                 PACAME
               </span>
             </Link>
-            <p className="text-[15px] text-pacame-white/55 leading-relaxed max-w-xs mb-6">
+            <p className="text-[15px] text-ink/55 leading-relaxed max-w-xs mb-6">
               Tu equipo digital completo. 10 agentes IA + 120 subespecialistas, liderados por humanos.
             </p>
 
@@ -155,9 +155,9 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:hola@pacameagencia.com"
-                  className="inline-flex items-center gap-2 text-sm text-pacame-white/55 hover:text-pacame-white transition-colors"
+                  className="inline-flex items-center gap-2 text-sm text-ink/55 hover:text-ink transition-colors"
                 >
-                  <Mail className="w-3.5 h-3.5 text-olympus-gold/60" />
+                  <Mail className="w-3.5 h-3.5 text-accent-gold/60" />
                   hola@pacameagencia.com
                 </a>
               </li>
@@ -166,9 +166,9 @@ export default function Footer() {
                   href="https://wa.me/34722669381"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm text-pacame-white/55 hover:text-pacame-white transition-colors"
+                  className="inline-flex items-center gap-2 text-sm text-ink/55 hover:text-ink transition-colors"
                 >
-                  <MessageCircle className="w-3.5 h-3.5 text-olympus-gold/60" />
+                  <MessageCircle className="w-3.5 h-3.5 text-accent-gold/60" />
                   WhatsApp +34 722 669 381
                 </a>
               </li>
@@ -177,9 +177,9 @@ export default function Footer() {
                   href="https://t.me/pacameagencia"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm text-pacame-white/55 hover:text-pacame-white transition-colors"
+                  className="inline-flex items-center gap-2 text-sm text-ink/55 hover:text-ink transition-colors"
                 >
-                  <Send className="w-3.5 h-3.5 text-olympus-gold/60" />
+                  <Send className="w-3.5 h-3.5 text-accent-gold/60" />
                   Telegram @pacameagencia
                 </a>
               </li>
@@ -193,7 +193,7 @@ export default function Footer() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full border border-white/[0.08] flex items-center justify-center text-pacame-white/50 hover:text-olympus-gold hover:border-olympus-gold/30 transition-all duration-300"
+                  className="w-9 h-9 rounded-full border border-ink/[0.08] flex items-center justify-center text-ink/50 hover:text-accent-gold hover:border-accent-gold/30 transition-all duration-300"
                   aria-label={label}
                 >
                   <Icon className="w-4 h-4" />
@@ -213,23 +213,23 @@ export default function Footer() {
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             {/* Copyright + location */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-x-5 gap-y-2">
-              <p className="text-xs text-pacame-white/40 font-body">
+              <p className="text-xs text-ink/40 font-body">
                 &copy; {new Date().getFullYear()} PACAME. Todos los derechos reservados.
               </p>
-              <p className="text-xs text-pacame-white/40 font-body">
+              <p className="text-xs text-ink/40 font-body">
                 Pablo Calleja Mena · Madrid, Espana
               </p>
             </div>
 
             {/* Trust badges mini */}
-            <div className="flex flex-wrap items-center gap-4 text-xs font-body text-pacame-white/45">
+            <div className="flex flex-wrap items-center gap-4 text-xs font-body text-ink/45">
               <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-olympus-gold/60" />
+                <ShieldCheck className="w-3.5 h-3.5 text-accent-gold/60" />
                 Stripe Verified
               </span>
-              <span className="text-pacame-white/15">·</span>
+              <span className="text-ink/15">·</span>
               <span>GDPR compliant</span>
-              <span className="text-pacame-white/15">·</span>
+              <span className="text-ink/15">·</span>
               <span className="inline-flex items-center gap-1">
                 Made in Spain
                 <span role="img" aria-label="flag Spain">

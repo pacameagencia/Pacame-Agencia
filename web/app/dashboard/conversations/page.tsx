@@ -191,49 +191,49 @@ export default function ConversationsPage() {
   return (
     <div className="space-y-6 max-w-6xl">
       <div>
-        <h1 className="font-heading font-bold text-2xl text-pacame-white">Conversaciones WhatsApp</h1>
-        <p className="text-sm text-pacame-white/40 font-body mt-1">
+        <h1 className="font-heading font-bold text-2xl text-ink">Conversaciones WhatsApp</h1>
+        <p className="text-sm text-ink/40 font-body mt-1">
           {loading ? "Cargando..." : `${totalConversations} contactos · ${conversations.length} mensajes`}
         </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-4 text-center">
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-4 text-center">
           <MessageCircle className="w-5 h-5 text-green-500 mx-auto mb-2" />
-          <div className="font-heading font-bold text-xl text-pacame-white">{totalConversations}</div>
-          <div className="text-[11px] text-pacame-white/40 font-body">Contactos</div>
+          <div className="font-heading font-bold text-xl text-ink">{totalConversations}</div>
+          <div className="text-[11px] text-ink/40 font-body">Contactos</div>
         </div>
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-4 text-center">
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-4 text-center">
           <ArrowDownUp className="w-5 h-5 text-cyan-400 mx-auto mb-2" />
-          <div className="font-heading font-bold text-xl text-pacame-white">{inboundToday}</div>
-          <div className="text-[11px] text-pacame-white/40 font-body">Recibidos hoy</div>
+          <div className="font-heading font-bold text-xl text-ink">{inboundToday}</div>
+          <div className="text-[11px] text-ink/40 font-body">Recibidos hoy</div>
         </div>
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-4 text-center">
-          <Send className="w-5 h-5 text-electric-violet mx-auto mb-2" />
-          <div className="font-heading font-bold text-xl text-pacame-white">{outboundToday}</div>
-          <div className="text-[11px] text-pacame-white/40 font-body">Enviados hoy</div>
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-4 text-center">
+          <Send className="w-5 h-5 text-brand-primary mx-auto mb-2" />
+          <div className="font-heading font-bold text-xl text-ink">{outboundToday}</div>
+          <div className="text-[11px] text-ink/40 font-body">Enviados hoy</div>
         </div>
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-4 text-center">
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-4 text-center">
           <Bot className="w-5 h-5 text-amber-400 mx-auto mb-2" />
-          <div className="font-heading font-bold text-xl text-pacame-white">{aiResponses}</div>
-          <div className="text-[11px] text-pacame-white/40 font-body">Respuestas IA</div>
+          <div className="font-heading font-bold text-xl text-ink">{aiResponses}</div>
+          <div className="text-[11px] text-ink/40 font-body">Respuestas IA</div>
         </div>
       </div>
 
       {/* Chat layout */}
-      <div className="rounded-2xl bg-dark-card border border-white/[0.06] overflow-hidden flex" style={{ height: "calc(100vh - 320px)", minHeight: 400 }}>
+      <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] overflow-hidden flex" style={{ height: "calc(100vh - 320px)", minHeight: 400 }}>
         {/* Contact list */}
-        <div className="w-80 border-r border-white/[0.06] flex flex-col">
-          <div className="p-3 border-b border-white/[0.06]">
+        <div className="w-80 border-r border-ink/[0.06] flex flex-col">
+          <div className="p-3 border-b border-ink/[0.06]">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/30" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/30" />
               <input
                 type="text"
                 placeholder="Buscar contacto..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.06] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+                className="w-full pl-9 pr-3 py-2 rounded-lg bg-white/[0.04] border border-ink/[0.06] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
               />
             </div>
           </div>
@@ -241,12 +241,12 @@ export default function ConversationsPage() {
           <div className="flex-1 overflow-y-auto">
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="w-6 h-6 text-electric-violet animate-spin" />
+                <Loader2 className="w-6 h-6 text-brand-primary animate-spin" />
               </div>
             ) : filteredContacts.length === 0 ? (
               <div className="text-center py-12 px-4">
-                <MessageCircle className="w-8 h-8 text-pacame-white/10 mx-auto mb-2" />
-                <p className="text-sm text-pacame-white/30 font-body">
+                <MessageCircle className="w-8 h-8 text-ink/10 mx-auto mb-2" />
+                <p className="text-sm text-ink/30 font-body">
                   {search ? "Sin resultados" : "No hay conversaciones"}
                 </p>
               </div>
@@ -257,7 +257,7 @@ export default function ConversationsPage() {
                   onClick={() => setSelectedContact(contact.id)}
                   className={`w-full px-4 py-3 flex items-start gap-3 text-left border-b border-white/[0.03] transition-colors ${
                     selectedContact === contact.id
-                      ? "bg-electric-violet/10"
+                      ? "bg-brand-primary/10"
                       : "hover:bg-white/[0.03]"
                   }`}
                 >
@@ -266,20 +266,20 @@ export default function ConversationsPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-body text-pacame-white font-medium truncate">
+                      <span className="text-sm font-body text-ink font-medium truncate">
                         {contact.name}
                       </span>
-                      <span className="text-[10px] text-pacame-white/30 font-body flex-shrink-0 ml-2">
+                      <span className="text-[10px] text-ink/30 font-body flex-shrink-0 ml-2">
                         {timeAgo(contact.lastMessageAt)}
                       </span>
                     </div>
                     <div className="flex items-center gap-1 mt-0.5">
                       {contact.type === "client" && (
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-electric-violet/20 text-electric-violet font-body">
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-brand-primary/20 text-brand-primary font-body">
                           cliente
                         </span>
                       )}
-                      <p className="text-xs text-pacame-white/40 font-body truncate">
+                      <p className="text-xs text-ink/40 font-body truncate">
                         {contact.lastMessage.length > 50
                           ? contact.lastMessage.slice(0, 50) + "..."
                           : contact.lastMessage}
@@ -297,22 +297,22 @@ export default function ConversationsPage() {
           {selectedContact && selectedContactData ? (
             <>
               {/* Chat header */}
-              <div className="px-4 py-3 border-b border-white/[0.06] flex items-center gap-3">
+              <div className="px-4 py-3 border-b border-ink/[0.06] flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
                   <User className="w-4 h-4 text-green-500" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-heading font-semibold text-pacame-white">
+                  <h3 className="text-sm font-heading font-semibold text-ink">
                     {selectedContactData.name}
                   </h3>
                   <div className="flex items-center gap-2">
                     {selectedContactData.phone && (
-                      <span className="text-[11px] text-pacame-white/40 font-body flex items-center gap-1">
+                      <span className="text-[11px] text-ink/40 font-body flex items-center gap-1">
                         <Phone className="w-3 h-3" />
                         +{selectedContactData.phone}
                       </span>
                     )}
-                    <span className="text-[11px] text-pacame-white/30 font-body">
+                    <span className="text-[11px] text-ink/30 font-body">
                       {selectedContactData.type === "client" ? "Cliente" : "Lead"}
                     </span>
                   </div>
@@ -323,7 +323,7 @@ export default function ConversationsPage() {
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
                 {selectedMessages.length === 0 ? (
                   <div className="text-center py-12">
-                    <p className="text-sm text-pacame-white/30 font-body">Sin mensajes</p>
+                    <p className="text-sm text-ink/30 font-body">Sin mensajes</p>
                   </div>
                 ) : (
                   selectedMessages.map((msg) => (
@@ -334,15 +334,15 @@ export default function ConversationsPage() {
                       <div
                         className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${
                           msg.direction === "outbound"
-                            ? "bg-electric-violet/20 border border-electric-violet/10"
+                            ? "bg-brand-primary/20 border border-brand-primary/10"
                             : "bg-white/[0.06] border border-white/[0.04]"
                         }`}
                       >
-                        <p className="text-sm text-pacame-white/90 font-body whitespace-pre-line">
+                        <p className="text-sm text-ink/90 font-body whitespace-pre-line">
                           {msg.message}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="text-[10px] text-pacame-white/30 font-body">
+                          <span className="text-[10px] text-ink/30 font-body">
                             {new Date(msg.created_at).toLocaleTimeString("es-ES", {
                               hour: "2-digit",
                               minute: "2-digit",
@@ -363,14 +363,14 @@ export default function ConversationsPage() {
               </div>
 
               {/* Input */}
-              <form onSubmit={handleSend} className="p-3 border-t border-white/[0.06] flex items-center gap-2">
+              <form onSubmit={handleSend} className="p-3 border-t border-ink/[0.06] flex items-center gap-2">
                 <input
                   type="text"
                   placeholder="Escribe un mensaje..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   disabled={!selectedContactData.phone}
-                  className="flex-1 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none disabled:opacity-40"
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-ink/[0.06] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none disabled:opacity-40"
                 />
                 <Button
                   type="submit"
@@ -395,8 +395,8 @@ export default function ConversationsPage() {
           ) : (
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <MessageCircle className="w-12 h-12 text-pacame-white/10 mx-auto mb-3" />
-                <p className="text-sm text-pacame-white/30 font-body">
+                <MessageCircle className="w-12 h-12 text-ink/10 mx-auto mb-3" />
+                <p className="text-sm text-ink/30 font-body">
                   Selecciona un contacto para ver la conversacion
                 </p>
               </div>

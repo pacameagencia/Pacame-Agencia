@@ -58,14 +58,14 @@ const CATEGORY_LABELS: Record<string, string> = {
 const CATEGORY_COLORS: Record<string, string> = {
   llm: "text-violet-400 bg-violet-500/10 border-violet-500/30",
   database: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
-  payments: "text-olympus-gold bg-olympus-gold/10 border-olympus-gold/30",
+  payments: "text-accent-gold bg-accent-gold/10 border-accent-gold/30",
   auth: "text-red-400 bg-red-500/10 border-red-500/30",
   messaging: "text-cyan-400 bg-cyan-500/10 border-cyan-500/30",
   social: "text-pink-400 bg-pink-500/10 border-pink-500/30",
   content: "text-amber-400 bg-amber-500/10 border-amber-500/30",
   infrastructure: "text-blue-400 bg-blue-500/10 border-blue-500/30",
   analytics: "text-indigo-400 bg-indigo-500/10 border-indigo-500/30",
-  cron: "text-pacame-white/60 bg-white/[0.04] border-white/10",
+  cron: "text-ink/60 bg-white/[0.04] border-white/10",
 };
 
 export default function EnvDashboardPage() {
@@ -113,7 +113,7 @@ export default function EnvDashboardPage() {
 
   if (loading && !data) {
     return (
-      <div className="flex items-center justify-center py-20 text-pacame-white/40">
+      <div className="flex items-center justify-center py-20 text-ink/40">
         <Loader2 className="w-5 h-5 animate-spin mr-2" /> Cargando env status...
       </div>
     );
@@ -132,18 +132,18 @@ export default function EnvDashboardPage() {
       {/* Header */}
       <div className="flex items-start justify-between flex-wrap gap-3">
         <div>
-          <h1 className="font-heading font-bold text-2xl text-pacame-white flex items-center gap-2">
-            <Shield className="w-6 h-6 text-olympus-gold" /> Env Registry
+          <h1 className="font-heading font-bold text-2xl text-ink flex items-center gap-2">
+            <Shield className="w-6 h-6 text-accent-gold" /> Env Registry
           </h1>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">
+          <p className="text-sm text-ink/40 font-body mt-1">
             {data?.vars.length} vars gestionadas · Environment:{" "}
-            <span className="font-mono text-olympus-gold">{data?.current_env}</span>
+            <span className="font-mono text-accent-gold">{data?.current_env}</span>
             {data && ` · Verificado ${new Date(data.checked_at).toLocaleTimeString("es-ES")}`}
           </p>
         </div>
         <button
           onClick={fetchData}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/[0.04] text-pacame-white/60 hover:text-pacame-white text-xs transition border border-white/[0.08]"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/[0.04] text-ink/60 hover:text-ink text-xs transition border border-ink/[0.08]"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} /> Refresh
         </button>
@@ -152,11 +152,11 @@ export default function EnvDashboardPage() {
       {/* Hero KPIs */}
       {data && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
-            <div className="text-xs uppercase tracking-wider text-pacame-white/40 font-mono mb-1">
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5">
+            <div className="text-xs uppercase tracking-wider text-ink/40 font-mono mb-1">
               Total vars
             </div>
-            <div className="font-heading font-bold text-3xl text-pacame-white">
+            <div className="font-heading font-bold text-3xl text-ink">
               {data.totals.total}
             </div>
           </div>
@@ -165,7 +165,7 @@ export default function EnvDashboardPage() {
             <div className="font-heading font-bold text-3xl text-emerald-400">
               {data.totals.set}
             </div>
-            <div className="text-xs text-pacame-white/40 font-body mt-1">
+            <div className="text-xs text-ink/40 font-body mt-1">
               Configuradas
             </div>
           </div>
@@ -173,22 +173,22 @@ export default function EnvDashboardPage() {
             className={`rounded-2xl p-5 border ${
               data.totals.missing_required > 0
                 ? "bg-red-500/10 border-red-500/40 animate-pulse"
-                : "bg-dark-card border-white/[0.06]"
+                : "bg-paper-deep border-ink/[0.06]"
             }`}
           >
             <XCircle
               className={`w-5 h-5 mb-2 ${
-                data.totals.missing_required > 0 ? "text-red-400" : "text-pacame-white/30"
+                data.totals.missing_required > 0 ? "text-red-400" : "text-ink/30"
               }`}
             />
             <div
               className={`font-heading font-bold text-3xl ${
-                data.totals.missing_required > 0 ? "text-red-400" : "text-pacame-white/60"
+                data.totals.missing_required > 0 ? "text-red-400" : "text-ink/60"
               }`}
             >
               {data.totals.missing_required}
             </div>
-            <div className="text-xs text-pacame-white/40 font-body mt-1">
+            <div className="text-xs text-ink/40 font-body mt-1">
               Required missing
             </div>
           </div>
@@ -197,7 +197,7 @@ export default function EnvDashboardPage() {
             <div className="font-heading font-bold text-3xl text-amber-400">
               {data.totals.missing_optional}
             </div>
-            <div className="text-xs text-pacame-white/40 font-body mt-1">
+            <div className="text-xs text-ink/40 font-body mt-1">
               Optional missing
             </div>
           </div>
@@ -206,8 +206,8 @@ export default function EnvDashboardPage() {
 
       {/* Categorías */}
       {data && (
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
-          <h2 className="font-heading font-semibold text-lg text-pacame-white mb-4">
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
+          <h2 className="font-heading font-semibold text-lg text-ink mb-4">
             Por categoria
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
@@ -219,8 +219,8 @@ export default function EnvDashboardPage() {
                 }
                 className={`p-3 rounded-xl border transition text-left ${
                   categoryFilter === cat
-                    ? "bg-olympus-gold/10 border-olympus-gold/40"
-                    : "bg-white/[0.02] border-white/[0.04] hover:border-white/[0.1]"
+                    ? "bg-accent-gold/10 border-accent-gold/40"
+                    : "bg-white/[0.02] border-white/[0.04] hover:border-ink/[0.1]"
                 }`}
               >
                 <div
@@ -231,7 +231,7 @@ export default function EnvDashboardPage() {
                 >
                   {CATEGORY_LABELS[cat] || cat}
                 </div>
-                <div className="font-heading font-bold text-xl text-pacame-white mt-1">
+                <div className="font-heading font-bold text-xl text-ink mt-1">
                   {counts.set}/{counts.total}
                 </div>
                 {counts.missing > 0 && (
@@ -247,15 +247,15 @@ export default function EnvDashboardPage() {
 
       {/* Filter bar */}
       <div className="flex items-center gap-2 flex-wrap">
-        <Filter className="w-4 h-4 text-pacame-white/40" />
+        <Filter className="w-4 h-4 text-ink/40" />
         {(["all", "missing", "missing-required"] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider transition ${
               filter === f
-                ? "bg-olympus-gold text-pacame-black"
-                : "bg-white/[0.04] text-pacame-white/60 hover:text-pacame-white border border-white/[0.08]"
+                ? "bg-accent-gold text-paper"
+                : "bg-white/[0.04] text-ink/60 hover:text-ink border border-ink/[0.08]"
             }`}
           >
             {f === "all" && "Todas"}
@@ -266,7 +266,7 @@ export default function EnvDashboardPage() {
         {categoryFilter !== "all" && (
           <button
             onClick={() => setCategoryFilter("all")}
-            className="px-3 py-1.5 rounded-lg text-xs text-pacame-white/60 bg-white/[0.04] border border-white/[0.08]"
+            className="px-3 py-1.5 rounded-lg text-xs text-ink/60 bg-white/[0.04] border border-ink/[0.08]"
           >
             × {CATEGORY_LABELS[categoryFilter]}
           </button>
@@ -274,10 +274,10 @@ export default function EnvDashboardPage() {
       </div>
 
       {/* Vars matrix */}
-      <div className="rounded-2xl bg-dark-card border border-white/[0.06] overflow-hidden">
+      <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-white/[0.02]">
-            <tr className="text-left text-[10px] uppercase tracking-wider text-pacame-white/40 font-mono">
+            <tr className="text-left text-[10px] uppercase tracking-wider text-ink/40 font-mono">
               <th className="p-3 pl-5">Status</th>
               <th className="p-3">Variable</th>
               <th className="p-3">Category</th>
@@ -303,17 +303,17 @@ export default function EnvDashboardPage() {
                     <AlertTriangle className="w-4 h-4 text-amber-400" />
                   )}
                 </td>
-                <td className="p-3 font-mono text-pacame-white/90">
+                <td className="p-3 font-mono text-ink/90">
                   <div className="flex items-center gap-2">
                     {v.public ? (
                       <Globe className="w-3 h-3 text-blue-400" />
                     ) : (
-                      <Lock className="w-3 h-3 text-pacame-white/30" />
+                      <Lock className="w-3 h-3 text-ink/30" />
                     )}
                     {v.name}
                   </div>
                   {v.isSet && v.valuePreview && (
-                    <div className="text-[10px] text-pacame-white/40 mt-0.5 font-mono">
+                    <div className="text-[10px] text-ink/40 mt-0.5 font-mono">
                       {v.valuePreview}
                     </div>
                   )}
@@ -322,13 +322,13 @@ export default function EnvDashboardPage() {
                   <span
                     className={`text-[10px] uppercase tracking-wider font-mono px-2 py-0.5 rounded-full border ${CATEGORY_COLORS[
                       v.category
-                    ] || "text-pacame-white/60 border-white/10"}`}
+                    ] || "text-ink/60 border-white/10"}`}
                   >
                     {v.category}
                   </span>
                 </td>
-                <td className="p-3 text-pacame-white/60 text-xs">{v.provider}</td>
-                <td className="p-3 text-pacame-white/70 text-xs max-w-[300px]">
+                <td className="p-3 text-ink/60 text-xs">{v.provider}</td>
+                <td className="p-3 text-ink/70 text-xs max-w-[300px]">
                   {v.description}
                 </td>
                 <td className="p-3 text-right pr-5">
@@ -337,7 +337,7 @@ export default function EnvDashboardPage() {
                       href={v.generate_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-olympus-gold/10 border border-olympus-gold/30 text-olympus-gold text-[11px] hover:bg-olympus-gold/20 transition"
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-accent-gold/10 border border-accent-gold/30 text-accent-gold text-[11px] hover:bg-accent-gold/20 transition"
                     >
                       Generate <ExternalLink className="w-3 h-3" />
                     </a>
@@ -348,17 +348,17 @@ export default function EnvDashboardPage() {
           </tbody>
         </table>
         {filteredVars.length === 0 && (
-          <div className="p-8 text-center text-pacame-white/40 text-sm">
+          <div className="p-8 text-center text-ink/40 text-sm">
             Sin vars en este filtro
           </div>
         )}
       </div>
 
       {/* Footer help */}
-      <div className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 text-xs text-pacame-white/50 font-body">
+      <div className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 text-xs text-ink/50 font-body">
         <p>
-          <strong className="text-pacame-white/70">Como añadir una nueva env var:</strong>{" "}
-          Edita <code className="text-olympus-gold font-mono">web/lib/env/registry.ts</code>,
+          <strong className="text-ink/70">Como añadir una nueva env var:</strong>{" "}
+          Edita <code className="text-accent-gold font-mono">web/lib/env/registry.ts</code>,
           sube el valor via <code className="font-mono">vercel env add</code>, y corre{" "}
           <code className="font-mono">node scripts/generate-env-example.mjs</code> para
           regenerar el example. Aparece aqui en la proxima revalidacion.

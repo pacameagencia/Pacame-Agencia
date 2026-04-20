@@ -72,7 +72,7 @@ export default function AppSetupForm({ instanceId, schema, initialConfig }: Prop
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl p-6 bg-dark-card border border-white/[0.06] space-y-5">
+    <form onSubmit={handleSubmit} className="rounded-2xl p-6 bg-paper-deep border border-ink/[0.06] space-y-5">
       {fieldEntries.map(([key, field]) => {
         const isReq = required.includes(key);
         const label = (field.title || key) + (isReq ? " *" : "");
@@ -82,13 +82,13 @@ export default function AppSetupForm({ instanceId, schema, initialConfig }: Prop
         if (field.type === "string" && field.enum) {
           return (
             <div key={key}>
-              <label className="block text-sm font-body font-medium text-pacame-white/80 mb-1.5">
+              <label className="block text-sm font-body font-medium text-ink/80 mb-1.5">
                 {label}
               </label>
               <select
                 value={(value as string) || ""}
                 onChange={(e) => update(key, e.target.value)}
-                className="w-full bg-pacame-black border border-white/[0.08] rounded-lg px-3 py-2.5 text-sm text-pacame-white focus:border-olympus-gold focus:outline-none transition"
+                className="w-full bg-paper border border-ink/[0.08] rounded-lg px-3 py-2.5 text-sm text-ink focus:border-accent-gold focus:outline-none transition"
               >
                 <option value="">Elige una opcion</option>
                 {field.enum.map((opt) => (
@@ -106,7 +106,7 @@ export default function AppSetupForm({ instanceId, schema, initialConfig }: Prop
           const arr = Array.isArray(value) ? (value as string[]) : [];
           return (
             <div key={key}>
-              <label className="block text-sm font-body font-medium text-pacame-white/80 mb-2">
+              <label className="block text-sm font-body font-medium text-ink/80 mb-2">
                 {label}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -117,8 +117,8 @@ export default function AppSetupForm({ instanceId, schema, initialConfig }: Prop
                       key={opt}
                       className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-sm font-body cursor-pointer transition ${
                         checked
-                          ? "bg-olympus-gold/10 border-olympus-gold/40 text-olympus-gold"
-                          : "bg-white/[0.02] border-white/[0.08] text-pacame-white/70 hover:border-white/[0.15]"
+                          ? "bg-accent-gold/10 border-accent-gold/40 text-accent-gold"
+                          : "bg-white/[0.02] border-ink/[0.08] text-ink/70 hover:border-white/[0.15]"
                       }`}
                     >
                       <input
@@ -147,7 +147,7 @@ export default function AppSetupForm({ instanceId, schema, initialConfig }: Prop
         if (field.type === "string" && (field.maxLength ?? 0) > 200) {
           return (
             <div key={key}>
-              <label className="block text-sm font-body font-medium text-pacame-white/80 mb-1.5">
+              <label className="block text-sm font-body font-medium text-ink/80 mb-1.5">
                 {label}
               </label>
               <textarea
@@ -155,7 +155,7 @@ export default function AppSetupForm({ instanceId, schema, initialConfig }: Prop
                 onChange={(e) => update(key, e.target.value)}
                 maxLength={field.maxLength}
                 rows={4}
-                className="w-full bg-pacame-black border border-white/[0.08] rounded-lg px-3 py-2.5 text-sm text-pacame-white focus:border-olympus-gold focus:outline-none transition resize-none"
+                className="w-full bg-paper border border-ink/[0.08] rounded-lg px-3 py-2.5 text-sm text-ink focus:border-accent-gold focus:outline-none transition resize-none"
               />
             </div>
           );
@@ -164,7 +164,7 @@ export default function AppSetupForm({ instanceId, schema, initialConfig }: Prop
         // Default: text input
         return (
           <div key={key}>
-            <label className="block text-sm font-body font-medium text-pacame-white/80 mb-1.5">
+            <label className="block text-sm font-body font-medium text-ink/80 mb-1.5">
               {label}
             </label>
             <input
@@ -172,7 +172,7 @@ export default function AppSetupForm({ instanceId, schema, initialConfig }: Prop
               value={(value as string) || ""}
               onChange={(e) => update(key, e.target.value)}
               maxLength={field.maxLength}
-              className="w-full bg-pacame-black border border-white/[0.08] rounded-lg px-3 py-2.5 text-sm text-pacame-white focus:border-olympus-gold focus:outline-none transition"
+              className="w-full bg-paper border border-ink/[0.08] rounded-lg px-3 py-2.5 text-sm text-ink focus:border-accent-gold focus:outline-none transition"
             />
           </div>
         );
@@ -193,7 +193,7 @@ export default function AppSetupForm({ instanceId, schema, initialConfig }: Prop
       <button
         type="submit"
         disabled={loading}
-        className="w-full inline-flex items-center justify-center gap-2 bg-olympus-gold hover:bg-olympus-gold/90 disabled:opacity-50 text-pacame-black font-heading font-semibold py-3 rounded-xl transition"
+        className="w-full inline-flex items-center justify-center gap-2 bg-accent-gold hover:bg-accent-gold/90 disabled:opacity-50 text-paper font-heading font-semibold py-3 rounded-xl transition"
       >
         {loading && <Loader2 className="w-4 h-4 animate-spin" />}
         Activar app

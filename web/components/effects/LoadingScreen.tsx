@@ -49,8 +49,8 @@ export default function LoadingScreen() {
         >
           {/* Background ambient glow */}
           <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-electric-violet/[0.04] blur-[120px]" />
-            <div className="absolute top-1/3 left-1/3 w-[400px] h-[400px] rounded-full bg-olympus-gold/[0.03] blur-[100px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-brand-primary/[0.04] blur-[120px]" />
+            <div className="absolute top-1/3 left-1/3 w-[400px] h-[400px] rounded-full bg-accent-gold/[0.03] blur-[100px]" />
           </div>
 
           {/* Logo animation */}
@@ -110,7 +110,7 @@ export default function LoadingScreen() {
 
             {/* Brand name */}
             <motion.span
-              className="font-heading font-bold text-xl text-pacame-white tracking-[0.15em] mb-10"
+              className="font-heading font-bold text-xl text-ink tracking-[0.15em] mb-10"
               initial={{ opacity: 0, letterSpacing: "0.3em" }}
               animate={{ opacity: 1, letterSpacing: "0.15em" }}
               transition={{ duration: 0.8, delay: 0.6 }}

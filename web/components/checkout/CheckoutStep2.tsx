@@ -29,12 +29,12 @@ interface CheckoutStep2Props {
 }
 
 const INPUT_CLASS =
-  "w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white placeholder:text-pacame-white/25 font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors";
+  "w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink placeholder:text-ink/25 font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors";
 
-const LABEL_CLASS = "text-sm text-pacame-white/70 font-body mb-2 block";
+const LABEL_CLASS = "text-sm text-ink/70 font-body mb-2 block";
 
 const SELECT_CLASS =
-  "w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors appearance-none cursor-pointer";
+  "w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors appearance-none cursor-pointer";
 
 const SECTORS = [
   "Tecnologia",
@@ -74,10 +74,10 @@ export default function CheckoutStep2({
       transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
     >
       <div className="mb-8">
-        <h2 className="text-subsection font-heading text-pacame-white">
+        <h2 className="text-subsection font-heading text-ink">
           Tu proyecto
         </h2>
-        <p className="mt-2 text-sm font-body text-pacame-white/50">
+        <p className="mt-2 text-sm font-body text-ink/50">
           Cuanto mas nos cuentes, mejor personalizamos tu servicio. Todos los
           campos son opcionales.
         </p>
@@ -90,7 +90,7 @@ export default function CheckoutStep2({
             Nombre de tu empresa
           </label>
           <div className="relative">
-            <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/20 pointer-events-none" />
+            <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/20 pointer-events-none" />
             <input
               id="checkout-company"
               type="text"
@@ -111,7 +111,7 @@ export default function CheckoutStep2({
             Web actual (si tienes)
           </label>
           <div className="relative">
-            <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/20 pointer-events-none" />
+            <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/20 pointer-events-none" />
             <input
               id="checkout-website"
               type="url"
@@ -132,7 +132,7 @@ export default function CheckoutStep2({
             Sector
           </label>
           <div className="relative">
-            <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/20 pointer-events-none" />
+            <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/20 pointer-events-none" />
             <select
               id="checkout-sector"
               value={data.company_sector}
@@ -141,20 +141,20 @@ export default function CheckoutStep2({
               }
               className={`${SELECT_CLASS} pl-11 pr-10`}
             >
-              <option value="" className="bg-dark-card text-pacame-white/50">
+              <option value="" className="bg-paper-deep text-ink/50">
                 Selecciona tu sector
               </option>
               {SECTORS.map((sector) => (
                 <option
                   key={sector}
                   value={sector}
-                  className="bg-dark-card text-pacame-white"
+                  className="bg-paper-deep text-ink"
                 >
                   {sector}
                 </option>
               ))}
             </select>
-            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/30 pointer-events-none" />
+            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/30 pointer-events-none" />
           </div>
         </div>
 
@@ -164,7 +164,7 @@ export default function CheckoutStep2({
             Describe tu proyecto en unas lineas
           </label>
           <div className="relative">
-            <FileText className="absolute left-4 top-4 w-4 h-4 text-pacame-white/20 pointer-events-none" />
+            <FileText className="absolute left-4 top-4 w-4 h-4 text-ink/20 pointer-events-none" />
             <textarea
               id="checkout-description"
               rows={3}
@@ -184,7 +184,7 @@ export default function CheckoutStep2({
             Que objetivos quieres alcanzar?
           </label>
           <div className="relative">
-            <Target className="absolute left-4 top-4 w-4 h-4 text-pacame-white/20 pointer-events-none" />
+            <Target className="absolute left-4 top-4 w-4 h-4 text-ink/20 pointer-events-none" />
             <textarea
               id="checkout-objectives"
               rows={3}
@@ -204,27 +204,27 @@ export default function CheckoutStep2({
             Plazo deseado
           </label>
           <div className="relative">
-            <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/20 pointer-events-none" />
+            <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/20 pointer-events-none" />
             <select
               id="checkout-timeline"
               value={data.timeline}
               onChange={(e) => onChange({ ...data, timeline: e.target.value })}
               className={`${SELECT_CLASS} pl-11 pr-10`}
             >
-              <option value="" className="bg-dark-card text-pacame-white/50">
+              <option value="" className="bg-paper-deep text-ink/50">
                 Cuando lo necesitas?
               </option>
               {TIMELINES.map((tl) => (
                 <option
                   key={tl}
                   value={tl}
-                  className="bg-dark-card text-pacame-white"
+                  className="bg-paper-deep text-ink"
                 >
                   {tl}
                 </option>
               ))}
             </select>
-            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/30 pointer-events-none" />
+            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/30 pointer-events-none" />
           </div>
         </div>
 

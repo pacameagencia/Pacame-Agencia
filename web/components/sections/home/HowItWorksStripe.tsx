@@ -34,21 +34,21 @@ const steps = [
 
 export default function HowItWorksStripe() {
   return (
-    <section className="section-padding bg-pacame-black relative">
+    <section className="section-padding bg-paper relative">
       <div className="px-6">
         <GoldenDivider variant="line" />
       </div>
 
       <div className="max-w-6xl mx-auto px-6">
         <ScrollReveal className="text-center mb-16">
-          <p className="text-[12px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.22em]">
+          <p className="text-[12px] font-body font-medium text-accent-gold/70 mb-4 uppercase tracking-[0.22em]">
             Como funciona
           </p>
-          <h2 className="font-accent font-bold text-section text-pacame-white mb-5 text-balance">
+          <h2 className="font-accent font-bold text-section text-ink mb-5 text-balance">
             Cuatro pasos.{" "}
             <span className="gradient-text-gold">Cero friccion.</span>
           </h2>
-          <p className="text-lg text-pacame-white/50 max-w-xl mx-auto font-body">
+          <p className="text-lg text-ink/50 max-w-xl mx-auto font-body">
             Disenado para lanzar rapido. Pago unico o suscripcion, tu eliges.
           </p>
         </ScrollReveal>
@@ -59,21 +59,21 @@ export default function HowItWorksStripe() {
         >
           {steps.map((step) => (
             <StaggerItem key={step.n}>
-              <div className="relative rounded-2xl p-6 bg-dark-card border border-white/[0.06] hover:border-olympus-gold/30 transition-colors duration-500 h-full flex flex-col">
+              <div className="relative rounded-2xl p-6 bg-paper-deep border border-ink/[0.06] hover:border-accent-gold/30 transition-colors duration-500 h-full flex flex-col">
                 {/* Numero grande, estilo editorial */}
                 <div className="flex items-start justify-between mb-6">
-                  <span className="font-accent font-bold text-4xl text-olympus-gold/30">
+                  <span className="font-accent font-bold text-4xl text-accent-gold/30">
                     {step.n}
                   </span>
-                  <div className="w-10 h-10 rounded-xl bg-olympus-gold/10 border border-olympus-gold/20 flex items-center justify-center">
-                    <step.Icon className="w-4 h-4 text-olympus-gold" />
+                  <div className="w-10 h-10 rounded-xl bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center">
+                    <step.Icon className="w-4 h-4 text-accent-gold" />
                   </div>
                 </div>
 
-                <h3 className="font-heading font-bold text-lg text-pacame-white mb-2">
+                <h3 className="font-heading font-bold text-lg text-ink mb-2">
                   {step.title}
                 </h3>
-                <p className="text-sm text-pacame-white/50 font-body leading-relaxed">
+                <p className="text-sm text-ink/50 font-body leading-relaxed">
                   {step.desc}
                 </p>
               </div>

@@ -88,7 +88,7 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
   ];
 
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       {/* Schema JSON-LD */}
       <script
         type="application/ld+json"
@@ -132,22 +132,22 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
 
         <div className="relative z-10 max-w-4xl mx-auto px-6">
           {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-xs text-pacame-white/30 font-body mb-8">
-            <Link href="/" className="hover:text-pacame-white/50">PACAME</Link>
+          <nav className="flex items-center gap-2 text-xs text-ink/30 font-body mb-8">
+            <Link href="/" className="hover:text-ink/50">PACAME</Link>
             <span>/</span>
-            <Link href="/servicios" className="hover:text-pacame-white/50">Servicios</Link>
+            <Link href="/servicios" className="hover:text-ink/50">Servicios</Link>
             <span>/</span>
-            <span className="text-pacame-white/50">{pageTitle}</span>
+            <span className="text-ink/50">{pageTitle}</span>
           </nav>
 
-          <h1 className="font-heading font-bold text-[clamp(2rem,4.5vw,3.5rem)] text-pacame-white leading-tight mb-6">
+          <h1 className="font-heading font-bold text-[clamp(2rem,4.5vw,3.5rem)] text-ink leading-tight mb-6">
             {service.nameShort} para{" "}
             <span style={{ color: service.color }}>{sector.namePlural}</span>
             <br />
             en {city.name}
           </h1>
 
-          <p className="text-lg text-pacame-white/60 font-body max-w-2xl mb-8">
+          <p className="text-lg text-ink/60 font-body max-w-2xl mb-8">
             {service.description}
           </p>
 
@@ -169,44 +169,44 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
       </section>
 
       {/* Problema */}
-      <section className="section-padding bg-dark-elevated">
+      <section className="section-padding bg-paper-soft">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="font-mono text-sm mb-4 uppercase tracking-widest" style={{ color: service.color }}>
             El problema
           </p>
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-8">
+          <h2 className="font-heading font-bold text-section text-ink mb-8">
             ¿Tu {sector.name} en {city.name} tiene alguno de estos problemas?
           </h2>
           <div className="space-y-4">
             {sector.problems.map((problem, i) => (
-              <div key={i} className="flex items-start gap-4 p-4 rounded-xl bg-dark-card border border-white/[0.06]">
+              <div key={i} className="flex items-start gap-4 p-4 rounded-xl bg-paper-deep border border-ink/[0.06]">
                 <div className="w-8 h-8 rounded-lg bg-red-500/15 flex items-center justify-center flex-shrink-0">
                   <span className="text-red-400 font-heading font-bold text-sm">{i + 1}</span>
                 </div>
-                <p className="text-pacame-white/70 font-body">{problem}</p>
+                <p className="text-ink/70 font-body">{problem}</p>
               </div>
             ))}
           </div>
-          <p className="text-pacame-white/50 font-body mt-6">
+          <p className="text-ink/50 font-body mt-6">
             {city.localFact}
           </p>
         </div>
       </section>
 
       {/* Solucion */}
-      <section className="section-padding bg-pacame-black">
+      <section className="section-padding bg-paper">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="font-mono text-sm mb-4 uppercase tracking-widest" style={{ color: service.color }}>
             La solución
           </p>
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-8">
+          <h2 className="font-heading font-bold text-section text-ink mb-8">
             Esto es lo que PACAME hace por tu {sector.name}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {service.benefits.map((benefit) => (
-              <div key={benefit} className="flex items-start gap-3 p-4 rounded-xl bg-dark-card border border-white/[0.06]">
+              <div key={benefit} className="flex items-start gap-3 p-4 rounded-xl bg-paper-deep border border-ink/[0.06]">
                 <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: service.color }} />
-                <p className="text-sm text-pacame-white/70 font-body">{benefit}</p>
+                <p className="text-sm text-ink/70 font-body">{benefit}</p>
               </div>
             ))}
           </div>
@@ -214,12 +214,12 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
       </section>
 
       {/* Como funciona */}
-      <section className="section-padding bg-dark-elevated">
+      <section className="section-padding bg-paper-soft">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="font-mono text-neon-cyan text-sm mb-4 uppercase tracking-widest">
+          <p className="font-mono text-mint text-sm mb-4 uppercase tracking-widest">
             Cómo funciona
           </p>
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-12">
+          <h2 className="font-heading font-bold text-section text-ink mb-12">
             De tu problema a la solución en 4 pasos
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -236,8 +236,8 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
                 >
                   {item.step}
                 </div>
-                <h3 className="font-heading font-semibold text-pacame-white mb-2">{item.title}</h3>
-                <p className="text-sm text-pacame-white/50 font-body">{item.desc}</p>
+                <h3 className="font-heading font-semibold text-ink mb-2">{item.title}</h3>
+                <p className="text-sm text-ink/50 font-body">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -245,13 +245,13 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
       </section>
 
       {/* Precios */}
-      <section className="section-padding bg-pacame-black">
+      <section className="section-padding bg-paper">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-4">
+          <h2 className="font-heading font-bold text-section text-ink mb-4">
             ¿Cuánto cuesta?
           </h2>
-          <p className="text-pacame-white/60 font-body mb-8 max-w-xl mx-auto">
-            {service.nameShort} para {sector.namePlural}: <strong className="text-pacame-white">{service.priceFrom}</strong>.
+          <p className="text-ink/60 font-body mb-8 max-w-xl mx-auto">
+            {service.nameShort} para {sector.namePlural}: <strong className="text-ink">{service.priceFrom}</strong>.
             El precio final depende de tu caso concreto. Te damos presupuesto exacto en 24 horas.
           </p>
           <Button variant="gradient" size="xl" asChild className="group">
@@ -264,19 +264,19 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
       </section>
 
       {/* FAQ */}
-      <section className="section-padding bg-dark-elevated">
+      <section className="section-padding bg-paper-soft">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-8 text-center">
+          <h2 className="font-heading font-bold text-section text-ink mb-8 text-center">
             Preguntas frecuentes
           </h2>
           <div className="space-y-4">
             {faqs.map((faq) => (
-              <div key={faq.q} className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
+              <div key={faq.q} className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5">
                 <div className="flex items-start gap-3">
                   <HelpCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: service.color }} />
                   <div>
-                    <h3 className="font-heading font-semibold text-pacame-white mb-2">{faq.q}</h3>
-                    <p className="text-sm text-pacame-white/60 font-body leading-relaxed">{faq.a}</p>
+                    <h3 className="font-heading font-semibold text-ink mb-2">{faq.q}</h3>
+                    <p className="text-sm text-ink/60 font-body leading-relaxed">{faq.a}</p>
                   </div>
                 </div>
               </div>
@@ -286,12 +286,12 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
       </section>
 
       {/* Related pages — internal linking for SEO */}
-      <section className="section-padding bg-pacame-black">
+      <section className="section-padding bg-paper">
         <div className="max-w-4xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Other cities for same service+sector */}
             <div>
-              <h3 className="font-heading font-semibold text-lg text-pacame-white mb-4">
+              <h3 className="font-heading font-semibold text-lg text-ink mb-4">
                 {service.nameShort} para {sector.namePlural} en otras ciudades
               </h3>
               <ul className="space-y-2">
@@ -302,7 +302,7 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
                     <li key={c.slug}>
                       <Link
                         href={`/${service.slug}-${sector.slug}-${c.slug}`}
-                        className="text-sm text-pacame-white/50 hover:text-electric-violet font-body transition-colors"
+                        className="text-sm text-ink/50 hover:text-brand-primary font-body transition-colors"
                       >
                         {service.nameShort} para {sector.namePlural} en {c.name}
                       </Link>
@@ -313,7 +313,7 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
 
             {/* Other services for same sector+city */}
             <div>
-              <h3 className="font-heading font-semibold text-lg text-pacame-white mb-4">
+              <h3 className="font-heading font-semibold text-lg text-ink mb-4">
                 Otros servicios para {sector.namePlural} en {city.name}
               </h3>
               <ul className="space-y-2">
@@ -324,7 +324,7 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
                     <li key={s.slug}>
                       <Link
                         href={`/${s.slug}-${sector.slug}-${city.slug}`}
-                        className="text-sm text-pacame-white/50 hover:text-electric-violet font-body transition-colors"
+                        className="text-sm text-ink/50 hover:text-brand-primary font-body transition-colors"
                       >
                         {s.nameShort} para {sector.namePlural} en {city.name}
                       </Link>
@@ -337,12 +337,12 @@ export default async function SEOPage({ params }: { params: Promise<{ seoSlug: s
       </section>
 
       {/* CTA final */}
-      <section className="py-20 bg-pacame-black text-center">
+      <section className="py-20 bg-paper text-center">
         <div className="max-w-2xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-3xl text-pacame-white mb-4">
+          <h2 className="font-heading font-bold text-3xl text-ink mb-4">
             ¿Listo para hacer crecer tu {sector.name} en {city.name}?
           </h2>
-          <p className="text-pacame-white/60 font-body mb-8">
+          <p className="text-ink/60 font-body mb-8">
             Diagnóstico gratuito. Presupuesto en 24 horas. Sin compromiso.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

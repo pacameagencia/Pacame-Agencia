@@ -72,13 +72,13 @@ const suggestions: Suggestion[] = [
 
 export default function NotFound() {
   return (
-    <div className="bg-pacame-black min-h-screen flex items-center justify-center relative overflow-hidden py-20">
+    <div className="bg-paper min-h-screen flex items-center justify-center relative overflow-hidden py-20">
       {/* Constellation background */}
       <ConstellationBackground density={30} />
 
       {/* Ambient glow dorado */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-olympus-radial pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-electric-violet/[0.06] rounded-full blur-[180px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-brand-primary/[0.06] rounded-full blur-[180px] pointer-events-none" />
 
       <motion.div
         className="relative z-10 max-w-2xl mx-auto px-6 text-center"
@@ -104,14 +104,14 @@ export default function NotFound() {
 
         <motion.h1
           variants={itemVariants}
-          className="font-heading font-bold text-3xl md:text-4xl text-pacame-white mb-4 mt-8 text-balance"
+          className="font-heading font-bold text-3xl md:text-4xl text-ink mb-4 mt-8 text-balance"
         >
           Esta pagina se fue a tomar un cafe.
         </motion.h1>
 
         <motion.p
           variants={itemVariants}
-          className="text-lg text-pacame-white/60 font-body mb-10 max-w-md mx-auto leading-relaxed"
+          className="text-lg text-ink/60 font-body mb-10 max-w-md mx-auto leading-relaxed"
         >
           O nunca existio, o cambiamos la direccion, o alguien la borro por error.
           Te ayudamos a encontrar lo que buscas.
@@ -126,15 +126,15 @@ export default function NotFound() {
             <Link
               key={href}
               href={href}
-              className="group rounded-2xl bg-dark-card/70 backdrop-blur-sm border border-white/[0.06] p-5 text-left hover:border-olympus-gold/30 transition-all hover:-translate-y-0.5"
+              className="group rounded-2xl bg-paper-deep/70 backdrop-blur-sm border border-ink/[0.06] p-5 text-left hover:border-accent-gold/30 transition-all hover:-translate-y-0.5"
             >
-              <div className="w-9 h-9 rounded-lg bg-olympus-gold/10 border border-olympus-gold/20 flex items-center justify-center mb-3">
-                <Icon className="w-4 h-4 text-olympus-gold" />
+              <div className="w-9 h-9 rounded-lg bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center mb-3">
+                <Icon className="w-4 h-4 text-accent-gold" />
               </div>
-              <p className="font-heading font-semibold text-sm text-pacame-white group-hover:text-olympus-gold transition-colors mb-1">
+              <p className="font-heading font-semibold text-sm text-ink group-hover:text-accent-gold transition-colors mb-1">
                 {label}
               </p>
-              <p className="text-xs text-pacame-white/50 font-body">
+              <p className="text-xs text-ink/50 font-body">
                 {description}
               </p>
             </Link>
@@ -144,13 +144,13 @@ export default function NotFound() {
         {/* Links secundarios en una linea */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-body text-pacame-white/40 mb-10"
+          className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-body text-ink/40 mb-10"
         >
           {suggestions.slice(3).map(({ href, label }) => (
             <Link
               key={href}
               href={href}
-              className="hover:text-olympus-gold transition-colors underline underline-offset-4 decoration-white/[0.08] hover:decoration-olympus-gold/60"
+              className="hover:text-accent-gold transition-colors underline underline-offset-4 decoration-white/[0.08] hover:decoration-accent-gold/60"
             >
               {label}
             </Link>
@@ -168,7 +168,7 @@ export default function NotFound() {
               gradientOpacity={0.8}
               className="group min-w-[220px] h-12 px-6 text-sm font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
             >
-              <Link href="/" className="flex items-center gap-2 text-pacame-white">
+              <Link href="/" className="flex items-center gap-2 text-ink">
                 <Home className="w-4 h-4" />
                 Volver al inicio
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -179,7 +179,7 @@ export default function NotFound() {
             variant="outline"
             size="lg"
             asChild
-            className="rounded-full border-olympus-gold/20 hover:border-olympus-gold/40 hover:bg-olympus-gold/5"
+            className="rounded-full border-accent-gold/20 hover:border-accent-gold/40 hover:bg-accent-gold/5"
           >
             <Link href="/contacto">
               <Search className="w-4 h-4" />

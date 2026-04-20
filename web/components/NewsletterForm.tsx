@@ -32,7 +32,7 @@ export default function NewsletterForm() {
 
   if (status === "done") {
     return (
-      <div className="flex items-center justify-center gap-2 text-lime-pulse font-body">
+      <div className="flex items-center justify-center gap-2 text-mint font-body">
         <CheckCircle2 className="w-5 h-5" />
         <span>Te has suscrito correctamente</span>
       </div>
@@ -47,7 +47,7 @@ export default function NewsletterForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="tu@empresa.com"
-        className="flex-1 h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 focus:border-electric-violet outline-none transition-colors"
+        className="flex-1 h-12 px-4 rounded-xl bg-paper-deep border border-ink/[0.08] text-ink font-body text-sm placeholder:text-ink/30 focus:border-brand-primary outline-none transition-colors"
       />
       <Button variant="gradient" size="default" type="submit" disabled={status === "sending"}>
         {status === "sending" ? "Enviando..." : "Suscribirse"}

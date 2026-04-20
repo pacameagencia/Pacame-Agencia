@@ -75,7 +75,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-electric-violet" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
       </div>
     );
   }
@@ -83,10 +83,10 @@ export default function DashboardPage() {
   if (error || !data) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-        <p className="text-pacame-white/60 font-body mb-4">{error ?? "Sin datos"}</p>
+        <p className="text-ink/60 font-body mb-4">{error ?? "Sin datos"}</p>
         <button
           onClick={() => { setLoading(true); setError(null); fetchDashboard(); }}
-          className="text-sm text-electric-violet font-body hover:underline"
+          className="text-sm text-brand-primary font-body hover:underline"
         >
           Reintentar
         </button>
@@ -111,18 +111,18 @@ export default function DashboardPage() {
     <div className="space-y-8">
       {/* Banner */}
       <ScrollReveal>
-        <div className="relative overflow-hidden rounded-2xl bg-dark-card border border-white/[0.06] p-8">
+        <div className="relative overflow-hidden rounded-2xl bg-paper-deep border border-ink/[0.06] p-8">
           <div className="absolute inset-0 opacity-[0.03]" style={{
             backgroundImage: `radial-gradient(circle at 30% 50%, ${primaryColor}, transparent 70%)`,
           }} />
           <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
               <h1 className="font-heading font-bold text-3xl sm:text-4xl">
-                <span className="bg-gradient-to-r from-pacame-white to-pacame-white/60 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-ink to-ink/60 bg-clip-text text-transparent">
                   Hola, {client.name?.split(" ")[0] || "cliente"}
                 </span>
               </h1>
-              <p className="text-pacame-white/50 font-body mt-2 text-sm">
+              <p className="text-ink/50 font-body mt-2 text-sm">
                 Plan {client.plan || "Personalizado"} ·{" "}
                 Cliente desde{" "}
                 {new Date(client.member_since).toLocaleDateString("es-ES", {
@@ -144,37 +144,37 @@ export default function DashboardPage() {
       {/* Stats row */}
       <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4" staggerDelay={0.06}>
         <StaggerItem>
-          <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-5 text-center">
-            <CheckCircle2 className="w-5 h-5 text-lime-pulse mx-auto mb-2" />
-            <div className="font-heading font-bold text-xl text-pacame-white">
+          <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-5 text-center">
+            <CheckCircle2 className="w-5 h-5 text-mint mx-auto mb-2" />
+            <div className="font-heading font-bold text-xl text-ink">
               {completedMilestones}/{totalMilestones}
             </div>
-            <p className="text-[11px] text-pacame-white/40 font-body mt-1">Hitos completados</p>
+            <p className="text-[11px] text-ink/40 font-body mt-1">Hitos completados</p>
           </div>
         </StaggerItem>
         <StaggerItem>
-          <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-5 text-center">
-            <MessageSquare className="w-5 h-5 text-electric-violet mx-auto mb-2" />
-            <div className="font-heading font-bold text-xl text-pacame-white">
+          <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-5 text-center">
+            <MessageSquare className="w-5 h-5 text-brand-primary mx-auto mb-2" />
+            <div className="font-heading font-bold text-xl text-ink">
               {unreadMessages}
             </div>
-            <p className="text-[11px] text-pacame-white/40 font-body mt-1">Mensajes sin leer</p>
+            <p className="text-[11px] text-ink/40 font-body mt-1">Mensajes sin leer</p>
           </div>
         </StaggerItem>
         <StaggerItem>
-          <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-5 text-center">
+          <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-5 text-center">
             <FileUp className="w-5 h-5 text-cyan-spark mx-auto mb-2" />
-            <div className="font-heading font-bold text-xl text-pacame-white">{filesCount}</div>
-            <p className="text-[11px] text-pacame-white/40 font-body mt-1">Archivos</p>
+            <div className="font-heading font-bold text-xl text-ink">{filesCount}</div>
+            <p className="text-[11px] text-ink/40 font-body mt-1">Archivos</p>
           </div>
         </StaggerItem>
         <StaggerItem>
-          <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-5 text-center">
-            <Receipt className="w-5 h-5 text-olympus-gold mx-auto mb-2" />
-            <div className="font-heading font-bold text-xl text-pacame-white">
+          <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-5 text-center">
+            <Receipt className="w-5 h-5 text-accent-gold mx-auto mb-2" />
+            <div className="font-heading font-bold text-xl text-ink">
               {paymentsTotal.toLocaleString("es-ES")}€
             </div>
-            <p className="text-[11px] text-pacame-white/40 font-body mt-1">Total invertido</p>
+            <p className="text-[11px] text-ink/40 font-body mt-1">Total invertido</p>
           </div>
         </StaggerItem>
       </StaggerContainer>
@@ -183,9 +183,9 @@ export default function DashboardPage() {
       <div className="grid lg:grid-cols-5 gap-6">
         {/* Active milestones */}
         <ScrollReveal className="lg:col-span-3">
-          <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-6">
+          <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-6">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="font-heading font-bold text-lg text-pacame-white flex items-center gap-2">
+              <h2 className="font-heading font-bold text-lg text-ink flex items-center gap-2">
                 <FolderKanban className="w-5 h-5" style={{ color: primaryColor }} />
                 Hitos del proyecto
               </h2>
@@ -206,13 +206,13 @@ export default function DashboardPage() {
 
         {/* Recent activity */}
         <ScrollReveal delay={0.1} className="lg:col-span-2">
-          <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-6 h-full">
-            <h2 className="font-heading font-bold text-lg text-pacame-white flex items-center gap-2 mb-5">
+          <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-6 h-full">
+            <h2 className="font-heading font-bold text-lg text-ink flex items-center gap-2 mb-5">
               <Activity className="w-5 h-5" style={{ color: primaryColor }} />
               Actividad reciente
             </h2>
             {recentActivity.length === 0 ? (
-              <p className="text-sm text-pacame-white/30 font-body text-center py-8">
+              <p className="text-sm text-ink/30 font-body text-center py-8">
                 Sin actividad reciente
               </p>
             ) : (
@@ -229,10 +229,10 @@ export default function DashboardPage() {
                       style={{ backgroundColor: primaryColor }}
                     />
                     <div className="min-w-0">
-                      <p className="text-sm text-pacame-white/80 font-body leading-relaxed">
+                      <p className="text-sm text-ink/80 font-body leading-relaxed">
                         {item.description}
                       </p>
-                      <span className="text-[10px] text-pacame-white/30 font-body">
+                      <span className="text-[10px] text-ink/30 font-body">
                         {new Date(item.created_at).toLocaleDateString("es-ES", {
                           day: "numeric",
                           month: "short",
@@ -251,7 +251,7 @@ export default function DashboardPage() {
 
       {/* Quick actions */}
       <ScrollReveal delay={0.15}>
-        <h2 className="font-heading font-bold text-lg text-pacame-white mb-4">Acciones rapidas</h2>
+        <h2 className="font-heading font-bold text-lg text-ink mb-4">Acciones rapidas</h2>
         <div className="grid sm:grid-cols-3 gap-4">
           {[
             {
@@ -278,15 +278,15 @@ export default function DashboardPage() {
           ].map((action) => (
             <Link key={action.href} href={action.href}>
               <CardTilt tiltMaxAngle={6}>
-                <CardTiltContent className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 cursor-pointer group hover:border-white/[0.12] transition-colors">
+                <CardTiltContent className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5 cursor-pointer group hover:border-ink/[0.12] transition-colors">
                   <action.icon
                     className="w-6 h-6 mb-3 transition-transform group-hover:scale-110"
                     style={{ color: action.color }}
                   />
-                  <h3 className="font-heading font-semibold text-sm text-pacame-white mb-1">
+                  <h3 className="font-heading font-semibold text-sm text-ink mb-1">
                     {action.label}
                   </h3>
-                  <p className="text-[11px] text-pacame-white/40 font-body">
+                  <p className="text-[11px] text-ink/40 font-body">
                     {action.description}
                   </p>
                 </CardTiltContent>

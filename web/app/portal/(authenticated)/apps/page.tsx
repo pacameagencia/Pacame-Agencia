@@ -21,7 +21,7 @@ const statusLabels: Record<string, { label: string; color: string; icon: typeof 
   provisioning: { label: "Pendiente configuracion", color: "text-orange-400", icon: Clock },
   active: { label: "Activa", color: "text-green-400", icon: CheckCircle2 },
   past_due: { label: "Pago pendiente", color: "text-orange-400", icon: Clock },
-  canceled: { label: "Cancelada", color: "text-pacame-white/40", icon: Clock },
+  canceled: { label: "Cancelada", color: "text-ink/40", icon: Clock },
   suspended: { label: "Suspendida", color: "text-rose-400", icon: Clock },
 };
 
@@ -52,17 +52,17 @@ export default async function AppsListPage() {
     <div className="max-w-5xl mx-auto">
       <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="font-heading font-bold text-3xl text-pacame-white mb-1 flex items-center gap-3">
-            <Boxes className="w-7 h-7 text-olympus-gold" />
+          <h1 className="font-heading font-bold text-3xl text-ink mb-1 flex items-center gap-3">
+            <Boxes className="w-7 h-7 text-accent-gold" />
             Mis apps
           </h1>
-          <p className="text-pacame-white/60 font-body text-sm">
+          <p className="text-ink/60 font-body text-sm">
             Apps activadas para tu negocio.
           </p>
         </div>
         <Link
           href="/apps"
-          className="inline-flex items-center gap-2 bg-olympus-gold hover:bg-olympus-gold/90 text-pacame-black font-heading font-semibold px-5 py-2.5 rounded-xl transition"
+          className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-paper font-heading font-semibold px-5 py-2.5 rounded-xl transition"
         >
           Descubrir mas apps
           <ArrowRight className="w-4 h-4" />
@@ -70,17 +70,17 @@ export default async function AppsListPage() {
       </div>
 
       {instances.length === 0 ? (
-        <div className="rounded-2xl p-12 bg-dark-card border border-white/[0.06] text-center">
-          <Boxes className="w-12 h-12 text-pacame-white/30 mx-auto mb-4" />
-          <h2 className="font-heading font-semibold text-xl text-pacame-white mb-2">
+        <div className="rounded-2xl p-12 bg-paper-deep border border-ink/[0.06] text-center">
+          <Boxes className="w-12 h-12 text-ink/30 mx-auto mb-4" />
+          <h2 className="font-heading font-semibold text-xl text-ink mb-2">
             Aun no tienes apps
           </h2>
-          <p className="text-pacame-white/60 font-body text-sm mb-6">
+          <p className="text-ink/60 font-body text-sm mb-6">
             Las apps productizadas PACAME funcionan solas. Activa la primera en 1 clic.
           </p>
           <Link
             href="/planes"
-            className="inline-flex items-center gap-2 bg-olympus-gold hover:bg-olympus-gold/90 text-pacame-black font-heading font-semibold px-6 py-3 rounded-xl transition"
+            className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-paper font-heading font-semibold px-6 py-3 rounded-xl transition"
           >
             Ver planes y apps
             <ArrowRight className="w-4 h-4" />
@@ -91,7 +91,7 @@ export default async function AppsListPage() {
           {instances.map((inst) => {
             const info = statusLabels[inst.status] || {
               label: inst.status,
-              color: "text-pacame-white/60",
+              color: "text-ink/60",
               icon: Clock,
             };
             const Icon = info.icon;
@@ -103,15 +103,15 @@ export default async function AppsListPage() {
               <Link
                 key={inst.id}
                 href={href}
-                className="group block rounded-2xl p-5 bg-dark-card border border-white/[0.06] hover:border-olympus-gold/30 transition"
+                className="group block rounded-2xl p-5 bg-paper-deep border border-ink/[0.06] hover:border-accent-gold/30 transition"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-heading font-semibold text-pacame-white text-lg">
+                    <h3 className="font-heading font-semibold text-ink text-lg">
                       {inst.app?.name || inst.app_slug}
                     </h3>
                     {inst.app?.tagline && (
-                      <p className="text-sm font-body text-pacame-white/50 mt-0.5">
+                      <p className="text-sm font-body text-ink/50 mt-0.5">
                         {inst.app.tagline}
                       </p>
                     )}
@@ -121,13 +121,13 @@ export default async function AppsListPage() {
                         {info.label}
                       </span>
                       {needsSetup && (
-                        <span className="text-xs font-body text-olympus-gold">
+                        <span className="text-xs font-body text-accent-gold">
                           · Completa el setup
                         </span>
                       )}
                     </div>
                   </div>
-                  <div className="p-2 rounded-lg bg-white/[0.04] text-pacame-white/40 group-hover:text-olympus-gold transition">
+                  <div className="p-2 rounded-lg bg-white/[0.04] text-ink/40 group-hover:text-accent-gold transition">
                     {needsSetup ? <Settings className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
                   </div>
                 </div>

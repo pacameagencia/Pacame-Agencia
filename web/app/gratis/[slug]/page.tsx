@@ -69,32 +69,32 @@ export default async function LeadMagnetPage({ params }: PageProps) {
   if (!config) notFound();
 
   return (
-    <main className="bg-pacame-black min-h-screen">
+    <main className="bg-paper min-h-screen">
       {/* Hero */}
       <section className="relative overflow-hidden py-20 lg:py-28">
         {/* Background gradient */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-radial from-electric-violet/10 via-olympus-gold/5 to-transparent rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-radial from-brand-primary/10 via-accent-gold/5 to-transparent rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-5xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left: copy */}
             <div>
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-lime-pulse/30 bg-lime-pulse/5 text-lime-pulse text-xs font-heading font-semibold mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-lime-pulse animate-pulse" />
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-mint/30 bg-mint/5 text-mint text-xs font-heading font-semibold mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-mint animate-pulse" />
                 100% gratis
               </span>
 
-              <h1 className="font-accent font-bold text-4xl sm:text-5xl text-pacame-white leading-tight tracking-tight">
+              <h1 className="font-accent font-bold text-4xl sm:text-5xl text-ink leading-tight tracking-tight">
                 {config.headline}
               </h1>
 
-              <p className="mt-6 text-lg text-pacame-white/60 font-body leading-relaxed">
+              <p className="mt-6 text-lg text-ink/60 font-body leading-relaxed">
                 {config.subheadline}
               </p>
 
-              <p className="mt-4 text-sm text-pacame-white/40 font-body leading-relaxed">
+              <p className="mt-4 text-sm text-ink/40 font-body leading-relaxed">
                 {config.description}
               </p>
 
@@ -103,10 +103,10 @@ export default async function LeadMagnetPage({ params }: PageProps) {
                 {config.benefits.map((benefit) => (
                   <li
                     key={benefit}
-                    className="flex items-start gap-3 text-pacame-white/70 font-body text-sm"
+                    className="flex items-start gap-3 text-ink/70 font-body text-sm"
                   >
                     <svg
-                      className="w-5 h-5 text-lime-pulse flex-shrink-0 mt-0.5"
+                      className="w-5 h-5 text-mint flex-shrink-0 mt-0.5"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -135,7 +135,7 @@ export default async function LeadMagnetPage({ params }: PageProps) {
       {/* Trust */}
       <section className="py-12 border-t border-white/[0.04]">
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <p className="text-pacame-white/30 font-body text-sm">
+          <p className="text-ink/30 font-body text-sm">
             Mas de 150 PYMEs espanolas ya han recibido su auditoria. Sin
             spam, sin compromisos, solo un informe util para mejorar tu web.
           </p>

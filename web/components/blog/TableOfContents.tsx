@@ -47,10 +47,10 @@ export default function TableOfContents({
       aria-label="Indice del articulo"
       className="text-sm font-body"
     >
-      <p className="uppercase tracking-[0.2em] text-[11px] text-olympus-gold/70 font-medium mb-4">
+      <p className="uppercase tracking-[0.2em] text-[11px] text-accent-gold/70 font-medium mb-4">
         En este articulo
       </p>
-      <ol className="space-y-2 border-l border-white/[0.06]">
+      <ol className="space-y-2 border-l border-ink/[0.06]">
         {headings.map((h) => {
           const isActive = activeId === h.id;
           return (
@@ -70,7 +70,7 @@ export default function TableOfContents({
                   color: isActive ? "#fff" : "rgba(255,255,255,0.5)",
                 }}
               >
-                <span className="hover:text-pacame-white/80 transition-colors block">
+                <span className="hover:text-ink/80 transition-colors block">
                   {h.text}
                 </span>
               </a>

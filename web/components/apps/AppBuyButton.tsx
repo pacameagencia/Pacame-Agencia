@@ -64,8 +64,8 @@ export default function AppBuyButton({
 
   const baseStyles =
     variant === "primary"
-      ? "bg-olympus-gold text-pacame-black hover:bg-olympus-gold/90 shadow-lg hover:shadow-xl hover:shadow-olympus-gold/20"
-      : "bg-transparent text-olympus-gold border-2 border-olympus-gold/40 hover:border-olympus-gold hover:bg-olympus-gold/5";
+      ? "bg-accent-gold text-paper hover:bg-accent-gold/90 shadow-lg hover:shadow-xl hover:shadow-accent-gold/20"
+      : "bg-transparent text-accent-gold border-2 border-accent-gold/40 hover:border-accent-gold hover:bg-accent-gold/5";
 
   return (
     <div className={className}>

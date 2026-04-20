@@ -124,13 +124,13 @@ export default function HomeTestimonials() {
   }, []);
 
   return (
-    <section className="section-padding bg-pacame-black relative">
+    <section className="section-padding bg-paper relative">
       <div className="max-w-6xl mx-auto px-6">
         <ScrollReveal className="text-center mb-14">
-          <p className="text-[12px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.22em]">
+          <p className="text-[12px] font-body font-medium text-accent-gold/70 mb-4 uppercase tracking-[0.22em]">
             Testimonios verificados
           </p>
-          <h2 className="font-accent font-bold text-section text-pacame-white mb-5 text-balance">
+          <h2 className="font-accent font-bold text-section text-ink mb-5 text-balance">
             Lo que dicen{" "}
             <span className="gradient-text-gold">clientes reales.</span>
           </h2>
@@ -140,11 +140,11 @@ export default function HomeTestimonials() {
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
-                  className="w-4 h-4 fill-olympus-gold text-olympus-gold"
+                  className="w-4 h-4 fill-accent-gold text-accent-gold"
                 />
               ))}
             </div>
-            <span className="text-pacame-white/60 font-body text-sm">
+            <span className="text-ink/60 font-body text-sm">
               4.9/5 · 500+ PYMEs
             </span>
           </div>
@@ -156,47 +156,47 @@ export default function HomeTestimonials() {
         >
           {items.map((t) => (
             <StaggerItem key={t.id}>
-              <article className="rounded-2xl p-7 bg-dark-card border border-white/[0.06] hover:border-olympus-gold/30 transition-colors duration-500 h-full flex flex-col relative overflow-hidden">
+              <article className="rounded-2xl p-7 bg-paper-deep border border-ink/[0.06] hover:border-accent-gold/30 transition-colors duration-500 h-full flex flex-col relative overflow-hidden">
                 {/* Top accent */}
-                <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-olympus-gold/40 to-transparent" />
+                <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-accent-gold/40 to-transparent" />
 
                 {/* Quote mark decorative */}
-                <Quote className="w-6 h-6 text-olympus-gold/30 mb-3" />
+                <Quote className="w-6 h-6 text-accent-gold/30 mb-3" />
 
                 {/* Stars */}
                 <div className="flex gap-0.5 mb-4">
                   {[...Array(t.rating || 5)].map((_, i) => (
                     <Star
                       key={i}
-                      className="w-3.5 h-3.5 fill-olympus-gold text-olympus-gold"
+                      className="w-3.5 h-3.5 fill-accent-gold text-accent-gold"
                     />
                   ))}
                 </div>
 
                 {/* Quote */}
-                <p className="text-[15px] text-pacame-white/70 font-body leading-relaxed mb-6 flex-1">
+                <p className="text-[15px] text-ink/70 font-body leading-relaxed mb-6 flex-1">
                   &ldquo;{t.quote}&rdquo;
                 </p>
 
                 {/* Author */}
-                <div className="flex items-center gap-3 pt-5 border-t border-white/[0.06]">
+                <div className="flex items-center gap-3 pt-5 border-t border-ink/[0.06]">
                   {t.author_photo_url ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img
                       src={t.author_photo_url}
                       alt={t.author_name}
-                      className="w-10 h-10 rounded-full object-cover border border-olympus-gold/20"
+                      className="w-10 h-10 rounded-full object-cover border border-accent-gold/20"
                     />
                   ) : (
-                    <div className="w-10 h-10 rounded-full bg-olympus-gold/10 border border-olympus-gold/20 flex items-center justify-center font-heading font-bold text-[12px] text-olympus-gold">
+                    <div className="w-10 h-10 rounded-full bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center font-heading font-bold text-[12px] text-accent-gold">
                       {getInitials(t.author_name)}
                     </div>
                   )}
                   <div className="min-w-0">
-                    <div className="text-sm font-heading font-semibold text-pacame-white truncate">
+                    <div className="text-sm font-heading font-semibold text-ink truncate">
                       {t.author_name}
                     </div>
-                    <div className="text-xs text-pacame-white/40 font-body truncate">
+                    <div className="text-xs text-ink/40 font-body truncate">
                       {[t.author_role, t.author_city || t.author_company]
                         .filter(Boolean)
                         .join(" · ")}

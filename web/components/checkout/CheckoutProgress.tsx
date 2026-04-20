@@ -23,7 +23,7 @@ export default function CheckoutProgress({ currentStep }: CheckoutProgressProps)
 
         {/* Animated progress line */}
         <motion.div
-          className="absolute top-5 left-[10%] h-px bg-olympus-gold"
+          className="absolute top-5 left-[10%] h-px bg-accent-gold"
           initial={{ width: "0%" }}
           animate={{
             width:
@@ -49,10 +49,10 @@ export default function CheckoutProgress({ currentStep }: CheckoutProgressProps)
                 className={cn(
                   "w-10 h-10 rounded-full flex items-center justify-center text-sm font-heading font-semibold border-2 transition-colors duration-300",
                   isCompleted
-                    ? "bg-olympus-gold border-olympus-gold text-pacame-black"
+                    ? "bg-accent-gold border-accent-gold text-paper"
                     : isActive
-                      ? "border-olympus-gold bg-olympus-gold/10 text-olympus-gold"
-                      : "border-white/[0.12] bg-dark-card text-pacame-white/30"
+                      ? "border-accent-gold bg-accent-gold/10 text-accent-gold"
+                      : "border-ink/[0.12] bg-paper-deep text-ink/30"
                 )}
                 animate={
                   isActive
@@ -82,10 +82,10 @@ export default function CheckoutProgress({ currentStep }: CheckoutProgressProps)
                 className={cn(
                   "mt-2.5 text-xs font-body transition-colors duration-300",
                   isActive
-                    ? "text-olympus-gold font-medium"
+                    ? "text-accent-gold font-medium"
                     : isCompleted
-                      ? "text-pacame-white/60"
-                      : "text-pacame-white/30"
+                      ? "text-ink/60"
+                      : "text-ink/30"
                 )}
                 animate={isActive ? { y: [2, 0] } : {}}
                 transition={{ duration: 0.3 }}

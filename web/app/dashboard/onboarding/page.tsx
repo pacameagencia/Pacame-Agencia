@@ -120,8 +120,8 @@ export default function OnboardingPage() {
     <div className="space-y-6 max-w-4xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading font-bold text-2xl text-pacame-white">Onboarding</h1>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">
+          <h1 className="font-heading font-bold text-2xl text-ink">Onboarding</h1>
+          <p className="text-sm text-ink/40 font-body mt-1">
             {loading ? "Cargando..." : `${clients.filter((c) => c.status === "onboarding").length} clientes en onboarding`}
           </p>
         </div>
@@ -132,30 +132,30 @@ export default function OnboardingPage() {
         <div className="relative">
           <button
             onClick={() => setShowClientPicker(!showClientPicker)}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl bg-dark-card border border-white/[0.06] hover:border-white/10 transition-all w-full"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl bg-paper-deep border border-ink/[0.06] hover:border-white/10 transition-all w-full"
           >
-            <div className="w-8 h-8 rounded-lg bg-electric-violet/15 flex items-center justify-center">
-              <ClipboardCheck className="w-4 h-4 text-electric-violet" />
+            <div className="w-8 h-8 rounded-lg bg-brand-primary/15 flex items-center justify-center">
+              <ClipboardCheck className="w-4 h-4 text-brand-primary" />
             </div>
             <div className="text-left flex-1">
-              <div className="text-sm font-heading font-semibold text-pacame-white">
+              <div className="text-sm font-heading font-semibold text-ink">
                 {selectedClient?.business_name || "Seleccionar cliente"}
               </div>
-              <div className="text-xs text-pacame-white/40 font-body">{selectedClient?.name}</div>
+              <div className="text-xs text-ink/40 font-body">{selectedClient?.name}</div>
             </div>
             {selectedClient && totalItems > 0 && (
               <div className="flex items-center gap-2 mr-2">
                 <div className="w-24 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
-                  <div className="h-full rounded-full bg-lime-pulse transition-all" style={{ width: `${progress}%` }} />
+                  <div className="h-full rounded-full bg-mint transition-all" style={{ width: `${progress}%` }} />
                 </div>
-                <span className="text-xs font-heading font-bold text-pacame-white/60">{progress}%</span>
+                <span className="text-xs font-heading font-bold text-ink/60">{progress}%</span>
               </div>
             )}
-            <ChevronDown className={`w-4 h-4 text-pacame-white/30 transition-transform ${showClientPicker ? "rotate-180" : ""}`} />
+            <ChevronDown className={`w-4 h-4 text-ink/30 transition-transform ${showClientPicker ? "rotate-180" : ""}`} />
           </button>
 
           {showClientPicker && (
-            <div className="absolute top-full left-0 right-0 mt-2 rounded-xl bg-dark-card border border-white/[0.08] shadow-2xl z-20 overflow-hidden max-h-64 overflow-y-auto">
+            <div className="absolute top-full left-0 right-0 mt-2 rounded-xl bg-paper-deep border border-ink/[0.08] shadow-2xl z-20 overflow-hidden max-h-64 overflow-y-auto">
               {clients.map((client) => (
                 <button
                   key={client.id}
@@ -164,8 +164,8 @@ export default function OnboardingPage() {
                     client.id === selectedClient?.id ? "bg-white/[0.06]" : ""
                   }`}
                 >
-                  <span className="text-sm font-heading font-medium text-pacame-white">{client.business_name}</span>
-                  <span className="text-xs text-pacame-white/30 font-body">{client.name}</span>
+                  <span className="text-sm font-heading font-medium text-ink">{client.business_name}</span>
+                  <span className="text-xs text-ink/30 font-body">{client.name}</span>
                   <span
                     className="text-[10px] px-2 py-0.5 rounded-full font-body ml-auto"
                     style={{
@@ -184,18 +184,18 @@ export default function OnboardingPage() {
 
       {/* No clients */}
       {!loading && clients.length === 0 && (
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
-          <ClipboardCheck className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
-          <p className="text-sm text-pacame-white/40 font-body">Crea un cliente primero para gestionar su onboarding</p>
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-12 text-center">
+          <ClipboardCheck className="w-8 h-8 text-ink/20 mx-auto mb-3" />
+          <p className="text-sm text-ink/40 font-body">Crea un cliente primero para gestionar su onboarding</p>
         </div>
       )}
 
       {/* Empty checklist - Initialize */}
       {selectedClient && checklist.length === 0 && !loading && (
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-8 text-center">
-          <ClipboardCheck className="w-10 h-10 text-pacame-white/20 mx-auto mb-3" />
-          <p className="font-heading font-semibold text-pacame-white mb-1">Sin checklist</p>
-          <p className="text-sm text-pacame-white/40 font-body mb-4">Inicializa el checklist de onboarding para {selectedClient.business_name}</p>
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-8 text-center">
+          <ClipboardCheck className="w-10 h-10 text-ink/20 mx-auto mb-3" />
+          <p className="font-heading font-semibold text-ink mb-1">Sin checklist</p>
+          <p className="text-sm text-ink/40 font-body mb-4">Inicializa el checklist de onboarding para {selectedClient.business_name}</p>
           <Button variant="gradient" size="sm" onClick={initializeChecklist} disabled={initializingChecklist} className="gap-1.5">
             <Plus className="w-4 h-4" />
             {initializingChecklist ? "Creando..." : "Crear checklist estandar"}
@@ -207,14 +207,14 @@ export default function OnboardingPage() {
       {selectedClient && totalItems > 0 && (
         <>
           {/* Progress bar */}
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-heading font-semibold text-pacame-white">Progreso general</span>
-              <span className="text-sm font-heading font-bold text-lime-pulse">{completedItems}/{totalItems}</span>
+              <span className="text-sm font-heading font-semibold text-ink">Progreso general</span>
+              <span className="text-sm font-heading font-bold text-mint">{completedItems}/{totalItems}</span>
             </div>
             <div className="w-full h-2 rounded-full bg-white/[0.06] overflow-hidden">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-electric-violet to-lime-pulse transition-all duration-500"
+                className="h-full rounded-full bg-gradient-to-r from-brand-primary to-mint transition-all duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -224,10 +224,10 @@ export default function OnboardingPage() {
           {Array.from(groups.entries()).map(([category, items]) => {
             const groupCompleted = items.filter((i) => i.completed).length;
             return (
-              <div key={category} className="rounded-2xl bg-dark-card border border-white/[0.06] overflow-hidden">
+              <div key={category} className="rounded-2xl bg-paper-deep border border-ink/[0.06] overflow-hidden">
                 <div className="px-5 py-3 border-b border-white/[0.04] bg-white/[0.02] flex items-center justify-between">
-                  <h2 className="font-heading font-semibold text-sm text-pacame-white">{category}</h2>
-                  <span className="text-xs text-pacame-white/40 font-body">{groupCompleted}/{items.length}</span>
+                  <h2 className="font-heading font-semibold text-sm text-ink">{category}</h2>
+                  <span className="text-xs text-ink/40 font-body">{groupCompleted}/{items.length}</span>
                 </div>
                 <div className="divide-y divide-white/[0.04]">
                   {items.map((item) => (
@@ -237,15 +237,15 @@ export default function OnboardingPage() {
                       className="w-full flex items-center gap-3 px-5 py-3 hover:bg-white/[0.02] transition-colors text-left"
                     >
                       {item.completed ? (
-                        <CheckCircle2 className="w-5 h-5 text-lime-pulse flex-shrink-0" />
+                        <CheckCircle2 className="w-5 h-5 text-mint flex-shrink-0" />
                       ) : (
-                        <Circle className="w-5 h-5 text-pacame-white/20 flex-shrink-0" />
+                        <Circle className="w-5 h-5 text-ink/20 flex-shrink-0" />
                       )}
-                      <span className={`text-sm font-body ${item.completed ? "text-pacame-white/30 line-through" : "text-pacame-white/70"}`}>
+                      <span className={`text-sm font-body ${item.completed ? "text-ink/30 line-through" : "text-ink/70"}`}>
                         {item.item}
                       </span>
                       {item.completed_at && (
-                        <span className="text-[10px] text-pacame-white/20 font-body ml-auto">
+                        <span className="text-[10px] text-ink/20 font-body ml-auto">
                           {new Date(item.completed_at).toLocaleDateString("es-ES")}
                         </span>
                       )}

@@ -86,11 +86,11 @@ export default function TrustLogos() {
 
   return (
     <section className="py-16 sm:py-20 relative overflow-hidden">
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/10 to-transparent" />
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/10 to-transparent" />
 
       <div className="max-w-5xl mx-auto px-6">
         <motion.p
-          className="text-center text-[13px] font-body font-medium text-pacame-white/25 uppercase tracking-[0.2em] mb-12"
+          className="text-center text-[13px] font-body font-medium text-ink/25 uppercase tracking-[0.2em] mb-12"
           initial={prefersReduced ? {} : { opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -103,7 +103,7 @@ export default function TrustLogos() {
           {logos.map((logo, i) => (
             <motion.div
               key={logo.name}
-              className="flex flex-col items-center gap-2 text-pacame-white/15 hover:text-pacame-white/40 transition-colors duration-500 group cursor-default"
+              className="flex flex-col items-center gap-2 text-ink/15 hover:text-ink/40 transition-colors duration-500 group cursor-default"
               initial={prefersReduced ? {} : { opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -120,7 +120,7 @@ export default function TrustLogos() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/10 to-transparent" />
+      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/10 to-transparent" />
     </section>
   );
 }

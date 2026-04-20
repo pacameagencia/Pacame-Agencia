@@ -125,7 +125,7 @@ export default function MessagesPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-electric-violet" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
       </div>
     );
   }
@@ -137,8 +137,8 @@ export default function MessagesPage() {
         <div className="flex items-center gap-3 mb-4">
           <MessageSquare className="w-6 h-6" style={{ color: primaryColor }} />
           <div>
-            <h1 className="font-heading font-bold text-2xl text-pacame-white">Mensajes</h1>
-            <p className="text-xs text-pacame-white/40 font-body">
+            <h1 className="font-heading font-bold text-2xl text-ink">Mensajes</h1>
+            <p className="text-xs text-ink/40 font-body">
               Comunicate con tu equipo PACAME
             </p>
           </div>
@@ -146,15 +146,15 @@ export default function MessagesPage() {
       </ScrollReveal>
 
       {/* Messages area */}
-      <div className="flex-1 bg-dark-card border border-white/[0.06] rounded-2xl flex flex-col overflow-hidden">
+      <div className="flex-1 bg-paper-deep border border-ink/[0.06] rounded-2xl flex flex-col overflow-hidden">
         <div
           ref={scrollRef}
           className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 scrollbar-thin scrollbar-thumb-white/10"
         >
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center py-16">
-              <MessageSquare className="w-12 h-12 text-pacame-white/10 mb-3" />
-              <p className="text-sm text-pacame-white/30 font-body">
+              <MessageSquare className="w-12 h-12 text-ink/10 mb-3" />
+              <p className="text-sm text-ink/30 font-body">
                 Aun no hay mensajes. Envia el primero.
               </p>
             </div>
@@ -185,13 +185,13 @@ export default function MessagesPage() {
                           isAgent ? (
                             <Bot className="w-3 h-3 text-cyan-spark" />
                           ) : (
-                            <User className="w-3 h-3 text-electric-violet" />
+                            <User className="w-3 h-3 text-brand-primary" />
                           )
                         )}
-                        <span className="text-[10px] text-pacame-white/30 font-body">
+                        <span className="text-[10px] text-ink/30 font-body">
                           {label}
                         </span>
-                        <span className="text-[10px] text-pacame-white/20 font-body">
+                        <span className="text-[10px] text-ink/20 font-body">
                           {new Date(msg.created_at).toLocaleTimeString("es-ES", {
                             hour: "2-digit",
                             minute: "2-digit",
@@ -204,7 +204,7 @@ export default function MessagesPage() {
                         className={`rounded-2xl px-4 py-3 text-sm font-body leading-relaxed ${
                           isClient
                             ? "rounded-br-md text-white"
-                            : "rounded-bl-md bg-white/[0.06] text-pacame-white/80 border border-white/[0.06]"
+                            : "rounded-bl-md bg-white/[0.06] text-ink/80 border border-ink/[0.06]"
                         }`}
                         style={isClient ? { backgroundColor: primaryColor } : undefined}
                       >
@@ -220,15 +220,15 @@ export default function MessagesPage() {
 
         {/* Error banner */}
         {error && (
-          <div className="px-4 py-2 bg-rose-alert/10 border-t border-rose-alert/20">
-            <p className="text-xs text-rose-alert font-body">{error}</p>
+          <div className="px-4 py-2 bg-accent-burgundy-soft/10 border-t border-accent-burgundy-soft/20">
+            <p className="text-xs text-accent-burgundy-soft font-body">{error}</p>
           </div>
         )}
 
         {/* Input */}
         <form
           onSubmit={handleSend}
-          className="border-t border-white/[0.06] p-3 sm:p-4 flex items-end gap-3"
+          className="border-t border-ink/[0.06] p-3 sm:p-4 flex items-end gap-3"
         >
           <textarea
             ref={inputRef}
@@ -237,7 +237,7 @@ export default function MessagesPage() {
             onKeyDown={handleKeyDown}
             placeholder="Escribe un mensaje..."
             rows={1}
-            className="flex-1 resize-none px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white placeholder:text-pacame-white/25 font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors min-h-[44px] max-h-[120px]"
+            className="flex-1 resize-none px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink placeholder:text-ink/25 font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors min-h-[44px] max-h-[120px]"
           />
           <Button
             type="submit"

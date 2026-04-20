@@ -78,17 +78,17 @@ export default async function OrderDetailPage({
     <div className="max-w-3xl mx-auto p-6">
       <Link
         href="/portal/orders"
-        className="inline-flex items-center gap-2 text-sm text-pacame-white/50 hover:text-pacame-white/80 font-body mb-6 transition"
+        className="inline-flex items-center gap-2 text-sm text-ink/50 hover:text-ink/80 font-body mb-6 transition"
       >
         <ArrowLeft className="w-4 h-4" />
         Mis pedidos
       </Link>
 
-      <h1 className="font-heading font-bold text-3xl text-pacame-white mb-1">
+      <h1 className="font-heading font-bold text-3xl text-ink mb-1">
         {catalog?.name || order.service_slug}
       </h1>
       {catalog?.tagline && (
-        <p className="text-pacame-white/60 font-body mb-6">{catalog.tagline}</p>
+        <p className="text-ink/60 font-body mb-6">{catalog.tagline}</p>
       )}
 
       <OrderTracker

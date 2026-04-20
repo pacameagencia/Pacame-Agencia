@@ -14,6 +14,11 @@ import NoiseOverlay from "@/components/effects/NoiseOverlay";
 import BackToTop from "@/components/effects/BackToTop";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 import ReferralCookieTracker from "@/components/referral/ReferralCookieTracker";
+import ThemeProvider from "@/components/providers/ThemeProvider";
+import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
+import CommandPalette from "@/components/command/CommandPalette";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -138,7 +143,8 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable} dark`}
+      suppressHydrationWarning
+      className={`${GeistSans.variable} ${GeistMono.variable} ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable}`}
     >
       <head>
         <script
@@ -222,10 +228,12 @@ export default function RootLayout({
         />
         <OrganizationJsonLd />
       </head>
-      <body className="bg-pacame-black text-pacame-white font-body antialiased">
+      <body className="bg-paper text-ink font-sans antialiased">
+        <ThemeProvider>
+          <SmoothScrollProvider>
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-electric-violet focus:text-white focus:rounded-lg focus:text-sm focus:font-body"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-brand-primary focus:text-white focus:rounded-lg focus:text-sm focus:font-body"
         >
           Saltar al contenido
         </a>
@@ -242,6 +250,9 @@ export default function RootLayout({
         <CookieConsent />
         <GoogleAnalytics />
         <ReferralCookieTracker />
+        <CommandPalette />
+          </SmoothScrollProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

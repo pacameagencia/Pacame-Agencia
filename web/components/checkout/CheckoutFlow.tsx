@@ -181,7 +181,7 @@ export default function CheckoutFlow({
 
       {/* Content */}
       <motion.div
-        className="relative z-10 w-full max-w-5xl mx-4 mt-8 mb-8 max-h-[calc(100vh-4rem)] overflow-y-auto rounded-3xl bg-pacame-black border border-white/[0.06] shadow-apple-xl"
+        className="relative z-10 w-full max-w-5xl mx-4 mt-8 mb-8 max-h-[calc(100vh-4rem)] overflow-y-auto rounded-3xl bg-paper border border-ink/[0.06] shadow-apple-xl"
         initial={{ scale: 0.95, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.95, y: 20 }}
@@ -191,7 +191,7 @@ export default function CheckoutFlow({
         <button
           onClick={handleClose}
           disabled={loading}
-          className="absolute top-5 right-5 z-20 p-2 rounded-full bg-white/[0.06] hover:bg-white/[0.1] text-pacame-white/50 hover:text-pacame-white transition-colors disabled:opacity-30"
+          className="absolute top-5 right-5 z-20 p-2 rounded-full bg-white/[0.06] hover:bg-white/[0.1] text-ink/50 hover:text-ink transition-colors disabled:opacity-30"
           aria-label="Cerrar"
         >
           <X className="w-5 h-5" />
@@ -207,7 +207,7 @@ export default function CheckoutFlow({
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-4 rounded-xl bg-rose-alert/10 border border-rose-alert/20 text-sm font-body text-rose-alert"
+                className="mb-6 p-4 rounded-xl bg-accent-burgundy-soft/10 border border-accent-burgundy-soft/20 text-sm font-body text-accent-burgundy-soft"
               >
                 {error}
               </motion.div>
@@ -252,7 +252,7 @@ export default function CheckoutFlow({
 
           {/* Right — Sidebar (hidden on mobile for step 1, shown for steps 2+3) */}
           <div
-            className={`lg:w-[360px] shrink-0 p-6 lg:p-8 border-t lg:border-t-0 lg:border-l border-white/[0.06] ${
+            className={`lg:w-[360px] shrink-0 p-6 lg:p-8 border-t lg:border-t-0 lg:border-l border-ink/[0.06] ${
               step === 1 ? "hidden lg:block" : "block"
             }`}
           >

@@ -37,7 +37,7 @@ const itemVariants = {
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-void-purple">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-ink">
       {/* Animated gradient mesh background */}
       <GradientMeshCanvas
         colors={["#7C3AED", "#4338CA", "#06B6D4", "#D4A853"]}
@@ -63,8 +63,8 @@ export default function Hero() {
               <path d="M8 6C6 2 4 1 2 0.5C3 2 3 4 3.5 6C3 4 1.5 3 0 3C1.5 5 2.5 7 4 8C2.5 8 1 9 0 10.5C2 9.5 4 9 5.5 8C6.5 10 8 11 9 11.5L8 6Z" fill="#D4A853" />
             </svg>
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-pulse opacity-60" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-lime-pulse" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-60" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-mint" />
             </span>
             <span className="gradient-text-gold">El Olimpo Digital</span>
             {/* Golden laurel right */}
@@ -76,7 +76,7 @@ export default function Hero() {
 
         {/* Headline — mixed fonts for premium feel */}
         <motion.div variants={itemVariants} className="mb-8">
-          <h1 className="text-hero text-pacame-white text-balance">
+          <h1 className="text-hero text-ink text-balance">
             <TextReveal
               text="Tu problema digital."
               mode="words"
@@ -96,7 +96,7 @@ export default function Hero() {
         {/* Subtitle */}
         <motion.p
           variants={itemVariants}
-          className="text-xl sm:text-2xl text-pacame-white/50 max-w-2xl mx-auto mb-12 leading-relaxed font-body font-light text-balance"
+          className="text-xl sm:text-2xl text-ink/50 max-w-2xl mx-auto mb-12 leading-relaxed font-body font-light text-balance"
         >
           7 agentes IA especializados, liderados por un humano.
           <br className="hidden sm:block" />
@@ -115,7 +115,7 @@ export default function Hero() {
               gradientOpacity={0.8}
               className="group min-w-[260px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
             >
-              <Link href="/servicios" className="flex items-center gap-2 text-pacame-white">
+              <Link href="/servicios" className="flex items-center gap-2 text-ink">
                 Ver servicios desde 300{"\u00A0"}{"\u20AC"}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -125,7 +125,7 @@ export default function Hero() {
             variant="outline"
             size="xl"
             asChild
-            className="rounded-full min-w-[200px] border-white/[0.08] hover:border-olympus-gold/30 hover:bg-white/[0.03] transition-colors duration-500"
+            className="rounded-full min-w-[200px] border-ink/[0.08] hover:border-accent-gold/30 hover:bg-white/[0.03] transition-colors duration-500"
           >
             <Link href="/contacto">Hablar con el equipo</Link>
           </Button>
@@ -144,8 +144,8 @@ export default function Hero() {
           ].map((stat) => (
             <CardTilt key={stat.label} tiltMaxAngle={10} scale={1.04}>
               <CardTiltContent>
-                <div className="relative glass rounded-2xl p-5 sm:p-6 text-center border-t border-olympus-gold/10 hover:border-olympus-gold/20 transition-colors duration-500">
-                  <div className="font-heading font-bold text-2xl sm:text-3xl text-pacame-white mb-1.5">
+                <div className="relative glass rounded-2xl p-5 sm:p-6 text-center border-t border-accent-gold/10 hover:border-accent-gold/20 transition-colors duration-500">
+                  <div className="font-heading font-bold text-2xl sm:text-3xl text-ink mb-1.5">
                     <CountUpNumber
                       target={stat.value}
                       prefix={stat.prefix}
@@ -153,7 +153,7 @@ export default function Hero() {
                       duration={2}
                     />
                   </div>
-                  <div className="text-xs text-pacame-white/50 font-body">{stat.label}</div>
+                  <div className="text-xs text-ink/50 font-body">{stat.label}</div>
                 </div>
               </CardTiltContent>
             </CardTilt>
@@ -168,19 +168,19 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 2, duration: 1 }}
       >
-        <span className="text-[11px] font-body text-olympus-gold/50 tracking-widest uppercase">
+        <span className="text-[11px] font-body text-accent-gold/50 tracking-widest uppercase">
           Descubre
         </span>
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ChevronDown className="w-4 h-4 text-olympus-gold/40" />
+          <ChevronDown className="w-4 h-4 text-accent-gold/40" />
         </motion.div>
       </motion.div>
 
       {/* Bottom fade */}
-      <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-pacame-black to-transparent z-[1]" />
+      <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-paper to-transparent z-[1]" />
     </section>
   );
 }

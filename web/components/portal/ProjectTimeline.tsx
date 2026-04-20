@@ -47,8 +47,8 @@ export default function ProjectTimeline({
   if (milestones.length === 0) {
     return (
       <div className="text-center py-12">
-        <Circle className="w-10 h-10 text-pacame-white/20 mx-auto mb-3" />
-        <p className="text-sm text-pacame-white/40 font-body">
+        <Circle className="w-10 h-10 text-ink/20 mx-auto mb-3" />
+        <p className="text-sm text-ink/40 font-body">
           Aun no hay hitos de proyecto
         </p>
       </div>
@@ -111,7 +111,7 @@ export default function ProjectTimeline({
                       {milestone.title}
                     </h3>
                     {milestone.description && (
-                      <p className="text-xs text-pacame-white/40 font-body mt-1 leading-relaxed">
+                      <p className="text-xs text-ink/40 font-body mt-1 leading-relaxed">
                         {milestone.description}
                       </p>
                     )}
@@ -130,7 +130,7 @@ export default function ProjectTimeline({
                 {/* Date info */}
                 <div className="flex items-center gap-3 mt-2">
                   {milestone.due_date && (
-                    <span className="text-[11px] text-pacame-white/30 font-body">
+                    <span className="text-[11px] text-ink/30 font-body">
                       Fecha limite:{" "}
                       {new Date(milestone.due_date).toLocaleDateString("es-ES", {
                         day: "numeric",
@@ -140,7 +140,7 @@ export default function ProjectTimeline({
                     </span>
                   )}
                   {milestone.completed_at && (
-                    <span className="text-[11px] text-lime-pulse/60 font-body">
+                    <span className="text-[11px] text-mint/60 font-body">
                       Completado:{" "}
                       {new Date(milestone.completed_at).toLocaleDateString("es-ES", {
                         day: "numeric",

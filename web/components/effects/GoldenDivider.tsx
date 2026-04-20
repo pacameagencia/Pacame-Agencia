@@ -52,7 +52,7 @@ export default function GoldenDivider({
   return (
     <div ref={ref} className={`flex items-center justify-center gap-3 ${className}`}>
       <motion.div
-        className="flex-1 h-px bg-gradient-to-r from-transparent via-olympus-gold/30 to-transparent origin-left"
+        className="flex-1 h-px bg-gradient-to-r from-transparent via-accent-gold/30 to-transparent origin-left"
         initial={reducedMotion ? "visible" : "hidden"}
         animate={isInView ? "visible" : "hidden"}
         variants={lineVariant}
@@ -80,7 +80,7 @@ export default function GoldenDivider({
       )}
 
       <motion.div
-        className="flex-1 h-px bg-gradient-to-r from-transparent via-olympus-gold/30 to-transparent origin-right"
+        className="flex-1 h-px bg-gradient-to-r from-transparent via-accent-gold/30 to-transparent origin-right"
         initial={reducedMotion ? "visible" : "hidden"}
         animate={isInView ? "visible" : "hidden"}
         variants={lineVariant}

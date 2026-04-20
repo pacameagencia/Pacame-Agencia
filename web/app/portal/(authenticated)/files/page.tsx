@@ -136,7 +136,7 @@ export default function FilesPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-electric-violet" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
       </div>
     );
   }
@@ -149,9 +149,9 @@ export default function FilesPage() {
           <div>
             <div className="flex items-center gap-3 mb-1">
               <FileUp className="w-6 h-6 text-cyan-spark" />
-              <h1 className="font-heading font-bold text-2xl text-pacame-white">Archivos</h1>
+              <h1 className="font-heading font-bold text-2xl text-ink">Archivos</h1>
             </div>
-            <p className="text-sm text-pacame-white/50 font-body">
+            <p className="text-sm text-ink/50 font-body">
               {files.length} archivo{files.length !== 1 ? "s" : ""} subido{files.length !== 1 ? "s" : ""}
             </p>
           </div>
@@ -159,7 +159,7 @@ export default function FilesPage() {
             <button
               onClick={() => setViewMode("grid")}
               className={`p-2 rounded-lg transition-colors ${
-                viewMode === "grid" ? "bg-white/[0.08] text-pacame-white" : "text-pacame-white/30 hover:text-pacame-white/60"
+                viewMode === "grid" ? "bg-white/[0.08] text-ink" : "text-ink/30 hover:text-ink/60"
               }`}
             >
               <Grid3x3 className="w-4 h-4" />
@@ -167,7 +167,7 @@ export default function FilesPage() {
             <button
               onClick={() => setViewMode("list")}
               className={`p-2 rounded-lg transition-colors ${
-                viewMode === "list" ? "bg-white/[0.08] text-pacame-white" : "text-pacame-white/30 hover:text-pacame-white/60"
+                viewMode === "list" ? "bg-white/[0.08] text-ink" : "text-ink/30 hover:text-ink/60"
               }`}
             >
               <List className="w-4 h-4" />
@@ -185,8 +185,8 @@ export default function FilesPage() {
           onClick={() => fileInputRef.current?.click()}
           className={`relative rounded-2xl border-2 border-dashed p-10 text-center cursor-pointer transition-all duration-300 ${
             dragOver
-              ? "border-electric-violet bg-electric-violet/5"
-              : "border-white/[0.1] hover:border-white/[0.2] bg-dark-card"
+              ? "border-brand-primary bg-brand-primary/5"
+              : "border-ink/[0.1] hover:border-white/[0.2] bg-paper-deep"
           }`}
         >
           <input
@@ -197,14 +197,14 @@ export default function FilesPage() {
             onChange={(e) => handleUpload(e.target.files)}
           />
           {uploading ? (
-            <Loader2 className="w-8 h-8 animate-spin text-electric-violet mx-auto" />
+            <Loader2 className="w-8 h-8 animate-spin text-brand-primary mx-auto" />
           ) : (
             <>
-              <Upload className="w-10 h-10 text-pacame-white/20 mx-auto mb-3" />
-              <p className="font-heading font-semibold text-sm text-pacame-white mb-1">
+              <Upload className="w-10 h-10 text-ink/20 mx-auto mb-3" />
+              <p className="font-heading font-semibold text-sm text-ink mb-1">
                 Arrastra archivos aqui o haz clic para subir
               </p>
-              <p className="text-[11px] text-pacame-white/30 font-body">
+              <p className="text-[11px] text-ink/30 font-body">
                 Logos, documentos, recursos de marca... hasta 10 MB por archivo
               </p>
             </>
@@ -219,11 +219,11 @@ export default function FilesPage() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="bg-rose-alert/10 border border-rose-alert/20 rounded-xl p-3 flex items-center justify-between"
+            className="bg-accent-burgundy-soft/10 border border-accent-burgundy-soft/20 rounded-xl p-3 flex items-center justify-between"
           >
-            <p className="text-sm text-rose-alert font-body">{error}</p>
+            <p className="text-sm text-accent-burgundy-soft font-body">{error}</p>
             <button onClick={() => setError(null)}>
-              <X className="w-4 h-4 text-rose-alert/60 hover:text-rose-alert" />
+              <X className="w-4 h-4 text-accent-burgundy-soft/60 hover:text-accent-burgundy-soft" />
             </button>
           </motion.div>
         )}
@@ -232,8 +232,8 @@ export default function FilesPage() {
       {/* Files */}
       {files.length === 0 ? (
         <div className="text-center py-16">
-          <File className="w-12 h-12 text-pacame-white/10 mx-auto mb-3" />
-          <p className="text-sm text-pacame-white/30 font-body">Aun no hay archivos subidos</p>
+          <File className="w-12 h-12 text-ink/10 mx-auto mb-3" />
+          <p className="text-sm text-ink/30 font-body">Aun no hay archivos subidos</p>
         </div>
       ) : viewMode === "grid" ? (
         <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" staggerDelay={0.04}>
@@ -242,7 +242,7 @@ export default function FilesPage() {
             const FileIcon = cfg.Icon;
             return (
               <StaggerItem key={file.id}>
-                <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-4 group hover:border-white/[0.12] transition-colors relative">
+                <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-4 group hover:border-ink/[0.12] transition-colors relative">
                   {/* Type badge */}
                   <span
                     className="absolute top-3 right-3 text-[9px] px-1.5 py-0.5 rounded-full font-body font-medium"
@@ -262,10 +262,10 @@ export default function FilesPage() {
                       <FileIcon className="w-10 h-10" style={{ color: cfg.color + "80" }} />
                     )}
                   </div>
-                  <p className="text-xs text-pacame-white font-body truncate mb-1" title={file.filename}>
+                  <p className="text-xs text-ink font-body truncate mb-1" title={file.filename}>
                     {file.filename}
                   </p>
-                  <p className="text-[10px] text-pacame-white/30 font-body">
+                  <p className="text-[10px] text-ink/30 font-body">
                     {formatFileSize(file.file_size)} · {new Date(file.created_at).toLocaleDateString("es-ES")}
                   </p>
                   {/* Actions */}
@@ -274,14 +274,14 @@ export default function FilesPage() {
                       href={file.file_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-[10px] text-pacame-white/60 font-body transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-[10px] text-ink/60 font-body transition-colors"
                     >
                       <Download className="w-3 h-3" /> Abrir
                     </a>
                     <button
                       onClick={(e) => { e.stopPropagation(); handleDelete(file.id); }}
                       disabled={deletingId === file.id}
-                      className="px-2 py-1.5 rounded-lg bg-white/[0.04] hover:bg-rose-alert/10 text-pacame-white/30 hover:text-rose-alert transition-colors"
+                      className="px-2 py-1.5 rounded-lg bg-white/[0.04] hover:bg-accent-burgundy-soft/10 text-ink/30 hover:text-accent-burgundy-soft transition-colors"
                     >
                       {deletingId === file.id ? (
                         <Loader2 className="w-3 h-3 animate-spin" />
@@ -296,7 +296,7 @@ export default function FilesPage() {
           })}
         </StaggerContainer>
       ) : (
-        <div className="bg-dark-card border border-white/[0.06] rounded-2xl divide-y divide-white/[0.04]">
+        <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl divide-y divide-white/[0.04]">
           {files.map((file) => {
             const cfg = typeConfig[file.file_type] ?? typeConfig.other;
             const FileIcon = cfg.Icon;
@@ -307,8 +307,8 @@ export default function FilesPage() {
               >
                 <FileIcon className="w-5 h-5 flex-shrink-0" style={{ color: cfg.color + "80" }} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-pacame-white font-body truncate">{file.filename}</p>
-                  <p className="text-[10px] text-pacame-white/30 font-body">
+                  <p className="text-sm text-ink font-body truncate">{file.filename}</p>
+                  <p className="text-[10px] text-ink/30 font-body">
                     {formatFileSize(file.file_size)} · {new Date(file.created_at).toLocaleDateString("es-ES")}
                   </p>
                 </div>
@@ -323,14 +323,14 @@ export default function FilesPage() {
                     href={file.file_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-1.5 rounded-lg hover:bg-white/[0.06] text-pacame-white/40 hover:text-pacame-white transition-colors"
+                    className="p-1.5 rounded-lg hover:bg-white/[0.06] text-ink/40 hover:text-ink transition-colors"
                   >
                     <Download className="w-4 h-4" />
                   </a>
                   <button
                     onClick={() => handleDelete(file.id)}
                     disabled={deletingId === file.id}
-                    className="p-1.5 rounded-lg hover:bg-rose-alert/10 text-pacame-white/30 hover:text-rose-alert transition-colors"
+                    className="p-1.5 rounded-lg hover:bg-accent-burgundy-soft/10 text-ink/30 hover:text-accent-burgundy-soft transition-colors"
                   >
                     {deletingId === file.id ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
