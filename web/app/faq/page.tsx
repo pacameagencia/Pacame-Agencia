@@ -216,7 +216,7 @@ function FaqJsonLd() {
 
 export default function FaqPage() {
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       <FaqJsonLd />
       <BreadcrumbJsonLd
         items={[
@@ -226,18 +226,18 @@ export default function FaqPage() {
       />
       {/* Hero */}
       <section className="relative pt-36 pb-20 overflow-hidden">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-primary/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
+          <p className="text-[13px] font-body font-medium text-brand-primary mb-5 uppercase tracking-[0.2em]">
             Preguntas frecuentes
           </p>
-          <h1 className="font-heading font-bold text-display text-pacame-white leading-tight mb-6">
+          <h1 className="font-heading font-bold text-display text-ink leading-tight mb-6">
             Todas tus dudas.
             <br />
             <span className="gradient-text-vivid">Resueltas aqui.</span>
           </h1>
-          <p className="text-lg text-pacame-white/60 font-body font-light max-w-2xl mx-auto">
+          <p className="text-lg text-ink/60 font-body font-light max-w-2xl mx-auto">
             Si no encuentras lo que buscas, escribenos y te respondemos en menos de 2 horas.
           </p>
         </ScrollReveal>
@@ -246,13 +246,13 @@ export default function FaqPage() {
       <FaqAccordion categories={faqCategories} />
 
       {/* CTA */}
-      <section className="py-20 bg-pacame-black text-center">
+      <section className="py-20 bg-paper text-center">
         <div className="px-6"><GoldenDivider variant="line" /></div>
         <ScrollReveal className="max-w-2xl mx-auto px-6 pt-10">
-          <h2 className="font-heading font-bold text-3xl text-pacame-white mb-4">
+          <h2 className="font-heading font-bold text-3xl text-ink mb-4">
             No has encontrado tu respuesta?
           </h2>
-          <p className="text-pacame-white/60 font-body mb-8">
+          <p className="text-ink/60 font-body mb-8">
             Escribenos y te respondemos en menos de 2 horas. Sin compromiso.
           </p>
           <MagneticButton>
@@ -262,7 +262,7 @@ export default function FaqPage() {
               gradientOpacity={0.8}
               className="group min-w-[260px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
             >
-              <Link href="/contacto" className="flex items-center gap-2 text-pacame-white">
+              <Link href="/contacto" className="flex items-center gap-2 text-ink">
                 <MessageSquare className="w-5 h-5" />
                 Escribir al equipo
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

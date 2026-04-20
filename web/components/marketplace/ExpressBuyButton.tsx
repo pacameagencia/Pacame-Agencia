@@ -54,7 +54,7 @@ export default function ExpressBuyButton({ serviceSlug, serviceName, priceCents 
       <button
         onClick={handleBuy}
         disabled={loading}
-        className="w-full bg-olympus-gold hover:bg-olympus-gold/90 disabled:opacity-60 disabled:cursor-not-allowed text-pacame-black font-heading font-semibold py-4 px-6 rounded-xl text-lg flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl hover:shadow-olympus-gold/20"
+        className="w-full bg-accent-gold hover:bg-accent-gold/90 disabled:opacity-60 disabled:cursor-not-allowed text-paper font-heading font-semibold py-4 px-6 rounded-xl text-lg flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl hover:shadow-accent-gold/20"
       >
         {loading ? (
           <>
@@ -76,7 +76,7 @@ export default function ExpressBuyButton({ serviceSlug, serviceName, priceCents 
         </p>
       )}
 
-      <p className="mt-3 text-xs text-pacame-white/40 font-body text-center">
+      <p className="mt-3 text-xs text-ink/40 font-body text-center">
         Pago seguro via Stripe. Te redirigiremos a su pasarela.
       </p>
     </div>

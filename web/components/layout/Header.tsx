@@ -115,7 +115,7 @@ function MegaMenu({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 8, scale: 0.98 }}
       transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
-      className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-[780px] max-w-[calc(100vw-2rem)] bg-[#0F0F11]/95 backdrop-blur-2xl border border-olympus-gold/15 rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.6)] p-6 z-50"
+      className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-[780px] max-w-[calc(100vw-2rem)] bg-[#0F0F11]/95 backdrop-blur-2xl border border-accent-gold/15 rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.6)] p-6 z-50"
       role="menu"
     >
       <div className="grid grid-cols-3 gap-2">
@@ -130,14 +130,14 @@ function MegaMenu({
               className="group flex items-start gap-3 p-3 rounded-xl hover:bg-white/[0.04] transition-colors duration-300"
               role="menuitem"
             >
-              <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-olympus-gold/10 border border-olympus-gold/20 flex items-center justify-center group-hover:bg-olympus-gold/20 transition-colors">
-                <item.Icon className="w-4 h-4 text-olympus-gold" />
+              <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center group-hover:bg-accent-gold/20 transition-colors">
+                <item.Icon className="w-4 h-4 text-accent-gold" />
               </div>
               <div className="min-w-0">
-                <div className="text-sm font-heading font-semibold text-pacame-white group-hover:text-olympus-gold-light transition-colors truncate">
+                <div className="text-sm font-heading font-semibold text-ink group-hover:text-accent-gold-soft transition-colors truncate">
                   {item.label}
                 </div>
-                <div className="text-xs text-pacame-white/45 font-body mt-0.5 leading-relaxed">
+                <div className="text-xs text-ink/45 font-body mt-0.5 leading-relaxed">
                   {item.desc}
                 </div>
               </div>
@@ -147,14 +147,14 @@ function MegaMenu({
       </div>
 
       {/* Footer row */}
-      <div className="mt-5 pt-5 border-t border-white/[0.06] flex items-center justify-between text-xs font-body">
-        <span className="text-pacame-white/40">
+      <div className="mt-5 pt-5 border-t border-ink/[0.06] flex items-center justify-between text-xs font-body">
+        <span className="text-ink/40">
           24 productos · entrega en horas · sin permanencia
         </span>
         <Link
           href={baseHref}
           onClick={onItemClick}
-          className="text-olympus-gold hover:text-olympus-gold-light transition-colors inline-flex items-center gap-1"
+          className="text-accent-gold hover:text-accent-gold-soft transition-colors inline-flex items-center gap-1"
         >
           Ver todo
           <ChevronDown className="w-3 h-3 -rotate-90" />
@@ -214,7 +214,7 @@ export default function Header() {
       )}
     >
       {scrolled && (
-        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/20 to-transparent" />
+        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/20 to-transparent" />
       )}
 
       <div className="max-w-7xl mx-auto px-6">
@@ -224,7 +224,7 @@ export default function Header() {
             <div className="transition-transform duration-300 group-hover:scale-105">
               <PacameLogo />
             </div>
-            <span className="font-heading font-bold text-lg text-pacame-white tracking-tight">
+            <span className="font-heading font-bold text-lg text-ink tracking-tight">
               PACAME
             </span>
           </Link>
@@ -245,8 +245,8 @@ export default function Header() {
               className={cn(
                 "flex items-center gap-1 px-3.5 py-2 rounded-full text-[13px] font-medium font-body transition-all duration-300",
                 pathname.startsWith("/servicios")
-                  ? "text-pacame-white bg-white/[0.05]"
-                  : "text-pacame-white/55 hover:text-pacame-white"
+                  ? "text-ink bg-white/[0.05]"
+                  : "text-ink/55 hover:text-ink"
               )}
               aria-haspopup="true"
               aria-expanded={openMenu === "services"}
@@ -267,8 +267,8 @@ export default function Header() {
               className={cn(
                 "flex items-center gap-1 px-3.5 py-2 rounded-full text-[13px] font-medium font-body transition-all duration-300",
                 pathname.startsWith("/apps")
-                  ? "text-pacame-white bg-white/[0.05]"
-                  : "text-pacame-white/55 hover:text-pacame-white"
+                  ? "text-ink bg-white/[0.05]"
+                  : "text-ink/55 hover:text-ink"
               )}
               aria-haspopup="true"
               aria-expanded={openMenu === "apps"}
@@ -291,13 +291,13 @@ export default function Header() {
                 className={cn(
                   "relative px-3.5 py-2 rounded-full text-[13px] font-medium font-body transition-all duration-300",
                   pathname === link.href
-                    ? "text-pacame-white"
-                    : "text-pacame-white/55 hover:text-pacame-white"
+                    ? "text-ink"
+                    : "text-ink/55 hover:text-ink"
                 )}
               >
                 {pathname === link.href && (
                   <motion.div
-                    className="absolute inset-0 rounded-full bg-white/[0.07] border border-olympus-gold/10"
+                    className="absolute inset-0 rounded-full bg-white/[0.07] border border-accent-gold/10"
                     layoutId="activeNav"
                     transition={{ type: "spring", stiffness: 350, damping: 30 }}
                   />
@@ -342,7 +342,7 @@ export default function Header() {
 
           {/* Mobile toggle */}
           <button
-            className="lg:hidden p-2 rounded-full text-pacame-white/60 hover:text-pacame-white transition-colors"
+            className="lg:hidden p-2 rounded-full text-ink/60 hover:text-ink transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Cerrar menu" : "Abrir menu"}
             aria-expanded={mobileOpen}
@@ -361,7 +361,7 @@ export default function Header() {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
             >
-              <div className="h-px bg-gradient-to-r from-transparent via-olympus-gold/20 to-transparent mb-4" />
+              <div className="h-px bg-gradient-to-r from-transparent via-accent-gold/20 to-transparent mb-4" />
               <nav className="flex flex-col gap-0.5" aria-label="Navegacion movil">
                 {/* Collapsible Servicios */}
                 <button
@@ -369,8 +369,8 @@ export default function Header() {
                   className={cn(
                     "px-4 py-3 rounded-xl text-[15px] font-medium font-body transition-all flex items-center justify-between",
                     pathname.startsWith("/servicios")
-                      ? "text-pacame-white bg-white/[0.06] border-l-2 border-olympus-gold/40"
-                      : "text-pacame-white/60 hover:text-pacame-white"
+                      ? "text-ink bg-white/[0.06] border-l-2 border-accent-gold/40"
+                      : "text-ink/60 hover:text-ink"
                   )}
                   aria-expanded={mobileServices}
                 >
@@ -389,16 +389,16 @@ export default function Header() {
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.25 }}
-                      className="overflow-hidden ml-4 pl-3 border-l border-olympus-gold/15"
+                      className="overflow-hidden ml-4 pl-3 border-l border-accent-gold/15"
                     >
                       {servicesMenu.map((s) => (
                         <Link
                           key={s.slug}
                           href={`/servicios#${s.slug}`}
                           onClick={() => setMobileOpen(false)}
-                          className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-body text-pacame-white/60 hover:text-pacame-white transition-colors"
+                          className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-body text-ink/60 hover:text-ink transition-colors"
                         >
-                          <s.Icon className="w-3.5 h-3.5 text-olympus-gold/70" />
+                          <s.Icon className="w-3.5 h-3.5 text-accent-gold/70" />
                           {s.label}
                         </Link>
                       ))}
@@ -412,8 +412,8 @@ export default function Header() {
                   className={cn(
                     "px-4 py-3 rounded-xl text-[15px] font-medium font-body transition-all flex items-center justify-between",
                     pathname.startsWith("/apps")
-                      ? "text-pacame-white bg-white/[0.06] border-l-2 border-olympus-gold/40"
-                      : "text-pacame-white/60 hover:text-pacame-white"
+                      ? "text-ink bg-white/[0.06] border-l-2 border-accent-gold/40"
+                      : "text-ink/60 hover:text-ink"
                   )}
                   aria-expanded={mobileApps}
                 >
@@ -432,16 +432,16 @@ export default function Header() {
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.25 }}
-                      className="overflow-hidden ml-4 pl-3 border-l border-olympus-gold/15"
+                      className="overflow-hidden ml-4 pl-3 border-l border-accent-gold/15"
                     >
                       {appsMenu.map((a) => (
                         <Link
                           key={a.slug}
                           href={a.href}
                           onClick={() => setMobileOpen(false)}
-                          className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-body text-pacame-white/60 hover:text-pacame-white transition-colors"
+                          className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-body text-ink/60 hover:text-ink transition-colors"
                         >
-                          <a.Icon className="w-3.5 h-3.5 text-olympus-gold/70" />
+                          <a.Icon className="w-3.5 h-3.5 text-accent-gold/70" />
                           {a.label}
                         </Link>
                       ))}
@@ -463,8 +463,8 @@ export default function Header() {
                       className={cn(
                         "px-4 py-3 rounded-xl text-[15px] font-medium font-body transition-all block",
                         pathname === link.href
-                          ? "text-pacame-white bg-white/[0.06] border-l-2 border-olympus-gold/40"
-                          : "text-pacame-white/50 hover:text-pacame-white"
+                          ? "text-ink bg-white/[0.06] border-l-2 border-accent-gold/40"
+                          : "text-ink/50 hover:text-ink"
                       )}
                     >
                       {link.label}

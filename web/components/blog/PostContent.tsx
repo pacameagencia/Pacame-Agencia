@@ -31,12 +31,12 @@ export default function PostContent({ markdown }: PostContentProps) {
     nodes.push(
       <ul
         key={`ul-${nodes.length}`}
-        className="list-disc pl-6 space-y-2 my-5 marker:text-olympus-gold/70"
+        className="list-disc pl-6 space-y-2 my-5 marker:text-accent-gold/70"
       >
         {listBuffer.map((item, i) => (
           <li
             key={i}
-            className="text-pacame-white/75 font-body leading-relaxed"
+            className="text-ink/75 font-body leading-relaxed"
           >
             {renderInline(item)}
           </li>
@@ -65,7 +65,7 @@ export default function PostContent({ markdown }: PostContentProps) {
     nodes.push(
       <div
         key={`tbl-${nodes.length}`}
-        className="my-8 overflow-x-auto rounded-xl border border-white/[0.06]"
+        className="my-8 overflow-x-auto rounded-xl border border-ink/[0.06]"
       >
         <table className="w-full text-sm font-body">
           <thead className="bg-white/[0.02]">
@@ -73,7 +73,7 @@ export default function PostContent({ markdown }: PostContentProps) {
               {header.map((h, i) => (
                 <th
                   key={i}
-                  className="text-left px-4 py-3 text-olympus-gold font-heading font-medium text-xs uppercase tracking-wider"
+                  className="text-left px-4 py-3 text-accent-gold font-heading font-medium text-xs uppercase tracking-wider"
                 >
                   {h}
                 </th>
@@ -89,7 +89,7 @@ export default function PostContent({ markdown }: PostContentProps) {
                 {row.map((cell, c) => (
                   <td
                     key={c}
-                    className="px-4 py-3 text-pacame-white/70"
+                    className="px-4 py-3 text-ink/70"
                   >
                     {renderInline(cell)}
                   </td>
@@ -132,7 +132,7 @@ export default function PostContent({ markdown }: PostContentProps) {
         <h3
           key={`h3-${i}`}
           id={id}
-          className="font-heading font-semibold text-lg md:text-xl text-pacame-white mt-10 mb-3 scroll-mt-32"
+          className="font-heading font-semibold text-lg md:text-xl text-ink mt-10 mb-3 scroll-mt-32"
         >
           {text}
         </h3>,
@@ -147,7 +147,7 @@ export default function PostContent({ markdown }: PostContentProps) {
         <h2
           key={`h2-${i}`}
           id={id}
-          className="font-heading font-bold text-2xl md:text-3xl text-pacame-white mt-14 mb-5 scroll-mt-32"
+          className="font-heading font-bold text-2xl md:text-3xl text-ink mt-14 mb-5 scroll-mt-32"
         >
           {text}
         </h2>,
@@ -168,7 +168,7 @@ export default function PostContent({ markdown }: PostContentProps) {
       nodes.push(
         <hr
           key={`hr-${i}`}
-          className="border-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/20 to-transparent my-12"
+          className="border-0 h-px bg-gradient-to-r from-transparent via-accent-gold/20 to-transparent my-12"
         />,
       );
       continue;
@@ -181,7 +181,7 @@ export default function PostContent({ markdown }: PostContentProps) {
     nodes.push(
       <p
         key={`p-${i}`}
-        className="text-pacame-white/75 font-body text-base md:text-lg leading-relaxed my-5"
+        className="text-ink/75 font-body text-base md:text-lg leading-relaxed my-5"
       >
         {renderInline(line)}
       </p>,
@@ -201,7 +201,7 @@ function renderInline(text: string): ReactNode {
   const parts = text.split(/\*\*(.*?)\*\*/g);
   return parts.map((part, j) =>
     j % 2 === 1 ? (
-      <strong key={j} className="text-pacame-white font-semibold">
+      <strong key={j} className="text-ink font-semibold">
         {part}
       </strong>
     ) : (

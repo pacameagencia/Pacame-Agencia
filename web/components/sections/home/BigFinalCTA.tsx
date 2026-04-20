@@ -25,22 +25,22 @@ export default function BigFinalCTA() {
         />
       </div>
       {/* Overlay para legibilidad */}
-      <div className="absolute inset-0 bg-pacame-black/60 pointer-events-none" />
+      <div className="absolute inset-0 bg-ink/60 pointer-events-none" />
 
       {/* Top/bottom hairline */}
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/40 to-transparent" />
-      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/40 to-transparent" />
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/40 to-transparent" />
+      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/40 to-transparent" />
 
       <ScrollReveal className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-        <p className="text-[12px] font-body font-medium text-olympus-gold/80 mb-6 uppercase tracking-[0.24em]">
+        <p className="text-[12px] font-body font-medium text-accent-gold/80 mb-6 uppercase tracking-[0.24em]">
           Siguiente paso
         </p>
-        <h2 className="font-accent font-bold text-display text-pacame-white mb-6 text-balance leading-tight">
+        <h2 className="font-accent font-bold text-display text-ink mb-6 text-balance leading-tight">
           Listo para tener un{" "}
           <span className="gradient-text-aurora">equipo digital</span>{" "}
           sin contratarlo?
         </h2>
-        <p className="text-lg sm:text-xl text-pacame-white/55 font-body mb-10 max-w-xl mx-auto text-balance">
+        <p className="text-lg sm:text-xl text-ink/55 font-body mb-10 max-w-xl mx-auto text-balance">
           Eligeun producto o habla 15 min con Pablo. Sin compromiso, sin presupuestos ciegos, sin humo.
         </p>
 
@@ -54,7 +54,7 @@ export default function BigFinalCTA() {
             >
               <Link
                 href="/servicios"
-                className="flex items-center gap-2 text-pacame-white"
+                className="flex items-center gap-2 text-ink"
               >
                 Explorar productos
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -65,7 +65,7 @@ export default function BigFinalCTA() {
             variant="outline"
             size="xl"
             asChild
-            className="rounded-full min-w-[220px] border-white/[0.1] hover:border-olympus-gold/30 hover:bg-white/[0.03] transition-colors duration-500"
+            className="rounded-full min-w-[220px] border-ink/[0.1] hover:border-accent-gold/30 hover:bg-white/[0.03] transition-colors duration-500"
           >
             <Link href="/contacto">
               <MessageSquare className="w-4 h-4" />
@@ -74,7 +74,7 @@ export default function BigFinalCTA() {
           </Button>
         </div>
 
-        <p className="text-xs text-pacame-white/40 font-body">
+        <p className="text-xs text-ink/40 font-body">
           Respuesta en menos de 2h · Sin compromiso · Garantia 7 dias
         </p>
       </ScrollReveal>

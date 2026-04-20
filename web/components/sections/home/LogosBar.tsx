@@ -29,12 +29,12 @@ export default function LogosBar() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="relative py-16 bg-pacame-black">
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/15 to-transparent" />
+    <section className="relative py-16 bg-paper">
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/15 to-transparent" />
 
       <div className="max-w-6xl mx-auto px-6">
         <motion.p
-          className="text-center text-[11px] font-body font-medium text-pacame-white/35 uppercase tracking-[0.24em] mb-10"
+          className="text-center text-[11px] font-body font-medium text-ink/35 uppercase tracking-[0.24em] mb-10"
           initial={reduced ? {} : { opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
@@ -47,7 +47,7 @@ export default function LogosBar() {
           {sectors.map((s, i) => (
             <motion.div
               key={s.label}
-              className="bg-pacame-black flex flex-col items-center justify-center gap-2 py-6 text-pacame-white/25 hover:text-pacame-white/55 hover:bg-white/[0.02] transition-all duration-500 group"
+              className="bg-paper flex flex-col items-center justify-center gap-2 py-6 text-ink/25 hover:text-ink/55 hover:bg-white/[0.02] transition-all duration-500 group"
               initial={reduced ? {} : { opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
@@ -62,7 +62,7 @@ export default function LogosBar() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/10 to-transparent" />
+      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/10 to-transparent" />
     </section>
   );
 }

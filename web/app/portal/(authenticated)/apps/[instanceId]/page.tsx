@@ -163,7 +163,7 @@ export default async function AppDashboardPage({
       <div className="mb-6">
         <Link
           href="/portal/apps"
-          className="inline-flex items-center gap-1.5 text-sm font-body text-pacame-white/50 hover:text-pacame-white transition mb-4"
+          className="inline-flex items-center gap-1.5 text-sm font-body text-ink/50 hover:text-ink transition mb-4"
         >
           <ArrowLeft className="w-4 h-4" />
           Mis apps
@@ -171,7 +171,7 @@ export default async function AppDashboardPage({
 
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <h1 className="font-heading font-bold text-3xl text-pacame-white mb-1">
+            <h1 className="font-heading font-bold text-3xl text-ink mb-1">
               {appInfo?.name || instance.app_slug}
             </h1>
             <div className="flex items-center gap-2 mt-1">
@@ -179,14 +179,14 @@ export default async function AppDashboardPage({
                 className={`inline-flex items-center gap-1 text-xs font-body font-semibold px-2 py-0.5 rounded-full border ${
                   isActive
                     ? "bg-green-400/10 text-green-400 border-green-400/30"
-                    : "bg-white/5 text-pacame-white/60 border-white/10"
+                    : "bg-white/5 text-ink/60 border-white/10"
                 }`}
               >
                 {isActive ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
                 {isActive ? "Activa" : instance.status}
               </span>
               {instance.last_activity_at && (
-                <span className="text-xs text-pacame-white/40">
+                <span className="text-xs text-ink/40">
                   Ultima actividad: {formatDate(instance.last_activity_at)}
                 </span>
               )}
@@ -194,7 +194,7 @@ export default async function AppDashboardPage({
           </div>
           <Link
             href={`/portal/apps/${instanceId}/setup`}
-            className="inline-flex items-center gap-2 bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 text-pacame-white font-body font-medium px-4 py-2 rounded-xl transition text-sm"
+            className="inline-flex items-center gap-2 bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 text-ink font-body font-medium px-4 py-2 rounded-xl transition text-sm"
           >
             <Settings className="w-4 h-4" />
             Editar configuracion
@@ -224,13 +224,13 @@ export default async function AppDashboardPage({
 
       {/* Conversations + Leads side by side */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <section className="rounded-2xl p-5 bg-dark-card border border-white/[0.06]">
-          <h2 className="font-heading font-semibold text-pacame-white text-lg mb-4 flex items-center gap-2">
-            <MessageSquare className="w-4 h-4 text-olympus-gold" />
+        <section className="rounded-2xl p-5 bg-paper-deep border border-ink/[0.06]">
+          <h2 className="font-heading font-semibold text-ink text-lg mb-4 flex items-center gap-2">
+            <MessageSquare className="w-4 h-4 text-accent-gold" />
             Conversaciones recientes
           </h2>
           {conversations.length === 0 ? (
-            <p className="text-sm font-body text-pacame-white/50">
+            <p className="text-sm font-body text-ink/50">
               Todavia no hay conversaciones.
             </p>
           ) : (
@@ -241,15 +241,15 @@ export default async function AppDashboardPage({
                   className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]"
                 >
                   <div className="flex items-center justify-between gap-2 mb-1">
-                    <span className="font-heading font-semibold text-pacame-white text-sm truncate">
+                    <span className="font-heading font-semibold text-ink text-sm truncate">
                       {c.contact_name || c.contact_phone}
                     </span>
-                    <span className="text-[11px] text-pacame-white/40 font-body">
+                    <span className="text-[11px] text-ink/40 font-body">
                       {formatDate(c.created_at)}
                     </span>
                   </div>
-                  <p className="text-xs font-body text-pacame-white/60 line-clamp-2">
-                    <span className="text-olympus-gold">
+                  <p className="text-xs font-body text-ink/60 line-clamp-2">
+                    <span className="text-accent-gold">
                       {c.direction === "outbound" ? "IA: " : ""}
                     </span>
                     {c.last_message}
@@ -260,13 +260,13 @@ export default async function AppDashboardPage({
           )}
         </section>
 
-        <section className="rounded-2xl p-5 bg-dark-card border border-white/[0.06]">
-          <h2 className="font-heading font-semibold text-pacame-white text-lg mb-4 flex items-center gap-2">
-            <Users className="w-4 h-4 text-olympus-gold" />
+        <section className="rounded-2xl p-5 bg-paper-deep border border-ink/[0.06]">
+          <h2 className="font-heading font-semibold text-ink text-lg mb-4 flex items-center gap-2">
+            <Users className="w-4 h-4 text-accent-gold" />
             Leads
           </h2>
           {(!leads || leads.length === 0) ? (
-            <p className="text-sm font-body text-pacame-white/50">
+            <p className="text-sm font-body text-ink/50">
               Todavia no has captado leads.
             </p>
           ) : (
@@ -277,17 +277,17 @@ export default async function AppDashboardPage({
                   className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.04] flex items-center justify-between gap-2"
                 >
                   <div className="min-w-0">
-                    <div className="font-body font-medium text-sm text-pacame-white truncate">
+                    <div className="font-body font-medium text-sm text-ink truncate">
                       {l.name || l.phone || "Lead"}
                     </div>
-                    <div className="text-[11px] font-body text-pacame-white/40">
+                    <div className="text-[11px] font-body text-ink/40">
                       {l.phone} · {l.status || "new"}
                       {Array.isArray(l.tags) && l.tags.length > 0 && (
                         <span> · {l.tags.join(", ")}</span>
                       )}
                     </div>
                   </div>
-                  <span className="text-[11px] text-pacame-white/40 font-body flex-shrink-0">
+                  <span className="text-[11px] text-ink/40 font-body flex-shrink-0">
                     {formatDate(l.last_interaction_at as string | null)}
                   </span>
                 </li>
@@ -310,14 +310,14 @@ function Kpi({
   value: number;
 }) {
   return (
-    <div className="rounded-2xl p-5 bg-dark-card border border-white/[0.06]">
+    <div className="rounded-2xl p-5 bg-paper-deep border border-ink/[0.06]">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-body text-pacame-white/50 uppercase tracking-wider">
+        <span className="text-xs font-body text-ink/50 uppercase tracking-wider">
           {label}
         </span>
-        <Icon className="w-4 h-4 text-olympus-gold" />
+        <Icon className="w-4 h-4 text-accent-gold" />
       </div>
-      <div className="font-heading font-bold text-3xl text-pacame-white">
+      <div className="font-heading font-bold text-3xl text-ink">
         {value}
       </div>
     </div>

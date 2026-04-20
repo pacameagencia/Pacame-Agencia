@@ -28,17 +28,17 @@ export default function PackageCheckoutButton({ packageId, packageName, featured
         description={pricing.description}
         variant={featured ? "secondary" : "outline"}
         size="lg"
-        className={`w-full ${featured ? "bg-white text-pacame-black hover:bg-white/90" : ""}`}
+        className={`w-full ${featured ? "bg-white text-paper hover:bg-white/90" : ""}`}
       />
       <Link
         href="/contacto"
         className={`block text-center text-xs font-body mt-3 transition-colors ${
-          featured ? "text-white/40 hover:text-white/60" : "text-pacame-white/30 hover:text-pacame-white/50"
+          featured ? "text-white/40 hover:text-white/60" : "text-ink/30 hover:text-ink/50"
         }`}
       >
         o hablar primero sin compromiso
       </Link>
-      <p className="text-center text-[10px] text-pacame-white/20 font-body mt-2">
+      <p className="text-center text-[10px] text-ink/20 font-body mt-2">
         Pago seguro via Stripe &middot; Cancela cuando quieras
       </p>
     </div>

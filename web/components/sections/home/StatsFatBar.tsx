@@ -31,8 +31,8 @@ export default function StatsFatBar() {
   return (
     <section className="relative bg-[linear-gradient(90deg,#0A0A0A_0%,#0D0B21_50%,#0A0A0A_100%)] py-16 sm:py-20 overflow-hidden">
       {/* Top border glow */}
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/40 to-transparent" />
-      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-olympus-gold/40 to-transparent" />
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/40 to-transparent" />
+      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/40 to-transparent" />
 
       {/* Subtle radial olympus */}
       <div className="absolute inset-0 bg-olympus-radial opacity-40 pointer-events-none" />
@@ -72,11 +72,11 @@ export default function StatsFatBar() {
             },
           ].map((stat) => (
             <div key={stat.label} className="text-center group">
-              <div className="font-heading font-bold text-4xl sm:text-5xl text-pacame-white mb-1.5 tabular-nums">
+              <div className="font-heading font-bold text-4xl sm:text-5xl text-ink mb-1.5 tabular-nums">
                 {stat.decimals ? (
                   <>
                     <span>{stat.value}</span>
-                    <span className="text-olympus-gold">{stat.suffix}</span>
+                    <span className="text-accent-gold">{stat.suffix}</span>
                   </>
                 ) : (
                   <CountUpNumber
@@ -86,7 +86,7 @@ export default function StatsFatBar() {
                   />
                 )}
               </div>
-              <div className="text-xs sm:text-sm text-pacame-white/50 font-body uppercase tracking-wider">
+              <div className="text-xs sm:text-sm text-ink/50 font-body uppercase tracking-wider">
                 {stat.label}
               </div>
             </div>

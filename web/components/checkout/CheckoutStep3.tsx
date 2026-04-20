@@ -58,29 +58,29 @@ export default function CheckoutStep3({
       transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
     >
       <div className="mb-8">
-        <h2 className="text-subsection font-heading text-pacame-white">
+        <h2 className="text-subsection font-heading text-ink">
           Confirma tu pedido
         </h2>
-        <p className="mt-2 text-sm font-body text-pacame-white/50">
+        <p className="mt-2 text-sm font-body text-ink/50">
           Revisa los datos antes de continuar al pago seguro.
         </p>
       </div>
 
       {/* Service Summary */}
-      <div className="p-5 rounded-xl bg-white/[0.03] border border-olympus-gold/20 mb-6">
+      <div className="p-5 rounded-xl bg-white/[0.03] border border-accent-gold/20 mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-pacame-white/50 font-body">Servicio</p>
-            <h3 className="text-lg font-heading font-semibold text-pacame-white mt-0.5">
+            <p className="text-sm text-ink/50 font-body">Servicio</p>
+            <h3 className="text-lg font-heading font-semibold text-ink mt-0.5">
               {serviceName}
             </h3>
           </div>
           <div className="text-right">
-            <span className="text-xl font-heading font-bold text-olympus-gold">
+            <span className="text-xl font-heading font-bold text-accent-gold">
               {formattedPrice}
             </span>
             {recurring && (
-              <span className="flex items-center gap-1 mt-1 text-xs text-pacame-white/40 font-body justify-end">
+              <span className="flex items-center gap-1 mt-1 text-xs text-ink/40 font-body justify-end">
                 <RefreshCw className="w-3 h-3" />
                 Pago mensual
               </span>
@@ -90,8 +90,8 @@ export default function CheckoutStep3({
       </div>
 
       {/* Contact Summary */}
-      <div className="p-5 rounded-xl bg-white/[0.03] border border-white/[0.06] mb-4">
-        <p className="text-xs font-body text-pacame-white/40 uppercase tracking-wider mb-3">
+      <div className="p-5 rounded-xl bg-white/[0.03] border border-ink/[0.06] mb-4">
+        <p className="text-xs font-body text-ink/40 uppercase tracking-wider mb-3">
           Datos de contacto
         </p>
         <div className="space-y-2.5">
@@ -108,8 +108,8 @@ export default function CheckoutStep3({
 
       {/* Project Summary */}
       {(data.company_name || data.company_sector || data.timeline) && (
-        <div className="p-5 rounded-xl bg-white/[0.03] border border-white/[0.06] mb-6">
-          <p className="text-xs font-body text-pacame-white/40 uppercase tracking-wider mb-3">
+        <div className="p-5 rounded-xl bg-white/[0.03] border border-ink/[0.06] mb-6">
+          <p className="text-xs font-body text-ink/40 uppercase tracking-wider mb-3">
             Proyecto
           </p>
           <div className="space-y-2.5">
@@ -142,7 +142,7 @@ export default function CheckoutStep3({
         gradientTo="#7C3AED"
         onClick={loading ? undefined : onConfirm}
       >
-        <span className="flex items-center gap-2.5 px-6 py-3 text-base font-heading font-semibold text-pacame-white">
+        <span className="flex items-center gap-2.5 px-6 py-3 text-base font-heading font-semibold text-ink">
           {loading ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -195,8 +195,8 @@ function SummaryRow({
 }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="text-pacame-white/30">{icon}</span>
-      <span className="text-sm font-body text-pacame-white/80">{label}</span>
+      <span className="text-ink/30">{icon}</span>
+      <span className="text-sm font-body text-ink/80">{label}</span>
     </div>
   );
 }
@@ -209,7 +209,7 @@ function TrustPill({
   label: string;
 }) {
   return (
-    <div className="flex items-center gap-1.5 text-pacame-white/30">
+    <div className="flex items-center gap-1.5 text-ink/30">
       {icon}
       <span className="text-xs font-body">{label}</span>
     </div>

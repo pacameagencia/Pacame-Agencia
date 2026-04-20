@@ -26,7 +26,7 @@ export default function BackToTop() {
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
           onClick={scrollToTop}
-          className="fixed bottom-24 right-6 z-[45] w-11 h-11 rounded-full glass border border-olympus-gold/15 hover:border-olympus-gold/30 flex items-center justify-center text-olympus-gold/60 hover:text-olympus-gold transition-colors duration-300 shadow-apple cursor-pointer"
+          className="fixed bottom-24 right-6 z-[45] w-11 h-11 rounded-full glass border border-accent-gold/15 hover:border-accent-gold/30 flex items-center justify-center text-accent-gold/60 hover:text-accent-gold transition-colors duration-300 shadow-apple cursor-pointer"
           aria-label="Volver arriba"
         >
           <ArrowUp className="w-4 h-4" />

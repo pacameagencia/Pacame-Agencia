@@ -31,8 +31,8 @@ const statusLabels: Record<string, { label: string; color: string; icon: typeof 
   delivered: { label: "Entregado", color: "text-green-400", icon: CheckCircle2 },
   revision_requested: { label: "En revision", color: "text-blue-400", icon: Loader2 },
   escalated: { label: "En atencion de Pablo", color: "text-orange-400", icon: AlertCircle },
-  refunded: { label: "Reembolsado", color: "text-pacame-white/40", icon: AlertCircle },
-  cancelled: { label: "Cancelado", color: "text-pacame-white/40", icon: AlertCircle },
+  refunded: { label: "Reembolsado", color: "text-ink/40", icon: AlertCircle },
+  cancelled: { label: "Cancelado", color: "text-ink/40", icon: AlertCircle },
   failed: { label: "Fallo", color: "text-red-400", icon: AlertCircle },
 };
 
@@ -70,17 +70,17 @@ export default async function OrdersListPage() {
     <div className="max-w-6xl mx-auto p-6">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="font-heading font-bold text-3xl text-pacame-white mb-1 flex items-center gap-3">
-            <ShoppingBag className="w-7 h-7 text-olympus-gold" />
+          <h1 className="font-heading font-bold text-3xl text-ink mb-1 flex items-center gap-3">
+            <ShoppingBag className="w-7 h-7 text-accent-gold" />
             Mis pedidos
           </h1>
-          <p className="text-pacame-white/60 font-body text-sm">
+          <p className="text-ink/60 font-body text-sm">
             Seguimiento en tiempo real de todos tus entregables
           </p>
         </div>
         <Link
           href="/servicios"
-          className="inline-flex items-center gap-2 bg-olympus-gold hover:bg-olympus-gold/90 text-pacame-black font-heading font-semibold px-5 py-2.5 rounded-xl transition"
+          className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-paper font-heading font-semibold px-5 py-2.5 rounded-xl transition"
         >
           Comprar otro servicio
           <ArrowRight className="w-4 h-4" />
@@ -88,17 +88,17 @@ export default async function OrdersListPage() {
       </div>
 
       {rows.length === 0 ? (
-        <div className="rounded-2xl p-12 bg-dark-card border border-white/[0.06] text-center">
-          <ShoppingBag className="w-12 h-12 text-pacame-white/30 mx-auto mb-4" />
-          <h2 className="font-heading font-semibold text-xl text-pacame-white mb-2">
+        <div className="rounded-2xl p-12 bg-paper-deep border border-ink/[0.06] text-center">
+          <ShoppingBag className="w-12 h-12 text-ink/30 mx-auto mb-4" />
+          <h2 className="font-heading font-semibold text-xl text-ink mb-2">
             Aun no tienes pedidos
           </h2>
-          <p className="text-pacame-white/60 font-body text-sm mb-6">
+          <p className="text-ink/60 font-body text-sm mb-6">
             Explora nuestro catalogo de servicios y compra con un clic.
           </p>
           <Link
             href="/servicios"
-            className="inline-flex items-center gap-2 bg-olympus-gold hover:bg-olympus-gold/90 text-pacame-black font-heading font-semibold px-6 py-3 rounded-xl transition"
+            className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-paper font-heading font-semibold px-6 py-3 rounded-xl transition"
           >
             Ver catalogo
             <ArrowRight className="w-4 h-4" />
@@ -109,7 +109,7 @@ export default async function OrdersListPage() {
           {rows.map((o) => {
             const statusInfo = statusLabels[o.status] || {
               label: o.status,
-              color: "text-pacame-white/60",
+              color: "text-ink/60",
               icon: Clock,
             };
             const Icon = statusInfo.icon;
@@ -119,12 +119,12 @@ export default async function OrdersListPage() {
               <Link
                 key={o.id}
                 href={`/portal/orders/${o.id}`}
-                className="group block rounded-2xl p-5 bg-dark-card border border-white/[0.06] hover:border-olympus-gold/30 transition"
+                className="group block rounded-2xl p-5 bg-paper-deep border border-ink/[0.06] hover:border-accent-gold/30 transition"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-mono text-pacame-white/40">
+                      <span className="text-xs font-mono text-ink/40">
                         {o.order_number}
                       </span>
                       <span
@@ -134,10 +134,10 @@ export default async function OrdersListPage() {
                         {statusInfo.label}
                       </span>
                     </div>
-                    <h3 className="font-heading font-semibold text-pacame-white text-lg truncate">
+                    <h3 className="font-heading font-semibold text-ink text-lg truncate">
                       {o.service_slug}
                     </h3>
-                    <div className="text-pacame-white/50 font-body text-sm">
+                    <div className="text-ink/50 font-body text-sm">
                       {(o.amount_cents / 100).toFixed(0)}€ ·{" "}
                       {formatDate(o.created_at as string)}
                     </div>
@@ -146,20 +146,20 @@ export default async function OrdersListPage() {
                       o.status === "revision_requested") &&
                       pct > 0 && (
                         <div className="mt-3">
-                          <div className="flex items-center justify-between text-xs text-pacame-white/50 font-body mb-1">
+                          <div className="flex items-center justify-between text-xs text-ink/50 font-body mb-1">
                             <span>{o.progress_message || "En proceso"}</span>
                             <span>{pct}%</span>
                           </div>
                           <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-olympus-gold transition-all"
+                              className="h-full bg-accent-gold transition-all"
                               style={{ width: `${pct}%` }}
                             />
                           </div>
                         </div>
                       )}
                   </div>
-                  <ArrowRight className="w-5 h-5 text-pacame-white/30 group-hover:text-olympus-gold transition flex-shrink-0" />
+                  <ArrowRight className="w-5 h-5 text-ink/30 group-hover:text-accent-gold transition flex-shrink-0" />
                 </div>
               </Link>
             );

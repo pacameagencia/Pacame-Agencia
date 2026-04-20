@@ -53,7 +53,7 @@ export default async function PortalAuthenticatedLayout({
 
   return (
     <div
-      className="min-h-screen bg-pacame-black"
+      className="min-h-screen bg-paper"
       style={
         {
           "--client-primary": primaryColor,

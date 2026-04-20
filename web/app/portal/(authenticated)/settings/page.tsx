@@ -132,7 +132,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-electric-violet" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
       </div>
     );
   }
@@ -142,28 +142,28 @@ export default function SettingsPage() {
       {/* Header */}
       <ScrollReveal>
         <div className="flex items-center gap-3 mb-1">
-          <Settings className="w-6 h-6 text-electric-violet" />
-          <h1 className="font-heading font-bold text-2xl text-pacame-white">Ajustes de marca</h1>
+          <Settings className="w-6 h-6 text-brand-primary" />
+          <h1 className="font-heading font-bold text-2xl text-ink">Ajustes de marca</h1>
         </div>
-        <p className="text-sm text-pacame-white/50 font-body">
+        <p className="text-sm text-ink/50 font-body">
           Personaliza tu portal con los colores y tipografia de tu marca
         </p>
       </ScrollReveal>
 
       {/* Logo */}
       <ScrollReveal delay={0.05}>
-        <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-6">
-          <h2 className="font-heading font-semibold text-base text-pacame-white mb-4 flex items-center gap-2">
-            <Upload className="w-4 h-4 text-pacame-white/50" />
+        <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-6">
+          <h2 className="font-heading font-semibold text-base text-ink mb-4 flex items-center gap-2">
+            <Upload className="w-4 h-4 text-ink/50" />
             Logo
           </h2>
           <div className="flex items-center gap-6">
             <div
-              className="w-20 h-20 rounded-2xl border-2 border-dashed border-white/[0.12] flex items-center justify-center overflow-hidden cursor-pointer hover:border-white/[0.25] transition-colors"
+              className="w-20 h-20 rounded-2xl border-2 border-dashed border-ink/[0.12] flex items-center justify-center overflow-hidden cursor-pointer hover:border-white/[0.25] transition-colors"
               onClick={() => logoInputRef.current?.click()}
             >
               {uploadingLogo ? (
-                <Loader2 className="w-6 h-6 animate-spin text-pacame-white/30" />
+                <Loader2 className="w-6 h-6 animate-spin text-ink/30" />
               ) : logoPreview ? (
                 <img
                   src={logoPreview}
@@ -171,7 +171,7 @@ export default function SettingsPage() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-3xl font-heading font-bold text-pacame-white/20">P</span>
+                <span className="text-3xl font-heading font-bold text-ink/20">P</span>
               )}
             </div>
             <div>
@@ -183,7 +183,7 @@ export default function SettingsPage() {
               >
                 {uploadingLogo ? "Subiendo..." : "Cambiar logo"}
               </Button>
-              <p className="text-[11px] text-pacame-white/30 font-body mt-2">
+              <p className="text-[11px] text-ink/30 font-body mt-2">
                 PNG, SVG o JPG. Recomendado: 200x200px
               </p>
             </div>
@@ -200,14 +200,14 @@ export default function SettingsPage() {
 
       {/* Colors */}
       <ScrollReveal delay={0.1}>
-        <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-6">
-          <h2 className="font-heading font-semibold text-base text-pacame-white mb-4 flex items-center gap-2">
-            <Palette className="w-4 h-4 text-pacame-white/50" />
+        <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-6">
+          <h2 className="font-heading font-semibold text-base text-ink mb-4 flex items-center gap-2">
+            <Palette className="w-4 h-4 text-ink/50" />
             Colores
           </h2>
           <div className="grid sm:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs text-pacame-white/50 font-body mb-2">
+              <label className="block text-xs text-ink/50 font-body mb-2">
                 Color primario
               </label>
               <div className="flex items-center gap-3">
@@ -219,7 +219,7 @@ export default function SettingsPage() {
                     className="absolute inset-0 opacity-0 cursor-pointer w-10 h-10"
                   />
                   <div
-                    className="w-10 h-10 rounded-xl border-2 border-white/[0.12] transition-shadow hover:shadow-lg"
+                    className="w-10 h-10 rounded-xl border-2 border-ink/[0.12] transition-shadow hover:shadow-lg"
                     style={{ backgroundColor: settings.primary_color }}
                   />
                 </label>
@@ -227,13 +227,13 @@ export default function SettingsPage() {
                   type="text"
                   value={settings.primary_color}
                   onChange={(e) => setSettings((prev) => ({ ...prev, primary_color: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white placeholder:text-pacame-white/25 font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors uppercase"
+                  className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink placeholder:text-ink/25 font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors uppercase"
                   maxLength={7}
                 />
               </div>
             </div>
             <div>
-              <label className="block text-xs text-pacame-white/50 font-body mb-2">
+              <label className="block text-xs text-ink/50 font-body mb-2">
                 Color secundario
               </label>
               <div className="flex items-center gap-3">
@@ -245,7 +245,7 @@ export default function SettingsPage() {
                     className="absolute inset-0 opacity-0 cursor-pointer w-10 h-10"
                   />
                   <div
-                    className="w-10 h-10 rounded-xl border-2 border-white/[0.12] transition-shadow hover:shadow-lg"
+                    className="w-10 h-10 rounded-xl border-2 border-ink/[0.12] transition-shadow hover:shadow-lg"
                     style={{ backgroundColor: settings.secondary_color }}
                   />
                 </label>
@@ -253,7 +253,7 @@ export default function SettingsPage() {
                   type="text"
                   value={settings.secondary_color}
                   onChange={(e) => setSettings((prev) => ({ ...prev, secondary_color: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white placeholder:text-pacame-white/25 font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors uppercase"
+                  className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink placeholder:text-ink/25 font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors uppercase"
                   maxLength={7}
                 />
               </div>
@@ -264,20 +264,20 @@ export default function SettingsPage() {
 
       {/* Typography */}
       <ScrollReveal delay={0.15}>
-        <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-6">
-          <h2 className="font-heading font-semibold text-base text-pacame-white mb-4 flex items-center gap-2">
-            <Type className="w-4 h-4 text-pacame-white/50" />
+        <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-6">
+          <h2 className="font-heading font-semibold text-base text-ink mb-4 flex items-center gap-2">
+            <Type className="w-4 h-4 text-ink/50" />
             Tipografia
           </h2>
           <div className="grid sm:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs text-pacame-white/50 font-body mb-2">
+              <label className="block text-xs text-ink/50 font-body mb-2">
                 Fuente de titulos
               </label>
               <select
                 value={settings.font_heading}
                 onChange={(e) => setSettings((prev) => ({ ...prev, font_heading: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors appearance-none cursor-pointer"
+                className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors appearance-none cursor-pointer"
               >
                 {fontOptions.map((font) => (
                   <option key={font} value={font} className="bg-[#1a1a1a] text-white">
@@ -287,13 +287,13 @@ export default function SettingsPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs text-pacame-white/50 font-body mb-2">
+              <label className="block text-xs text-ink/50 font-body mb-2">
                 Fuente de cuerpo
               </label>
               <select
                 value={settings.font_body}
                 onChange={(e) => setSettings((prev) => ({ ...prev, font_body: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors appearance-none cursor-pointer"
+                className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors appearance-none cursor-pointer"
               >
                 {fontOptions.map((font) => (
                   <option key={font} value={font} className="bg-[#1a1a1a] text-white">
@@ -308,8 +308,8 @@ export default function SettingsPage() {
 
       {/* Tagline */}
       <ScrollReveal delay={0.2}>
-        <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-6">
-          <label className="block text-xs text-pacame-white/50 font-body mb-2">
+        <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-6">
+          <label className="block text-xs text-ink/50 font-body mb-2">
             Tagline de empresa
           </label>
           <input
@@ -317,10 +317,10 @@ export default function SettingsPage() {
             value={settings.company_tagline}
             onChange={(e) => setSettings((prev) => ({ ...prev, company_tagline: e.target.value }))}
             placeholder="Tu slogan o frase principal"
-            className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white placeholder:text-pacame-white/25 font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors"
+            className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink placeholder:text-ink/25 font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors"
             maxLength={120}
           />
-          <p className="text-[10px] text-pacame-white/20 font-body mt-1.5">
+          <p className="text-[10px] text-ink/20 font-body mt-1.5">
             {settings.company_tagline.length}/120 caracteres
           </p>
         </div>
@@ -328,12 +328,12 @@ export default function SettingsPage() {
 
       {/* Live preview */}
       <ScrollReveal delay={0.25}>
-        <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-6">
-          <h2 className="font-heading font-semibold text-base text-pacame-white mb-4 flex items-center gap-2">
-            <Eye className="w-4 h-4 text-pacame-white/50" />
+        <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-6">
+          <h2 className="font-heading font-semibold text-base text-ink mb-4 flex items-center gap-2">
+            <Eye className="w-4 h-4 text-ink/50" />
             Vista previa
           </h2>
-          <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
+          <div className="rounded-xl border border-ink/[0.06] bg-white/[0.02] p-6">
             <div className="flex items-center gap-4 mb-4">
               {logoPreview ? (
                 <img
@@ -351,14 +351,14 @@ export default function SettingsPage() {
               )}
               <div>
                 <h3
-                  className="font-bold text-lg text-pacame-white"
+                  className="font-bold text-lg text-ink"
                   style={{ fontFamily: settings.font_heading }}
                 >
                   Tu Empresa
                 </h3>
                 {settings.company_tagline && (
                   <p
-                    className="text-sm text-pacame-white/50"
+                    className="text-sm text-ink/50"
                     style={{ fontFamily: settings.font_body }}
                   >
                     {settings.company_tagline}
@@ -418,9 +418,9 @@ export default function SettingsPage() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-rose-alert/10 border border-rose-alert/20 rounded-xl p-3"
+          className="bg-accent-burgundy-soft/10 border border-accent-burgundy-soft/20 rounded-xl p-3"
         >
-          <p className="text-sm text-rose-alert font-body">{error}</p>
+          <p className="text-sm text-accent-burgundy-soft font-body">{error}</p>
         </motion.div>
       )}
     </div>

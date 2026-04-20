@@ -139,7 +139,7 @@ export default function GrowthPage() {
 
   if (loading && !data) {
     return (
-      <div className="flex items-center justify-center py-20 text-pacame-white/40">
+      <div className="flex items-center justify-center py-20 text-ink/40">
         <Loader2 className="w-5 h-5 animate-spin mr-2" /> Cargando growth data...
       </div>
     );
@@ -160,17 +160,17 @@ export default function GrowthPage() {
       {/* Header */}
       <div className="flex items-start justify-between flex-wrap gap-3">
         <div>
-          <h1 className="font-heading font-bold text-2xl text-pacame-white flex items-center gap-2">
-            <TrendingUp className="w-6 h-6 text-olympus-gold" />
+          <h1 className="font-heading font-bold text-2xl text-ink flex items-center gap-2">
+            <TrendingUp className="w-6 h-6 text-accent-gold" />
             Growth Loop
           </h1>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">
+          <p className="text-sm text-ink/40 font-body mt-1">
             Lifecycle funnel · NPS live · Referrals · Detractores activos
           </p>
         </div>
         <button
           onClick={fetchData}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/[0.04] text-pacame-white/60 hover:text-pacame-white text-xs transition border border-white/[0.08]"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/[0.04] text-ink/60 hover:text-ink text-xs transition border border-ink/[0.08]"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} /> Refresh
         </button>
@@ -178,19 +178,19 @@ export default function GrowthPage() {
 
       {/* KPI hero: NPS score con gauge SVG */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 md:col-span-2 relative overflow-hidden">
-          <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-olympus-gold/[0.04] blur-3xl pointer-events-none" />
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5 md:col-span-2 relative overflow-hidden">
+          <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-accent-gold/[0.04] blur-3xl pointer-events-none" />
           <div className="flex items-start justify-between mb-3 relative">
             <div>
-              <div className="text-xs uppercase tracking-wider text-pacame-white/40 font-mono mb-1">
+              <div className="text-xs uppercase tracking-wider text-ink/40 font-mono mb-1">
                 NPS Score (30d)
               </div>
-              <div className="text-xs text-pacame-white/40 mt-1">
+              <div className="text-xs text-ink/40 mt-1">
                 Basado en {nps?.responses || 0} respuestas · media{" "}
                 {nps?.avg_score?.toFixed(1) || "—"}/10
               </div>
             </div>
-            <Heart className="w-6 h-6 text-pacame-white/20" />
+            <Heart className="w-6 h-6 text-ink/20" />
           </div>
           <div className="flex flex-col md:flex-row items-center gap-4 relative">
             <NpsGauge score={nps?.nps_score ?? null} size={220} />
@@ -199,12 +199,12 @@ export default function GrowthPage() {
               <div className="flex-1 w-full min-w-0">
                 <div className="flex h-2 rounded-full overflow-hidden bg-white/[0.04]">
                   <div
-                    className="bg-lime-pulse transition-all duration-700 ease-out"
+                    className="bg-mint transition-all duration-700 ease-out"
                     style={{ width: `${(nps.promoters / nps.responses) * 100}%` }}
                     title={`${nps.promoters} promoters`}
                   />
                   <div
-                    className="bg-amber-signal transition-all duration-700 ease-out"
+                    className="bg-accent-gold transition-all duration-700 ease-out"
                     style={{ width: `${(nps.passives / nps.responses) * 100}%` }}
                     title={`${nps.passives} passives`}
                   />
@@ -215,19 +215,19 @@ export default function GrowthPage() {
                   />
                 </div>
                 <div className="grid grid-cols-3 mt-3 gap-2 text-[11px] font-body">
-                  <div className="p-2 rounded-lg bg-lime-pulse/5 border border-lime-pulse/20">
-                    <div className="text-lime-pulse font-heading font-bold text-lg">
+                  <div className="p-2 rounded-lg bg-mint/5 border border-mint/20">
+                    <div className="text-mint font-heading font-bold text-lg">
                       <AnimatedNumber value={nps.promoters} />
                     </div>
-                    <div className="text-lime-pulse/70 uppercase tracking-wider text-[10px]">
+                    <div className="text-mint/70 uppercase tracking-wider text-[10px]">
                       Promoters
                     </div>
                   </div>
-                  <div className="p-2 rounded-lg bg-amber-signal/5 border border-amber-signal/20">
-                    <div className="text-amber-signal font-heading font-bold text-lg">
+                  <div className="p-2 rounded-lg bg-accent-gold/5 border border-accent-gold/20">
+                    <div className="text-accent-gold font-heading font-bold text-lg">
                       <AnimatedNumber value={nps.passives} />
                     </div>
-                    <div className="text-amber-signal/70 uppercase tracking-wider text-[10px]">
+                    <div className="text-accent-gold/70 uppercase tracking-wider text-[10px]">
                       Passives
                     </div>
                   </div>
@@ -245,7 +245,7 @@ export default function GrowthPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 relative overflow-hidden">
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5 relative overflow-hidden">
           {(data?.detractors_unaddressed.length || 0) > 0 && (
             <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-red-500/10 blur-2xl pointer-events-none animate-pulse" />
           )}
@@ -253,7 +253,7 @@ export default function GrowthPage() {
           <div className="font-heading font-bold text-3xl text-red-400">
             <AnimatedNumber value={data?.detractors_unaddressed.length || 0} />
           </div>
-          <div className="text-xs text-pacame-white/40 font-body mt-1">
+          <div className="text-xs text-ink/40 font-body mt-1">
             Detractores sin contacto
           </div>
           {(data?.detractors_unaddressed.length || 0) > 0 && (
@@ -264,16 +264,16 @@ export default function GrowthPage() {
           )}
         </div>
 
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
-          <Award className="w-5 h-5 text-olympus-gold mb-2" />
-          <div className="font-heading font-bold text-3xl text-olympus-gold">
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5">
+          <Award className="w-5 h-5 text-accent-gold mb-2" />
+          <div className="font-heading font-bold text-3xl text-accent-gold">
             <AnimatedNumber value={data?.referrals_top.length || 0} />
           </div>
-          <div className="text-xs text-pacame-white/40 font-body mt-1">
+          <div className="text-xs text-ink/40 font-body mt-1">
             Referrers activos
           </div>
           {data && data.referrals_top.length > 0 && (
-            <div className="text-[11px] text-olympus-gold/80 mt-2">
+            <div className="text-[11px] text-accent-gold/80 mt-2">
               {eur(
                 data.referrals_top.reduce((s, r) => s + r.total_revenue_cents, 0)
               )}{" "}
@@ -284,10 +284,10 @@ export default function GrowthPage() {
       </div>
 
       {/* Lifecycle funnel */}
-      <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+      <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
         <div className="flex items-center gap-2 mb-5">
-          <Mail className="w-5 h-5 text-electric-violet" />
-          <h2 className="font-heading font-semibold text-lg text-pacame-white">
+          <Mail className="w-5 h-5 text-brand-primary" />
+          <h2 className="font-heading font-semibold text-lg text-ink">
             Lifecycle funnel (ultimos 30d)
           </h2>
         </div>
@@ -302,21 +302,21 @@ export default function GrowthPage() {
                 key={type}
                 className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]"
               >
-                <div className="text-[11px] uppercase tracking-wider text-pacame-white/40 font-mono mb-2">
+                <div className="text-[11px] uppercase tracking-wider text-ink/40 font-mono mb-2">
                   {LIFECYCLE_LABEL[type]}
                 </div>
-                <div className="font-heading font-bold text-2xl text-pacame-white">
+                <div className="font-heading font-bold text-2xl text-ink">
                   <AnimatedNumber value={sent} />
                 </div>
-                <div className="text-xs text-pacame-white/50 font-body mt-0.5">enviados</div>
+                <div className="text-xs text-ink/50 font-body mt-0.5">enviados</div>
                 <div className="flex justify-between mt-3 pt-3 border-t border-white/[0.04] text-[11px] font-body">
                   <div>
-                    <div className="text-electric-violet font-semibold">{pct(opened, sent)}</div>
-                    <div className="text-pacame-white/30">open</div>
+                    <div className="text-brand-primary font-semibold">{pct(opened, sent)}</div>
+                    <div className="text-ink/30">open</div>
                   </div>
                   <div>
-                    <div className="text-olympus-gold font-semibold">{pct(clicked, sent)}</div>
-                    <div className="text-pacame-white/30">click</div>
+                    <div className="text-accent-gold font-semibold">{pct(clicked, sent)}</div>
+                    <div className="text-ink/30">click</div>
                   </div>
                 </div>
               </div>
@@ -338,32 +338,32 @@ export default function GrowthPage() {
             {data.detractors_unaddressed.slice(0, 5).map((d) => (
               <div
                 key={d.id}
-                className="p-4 rounded-xl bg-dark-card border border-red-500/20"
+                className="p-4 rounded-xl bg-paper-deep border border-red-500/20"
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
                     <span className="font-heading font-bold text-red-400">
                       {d.score}/10
                     </span>
-                    <span className="text-sm text-pacame-white">
+                    <span className="text-sm text-ink">
                       {d.client_email_snapshot || d.client_id}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] text-pacame-white/40 font-body">
+                    <span className="text-[11px] text-ink/40 font-body">
                       {timeAgo(d.submitted_at)}
                     </span>
                     <button
                       onClick={() => markContacted(d.id)}
                       disabled={marking === d.id}
-                      className="px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.08] text-[11px] text-pacame-white/70 hover:bg-white/[0.08] disabled:opacity-50 transition"
+                      className="px-2.5 py-1 rounded-md bg-white/[0.04] border border-ink/[0.08] text-[11px] text-ink/70 hover:bg-white/[0.08] disabled:opacity-50 transition"
                     >
                       {marking === d.id ? "..." : "Marcar contactado"}
                     </button>
                   </div>
                 </div>
                 {d.feedback && (
-                  <div className="text-sm text-pacame-white/70 italic border-l-2 border-red-500/40 pl-3 mt-2">
+                  <div className="text-sm text-ink/70 italic border-l-2 border-red-500/40 pl-3 mt-2">
                     &quot;{d.feedback}&quot;
                   </div>
                 )}
@@ -374,13 +374,13 @@ export default function GrowthPage() {
       )}
 
       {/* NPS recent feedback */}
-      <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
-        <h2 className="font-heading font-semibold text-lg text-pacame-white mb-5 flex items-center gap-2">
+      <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
+        <h2 className="font-heading font-semibold text-lg text-ink mb-5 flex items-center gap-2">
           <Heart className="w-5 h-5 text-pink-400" />
           Ultimos feedback NPS
         </h2>
         {!data?.nps_recent.length ? (
-          <p className="text-sm text-pacame-white/30 font-body text-center py-6">
+          <p className="text-sm text-ink/30 font-body text-center py-6">
             Sin respuestas aun. Los emails NPS D+7 se envian via lifecycle-cron diario.
           </p>
         ) : (
@@ -388,9 +388,9 @@ export default function GrowthPage() {
             {data.nps_recent.map((r) => {
               const color =
                 r.category === "promoter"
-                  ? "text-lime-pulse border-lime-pulse/20 bg-lime-pulse/5"
+                  ? "text-mint border-mint/20 bg-mint/5"
                   : r.category === "passive"
-                  ? "text-amber-signal border-amber-signal/20 bg-amber-signal/5"
+                  ? "text-accent-gold border-accent-gold/20 bg-accent-gold/5"
                   : "text-red-400 border-red-500/20 bg-red-500/5";
               return (
                 <div key={r.id} className={`p-4 rounded-xl border ${color}`}>
@@ -400,16 +400,16 @@ export default function GrowthPage() {
                       <span className="text-[10px] uppercase tracking-wider font-mono">
                         {r.category}
                       </span>
-                      <span className="text-sm text-pacame-white/70">
+                      <span className="text-sm text-ink/70">
                         {r.client_email_snapshot || "—"}
                       </span>
                     </div>
-                    <span className="text-[11px] text-pacame-white/40 font-body">
+                    <span className="text-[11px] text-ink/40 font-body">
                       {timeAgo(r.submitted_at)}
                     </span>
                   </div>
                   {r.feedback && (
-                    <div className="text-sm text-pacame-white/70 italic mt-2 pl-1">
+                    <div className="text-sm text-ink/70 italic mt-2 pl-1">
                       &quot;{r.feedback}&quot;
                     </div>
                   )}
@@ -421,23 +421,23 @@ export default function GrowthPage() {
       </div>
 
       {/* Top referrers */}
-      <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+      <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
         <div className="flex items-center justify-between mb-5">
-          <h2 className="font-heading font-semibold text-lg text-pacame-white flex items-center gap-2">
-            <Users className="w-5 h-5 text-olympus-gold" />
+          <h2 className="font-heading font-semibold text-lg text-ink flex items-center gap-2">
+            <Users className="w-5 h-5 text-accent-gold" />
             Top referrers (clientes)
           </h2>
           <a
             href="/refiere"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-olympus-gold hover:underline font-body flex items-center gap-1"
+            className="text-xs text-accent-gold hover:underline font-body flex items-center gap-1"
           >
             Landing referral <ExternalLink className="w-3 h-3" />
           </a>
         </div>
         {!data?.referrals_top.length ? (
-          <p className="text-sm text-pacame-white/30 font-body text-center py-6">
+          <p className="text-sm text-ink/30 font-body text-center py-6">
             Aun no hay referidos convertidos. Los clientes con orders &gt;= 1 pueden generar su codigo en /refiere.
           </p>
         ) : (
@@ -448,20 +448,20 @@ export default function GrowthPage() {
                 className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02]"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-olympus-gold/10 text-olympus-gold flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-lg bg-accent-gold/10 text-accent-gold flex items-center justify-center">
                     <Award className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="font-heading font-semibold text-sm text-pacame-white">
+                    <div className="font-heading font-semibold text-sm text-ink">
                       {r.name || r.email || r.code}
                     </div>
-                    <div className="text-[11px] text-pacame-white/40 font-body">
+                    <div className="text-[11px] text-ink/40 font-body">
                       {r.total_uses} referidos · {eur(r.total_commission_cents)} comision
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="font-heading font-bold text-sm text-olympus-gold">
+                  <div className="font-heading font-bold text-sm text-accent-gold">
                     {eur(r.total_revenue_cents)}
                   </div>
                   <button
@@ -472,10 +472,10 @@ export default function GrowthPage() {
                       setCopied(r.code);
                       setTimeout(() => setCopied(null), 1500);
                     }}
-                    className="p-1.5 rounded-md hover:bg-white/[0.06] text-pacame-white/40 hover:text-pacame-white transition"
+                    className="p-1.5 rounded-md hover:bg-white/[0.06] text-ink/40 hover:text-ink transition"
                   >
                     {copied === r.code ? (
-                      <CheckCircle2 className="w-3.5 h-3.5 text-lime-pulse" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-mint" />
                     ) : (
                       <Copy className="w-3.5 h-3.5" />
                     )}

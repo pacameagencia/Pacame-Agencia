@@ -154,7 +154,7 @@ export default function ProductEditor({ initial, isNew = false }: Props) {
 
       <div className="space-y-6">
         {/* Basics */}
-        <div className="rounded-2xl p-6 bg-white/[0.03] border border-white/[0.06] space-y-4">
+        <div className="rounded-2xl p-6 bg-white/[0.03] border border-ink/[0.06] space-y-4">
           <h2 className="font-bold text-lg">Basicos</h2>
 
           <div className="grid grid-cols-2 gap-4">
@@ -214,7 +214,7 @@ export default function ProductEditor({ initial, isNew = false }: Props) {
         </div>
 
         {/* Delivery config */}
-        <div className="rounded-2xl p-6 bg-white/[0.03] border border-white/[0.06] space-y-4">
+        <div className="rounded-2xl p-6 bg-white/[0.03] border border-ink/[0.06] space-y-4">
           <h2 className="font-bold text-lg">Entrega</h2>
 
           <div className="grid grid-cols-2 gap-4">
@@ -269,7 +269,7 @@ export default function ProductEditor({ initial, isNew = false }: Props) {
         </div>
 
         {/* Marketing */}
-        <div className="rounded-2xl p-6 bg-white/[0.03] border border-white/[0.06] space-y-4">
+        <div className="rounded-2xl p-6 bg-white/[0.03] border border-ink/[0.06] space-y-4">
           <h2 className="font-bold text-lg">Marketing</h2>
 
           <div className="grid grid-cols-2 gap-4">
@@ -304,7 +304,7 @@ export default function ProductEditor({ initial, isNew = false }: Props) {
         </div>
 
         {/* Publishing */}
-        <div className="rounded-2xl p-6 bg-white/[0.03] border border-white/[0.06] space-y-4">
+        <div className="rounded-2xl p-6 bg-white/[0.03] border border-ink/[0.06] space-y-4">
           <h2 className="font-bold text-lg">Publicacion</h2>
 
           <div className="grid grid-cols-3 gap-4">
@@ -346,14 +346,14 @@ export default function ProductEditor({ initial, isNew = false }: Props) {
         <div className="flex gap-3">
           <button
             onClick={() => router.push("/dashboard/catalog")}
-            className="flex-1 px-5 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white/70"
+            className="flex-1 px-5 py-3 rounded-xl bg-white/[0.04] border border-ink/[0.08] text-white/70"
           >
             Cancelar
           </button>
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex-1 px-5 py-3 rounded-xl bg-olympus-gold text-black font-semibold flex items-center justify-center gap-2 disabled:opacity-50"
+            className="flex-1 px-5 py-3 rounded-xl bg-accent-gold text-black font-semibold flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             {saving ? "Guardando..." : isNew ? "Crear producto" : "Guardar cambios"}
@@ -377,7 +377,7 @@ function Field({
     <label className="block">
       <span className="text-sm font-medium text-white/80 mb-1.5 block">
         {label}
-        {required && <span className="text-olympus-gold ml-0.5">*</span>}
+        {required && <span className="text-accent-gold ml-0.5">*</span>}
       </span>
       {children}
     </label>
@@ -385,4 +385,4 @@ function Field({
 }
 
 const inputCls =
-  "w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2 text-white focus:border-olympus-gold/50 focus:outline-none";
+  "w-full bg-white/[0.04] border border-ink/[0.08] rounded-xl px-3 py-2 text-white focus:border-accent-gold/50 focus:outline-none";

@@ -194,7 +194,7 @@ function PortfolioJsonLd() {
 
 export default function PortfolioPage() {
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       <PortfolioJsonLd />
       <BreadcrumbJsonLd
         items={[
@@ -204,17 +204,17 @@ export default function PortfolioPage() {
       />
       {/* Hero */}
       <section className="relative pt-36 pb-24 overflow-hidden">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-primary/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
+          <p className="text-[13px] font-body font-medium text-brand-primary mb-5 uppercase tracking-[0.2em]">
             Portfolio
           </p>
-          <h1 className="font-heading font-bold text-display text-pacame-white mb-6 text-balance">
+          <h1 className="font-heading font-bold text-display text-ink mb-6 text-balance">
             Resultados reales.{" "}
             <span className="gradient-text-vivid">No promesas vacias.</span>
           </h1>
-          <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto mb-14 font-light">
+          <p className="text-xl text-ink/60 font-body max-w-2xl mx-auto mb-14 font-light">
             Cada proyecto con metricas concretas. Porque los numeros no mienten.
           </p>
 
@@ -227,11 +227,11 @@ export default function PortfolioPage() {
               { value: "4.9/5", label: "Valoracion media" },
             ].map((stat) => (
               <StaggerItem key={stat.label}>
-              <div className="bg-pacame-black p-6 text-center">
-                <div className="font-heading font-bold text-2xl text-pacame-white mb-1">
+              <div className="bg-paper p-6 text-center">
+                <div className="font-heading font-bold text-2xl text-ink mb-1">
                   {stat.value}
                 </div>
-                <div className="text-xs text-pacame-white/50 font-body">{stat.label}</div>
+                <div className="text-xs text-ink/50 font-body">{stat.label}</div>
               </div>
               </StaggerItem>
             ))}
@@ -249,7 +249,7 @@ export default function PortfolioPage() {
             return (
               <ScrollReveal key={c.id} delay={caseIdx * 0.1}>
               <div
-                className="rounded-2xl bg-dark-card border border-white/[0.06] hover:border-white/[0.1] transition-all duration-500 ease-apple overflow-hidden card-golden-shine"
+                className="rounded-2xl bg-paper-deep border border-ink/[0.06] hover:border-ink/[0.1] transition-all duration-500 ease-apple overflow-hidden card-golden-shine"
               >
                 <div className="p-8 lg:p-10">
                   {/* Top row */}
@@ -262,10 +262,10 @@ export default function PortfolioPage() {
                         {Icon && <Icon className="w-5 h-5" style={{ color: c.color }} />}
                       </div>
                       <div>
-                        <h2 className="font-heading font-bold text-xl text-pacame-white">
+                        <h2 className="font-heading font-bold text-xl text-ink">
                           {c.client}
                         </h2>
-                        <p className="text-sm text-pacame-white/50 font-body">
+                        <p className="text-sm text-ink/50 font-body">
                           {c.sector} &middot; {c.city}
                         </p>
                       </div>
@@ -290,18 +290,18 @@ export default function PortfolioPage() {
                   {/* Challenge + Solution */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                     <div>
-                      <h3 className="text-xs font-body font-medium uppercase tracking-[0.15em] text-pacame-white/50 mb-2">
+                      <h3 className="text-xs font-body font-medium uppercase tracking-[0.15em] text-ink/50 mb-2">
                         El problema
                       </h3>
-                      <p className="text-sm text-pacame-white/60 font-body leading-relaxed">
+                      <p className="text-sm text-ink/60 font-body leading-relaxed">
                         {c.challenge}
                       </p>
                     </div>
                     <div>
-                      <h3 className="text-xs font-body font-medium uppercase tracking-[0.15em] text-pacame-white/50 mb-2">
+                      <h3 className="text-xs font-body font-medium uppercase tracking-[0.15em] text-ink/50 mb-2">
                         La solucion
                       </h3>
-                      <p className="text-sm text-pacame-white/60 font-body leading-relaxed">
+                      <p className="text-sm text-ink/60 font-body leading-relaxed">
                         {c.solution}
                       </p>
                     </div>
@@ -321,8 +321,8 @@ export default function PortfolioPage() {
                         >
                           {r.value}
                         </div>
-                        <div className="text-xs text-pacame-white/50 font-body">{r.metric}</div>
-                        <div className="text-[10px] text-pacame-white/40 font-body mt-1">
+                        <div className="text-xs text-ink/50 font-body">{r.metric}</div>
+                        <div className="text-[10px] text-ink/40 font-body mt-1">
                           {r.improvement}
                         </div>
                       </div>
@@ -332,11 +332,11 @@ export default function PortfolioPage() {
                   {/* Testimonial + meta */}
                   <div className="flex flex-col lg:flex-row lg:items-center gap-6 pt-6 border-t border-white/[0.04]">
                     <div className="flex-1">
-                      <p className="text-sm text-pacame-white/60 font-body italic leading-relaxed">
+                      <p className="text-sm text-ink/60 font-body italic leading-relaxed">
                         &ldquo;{c.testimonial}&rdquo;
                       </p>
                     </div>
-                    <div className="flex items-center gap-6 text-xs text-pacame-white/50 font-body flex-shrink-0">
+                    <div className="flex items-center gap-6 text-xs text-ink/50 font-body flex-shrink-0">
                       <div className="flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5" />
                         {c.duration}
@@ -347,7 +347,7 @@ export default function PortfolioPage() {
                       </div>
                       <div className="flex items-center gap-0.5">
                         {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-3 h-3 fill-amber-signal text-amber-signal" />
+                          <Star key={i} className="w-3 h-3 fill-accent-gold text-accent-gold" />
                         ))}
                       </div>
                     </div>
@@ -361,12 +361,12 @@ export default function PortfolioPage() {
       </section>
 
       {/* CTA */}
-      <section className="section-padding bg-pacame-black text-center">
+      <section className="section-padding bg-paper text-center">
         <ScrollReveal className="max-w-2xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
+          <h2 className="font-heading font-bold text-section text-ink mb-4 text-balance">
             Tu proyecto puede ser el siguiente.
           </h2>
-          <p className="text-lg text-pacame-white/60 font-body mb-10">
+          <p className="text-lg text-ink/60 font-body mb-10">
             Cuentanos que necesitas. Diagnostico gratuito, sin compromiso.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -377,14 +377,14 @@ export default function PortfolioPage() {
                 gradientOpacity={0.8}
                 className="group min-w-[280px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
               >
-                <Link href="/contacto" className="flex items-center gap-2 text-pacame-white">
+                <Link href="/contacto" className="flex items-center gap-2 text-ink">
                   <MessageSquare className="w-5 h-5" />
                   Pedir diagnostico gratis
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </ShinyButton>
             </MagneticButton>
-            <Button variant="outline" size="xl" asChild className="rounded-full border-white/[0.08] hover:border-white/20">
+            <Button variant="outline" size="xl" asChild className="rounded-full border-ink/[0.08] hover:border-white/20">
               <Link href="/servicios">Ver servicios y precios</Link>
             </Button>
           </div>

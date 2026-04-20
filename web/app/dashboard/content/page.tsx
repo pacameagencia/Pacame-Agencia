@@ -87,17 +87,17 @@ export default function ContentReviewPage() {
   return (
     <div className="space-y-6 max-w-5xl">
       <div>
-        <h1 className="font-heading font-bold text-2xl text-pacame-white">Revision de contenido</h1>
-        <p className="text-sm text-pacame-white/40 font-body mt-1">
+        <h1 className="font-heading font-bold text-2xl text-ink">Revision de contenido</h1>
+        <p className="text-sm text-ink/40 font-body mt-1">
           {loading ? "Cargando..." : `${pending.length} pendiente${pending.length !== 1 ? "s" : ""} de aprobacion`}
         </p>
       </div>
 
       {pending.length === 0 && !loading ? (
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
-          <Check className="w-10 h-10 text-lime-pulse mx-auto mb-3" />
-          <p className="font-heading font-semibold text-pacame-white">Todo revisado</p>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">No hay contenido pendiente</p>
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-12 text-center">
+          <Check className="w-10 h-10 text-mint mx-auto mb-3" />
+          <p className="font-heading font-semibold text-ink">Todo revisado</p>
+          <p className="text-sm text-ink/40 font-body mt-1">No hay contenido pendiente</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -108,7 +108,7 @@ export default function ContentReviewPage() {
             const clientName = item.client?.business_name || item.client?.name || "Sin cliente";
 
             return (
-              <div key={item.id} className="rounded-2xl bg-dark-card border border-white/[0.06] overflow-hidden">
+              <div key={item.id} className="rounded-2xl bg-paper-deep border border-ink/[0.06] overflow-hidden">
                 <div className="p-5">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
@@ -117,9 +117,9 @@ export default function ContentReviewPage() {
                           <PlatformIcon className="w-4 h-4" style={{ color: pColor }} />
                         </div>
                         <div>
-                          <span className="text-xs text-pacame-white/40 font-body">{clientName}</span>
+                          <span className="text-xs text-ink/40 font-body">{clientName}</span>
                           <div className="flex items-center gap-2">
-                            <h3 className="font-heading font-semibold text-pacame-white text-sm">{item.title || "Sin titulo"}</h3>
+                            <h3 className="font-heading font-semibold text-ink text-sm">{item.title || "Sin titulo"}</h3>
                             {item.content_type && (
                               <span className="text-[10px] px-2 py-0.5 rounded-full font-body" style={{ backgroundColor: `${pColor}15`, color: pColor }}>
                                 {item.content_type}
@@ -130,13 +130,13 @@ export default function ContentReviewPage() {
                       </div>
 
                       <div className="mt-3 p-4 rounded-xl bg-white/[0.03] border border-white/[0.04]">
-                        <p className="text-sm text-pacame-white/70 font-body whitespace-pre-line leading-relaxed">
+                        <p className="text-sm text-ink/70 font-body whitespace-pre-line leading-relaxed">
                           {isExpanded ? item.body : (item.body || "").slice(0, 200) + ((item.body || "").length > 200 ? "..." : "")}
                         </p>
                         {(item.body || "").length > 200 && (
                           <button
                             onClick={() => setExpandedId(isExpanded ? null : item.id)}
-                            className="text-xs text-electric-violet hover:underline font-body mt-2 flex items-center gap-1"
+                            className="text-xs text-brand-primary hover:underline font-body mt-2 flex items-center gap-1"
                           >
                             {isExpanded ? "Ver menos" : "Ver todo"}
                             <ChevronDown className={`w-3 h-3 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
@@ -144,24 +144,24 @@ export default function ContentReviewPage() {
                         )}
                       </div>
 
-                      {item.hashtags && <p className="text-xs text-electric-violet/50 font-body mt-2">{item.hashtags}</p>}
+                      {item.hashtags && <p className="text-xs text-brand-primary/50 font-body mt-2">{item.hashtags}</p>}
 
                       {item.image_prompt && (
                         <div className="flex items-start gap-2 mt-3 p-2.5 rounded-lg bg-white/[0.02]">
-                          <Image className="w-3.5 h-3.5 text-pacame-white/30 mt-0.5 flex-shrink-0" />
-                          <p className="text-[11px] text-pacame-white/30 font-body">{item.image_prompt}</p>
+                          <Image className="w-3.5 h-3.5 text-ink/30 mt-0.5 flex-shrink-0" />
+                          <p className="text-[11px] text-ink/30 font-body">{item.image_prompt}</p>
                         </div>
                       )}
 
                       <div className="flex items-center gap-4 mt-3">
                         {item.scheduled_for && (
-                          <span className="flex items-center gap-1 text-[11px] text-pacame-white/30 font-body">
+                          <span className="flex items-center gap-1 text-[11px] text-ink/30 font-body">
                             <Clock className="w-3 h-3" />
                             {new Date(item.scheduled_for).toLocaleDateString("es-ES", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
                           </span>
                         )}
                         {item.subagents_used && item.subagents_used.length > 0 && (
-                          <span className="flex items-center gap-1 text-[11px] text-pacame-white/30 font-body">
+                          <span className="flex items-center gap-1 text-[11px] text-ink/30 font-body">
                             <Bot className="w-3 h-3" />{item.subagents_used.join(" → ")}
                           </span>
                         )}
@@ -204,15 +204,15 @@ export default function ContentReviewPage() {
 
       {reviewed.length > 0 && (
         <div>
-          <h2 className="font-heading font-semibold text-lg text-pacame-white mb-3">Ya revisado</h2>
+          <h2 className="font-heading font-semibold text-lg text-ink mb-3">Ya revisado</h2>
           <div className="space-y-2">
             {reviewed.map((item) => {
               const clientName = item.client?.business_name || item.client?.name || "";
               return (
-                <div key={item.id} className="flex items-center gap-3 p-3 rounded-xl bg-dark-card border border-white/[0.06] opacity-60">
-                  {item.status === "approved" ? <Check className="w-4 h-4 text-lime-pulse" /> : item.status === "published" ? <Send className="w-4 h-4 text-cyan-400" /> : <X className="w-4 h-4 text-red-400" />}
-                  <span className="text-sm text-pacame-white/60 font-body">{clientName}{clientName ? " — " : ""}{item.title}</span>
-                  <span className="text-xs text-pacame-white/30 font-body ml-auto">
+                <div key={item.id} className="flex items-center gap-3 p-3 rounded-xl bg-paper-deep border border-ink/[0.06] opacity-60">
+                  {item.status === "approved" ? <Check className="w-4 h-4 text-mint" /> : item.status === "published" ? <Send className="w-4 h-4 text-cyan-400" /> : <X className="w-4 h-4 text-red-400" />}
+                  <span className="text-sm text-ink/60 font-body">{clientName}{clientName ? " — " : ""}{item.title}</span>
+                  <span className="text-xs text-ink/30 font-body ml-auto">
                     {item.status === "published" ? "Publicado" : item.status === "approved" ? "Aprobado" : "Rechazado"}
                   </span>
                   {item.status === "approved" && (

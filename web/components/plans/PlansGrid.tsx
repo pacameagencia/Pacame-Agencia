@@ -15,13 +15,13 @@ export default function PlansGrid({ plans }: Props) {
     <div>
       {/* Toggle */}
       <div className="flex items-center justify-center mb-10">
-        <div className="inline-flex items-center gap-1 p-1 rounded-full bg-white/[0.04] border border-white/[0.08]">
+        <div className="inline-flex items-center gap-1 p-1 rounded-full bg-white/[0.04] border border-ink/[0.08]">
           <button
             onClick={() => setInterval("month")}
             className={`px-5 py-2 rounded-full text-sm font-body font-medium transition ${
               interval === "month"
-                ? "bg-olympus-gold text-pacame-black"
-                : "text-pacame-white/60 hover:text-pacame-white"
+                ? "bg-accent-gold text-paper"
+                : "text-ink/60 hover:text-ink"
             }`}
           >
             Mensual
@@ -30,16 +30,16 @@ export default function PlansGrid({ plans }: Props) {
             onClick={() => setInterval("year")}
             className={`px-5 py-2 rounded-full text-sm font-body font-medium transition flex items-center gap-2 ${
               interval === "year"
-                ? "bg-olympus-gold text-pacame-black"
-                : "text-pacame-white/60 hover:text-pacame-white"
+                ? "bg-accent-gold text-paper"
+                : "text-ink/60 hover:text-ink"
             }`}
           >
             Anual
             <span
               className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${
                 interval === "year"
-                  ? "bg-pacame-black/20 text-pacame-black"
-                  : "bg-olympus-gold/20 text-olympus-gold"
+                  ? "bg-ink/20 text-paper"
+                  : "bg-accent-gold/20 text-accent-gold"
               }`}
             >
               -17%

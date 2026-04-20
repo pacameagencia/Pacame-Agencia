@@ -222,10 +222,10 @@ export default function RootLayout({
         />
         <OrganizationJsonLd />
       </head>
-      <body className="bg-pacame-black text-pacame-white font-body antialiased">
+      <body className="bg-paper text-ink font-body antialiased">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-electric-violet focus:text-white focus:rounded-lg focus:text-sm focus:font-body"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-brand-primary focus:text-white focus:rounded-lg focus:text-sm focus:font-body"
         >
           Saltar al contenido
         </a>

@@ -32,15 +32,15 @@ interface Props {
 
 function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
   return (
-    <label className="block font-heading font-medium text-pacame-white text-sm mb-2">
+    <label className="block font-heading font-medium text-ink text-sm mb-2">
       {children}
-      {required && <span className="text-olympus-gold ml-1">*</span>}
+      {required && <span className="text-accent-gold ml-1">*</span>}
     </label>
   );
 }
 
 const inputClass =
-  "w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-olympus-gold/60 focus:outline-none transition";
+  "w-full bg-white/[0.04] border border-ink/[0.1] rounded-xl px-4 py-3 text-ink font-body placeholder:text-ink/30 focus:border-accent-gold/60 focus:outline-none transition";
 
 export default function DynamicInputForm({ orderId, schema, defaults }: Props) {
   const router = useRouter();
@@ -124,8 +124,8 @@ export default function DynamicInputForm({ orderId, schema, defaults }: Props) {
                       }}
                       className={`px-3 py-1.5 rounded-full text-sm font-body transition border ${
                         isOn
-                          ? "bg-olympus-gold text-pacame-black border-olympus-gold"
-                          : "bg-white/[0.04] text-pacame-white/70 border-white/[0.1] hover:border-olympus-gold/40"
+                          ? "bg-accent-gold text-paper border-accent-gold"
+                          : "bg-white/[0.04] text-ink/70 border-ink/[0.1] hover:border-accent-gold/40"
                       }`}
                     >
                       {opt}
@@ -134,7 +134,7 @@ export default function DynamicInputForm({ orderId, schema, defaults }: Props) {
                 })}
               </div>
               {prop.maxItems && (
-                <p className="text-xs text-pacame-white/30 mt-1 font-body">
+                <p className="text-xs text-ink/30 mt-1 font-body">
                   Maximo {prop.maxItems}
                 </p>
               )}
@@ -173,9 +173,9 @@ export default function DynamicInputForm({ orderId, schema, defaults }: Props) {
                 type="checkbox"
                 checked={Boolean(val ?? prop.default)}
                 onChange={(e) => setValue(key, e.target.checked)}
-                className="w-5 h-5 accent-olympus-gold"
+                className="w-5 h-5 accent-accent-gold"
               />
-              <label htmlFor={key} className="font-body text-pacame-white/80">
+              <label htmlFor={key} className="font-body text-ink/80">
                 {title}
               </label>
             </div>
@@ -237,7 +237,7 @@ export default function DynamicInputForm({ orderId, schema, defaults }: Props) {
       <button
         type="submit"
         disabled={submitting}
-        className="w-full bg-olympus-gold hover:bg-olympus-gold/90 disabled:opacity-60 disabled:cursor-not-allowed text-pacame-black font-heading font-semibold py-4 rounded-xl flex items-center justify-center gap-2 transition shadow-lg"
+        className="w-full bg-accent-gold hover:bg-accent-gold/90 disabled:opacity-60 disabled:cursor-not-allowed text-paper font-heading font-semibold py-4 rounded-xl flex items-center justify-center gap-2 transition shadow-lg"
       >
         {submitting ? (
           <>
@@ -252,7 +252,7 @@ export default function DynamicInputForm({ orderId, schema, defaults }: Props) {
         )}
       </button>
 
-      <p className="text-xs text-pacame-white/40 font-body text-center">
+      <p className="text-xs text-ink/40 font-body text-center">
         En cuanto envies el brief, nuestro agente IA empieza a trabajar en tu entregable.
       </p>
     </form>

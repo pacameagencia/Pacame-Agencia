@@ -16,7 +16,7 @@ const GradientMeshCanvas = dynamic(
 
 export default function CTASection() {
   return (
-    <section className="section-padding bg-pacame-black relative overflow-hidden">
+    <section className="section-padding bg-paper relative overflow-hidden">
       {/* Background gradient mesh — low intensity */}
       <div className="absolute inset-0 pointer-events-none opacity-40">
         <GradientMeshCanvas
@@ -27,7 +27,7 @@ export default function CTASection() {
       </div>
 
       <ScrollReveal className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-        <div className="rounded-3xl p-10 sm:p-16 border border-olympus-gold/15 bg-dark-card/80 backdrop-blur-sm relative overflow-hidden">
+        <div className="rounded-3xl p-10 sm:p-16 border border-accent-gold/15 bg-paper-deep/80 backdrop-blur-sm relative overflow-hidden">
           {/* Orbiting golden border light */}
           <div
             className="absolute inset-0 rounded-3xl pointer-events-none"
@@ -37,21 +37,21 @@ export default function CTASection() {
             }}
           />
           {/* Inner mask to keep the orbit on the border only */}
-          <div className="absolute inset-[1px] rounded-3xl bg-dark-card/95 pointer-events-none" />
+          <div className="absolute inset-[1px] rounded-3xl bg-paper-deep/95 pointer-events-none" />
 
           <div className="relative z-10">
             {/* Headline */}
-            <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-6 uppercase tracking-[0.2em]">
+            <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-6 uppercase tracking-[0.2em]">
               El siguiente paso
             </p>
 
-            <h2 className="font-accent font-bold text-display text-pacame-white mb-6 text-balance">
+            <h2 className="font-accent font-bold text-display text-ink mb-6 text-balance">
               Tienes un problema digital.
               <br />
               <span className="gradient-text-aurora">Nosotros lo resolvemos.</span>
             </h2>
 
-            <p className="text-lg text-pacame-white/40 font-body mb-4 max-w-md mx-auto">
+            <p className="text-lg text-ink/40 font-body mb-4 max-w-md mx-auto">
               30 minutos de llamada. Sin compromiso. Sin presupuestos ciegos.
             </p>
 
@@ -73,13 +73,13 @@ export default function CTASection() {
                   gradientOpacity={0.8}
                   className="group min-w-[260px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
                 >
-                  <Link href="/contacto" className="flex items-center gap-2 text-pacame-white">
+                  <Link href="/contacto" className="flex items-center gap-2 text-ink">
                     Agendar llamada gratis
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </ShinyButton>
               </MagneticButton>
-              <Button variant="outline" size="xl" asChild className="group rounded-full min-w-[200px] border-olympus-gold/20 hover:border-olympus-gold/40 hover:bg-olympus-gold/5">
+              <Button variant="outline" size="xl" asChild className="group rounded-full min-w-[200px] border-accent-gold/20 hover:border-accent-gold/40 hover:bg-accent-gold/5">
                 <Link href="mailto:hola@pacameagencia.com">
                   <MessageSquare className="w-4 h-4" />
                   Escribir por email
@@ -88,14 +88,14 @@ export default function CTASection() {
             </div>
 
             {/* Trust signals — golden dots */}
-            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-pacame-white/30 font-body">
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-ink/30 font-body">
               {[
                 "Respuesta en menos de 2h",
                 "Sin compromiso",
                 "Presupuesto en 24h",
               ].map((signal) => (
                 <div key={signal} className="flex items-center gap-2">
-                  <span className="block w-1.5 h-1.5 rounded-full bg-olympus-gold animate-pulse" />
+                  <span className="block w-1.5 h-1.5 rounded-full bg-accent-gold animate-pulse" />
                   {signal}
                 </div>
               ))}

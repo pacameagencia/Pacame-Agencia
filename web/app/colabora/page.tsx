@@ -83,40 +83,40 @@ export default function ColaboraPage() {
   }
 
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       {/* Hero */}
       <section className="relative pt-36 pb-20 overflow-hidden">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-primary/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-lime-pulse mb-5 uppercase tracking-[0.2em]">
+          <p className="text-[13px] font-body font-medium text-mint mb-5 uppercase tracking-[0.2em]">
             Programa de colaboradores
           </p>
-          <h1 className="font-heading font-bold text-display text-pacame-white leading-tight mb-6">
+          <h1 className="font-heading font-bold text-display text-ink leading-tight mb-6">
             Tu recomiendas.
             <br />
             <span className="gradient-text-vivid">Nosotros ejecutamos. Tu cobras.</span>
           </h1>
-          <p className="text-lg text-pacame-white/60 font-body font-light max-w-2xl mx-auto mb-8">
+          <p className="text-lg text-ink/60 font-body font-light max-w-2xl mx-auto mb-8">
             Gana comisiones recurrentes por cada negocio que recomiendes a PACAME.
             Sin exclusividad, sin compromiso, sin tener que vender nada.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-pacame-white/50 font-body">
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-ink/50 font-body">
             <div className="flex items-center gap-2">
-              <DollarSign className="w-4 h-4 text-lime-pulse" />
+              <DollarSign className="w-4 h-4 text-mint" />
               Hasta 25% de comision
             </div>
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-lime-pulse" />
+              <TrendingUp className="w-4 h-4 text-mint" />
               Ingresos recurrentes
             </div>
             <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4 text-lime-pulse" />
+              <Shield className="w-4 h-4 text-mint" />
               Sin permanencia
             </div>
             <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-lime-pulse" />
+              <Clock className="w-4 h-4 text-mint" />
               5 min de setup
             </div>
           </div>
@@ -124,14 +124,14 @@ export default function ColaboraPage() {
       </section>
 
       {/* How it works */}
-      <section className="section-padding bg-pacame-black">
+      <section className="section-padding bg-paper">
         <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-5xl mx-auto px-6">
           <ScrollReveal className="text-center mb-12">
-            <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
+            <p className="text-[13px] font-body font-medium text-brand-primary mb-5 uppercase tracking-[0.2em]">
               Como funciona
             </p>
-            <h2 className="font-heading font-bold text-section text-pacame-white">
+            <h2 className="font-heading font-bold text-section text-ink">
               3 pasos. Cero complicaciones.
             </h2>
           </ScrollReveal>
@@ -145,12 +145,12 @@ export default function ColaboraPage() {
               <StaggerItem key={item.step}>
               <CardTilt tiltMaxAngle={8} scale={1.02}>
               <CardTiltContent>
-              <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6 text-center card-golden-shine">
-                <div className="w-14 h-14 rounded-2xl bg-electric-violet/15 flex items-center justify-center mx-auto mb-4">
-                  <item.icon className="w-6 h-6 text-electric-violet" />
+              <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6 text-center card-golden-shine">
+                <div className="w-14 h-14 rounded-2xl bg-brand-primary/15 flex items-center justify-center mx-auto mb-4">
+                  <item.icon className="w-6 h-6 text-brand-primary" />
                 </div>
-                <div className="font-heading font-bold text-lg text-pacame-white mb-2">{item.title}</div>
-                <p className="text-sm text-pacame-white/50 font-body">{item.desc}</p>
+                <div className="font-heading font-bold text-lg text-ink mb-2">{item.title}</div>
+                <p className="text-sm text-ink/50 font-body">{item.desc}</p>
               </div>
               </CardTiltContent>
               </CardTilt>
@@ -161,14 +161,14 @@ export default function ColaboraPage() {
       </section>
 
       {/* Tiers */}
-      <section className="section-padding bg-pacame-black">
+      <section className="section-padding bg-paper">
         <div className="px-6"><GoldenDivider variant="laurel" /></div>
         <div className="max-w-5xl mx-auto px-6">
           <ScrollReveal className="text-center mb-12">
-            <p className="text-[13px] font-body font-medium text-amber-signal mb-5 uppercase tracking-[0.2em]">
+            <p className="text-[13px] font-body font-medium text-accent-gold mb-5 uppercase tracking-[0.2em]">
               Comisiones
             </p>
-            <h2 className="font-heading font-bold text-section text-pacame-white">
+            <h2 className="font-heading font-bold text-section text-ink">
               Cuanto mas recomiendes, mas ganas.
             </h2>
           </ScrollReveal>
@@ -178,33 +178,33 @@ export default function ColaboraPage() {
               <StaggerItem key={tier.name}>
               <CardTilt tiltMaxAngle={8} scale={1.02}>
               <CardTiltContent>
-              <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6 hover:border-white/10 transition-colors card-golden-shine">
+              <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6 hover:border-white/10 transition-colors card-golden-shine">
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 font-heading font-bold text-lg"
                   style={{ backgroundColor: `${tier.color}20`, color: tier.color }}
                 >
                   {tier.name[0]}
                 </div>
-                <h3 className="font-heading font-bold text-xl text-pacame-white mb-1">{tier.name}</h3>
-                <p className="text-xs text-pacame-white/60 font-body mb-4">{tier.range}</p>
+                <h3 className="font-heading font-bold text-xl text-ink mb-1">{tier.name}</h3>
+                <p className="text-xs text-ink/60 font-body mb-4">{tier.range}</p>
 
                 <div className="space-y-3 mb-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-pacame-white/50 font-body">Primer pago</span>
-                    <span className="font-heading font-bold text-pacame-white">{tier.firstPct}</span>
+                    <span className="text-sm text-ink/50 font-body">Primer pago</span>
+                    <span className="font-heading font-bold text-ink">{tier.firstPct}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-pacame-white/50 font-body">Recurrente</span>
-                    <span className="font-heading font-bold text-pacame-white">{tier.recurringPct}</span>
+                    <span className="text-sm text-ink/50 font-body">Recurrente</span>
+                    <span className="font-heading font-bold text-ink">{tier.recurringPct}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-pacame-white/50 font-body">Duracion</span>
-                    <span className="font-heading font-bold text-pacame-white">{tier.months}</span>
+                    <span className="text-sm text-ink/50 font-body">Duracion</span>
+                    <span className="font-heading font-bold text-ink">{tier.months}</span>
                   </div>
                 </div>
 
                 <div className="rounded-xl bg-white/[0.03] p-3">
-                  <p className="text-xs text-pacame-white/60 font-body">{tier.example}</p>
+                  <p className="text-xs text-ink/60 font-body">{tier.example}</p>
                 </div>
               </div>
               </CardTiltContent>
@@ -216,14 +216,14 @@ export default function ColaboraPage() {
       </section>
 
       {/* Who is this for */}
-      <section className="section-padding bg-pacame-black">
+      <section className="section-padding bg-paper">
         <div className="px-6"><GoldenDivider variant="line" /></div>
         <div className="max-w-5xl mx-auto px-6">
           <ScrollReveal className="text-center mb-12">
-            <p className="text-[13px] font-body font-medium text-neon-cyan mb-5 uppercase tracking-[0.2em]">
+            <p className="text-[13px] font-body font-medium text-mint mb-5 uppercase tracking-[0.2em]">
               Para quien es
             </p>
-            <h2 className="font-heading font-bold text-section text-pacame-white">
+            <h2 className="font-heading font-bold text-section text-ink">
               Si conoces PYMEs, esto te interesa.
             </h2>
           </ScrollReveal>
@@ -231,11 +231,11 @@ export default function ColaboraPage() {
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" staggerDelay={0.06}>
             {WHO_IS_FOR.map((item) => (
               <StaggerItem key={item.title}>
-              <div className="flex items-start gap-3 p-4 rounded-xl bg-dark-card border border-white/[0.06] card-golden-shine">
-                <CheckCircle2 className="w-5 h-5 text-lime-pulse flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 p-4 rounded-xl bg-paper-deep border border-ink/[0.06] card-golden-shine">
+                <CheckCircle2 className="w-5 h-5 text-mint flex-shrink-0 mt-0.5" />
                 <div>
-                  <h3 className="font-heading font-semibold text-sm text-pacame-white mb-1">{item.title}</h3>
-                  <p className="text-xs text-pacame-white/60 font-body">{item.desc}</p>
+                  <h3 className="font-heading font-semibold text-sm text-ink mb-1">{item.title}</h3>
+                  <p className="text-xs text-ink/60 font-body">{item.desc}</p>
                 </div>
               </div>
               </StaggerItem>
@@ -245,27 +245,27 @@ export default function ColaboraPage() {
       </section>
 
       {/* Form */}
-      <section className="section-padding bg-pacame-black">
+      <section className="section-padding bg-paper">
         <div className="max-w-xl mx-auto px-6">
           {state === "success" ? (
             <div className="rounded-3xl glass p-10 text-center">
               <Celebration />
-              <div className="w-16 h-16 rounded-full bg-lime-pulse/20 flex items-center justify-center mx-auto mb-6">
-                <Zap className="w-8 h-8 text-lime-pulse" />
+              <div className="w-16 h-16 rounded-full bg-mint/20 flex items-center justify-center mx-auto mb-6">
+                <Zap className="w-8 h-8 text-mint" />
               </div>
-              <h2 className="font-heading font-bold text-2xl text-pacame-white mb-3">
+              <h2 className="font-heading font-bold text-2xl text-ink mb-3">
                 Bienvenido al equipo
               </h2>
               {partnerCode && (
-                <div className="rounded-xl bg-dark-card border border-white/[0.06] p-4 mb-4">
-                  <p className="text-xs text-pacame-white/60 font-body mb-1">Tu codigo de colaborador:</p>
-                  <p className="font-mono text-lg text-electric-violet font-bold">{partnerCode}</p>
-                  <p className="text-xs text-pacame-white/60 font-body mt-2">
+                <div className="rounded-xl bg-paper-deep border border-ink/[0.06] p-4 mb-4">
+                  <p className="text-xs text-ink/60 font-body mb-1">Tu codigo de colaborador:</p>
+                  <p className="font-mono text-lg text-brand-primary font-bold">{partnerCode}</p>
+                  <p className="text-xs text-ink/60 font-body mt-2">
                     Tu link: pacameagencia.com/p/{partnerCode}
                   </p>
                 </div>
               )}
-              <p className="text-pacame-white/60 font-body mb-6">
+              <p className="text-ink/60 font-body mb-6">
                 Te enviaremos un email con tu kit de colaborador: link personal, argumentario y todo lo que necesitas.
               </p>
               <Button variant="outline" asChild>
@@ -278,45 +278,45 @@ export default function ColaboraPage() {
           ) : (
             <>
               <div className="text-center mb-8">
-                <p className="text-[13px] font-body font-medium text-electric-violet mb-5 uppercase tracking-[0.2em]">
+                <p className="text-[13px] font-body font-medium text-brand-primary mb-5 uppercase tracking-[0.2em]">
                   Unete
                 </p>
-                <h2 className="font-heading font-bold text-[clamp(1.5rem,4vw,2.5rem)] text-pacame-white leading-tight mb-4">
+                <h2 className="font-heading font-bold text-[clamp(1.5rem,4vw,2.5rem)] text-ink leading-tight mb-4">
                   Empieza a ganar hoy
                 </h2>
-                <p className="text-pacame-white/60 font-body">
+                <p className="text-ink/60 font-body">
                   1 minuto de registro. Sin compromiso. Comisiones desde el primer referido.
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label className="block text-sm font-body text-pacame-white/70 mb-2">Nombre completo *</label>
+                  <label className="block text-sm font-body text-ink/70 mb-2">Nombre completo *</label>
                   <input
                     name="name"
                     required
                     placeholder="Tu nombre"
-                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors"
+                    className="w-full h-12 px-4 rounded-xl bg-paper-deep border border-ink/[0.06] text-ink font-body text-sm placeholder:text-ink/50 input-premium outline-none transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-body text-pacame-white/70 mb-2">Email *</label>
+                  <label className="block text-sm font-body text-ink/70 mb-2">Email *</label>
                   <input
                     name="email"
                     type="email"
                     required
                     placeholder="tu@email.com"
-                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors"
+                    className="w-full h-12 px-4 rounded-xl bg-paper-deep border border-ink/[0.06] text-ink font-body text-sm placeholder:text-ink/50 input-premium outline-none transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-body text-pacame-white/70 mb-2">Telefono</label>
+                  <label className="block text-sm font-body text-ink/70 mb-2">Telefono</label>
                   <input
                     name="phone"
                     placeholder="+34 600 000 000"
-                    className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none transition-colors"
+                    className="w-full h-12 px-4 rounded-xl bg-paper-deep border border-ink/[0.06] text-ink font-body text-sm placeholder:text-ink/50 input-premium outline-none transition-colors"
                   />
                 </div>
 
@@ -333,7 +333,7 @@ export default function ColaboraPage() {
                       gradientOpacity={0.8}
                       className="group w-full h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
                     >
-                      <button type="submit" className="flex items-center gap-2 text-pacame-white w-full justify-center">
+                      <button type="submit" className="flex items-center gap-2 text-ink w-full justify-center">
                         <Zap className="w-4 h-4" />
                         Quiero ser colaborador
                       </button>
@@ -341,9 +341,9 @@ export default function ColaboraPage() {
                   </MagneticButton>
                 )}
 
-                <p className="text-xs text-pacame-white/60 font-body text-center">
+                <p className="text-xs text-ink/60 font-body text-center">
                   Sin permanencia. Sin exclusividad. Cancela cuando quieras.{" "}
-                  <Link href="/privacidad" className="text-electric-violet/60 hover:underline">
+                  <Link href="/privacidad" className="text-brand-primary/60 hover:underline">
                     Politica de privacidad
                   </Link>
                 </p>

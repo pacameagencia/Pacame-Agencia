@@ -188,18 +188,18 @@ export default function OrderTracker({
   return (
     <div className="space-y-6">
       {/* Progress card */}
-      <div className="rounded-2xl p-6 sm:p-8 bg-dark-card border border-white/[0.06]">
+      <div className="rounded-2xl p-6 sm:p-8 bg-paper-deep border border-ink/[0.06]">
         <div className="flex items-start justify-between gap-4 mb-6">
           <div>
-            <div className="text-xs font-mono text-pacame-white/40 mb-1">
+            <div className="text-xs font-mono text-ink/40 mb-1">
               {order.order_number}
             </div>
-            <h2 className="font-heading font-bold text-2xl text-pacame-white">
+            <h2 className="font-heading font-bold text-2xl text-ink">
               {order.service_slug}
             </h2>
             {order.assigned_agent && (
-              <p className="text-pacame-white/60 font-body text-sm mt-1 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-olympus-gold" />
+              <p className="text-ink/60 font-body text-sm mt-1 flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-accent-gold" />
                 Agente asignado: <span className="font-semibold capitalize">{order.assigned_agent}</span>
               </p>
             )}
@@ -231,14 +231,14 @@ export default function OrderTracker({
         {!isDelivered && !isEscalated && (
           <div className="space-y-3">
             <div className="flex items-center justify-between text-sm font-body">
-              <span className="text-pacame-white/70">
+              <span className="text-ink/70">
                 {order.progress_message || "Preparando..."}
               </span>
-              <span className="text-olympus-gold font-semibold">{pct}%</span>
+              <span className="text-accent-gold font-semibold">{pct}%</span>
             </div>
             <div className="h-2 bg-white/5 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-olympus-gold/60 to-olympus-gold transition-all duration-700"
+                className="h-full bg-gradient-to-r from-accent-gold/60 to-accent-gold transition-all duration-700"
                 style={{ width: `${pct}%` }}
               />
             </div>
@@ -256,8 +256,8 @@ export default function OrderTracker({
 
       {/* Deliverables */}
       {deliverables.length > 0 && (
-        <div className="rounded-2xl p-6 sm:p-8 bg-dark-card border border-white/[0.06]">
-          <h3 className="font-heading font-bold text-xl text-pacame-white mb-5">
+        <div className="rounded-2xl p-6 sm:p-8 bg-paper-deep border border-ink/[0.06]">
+          <h3 className="font-heading font-bold text-xl text-ink mb-5">
             Tu entregable
           </h3>
 
@@ -271,7 +271,7 @@ export default function OrderTracker({
               {revisionsUsed < revisionsIncluded && (
                 <button
                   onClick={() => setRevisionOpen(true)}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.1] text-pacame-white hover:border-olympus-gold/40 font-body text-sm transition"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] border border-ink/[0.1] text-ink hover:border-accent-gold/40 font-body text-sm transition"
                 >
                   <MessageSquare className="w-4 h-4" />
                   Pedir revision ({revisionsIncluded - revisionsUsed} disponibles)
@@ -279,7 +279,7 @@ export default function OrderTracker({
               )}
               <button
                 onClick={() => setRatingOpen(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-olympus-gold text-pacame-black hover:bg-olympus-gold/90 font-heading font-semibold text-sm transition"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-accent-gold text-paper hover:bg-accent-gold/90 font-heading font-semibold text-sm transition"
               >
                 <Star className="w-4 h-4" />
                 Valorar entregable
@@ -288,8 +288,8 @@ export default function OrderTracker({
           )}
 
           {order.rating && (
-            <div className="mt-6 p-4 rounded-xl bg-olympus-gold/10 border border-olympus-gold/20">
-              <p className="text-pacame-white font-body text-sm">
+            <div className="mt-6 p-4 rounded-xl bg-accent-gold/10 border border-accent-gold/20">
+              <p className="text-ink font-body text-sm">
                 Has valorado este entregable con{" "}
                 <span className="font-semibold">{order.rating}/5</span>.
                 ¡Gracias!
@@ -300,25 +300,25 @@ export default function OrderTracker({
       )}
 
       {/* Timeline */}
-      <div className="rounded-2xl p-6 sm:p-8 bg-dark-card border border-white/[0.06]">
-        <h3 className="font-heading font-bold text-xl text-pacame-white mb-5">
+      <div className="rounded-2xl p-6 sm:p-8 bg-paper-deep border border-ink/[0.06]">
+        <h3 className="font-heading font-bold text-xl text-ink mb-5">
           Linea de tiempo
         </h3>
         <ol className="space-y-3">
           {events.map((ev) => (
             <li key={ev.id} className="flex items-start gap-3 text-sm font-body">
-              <span className="flex-shrink-0 w-2 h-2 rounded-full bg-olympus-gold mt-2" />
+              <span className="flex-shrink-0 w-2 h-2 rounded-full bg-accent-gold mt-2" />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="font-medium text-pacame-white">
+                  <span className="font-medium text-ink">
                     {eventLabels[ev.event_type] || ev.title || ev.event_type}
                   </span>
-                  <span className="text-pacame-white/30 text-xs">
+                  <span className="text-ink/30 text-xs">
                     {formatTime(ev.created_at)}
                   </span>
                 </div>
                 {ev.message && (
-                  <p className="text-pacame-white/60 text-xs mt-0.5">
+                  <p className="text-ink/60 text-xs mt-0.5">
                     {ev.message}
                   </p>
                 )}
@@ -331,31 +331,31 @@ export default function OrderTracker({
       {/* Revision modal */}
       {revisionOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-6">
-          <div className="max-w-md w-full rounded-2xl p-6 bg-dark-card border border-white/[0.1]">
-            <h3 className="font-heading font-bold text-xl text-pacame-white mb-3">
+          <div className="max-w-md w-full rounded-2xl p-6 bg-paper-deep border border-ink/[0.1]">
+            <h3 className="font-heading font-bold text-xl text-ink mb-3">
               Pedir revision
             </h3>
-            <p className="text-pacame-white/60 font-body text-sm mb-4">
+            <p className="text-ink/60 font-body text-sm mb-4">
               Cuentanos que ajustar. El agente regenerara con tu feedback.
             </p>
             <textarea
               value={revisionText}
               onChange={(e) => setRevisionText(e.target.value)}
-              className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-pacame-white font-body min-h-[120px] focus:border-olympus-gold/60 focus:outline-none"
+              className="w-full bg-white/[0.04] border border-ink/[0.1] rounded-xl px-4 py-3 text-ink font-body min-h-[120px] focus:border-accent-gold/60 focus:outline-none"
               placeholder="Ej: Prefiero tono mas profesional y menos emojis. Los CTAs que sean mas directos..."
               maxLength={1000}
             />
             <div className="flex gap-3 mt-4">
               <button
                 onClick={() => setRevisionOpen(false)}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.1] text-pacame-white/70 font-body text-sm"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-ink/[0.1] text-ink/70 font-body text-sm"
               >
                 Cancelar
               </button>
               <button
                 onClick={submitRevision}
                 disabled={submittingRev || revisionText.trim().length < 10}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-olympus-gold text-pacame-black font-heading font-semibold text-sm disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-accent-gold text-paper font-heading font-semibold text-sm disabled:opacity-50"
               >
                 {submittingRev ? "Enviando..." : "Enviar"}
               </button>
@@ -367,8 +367,8 @@ export default function OrderTracker({
       {/* Rating modal */}
       {ratingOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-6">
-          <div className="max-w-md w-full rounded-2xl p-6 bg-dark-card border border-white/[0.1]">
-            <h3 className="font-heading font-bold text-xl text-pacame-white mb-4">
+          <div className="max-w-md w-full rounded-2xl p-6 bg-paper-deep border border-ink/[0.1]">
+            <h3 className="font-heading font-bold text-xl text-ink mb-4">
               Valora tu entregable
             </h3>
 
@@ -382,7 +382,7 @@ export default function OrderTracker({
                   <Star
                     className={`w-10 h-10 ${
                       n <= ratingValue
-                        ? "fill-olympus-gold text-olympus-gold"
+                        ? "fill-accent-gold text-accent-gold"
                         : "text-white/20"
                     }`}
                   />
@@ -393,21 +393,21 @@ export default function OrderTracker({
             <textarea
               value={ratingText}
               onChange={(e) => setRatingText(e.target.value)}
-              className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-pacame-white font-body focus:border-olympus-gold/60 focus:outline-none"
+              className="w-full bg-white/[0.04] border border-ink/[0.1] rounded-xl px-4 py-3 text-ink font-body focus:border-accent-gold/60 focus:outline-none"
               placeholder="Comentario opcional (publico si activas testimonios)..."
               maxLength={500}
             />
             <div className="flex gap-3 mt-4">
               <button
                 onClick={() => setRatingOpen(false)}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.1] text-pacame-white/70 font-body text-sm"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-ink/[0.1] text-ink/70 font-body text-sm"
               >
                 Cancelar
               </button>
               <button
                 onClick={submitRating}
                 disabled={submittingRating || !ratingValue}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-olympus-gold text-pacame-black font-heading font-semibold text-sm disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-accent-gold text-paper font-heading font-semibold text-sm disabled:opacity-50"
               >
                 {submittingRating ? "Enviando..." : "Enviar valoracion"}
               </button>
@@ -428,14 +428,14 @@ function DeliverableView({ deliverable }: { deliverable: DeliverableRow }) {
         <img
           src={d.file_url}
           alt={d.title || "Entregable"}
-          className="rounded-xl w-full max-w-md mx-auto border border-white/[0.06]"
+          className="rounded-xl w-full max-w-md mx-auto border border-ink/[0.06]"
         />
         <div className="mt-3 flex gap-2 justify-center">
           <a
             href={d.file_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.1] text-pacame-white/70 font-body text-xs hover:border-olympus-gold/40 transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.04] border border-ink/[0.1] text-ink/70 font-body text-xs hover:border-accent-gold/40 transition"
           >
             <Download className="w-3.5 h-3.5" />
             Descargar
@@ -460,27 +460,27 @@ function DeliverableView({ deliverable }: { deliverable: DeliverableRow }) {
           {variants.map((v, i) => (
             <div
               key={i}
-              className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]"
+              className="p-4 rounded-xl bg-white/[0.03] border border-ink/[0.06]"
             >
-              <div className="text-xs font-mono text-olympus-gold mb-2">
+              <div className="text-xs font-mono text-accent-gold mb-2">
                 Variante {i + 1} — {v.angle}
               </div>
-              <h4 className="font-heading font-bold text-2xl text-pacame-white mb-1">
+              <h4 className="font-heading font-bold text-2xl text-ink mb-1">
                 {v.headline}
               </h4>
-              <p className="text-pacame-white/70 font-body mb-3">{v.subheadline}</p>
-              <div className="inline-block px-4 py-2 rounded-xl bg-olympus-gold/10 border border-olympus-gold/20 text-olympus-gold font-heading font-semibold text-sm">
+              <p className="text-ink/70 font-body mb-3">{v.subheadline}</p>
+              <div className="inline-block px-4 py-2 rounded-xl bg-accent-gold/10 border border-accent-gold/20 text-accent-gold font-heading font-semibold text-sm">
                 {v.cta}
               </div>
-              <p className="mt-3 text-pacame-white/50 font-body text-xs italic">
+              <p className="mt-3 text-ink/50 font-body text-xs italic">
                 {v.rationale}
               </p>
             </div>
           ))}
           {Boolean(p.recommendation) && (
-            <div className="p-4 rounded-xl bg-olympus-gold/10 border border-olympus-gold/20">
-              <p className="text-pacame-white/80 font-body text-sm">
-                <strong className="text-olympus-gold">Recomendacion Copy:</strong>{" "}
+            <div className="p-4 rounded-xl bg-accent-gold/10 border border-accent-gold/20">
+              <p className="text-ink/80 font-body text-sm">
+                <strong className="text-accent-gold">Recomendacion Copy:</strong>{" "}
                 {p.recommendation as string}
               </p>
             </div>
@@ -496,28 +496,28 @@ function DeliverableView({ deliverable }: { deliverable: DeliverableRow }) {
             <img
               src={p.image_url as string}
               alt="Post Instagram"
-              className="rounded-xl w-full max-w-md mx-auto border border-white/[0.06]"
+              className="rounded-xl w-full max-w-md mx-auto border border-ink/[0.06]"
             />
           )}
-          <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-            <h4 className="font-heading font-semibold text-pacame-white mb-2 text-sm">
+          <div className="p-4 rounded-xl bg-white/[0.03] border border-ink/[0.06]">
+            <h4 className="font-heading font-semibold text-ink mb-2 text-sm">
               Caption
             </h4>
-            <p className="text-pacame-white/80 font-body text-sm whitespace-pre-wrap">
+            <p className="text-ink/80 font-body text-sm whitespace-pre-wrap">
               {p.caption as string}
             </p>
           </div>
-          <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-            <h4 className="font-heading font-semibold text-pacame-white mb-2 text-sm">
+          <div className="p-4 rounded-xl bg-white/[0.03] border border-ink/[0.06]">
+            <h4 className="font-heading font-semibold text-ink mb-2 text-sm">
               Hashtags
             </h4>
-            <p className="text-pacame-white/60 font-body text-xs">
+            <p className="text-ink/60 font-body text-xs">
               {p.hashtags_line as string}
             </p>
           </div>
           {Boolean(p.best_time) && (
-            <div className="text-pacame-white/60 font-body text-sm flex items-center gap-2">
-              <Clock className="w-4 h-4 text-olympus-gold" />
+            <div className="text-ink/60 font-body text-sm flex items-center gap-2">
+              <Clock className="w-4 h-4 text-accent-gold" />
               Mejor hora de publicacion: <strong>{p.best_time as string}</strong>
             </div>
           )}
@@ -526,7 +526,7 @@ function DeliverableView({ deliverable }: { deliverable: DeliverableRow }) {
     }
 
     return (
-      <pre className="bg-white/[0.03] border border-white/[0.06] p-4 rounded-xl text-pacame-white/70 font-mono text-xs overflow-x-auto">
+      <pre className="bg-white/[0.03] border border-ink/[0.06] p-4 rounded-xl text-ink/70 font-mono text-xs overflow-x-auto">
         {JSON.stringify(p, null, 2)}
       </pre>
     );
@@ -538,14 +538,14 @@ function DeliverableView({ deliverable }: { deliverable: DeliverableRow }) {
         href={d.file_url}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-olympus-gold/40 transition"
+        className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.03] border border-ink/[0.06] hover:border-accent-gold/40 transition"
       >
-        <ExternalLink className="w-5 h-5 text-olympus-gold" />
+        <ExternalLink className="w-5 h-5 text-accent-gold" />
         <div className="flex-1">
-          <div className="font-heading font-semibold text-pacame-white">
+          <div className="font-heading font-semibold text-ink">
             {d.title || "Documento PDF"}
           </div>
-          <div className="text-xs text-pacame-white/50 font-body">Descargar PDF</div>
+          <div className="text-xs text-ink/50 font-body">Descargar PDF</div>
         </div>
       </a>
     );

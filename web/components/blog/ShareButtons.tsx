@@ -43,7 +43,7 @@ export default function ShareButtons({
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Compartir en X"
-        className="w-9 h-9 rounded-lg bg-dark-card border border-white/[0.06] flex items-center justify-center text-xs font-mono text-pacame-white/60 hover:text-olympus-gold hover:border-olympus-gold/30 transition-colors"
+        className="w-9 h-9 rounded-lg bg-paper-deep border border-ink/[0.06] flex items-center justify-center text-xs font-mono text-ink/60 hover:text-accent-gold hover:border-accent-gold/30 transition-colors"
       >
         X
       </a>
@@ -52,7 +52,7 @@ export default function ShareButtons({
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Compartir en LinkedIn"
-        className="w-9 h-9 rounded-lg bg-dark-card border border-white/[0.06] flex items-center justify-center text-xs font-mono text-pacame-white/60 hover:text-olympus-gold hover:border-olympus-gold/30 transition-colors"
+        className="w-9 h-9 rounded-lg bg-paper-deep border border-ink/[0.06] flex items-center justify-center text-xs font-mono text-ink/60 hover:text-accent-gold hover:border-accent-gold/30 transition-colors"
       >
         in
       </a>
@@ -61,7 +61,7 @@ export default function ShareButtons({
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Compartir por WhatsApp"
-        className="w-9 h-9 rounded-lg bg-dark-card border border-white/[0.06] flex items-center justify-center text-xs font-mono text-pacame-white/60 hover:text-olympus-gold hover:border-olympus-gold/30 transition-colors"
+        className="w-9 h-9 rounded-lg bg-paper-deep border border-ink/[0.06] flex items-center justify-center text-xs font-mono text-ink/60 hover:text-accent-gold hover:border-accent-gold/30 transition-colors"
       >
         WA
       </a>
@@ -69,10 +69,10 @@ export default function ShareButtons({
         type="button"
         onClick={handleCopy}
         aria-label="Copiar enlace"
-        className="w-9 h-9 rounded-lg bg-dark-card border border-white/[0.06] flex items-center justify-center text-pacame-white/60 hover:text-olympus-gold hover:border-olympus-gold/30 transition-colors"
+        className="w-9 h-9 rounded-lg bg-paper-deep border border-ink/[0.06] flex items-center justify-center text-ink/60 hover:text-accent-gold hover:border-accent-gold/30 transition-colors"
       >
         {copied ? (
-          <Check className="w-4 h-4 text-olympus-gold" />
+          <Check className="w-4 h-4 text-accent-gold" />
         ) : (
           <Link2 className="w-4 h-4" />
         )}

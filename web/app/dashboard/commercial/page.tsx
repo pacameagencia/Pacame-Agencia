@@ -45,9 +45,9 @@ interface OutboundLead {
 const funnelStages = [
   { key: "new", label: "Nuevos", color: "bg-blue-500", icon: Users },
   { key: "contacted", label: "Contactados", color: "bg-amber-500", icon: Mail },
-  { key: "qualified", label: "Cualificados", color: "bg-electric-violet", icon: Target },
-  { key: "proposals", label: "Propuestas", color: "bg-neon-cyan", icon: FileCheck },
-  { key: "accepted", label: "Aceptadas", color: "bg-lime-pulse", icon: CheckCircle },
+  { key: "qualified", label: "Cualificados", color: "bg-brand-primary", icon: Target },
+  { key: "proposals", label: "Propuestas", color: "bg-mint", icon: FileCheck },
+  { key: "accepted", label: "Aceptadas", color: "bg-mint", icon: CheckCircle },
   { key: "clients", label: "Clientes", color: "bg-green-500", icon: CreditCard },
 ];
 
@@ -163,8 +163,8 @@ export default function CommercialPage() {
     <div className="space-y-6 max-w-5xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading font-bold text-2xl text-pacame-white">Pipeline Comercial</h1>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">
+          <h1 className="font-heading font-bold text-2xl text-ink">Pipeline Comercial</h1>
+          <p className="text-sm text-ink/40 font-body mt-1">
             {loading ? "Cargando..." : `${leads.length} leads outbound · ${metrics?.total_outreach_sent || 0} emails enviados`}
           </p>
         </div>
@@ -183,10 +183,10 @@ export default function CommercialPage() {
 
       {/* Funnel Visualization */}
       {funnel && (
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
           <div className="flex items-center gap-2 mb-6">
-            <BarChart3 className="w-5 h-5 text-electric-violet" />
-            <h2 className="font-heading font-semibold text-pacame-white">Embudo de ventas</h2>
+            <BarChart3 className="w-5 h-5 text-brand-primary" />
+            <h2 className="font-heading font-semibold text-ink">Embudo de ventas</h2>
           </div>
 
           <div className="space-y-3">
@@ -197,8 +197,8 @@ export default function CommercialPage() {
               return (
                 <div key={stage.key} className="flex items-center gap-4">
                   <div className="w-28 flex items-center gap-2 flex-shrink-0">
-                    <Icon className="w-4 h-4 text-pacame-white/40" />
-                    <span className="text-xs text-pacame-white/60 font-body">{stage.label}</span>
+                    <Icon className="w-4 h-4 text-ink/40" />
+                    <span className="text-xs text-ink/60 font-body">{stage.label}</span>
                   </div>
                   <div className="flex-1 h-8 bg-white/[0.03] rounded-lg overflow-hidden relative">
                     <div
@@ -217,26 +217,26 @@ export default function CommercialPage() {
           <div className="flex items-center gap-6 mt-6 pt-4 border-t border-white/[0.04]">
             {funnel.contacted > 0 && (
               <div className="text-center">
-                <div className="text-lg font-heading font-bold text-electric-violet">
+                <div className="text-lg font-heading font-bold text-brand-primary">
                   {Math.round((funnel.qualified / funnel.contacted) * 100)}%
                 </div>
-                <div className="text-[10px] text-pacame-white/30 font-body">Cualificacion</div>
+                <div className="text-[10px] text-ink/30 font-body">Cualificacion</div>
               </div>
             )}
             {funnel.qualified > 0 && (
               <div className="text-center">
-                <div className="text-lg font-heading font-bold text-neon-cyan">
+                <div className="text-lg font-heading font-bold text-mint">
                   {Math.round((funnel.accepted / Math.max(funnel.proposals, 1)) * 100)}%
                 </div>
-                <div className="text-[10px] text-pacame-white/30 font-body">Cierre propuestas</div>
+                <div className="text-[10px] text-ink/30 font-body">Cierre propuestas</div>
               </div>
             )}
             {metrics && (
               <div className="text-center ml-auto">
-                <div className="text-lg font-heading font-bold text-lime-pulse">
+                <div className="text-lg font-heading font-bold text-mint">
                   {metrics.monthly_revenue.toLocaleString("es-ES")}€
                 </div>
-                <div className="text-[10px] text-pacame-white/30 font-body">Revenue este mes</div>
+                <div className="text-[10px] text-ink/30 font-body">Revenue este mes</div>
               </div>
             )}
           </div>
@@ -244,8 +244,8 @@ export default function CommercialPage() {
       )}
 
       {/* Batch Actions */}
-      <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
-        <h2 className="font-heading font-semibold text-pacame-white mb-3">Acciones masivas</h2>
+      <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5">
+        <h2 className="font-heading font-semibold text-ink mb-3">Acciones masivas</h2>
         <div className="flex flex-wrap items-center gap-3">
           {[1, 2, 3].map((n) => (
             <Button
@@ -260,20 +260,20 @@ export default function CommercialPage() {
             </Button>
           ))}
         </div>
-        <p className="text-[10px] text-pacame-white/50 font-body mt-2">
+        <p className="text-[10px] text-ink/50 font-body mt-2">
           Solo envia a leads que tengan emails generados y no hayan recibido ese numero de email.
         </p>
       </div>
 
       {/* Outbound Leads Table */}
       <div className="space-y-2">
-        <h2 className="font-heading font-semibold text-pacame-white">Leads outbound</h2>
+        <h2 className="font-heading font-semibold text-ink">Leads outbound</h2>
 
         {!loading && leads.length === 0 && (
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
-            <Target className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
-            <p className="text-sm text-pacame-white/40 font-body">Sin leads outbound</p>
-            <p className="text-xs text-pacame-white/50 font-body mt-1">Usa Lead Generation para scrapear negocios de Google Maps</p>
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-12 text-center">
+            <Target className="w-8 h-8 text-ink/20 mx-auto mb-3" />
+            <p className="text-sm text-ink/40 font-body">Sin leads outbound</p>
+            <p className="text-xs text-ink/50 font-body mt-1">Usa Lead Generation para scrapear negocios de Google Maps</p>
           </div>
         )}
 
@@ -285,13 +285,13 @@ export default function CommercialPage() {
           const auditScore = analysis.audit_score;
 
           return (
-            <div key={lead.id} className="rounded-xl bg-dark-card border border-white/[0.06] hover:border-white/10 transition-all p-4">
+            <div key={lead.id} className="rounded-xl bg-paper-deep border border-ink/[0.06] hover:border-white/10 transition-all p-4">
               <div className="flex items-center gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-heading font-medium text-pacame-white">{lead.business_name || lead.name}</span>
+                    <span className="text-sm font-heading font-medium text-ink">{lead.business_name || lead.name}</span>
                     {lead.score >= 4 && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-lime-pulse/15 text-lime-pulse font-mono">Hot</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-mint/15 text-mint font-mono">Hot</span>
                     )}
                     {auditScore !== undefined && (
                       <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${
@@ -303,13 +303,13 @@ export default function CommercialPage() {
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-3 mt-1 text-xs text-pacame-white/30 font-body">
+                  <div className="flex items-center gap-3 mt-1 text-xs text-ink/30 font-body">
                     {lead.email && <span>{lead.email}</span>}
                     <span className={`px-1.5 py-0.5 rounded text-[10px] ${
                       lead.status === "new" ? "bg-blue-500/15 text-blue-400" :
                       lead.status === "contacted" ? "bg-amber-500/15 text-amber-400" :
-                      lead.status === "qualified" ? "bg-electric-violet/15 text-electric-violet" :
-                      "bg-white/[0.05] text-pacame-white/40"
+                      lead.status === "qualified" ? "bg-brand-primary/15 text-brand-primary" :
+                      "bg-white/[0.05] text-ink/40"
                     }`}>
                       {lead.status}
                     </span>
@@ -319,7 +319,7 @@ export default function CommercialPage() {
                       </span>
                     )}
                     {analysis.campaign && (
-                      <span className="text-pacame-white/20">{analysis.campaign}</span>
+                      <span className="text-ink/20">{analysis.campaign}</span>
                     )}
                   </div>
                 </div>
@@ -340,12 +340,12 @@ export default function CommercialPage() {
                     </Button>
                   )}
                   {!hasEmails && (
-                    <span className="text-[10px] text-pacame-white/20 font-body flex items-center gap-1">
+                    <span className="text-[10px] text-ink/20 font-body flex items-center gap-1">
                       <AlertCircle className="w-3 h-3" />Sin emails generados
                     </span>
                   )}
                   {outreachCount >= 3 && (
-                    <span className="text-[10px] text-pacame-white/20 font-body">Secuencia completa</span>
+                    <span className="text-[10px] text-ink/20 font-body">Secuencia completa</span>
                   )}
                 </div>
               </div>

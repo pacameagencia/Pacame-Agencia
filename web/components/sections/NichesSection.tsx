@@ -48,7 +48,7 @@ const nicheCards: NicheCard[] = [
 
 export default function NichesSection() {
   return (
-    <section className="section-padding bg-pacame-black relative overflow-hidden">
+    <section className="section-padding bg-paper relative overflow-hidden">
       {/* Golden divider */}
       <div className="px-6">
         <GoldenDivider variant="star" />
@@ -56,14 +56,14 @@ export default function NichesSection() {
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <ScrollReveal className="text-center mb-16">
-          <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
+          <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-4 uppercase tracking-[0.2em]">
             Soluciones por sector
           </p>
-          <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
+          <h2 className="font-accent font-bold text-section text-ink mb-6 text-balance">
             Tu sector.{" "}
             <span className="gradient-text-gold">Nuestra especialidad.</span>
           </h2>
-          <p className="text-lg text-pacame-white/40 max-w-lg mx-auto font-body">
+          <p className="text-lg text-ink/40 max-w-lg mx-auto font-body">
             Soluciones digitales diseñadas para los problemas reales de tu negocio.
           </p>
         </ScrollReveal>
@@ -103,15 +103,15 @@ export default function NichesSection() {
                       </div>
 
                       {/* Content */}
-                      <h3 className="font-heading font-bold text-xl text-pacame-white mb-3">
+                      <h3 className="font-heading font-bold text-xl text-ink mb-3">
                         {niche.name}
                       </h3>
-                      <p className="text-sm text-pacame-white/45 font-body leading-relaxed mb-5">
+                      <p className="text-sm text-ink/45 font-body leading-relaxed mb-5">
                         {niche.pain}
                       </p>
 
                       {/* CTA */}
-                      <div className="flex items-center gap-2 text-sm font-body font-medium text-olympus-gold group-hover:text-olympus-gold-light transition-colors duration-300">
+                      <div className="flex items-center gap-2 text-sm font-body font-medium text-accent-gold group-hover:text-accent-gold-soft transition-colors duration-300">
                         Ver solucion
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                       </div>

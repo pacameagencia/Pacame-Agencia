@@ -45,8 +45,8 @@ function ScoreRing({ score }: { score: number }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-heading font-bold text-3xl text-pacame-white">{score}</span>
-        <span className="text-[10px] text-pacame-white/60 font-body">/100</span>
+        <span className="font-heading font-bold text-3xl text-ink">{score}</span>
+        <span className="text-[10px] text-ink/60 font-body">/100</span>
       </div>
     </div>
   );
@@ -89,21 +89,21 @@ export default function AuditoriaPage() {
   }
 
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       {/* Hero */}
       <section className="relative pt-36 pb-20 overflow-hidden">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-neon-cyan/[0.05] rounded-full blur-[200px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-mint/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-neon-cyan mb-5 uppercase tracking-[0.2em]">
+          <p className="text-[13px] font-body font-medium text-mint mb-5 uppercase tracking-[0.2em]">
             Auditoria gratuita
           </p>
 
-          <h1 className="font-heading font-bold text-display text-pacame-white mb-6 text-balance">
+          <h1 className="font-heading font-bold text-display text-ink mb-6 text-balance">
             Auditoria web gratuita{" "}
             <span className="gradient-text-vivid">en 30 segundos.</span>
           </h1>
-          <p className="text-xl text-pacame-white/60 font-body max-w-xl mx-auto mb-12 font-light">
+          <p className="text-xl text-ink/60 font-body max-w-xl mx-auto mb-12 font-light">
             Introduce la URL de tu negocio y nuestros agentes IA analizan SEO, velocidad,
             movil, seguridad y UX. Gratis.
           </p>
@@ -117,14 +117,14 @@ export default function AuditoriaPage() {
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://tunegocio.com"
                   required
-                  className="flex-1 h-14 px-5 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan outline-none"
+                  className="flex-1 h-14 px-5 rounded-xl bg-paper-deep border border-ink/[0.08] text-ink font-body text-sm placeholder:text-ink/50 focus:border-mint focus:ring-1 focus:ring-mint outline-none"
                 />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="tu@email.com (opcional)"
-                  className="sm:w-56 h-14 px-5 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan outline-none"
+                  className="sm:w-56 h-14 px-5 rounded-xl bg-paper-deep border border-ink/[0.08] text-ink font-body text-sm placeholder:text-ink/50 focus:border-mint focus:ring-1 focus:ring-mint outline-none"
                 />
               </div>
               <Button type="submit" variant="gradient" size="xl" className="w-full sm:w-auto mt-4 group">
@@ -137,9 +137,9 @@ export default function AuditoriaPage() {
 
           {state === "loading" && (
             <div className="max-w-md mx-auto rounded-2xl glass p-10 text-center">
-              <Loader2 className="w-10 h-10 text-neon-cyan mx-auto mb-4 animate-spin" />
-              <p className="text-sm text-pacame-white/60 font-body">Nuestros agentes IA estan analizando tu web...</p>
-              <div className="flex items-center justify-center gap-4 mt-4 text-xs text-pacame-white/50 font-body">
+              <Loader2 className="w-10 h-10 text-mint mx-auto mb-4 animate-spin" />
+              <p className="text-sm text-ink/60 font-body">Nuestros agentes IA estan analizando tu web...</p>
+              <div className="flex items-center justify-center gap-4 mt-4 text-xs text-ink/50 font-body">
                 <span>SEO...</span>
                 <span>Velocidad...</span>
                 <span>Movil...</span>
@@ -156,14 +156,14 @@ export default function AuditoriaPage() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
             {/* Overall score */}
             <div className="rounded-3xl glass p-8 sm:p-10 mb-8 text-center">
-              <p className="text-xs text-pacame-white/60 font-body mb-4 uppercase tracking-widest">Puntuacion general</p>
+              <p className="text-xs text-ink/60 font-body mb-4 uppercase tracking-widest">Puntuacion general</p>
               <div className="flex justify-center mb-6">
                 <ScoreRing score={result.score} />
               </div>
-              <p className="text-pacame-white/60 font-body max-w-lg mx-auto mb-4">{result.summary}</p>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-signal/10 border border-amber-signal/20">
-                <Zap className="w-4 h-4 text-amber-signal" />
-                <span className="text-sm text-amber-signal font-body">Prioridad: {result.priority_action}</span>
+              <p className="text-ink/60 font-body max-w-lg mx-auto mb-4">{result.summary}</p>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-gold/10 border border-accent-gold/20">
+                <Zap className="w-4 h-4 text-accent-gold" />
+                <span className="text-sm text-accent-gold font-body">Prioridad: {result.priority_action}</span>
               </div>
             </div>
 
@@ -171,13 +171,13 @@ export default function AuditoriaPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
               {result.categories.map((cat) => {
                 const Icon = categoryIcons[cat.icon] || Globe;
-                const scoreColor = cat.score >= 70 ? "text-lime-pulse" : cat.score >= 40 ? "text-amber-signal" : "text-red-400";
+                const scoreColor = cat.score >= 70 ? "text-mint" : cat.score >= 40 ? "text-accent-gold" : "text-red-400";
                 return (
-                  <div key={cat.name} className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
+                  <div key={cat.name} className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-2">
-                        <Icon className="w-4 h-4 text-pacame-white/50" />
-                        <span className="font-heading font-semibold text-sm text-pacame-white">{cat.name}</span>
+                        <Icon className="w-4 h-4 text-ink/50" />
+                        <span className="font-heading font-semibold text-sm text-ink">{cat.name}</span>
                       </div>
                       <span className={`font-heading font-bold text-lg ${scoreColor}`}>{cat.score}</span>
                     </div>
@@ -186,7 +186,7 @@ export default function AuditoriaPage() {
                       {cat.issues.map((issue) => (
                         <div key={issue} className="flex items-start gap-2">
                           <XCircle className="w-3.5 h-3.5 text-red-400 mt-0.5 flex-shrink-0" />
-                          <span className="text-xs text-pacame-white/50 font-body">{issue}</span>
+                          <span className="text-xs text-ink/50 font-body">{issue}</span>
                         </div>
                       ))}
                     </div>
@@ -194,8 +194,8 @@ export default function AuditoriaPage() {
                     <div className="space-y-2">
                       {cat.recommendations.map((rec) => (
                         <div key={rec} className="flex items-start gap-2">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-lime-pulse mt-0.5 flex-shrink-0" />
-                          <span className="text-xs text-pacame-white/50 font-body">{rec}</span>
+                          <CheckCircle2 className="w-3.5 h-3.5 text-mint mt-0.5 flex-shrink-0" />
+                          <span className="text-xs text-ink/50 font-body">{rec}</span>
                         </div>
                       ))}
                     </div>
@@ -240,7 +240,7 @@ export default function AuditoriaPage() {
       {state === "idle" && (
         <section className="section-padding">
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
-            <h2 className="font-heading font-bold text-2xl text-pacame-white text-center mb-10">
+            <h2 className="font-heading font-bold text-2xl text-ink text-center mb-10">
               ¿Que analizamos?
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -252,10 +252,10 @@ export default function AuditoriaPage() {
                 { icon: Eye, title: "UX y Conversion", desc: "CTAs, formularios, recorrido del usuario y puntos de fuga." },
                 { icon: Zap, title: "Plan de Accion", desc: "Recomendaciones priorizadas por impacto para que sepas por donde empezar." },
               ].map((item) => (
-                <div key={item.title} className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
-                  <item.icon className="w-6 h-6 text-neon-cyan mb-3" />
-                  <h3 className="font-heading font-semibold text-pacame-white mb-2">{item.title}</h3>
-                  <p className="text-xs text-pacame-white/50 font-body">{item.desc}</p>
+                <div key={item.title} className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
+                  <item.icon className="w-6 h-6 text-mint mb-3" />
+                  <h3 className="font-heading font-semibold text-ink mb-2">{item.title}</h3>
+                  <p className="text-xs text-ink/50 font-body">{item.desc}</p>
                 </div>
               ))}
             </div>

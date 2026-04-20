@@ -74,7 +74,7 @@ function KPICard({ label, value, icon: Icon, color, sub, trend }: {
   label: string; value: string | number; icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>; color: string; sub?: string; trend?: string;
 }) {
   return (
-    <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5 hover:border-white/10 transition-colors">
+    <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5 hover:border-white/10 transition-colors">
       <div className="flex items-start justify-between mb-3">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${color}15` }}>
           <Icon className="w-5 h-5" style={{ color }} />
@@ -85,9 +85,9 @@ function KPICard({ label, value, icon: Icon, color, sub, trend }: {
           }`}>{trend}</span>
         )}
       </div>
-      <div className="font-heading font-bold text-2xl text-pacame-white">{value}</div>
-      <div className="text-xs text-pacame-white/40 font-body mt-1">{label}</div>
-      {sub && <div className="text-[11px] text-pacame-white/30 font-body mt-0.5">{sub}</div>}
+      <div className="font-heading font-bold text-2xl text-ink">{value}</div>
+      <div className="text-xs text-ink/40 font-body mt-1">{label}</div>
+      {sub && <div className="text-[11px] text-ink/30 font-body mt-0.5">{sub}</div>}
     </div>
   );
 }
@@ -97,8 +97,8 @@ const monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep
 function ChartTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number; name: string; color: string }>; label?: string }) {
   if (!active || !payload) return null;
   return (
-    <div className="rounded-lg bg-dark-elevated border border-white/10 px-3 py-2 shadow-xl">
-      <p className="text-xs text-pacame-white/60 font-body mb-1">{label}</p>
+    <div className="rounded-lg bg-paper-soft border border-white/10 px-3 py-2 shadow-xl">
+      <p className="text-xs text-ink/60 font-body mb-1">{label}</p>
       {payload.map((entry) => (
         <p key={entry.name} className="text-xs font-body font-medium" style={{ color: entry.color }}>
           {entry.name === "revenue" ? "Ingresos" : entry.name === "expenses" ? "Gastos" : "Profit"}: {entry.value.toLocaleString("es-ES")}€
@@ -132,7 +132,7 @@ function CronTrigger() {
     <button
       onClick={triggerCron}
       disabled={running}
-      className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-lime-pulse/10 hover:bg-lime-pulse/20 border border-lime-pulse/20 text-lime-pulse text-xs font-body font-medium transition-all disabled:opacity-50"
+      className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mint/10 hover:bg-mint/20 border border-mint/20 text-mint text-xs font-body font-medium transition-all disabled:opacity-50"
     >
       {running ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Play className="w-3.5 h-3.5" />}
       {result || (running ? "Ejecutando agentes..." : "Ejecutar cron")}
@@ -258,8 +258,8 @@ export default function DashboardOverview() {
   return (
     <div className="space-y-8 max-w-7xl">
       <div>
-        <h1 className="font-heading font-bold text-2xl text-pacame-white">Dashboard</h1>
-        <p className="text-sm text-pacame-white/40 font-body mt-1">Vista general del sistema PACAME</p>
+        <h1 className="font-heading font-bold text-2xl text-ink">Dashboard</h1>
+        <p className="text-sm text-ink/40 font-body mt-1">Vista general del sistema PACAME</p>
       </div>
 
       {/* Row 1: Core KPIs */}
@@ -291,27 +291,27 @@ export default function DashboardOverview() {
       </div>
 
       {/* Mini funnel bar */}
-      <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
+      <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-electric-violet" />
-            <h2 className="font-heading font-semibold text-pacame-white text-sm">Embudo rapido</h2>
+            <BarChart3 className="w-4 h-4 text-brand-primary" />
+            <h2 className="font-heading font-semibold text-ink text-sm">Embudo rapido</h2>
           </div>
-          <Link href="/dashboard/commercial" className="text-xs text-electric-violet hover:underline font-body">Ver completo</Link>
+          <Link href="/dashboard/commercial" className="text-xs text-brand-primary hover:underline font-body">Ver completo</Link>
         </div>
         <div className="flex items-center gap-1">
           {[
             { label: "Leads", value: kpis.leadsThisMonth, color: "bg-blue-500" },
             { label: "Hot", value: kpis.hotLeads, color: "bg-amber-500" },
-            { label: "Propuestas", value: kpis.proposalsSent, color: "bg-electric-violet" },
-            { label: "Aceptadas", value: kpis.proposalsAccepted, color: "bg-lime-pulse" },
+            { label: "Propuestas", value: kpis.proposalsSent, color: "bg-brand-primary" },
+            { label: "Aceptadas", value: kpis.proposalsAccepted, color: "bg-mint" },
             { label: "Clientes", value: kpis.activeClients, color: "bg-green-500" },
           ].map((stage, i) => (
             <div key={stage.label} className="flex-1 text-center">
               <div className={`h-2 ${stage.color} rounded-full mx-0.5`} style={{ opacity: Math.max(0.2, stage.value > 0 ? 1 : 0.15) }} />
-              <div className="text-[10px] text-pacame-white/40 font-body mt-1.5">{stage.label}</div>
-              <div className="text-xs font-heading font-bold text-pacame-white">{stage.value}</div>
-              {i < 4 && <ArrowRight className="w-3 h-3 text-pacame-white/10 mx-auto mt-0.5 hidden md:block" />}
+              <div className="text-[10px] text-ink/40 font-body mt-1.5">{stage.label}</div>
+              <div className="text-xs font-heading font-bold text-ink">{stage.value}</div>
+              {i < 4 && <ArrowRight className="w-3 h-3 text-ink/10 mx-auto mt-0.5 hidden md:block" />}
             </div>
           ))}
         </div>
@@ -321,13 +321,13 @@ export default function DashboardOverview() {
       {monthlyData.length > 0 && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Bar chart: Revenue vs Expenses */}
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="font-heading font-semibold text-sm text-pacame-white">Ingresos vs Gastos</h2>
-                <p className="text-[11px] text-pacame-white/30 font-body mt-0.5">Ultimos 6 meses</p>
+                <h2 className="font-heading font-semibold text-sm text-ink">Ingresos vs Gastos</h2>
+                <p className="text-[11px] text-ink/30 font-body mt-0.5">Ultimos 6 meses</p>
               </div>
-              <DollarSign className="w-4 h-4 text-pacame-white/20" />
+              <DollarSign className="w-4 h-4 text-ink/20" />
             </div>
             <div className="h-52">
               <ResponsiveContainer width="100%" height="100%">
@@ -344,23 +344,23 @@ export default function DashboardOverview() {
             <div className="flex items-center gap-4 mt-3">
               <div className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-sm bg-green-600" />
-                <span className="text-[10px] text-pacame-white/40 font-body">Ingresos</span>
+                <span className="text-[10px] text-ink/40 font-body">Ingresos</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-sm bg-red-500 opacity-70" />
-                <span className="text-[10px] text-pacame-white/40 font-body">Gastos</span>
+                <span className="text-[10px] text-ink/40 font-body">Gastos</span>
               </div>
             </div>
           </div>
 
           {/* Area chart: Profit trend */}
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="font-heading font-semibold text-sm text-pacame-white">Beneficio neto</h2>
-                <p className="text-[11px] text-pacame-white/30 font-body mt-0.5">Evolucion mensual</p>
+                <h2 className="font-heading font-semibold text-sm text-ink">Beneficio neto</h2>
+                <p className="text-[11px] text-ink/30 font-body mt-0.5">Evolucion mensual</p>
               </div>
-              <TrendingUp className="w-4 h-4 text-pacame-white/20" />
+              <TrendingUp className="w-4 h-4 text-ink/20" />
             </div>
             <div className="h-52">
               <ResponsiveContainer width="100%" height="100%">
@@ -382,7 +382,7 @@ export default function DashboardOverview() {
             <div className="flex items-center gap-4 mt-3">
               <div className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-sm bg-[#7C3AED]" />
-                <span className="text-[10px] text-pacame-white/40 font-body">Beneficio neto</span>
+                <span className="text-[10px] text-ink/40 font-body">Beneficio neto</span>
               </div>
             </div>
           </div>
@@ -391,14 +391,14 @@ export default function DashboardOverview() {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Activity feed */}
-        <div className="lg:col-span-3 rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+        <div className="lg:col-span-3 rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="font-heading font-semibold text-lg text-pacame-white">Actividad de agentes</h2>
-            <Link href="/dashboard/agents" className="text-xs text-electric-violet hover:underline font-body">Ver todo</Link>
+            <h2 className="font-heading font-semibold text-lg text-ink">Actividad de agentes</h2>
+            <Link href="/dashboard/agents" className="text-xs text-brand-primary hover:underline font-body">Ver todo</Link>
           </div>
           <div className="space-y-4">
             {activity.length === 0 && !loading && (
-              <p className="text-sm text-pacame-white/30 font-body text-center py-6">Sin actividad reciente</p>
+              <p className="text-sm text-ink/30 font-body text-center py-6">Sin actividad reciente</p>
             )}
             {activity.map((item) => {
               const agentUpper = (item.agent_id || "").toUpperCase();
@@ -414,11 +414,11 @@ export default function DashboardOverview() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-heading font-semibold" style={{ color }}>{agentUpper}</span>
-                      <span className="text-[10px] text-pacame-white/30 font-mono">{item.type.replace("_", " ")}</span>
+                      <span className="text-[10px] text-ink/30 font-mono">{item.type.replace("_", " ")}</span>
                     </div>
-                    <p className="text-sm text-pacame-white/70 font-body truncate">{item.title}</p>
+                    <p className="text-sm text-ink/70 font-body truncate">{item.title}</p>
                   </div>
-                  <span className="text-[11px] text-pacame-white/30 font-body flex-shrink-0">{timeAgo(item.created_at)}</span>
+                  <span className="text-[11px] text-ink/30 font-body flex-shrink-0">{timeAgo(item.created_at)}</span>
                 </div>
               );
             })}
@@ -426,16 +426,16 @@ export default function DashboardOverview() {
         </div>
 
         {/* Hot leads */}
-        <div className="lg:col-span-2 rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+        <div className="lg:col-span-2 rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="font-heading font-semibold text-lg text-pacame-white">Leads calientes</h2>
-            <Link href="/dashboard/leads" className="text-xs text-electric-violet hover:underline font-body">Ver todos</Link>
+            <h2 className="font-heading font-semibold text-lg text-ink">Leads calientes</h2>
+            <Link href="/dashboard/leads" className="text-xs text-brand-primary hover:underline font-body">Ver todos</Link>
           </div>
           {hotLeads.length === 0 ? (
             <div className="text-center py-8">
-              <UserPlus className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
-              <p className="text-sm text-pacame-white/40 font-body">Sin leads calientes</p>
-              <p className="text-xs text-pacame-white/50 font-body mt-1">Llegaran por WhatsApp, web o ads</p>
+              <UserPlus className="w-8 h-8 text-ink/20 mx-auto mb-3" />
+              <p className="text-sm text-ink/40 font-body">Sin leads calientes</p>
+              <p className="text-xs text-ink/50 font-body mt-1">Llegaran por WhatsApp, web o ads</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -446,16 +446,16 @@ export default function DashboardOverview() {
                 return (
                   <div key={lead.id} className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.04]">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="font-heading font-semibold text-sm text-pacame-white">{lead.name}</span>
+                      <span className="font-heading font-semibold text-sm text-ink">{lead.name}</span>
                       <span className="text-xs px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-400 font-body font-medium">{lead.score}/5</span>
                     </div>
-                    <p className="text-xs text-pacame-white/50 font-body">{lead.business_name}</p>
+                    <p className="text-xs text-ink/50 font-body">{lead.business_name}</p>
                     <div className="flex items-center gap-2 mt-2">
                       {services.map((s: string) => (
-                        <span key={s} className="text-[10px] px-2 py-0.5 rounded-full bg-electric-violet/10 text-electric-violet/70 font-body">{s}</span>
+                        <span key={s} className="text-[10px] px-2 py-0.5 rounded-full bg-brand-primary/10 text-brand-primary/70 font-body">{s}</span>
                       ))}
                       {(onetime > 0 || monthly > 0) && (
-                        <span className="text-[11px] text-lime-pulse font-body ml-auto">
+                        <span className="text-[11px] text-mint font-body ml-auto">
                           {onetime > 0 ? `${onetime}€` : ""}{monthly > 0 ? ` + ${monthly}€/mes` : ""}
                         </span>
                       )}
@@ -469,9 +469,9 @@ export default function DashboardOverview() {
       </div>
 
       {/* Quick actions */}
-      <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-6">
+      <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-heading font-semibold text-lg text-pacame-white">Acciones rapidas</h2>
+          <h2 className="font-heading font-semibold text-lg text-ink">Acciones rapidas</h2>
           <CronTrigger />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -488,13 +488,13 @@ export default function DashboardOverview() {
             <Link
               key={action.label}
               href={action.href}
-              className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/[0.04] hover:border-white/[0.08] transition-all group"
+              className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/[0.04] hover:border-ink/[0.08] transition-all group"
             >
               <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${action.color}15` }}>
                 <action.icon className="w-4 h-4" style={{ color: action.color }} />
               </div>
-              <span className="text-sm text-pacame-white/70 font-body group-hover:text-pacame-white transition-colors">{action.label}</span>
-              <ArrowRight className="w-3.5 h-3.5 text-pacame-white/20 ml-auto group-hover:translate-x-0.5 transition-transform" />
+              <span className="text-sm text-ink/70 font-body group-hover:text-ink transition-colors">{action.label}</span>
+              <ArrowRight className="w-3.5 h-3.5 text-ink/20 ml-auto group-hover:translate-x-0.5 transition-transform" />
             </Link>
           ))}
         </div>

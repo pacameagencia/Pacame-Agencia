@@ -375,7 +375,7 @@ export default function NeuralPage() {
           </svg>
 
           {/* Leyenda sinapsis */}
-          <div className="absolute bottom-3 left-3 bg-pacame-black/70 backdrop-blur rounded-lg p-3 text-xs space-y-1">
+          <div className="absolute bottom-3 left-3 bg-ink/70 backdrop-blur rounded-lg p-3 text-xs space-y-1">
             <div className="text-pacame-gray font-semibold mb-1">Tipo de sinapsis</div>
             {Object.entries(SYNAPSE_COLORS).map(([type, color]) => (
               <div key={type} className="flex items-center gap-2">
@@ -558,7 +558,7 @@ function NeuronDetail({ node, edges, onClose }: { node: AgentNode; edges: Synaps
 
 function Mini({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="bg-pacame-black/40 rounded p-2">
+    <div className="bg-ink/40 rounded p-2">
       <div className="text-[10px] text-pacame-gray uppercase">{label}</div>
       <div className="text-white text-sm font-bold">{value}</div>
     </div>

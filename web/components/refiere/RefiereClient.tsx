@@ -102,13 +102,13 @@ export default function RefiereClient() {
       },
       {
         label: "X (Twitter)",
-        color: "bg-white/[0.06] text-pacame-white hover:bg-white/[0.1] border-white/[0.12]",
+        color: "bg-white/[0.06] text-ink hover:bg-white/[0.1] border-ink/[0.12]",
         icon: Twitter,
         href: `https://twitter.com/intent/tweet?text=${encoded}`,
       },
       {
         label: "Email",
-        color: "bg-olympus-gold/15 text-olympus-gold hover:bg-olympus-gold/25 border-olympus-gold/30",
+        color: "bg-accent-gold/15 text-accent-gold hover:bg-accent-gold/25 border-accent-gold/30",
         icon: Mail,
         href: `mailto:?subject=${encodeURIComponent(
           "Tengo un -" + data.discount_pct + "% para ti en PACAME"
@@ -133,29 +133,29 @@ export default function RefiereClient() {
     }
     return (
       <div className="max-w-2xl mx-auto">
-        <div className="rounded-2xl bg-gradient-to-br from-olympus-gold/10 via-amber-500/5 to-transparent border border-olympus-gold/30 p-8">
-          <div className="text-[11px] uppercase tracking-wider text-olympus-gold font-mono mb-2">
+        <div className="rounded-2xl bg-gradient-to-br from-accent-gold/10 via-amber-500/5 to-transparent border border-accent-gold/30 p-8">
+          <div className="text-[11px] uppercase tracking-wider text-accent-gold font-mono mb-2">
             Tu codigo personal
           </div>
-          <div className="font-heading font-bold text-4xl text-pacame-white mb-1">
+          <div className="font-heading font-bold text-4xl text-ink mb-1">
             {data.code}
           </div>
-          <div className="text-sm text-pacame-white/60 mb-6">
+          <div className="text-sm text-ink/60 mb-6">
             {data.discount_pct}% descuento para tu amigo · {data.commission_pct}% comision
             para ti
           </div>
 
           <div className="flex flex-col gap-2 mb-5">
-            <div className="flex items-center gap-2 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+            <div className="flex items-center gap-2 p-3 rounded-xl bg-white/[0.03] border border-ink/[0.06]">
               <input
                 type="text"
                 readOnly
                 value={link}
-                className="flex-1 bg-transparent text-sm text-pacame-white/80 outline-none font-mono"
+                className="flex-1 bg-transparent text-sm text-ink/80 outline-none font-mono"
               />
               <button
                 onClick={() => copy("link")}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-olympus-gold text-pacame-black text-xs font-semibold hover:brightness-110 transition"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent-gold text-paper text-xs font-semibold hover:brightness-110 transition"
               >
                 {copied === "link" ? (
                   <>
@@ -173,14 +173,14 @@ export default function RefiereClient() {
           {/* Share targets */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[11px] uppercase tracking-wider text-pacame-white/40 font-mono">
+              <span className="text-[11px] uppercase tracking-wider text-ink/40 font-mono">
                 Compartir directamente
               </span>
               {typeof navigator !== "undefined" && "share" in navigator && (
                 <button
                   type="button"
                   onClick={nativeShare}
-                  className="text-[11px] text-pacame-white/60 hover:text-pacame-white inline-flex items-center gap-1"
+                  className="text-[11px] text-ink/60 hover:text-ink inline-flex items-center gap-1"
                 >
                   <Share2 className="w-3 h-3" /> Menu del sistema
                 </button>
@@ -202,42 +202,42 @@ export default function RefiereClient() {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 pt-5 border-t border-white/[0.06]">
+          <div className="grid grid-cols-3 gap-3 pt-5 border-t border-ink/[0.06]">
             <div>
-              <div className="text-[11px] uppercase tracking-wider text-pacame-white/40 font-mono">
+              <div className="text-[11px] uppercase tracking-wider text-ink/40 font-mono">
                 Referidos
               </div>
-              <div className="font-heading font-bold text-xl text-pacame-white">
+              <div className="font-heading font-bold text-xl text-ink">
                 {data.stats.total_uses}
               </div>
             </div>
             <div>
-              <div className="text-[11px] uppercase tracking-wider text-pacame-white/40 font-mono">
+              <div className="text-[11px] uppercase tracking-wider text-ink/40 font-mono">
                 Facturacion
               </div>
-              <div className="font-heading font-bold text-xl text-pacame-white">
+              <div className="font-heading font-bold text-xl text-ink">
                 {eur(data.stats.total_revenue_cents)}
               </div>
             </div>
             <div>
-              <div className="text-[11px] uppercase tracking-wider text-pacame-white/40 font-mono">
+              <div className="text-[11px] uppercase tracking-wider text-ink/40 font-mono">
                 Comision
               </div>
-              <div className="font-heading font-bold text-xl text-olympus-gold">
+              <div className="font-heading font-bold text-xl text-accent-gold">
                 {eur(data.stats.total_commission_cents)}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-6 p-5 rounded-xl bg-dark-card border border-white/[0.06]">
+        <div className="mt-6 p-5 rounded-xl bg-paper-deep border border-ink/[0.06]">
           <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="w-4 h-4 text-electric-violet" />
-            <span className="font-heading font-semibold text-pacame-white text-sm">
+            <TrendingUp className="w-4 h-4 text-brand-primary" />
+            <span className="font-heading font-semibold text-ink text-sm">
               Consejo de Pablo
             </span>
           </div>
-          <p className="text-sm text-pacame-white/60 leading-relaxed">
+          <p className="text-sm text-ink/60 leading-relaxed">
             Los que mejor rinden mandan el link con un mensaje personal tipo: &quot;Oye, he
             estado probando PACAME y les curra bien — mira si te encaja. Con este link
             tienes 10% off&quot;. No necesita ser un discurso, necesita ser real.
@@ -250,15 +250,15 @@ export default function RefiereClient() {
   return (
     <form
       onSubmit={submit}
-      className="max-w-xl mx-auto p-8 rounded-2xl bg-dark-card border border-white/[0.08]"
+      className="max-w-xl mx-auto p-8 rounded-2xl bg-paper-deep border border-ink/[0.08]"
     >
       <div className="flex items-center gap-2 mb-4">
-        <Mail className="w-5 h-5 text-olympus-gold" />
-        <span className="font-heading font-semibold text-pacame-white">
+        <Mail className="w-5 h-5 text-accent-gold" />
+        <span className="font-heading font-semibold text-ink">
           Consigue tu codigo
         </span>
       </div>
-      <label className="block text-sm text-pacame-white/60 mb-2">
+      <label className="block text-sm text-ink/60 mb-2">
         Email con el que compraste (necesitamos comprobar que eres cliente)
       </label>
       <input
@@ -267,7 +267,7 @@ export default function RefiereClient() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="tu@empresa.com"
-        className="w-full bg-white/[0.02] border border-white/[0.08] rounded-xl px-4 py-3 text-pacame-white placeholder:text-pacame-white/30 text-sm outline-none focus:border-olympus-gold/40 transition mb-4"
+        className="w-full bg-white/[0.02] border border-ink/[0.08] rounded-xl px-4 py-3 text-ink placeholder:text-ink/30 text-sm outline-none focus:border-accent-gold/40 transition mb-4"
       />
       {error && (
         <div className="mb-4 px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
@@ -277,7 +277,7 @@ export default function RefiereClient() {
       <button
         type="submit"
         disabled={!email || loading}
-        className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-olympus-gold text-pacame-black font-semibold text-sm disabled:opacity-50 hover:brightness-110 transition"
+        className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-accent-gold text-paper font-semibold text-sm disabled:opacity-50 hover:brightness-110 transition"
       >
         {loading ? (
           <>
@@ -289,9 +289,9 @@ export default function RefiereClient() {
           </>
         )}
       </button>
-      <p className="text-[11px] text-pacame-white/40 mt-4 text-center">
+      <p className="text-[11px] text-ink/40 mt-4 text-center">
         ¿Aun no eres cliente?{" "}
-        <a href="/servicios" className="text-olympus-gold hover:underline">
+        <a href="/servicios" className="text-accent-gold hover:underline">
           Empieza por aqui
         </a>
       </p>

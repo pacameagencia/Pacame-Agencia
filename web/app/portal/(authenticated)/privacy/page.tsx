@@ -39,23 +39,23 @@ export default async function PrivacyPage() {
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <header className="space-y-2">
         <h1 className="text-3xl font-bold flex items-center gap-3">
-          <ShieldCheck className="w-7 h-7 text-olympus-gold" />
+          <ShieldCheck className="w-7 h-7 text-accent-gold" />
           Privacidad y datos
         </h1>
-        <p className="text-pacame-white/60 font-body text-sm">
+        <p className="text-ink/60 font-body text-sm">
           Tu derecho a acceder, descargar y eliminar tus datos personales (RGPD).
         </p>
       </header>
 
       {/* Export */}
-      <section className="rounded-2xl p-6 bg-dark-card border border-white/[0.06]">
+      <section className="rounded-2xl p-6 bg-paper-deep border border-ink/[0.06]">
         <div className="flex items-start gap-3 mb-4">
-          <Download className="w-5 h-5 text-olympus-gold mt-1 flex-shrink-0" />
+          <Download className="w-5 h-5 text-accent-gold mt-1 flex-shrink-0" />
           <div>
-            <h2 className="font-heading font-semibold text-xl text-pacame-white mb-1">
+            <h2 className="font-heading font-semibold text-xl text-ink mb-1">
               Descargar mis datos
             </h2>
-            <p className="text-pacame-white/60 font-body text-sm">
+            <p className="text-ink/60 font-body text-sm">
               Te generamos un ZIP con TODO: perfil, pedidos, entregables, mensajes, suscripciones.
               Tarda ~1-2 min. Disponible 24h.
             </p>
@@ -74,10 +74,10 @@ export default async function PrivacyPage() {
         <div className="flex items-start gap-3 mb-4">
           <Trash2 className="w-5 h-5 text-red-400 mt-1 flex-shrink-0" />
           <div>
-            <h2 className="font-heading font-semibold text-xl text-pacame-white mb-1">
+            <h2 className="font-heading font-semibold text-xl text-ink mb-1">
               Eliminar mi cuenta
             </h2>
-            <p className="text-pacame-white/60 font-body text-sm leading-relaxed">
+            <p className="text-ink/60 font-body text-sm leading-relaxed">
               Proceso de 2 pasos: (1) confirmas via email, (2) pasamos 30 dias de reflexion
               antes de purgar. Puedes cancelar en cualquier momento hasta el dia 30.
             </p>
@@ -86,11 +86,11 @@ export default async function PrivacyPage() {
       </section>
 
       <aside className="rounded-xl p-4 bg-white/[0.02] border border-white/[0.04] flex items-start gap-3 text-sm">
-        <Info className="w-4 h-4 text-pacame-white/40 mt-0.5 flex-shrink-0" />
-        <p className="text-pacame-white/60 font-body">
+        <Info className="w-4 h-4 text-ink/40 mt-0.5 flex-shrink-0" />
+        <p className="text-ink/60 font-body">
           Responsable de tratamiento: PACAME Agencia. Base legal: ejecucion del contrato +
           consentimiento. Contacto DPO:{" "}
-          <a href="mailto:hola@pacameagencia.com" className="text-olympus-gold underline">
+          <a href="mailto:hola@pacameagencia.com" className="text-accent-gold underline">
             hola@pacameagencia.com
           </a>
           .

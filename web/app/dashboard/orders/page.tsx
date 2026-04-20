@@ -75,7 +75,7 @@ export default function OrdersAdminPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-3">
-            <ShoppingBag className="w-7 h-7 text-olympus-gold" />
+            <ShoppingBag className="w-7 h-7 text-accent-gold" />
             Pedidos Marketplace
           </h1>
           <p className="text-white/60 text-sm mt-1">
@@ -100,13 +100,13 @@ export default function OrdersAdminPage() {
           <Kpi
             label="Revenue"
             value={`${(summary.revenue_cents / 100).toFixed(0)}€`}
-            icon={<Euro className="w-4 h-4 text-olympus-gold" />}
+            icon={<Euro className="w-4 h-4 text-accent-gold" />}
           />
           <Kpi
             label="Margen PACAME"
             value={`${(summary.margin_cents / 100).toFixed(0)}€`}
             subtext={`Coste IA: $${summary.cost_usd.toFixed(2)}`}
-            icon={<TrendingUp className="w-4 h-4 text-olympus-gold" />}
+            icon={<TrendingUp className="w-4 h-4 text-accent-gold" />}
           />
         </div>
       )}
@@ -125,7 +125,7 @@ export default function OrdersAdminPage() {
             onClick={() => setFilter(val)}
             className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition ${
               filter === val
-                ? "bg-olympus-gold text-black font-semibold"
+                ? "bg-accent-gold text-black font-semibold"
                 : "bg-white/[0.04] text-white/70 hover:bg-white/[0.08]"
             }`}
           >
@@ -137,12 +137,12 @@ export default function OrdersAdminPage() {
       {loading ? (
         <p className="text-white/50">Cargando...</p>
       ) : orders.length === 0 ? (
-        <div className="rounded-2xl p-12 bg-white/[0.03] border border-white/[0.06] text-center">
+        <div className="rounded-2xl p-12 bg-white/[0.03] border border-ink/[0.06] text-center">
           <ShoppingBag className="w-12 h-12 text-white/30 mx-auto mb-4" />
           <p className="text-white/60">No hay pedidos con este filtro.</p>
         </div>
       ) : (
-        <div className="rounded-2xl border border-white/[0.06] overflow-hidden">
+        <div className="rounded-2xl border border-ink/[0.06] overflow-hidden">
           <table className="w-full text-sm">
             <thead className="bg-white/[0.03] text-xs uppercase text-white/50">
               <tr>
@@ -164,7 +164,7 @@ export default function OrdersAdminPage() {
                   <td className="p-3">
                     <Link
                       href={`/dashboard/orders/${o.id}`}
-                      className="font-mono text-xs text-olympus-gold hover:underline"
+                      className="font-mono text-xs text-accent-gold hover:underline"
                     >
                       {o.order_number || o.id.slice(0, 8)}
                     </Link>
@@ -194,7 +194,7 @@ export default function OrdersAdminPage() {
                   </td>
                   <td className="p-3 text-right">
                     {o.pacame_margin_cents !== null ? (
-                      <span className="text-olympus-gold">
+                      <span className="text-accent-gold">
                         {(o.pacame_margin_cents / 100).toFixed(0)}€
                       </span>
                     ) : (
@@ -237,7 +237,7 @@ function Kpi({
   subtext?: string;
 }) {
   return (
-    <div className="rounded-2xl p-4 bg-white/[0.03] border border-white/[0.06]">
+    <div className="rounded-2xl p-4 bg-white/[0.03] border border-ink/[0.06]">
       <div className="flex items-center gap-2 text-white/50 text-xs mb-1">
         {icon}
         {label}

@@ -4,24 +4,24 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium font-body transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric-violet disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium font-body transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "bg-electric-violet text-white hover:bg-electric-violet/90 shadow-glow-violet/30 hover:shadow-glow-violet",
+          "bg-brand-primary text-white hover:bg-brand-primary/90 shadow-glow-violet/30 hover:shadow-glow-violet",
         gradient:
           "bg-brand-gradient text-white hover:opacity-90 shadow-lg hover:shadow-glow-violet",
         outline:
-          "border border-electric-violet/40 text-pacame-white bg-transparent hover:bg-electric-violet/10 hover:border-electric-violet",
+          "border border-brand-primary/40 text-ink bg-transparent hover:bg-brand-primary/10 hover:border-brand-primary",
         ghost:
-          "text-pacame-white/70 hover:text-pacame-white hover:bg-white/5",
+          "text-ink/70 hover:text-ink hover:bg-white/5",
         secondary:
-          "bg-dark-card border border-white/10 text-pacame-white hover:bg-white/5 hover:border-white/20",
+          "bg-paper-deep border border-white/10 text-ink hover:bg-white/5 hover:border-white/20",
         destructive:
-          "bg-rose-alert text-white hover:bg-rose-alert/90",
+          "bg-accent-burgundy-soft text-white hover:bg-accent-burgundy-soft/90",
         link:
-          "text-electric-violet underline-offset-4 hover:underline p-0 h-auto",
+          "text-brand-primary underline-offset-4 hover:underline p-0 h-auto",
       },
       size: {
         default: "h-11 px-6 py-2.5",

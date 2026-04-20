@@ -150,10 +150,10 @@ export default function AgendaDashboard({
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold flex items-center gap-3">
-              <Calendar className="w-7 h-7 text-olympus-gold" />
+              <Calendar className="w-7 h-7 text-accent-gold" />
               Agenda — {businessName}
             </h1>
-            <p className="text-pacame-white/60 text-sm mt-1">
+            <p className="text-ink/60 text-sm mt-1">
               Zona horaria: {timezone} · Modo confirmacion:{" "}
               <span
                 className={
@@ -179,7 +179,7 @@ export default function AgendaDashboard({
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-white/[0.06]">
+      <div className="flex items-center gap-1 border-b border-ink/[0.06]">
         {[
           { id: "bookings", label: "Citas", icon: Calendar },
           { id: "services", label: "Servicios", icon: Settings },
@@ -191,8 +191,8 @@ export default function AgendaDashboard({
             onClick={() => setTab(t.id as typeof tab)}
             className={`inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition ${
               tab === t.id
-                ? "border-olympus-gold text-olympus-gold"
-                : "border-transparent text-pacame-white/50 hover:text-pacame-white/80"
+                ? "border-accent-gold text-accent-gold"
+                : "border-transparent text-ink/50 hover:text-ink/80"
             }`}
           >
             <t.icon className="w-4 h-4" />
@@ -211,7 +211,7 @@ export default function AgendaDashboard({
               message="Instala el widget en tu web — pestaña Widget."
             />
           ) : (
-            <div className="rounded-2xl border border-white/[0.06] overflow-hidden">
+            <div className="rounded-2xl border border-ink/[0.06] overflow-hidden">
               <table className="w-full text-sm">
                 <thead className="bg-white/[0.03] text-xs uppercase text-white/50">
                   <tr>
@@ -226,7 +226,7 @@ export default function AgendaDashboard({
                 <tbody>
                   {bookings.map((b) => (
                     <tr key={b.id} className="border-t border-white/[0.04] hover:bg-white/[0.02]">
-                      <td className="p-3 font-mono text-xs text-olympus-gold">{b.booking_number}</td>
+                      <td className="p-3 font-mono text-xs text-accent-gold">{b.booking_number}</td>
                       <td className="p-3">
                         <div className="text-white">{b.customer_name}</div>
                         <div className="text-xs text-white/50">{b.customer_email}</div>
@@ -305,21 +305,21 @@ export default function AgendaDashboard({
       {/* Tab: Widget */}
       {tab === "widget" && (
         <div className="space-y-4">
-          <div className="rounded-2xl p-5 bg-dark-card border border-white/[0.06]">
+          <div className="rounded-2xl p-5 bg-paper-deep border border-ink/[0.06]">
             <h2 className="font-heading font-semibold text-lg mb-2">
               Instala el widget en tu web
             </h2>
-            <p className="text-sm text-pacame-white/60 font-body mb-4">
+            <p className="text-sm text-ink/60 font-body mb-4">
               Copia este codigo y pegalo en el HTML de tu web donde quieras que aparezca el
               calendario de reservas.
             </p>
             <div className="relative">
-              <pre className="text-xs bg-black/40 border border-white/[0.04] rounded-lg p-4 overflow-x-auto text-pacame-white/80">
+              <pre className="text-xs bg-black/40 border border-white/[0.04] rounded-lg p-4 overflow-x-auto text-ink/80">
                 <code>{widgetHtml}</code>
               </pre>
               <button
                 onClick={copyWidget}
-                className="absolute top-3 right-3 inline-flex items-center gap-1.5 bg-olympus-gold text-black px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-olympus-gold/90"
+                className="absolute top-3 right-3 inline-flex items-center gap-1.5 bg-accent-gold text-black px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-accent-gold/90"
               >
                 <Copy className="w-3.5 h-3.5" />
                 Copiar
@@ -332,7 +332,7 @@ export default function AgendaDashboard({
             <h3 className="font-heading font-semibold text-sm mb-2">Vista previa</h3>
             <iframe
               src={`/api/apps/pacame-agenda/embed?instance_id=${instanceId}`}
-              className="w-full h-[520px] rounded-lg border border-white/[0.06] bg-white"
+              className="w-full h-[520px] rounded-lg border border-ink/[0.06] bg-white"
               title="Widget preview"
             />
           </div>
@@ -352,7 +352,7 @@ function Kpi({
   icon: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl p-4 bg-white/[0.03] border border-white/[0.06]">
+    <div className="rounded-2xl p-4 bg-white/[0.03] border border-ink/[0.06]">
       <div className="flex items-center gap-2 text-white/50 text-xs mb-1">
         {icon}
         {label}
@@ -372,10 +372,10 @@ function EmptyState({
   message: string;
 }) {
   return (
-    <div className="rounded-2xl p-12 bg-dark-card border border-white/[0.06] text-center">
+    <div className="rounded-2xl p-12 bg-paper-deep border border-ink/[0.06] text-center">
       <div className="inline-block mb-4">{icon}</div>
       <h3 className="font-heading font-semibold text-white text-lg mb-1">{title}</h3>
-      <p className="text-pacame-white/60 text-sm">{message}</p>
+      <p className="text-ink/60 text-sm">{message}</p>
     </div>
   );
 }
@@ -413,7 +413,7 @@ function ServicesTab({
         <h2 className="font-heading font-semibold text-lg">Servicios</h2>
         <button
           onClick={openNew}
-          className="inline-flex items-center gap-2 bg-olympus-gold text-black font-semibold px-4 py-2 rounded-xl hover:bg-olympus-gold/90"
+          className="inline-flex items-center gap-2 bg-accent-gold text-black font-semibold px-4 py-2 rounded-xl hover:bg-accent-gold/90"
         >
           <Plus className="w-4 h-4" />
           Nuevo servicio
@@ -433,7 +433,7 @@ function ServicesTab({
               key={s.id}
               className={`rounded-xl p-4 border ${
                 s.is_active
-                  ? "bg-dark-card border-white/[0.08]"
+                  ? "bg-paper-deep border-ink/[0.08]"
                   : "bg-white/[0.01] border-white/[0.04] opacity-60"
               }`}
             >
@@ -545,7 +545,7 @@ function ServiceForm({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-dark-card border border-white/[0.08] rounded-2xl p-6 max-w-md w-full space-y-4">
+      <div className="bg-paper-deep border border-ink/[0.08] rounded-2xl p-6 max-w-md w-full space-y-4">
         <h3 className="font-heading font-bold text-xl text-white">
           {initial ? "Editar servicio" : "Nuevo servicio"}
         </h3>
@@ -620,7 +620,7 @@ function ServiceForm({
           <button
             onClick={save}
             disabled={saving || !name}
-            className="flex-1 px-4 py-2.5 rounded-xl bg-olympus-gold text-black font-semibold disabled:opacity-50"
+            className="flex-1 px-4 py-2.5 rounded-xl bg-accent-gold text-black font-semibold disabled:opacity-50"
           >
             {saving ? "Guardando..." : "Guardar"}
           </button>
@@ -668,7 +668,7 @@ function HoursTab({
   return (
     <div className="space-y-3">
       <h2 className="font-heading font-semibold text-lg">Horarios de apertura</h2>
-      <div className="rounded-2xl overflow-hidden border border-white/[0.06]">
+      <div className="rounded-2xl overflow-hidden border border-ink/[0.06]">
         {WEEKDAYS.map((name, idx) => {
           const dayHours = hours.filter((h) => h.weekday === idx);
           return (
@@ -684,7 +684,7 @@ function HoursTab({
                   dayHours.map((h) => (
                     <span
                       key={h.id}
-                      className="inline-flex items-center gap-1.5 bg-olympus-gold/10 text-olympus-gold text-xs px-2 py-1 rounded-full"
+                      className="inline-flex items-center gap-1.5 bg-accent-gold/10 text-accent-gold text-xs px-2 py-1 rounded-full"
                     >
                       {h.start_time.slice(0, 5)} — {h.end_time.slice(0, 5)}
                       <button
@@ -699,7 +699,7 @@ function HoursTab({
               </div>
               <button
                 onClick={() => addHour(idx)}
-                className="p-1.5 rounded-lg bg-white/[0.04] hover:bg-olympus-gold/10 text-white/60 hover:text-olympus-gold"
+                className="p-1.5 rounded-lg bg-white/[0.04] hover:bg-accent-gold/10 text-white/60 hover:text-accent-gold"
                 title="Anadir franja"
               >
                 <Plus className="w-4 h-4" />
@@ -731,4 +731,4 @@ function Field({
 }
 
 const inputCls =
-  "w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:border-olympus-gold/50 focus:outline-none text-sm";
+  "w-full bg-white/[0.04] border border-ink/[0.08] rounded-lg px-3 py-2 text-white focus:border-accent-gold/50 focus:outline-none text-sm";

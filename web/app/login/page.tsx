@@ -46,26 +46,26 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="bg-pacame-black min-h-screen flex items-center justify-center relative overflow-hidden">
+    <div className="bg-paper min-h-screen flex items-center justify-center relative overflow-hidden">
       <ConstellationBackground />
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-electric-violet/[0.05] rounded-full blur-[200px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-brand-primary/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
       <ScrollReveal className="relative z-10 w-full max-w-sm px-4">
         <div className="text-center mb-8">
           <div className="w-14 h-14 rounded-2xl bg-brand-gradient flex items-center justify-center mx-auto mb-4 divine-entrance">
             <Zap className="w-7 h-7 text-white fill-white" />
           </div>
-          <h1 className="font-heading font-bold text-2xl text-pacame-white">PACAME Dashboard</h1>
-          <p className="text-sm text-pacame-white/60 font-body mt-1">Acceso restringido</p>
+          <h1 className="font-heading font-bold text-2xl text-ink">PACAME Dashboard</h1>
+          <p className="text-sm text-ink/60 font-body mt-1">Acceso restringido</p>
         </div>
 
         <CardTilt tiltMaxAngle={4}>
           <CardTiltContent className="rounded-2xl glass p-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs text-pacame-white/50 font-body mb-2">Password</label>
+                <label className="block text-xs text-ink/50 font-body mb-2">Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pacame-white/50" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/50" />
                   <input
                     type="password"
                     value={password}
@@ -73,7 +73,7 @@ export default function LoginPage() {
                     placeholder="Introduce el password"
                     required
                     autoFocus
-                    className="w-full h-12 pl-10 pr-4 rounded-xl bg-dark-card border border-white/[0.06] text-pacame-white font-body text-sm placeholder:text-pacame-white/50 input-premium outline-none"
+                    className="w-full h-12 pl-10 pr-4 rounded-xl bg-paper-deep border border-ink/[0.06] text-ink font-body text-sm placeholder:text-ink/50 input-premium outline-none"
                   />
                 </div>
               </div>
@@ -99,7 +99,7 @@ export default function LoginPage() {
                   gradientOpacity={0.8}
                   className="w-full h-12"
                 >
-                  <button type="submit" className="flex items-center gap-2 text-pacame-white w-full h-full justify-center font-medium">
+                  <button type="submit" className="flex items-center gap-2 text-ink w-full h-full justify-center font-medium">
                     Entrar
                     <ArrowRight className="w-4 h-4" />
                   </button>
@@ -109,7 +109,7 @@ export default function LoginPage() {
           </CardTiltContent>
         </CardTilt>
 
-        <p className="text-center text-[10px] text-pacame-white/50 font-body mt-6">
+        <p className="text-center text-[10px] text-ink/50 font-body mt-6">
           Solo Pablo tiene acceso a este panel.
         </p>
       </ScrollReveal>

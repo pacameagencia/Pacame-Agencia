@@ -98,7 +98,7 @@ export default function CheckoutButton({
           aria-labelledby="checkout-title"
           onClick={(e) => { if (e.target === e.currentTarget) setShowModal(false); }}
         >
-          <div className="relative w-full max-w-sm bg-[#141414] border border-white/[0.08] rounded-2xl p-7 shadow-2xl">
+          <div className="relative w-full max-w-sm bg-[#141414] border border-ink/[0.08] rounded-2xl p-7 shadow-2xl">
             {/* Close */}
             <button
               onClick={() => setShowModal(false)}
@@ -110,26 +110,26 @@ export default function CheckoutButton({
 
             {/* Header */}
             <div className="mb-6">
-              <h3 id="checkout-title" className="font-heading font-bold text-xl text-pacame-white mb-1">
+              <h3 id="checkout-title" className="font-heading font-bold text-xl text-ink mb-1">
                 Un paso mas
               </h3>
-              <p className="text-sm text-pacame-white/50 font-body">
+              <p className="text-sm text-ink/50 font-body">
                 Tu nombre y email para preparar el pago.
               </p>
             </div>
 
             {/* Summary */}
-            <div className="bg-white/[0.04] rounded-xl p-4 mb-6 border border-white/[0.06]">
+            <div className="bg-white/[0.04] rounded-xl p-4 mb-6 border border-ink/[0.06]">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-pacame-white/70 font-body">
+                <span className="text-sm text-ink/70 font-body">
                   {description || product}
                 </span>
-                <span className="font-heading font-bold text-lg text-pacame-white">
+                <span className="font-heading font-bold text-lg text-ink">
                   {amount}\u00A0\u20AC{recurring ? "/mes" : ""}
                 </span>
               </div>
               {recurring && (
-                <p className="text-xs text-pacame-white/30 mt-1 font-body">
+                <p className="text-xs text-ink/30 mt-1 font-body">
                   Cancela cuando quieras. Sin permanencia.
                 </p>
               )}
@@ -145,7 +145,7 @@ export default function CheckoutButton({
                   onChange={(e) => setName(e.target.value)}
                   required
                   minLength={2}
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white placeholder:text-pacame-white/25 font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors"
+                  className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink placeholder:text-ink/25 font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors"
                 />
               </div>
               <div>
@@ -155,12 +155,12 @@ export default function CheckoutButton({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-white/[0.08] text-pacame-white placeholder:text-pacame-white/25 font-body text-sm focus:outline-none focus:border-olympus-gold/50 transition-colors"
+                  className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border border-ink/[0.08] text-ink placeholder:text-ink/25 font-body text-sm focus:outline-none focus:border-accent-gold/50 transition-colors"
                 />
               </div>
 
               {error && (
-                <p className="text-rose-alert text-xs font-body" aria-live="polite">{error}</p>
+                <p className="text-accent-burgundy-soft text-xs font-body" aria-live="polite">{error}</p>
               )}
 
               <Button
@@ -186,18 +186,18 @@ export default function CheckoutButton({
 
             {/* Trust strip */}
             <div className="flex items-center justify-center gap-3 mt-4 pt-4 border-t border-white/[0.04]">
-              <Lock className="w-3.5 h-3.5 text-olympus-gold/30" />
-              <span className="text-[11px] text-pacame-white/25 font-body">Pago 100% seguro con Stripe</span>
+              <Lock className="w-3.5 h-3.5 text-accent-gold/30" />
+              <span className="text-[11px] text-ink/25 font-body">Pago 100% seguro con Stripe</span>
               <div className="flex items-center gap-1.5 ml-1">
                 {/* Visa */}
-                <svg width="24" height="16" viewBox="0 0 24 16" fill="none" className="text-pacame-white/15">
+                <svg width="24" height="16" viewBox="0 0 24 16" fill="none" className="text-ink/15">
                   <rect width="24" height="16" rx="2" stroke="currentColor" strokeWidth="0.8" />
                   <path d="M10.5 10.5L12 5.5L13.2 5.5L11.7 10.5H10.5Z" fill="currentColor" />
                   <path d="M9.5 5.5L7.5 10.5H8.7L9 9.5H10.5L10.7 10.5H11.8L10.5 5.5H9.5ZM9.3 8.7L9.8 7L10.2 8.7H9.3Z" fill="currentColor" />
                   <path d="M14 5.5V10.5H15V8.5L16.5 10.5H17.8L16 8.3L17.5 5.5H16.3L15 7.8V5.5H14Z" fill="currentColor" />
                 </svg>
                 {/* Mastercard */}
-                <svg width="24" height="16" viewBox="0 0 24 16" fill="none" className="text-pacame-white/15">
+                <svg width="24" height="16" viewBox="0 0 24 16" fill="none" className="text-ink/15">
                   <rect width="24" height="16" rx="2" stroke="currentColor" strokeWidth="0.8" />
                   <circle cx="10" cy="8" r="3.5" stroke="currentColor" strokeWidth="0.8" />
                   <circle cx="14" cy="8" r="3.5" stroke="currentColor" strokeWidth="0.8" />
@@ -206,11 +206,11 @@ export default function CheckoutButton({
             </div>
 
             {/* Alternative */}
-            <p className="text-center text-xs text-pacame-white/30 mt-4 font-body">
+            <p className="text-center text-xs text-ink/30 mt-4 font-body">
               Prefieres hablar primero?{" "}
               <Link
                 href="/contacto"
-                className="text-olympus-gold/70 hover:text-olympus-gold underline underline-offset-2"
+                className="text-accent-gold/70 hover:text-accent-gold underline underline-offset-2"
               >
                 Contactanos
               </Link>

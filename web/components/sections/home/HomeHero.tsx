@@ -67,7 +67,7 @@ export default function HomeHero() {
   const uptime = stats?.uptime_pct ?? 99.9;
 
   return (
-    <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-void-purple">
+    <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-ink">
       {/* Layered background — mesh + constellation para profundidad */}
       <GradientMeshCanvas
         colors={["#7C3AED", "#4338CA", "#06B6D4", "#D4A853"]}
@@ -85,10 +85,10 @@ export default function HomeHero() {
         <div className="max-w-4xl mx-auto text-center">
           {/* Eyebrow micro-badge */}
           <motion.div variants={itemVariants} className="mb-7 flex justify-center">
-            <span className="inline-flex items-center gap-2 text-[12px] font-body font-medium text-olympus-gold/80 bg-olympus-gold/8 border border-olympus-gold/20 rounded-full px-3.5 py-1.5 tracking-wide">
+            <span className="inline-flex items-center gap-2 text-[12px] font-body font-medium text-accent-gold/80 bg-accent-gold/8 border border-accent-gold/20 rounded-full px-3.5 py-1.5 tracking-wide">
               <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-pulse opacity-60" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-lime-pulse" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-60" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-mint" />
               </span>
               Plataforma operativa · 10 agentes + 120 subespecialistas
             </span>
@@ -97,7 +97,7 @@ export default function HomeHero() {
           {/* Headline — mix typography */}
           <motion.h1
             variants={itemVariants}
-            className="text-hero text-pacame-white text-balance mb-6"
+            className="text-hero text-ink text-balance mb-6"
           >
             <span className="font-accent font-bold block">
               Tu equipo digital.
@@ -110,7 +110,7 @@ export default function HomeHero() {
           {/* Sub-headline — conciso, under 20 words */}
           <motion.p
             variants={itemVariants}
-            className="text-xl sm:text-2xl text-pacame-white/55 max-w-2xl mx-auto mb-10 leading-relaxed font-body font-light text-balance"
+            className="text-xl sm:text-2xl text-ink/55 max-w-2xl mx-auto mb-10 leading-relaxed font-body font-light text-balance"
           >
             24 productos, 4 planes y 2 apps para PYMEs. Pago seguro, entrega en horas, garantia total.
           </motion.p>
@@ -127,7 +127,7 @@ export default function HomeHero() {
                 gradientOpacity={0.85}
                 className="group min-w-[220px] h-13 px-7 text-[15px] font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
               >
-                <Link href="/servicios" className="flex items-center gap-2 text-pacame-white">
+                <Link href="/servicios" className="flex items-center gap-2 text-ink">
                   Ver productos
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
@@ -137,7 +137,7 @@ export default function HomeHero() {
               variant="outline"
               size="lg"
               asChild
-              className="rounded-full min-w-[200px] h-13 border-white/[0.1] hover:border-olympus-gold/30 hover:bg-white/[0.03] text-[15px] transition-colors duration-500"
+              className="rounded-full min-w-[200px] h-13 border-ink/[0.1] hover:border-accent-gold/30 hover:bg-white/[0.03] text-[15px] transition-colors duration-500"
             >
               <Link href="/contacto">Hablar con Pablo</Link>
             </Button>
@@ -151,9 +151,9 @@ export default function HomeHero() {
             {trustBadges.map(({ label, Icon }) => (
               <div
                 key={label}
-                className="inline-flex items-center gap-1.5 text-[12px] text-pacame-white/40 font-body"
+                className="inline-flex items-center gap-1.5 text-[12px] text-ink/40 font-body"
               >
-                <Icon className="w-3.5 h-3.5 text-olympus-gold/50" />
+                <Icon className="w-3.5 h-3.5 text-accent-gold/50" />
                 <span>{label}</span>
               </div>
             ))}
@@ -162,7 +162,7 @@ export default function HomeHero() {
           {/* Stats row live — grid compacto */}
           <motion.div
             variants={itemVariants}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-olympus-gold/10 rounded-2xl overflow-hidden border border-olympus-gold/15 max-w-3xl mx-auto backdrop-blur-sm"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-accent-gold/10 rounded-2xl overflow-hidden border border-accent-gold/15 max-w-3xl mx-auto backdrop-blur-sm"
           >
             {[
               { value: monthDelivered, label: "Entregados este mes", suffix: "+" },
@@ -172,14 +172,14 @@ export default function HomeHero() {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="relative bg-pacame-black/80 p-4 sm:p-5 text-center"
+                className="relative bg-ink/80 p-4 sm:p-5 text-center"
               >
-                <div className="font-heading font-bold text-2xl sm:text-3xl text-pacame-white mb-0.5 tabular-nums">
+                <div className="font-heading font-bold text-2xl sm:text-3xl text-ink mb-0.5 tabular-nums">
                   {stat.decimals ? (
                     // Para decimales, formateamos fijo (no CountUp)
                     <>
                       {stat.value}
-                      <span className="text-olympus-gold ml-0.5">{stat.suffix}</span>
+                      <span className="text-accent-gold ml-0.5">{stat.suffix}</span>
                     </>
                   ) : (
                     <CountUpNumber
@@ -189,7 +189,7 @@ export default function HomeHero() {
                     />
                   )}
                 </div>
-                <div className="text-[11px] text-pacame-white/45 font-body uppercase tracking-wider">
+                <div className="text-[11px] text-ink/45 font-body uppercase tracking-wider">
                   {stat.label}
                 </div>
               </div>
@@ -199,7 +199,7 @@ export default function HomeHero() {
       </motion.div>
 
       {/* Fade bottom suave */}
-      <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-pacame-black to-transparent z-[1] pointer-events-none" />
+      <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-paper to-transparent z-[1] pointer-events-none" />
     </section>
   );
 }

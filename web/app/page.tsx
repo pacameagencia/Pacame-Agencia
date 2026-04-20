@@ -64,7 +64,7 @@ export default function HomePage() {
       <StatsFatBar />
 
       {/* Separador dorado */}
-      <div className="px-6 bg-pacame-black">
+      <div className="px-6 bg-paper">
         <div className="max-w-5xl mx-auto">
           <GoldenDivider variant="star" />
         </div>

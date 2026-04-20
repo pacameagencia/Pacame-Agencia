@@ -62,10 +62,10 @@ export default function TrustBadges({ variant = "footer" }: TrustBadgesProps) {
         <div
           key={badge.label}
           className={`flex flex-col items-center gap-1.5 group ${
-            isFooter ? "text-pacame-white/25 hover:text-pacame-white/45" : "text-pacame-white/35 hover:text-pacame-white/55"
+            isFooter ? "text-ink/25 hover:text-ink/45" : "text-ink/35 hover:text-ink/55"
           } transition-colors duration-300`}
         >
-          <div className={isFooter ? "text-olympus-gold/30 group-hover:text-olympus-gold/50 transition-colors duration-300" : "text-olympus-gold/40 group-hover:text-olympus-gold/60 transition-colors duration-300"}>
+          <div className={isFooter ? "text-accent-gold/30 group-hover:text-accent-gold/50 transition-colors duration-300" : "text-accent-gold/40 group-hover:text-accent-gold/60 transition-colors duration-300"}>
             {badge.icon}
           </div>
           <span className={`font-body leading-tight text-center ${isFooter ? "text-[10px]" : "text-xs"}`}>

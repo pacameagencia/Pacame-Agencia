@@ -125,8 +125,8 @@ export default function ClientsPage() {
     <div className="space-y-6 max-w-7xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading font-bold text-2xl text-pacame-white">Clientes</h1>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">
+          <h1 className="font-heading font-bold text-2xl text-ink">Clientes</h1>
+          <p className="text-sm text-ink/40 font-body mt-1">
             {loading ? "Cargando..." : `${clients.length} total · ${activeCount} activos · MRR: ${mrr.toLocaleString("es-ES")}€`}
           </p>
         </div>
@@ -142,12 +142,12 @@ export default function ClientsPage() {
             key={f.key}
             onClick={() => setFilter(f.key)}
             className={`text-xs px-3 py-1.5 rounded-lg font-body transition-colors ${
-              filter === f.key ? "bg-electric-violet/20 text-electric-violet" : "bg-white/[0.04] text-pacame-white/50 hover:text-pacame-white/70"
+              filter === f.key ? "bg-brand-primary/20 text-brand-primary" : "bg-white/[0.04] text-ink/50 hover:text-ink/70"
             }`}
           >
             {f.label}
             {f.key !== "all" && (
-              <span className="ml-1 text-pacame-white/30">
+              <span className="ml-1 text-ink/30">
                 {clients.filter((c) => c.status === f.key).length}
               </span>
             )}
@@ -157,10 +157,10 @@ export default function ClientsPage() {
 
       {/* Form */}
       {showForm && (
-        <form onSubmit={handleSubmit} className="rounded-2xl bg-dark-card border border-electric-violet/30 p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="rounded-2xl bg-paper-deep border border-brand-primary/30 p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="font-heading font-semibold text-pacame-white">{editingId ? "Editar cliente" : "Nuevo cliente"}</h2>
-            <button type="button" onClick={cancelForm} className="text-pacame-white/30 hover:text-pacame-white/60">
+            <h2 className="font-heading font-semibold text-ink">{editingId ? "Editar cliente" : "Nuevo cliente"}</h2>
+            <button type="button" onClick={cancelForm} className="text-ink/30 hover:text-ink/60">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -168,36 +168,36 @@ export default function ClientsPage() {
             <input
               required placeholder="Nombre contacto *"
               value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
             <input
               required placeholder="Nombre negocio *"
               value={form.business_name} onChange={(e) => setForm({ ...form, business_name: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
             <input
               type="email" placeholder="Email"
               value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
             <input
               placeholder="Telefono"
               value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
             <input
               placeholder="Web"
               value={form.website} onChange={(e) => setForm({ ...form, website: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
             <input
               placeholder="Tipo de negocio"
               value={form.business_type} onChange={(e) => setForm({ ...form, business_type: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
             <select
               value={form.plan} onChange={(e) => setForm({ ...form, plan: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body focus:border-brand-primary/50 outline-none"
             >
               <option value="" className="bg-dark-bg">Plan</option>
               {planOptions.map((p) => (
@@ -207,21 +207,21 @@ export default function ClientsPage() {
             <input
               type="number" placeholder="Fee mensual (€)" step="0.01"
               value={form.monthly_fee} onChange={(e) => setForm({ ...form, monthly_fee: e.target.value })}
-              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none"
+              className="px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none"
             />
           </div>
           <textarea
             placeholder="Notas internas"
             value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })}
             rows={2}
-            className="w-full px-3 py-2 rounded-lg bg-white/[0.05] border border-white/[0.08] text-sm text-pacame-white font-body placeholder:text-pacame-white/30 focus:border-electric-violet/50 outline-none resize-none"
+            className="w-full px-3 py-2 rounded-lg bg-white/[0.05] border border-ink/[0.08] text-sm text-ink font-body placeholder:text-ink/30 focus:border-brand-primary/50 outline-none resize-none"
           />
           <div className="flex gap-3">
             <Button type="submit" variant="gradient" size="sm" disabled={saving}>
               {saving ? "Guardando..." : editingId ? "Guardar cambios" : "Crear cliente"}
             </Button>
             {editingId && (
-              <button type="button" onClick={cancelForm} className="text-xs text-pacame-white/40 hover:text-pacame-white/60 font-body">
+              <button type="button" onClick={cancelForm} className="text-xs text-ink/40 hover:text-ink/60 font-body">
                 Cancelar
               </button>
             )}
@@ -232,12 +232,12 @@ export default function ClientsPage() {
       {/* Client list */}
       <div className="space-y-3">
         {!loading && filtered.length === 0 && (
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
-            <Users className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
-            <p className="text-sm text-pacame-white/40 font-body">
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-12 text-center">
+            <Users className="w-8 h-8 text-ink/20 mx-auto mb-3" />
+            <p className="text-sm text-ink/40 font-body">
               {filter === "all" ? "Sin clientes aun" : `Sin clientes con estado "${statusLabels[filter]?.label || filter}"`}
             </p>
-            <p className="text-xs text-pacame-white/50 font-body mt-1">
+            <p className="text-xs text-ink/50 font-body mt-1">
               {filter === "all" ? "Anade tu primer cliente para empezar" : "Cambia el filtro para ver otros clientes"}
             </p>
           </div>
@@ -245,11 +245,11 @@ export default function ClientsPage() {
         {filtered.map((client) => {
           const st = statusLabels[client.status] || { label: client.status, color: "#6B7280" };
           return (
-            <div key={client.id} className="group rounded-2xl bg-dark-card border border-white/[0.06] hover:border-white/10 p-5 transition-all">
+            <div key={client.id} className="group rounded-2xl bg-paper-deep border border-ink/[0.06] hover:border-white/10 p-5 transition-all">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-heading font-semibold text-pacame-white">{client.business_name}</h3>
+                    <h3 className="font-heading font-semibold text-ink">{client.business_name}</h3>
 
                     {/* Status dropdown */}
                     <div className="relative">
@@ -262,7 +262,7 @@ export default function ClientsPage() {
                         <ChevronDown className="w-3 h-3" />
                       </button>
                       {statusDropdownId === client.id && (
-                        <div className="absolute top-full left-0 mt-1 rounded-lg bg-dark-card border border-white/[0.1] shadow-xl z-10 overflow-hidden min-w-[120px]">
+                        <div className="absolute top-full left-0 mt-1 rounded-lg bg-paper-deep border border-ink/[0.1] shadow-xl z-10 overflow-hidden min-w-[120px]">
                           {Object.entries(statusLabels).map(([key, val]) => (
                             <button
                               key={key}
@@ -281,38 +281,38 @@ export default function ClientsPage() {
                     </div>
 
                     {client.plan && (
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-electric-violet/10 text-electric-violet/70 font-body">{client.plan}</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-brand-primary/10 text-brand-primary/70 font-body">{client.plan}</span>
                     )}
                   </div>
                   <div className="flex items-center gap-4 flex-wrap">
-                    <span className="flex items-center gap-1.5 text-xs text-pacame-white/50 font-body">
+                    <span className="flex items-center gap-1.5 text-xs text-ink/50 font-body">
                       <Building2 className="w-3 h-3" />{client.name}
                     </span>
                     {client.email && (
-                      <a href={`mailto:${client.email}`} className="flex items-center gap-1.5 text-xs text-pacame-white/50 hover:text-electric-violet/70 font-body transition-colors">
+                      <a href={`mailto:${client.email}`} className="flex items-center gap-1.5 text-xs text-ink/50 hover:text-brand-primary/70 font-body transition-colors">
                         <Mail className="w-3 h-3" />{client.email}
                       </a>
                     )}
                     {client.phone && (
-                      <a href={`tel:${client.phone}`} className="flex items-center gap-1.5 text-xs text-pacame-white/50 hover:text-electric-violet/70 font-body transition-colors">
+                      <a href={`tel:${client.phone}`} className="flex items-center gap-1.5 text-xs text-ink/50 hover:text-brand-primary/70 font-body transition-colors">
                         <Phone className="w-3 h-3" />{client.phone}
                       </a>
                     )}
                     {client.website && (
-                      <a href={client.website.startsWith("http") ? client.website : `https://${client.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-pacame-white/50 hover:text-electric-violet/70 font-body transition-colors">
+                      <a href={client.website.startsWith("http") ? client.website : `https://${client.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-ink/50 hover:text-brand-primary/70 font-body transition-colors">
                         <Globe className="w-3 h-3" />{client.website}
                       </a>
                     )}
                   </div>
                   {client.notes && (
-                    <p className="text-xs text-pacame-white/30 font-body mt-2 italic">{client.notes}</p>
+                    <p className="text-xs text-ink/30 font-body mt-2 italic">{client.notes}</p>
                   )}
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0">
                   {client.monthly_fee > 0 && (
                     <div className="text-right">
-                      <div className="text-sm font-heading font-bold text-lime-pulse">{Number(client.monthly_fee).toLocaleString("es-ES")}€</div>
-                      <div className="text-[11px] text-pacame-white/40 font-body">/mes</div>
+                      <div className="text-sm font-heading font-bold text-mint">{Number(client.monthly_fee).toLocaleString("es-ES")}€</div>
+                      <div className="text-[11px] text-ink/40 font-body">/mes</div>
                     </div>
                   )}
                   {/* Action buttons */}
@@ -322,7 +322,7 @@ export default function ClientsPage() {
                       className="p-1.5 rounded-lg hover:bg-white/[0.08] transition-colors"
                       title="Editar"
                     >
-                      <Edit3 className="w-3.5 h-3.5 text-pacame-white/40" />
+                      <Edit3 className="w-3.5 h-3.5 text-ink/40" />
                     </button>
                     <button
                       onClick={() => deleteClient(client.id)}

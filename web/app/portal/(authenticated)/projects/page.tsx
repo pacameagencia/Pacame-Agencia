@@ -44,7 +44,7 @@ export default function ProjectsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-electric-violet" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
       </div>
     );
   }
@@ -52,10 +52,10 @@ export default function ProjectsPage() {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-        <p className="text-pacame-white/60 font-body mb-4">{error}</p>
+        <p className="text-ink/60 font-body mb-4">{error}</p>
         <button
           onClick={() => { setLoading(true); setError(null); fetchMilestones(); }}
-          className="text-sm text-electric-violet font-body hover:underline"
+          className="text-sm text-brand-primary font-body hover:underline"
         >
           Reintentar
         </button>
@@ -80,16 +80,16 @@ export default function ProjectsPage() {
       <ScrollReveal>
         <div className="flex items-center gap-3 mb-1">
           <FolderKanban className="w-6 h-6" style={{ color: primaryColor }} />
-          <h1 className="font-heading font-bold text-2xl text-pacame-white">Proyectos</h1>
+          <h1 className="font-heading font-bold text-2xl text-ink">Proyectos</h1>
         </div>
-        <p className="text-sm text-pacame-white/50 font-body">
+        <p className="text-sm text-ink/50 font-body">
           Seguimiento detallado de los hitos de tu proyecto
         </p>
       </ScrollReveal>
 
       {/* Stats + Progress */}
       <ScrollReveal delay={0.05}>
-        <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-6">
+        <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-6">
           <div className="flex flex-col sm:flex-row items-center gap-8">
             <ProgressRing
               percentage={completionPct}
@@ -100,24 +100,24 @@ export default function ProjectsPage() {
             <div className="grid grid-cols-3 gap-6 flex-1">
               <div className="text-center">
                 <div className="flex items-center justify-center gap-1.5 mb-1">
-                  <CheckCircle2 className="w-4 h-4 text-lime-pulse" />
-                  <span className="font-heading font-bold text-xl text-lime-pulse">{completed}</span>
+                  <CheckCircle2 className="w-4 h-4 text-mint" />
+                  <span className="font-heading font-bold text-xl text-mint">{completed}</span>
                 </div>
-                <p className="text-[11px] text-pacame-white/40 font-body">Completados</p>
+                <p className="text-[11px] text-ink/40 font-body">Completados</p>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center gap-1.5 mb-1">
-                  <Clock className="w-4 h-4 text-olympus-gold" />
-                  <span className="font-heading font-bold text-xl text-olympus-gold">{inProgress}</span>
+                  <Clock className="w-4 h-4 text-accent-gold" />
+                  <span className="font-heading font-bold text-xl text-accent-gold">{inProgress}</span>
                 </div>
-                <p className="text-[11px] text-pacame-white/40 font-body">En progreso</p>
+                <p className="text-[11px] text-ink/40 font-body">En progreso</p>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center gap-1.5 mb-1">
-                  <Circle className="w-4 h-4 text-pacame-white/30" />
-                  <span className="font-heading font-bold text-xl text-pacame-white/50">{pending}</span>
+                  <Circle className="w-4 h-4 text-ink/30" />
+                  <span className="font-heading font-bold text-xl text-ink/50">{pending}</span>
                 </div>
-                <p className="text-[11px] text-pacame-white/40 font-body">Pendientes</p>
+                <p className="text-[11px] text-ink/40 font-body">Pendientes</p>
               </div>
             </div>
           </div>
@@ -126,8 +126,8 @@ export default function ProjectsPage() {
 
       {/* Full timeline */}
       <ScrollReveal delay={0.1}>
-        <div className="bg-dark-card border border-white/[0.06] rounded-2xl p-6">
-          <h2 className="font-heading font-bold text-lg text-pacame-white mb-6">
+        <div className="bg-paper-deep border border-ink/[0.06] rounded-2xl p-6">
+          <h2 className="font-heading font-bold text-lg text-ink mb-6">
             Linea de tiempo completa
           </h2>
           <ProjectTimeline milestones={milestones} primaryColor={primaryColor} />

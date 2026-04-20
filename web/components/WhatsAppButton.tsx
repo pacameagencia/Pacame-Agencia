@@ -18,7 +18,7 @@ export default function WhatsAppButton() {
     >
       <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
       {/* Tooltip */}
-      <span className="absolute right-full mr-3 px-3 py-1.5 rounded-lg bg-dark-card border border-white/10 text-xs text-pacame-white font-body whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+      <span className="absolute right-full mr-3 px-3 py-1.5 rounded-lg bg-paper-deep border border-white/10 text-xs text-ink font-body whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
         Escríbenos por WhatsApp
       </span>
     </a>

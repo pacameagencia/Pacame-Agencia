@@ -87,21 +87,21 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="min-h-screen bg-pacame-black flex">
+    <div className="min-h-screen bg-paper flex">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-dark-elevated border-r border-white/[0.06] transform transition-transform duration-200 lg:relative lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-paper-soft border-r border-ink/[0.06] transform transition-transform duration-200 lg:relative lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between h-16 px-5 border-b border-white/[0.06]">
+        <div className="flex items-center justify-between h-16 px-5 border-b border-ink/[0.06]">
           <Link href="/dashboard" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-brand-gradient flex items-center justify-center">
               <span className="text-white font-heading font-bold text-sm">P</span>
             </div>
-            <span className="font-heading font-bold text-pacame-white text-lg">PACAME</span>
+            <span className="font-heading font-bold text-ink text-lg">PACAME</span>
           </Link>
-          <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-pacame-white/50">
+          <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-ink/50">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -116,8 +116,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-body transition-all ${
                   isActive
-                    ? "bg-electric-violet/15 text-electric-violet font-medium"
-                    : "text-pacame-white/50 hover:text-pacame-white/80 hover:bg-white/[0.04]"
+                    ? "bg-brand-primary/15 text-brand-primary font-medium"
+                    : "text-ink/50 hover:text-ink/80 hover:bg-white/[0.04]"
                 }`}
               >
                 <item.icon className="w-4.5 h-4.5" />
@@ -132,17 +132,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           })}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/[0.06] space-y-2">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-ink/[0.06] space-y-2">
           <Link
             href="/"
-            className="flex items-center gap-2 text-xs text-pacame-white/30 hover:text-pacame-white/50 transition-colors font-body"
+            className="flex items-center gap-2 text-xs text-ink/30 hover:text-ink/50 transition-colors font-body"
           >
             <ChevronLeft className="w-3.5 h-3.5" />
             Volver a la web
           </Link>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 text-xs text-pacame-white/20 hover:text-red-400/70 transition-colors font-body"
+            className="flex items-center gap-2 text-xs text-ink/20 hover:text-red-400/70 transition-colors font-body"
           >
             <LogOut className="w-3.5 h-3.5" />
             Cerrar sesion
@@ -158,8 +158,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar */}
-        <header className="h-16 border-b border-white/[0.06] flex items-center px-4 lg:px-8 gap-4 bg-dark-elevated/50 backdrop-blur-sm sticky top-0 z-30">
-          <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-pacame-white/50">
+        <header className="h-16 border-b border-ink/[0.06] flex items-center px-4 lg:px-8 gap-4 bg-paper-soft/50 backdrop-blur-sm sticky top-0 z-30">
+          <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-ink/50">
             <Menu className="w-5 h-5" />
           </button>
           <div className="flex-1" />
@@ -167,15 +167,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             href="/dashboard/notifications"
             className="relative p-2 rounded-lg hover:bg-white/[0.04] transition-colors"
           >
-            <Bell className="w-4.5 h-4.5 text-pacame-white/40" />
+            <Bell className="w-4.5 h-4.5 text-ink/40" />
             {unreadCount > 0 && (
               <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold font-body px-1">
                 {unreadCount > 99 ? "99+" : unreadCount}
               </span>
             )}
           </Link>
-          <div className="flex items-center gap-2 text-xs text-pacame-white/40 font-body">
-            <div className="w-2 h-2 rounded-full bg-lime-pulse animate-pulse" />
+          <div className="flex items-center gap-2 text-xs text-ink/40 font-body">
+            <div className="w-2 h-2 rounded-full bg-mint animate-pulse" />
             Sistema operativo
           </div>
         </header>

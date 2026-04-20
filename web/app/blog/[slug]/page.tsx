@@ -83,7 +83,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const shareUrl = `https://pacameagencia.com/blog/${slug}`;
 
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       <ReadingProgress color={post.color} />
       <BreadcrumbJsonLd
         items={[
@@ -138,7 +138,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <nav aria-label="Breadcrumb" className="mb-8">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-sm text-pacame-white/50 hover:text-olympus-gold font-body transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-ink/50 hover:text-accent-gold font-body transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Volver al blog
@@ -157,25 +157,25 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               >
                 {post.category}
               </span>
-              <div className="flex items-center gap-1.5 text-xs text-pacame-white/50 font-body">
+              <div className="flex items-center gap-1.5 text-xs text-ink/50 font-body">
                 <Clock className="w-3 h-3" />
                 {readTimeLabel} de lectura
               </div>
-              <div className="flex items-center gap-1.5 text-xs text-pacame-white/50 font-body">
+              <div className="flex items-center gap-1.5 text-xs text-ink/50 font-body">
                 <Calendar className="w-3 h-3" />
                 {post.date}
               </div>
             </div>
 
-            <h1 className="font-heading font-bold text-display text-pacame-white mb-6 text-balance leading-tight">
+            <h1 className="font-heading font-bold text-display text-ink mb-6 text-balance leading-tight">
               {post.title}
             </h1>
 
-            <p className="text-xl text-pacame-white/70 font-body font-light mb-8 leading-relaxed">
+            <p className="text-xl text-ink/70 font-body font-light mb-8 leading-relaxed">
               {post.excerpt}
             </p>
 
-            <div className="flex items-center justify-between pb-8 border-b border-white/[0.06]">
+            <div className="flex items-center justify-between pb-8 border-b border-ink/[0.06]">
               <div className="flex items-center gap-3">
                 <span
                   className="w-10 h-10 rounded-full flex items-center justify-center text-base font-bold font-heading"
@@ -188,10 +188,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   {post.agentName[0]}
                 </span>
                 <div>
-                  <p className="text-sm text-pacame-white font-body font-medium">
+                  <p className="text-sm text-ink font-body font-medium">
                     {post.agentName}
                   </p>
-                  <p className="text-xs text-pacame-white/50 font-body">
+                  <p className="text-xs text-ink/50 font-body">
                     Agente IA de PACAME
                   </p>
                 </div>
@@ -204,7 +204,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {/* Cover visual — gradient con la categoria si no hay imagen real */}
         <div className="max-w-6xl mx-auto px-6 mb-16">
           <div
-            className="relative w-full aspect-[21/9] rounded-3xl overflow-hidden border border-white/[0.06]"
+            className="relative w-full aspect-[21/9] rounded-3xl overflow-hidden border border-ink/[0.06]"
             style={{
               background: `linear-gradient(135deg, ${post.color}30 0%, #141414 50%, ${post.color}20 100%)`,
             }}
@@ -239,14 +239,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {/* CTA final fuerte */}
             <ScrollReveal>
               <CardTilt tiltMaxAngle={4}>
-                <CardTiltContent className="mt-10 rounded-3xl bg-gradient-to-br from-olympus-gold/10 via-dark-card to-electric-violet/10 border border-olympus-gold/20 p-10 text-center card-golden-shine">
-                  <p className="text-[11px] uppercase tracking-[0.25em] text-olympus-gold font-body font-medium mb-4">
+                <CardTiltContent className="mt-10 rounded-3xl bg-gradient-to-br from-accent-gold/10 via-dark-card to-brand-primary/10 border border-accent-gold/20 p-10 text-center card-golden-shine">
+                  <p className="text-[11px] uppercase tracking-[0.25em] text-accent-gold font-body font-medium mb-4">
                     Del blog al producto
                   </p>
-                  <h3 className="font-heading font-bold text-2xl md:text-3xl text-pacame-white mb-4 text-balance">
+                  <h3 className="font-heading font-bold text-2xl md:text-3xl text-ink mb-4 text-balance">
                     Te gusta lo que lees? Ahora pruebalo con tu negocio.
                   </h3>
-                  <p className="text-base text-pacame-white/60 font-body mb-8 max-w-xl mx-auto">
+                  <p className="text-base text-ink/60 font-body mb-8 max-w-xl mx-auto">
                     Diagnostico digital gratuito. Te decimos que necesitas,
                     cuanto cuesta y lo entregamos en menos de 10 dias.
                   </p>
@@ -257,7 +257,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                       gradientOpacity={0.8}
                       className="min-w-[280px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
                     >
-                      <Link href="/servicios" className="flex items-center gap-2 text-pacame-white">
+                      <Link href="/servicios" className="flex items-center gap-2 text-ink">
                         Ver servicios PACAME
                         <ArrowRight className="w-4 h-4" />
                       </Link>
@@ -275,8 +275,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
               {/* Related posts */}
               {related.length > 0 && (
-                <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
-                  <p className="uppercase tracking-[0.2em] text-[11px] text-olympus-gold/70 font-body font-medium mb-4">
+                <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5">
+                  <p className="uppercase tracking-[0.2em] text-[11px] text-accent-gold/70 font-body font-medium mb-4">
                     Seguir leyendo
                   </p>
                   <ul className="space-y-4">
@@ -292,10 +292,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                           >
                             {rp.category}
                           </span>
-                          <h4 className="font-heading font-semibold text-sm text-pacame-white/90 group-hover:text-olympus-gold transition-colors leading-snug line-clamp-2">
+                          <h4 className="font-heading font-semibold text-sm text-ink/90 group-hover:text-accent-gold transition-colors leading-snug line-clamp-2">
                             {rp.title}
                           </h4>
-                          <p className="text-[11px] text-pacame-white/40 font-body mt-1 flex items-center gap-1">
+                          <p className="text-[11px] text-ink/40 font-body mt-1 flex items-center gap-1">
                             <Clock className="w-3 h-3" />
                             {rp.readTime}
                           </p>
@@ -307,8 +307,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               )}
 
               {/* Share vertical */}
-              <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
-                <p className="uppercase tracking-[0.2em] text-[11px] text-olympus-gold/70 font-body font-medium mb-4">
+              <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5">
+                <p className="uppercase tracking-[0.2em] text-[11px] text-accent-gold/70 font-body font-medium mb-4">
                   Compartir articulo
                 </p>
                 <ShareButtons url={shareUrl} title={post.title} />
@@ -319,9 +319,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         {/* Related mobile */}
         {related.length > 0 && (
-          <div className="lg:hidden max-w-3xl mx-auto px-6 mt-16 pt-10 border-t border-white/[0.06]">
+          <div className="lg:hidden max-w-3xl mx-auto px-6 mt-16 pt-10 border-t border-ink/[0.06]">
             <ScrollReveal>
-              <h3 className="font-heading font-bold text-xl text-pacame-white mb-6">
+              <h3 className="font-heading font-bold text-xl text-ink mb-6">
                 Articulos relacionados
               </h3>
             </ScrollReveal>
@@ -330,7 +330,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 <Link
                   key={rp.slug}
                   href={`/blog/${rp.slug}`}
-                  className="group block rounded-xl bg-dark-card border border-white/[0.06] p-5 hover:border-olympus-gold/20 transition-all"
+                  className="group block rounded-xl bg-paper-deep border border-ink/[0.06] p-5 hover:border-accent-gold/20 transition-all"
                 >
                   <span
                     className="text-[10px] px-2 py-0.5 rounded-full font-body font-medium inline-block mb-3"
@@ -341,10 +341,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   >
                     {rp.category}
                   </span>
-                  <h4 className="font-heading font-semibold text-sm text-pacame-white group-hover:text-olympus-gold transition-colors line-clamp-2 mb-2">
+                  <h4 className="font-heading font-semibold text-sm text-ink group-hover:text-accent-gold transition-colors line-clamp-2 mb-2">
                     {rp.title}
                   </h4>
-                  <p className="text-xs text-pacame-white/60 font-body flex items-center gap-1.5">
+                  <p className="text-xs text-ink/60 font-body flex items-center gap-1.5">
                     <Clock className="w-3 h-3" />
                     {rp.readTime}
                   </p>

@@ -127,7 +127,7 @@ export default function OutreachDashboard() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-3">
-            <Target className="w-7 h-7 text-olympus-gold" />
+            <Target className="w-7 h-7 text-accent-gold" />
             Outreach autonomo
           </h1>
           <p className="text-white/60 text-sm mt-1">
@@ -137,7 +137,7 @@ export default function OutreachDashboard() {
         <button
           onClick={triggerRun}
           disabled={running}
-          className="inline-flex items-center gap-2 bg-olympus-gold text-black font-semibold px-5 py-2.5 rounded-xl hover:bg-olympus-gold/90 disabled:opacity-50 transition"
+          className="inline-flex items-center gap-2 bg-accent-gold text-black font-semibold px-5 py-2.5 rounded-xl hover:bg-accent-gold/90 disabled:opacity-50 transition"
         >
           {running ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
           {running ? "Ejecutando…" : "Ejecutar ahora"}
@@ -145,7 +145,7 @@ export default function OutreachDashboard() {
       </div>
 
       {runMessage && (
-        <div className="mb-6 rounded-xl p-3 bg-olympus-gold/10 border border-olympus-gold/20 text-olympus-gold text-sm font-body">
+        <div className="mb-6 rounded-xl p-3 bg-accent-gold/10 border border-accent-gold/20 text-accent-gold text-sm font-body">
           {runMessage}
         </div>
       )}
@@ -163,7 +163,7 @@ export default function OutreachDashboard() {
 
       {/* Pipeline */}
       {summary && summary.by_status && Object.keys(summary.by_status).length > 0 && (
-        <div className="mb-8 rounded-2xl p-5 bg-white/[0.03] border border-white/[0.06]">
+        <div className="mb-8 rounded-2xl p-5 bg-white/[0.03] border border-ink/[0.06]">
           <h2 className="font-heading font-semibold text-lg mb-3">Pipeline por estado</h2>
           <div className="flex flex-wrap gap-2">
             {Object.entries(summary.by_status)
@@ -185,7 +185,7 @@ export default function OutreachDashboard() {
 
       {/* Niche breakdown */}
       {Object.keys(nicheStats).length > 0 && (
-        <div className="mb-8 rounded-2xl p-5 bg-white/[0.03] border border-white/[0.06]">
+        <div className="mb-8 rounded-2xl p-5 bg-white/[0.03] border border-ink/[0.06]">
           <h2 className="font-heading font-semibold text-lg mb-4">Por nicho</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {Object.entries(nicheStats)
@@ -228,11 +228,11 @@ export default function OutreachDashboard() {
       {loading ? (
         <p className="text-white/50">Cargando…</p>
       ) : campaigns.length === 0 ? (
-        <div className="rounded-2xl p-8 bg-white/[0.03] border border-white/[0.06] text-center text-white/60">
+        <div className="rounded-2xl p-8 bg-white/[0.03] border border-ink/[0.06] text-center text-white/60">
           Aun no hay campanas. Click <strong>Ejecutar ahora</strong> para arrancar.
         </div>
       ) : (
-        <div className="rounded-2xl border border-white/[0.06] overflow-hidden mb-8">
+        <div className="rounded-2xl border border-ink/[0.06] overflow-hidden mb-8">
           <table className="w-full text-sm">
             <thead className="bg-white/[0.03] text-xs uppercase text-white/50">
               <tr>
@@ -283,7 +283,7 @@ export default function OutreachDashboard() {
 
       {/* Recent leads */}
       <h2 className="font-heading font-semibold text-lg mb-3">Leads recientes</h2>
-      <div className="rounded-2xl border border-white/[0.06] overflow-hidden">
+      <div className="rounded-2xl border border-ink/[0.06] overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-white/[0.03] text-xs uppercase text-white/50">
             <tr>
@@ -331,7 +331,7 @@ function Kpi({
   icon: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl p-4 bg-white/[0.03] border border-white/[0.06]">
+    <div className="rounded-2xl p-4 bg-white/[0.03] border border-ink/[0.06]">
       <div className="flex items-center gap-2 text-white/50 text-xs mb-1">
         {icon}
         {label}

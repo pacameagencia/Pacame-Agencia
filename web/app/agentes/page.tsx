@@ -90,21 +90,21 @@ export default function AgentesPage() {
   const hasFilters = searchQuery || activeDivision || activeParent;
 
   return (
-    <div className="min-h-screen bg-pacame-black">
+    <div className="min-h-screen bg-paper">
       {/* ===== HERO ===== */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         {/* Background effects */}
         <div className="absolute inset-0 bg-grid opacity-40" />
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-hero-glow opacity-50 pointer-events-none" />
-        <div className="absolute top-40 right-10 w-72 h-72 bg-neon-cyan/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-10 w-96 h-96 bg-electric-violet/10 rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute top-40 right-10 w-72 h-72 bg-mint/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-10 w-96 h-96 bg-brand-primary/10 rounded-full blur-[150px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-olympus-gold/10 border border-olympus-gold/20 mb-8">
-              <Zap className="w-4 h-4 text-olympus-gold" />
-              <span className="text-sm font-mono text-olympus-gold">Catalogo de Agentes IA</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-gold/10 border border-accent-gold/20 mb-8">
+              <Zap className="w-4 h-4 text-accent-gold" />
+              <span className="text-sm font-mono text-accent-gold">Catalogo de Agentes IA</span>
             </div>
 
             {/* Counter */}
@@ -114,23 +114,23 @@ export default function AgentesPage() {
               </span>
             </div>
 
-            <h1 className="font-accent font-bold text-hero text-pacame-white mb-6">
+            <h1 className="font-accent font-bold text-hero text-ink mb-6">
               Especialistas IA a tu servicio
             </h1>
-            <p className="text-lg md:text-xl text-pacame-white/60 max-w-3xl mx-auto font-body mb-10">
+            <p className="text-lg md:text-xl text-ink/60 max-w-3xl mx-auto font-body mb-10">
               7 agentes PACAME principales + {agencyAgents.length} sub-especialistas organizados en {divisions.length} divisiones.
               Cada uno domina su campo. Todos trabajan para ti.
             </p>
 
             {/* Search bar */}
             <div className="max-w-2xl mx-auto relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pacame-white/50" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink/50" />
               <input
                 type="text"
                 placeholder="Buscar agentes... (ej: SEO, React, TikTok, Security)"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-dark-card border border-white/[0.08] rounded-2xl text-pacame-white placeholder-pacame-white/30 font-body focus:outline-none focus:border-olympus-gold/50 focus:ring-1 focus:ring-olympus-gold/30 transition-all"
+                className="w-full pl-12 pr-4 py-4 bg-paper-deep border border-ink/[0.08] rounded-2xl text-ink placeholder-ink/30 font-body focus:outline-none focus:border-accent-gold/50 focus:ring-1 focus:ring-accent-gold/30 transition-all"
                 id="agent-search"
               />
               {searchQuery && (
@@ -138,7 +138,7 @@ export default function AgentesPage() {
                   onClick={() => setSearchQuery("")}
                   className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-lg hover:bg-white/10 transition-colors"
                 >
-                  <X className="w-4 h-4 text-pacame-white/50" />
+                  <X className="w-4 h-4 text-ink/50" />
                 </button>
               )}
             </div>
@@ -147,14 +147,14 @@ export default function AgentesPage() {
       </section>
 
       {/* ===== PACAME CORE AGENTS ===== */}
-      <section className="py-12 border-t border-b border-white/[0.06]">
+      <section className="py-12 border-t border-b border-ink/[0.06]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-8">
-            <Users className="w-5 h-5 text-olympus-gold" />
-            <h2 className="font-heading font-bold text-xl text-pacame-white">
+            <Users className="w-5 h-5 text-accent-gold" />
+            <h2 className="font-heading font-bold text-xl text-ink">
               El Panteon PACAME
             </h2>
-            <span className="text-sm font-mono text-pacame-white/60">7 agentes core</span>
+            <span className="text-sm font-mono text-ink/60">7 agentes core</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
@@ -168,7 +168,7 @@ export default function AgentesPage() {
                   className={`group relative rounded-xl p-4 border transition-all duration-300 text-left ${
                     isActive
                       ? "border-opacity-60 -translate-y-1 shadow-lg"
-                      : "border-white/[0.06] hover:border-opacity-30 hover:-translate-y-0.5"
+                      : "border-ink/[0.06] hover:border-opacity-30 hover:-translate-y-0.5"
                   }`}
                   style={{
                     borderColor: isActive ? agent.color : undefined,
@@ -187,7 +187,7 @@ export default function AgentesPage() {
                   <p className="font-heading font-bold text-sm mb-0.5" style={{ color: agent.color }}>
                     {agent.name}
                   </p>
-                  <p className="text-[10px] text-pacame-white/60 font-body">
+                  <p className="text-[10px] text-ink/60 font-body">
                     +{subCount} especialistas
                   </p>
                 </button>
@@ -198,17 +198,17 @@ export default function AgentesPage() {
       </section>
 
       {/* ===== DIVISION FILTERS ===== */}
-      <section className="py-8 sticky top-16 z-40 bg-pacame-black/95 backdrop-blur-xl border-b border-white/[0.06]">
+      <section className="py-8 sticky top-16 z-40 bg-ink/95 backdrop-blur-xl border-b border-ink/[0.06]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <Filter className="w-4 h-4 text-pacame-white/60" />
-              <span className="text-sm font-body text-pacame-white/60">Filtrar por división</span>
+              <Filter className="w-4 h-4 text-ink/60" />
+              <span className="text-sm font-body text-ink/60">Filtrar por división</span>
             </div>
             {hasFilters && (
               <button
                 onClick={clearFilters}
-                className="text-xs font-mono text-olympus-gold hover:text-olympus-gold/80 transition-colors flex items-center gap-1"
+                className="text-xs font-mono text-accent-gold hover:text-accent-gold/80 transition-colors flex items-center gap-1"
               >
                 <X className="w-3 h-3" />
                 Limpiar filtros
@@ -221,8 +221,8 @@ export default function AgentesPage() {
               onClick={() => setActiveDivision(null)}
               className={`px-3 py-1.5 rounded-lg text-xs font-body transition-all ${
                 !activeDivision
-                  ? "bg-olympus-gold text-pacame-black"
-                  : "bg-dark-card text-pacame-white/50 hover:text-pacame-white/80 border border-white/[0.06]"
+                  ? "bg-accent-gold text-paper"
+                  : "bg-paper-deep text-ink/50 hover:text-ink/80 border border-ink/[0.06]"
               }`}
             >
               Todas ({agencyAgents.length})
@@ -238,7 +238,7 @@ export default function AgentesPage() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-body transition-all flex items-center gap-1.5 ${
                     isActive
                       ? "text-white"
-                      : "bg-dark-card text-pacame-white/50 hover:text-pacame-white/80 border border-white/[0.06]"
+                      : "bg-paper-deep text-ink/50 hover:text-ink/80 border border-ink/[0.06]"
                   }`}
                   style={{
                     backgroundColor: isActive ? div.color : undefined,
@@ -246,7 +246,7 @@ export default function AgentesPage() {
                 >
                   <span>{div.emoji}</span>
                   <span>{div.label}</span>
-                  <span className={`${isActive ? "text-white/70" : "text-pacame-white/50"}`}>
+                  <span className={`${isActive ? "text-white/70" : "text-ink/50"}`}>
                     {count}
                   </span>
                 </button>
@@ -261,7 +261,7 @@ export default function AgentesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Results count */}
           <div className="flex items-center justify-between mb-8">
-            <p className="text-sm font-body text-pacame-white/60">
+            <p className="text-sm font-body text-ink/60">
               {filteredAgents.length} agente{filteredAgents.length !== 1 ? "s" : ""} encontrado{filteredAgents.length !== 1 ? "s" : ""}
               {hasFilters && " con los filtros aplicados"}
             </p>
@@ -269,15 +269,15 @@ export default function AgentesPage() {
 
           {filteredAgents.length === 0 ? (
             <div className="text-center py-20">
-              <div className="w-16 h-16 rounded-2xl bg-dark-card border border-white/[0.06] flex items-center justify-center mx-auto mb-4">
-                <Search className="w-7 h-7 text-pacame-white/50" />
+              <div className="w-16 h-16 rounded-2xl bg-paper-deep border border-ink/[0.06] flex items-center justify-center mx-auto mb-4">
+                <Search className="w-7 h-7 text-ink/50" />
               </div>
-              <p className="text-pacame-white/60 font-body mb-4">
+              <p className="text-ink/60 font-body mb-4">
                 No se encontraron agentes con esos filtros
               </p>
               <button
                 onClick={clearFilters}
-                className="text-sm text-olympus-gold hover:text-olympus-gold/80 font-body transition-colors"
+                className="text-sm text-accent-gold hover:text-accent-gold/80 font-body transition-colors"
               >
                 Limpiar filtros
               </button>
@@ -290,7 +290,7 @@ export default function AgentesPage() {
                 return (
                   <div
                     key={agent.id}
-                    className="group relative rounded-2xl p-5 bg-dark-card border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300 hover:-translate-y-1"
+                    className="group relative rounded-2xl p-5 bg-paper-deep border border-ink/[0.06] hover:border-ink/[0.12] transition-all duration-300 hover:-translate-y-1"
                     style={{
                       animationDelay: `${(index % 20) * 0.03}s`,
                     }}
@@ -311,18 +311,18 @@ export default function AgentesPage() {
                     </div>
 
                     {/* Name */}
-                    <h3 className="font-heading font-bold text-base text-pacame-white mb-1 group-hover:text-white transition-colors">
+                    <h3 className="font-heading font-bold text-base text-ink mb-1 group-hover:text-white transition-colors">
                       {agent.name}
                     </h3>
 
                     {/* Specialty */}
-                    <p className="text-sm text-pacame-white/60 font-body mb-3 line-clamp-2 leading-relaxed">
+                    <p className="text-sm text-ink/60 font-body mb-3 line-clamp-2 leading-relaxed">
                       {agent.specialty}
                     </p>
 
                     {/* When to use */}
-                    <p className="text-xs text-pacame-white/60 font-body mb-4 line-clamp-2">
-                      <span className="text-neon-cyan/70 font-mono">Cuándo usar →</span> {agent.whenToUse}
+                    <p className="text-xs text-ink/60 font-body mb-4 line-clamp-2">
+                      <span className="text-mint/70 font-mono">Cuándo usar →</span> {agent.whenToUse}
                     </p>
 
                     {/* Parent agent badge */}
@@ -357,7 +357,7 @@ export default function AgentesPage() {
       </section>
 
       {/* ===== STATS SECTION ===== */}
-      <section className="py-16 bg-dark-elevated border-t border-white/[0.06]">
+      <section className="py-16 bg-paper-soft border-t border-ink/[0.06]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
@@ -371,7 +371,7 @@ export default function AgentesPage() {
                 <p className="text-3xl md:text-4xl font-heading font-bold gradient-text-gold mb-1">
                   {stat.value}
                 </p>
-                <p className="text-sm text-pacame-white/60 font-body">{stat.label}</p>
+                <p className="text-sm text-ink/60 font-body">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -384,11 +384,11 @@ export default function AgentesPage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-hero-glow opacity-30 pointer-events-none" />
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <h2 className="font-accent font-bold text-section text-pacame-white mb-6">
+          <h2 className="font-accent font-bold text-section text-ink mb-6">
             Necesitas un equipo{" "}
             <span className="gradient-text-aurora">de elite</span>?
           </h2>
-          <p className="text-lg text-pacame-white/60 font-body mb-10">
+          <p className="text-lg text-ink/60 font-body mb-10">
             No contratas freelancers. No esperas meses. Activas un equipo de {TOTAL_AGENTS}+ especialistas IA
             coordinados por un humano que garantiza calidad.
           </p>

@@ -171,7 +171,7 @@ export default function PrivacyActions({
       <button
         onClick={handleRequestExport}
         disabled={busy}
-        className="inline-flex items-center gap-2 bg-olympus-gold text-pacame-black font-semibold px-5 py-2.5 rounded-xl hover:bg-olympus-gold/90 disabled:opacity-50 transition"
+        className="inline-flex items-center gap-2 bg-accent-gold text-paper font-semibold px-5 py-2.5 rounded-xl hover:bg-accent-gold/90 disabled:opacity-50 transition"
       >
         {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
         Generar nuevo export
@@ -196,9 +196,9 @@ export default function PrivacyActions({
                   <AlertCircle className="w-4 h-4 text-red-400" />
                 )}
                 <div>
-                  <div className="text-pacame-white">
+                  <div className="text-ink">
                     {formatDate(e.requested_at)}{" "}
-                    <span className="text-pacame-white/40 text-xs">
+                    <span className="text-ink/40 text-xs">
                       · {e.status}
                       {e.file_size_bytes ? ` · ${formatSize(e.file_size_bytes)}` : ""}
                     </span>
@@ -211,7 +211,7 @@ export default function PrivacyActions({
               {e.status === "ready" && e.file_url && (
                 <a
                   href={e.file_url}
-                  className="text-olympus-gold hover:underline font-semibold text-xs"
+                  className="text-accent-gold hover:underline font-semibold text-xs"
                   download
                 >
                   Descargar
@@ -235,7 +235,7 @@ export default function PrivacyActions({
               </button>
             ) : (
               <div className="space-y-3 rounded-xl p-4 bg-red-500/5 border border-red-500/20">
-                <p className="text-sm text-pacame-white/80 font-body">
+                <p className="text-sm text-ink/80 font-body">
                   Esto es irreversible tras 30 dias de reflexion. Escribe{" "}
                   <strong>ELIMINAR</strong> para confirmar.
                 </p>
@@ -244,13 +244,13 @@ export default function PrivacyActions({
                   placeholder="Escribe ELIMINAR"
                   value={confirmText}
                   onChange={(e) => setConfirmText(e.target.value)}
-                  className="w-full bg-black/40 border border-white/[0.08] rounded-lg px-3 py-2 text-pacame-white"
+                  className="w-full bg-black/40 border border-ink/[0.08] rounded-lg px-3 py-2 text-ink"
                 />
                 <textarea
                   placeholder="Motivo (opcional, nos ayuda a mejorar)"
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                  className="w-full bg-black/40 border border-white/[0.08] rounded-lg px-3 py-2 text-pacame-white text-sm"
+                  className="w-full bg-black/40 border border-ink/[0.08] rounded-lg px-3 py-2 text-ink text-sm"
                   rows={3}
                   maxLength={500}
                 />
@@ -273,7 +273,7 @@ export default function PrivacyActions({
                       setConfirmText("");
                       setReason("");
                     }}
-                    className="inline-flex items-center gap-2 bg-white/[0.04] text-pacame-white/70 font-semibold px-5 py-2 rounded-lg hover:bg-white/[0.08] transition"
+                    className="inline-flex items-center gap-2 bg-white/[0.04] text-ink/70 font-semibold px-5 py-2 rounded-lg hover:bg-white/[0.08] transition"
                   >
                     <X className="w-4 h-4" />
                     Cancelar
@@ -286,12 +286,12 @@ export default function PrivacyActions({
           <div className="rounded-xl p-4 bg-yellow-500/5 border border-yellow-500/20 flex items-start gap-3">
             <Clock className="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
             <div className="flex-1">
-              <p className="text-pacame-white font-semibold">
+              <p className="text-ink font-semibold">
                 {deletionStatus === "confirmed"
                   ? "Eliminacion confirmada"
                   : "Esperando confirmacion por email"}
               </p>
-              <p className="text-pacame-white/60 text-sm font-body mt-0.5">
+              <p className="text-ink/60 text-sm font-body mt-0.5">
                 {deletionStatus === "confirmed"
                   ? "Tus datos se purgaran en ~30 dias. Puedes cancelar en cualquier momento."
                   : `Revisa tu email (${clientEmail}) y haz clic en el link de confirmacion.`}
@@ -299,7 +299,7 @@ export default function PrivacyActions({
               <button
                 onClick={handleCancelDelete}
                 disabled={busy}
-                className="mt-3 text-xs text-pacame-white/60 hover:text-pacame-white underline"
+                className="mt-3 text-xs text-ink/60 hover:text-ink underline"
               >
                 Cancelar peticion
               </button>

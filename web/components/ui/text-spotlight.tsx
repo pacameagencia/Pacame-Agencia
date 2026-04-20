@@ -127,7 +127,7 @@ export function TextSpotlight({
               opacity: isHovered ? 1 : 0,
             }}
           >
-            <p className={cn('text-pacame-white', textClassName)}>{text}</p>
+            <p className={cn('text-ink', textClassName)}>{text}</p>
           </motion.div>
         </>
       )}

@@ -137,10 +137,10 @@ export default function PayoutsPage() {
       {/* Header */}
       <div className="flex items-start justify-between flex-wrap gap-3">
         <div>
-          <h1 className="font-heading font-bold text-2xl text-pacame-white flex items-center gap-2">
-            <Wallet className="w-6 h-6 text-olympus-gold" /> Commission Payouts
+          <h1 className="font-heading font-bold text-2xl text-ink flex items-center gap-2">
+            <Wallet className="w-6 h-6 text-accent-gold" /> Commission Payouts
           </h1>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">
+          <p className="text-sm text-ink/40 font-body mt-1">
             Transferencias mensuales a referrers. Minimo {report?.min_payout_cents
               ? eur(report.min_payout_cents)
               : "20€"}{" "}
@@ -149,19 +149,19 @@ export default function PayoutsPage() {
         </div>
 
         {/* Month selector */}
-        <div className="flex items-center gap-2 bg-dark-card rounded-xl border border-white/[0.08] p-1">
+        <div className="flex items-center gap-2 bg-paper-deep rounded-xl border border-ink/[0.08] p-1">
           <button
             onClick={() => setMonth(prevMonth(month))}
-            className="px-3 py-1.5 rounded-lg hover:bg-white/[0.06] text-pacame-white/60 hover:text-pacame-white text-sm transition"
+            className="px-3 py-1.5 rounded-lg hover:bg-white/[0.06] text-ink/60 hover:text-ink text-sm transition"
           >
             ←
           </button>
-          <div className="flex items-center gap-2 px-3 py-1 text-sm font-mono text-pacame-white">
-            <Calendar className="w-3.5 h-3.5 text-olympus-gold" /> {month}
+          <div className="flex items-center gap-2 px-3 py-1 text-sm font-mono text-ink">
+            <Calendar className="w-3.5 h-3.5 text-accent-gold" /> {month}
           </div>
           <button
             onClick={() => setMonth(nextMonth(month))}
-            className="px-3 py-1.5 rounded-lg hover:bg-white/[0.06] text-pacame-white/60 hover:text-pacame-white text-sm transition"
+            className="px-3 py-1.5 rounded-lg hover:bg-white/[0.06] text-ink/60 hover:text-ink text-sm transition"
           >
             →
           </button>
@@ -171,30 +171,30 @@ export default function PayoutsPage() {
       {/* Summary cards */}
       {report && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
-            <div className="text-[11px] uppercase tracking-wider text-pacame-white/40 font-mono mb-1">
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5">
+            <div className="text-[11px] uppercase tracking-wider text-ink/40 font-mono mb-1">
               Total a pagar
             </div>
-            <div className="font-heading font-bold text-3xl text-olympus-gold">
+            <div className="font-heading font-bold text-3xl text-accent-gold">
               {eur(report.grand_total_commission_cents)}
             </div>
-            <div className="text-xs text-pacame-white/40 font-body mt-1">
+            <div className="text-xs text-ink/40 font-body mt-1">
               {report.eligible_count} referrers elegibles
             </div>
           </div>
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
-            <div className="text-[11px] uppercase tracking-wider text-pacame-white/40 font-mono mb-1">
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5">
+            <div className="text-[11px] uppercase tracking-wider text-ink/40 font-mono mb-1">
               Pendientes
             </div>
-            <div className="font-heading font-bold text-3xl text-pacame-white">
+            <div className="font-heading font-bold text-3xl text-ink">
               {report.total_count}
             </div>
-            <div className="text-xs text-pacame-white/40 font-body mt-1">
+            <div className="text-xs text-ink/40 font-body mt-1">
               Referrers con balance
             </div>
           </div>
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-5">
-            <div className="text-[11px] uppercase tracking-wider text-pacame-white/40 font-mono mb-1">
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-5">
+            <div className="text-[11px] uppercase tracking-wider text-ink/40 font-mono mb-1">
               Referencia pago
             </div>
             <input
@@ -202,9 +202,9 @@ export default function PayoutsPage() {
               placeholder="ej. txfr-2026-04-a1b2"
               value={paymentRef}
               onChange={(e) => setPaymentRef(e.target.value)}
-              className="w-full bg-white/[0.02] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-pacame-white placeholder:text-pacame-white/30 outline-none focus:border-olympus-gold/40 transition"
+              className="w-full bg-white/[0.02] border border-ink/[0.08] rounded-lg px-3 py-2 text-sm text-ink placeholder:text-ink/30 outline-none focus:border-accent-gold/40 transition"
             />
-            <div className="text-[11px] text-pacame-white/40 mt-1">
+            <div className="text-[11px] text-ink/40 mt-1">
               Se guarda en audit_log al marcar pagado
             </div>
           </div>
@@ -218,18 +218,18 @@ export default function PayoutsPage() {
       )}
 
       {loading && (
-        <div className="flex items-center justify-center py-10 text-pacame-white/40">
+        <div className="flex items-center justify-center py-10 text-ink/40">
           <Loader2 className="w-5 h-5 animate-spin mr-2" /> Cargando...
         </div>
       )}
 
       {!loading && report && report.payouts.length === 0 && (
-        <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-10 text-center">
-          <CheckCircle2 className="w-10 h-10 text-lime-pulse mx-auto mb-3" />
-          <div className="font-heading font-semibold text-pacame-white">
+        <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-10 text-center">
+          <CheckCircle2 className="w-10 h-10 text-mint mx-auto mb-3" />
+          <div className="font-heading font-semibold text-ink">
             Sin pagos pendientes este mes
           </div>
-          <p className="text-sm text-pacame-white/40 mt-2">
+          <p className="text-sm text-ink/40 mt-2">
             No hay referrals con status=pending en {month}.
           </p>
         </div>
@@ -245,18 +245,18 @@ export default function PayoutsPage() {
                 key={row.referrer_client_id}
                 className={`rounded-2xl border ${
                   row.eligible
-                    ? "bg-dark-card border-white/[0.06]"
+                    ? "bg-paper-deep border-ink/[0.06]"
                     : "bg-white/[0.01] border-white/[0.04] opacity-70"
                 }`}
               >
                 <div className="p-5 flex items-center justify-between flex-wrap gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 flex-wrap">
-                      <div className="font-heading font-semibold text-pacame-white">
+                      <div className="font-heading font-semibold text-ink">
                         {row.name || row.email || row.referrer_client_id.slice(0, 8)}
                       </div>
                       {row.eligible ? (
-                        <span className="text-[10px] uppercase tracking-wider font-mono px-2 py-0.5 rounded-full bg-lime-pulse/15 text-lime-pulse">
+                        <span className="text-[10px] uppercase tracking-wider font-mono px-2 py-0.5 rounded-full bg-mint/15 text-mint">
                           elegible
                         </span>
                       ) : (
@@ -265,7 +265,7 @@ export default function PayoutsPage() {
                         </span>
                       )}
                     </div>
-                    <div className="text-xs text-pacame-white/50 mt-1 flex items-center gap-3 flex-wrap">
+                    <div className="text-xs text-ink/50 mt-1 flex items-center gap-3 flex-wrap">
                       <span>{row.email}</span>
                       <span>·</span>
                       <span>{row.count} referrals</span>
@@ -277,11 +277,11 @@ export default function PayoutsPage() {
                           setCopied(row.referrer_client_id);
                           setTimeout(() => setCopied(null), 1500);
                         }}
-                        className="p-1 hover:bg-white/[0.04] rounded text-pacame-white/40 hover:text-pacame-white transition"
+                        className="p-1 hover:bg-white/[0.04] rounded text-ink/40 hover:text-ink transition"
                         title="Copiar email"
                       >
                         {copied === row.referrer_client_id ? (
-                          <CheckCircle2 className="w-3 h-3 text-lime-pulse" />
+                          <CheckCircle2 className="w-3 h-3 text-mint" />
                         ) : (
                           <Copy className="w-3 h-3" />
                         )}
@@ -296,16 +296,16 @@ export default function PayoutsPage() {
 
                   <div className="flex items-center gap-3 flex-shrink-0">
                     <div className="text-right">
-                      <div className="font-heading font-bold text-xl text-olympus-gold">
+                      <div className="font-heading font-bold text-xl text-accent-gold">
                         {eur(row.total_commission_cents)}
                       </div>
-                      <div className="text-[10px] text-pacame-white/30">a transferir</div>
+                      <div className="text-[10px] text-ink/30">a transferir</div>
                     </div>
                     <button
                       onClick={() =>
                         setExpanded(isOpen ? null : row.referrer_client_id)
                       }
-                      className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-xs text-pacame-white/70 transition"
+                      className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-xs text-ink/70 transition"
                     >
                       {isOpen ? "Ocultar" : "Ver detalle"}
                     </button>
@@ -313,7 +313,7 @@ export default function PayoutsPage() {
                       <button
                         onClick={() => markPaid(row)}
                         disabled={paying === row.referrer_client_id}
-                        className="px-3 py-1.5 rounded-lg bg-olympus-gold text-pacame-black text-xs font-semibold hover:brightness-110 disabled:opacity-50 transition"
+                        className="px-3 py-1.5 rounded-lg bg-accent-gold text-paper text-xs font-semibold hover:brightness-110 disabled:opacity-50 transition"
                       >
                         {paying === row.referrer_client_id ? (
                           <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -326,7 +326,7 @@ export default function PayoutsPage() {
                 </div>
 
                 {isOpen && (
-                  <div className="border-t border-white/[0.06] p-5">
+                  <div className="border-t border-ink/[0.06] p-5">
                     <div className="space-y-2">
                       {row.referrals.map((ref) => (
                         <div
@@ -334,10 +334,10 @@ export default function PayoutsPage() {
                           className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] text-sm"
                         >
                           <div className="flex items-center gap-3 flex-wrap">
-                            <span className="font-mono text-[11px] text-pacame-white/40">
+                            <span className="font-mono text-[11px] text-ink/40">
                               {ref.referral_code}
                             </span>
-                            <span className="text-pacame-white/70">
+                            <span className="text-ink/70">
                               {ref.referred_email || "—"}
                             </span>
                             {ref.order_id && (
@@ -345,19 +345,19 @@ export default function PayoutsPage() {
                                 href={`/dashboard/orders?id=${ref.order_id}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-olympus-gold hover:underline flex items-center gap-1 text-[11px]"
+                                className="text-accent-gold hover:underline flex items-center gap-1 text-[11px]"
                               >
                                 Order <ExternalLink className="w-3 h-3" />
                               </a>
                             )}
                           </div>
                           <div className="flex items-center gap-4">
-                            <span className="text-pacame-white/40 text-[11px]">
+                            <span className="text-ink/40 text-[11px]">
                               {new Date(ref.created_at).toLocaleDateString("es-ES")}
                             </span>
-                            <span className="text-pacame-white/60">
+                            <span className="text-ink/60">
                               {eur(ref.amount_cents)} →{" "}
-                              <strong className="text-olympus-gold">
+                              <strong className="text-accent-gold">
                                 {eur(ref.commission_cents)}
                               </strong>
                             </span>

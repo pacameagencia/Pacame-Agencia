@@ -86,8 +86,8 @@ export default function NotificationsPage() {
     <div className="space-y-6 max-w-4xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading font-bold text-2xl text-pacame-white">Notificaciones</h1>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">
+          <h1 className="font-heading font-bold text-2xl text-ink">Notificaciones</h1>
+          <p className="text-sm text-ink/40 font-body mt-1">
             {loading ? "Cargando..." : `${unreadCount} sin leer de ${notifications.length} total`}
           </p>
         </div>
@@ -107,7 +107,7 @@ export default function NotificationsPage() {
             key={f}
             onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded-md text-xs font-body transition-colors ${
-              filter === f ? "bg-electric-violet/20 text-electric-violet" : "text-pacame-white/40 hover:text-pacame-white/60"
+              filter === f ? "bg-brand-primary/20 text-brand-primary" : "text-ink/40 hover:text-ink/60"
             }`}
           >
             {f === "all" ? "Todas" : `Sin leer (${unreadCount})`}
@@ -118,9 +118,9 @@ export default function NotificationsPage() {
       {/* Notification list */}
       <div className="space-y-2">
         {!loading && filtered.length === 0 && (
-          <div className="rounded-2xl bg-dark-card border border-white/[0.06] p-12 text-center">
-            <Bell className="w-8 h-8 text-pacame-white/20 mx-auto mb-3" />
-            <p className="text-sm text-pacame-white/40 font-body">
+          <div className="rounded-2xl bg-paper-deep border border-ink/[0.06] p-12 text-center">
+            <Bell className="w-8 h-8 text-ink/20 mx-auto mb-3" />
+            <p className="text-sm text-ink/40 font-body">
               {filter === "unread" ? "Todo leido" : "Sin notificaciones"}
             </p>
           </div>
@@ -135,8 +135,8 @@ export default function NotificationsPage() {
               key={notif.id}
               className={`rounded-xl border p-4 transition-all cursor-pointer ${
                 notif.read_by_pablo
-                  ? "bg-dark-card border-white/[0.04] opacity-60"
-                  : "bg-dark-card border-white/[0.08] hover:border-white/[0.12]"
+                  ? "bg-paper-deep border-white/[0.04] opacity-60"
+                  : "bg-paper-deep border-ink/[0.08] hover:border-ink/[0.12]"
               }`}
               onClick={() => !notif.read_by_pablo && markAsRead(notif.id)}
             >
@@ -146,9 +146,9 @@ export default function NotificationsPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <h3 className="text-sm font-heading font-medium text-pacame-white">{notif.title}</h3>
+                    <h3 className="text-sm font-heading font-medium text-ink">{notif.title}</h3>
                     {!notif.read_by_pablo && (
-                      <span className="w-2 h-2 rounded-full bg-electric-violet flex-shrink-0" />
+                      <span className="w-2 h-2 rounded-full bg-brand-primary flex-shrink-0" />
                     )}
                     <span
                       className="text-[10px] px-2 py-0.5 rounded-full font-body ml-auto flex-shrink-0"
@@ -157,12 +157,12 @@ export default function NotificationsPage() {
                       {pConfig.label}
                     </span>
                   </div>
-                  <p className="text-xs text-pacame-white/50 font-body leading-relaxed">{notif.message}</p>
+                  <p className="text-xs text-ink/50 font-body leading-relaxed">{notif.message}</p>
                   <div className="flex items-center gap-3 mt-2">
-                    <span className="text-[10px] text-pacame-white/30 font-body">{timeAgo(notif.created_at)}</span>
-                    <span className="text-[10px] text-pacame-white/20 font-body">{notif.type}</span>
+                    <span className="text-[10px] text-ink/30 font-body">{timeAgo(notif.created_at)}</span>
+                    <span className="text-[10px] text-ink/20 font-body">{notif.type}</span>
                     {notif.sent && (
-                      <span className="flex items-center gap-1 text-[10px] text-pacame-white/20 font-body">
+                      <span className="flex items-center gap-1 text-[10px] text-ink/20 font-body">
                         <Check className="w-2.5 h-2.5" />Enviado via {notif.sent_via}
                       </span>
                     )}

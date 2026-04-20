@@ -120,7 +120,7 @@ function ServicesJsonLd() {
 export default async function ServiciosPage() {
   const marketplace = await fetchMarketplaceData();
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       <BreadcrumbJsonLd
         items={[
           { name: "Inicio", url: "https://pacameagencia.com" },
@@ -133,14 +133,14 @@ export default async function ServiciosPage() {
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-olympus-radial pointer-events-none" />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-5 uppercase tracking-[0.2em]">
+          <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-5 uppercase tracking-[0.2em]">
             Servicios y precios
           </p>
-          <h1 className="font-accent font-bold text-display text-pacame-white mb-6 text-balance">
+          <h1 className="font-accent font-bold text-display text-ink mb-6 text-balance">
             Precios claros.{" "}
             <span className="gradient-text-gold">Resultados concretos.</span>
           </h1>
-          <p className="text-xl text-pacame-white/60 font-body max-w-2xl mx-auto mb-12 font-light">
+          <p className="text-xl text-ink/60 font-body max-w-2xl mx-auto mb-12 font-light">
             Sin presupuestos que se inflan. Sin sorpresas en la factura.
           </p>
 
@@ -148,7 +148,7 @@ export default async function ServiciosPage() {
           <div className="flex flex-wrap justify-center gap-2">
             <a
               href="#marketplace"
-              className="px-4 py-2 rounded-full text-sm font-body border border-olympus-gold/30 text-olympus-gold bg-olympus-gold/10 transition-all duration-300 hover:translate-y-[-1px]"
+              className="px-4 py-2 rounded-full text-sm font-body border border-accent-gold/30 text-accent-gold bg-accent-gold/10 transition-all duration-300 hover:translate-y-[-1px]"
             >
               Marketplace Express
             </a>
@@ -206,10 +206,10 @@ export default async function ServiciosPage() {
                   {Icon && <Icon className="w-5 h-5" style={{ color: catColor }} />}
                 </div>
                 <div>
-                  <h2 className="font-heading font-bold text-2xl sm:text-3xl text-pacame-white mb-2">
+                  <h2 className="font-heading font-bold text-2xl sm:text-3xl text-ink mb-2">
                     {service.name}
                   </h2>
-                  <p className="text-pacame-white/60 font-body max-w-xl">{service.description}</p>
+                  <p className="text-ink/60 font-body max-w-xl">{service.description}</p>
                 </div>
               </ScrollReveal>
 
@@ -223,7 +223,7 @@ export default async function ServiciosPage() {
                     className={`rounded-2xl p-7 transition-all duration-500 ease-apple relative card-golden-shine ${
                       item.featured
                         ? "border-2 hover:translate-y-[-2px]"
-                        : "bg-dark-card border border-white/[0.06] hover:border-white/[0.1] hover:translate-y-[-2px]"
+                        : "bg-paper-deep border border-ink/[0.06] hover:border-ink/[0.1] hover:translate-y-[-2px]"
                     }`}
                     style={
                       item.featured
@@ -245,10 +245,10 @@ export default async function ServiciosPage() {
                       </div>
                     )}
 
-                    <h3 className="font-heading font-bold text-xl text-pacame-white mb-1.5">
+                    <h3 className="font-heading font-bold text-xl text-ink mb-1.5">
                       {item.name}
                     </h3>
-                    <p className="text-sm text-pacame-white/60 font-body mb-6">
+                    <p className="text-sm text-ink/60 font-body mb-6">
                       {item.description}
                     </p>
 
@@ -259,17 +259,17 @@ export default async function ServiciosPage() {
                             className="w-4 h-4 mt-0.5 flex-shrink-0"
                             style={{ color: catColor }}
                           />
-                          <span className="text-sm text-pacame-white/60 font-body">{inc}</span>
+                          <span className="text-sm text-ink/60 font-body">{inc}</span>
                         </li>
                       ))}
                     </ul>
 
-                    <div className="border-t border-white/[0.06] pt-5 flex items-end justify-between">
+                    <div className="border-t border-ink/[0.06] pt-5 flex items-end justify-between">
                       <div>
-                        <div className="font-heading font-bold text-2xl text-pacame-white">
+                        <div className="font-heading font-bold text-2xl text-ink">
                           {item.price}
                         </div>
-                        <div className="flex items-center gap-1.5 text-xs text-pacame-white/50 font-body mt-1">
+                        <div className="flex items-center gap-1.5 text-xs text-ink/50 font-body mt-1">
                           <Clock className="w-3 h-3" />
                           {item.deadline}
                         </div>
@@ -298,10 +298,10 @@ export default async function ServiciosPage() {
 
         <div className="max-w-6xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
-            <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
+            <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-4 uppercase tracking-[0.2em]">
               Paquetes combinados
             </p>
-            <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
+            <h2 className="font-accent font-bold text-section text-ink mb-6 text-balance">
               Combina servicios.{" "}
               <span className="gradient-text-gold">Ahorra hasta un 35%.</span>
             </h2>
@@ -314,13 +314,13 @@ export default async function ServiciosPage() {
               <CardTiltContent>
               <div
                 className={`rounded-2xl p-8 transition-all duration-500 ease-apple hover:translate-y-[-2px] relative flex flex-col ${
-                  pkg.featured ? "bg-brand-gradient glow-border" : "bg-dark-card border border-white/[0.06]"
+                  pkg.featured ? "bg-brand-gradient glow-border" : "bg-paper-deep border border-ink/[0.06]"
                 }`}
               >
                 {pkg.featured && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <div className="bg-pacame-white rounded-full px-4 py-1.5 shadow-apple">
-                      <span className="text-xs font-body font-semibold text-pacame-black uppercase tracking-wider">
+                    <div className="bg-ink rounded-full px-4 py-1.5 shadow-apple">
+                      <span className="text-xs font-body font-semibold text-paper uppercase tracking-wider">
                         Mas popular
                       </span>
                     </div>
@@ -328,16 +328,16 @@ export default async function ServiciosPage() {
                 )}
 
                 <div className="mb-6">
-                  <h3 className={`font-heading font-bold text-2xl mb-1 ${pkg.featured ? "text-white" : "text-pacame-white"}`}>
+                  <h3 className={`font-heading font-bold text-2xl mb-1 ${pkg.featured ? "text-white" : "text-ink"}`}>
                     {pkg.name}
                   </h3>
-                  <p className={`text-sm font-body mb-5 ${pkg.featured ? "text-white/60" : "text-pacame-white/60"}`}>
+                  <p className={`text-sm font-body mb-5 ${pkg.featured ? "text-white/60" : "text-ink/60"}`}>
                     {pkg.target}
                   </p>
-                  <div className={`font-heading font-bold text-4xl tracking-tight ${pkg.featured ? "text-white" : "text-pacame-white"}`}>
+                  <div className={`font-heading font-bold text-4xl tracking-tight ${pkg.featured ? "text-white" : "text-ink"}`}>
                     {pkg.price}
                   </div>
-                  <p className={`text-xs font-body mt-1.5 ${pkg.featured ? "text-white/50" : "text-pacame-white/50"}`}>
+                  <p className={`text-xs font-body mt-1.5 ${pkg.featured ? "text-white/50" : "text-ink/50"}`}>
                     {pkg.deadline}
                   </p>
                 </div>
@@ -345,8 +345,8 @@ export default async function ServiciosPage() {
                 <ul className="space-y-2.5 mb-7 flex-1">
                   {pkg.includes.map((item) => (
                     <li key={item} className="flex items-start gap-2.5">
-                      <Check className={`w-4 h-4 mt-0.5 flex-shrink-0 ${pkg.featured ? "text-white/80" : "text-pacame-white/50"}`} />
-                      <span className={`text-sm font-body ${pkg.featured ? "text-white/85" : "text-pacame-white/60"}`}>
+                      <Check className={`w-4 h-4 mt-0.5 flex-shrink-0 ${pkg.featured ? "text-white/80" : "text-ink/50"}`} />
+                      <span className={`text-sm font-body ${pkg.featured ? "text-white/85" : "text-ink/60"}`}>
                         {item}
                       </span>
                     </li>
@@ -377,12 +377,12 @@ export default async function ServiciosPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="section-padding bg-pacame-black text-center">
+      <section className="section-padding bg-paper text-center">
         <ScrollReveal className="max-w-2xl mx-auto px-6">
-          <h2 className="font-heading font-bold text-section text-pacame-white mb-4 text-balance">
+          <h2 className="font-heading font-bold text-section text-ink mb-4 text-balance">
             No ves lo que necesitas?
           </h2>
-          <p className="text-pacame-white/60 font-body mb-10 text-lg">
+          <p className="text-ink/60 font-body mb-10 text-lg">
             Te escuchamos y preparamos un presupuesto a medida. En 24 horas.
           </p>
           <MagneticButton>
@@ -392,7 +392,7 @@ export default async function ServiciosPage() {
               gradientOpacity={0.8}
               className="group min-w-[260px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
             >
-              <Link href="/contacto" className="flex items-center gap-2 text-pacame-white">
+              <Link href="/contacto" className="flex items-center gap-2 text-ink">
                 Hablar con el equipo
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>

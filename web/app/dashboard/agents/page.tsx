@@ -129,7 +129,7 @@ export default function AgentsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
-        <RefreshCw className="w-8 h-8 animate-spin text-electric-violet" />
+        <RefreshCw className="w-8 h-8 animate-spin text-brand-primary" />
       </div>
     );
   }
@@ -138,15 +138,15 @@ export default function AgentsPage() {
     <div className="space-y-6 max-w-7xl">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="font-heading font-bold text-2xl text-pacame-white">Agentes</h1>
-          <p className="text-sm text-pacame-white/40 font-body mt-1">
+          <h1 className="font-heading font-bold text-2xl text-ink">Agentes</h1>
+          <p className="text-sm text-ink/40 font-body mt-1">
             10 agentes IA autonomos — trabajan 3x/dia + auditoria semanal
           </p>
         </div>
         <button
           onClick={triggerCron}
           disabled={triggeringCron}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-electric-violet/15 text-electric-violet text-sm font-heading font-medium hover:bg-electric-violet/25 transition-all disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-primary/15 text-brand-primary text-sm font-heading font-medium hover:bg-brand-primary/25 transition-all disabled:opacity-50"
         >
           {triggeringCron ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
           {triggeringCron ? "Ejecutando..." : "Ejecutar ciclo ahora"}
@@ -164,10 +164,10 @@ export default function AgentsPage() {
         ].map((stat) => {
           const StatIcon = stat.icon;
           return (
-            <div key={stat.label} className="rounded-xl bg-dark-card border border-white/[0.06] p-4">
+            <div key={stat.label} className="rounded-xl bg-paper-deep border border-ink/[0.06] p-4">
               <div className="flex items-center gap-2 mb-1">
                 <StatIcon className="w-3.5 h-3.5" style={{ color: stat.color }} />
-                <span className="text-xs text-pacame-white/40 font-body">{stat.label}</span>
+                <span className="text-xs text-ink/40 font-body">{stat.label}</span>
               </div>
               <div className="font-heading font-bold text-xl" style={{ color: stat.color }}>
                 {stat.value}
@@ -190,7 +190,7 @@ export default function AgentsPage() {
           return (
             <div
               key={id}
-              className="rounded-2xl bg-dark-card border border-white/[0.06] hover:border-white/10 transition-all overflow-hidden"
+              className="rounded-2xl bg-paper-deep border border-ink/[0.06] hover:border-white/10 transition-all overflow-hidden"
             >
               <div className="h-1 w-full" style={{ backgroundColor: meta.color }} />
               <div className="p-5">
@@ -215,10 +215,10 @@ export default function AgentsPage() {
                         {statusConf.label}
                       </span>
                     </div>
-                    <p className="text-xs text-pacame-white/40 font-body truncate">{meta.role}</p>
+                    <p className="text-xs text-ink/40 font-body truncate">{meta.role}</p>
                   </div>
                   {state?.last_activity && (
-                    <span className="text-[10px] text-pacame-white/30 font-body flex-shrink-0">
+                    <span className="text-[10px] text-ink/30 font-body flex-shrink-0">
                       {timeAgo(state.last_activity)}
                     </span>
                   )}
@@ -227,18 +227,18 @@ export default function AgentsPage() {
                 {/* Current task */}
                 {state?.current_task && (
                   <div className="rounded-lg bg-white/[0.03] border border-white/[0.04] px-3 py-2 mb-3">
-                    <div className="text-[10px] text-pacame-white/30 font-body uppercase tracking-wide mb-0.5">
+                    <div className="text-[10px] text-ink/30 font-body uppercase tracking-wide mb-0.5">
                       Tarea actual
                     </div>
-                    <p className="text-xs text-pacame-white/70 font-body line-clamp-2">{state.current_task}</p>
+                    <p className="text-xs text-ink/70 font-body line-clamp-2">{state.current_task}</p>
                   </div>
                 )}
 
                 {/* Specialty */}
-                <p className="text-[11px] text-pacame-white/30 font-body mb-3 italic">{meta.specialty}</p>
+                <p className="text-[11px] text-ink/30 font-body mb-3 italic">{meta.specialty}</p>
 
                 {/* Stats */}
-                <div className="flex items-center gap-4 text-[10px] text-pacame-white/30 font-body mb-3">
+                <div className="flex items-center gap-4 text-[10px] text-ink/30 font-body mb-3">
                   <div className="flex items-center gap-1">
                     <Zap className="w-3 h-3" />
                     {state?.tasks_today || 0} hoy
@@ -256,7 +256,7 @@ export default function AgentsPage() {
                 {/* Recent activity */}
                 {recentActs.length > 0 && (
                   <div className="space-y-1.5 border-t border-white/[0.04] pt-3">
-                    <div className="text-[10px] text-pacame-white/25 font-body uppercase tracking-wide">
+                    <div className="text-[10px] text-ink/25 font-body uppercase tracking-wide">
                       Actividad reciente
                     </div>
                     {recentActs.map((act) => (
@@ -273,8 +273,8 @@ export default function AgentsPage() {
                           }}
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="text-[11px] text-pacame-white/60 font-body truncate">{act.title}</p>
-                          <span className="text-[9px] text-pacame-white/20 font-body">
+                          <p className="text-[11px] text-ink/60 font-body truncate">{act.title}</p>
+                          <span className="text-[9px] text-ink/20 font-body">
                             {timeAgo(act.created_at)}
                           </span>
                         </div>
@@ -285,7 +285,7 @@ export default function AgentsPage() {
 
                 {recentActs.length === 0 && (
                   <div className="border-t border-white/[0.04] pt-3">
-                    <p className="text-[11px] text-pacame-white/20 font-body text-center">
+                    <p className="text-[11px] text-ink/20 font-body text-center">
                       Sin actividad registrada. Ejecuta un ciclo.
                     </p>
                   </div>
@@ -297,15 +297,15 @@ export default function AgentsPage() {
       </div>
 
       {/* Cron schedule info */}
-      <div className="rounded-xl bg-dark-card border border-white/[0.06] p-4">
+      <div className="rounded-xl bg-paper-deep border border-ink/[0.06] p-4">
         <div className="flex items-center gap-3">
-          <Clock className="w-4 h-4 text-pacame-white/30" />
+          <Clock className="w-4 h-4 text-ink/30" />
           <div>
-            <p className="text-xs text-pacame-white/50 font-body">
-              <span className="font-medium text-pacame-white/70">Ciclo autonomo:</span>{" "}
+            <p className="text-xs text-ink/50 font-body">
+              <span className="font-medium text-ink/70">Ciclo autonomo:</span>{" "}
               3x/dia (6:00, 12:00, 18:00 UTC) — Cada agente analiza, ejecuta y reporta.
             </p>
-            <p className="text-[11px] text-pacame-white/30 font-body mt-0.5">
+            <p className="text-[11px] text-ink/30 font-body mt-0.5">
               DIOS ejecuta auditoria semanal completa los lunes a las 7:00 UTC.
             </p>
           </div>

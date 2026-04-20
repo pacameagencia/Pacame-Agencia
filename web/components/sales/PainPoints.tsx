@@ -38,13 +38,13 @@ export default function PainPoints({ painPoints }: PainPointsProps) {
       <div className="max-w-6xl mx-auto px-6">
         <ScrollReveal>
           <div className="text-center mb-16">
-            <span className="inline-block px-3 py-1 rounded-full bg-rose-alert/10 text-rose-alert text-xs font-heading font-semibold mb-4">
+            <span className="inline-block px-3 py-1 rounded-full bg-accent-burgundy-soft/10 text-accent-burgundy-soft text-xs font-heading font-semibold mb-4">
               El problema
             </span>
-            <h2 className="font-heading font-bold text-3xl sm:text-4xl text-pacame-white">
+            <h2 className="font-heading font-bold text-3xl sm:text-4xl text-ink">
               Te suena esto?
             </h2>
-            <p className="mt-4 text-pacame-white/50 font-body text-lg max-w-2xl mx-auto">
+            <p className="mt-4 text-ink/50 font-body text-lg max-w-2xl mx-auto">
               Si te identificas con alguno de estos problemas, no estas solo. El
               80% de las PYMEs espanolas los sufren.
             </p>
@@ -56,16 +56,16 @@ export default function PainPoints({ painPoints }: PainPointsProps) {
             const Icon = iconMap[point.icon] || AlertTriangle;
             return (
               <StaggerItem key={point.title}>
-                <div className="rounded-2xl bg-dark-card border border-rose-alert/10 hover:border-rose-alert/30 transition-colors p-6 h-full">
+                <div className="rounded-2xl bg-paper-deep border border-accent-burgundy-soft/10 hover:border-accent-burgundy-soft/30 transition-colors p-6 h-full">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-rose-alert/10 flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-6 h-6 text-rose-alert" />
+                    <div className="w-12 h-12 rounded-xl bg-accent-burgundy-soft/10 flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-6 h-6 text-accent-burgundy-soft" />
                     </div>
                     <div>
-                      <h3 className="font-heading font-semibold text-lg text-pacame-white mb-2">
+                      <h3 className="font-heading font-semibold text-lg text-ink mb-2">
                         {point.title}
                       </h3>
-                      <p className="text-pacame-white/50 font-body text-sm leading-relaxed">
+                      <p className="text-ink/50 font-body text-sm leading-relaxed">
                         {point.description}
                       </p>
                     </div>

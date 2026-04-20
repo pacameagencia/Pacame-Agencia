@@ -63,26 +63,26 @@ export default function PlanCard({ plan, interval, featured }: Props) {
     <div
       className={`relative rounded-2xl p-6 flex flex-col transition ${
         featured
-          ? "bg-gradient-to-br from-olympus-gold/[0.08] to-transparent border-2 border-olympus-gold/40 shadow-[0_0_60px_-15px_rgba(212,165,116,0.3)]"
-          : "bg-dark-card border border-white/[0.06] hover:border-white/[0.12]"
+          ? "bg-gradient-to-br from-accent-gold/[0.08] to-transparent border-2 border-accent-gold/40 shadow-[0_0_60px_-15px_rgba(212,165,116,0.3)]"
+          : "bg-paper-deep border border-ink/[0.06] hover:border-ink/[0.12]"
       }`}
     >
       {featured && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-olympus-gold text-pacame-black text-[10px] font-heading font-bold px-3 py-1 rounded-full flex items-center gap-1">
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent-gold text-paper text-[10px] font-heading font-bold px-3 py-1 rounded-full flex items-center gap-1">
           <Sparkles className="w-3 h-3" />
           MAS ELEGIDO
         </div>
       )}
 
       <div className="mb-5">
-        <div className="text-xs font-body font-semibold uppercase tracking-wider text-olympus-gold mb-1">
+        <div className="text-xs font-body font-semibold uppercase tracking-wider text-accent-gold mb-1">
           {plan.tier}
         </div>
-        <h3 className="font-heading font-bold text-xl text-pacame-white">
+        <h3 className="font-heading font-bold text-xl text-ink">
           {plan.name}
         </h3>
         {plan.tagline && (
-          <p className="text-pacame-white/50 font-body text-sm mt-2">
+          <p className="text-ink/50 font-body text-sm mt-2">
             {plan.tagline}
           </p>
         )}
@@ -90,12 +90,12 @@ export default function PlanCard({ plan, interval, featured }: Props) {
 
       <div className="mb-5">
         <div className="flex items-baseline gap-1">
-          <span className="font-heading font-bold text-4xl text-pacame-white">
+          <span className="font-heading font-bold text-4xl text-ink">
             {(displayCents / 100).toFixed(0)}€
           </span>
-          <span className="text-pacame-white/50 font-body text-sm">/mes</span>
+          <span className="text-ink/50 font-body text-sm">/mes</span>
         </div>
-        <p className="text-pacame-white/40 font-body text-xs mt-1">{billedNote}</p>
+        <p className="text-ink/40 font-body text-xs mt-1">{billedNote}</p>
       </div>
 
       <button
@@ -103,8 +103,8 @@ export default function PlanCard({ plan, interval, featured }: Props) {
         disabled={loading}
         className={`w-full mb-6 py-3 rounded-xl font-heading font-semibold transition ${
           featured
-            ? "bg-olympus-gold hover:bg-olympus-gold/90 text-pacame-black"
-            : "bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 text-pacame-white"
+            ? "bg-accent-gold hover:bg-accent-gold/90 text-paper"
+            : "bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 text-ink"
         } disabled:opacity-50 inline-flex items-center justify-center gap-2`}
       >
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
@@ -116,24 +116,24 @@ export default function PlanCard({ plan, interval, featured }: Props) {
         {(plan.features || []).map((f, i) => (
           <li
             key={i}
-            className="flex items-start gap-2 text-sm font-body text-pacame-white/70"
+            className="flex items-start gap-2 text-sm font-body text-ink/70"
           >
-            <CheckCircle2 className="w-4 h-4 text-olympus-gold mt-0.5 flex-shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-accent-gold mt-0.5 flex-shrink-0" />
             <span>{f}</span>
           </li>
         ))}
       </ul>
 
       {(plan.included_apps || []).length > 0 && (
-        <div className="mt-5 pt-5 border-t border-white/[0.06]">
-          <p className="text-[11px] font-body font-semibold text-olympus-gold uppercase tracking-wider mb-2">
+        <div className="mt-5 pt-5 border-t border-ink/[0.06]">
+          <p className="text-[11px] font-body font-semibold text-accent-gold uppercase tracking-wider mb-2">
             Apps incluidas
           </p>
           <div className="flex flex-wrap gap-1">
             {(plan.included_apps || []).map((a) => (
               <span
                 key={a}
-                className="text-[11px] font-body px-2 py-0.5 rounded-full bg-white/[0.05] text-pacame-white/70"
+                className="text-[11px] font-body px-2 py-0.5 rounded-full bg-white/[0.05] text-ink/70"
               >
                 {a}
               </span>

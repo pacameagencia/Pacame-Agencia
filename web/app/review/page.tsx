@@ -43,22 +43,22 @@ export default function ReviewPage() {
   }
 
   return (
-    <div className="bg-pacame-black min-h-screen">
+    <div className="bg-paper min-h-screen">
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0 bg-grid" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-electric-violet/15 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-primary/15 rounded-full blur-[140px] pointer-events-none" />
 
         <div className="relative z-10 max-w-xl mx-auto px-4 sm:px-6">
           {state === "sent" ? (
             <div className="rounded-3xl glass p-10 text-center">
               <Celebration />
-              <div className="w-16 h-16 rounded-full bg-lime-pulse/20 flex items-center justify-center mx-auto mb-6">
-                <CheckCircle2 className="w-8 h-8 text-lime-pulse" />
+              <div className="w-16 h-16 rounded-full bg-mint/20 flex items-center justify-center mx-auto mb-6">
+                <CheckCircle2 className="w-8 h-8 text-mint" />
               </div>
-              <h1 className="font-heading font-bold text-2xl text-pacame-white mb-3">
+              <h1 className="font-heading font-bold text-2xl text-ink mb-3">
                 Gracias por tu resena
               </h1>
-              <p className="text-pacame-white/60 font-body mb-6">
+              <p className="text-ink/60 font-body mb-6">
                 Tu opinion nos ayuda a mejorar y a que mas negocios confien en PACAME.
               </p>
               <Button variant="outline" asChild>
@@ -71,13 +71,13 @@ export default function ReviewPage() {
           ) : (
             <>
               <ScrollReveal className="text-center mb-8">
-                <p className="font-mono text-electric-violet text-sm mb-4 uppercase tracking-widest">
+                <p className="font-mono text-brand-primary text-sm mb-4 uppercase tracking-widest">
                   Tu opinion
                 </p>
-                <h1 className="font-heading font-bold text-[clamp(2rem,4vw,3rem)] text-pacame-white leading-tight mb-4">
+                <h1 className="font-heading font-bold text-[clamp(2rem,4vw,3rem)] text-ink leading-tight mb-4">
                   Cuentanos tu experiencia
                 </h1>
-                <p className="text-pacame-white/60 font-body">
+                <p className="text-ink/60 font-body">
                   Tu resena ayuda a otros negocios a tomar la decision correcta.
                 </p>
               </ScrollReveal>
@@ -85,7 +85,7 @@ export default function ReviewPage() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Rating */}
                 <div className="text-center">
-                  <label className="block text-sm font-body text-pacame-white/70 mb-3">
+                  <label className="block text-sm font-body text-ink/70 mb-3">
                     Valoracion *
                   </label>
                   <div className="flex justify-center gap-2">
@@ -101,8 +101,8 @@ export default function ReviewPage() {
                         <Star
                           className={`w-8 h-8 transition-colors ${
                             n <= (hoverRating || rating)
-                              ? "fill-amber-signal text-amber-signal"
-                              : "text-pacame-white/20"
+                              ? "fill-accent-gold text-accent-gold"
+                              : "text-ink/20"
                           }`}
                         />
                       </button>
@@ -112,30 +112,30 @@ export default function ReviewPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-body text-pacame-white/70 mb-2">Nombre *</label>
+                    <label className="block text-sm font-body text-ink/70 mb-2">Nombre *</label>
                     <input
                       name="name"
                       required
                       placeholder="Tu nombre"
-                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 input-premium outline-none transition-colors"
+                      className="w-full h-12 px-4 rounded-xl bg-paper-deep border border-ink/[0.08] text-ink font-body text-sm placeholder:text-ink/30 input-premium outline-none transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-body text-pacame-white/70 mb-2">Rol / Empresa</label>
+                    <label className="block text-sm font-body text-ink/70 mb-2">Rol / Empresa</label>
                     <input
                       name="role"
                       placeholder="CEO de MiEmpresa"
-                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 input-premium outline-none transition-colors"
+                      className="w-full h-12 px-4 rounded-xl bg-paper-deep border border-ink/[0.08] text-ink font-body text-sm placeholder:text-ink/30 input-premium outline-none transition-colors"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-body text-pacame-white/70 mb-2">Servicio contratado</label>
+                    <label className="block text-sm font-body text-ink/70 mb-2">Servicio contratado</label>
                     <select
                       name="service"
-                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm input-premium outline-none transition-colors appearance-none"
+                      className="w-full h-12 px-4 rounded-xl bg-paper-deep border border-ink/[0.08] text-ink font-body text-sm input-premium outline-none transition-colors appearance-none"
                     >
                       <option value="">Selecciona</option>
                       <option value="Web Corporativa">Web Corporativa</option>
@@ -153,23 +153,23 @@ export default function ReviewPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-body text-pacame-white/70 mb-2">Ciudad</label>
+                    <label className="block text-sm font-body text-ink/70 mb-2">Ciudad</label>
                     <input
                       name="city"
                       placeholder="Madrid"
-                      className="w-full h-12 px-4 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 input-premium outline-none transition-colors"
+                      className="w-full h-12 px-4 rounded-xl bg-paper-deep border border-ink/[0.08] text-ink font-body text-sm placeholder:text-ink/30 input-premium outline-none transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-body text-pacame-white/70 mb-2">Tu experiencia *</label>
+                  <label className="block text-sm font-body text-ink/70 mb-2">Tu experiencia *</label>
                   <textarea
                     name="text"
                     required
                     rows={4}
                     placeholder="Cuentanos como fue trabajar con PACAME, que resultados obtuviste..."
-                    className="w-full px-4 py-3 rounded-xl bg-dark-card border border-white/[0.08] text-pacame-white font-body text-sm placeholder:text-pacame-white/30 input-premium outline-none transition-colors resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-paper-deep border border-ink/[0.08] text-ink font-body text-sm placeholder:text-ink/30 input-premium outline-none transition-colors resize-none"
                   />
                 </div>
 
@@ -201,7 +201,7 @@ export default function ReviewPage() {
                       gradientOpacity={0.8}
                       className="group w-full h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
                     >
-                      <button type="submit" className="flex items-center gap-2 text-pacame-white w-full justify-center">
+                      <button type="submit" className="flex items-center gap-2 text-ink w-full justify-center">
                         <Send className="w-4 h-4" />
                         Enviar resena
                       </button>
@@ -209,9 +209,9 @@ export default function ReviewPage() {
                   </MagneticButton>
                 )}
 
-                <p className="text-xs text-pacame-white/30 font-body text-center">
+                <p className="text-xs text-ink/30 font-body text-center">
                   Tu resena sera revisada antes de publicarse.{" "}
-                  <Link href="/privacidad" className="text-electric-violet/60 hover:underline">
+                  <Link href="/privacidad" className="text-brand-primary/60 hover:underline">
                     Politica de privacidad
                   </Link>
                 </p>
