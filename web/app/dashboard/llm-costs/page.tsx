@@ -11,6 +11,7 @@ import {
   Activity,
 } from "lucide-react";
 import AnimatedNumber from "@/components/ui/AnimatedNumber";
+import MiniSparkline from "@/components/ui/MiniSparkline";
 
 interface BudgetRow {
   tier: string;
@@ -22,7 +23,24 @@ interface BudgetRow {
   errors: number;
   fallbacks: number;
   avg_latency_ms: number;
+  trend_7d_eur: number[];
 }
+
+const TIER_HEX: Record<string, string> = {
+  reasoning: "#a78bfa",
+  titan: "#D4A574",
+  premium: "#22d3ee",
+  standard: "#34d399",
+  economy: "#9ca3af",
+};
+
+const TIER_DESC: Record<string, string> = {
+  reasoning: "Claude Opus + extended thinking — DIOS, audits, decisiones criticas",
+  titan: "Claude Opus — tareas high-stakes sin pensamiento visible",
+  premium: "Claude Sonnet — client-facing (cold emails, chat, contact form, delivery)",
+  standard: "Nebius Qwen-80B — QA scoring, tareas internas con cierto rigor",
+  economy: "Gemma VPS gratis / Nebius Qwen-30B — DMs cortas, subject lines",
+};
 
 interface DailySpendRow {
   day: string;
@@ -144,6 +162,9 @@ export default function LlmCostsPage() {
   const totalCapEur = data?.budgets.reduce((s, b) => s + b.cap_eur, 0) || 0;
   const totalCalls = data?.budgets.reduce((s, b) => s + b.calls, 0) || 0;
   const totalErrors = data?.budgets.reduce((s, b) => s + b.errors, 0) || 0;
+  const has7dData =
+    !!data?.budgets.some((b) => b.trend_7d_eur.some((v) => v > 0));
+  const hasAnyCalls = !!data?.recent_calls.length;
 
   return (
     <div className="space-y-6 max-w-7xl">
@@ -164,6 +185,59 @@ export default function LlmCostsPage() {
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} /> Refresh
         </button>
       </div>
+
+      {/* First-run banner: ningun call registrado aun */}
+      {!hasAnyCalls && data && (
+        <div className="rounded-2xl bg-gradient-to-br from-electric-violet/10 via-olympus-gold/5 to-transparent border border-electric-violet/20 p-6">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl bg-electric-violet/15 border border-electric-violet/30 flex items-center justify-center flex-shrink-0">
+              <Zap className="w-5 h-5 text-electric-violet" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-heading font-semibold text-pacame-white mb-1">
+                Tracking LLM recien activado
+              </h3>
+              <p className="text-sm text-pacame-white/60 leading-relaxed">
+                Esta vista registra cada llamada a modelos IA (Opus, Sonnet, Kimi,
+                DeepSeek, Qwen, Gemma). Aun no hay datos — los primeros calls
+                apareceran aqui en segundos cuando el sistema genere algo:
+                outreach, chat, audit, delivery, DIOS...
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
+                <div className="p-3 rounded-lg bg-white/[0.03] border border-white/[0.06]">
+                  <div className="text-[11px] uppercase tracking-wider text-pacame-white/40 font-mono mb-1">
+                    1. Strategy
+                  </div>
+                  <div className="text-xs text-pacame-white/80">
+                    <code className="text-olympus-gold font-mono">LLM_STRATEGY=quality-first</code>{" "}
+                    prioriza Opus/Sonnet. Alternativa:{" "}
+                    <code className="text-pacame-white/60 font-mono">cost-first</code>.
+                  </div>
+                </div>
+                <div className="p-3 rounded-lg bg-white/[0.03] border border-white/[0.06]">
+                  <div className="text-[11px] uppercase tracking-wider text-pacame-white/40 font-mono mb-1">
+                    2. Budgets
+                  </div>
+                  <div className="text-xs text-pacame-white/80">
+                    Caps EUR/dia por tier. Al 80% aviso; al 100% auto-degrade al
+                    tier inferior (no corta servicio).
+                  </div>
+                </div>
+                <div className="p-3 rounded-lg bg-white/[0.03] border border-white/[0.06]">
+                  <div className="text-[11px] uppercase tracking-wider text-pacame-white/40 font-mono mb-1">
+                    3. Override
+                  </div>
+                  <div className="text-xs text-pacame-white/80">
+                    <code className="text-olympus-gold font-mono">LLM_BUDGET_OVERRIDE=true</code>{" "}
+                    salta cap en emergencia. Defaults en{" "}
+                    <code className="text-pacame-white/60 font-mono">.env.local.example</code>.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Totals hero */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -233,47 +307,81 @@ export default function LlmCostsPage() {
               : isWarn
               ? "from-amber-500 to-amber-400"
               : "from-olympus-gold to-amber-400";
+            const tierHex = TIER_HEX[b.tier] || "#D4A574";
+            const max7d = Math.max(...b.trend_7d_eur, b.cap_eur * 0.1);
             return (
               <div
                 key={b.tier}
                 className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]"
               >
-                <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`text-[10px] uppercase tracking-wider font-mono px-2 py-0.5 rounded-full border ${
-                        TIER_COLOR[b.tier] || "text-pacame-white/60 border-white/10"
-                      }`}
-                    >
-                      {b.tier}
-                    </span>
-                    <span className="text-sm text-pacame-white">
-                      {b.calls} calls · {b.avg_latency_ms}ms avg
-                    </span>
-                    {b.errors > 0 && (
-                      <span className="text-[11px] text-red-400">
-                        {b.errors} errores
+                <div className="flex items-start justify-between flex-wrap gap-3 mb-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 flex-wrap mb-1">
+                      <span
+                        className={`text-[10px] uppercase tracking-wider font-mono px-2 py-0.5 rounded-full border ${
+                          TIER_COLOR[b.tier] || "text-pacame-white/60 border-white/10"
+                        }`}
+                      >
+                        {b.tier}
                       </span>
-                    )}
-                    {b.fallbacks > 0 && (
-                      <span className="text-[11px] text-amber-400">
-                        {b.fallbacks} fallbacks
+                      <span className="text-sm text-pacame-white">
+                        {b.calls} calls · {b.avg_latency_ms}ms avg
                       </span>
-                    )}
+                      {b.errors > 0 && (
+                        <span className="text-[11px] text-red-400">
+                          {b.errors} errores
+                        </span>
+                      )}
+                      {b.fallbacks > 0 && (
+                        <span className="text-[11px] text-amber-400">
+                          {b.fallbacks} fallbacks
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-[11px] text-pacame-white/40 font-body">
+                      {TIER_DESC[b.tier]}
+                    </div>
                   </div>
-                  <div className="text-sm font-mono">
-                    <span
-                      className={
-                        isOver
-                          ? "text-red-400"
-                          : isWarn
-                          ? "text-amber-400"
-                          : "text-pacame-white"
-                      }
-                    >
-                      {eur(b.spent_eur)}
-                    </span>
-                    <span className="text-pacame-white/40"> / {eur(b.cap_eur)}</span>
+                  <div className="flex items-center gap-4 flex-shrink-0">
+                    {/* Trend 7d sparkline (solo si hay algun dato en 7d) */}
+                    {has7dData ? (
+                      <div className="flex flex-col items-end">
+                        <MiniSparkline
+                          values={b.trend_7d_eur}
+                          width={100}
+                          height={26}
+                          color={tierHex}
+                          maxY={max7d}
+                          minY={0}
+                        />
+                        <div className="text-[9px] text-pacame-white/30 font-mono mt-0.5">
+                          7d trend
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-center w-[100px] h-[26px] text-[10px] text-pacame-white/20 font-mono justify-end">
+                        —
+                      </div>
+                    )}
+                    <div className="text-right">
+                      <div className="text-sm font-mono">
+                        <span
+                          className={
+                            isOver
+                              ? "text-red-400"
+                              : isWarn
+                              ? "text-amber-400"
+                              : "text-pacame-white"
+                          }
+                        >
+                          {eur(b.spent_eur)}
+                        </span>
+                        <span className="text-pacame-white/40"> / {eur(b.cap_eur)}</span>
+                      </div>
+                      <div className="text-[10px] text-pacame-white/40 font-mono">
+                        hoy
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="h-1.5 rounded-full overflow-hidden bg-white/[0.04]">
@@ -304,9 +412,14 @@ export default function LlmCostsPage() {
           Top 15 call sites (7 dias)
         </h2>
         {!data?.top_call_sites.length ? (
-          <p className="text-sm text-pacame-white/30 font-body text-center py-6">
+          <div className="text-center py-8 text-pacame-white/40 text-sm">
+            <Activity className="w-6 h-6 mx-auto mb-2 opacity-30" />
             Sin calls registradas en los ultimos 7 dias.
-          </p>
+            <p className="text-[11px] mt-1 text-pacame-white/30">
+              Aqui veras los call_sites ordenados por coste — util para detectar
+              tareas que consumen mas de lo esperado.
+            </p>
+          </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -370,9 +483,14 @@ export default function LlmCostsPage() {
           <Zap className="w-5 h-5 text-electric-violet" /> Ultimas 50 calls
         </h2>
         {!data?.recent_calls.length ? (
-          <p className="text-sm text-pacame-white/30 font-body text-center py-6">
-            Ninguna call registrada todavia. El primer call aparecera aqui en segundos.
-          </p>
+          <div className="text-center py-8 text-pacame-white/40 text-sm">
+            <Zap className="w-6 h-6 mx-auto mb-2 opacity-30" />
+            Sin calls registradas todavia.
+            <p className="text-[11px] mt-1 text-pacame-white/30">
+              Cada llamada a llmChat() aparecera aqui con provider, modelo,
+              tokens, latency, coste y badge de fallback/error.
+            </p>
+          </div>
         ) : (
           <div className="space-y-1">
             {data.recent_calls.map((c) => (

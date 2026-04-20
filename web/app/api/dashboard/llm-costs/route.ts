@@ -107,13 +107,37 @@ export async function GET(request: NextRequest) {
       .sort((a, b) => b.cost_usd - a.cost_usd)
       .slice(0, 15);
 
-    // Budgets: spent hoy por tier + cap + pct
+    // Budgets: spent hoy por tier + cap + pct + trend 7d
     const tiers = ["reasoning", "titan", "premium", "standard", "economy"] as const;
+
+    // Agregar daily_spend por tier x dia (collapsing providers)
+    type DailyRow = {
+      day: string;
+      tier: string;
+      cost_usd: number | null;
+    };
+    const byTierDay = new Map<string, Map<string, number>>();
+    for (const r of (daily30d.data || []) as DailyRow[]) {
+      if (!byTierDay.has(r.tier)) byTierDay.set(r.tier, new Map());
+      const dayMap = byTierDay.get(r.tier)!;
+      dayMap.set(r.day, (dayMap.get(r.day) || 0) + (Number(r.cost_usd) || 0));
+    }
+    // Ultimos 7 dias (oldest → newest para sparkline)
+    const days7: string[] = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setUTCHours(0, 0, 0, 0);
+      d.setUTCDate(d.getUTCDate() - i);
+      days7.push(d.toISOString().slice(0, 10));
+    }
+
     const budgets = tiers.map((tier) => {
       const row = (todayByTier.data || []).find((r) => r.tier === tier);
       const spentUsd = Number(row?.cost_usd) || 0;
       const spentEur = spentUsd * USD_TO_EUR;
       const capEur = budgetCapEur(tier);
+      const trendMap = byTierDay.get(tier) || new Map();
+      const trend7d = days7.map((d) => (trendMap.get(d) || 0) * USD_TO_EUR);
       return {
         tier,
         spent_eur: Math.round(spentEur * 100) / 100,
@@ -124,6 +148,7 @@ export async function GET(request: NextRequest) {
         errors: Number(row?.errors) || 0,
         fallbacks: Number(row?.fallbacks) || 0,
         avg_latency_ms: Number(row?.avg_latency_ms) || 0,
+        trend_7d_eur: trend7d,
       };
     });
 

@@ -73,7 +73,9 @@ export interface LLMResult {
   degraded?: LLMTier | null;
 }
 
-const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY || "";
+function getClaudeApiKey(): string {
+  return process.env.CLAUDE_API_KEY || "";
+}
 
 /**
  * Entry point unificado.
@@ -287,7 +289,8 @@ async function callClaude(
   temperature: number,
   thinkingBudgetTokens = 0
 ): Promise<Omit<LLMResult, "latencyMs" | "fallback" | "tier" | "strategy" | "costUsd">> {
-  if (!CLAUDE_API_KEY) {
+  const apiKey = getClaudeApiKey();
+  if (!apiKey) {
     throw new Error("[llm] CLAUDE_API_KEY no configurada");
   }
 
@@ -318,7 +321,7 @@ async function callClaude(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": CLAUDE_API_KEY,
+      "x-api-key": apiKey,
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify(body),
