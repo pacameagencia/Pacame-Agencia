@@ -9,5 +9,6 @@
   "chat_open_on_load": false,
   "custom_api_url": "http://72.62.185.125:11434/v1",
   "language": "es",
-  "log_render_interval": 5000
+  "log_render_interval": 5000,
+  "installed_at": 1776727992008
 }

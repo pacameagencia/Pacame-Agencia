@@ -225,8 +225,8 @@
             "state": {
               "type": "calendar",
               "state": {},
-              "icon": "calendar-with-checkmark",
-              "title": "Calendar"
+              "icon": "lucide-ghost",
+              "title": "calendar"
             }
           },
           {
@@ -245,8 +245,8 @@
             "state": {
               "type": "juggl_nodes",
               "state": {},
-              "icon": "ag-node-list",
-              "title": "Juggl nodes"
+              "icon": "lucide-ghost",
+              "title": "juggl_nodes"
             }
           },
           {
@@ -255,8 +255,8 @@
             "state": {
               "type": "juggl_style",
               "state": {},
-              "icon": "ag-style",
-              "title": "Juggl style"
+              "icon": "lucide-ghost",
+              "title": "juggl_style"
             }
           },
           {
@@ -267,8 +267,8 @@
               "state": {
                 "file": "Bienvenido.md"
               },
-              "icon": "lucide-file-signature",
-              "title": "Notas al pie"
+              "icon": "lucide-ghost",
+              "title": "footnotes"
             }
           },
           {
@@ -307,25 +307,13 @@
       "templates:Insertar plantilla": false,
       "command-palette:Abrir paleta de comandos": false,
       "bases:Crear nueva base": false,
-      "zk-prefixer:Crear nueva nota única": false,
-      "audio-recorder:Iniciar/Detener la grabación": false,
-      "markdown-importer:Abrir el importador de Markdown": false,
-      "random-note:Abrir nota al azar": false,
-      "publish:Publicar cambios...": false,
       "obsidian-excalidraw-plugin:New drawing": false,
       "templater-obsidian:Templater": false,
-      "table-editor-obsidian:Advanced Tables Toolbar": false,
       "obsidian-git:Open Git source control": false,
       "obsidian-kanban:Create new board": false,
-      "remotely-save:Remotely Save": false,
-      "omnisearch:Omnisearch": false,
-      "copilot:Open Copilot Chat": false,
-      "3d-graph:3D Graph": false,
-      "juggl:Juggl global graph": false,
       "smart-connections:Smart Connections: Open connections view": false,
       "smart-connections:Smart Connections: Open random connection": false,
-      "smart-connections:Smart Lookup: Open lookup view": false,
-      "workspaces:Gestionar disposiciones de espacio de trabajo": false
+      "smart-connections:Smart Lookup: Open lookup view": false
     }
   },
   "active": "fd4bf1bd15c0b29c",
