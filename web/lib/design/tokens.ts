@@ -65,17 +65,19 @@ export const colors = {
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // NEUTRALS — editorial warm cool (cercano al Cloudy Sky)
+  // NEUTRALS — DARK-FIRST (sitio PACAME es dark mode canonical)
+  // `paper` = fondo oscuro (canvas). `ink` = texto claro.
+  // Si algun dia activamos light mode theme, next-themes hace el swap.
   // ═══════════════════════════════════════════════════════════════
-  paper:       "#F4F6F8",   // primary light bg (sutil cool tint)
-  paper_soft:  "#E8EEF3",
-  paper_deep:  "#DAE3EB",   // cards, elevated surfaces en light mode
+  paper:       "#0A0A0A",   // primary bg dark (canvas PACAME)
+  paper_soft:  "#141417",   // superficies elevadas
+  paper_deep:  "#161617",   // cards (antes bg-dark-card)
 
-  ink:         "#0F1B2E",   // primary text dark-navy (complementa ocean blue)
-  ink_soft:    "#2A3952",
-  ink_mute:    "#6A7A94",
-  ink_subtle:  "#A3B1C7",
-  ink_faint:   "#D0D8E2",
+  ink:         "#F5F5F7",   // texto principal (antes pacame-white)
+  ink_soft:    "#E2E8F0",
+  ink_mute:    "#A3B1C7",   // text-ink/mute para secundario
+  ink_subtle:  "#6A7A94",
+  ink_faint:   "#2A3952",
 
   // ═══════════════════════════════════════════════════════════════
   // SEMANTIC STATES
@@ -108,36 +110,34 @@ export const radii = {
 // Del skill pack 3d-scroll-website (battle-tested)
 // ═══════════════════════════════════════════════════════════════
 export const shadows = {
-  // Shadows normales (usando ink como tint)
-  sm:   "0 1px 2px rgba(15,27,46,0.04)",
-  md:   "0 2px 6px rgba(15,27,46,0.06), 0 4px 12px rgba(15,27,46,0.04)",
-  lg:   "0 6px 18px rgba(15,27,46,0.08), 0 12px 40px rgba(15,27,46,0.06)",
-  xl:   "0 16px 48px rgba(15,27,46,0.12)",
-  "2xl":"0 24px 80px rgba(15,27,46,0.16)",
+  // Shadows dark-mode — negro profundo
+  sm:   "0 1px 2px rgba(0,0,0,0.25)",
+  md:   "0 2px 6px rgba(0,0,0,0.30), 0 4px 12px rgba(0,0,0,0.20)",
+  lg:   "0 6px 18px rgba(0,0,0,0.35), 0 12px 40px rgba(0,0,0,0.25)",
+  xl:   "0 16px 48px rgba(0,0,0,0.40)",
+  "2xl":"0 24px 80px rgba(0,0,0,0.50)",
 
-  // Neumorphic (del skill pack) — 6 outer + 1 inset highlight
+  // Neumorphic — adaptado dark (inset con tint accent-gold sutil)
   neumo:
-    "0px 0.7px 0.7px -0.67px rgba(15,27,46,0.08), " +
-    "0px 1.8px 1.8px -1.33px rgba(15,27,46,0.08), " +
-    "0px 3.6px 3.6px -2px rgba(15,27,46,0.07), " +
-    "0px 6.9px 6.9px -2.67px rgba(15,27,46,0.07), " +
-    "0px 13.6px 13.6px -3.33px rgba(15,27,46,0.05), " +
-    "0px 30px 30px -4px rgba(15,27,46,0.02), " +
-    "inset 0px 3px 1px 0px rgba(255,255,255,1)",
+    "0px 0.7px 0.7px -0.67px rgba(0,0,0,0.40), " +
+    "0px 1.8px 1.8px -1.33px rgba(0,0,0,0.40), " +
+    "0px 3.6px 3.6px -2px rgba(0,0,0,0.35), " +
+    "0px 6.9px 6.9px -2.67px rgba(0,0,0,0.35), " +
+    "0px 13.6px 13.6px -3.33px rgba(0,0,0,0.30), " +
+    "0px 30px 30px -4px rgba(0,0,0,0.20), " +
+    "inset 0px 1px 0px 0px rgba(255,255,255,0.08)",
 
-  // Pill shadow (mas suave, para badges flotantes)
   pill:
-    "0px 0.7px 0.7px -0.67px rgba(15,27,46,0.08), " +
-    "0px 1.8px 1.8px -1.33px rgba(15,27,46,0.08), " +
-    "0px 3.6px 3.6px -2px rgba(15,27,46,0.07), " +
-    "0px 6.9px 6.9px -2.67px rgba(15,27,46,0.07), " +
-    "inset 0px 2px 1px 0px rgba(255,255,255,1)",
+    "0px 0.7px 0.7px -0.67px rgba(0,0,0,0.40), " +
+    "0px 1.8px 1.8px -1.33px rgba(0,0,0,0.40), " +
+    "0px 3.6px 3.6px -2px rgba(0,0,0,0.35), " +
+    "0px 6.9px 6.9px -2.67px rgba(0,0,0,0.35), " +
+    "inset 0px 1px 0px 0px rgba(255,255,255,0.08)",
 
-  // Inset (para elementos pressed/sunken)
-  inset: "inset 2px 2px 5px rgba(15,27,46,0.06), inset -2px -2px 5px rgba(255,255,255,0.8)",
+  inset: "inset 2px 2px 5px rgba(0,0,0,0.40), inset -2px -2px 5px rgba(255,255,255,0.03)",
 
-  // Glassmorphic (para navbar, floating cards)
-  glass: "0 1px 0 rgba(255,255,255,0.7) inset, 0 12px 40px rgba(40,114,161,0.08)",
+  // Glassmorphic dark (navbar, floating cards sobre dark canvas)
+  glass: "0 1px 0 rgba(255,255,255,0.06) inset, 0 12px 40px rgba(0,0,0,0.40)",
 
   // Glow — para CTAs hero y featured
   glow_primary: "0 0 0 1px rgba(40,114,161,0.15), 0 20px 60px -20px rgba(40,114,161,0.35)",
