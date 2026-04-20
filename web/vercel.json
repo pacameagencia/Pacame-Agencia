@@ -47,6 +47,10 @@
     {
       "path": "/api/apps/pacame-agenda/reminders-cron",
       "schedule": "0 18 * * *"
+    },
+    {
+      "path": "/api/marketplace/lifecycle-cron",
+      "schedule": "0 11 * * *"
     }
   ]
 }
