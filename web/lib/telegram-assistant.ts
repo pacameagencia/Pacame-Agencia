@@ -1,5 +1,6 @@
 import { createServerSupabase } from "@/lib/supabase/server";
 import { sendTelegram } from "@/lib/telegram";
+import { routeInput } from "@/lib/neural";
 import { generateImage, sendTelegramPhoto, sendTelegramVideo } from "@/lib/telegram-media";
 import { sendTelegramDocument } from "@/lib/telegram-media";
 import {
@@ -2498,10 +2499,19 @@ export async function processMessage(userMessage: string): Promise<void> {
     await saveMessage("inbound", userMessage);
     seedProjectKnowledge().catch(() => {}); // Background, runs once
 
+    // Cerebro neural: routeInput devuelve agente + skill + memorias/discoveries
+    // semánticas. Se ejecuta en paralelo con el histórico clásico.
+    const neuralRoute = routeInput({
+      input: userMessage,
+      source: "webhook",
+      channel: "telegram",
+    }).catch(() => null);
+
     // Load conversation history + persistent memories in parallel
-    const [history, memories] = await Promise.all([
+    const [history, memories, route] = await Promise.all([
       loadHistory(),
       loadMemories(),
+      neuralRoute,
     ]);
 
     // Build dynamic system prompt with deep knowledge + memories
@@ -2521,7 +2531,24 @@ RED NEURONAL — INSTRUCCIONES DE APRENDIZAJE CONTINUO:
 - Aprende continuamente. Cada conversacion te hace mas util. Eres una red neuronal que crece.`
       : `\n\nMEMORIA: Aun no tengo memorias guardadas. Empezare a aprender sobre Pablo y el proyecto a medida que hablemos. Usa save_memory cuando detectes info importante.`;
 
-    const systemWithMemory = SYSTEM_PROMPT + PROJECT_KNOWLEDGE + memoryBlock;
+    // Bloque de cerebro neural: agente PACAME elegido + contexto semántico
+    const brainBlock = route ? `
+
+═══════════════════════════════════════════════════
+CEREBRO NEURAL — CONTEXTO SEMANTICO (red pgvector)
+═══════════════════════════════════════════════════
+Agente sugerido para esta peticion: ${String(route.agent).toUpperCase()}
+${route.skill ? `Skill mas relevante: ${route.skill.label} (similarity ${route.skill.similarity.toFixed(2)})` : ''}
+${route.context ? route.context : ''}
+
+Instrucciones:
+- Usa el agente sugerido como base de tu persona (ademas de DIOS).
+- Si el skill sugerido es relevante, aplicalo.
+- Respeta tono PACAME: directo, cercano, tutear, frases cortas, cierre con proximo paso.
+- Si generas algo nuevo y util, lanza DISCOVERY: <insight> al final.
+` : '';
+
+    const systemWithMemory = SYSTEM_PROMPT + PROJECT_KNOWLEDGE + memoryBlock + brainBlock;
 
     // Build messages array: history + current message
     const messages: ClaudeMessage[] = [

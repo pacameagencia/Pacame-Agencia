@@ -698,9 +698,12 @@ export async function routeInput(params: {
   const agent = (params.agentHint as AgentId)
     || agentHintFromText(input)
     || "dios";
+  // Buscar memorias sin filtrar por agente: el cerebro debe recordar en todo
+  // el grafo neural, no solo las del agente elegido. Filtrar por agente
+  // fragmenta el conocimiento artificialmente.
   const [skillHits, memories, discoveries] = await Promise.all([
     semanticSearchNodes(input, { matchCount: 3, type: "skill" }),
-    semanticSearchMemories(input, { matchCount: 5, agentId: agent }),
+    semanticSearchMemories(input, { matchCount: 5 }),
     semanticSearchNodes(input, { matchCount: 3, type: "discovery" }),
   ]);
   const skill = skillHits[0] ? {
