@@ -159,15 +159,26 @@ TypeScript check: **0 errores** ✅
 }
 ```
 
-## Estado de los embedders al cierre
+## Estado FINAL del cerebro (tras todos los embedders)
 
-- **v1**: COMPLETO, exit code 0. 873/874 nodes con embedding (1 pendiente por HTTP 500 persistente en un skill con caracteres raros).
-- **v2**: en curso, 250/1214 skills procesados. Continuará hasta terminar — el script tiene skip logic (nodes con embedding ya se saltan). Cuando termine, el cerebro tendrá ~1900 nodes totales embebidos.
+| Categoría | Total | Con embedding | Cobertura |
+|---|---|---|---|
+| Knowledge nodes | 1862 | **1861** | 99.95% |
+| Skills | 1580 | **1579** | 99.94% |
+| Memorias | 135 | **135** | **100%** |
+| Discoveries | 61 | **61** | **100%** |
+| Sinapsis activas | 60 | — | — |
+| LLM calls registradas | 28 | — | — |
+| Stimuli recibidos | 127 | — | — |
 
-Puedes monitorizar con:
-```bash
-tail -5 "C:/Users/Pacame24/AppData/Local/Temp/claude/C--Users-Pacame24-Downloads-PACAME-AGENCIA--claude-worktrees-dazzling-hofstadter-514d8d/1496f0e0-45ee-441f-b34f-600ac1194ed0/tasks/bywph6w5e.output"
-```
+**Total vectores pgvector: 2057 items indexados.**
+
+El único nodo sin embedding es un skill con caracteres ilegibles para Ollama (`claude-md-progressive-disclosurer`). Impacto: 0.05%, no bloqueante.
+
+Embedders ejecutados (todos exit 0):
+- v1: 873 nodes procesados
+- v2: 976 skills nuevos + memorias
+- mini-script `embed-discoveries.ts`: 61 discoveries (script one-off creado al final)
 
 ## Cómo usarlo al despertar
 
