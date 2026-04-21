@@ -1,0 +1,418 @@
+/* PACAME · Compañero IA — estilos holográficos */
+
+.companero-root {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at center top, #0b1222 0%, #060912 60%, #000 100%);
+  color: #e0f2fe;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Grid holográfico de fondo */
+.holo-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(103, 232, 249, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(103, 232, 249, 0.06) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  animation: grid-move 20s linear infinite;
+  z-index: 0;
+}
+
+@keyframes grid-move {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(50px, 50px); }
+}
+
+/* Scanlines */
+.holo-scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(103, 232, 249, 0) 0px,
+    rgba(103, 232, 249, 0) 2px,
+    rgba(103, 232, 249, 0.04) 3px,
+    rgba(103, 232, 249, 0.04) 3px
+  );
+  z-index: 1;
+  animation: scan 10s linear infinite;
+}
+
+@keyframes scan {
+  from { transform: translateY(0); }
+  to   { transform: translateY(50px); }
+}
+
+.companero-container {
+  position: relative;
+  z-index: 10;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Header */
+.companero-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: rgba(14, 165, 233, 0.05);
+  border: 1px solid rgba(103, 232, 249, 0.25);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+}
+
+.brand-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: #67e8f9;
+  font-weight: 600;
+}
+
+.brand-dot {
+  width: 8px;
+  height: 8px;
+  background: #67e8f9;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #67e8f9, 0 0 24px rgba(103, 232, 249, 0.5);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.6; transform: scale(1.3); }
+}
+
+.state-indicator {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(103, 232, 249, 0.1);
+  border: 1px solid rgba(103, 232, 249, 0.3);
+  color: #67e8f9;
+}
+
+.state-listening  { background: rgba(34, 211, 238, 0.25); color: #22d3ee; border-color: #22d3ee; }
+.state-thinking   { background: rgba(250, 204, 21, 0.15); color: #facc15; border-color: #facc15; }
+.state-speaking   { background: rgba(192, 77, 255, 0.2);  color: #e879f9; border-color: #e879f9; }
+
+/* Sección del avatar */
+.avatar-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0;
+  min-height: 340px;
+}
+
+.avatar-container {
+  position: relative;
+  width: 280px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Aura detrás del avatar */
+.avatar-aura {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  height: 340px;
+  background: radial-gradient(ellipse at center, rgba(103, 232, 249, 0.4) 0%, rgba(59, 130, 246, 0.15) 35%, transparent 70%);
+  filter: blur(20px);
+  z-index: 0;
+  animation: aura-pulse 4s ease-in-out infinite;
+}
+
+@keyframes aura-pulse {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 1.0; transform: translateX(-50%) scale(1.08); }
+}
+
+/* Anillos holográficos */
+.avatar-ring {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 180px;
+  border: 1px solid rgba(103, 232, 249, 0.5);
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: ring-spin 20s linear infinite;
+  z-index: 1;
+}
+
+.avatar-ring-2 {
+  width: 220px;
+  height: 220px;
+  border-style: dashed;
+  animation-duration: 30s;
+  animation-direction: reverse;
+  opacity: 0.25;
+}
+
+@keyframes ring-spin {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to   { transform: translateX(-50%) rotate(360deg); }
+}
+
+/* SVG avatar principal */
+.avatar-svg {
+  position: relative;
+  z-index: 5;
+  width: 260px;
+  height: 350px;
+  filter: drop-shadow(0 0 20px rgba(103, 232, 249, 0.6));
+  animation: hover-float 5s ease-in-out infinite;
+}
+
+@keyframes hover-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* Estados del avatar */
+.avatar-listening .avatar-aura {
+  background: radial-gradient(ellipse at center, rgba(34, 211, 238, 0.6) 0%, rgba(6, 182, 212, 0.2) 35%, transparent 70%);
+}
+
+.avatar-thinking .avatar-aura {
+  background: radial-gradient(ellipse at center, rgba(250, 204, 21, 0.45) 0%, rgba(234, 179, 8, 0.15) 35%, transparent 70%);
+  animation: aura-pulse 1.2s ease-in-out infinite;
+}
+
+.avatar-speaking .avatar-aura {
+  background: radial-gradient(ellipse at center, rgba(232, 121, 249, 0.55) 0%, rgba(192, 77, 255, 0.2) 35%, transparent 70%);
+  animation: aura-pulse 0.6s ease-in-out infinite;
+}
+
+.avatar-speaking .avatar-svg {
+  filter: drop-shadow(0 0 25px rgba(232, 121, 249, 0.7));
+}
+
+/* Pedestal */
+.avatar-pedestal {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 60px;
+  z-index: 3;
+}
+
+.pedestal-glow {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 30px;
+  background: radial-gradient(ellipse at center, rgba(103, 232, 249, 0.7) 0%, transparent 70%);
+  filter: blur(8px);
+}
+
+.pedestal-ring {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 10px;
+  border: 2px solid rgba(103, 232, 249, 0.6);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(103, 232, 249, 0.5), inset 0 0 10px rgba(103, 232, 249, 0.3);
+}
+
+.pedestal-beam {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 150px;
+  background: linear-gradient(to top, rgba(103, 232, 249, 0.4) 0%, transparent 100%);
+  clip-path: polygon(0% 100%, 100% 100%, 75% 0%, 25% 0%);
+  opacity: 0.5;
+  filter: blur(3px);
+}
+
+/* Chat */
+.chat-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(3, 7, 18, 0.6);
+  border: 1px solid rgba(103, 232, 249, 0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  max-height: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-empty {
+  text-align: center;
+  color: #64748b;
+  padding: 20px;
+}
+
+.chat-empty .muted {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 6px;
+}
+
+.chat-msg {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.45;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.chat-msg-user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.35), rgba(99, 102, 241, 0.25));
+  border: 1px solid rgba(99, 102, 241, 0.5);
+  color: #dbeafe;
+}
+
+.chat-msg-assistant {
+  align-self: flex-start;
+  background: rgba(14, 165, 233, 0.08);
+  border: 1px solid rgba(103, 232, 249, 0.3);
+  color: #e0f2fe;
+}
+
+/* Input bar */
+.chat-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(3, 7, 18, 0.8);
+  border-top: 1px solid rgba(103, 232, 249, 0.2);
+}
+
+.chat-input {
+  flex: 1;
+  padding: 10px 14px;
+  background: rgba(14, 165, 233, 0.05);
+  border: 1px solid rgba(103, 232, 249, 0.25);
+  border-radius: 8px;
+  color: #e0f2fe;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.chat-input:focus {
+  border-color: #67e8f9;
+  box-shadow: 0 0 0 2px rgba(103, 232, 249, 0.2);
+}
+
+.chat-input:disabled {
+  opacity: 0.5;
+}
+
+.mic-btn, .send-btn {
+  padding: 10px 16px;
+  background: rgba(103, 232, 249, 0.15);
+  border: 1px solid rgba(103, 232, 249, 0.4);
+  color: #67e8f9;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s;
+  min-width: 44px;
+}
+
+.mic-btn:hover, .send-btn:hover {
+  background: rgba(103, 232, 249, 0.25);
+  border-color: #67e8f9;
+  box-shadow: 0 0 15px rgba(103, 232, 249, 0.3);
+}
+
+.mic-btn-active {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: #ef4444;
+  color: #fca5a5;
+  animation: mic-pulse 1s ease-in-out infinite;
+}
+
+@keyframes mic-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); }
+  50%      { box-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
+}
+
+.send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Footer */
+.companero-footer {
+  text-align: center;
+  font-size: 11px;
+  color: #64748b;
+  padding: 8px 0;
+  letter-spacing: 0.05em;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .avatar-container {
+    width: 240px;
+    height: 340px;
+  }
+  .avatar-svg {
+    width: 220px;
+    height: 300px;
+  }
+  .avatar-ring {
+    width: 160px;
+    height: 160px;
+  }
+  .avatar-ring-2 {
+    width: 190px;
+    height: 190px;
+  }
+  .chat-messages {
+    max-height: 240px;
+  }
+}
