@@ -5,6 +5,7 @@ import { logAgentActivity } from "@/lib/agent-logger";
 import { sendEmail, wrapEmailTemplate } from "@/lib/resend";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { llmChat, extractJSON } from "@/lib/llm";
+import { routeInput } from "@/lib/neural";
 
 const supabase = createServerSupabase();
 
@@ -256,7 +257,19 @@ export async function POST(request: NextRequest) {
 
     if (!lead) return NextResponse.json({ error: "Lead not found" }, { status: 404 });
 
-    const prompt = `Eres Copy, el copywriter de PACAME.
+    // Cerebro neural: insights de nurturing previo para este tipo de negocio
+    const brainInput = `email nurturing para ${lead.business_type || "pyme"} interesado en ${lead.sage_analysis?.services || "servicios digitales"}`;
+    const route = await routeInput({
+      input: brainInput,
+      source: "agent",
+      channel: "nurture",
+      agentHint: "copy",
+    }).catch(() => null);
+    const brainBlock = route?.context
+      ? `\n\nPATRONES APRENDIDOS (cerebro neural):\n${route.context}\n`
+      : "";
+
+    const prompt = `Eres Copy, el copywriter de PACAME.${brainBlock}
 
 Personaliza este email de nurturing para el siguiente lead:
 

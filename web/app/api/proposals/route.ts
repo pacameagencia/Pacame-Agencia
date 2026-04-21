@@ -65,11 +65,23 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Cerebro neural: busca memorias/discoveries de propuestas similares
+    const brainInput = `propuesta comercial para ${lead.sector || "pyme"} en ${lead.city || "Espana"} interesado en ${recommendedServices.join(", ") || "servicios digitales"}`;
+    const route = await routeInput({
+      input: brainInput,
+      source: "agent",
+      channel: "proposals",
+      agentHint: "sage",
+    }).catch(() => null);
+    const brainBlock = route?.context
+      ? `\n\nCONTEXTO CEREBRAL (patrones de propuestas previas + insights del sector):\n${route.context}\n`
+      : "";
+
     // Generate proposal content with AI
     let proposalContent = null;
     if (CLAUDE_API_KEY) {
       try {
-        const prompt = `Eres Sage, Chief Strategy Officer de PACAME.
+        const prompt = `Eres Sage, Chief Strategy Officer de PACAME.${brainBlock}
 
 Genera una propuesta comercial para este lead:
 
