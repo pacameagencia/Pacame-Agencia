@@ -702,17 +702,42 @@ export async function routeInput(params: {
   // Buscar memorias sin filtrar por agente: el cerebro debe recordar en todo
   // el grafo neural, no solo las del agente elegido. Filtrar por agente
   // fragmenta el conocimiento artificialmente.
-  const [skillHits, memories, discoveries] = await Promise.all([
+  // Identity injection: SIEMPRE se recuperan las top-5 memorias con tag 'identity'
+  // de Pablo, independientemente del match semántico con el input. Esto asegura
+  // que visión, pricing, estilo y directivas viajan en CADA prompt del cerebro.
+  const supabaseClient = createServerSupabase();
+  const identityPromise = supabaseClient
+    .from("agent_memories")
+    .select("id, title, content, importance, tags")
+    .eq("agent_id", "pablo")
+    .contains("tags", ["identity"])
+    .order("importance", { ascending: false })
+    .limit(5);
+
+  const [skillHits, memories, discoveries, identityRes] = await Promise.all([
     semanticSearchNodes(input, { matchCount: 3, type: "skill" }),
     semanticSearchMemories(input, { matchCount: 5 }),
     semanticSearchNodes(input, { matchCount: 3, type: "discovery" }),
+    identityPromise,
   ]);
+  const identity = (identityRes.data || []) as Array<{
+    id: string; title: string; content: string; importance: number;
+  }>;
+
   const skill = skillHits[0] ? {
     label: skillHits[0].label || "",
     id: skillHits[0].id,
     similarity: skillHits[0].similarity,
   } : null;
   const contextLines: string[] = [];
+
+  // 1) Identidad Pablo SIEMPRE primero (si existe)
+  if (identity.length > 0) {
+    contextLines.push("=== IDENTIDAD PABLO (obligatorio respetar) ===");
+    identity.forEach(i => contextLines.push(`- ${i.title}: ${(i.content || "").slice(0, 300)}`));
+    contextLines.push("");
+  }
+
   if (skill) contextLines.push(`Skill sugerido: ${skill.label} (similarity ${skill.similarity.toFixed(2)})`);
   if (memories.length) {
     contextLines.push(`\nMemorias relevantes del agente ${agent.toUpperCase()}:`);

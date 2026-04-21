@@ -28,6 +28,8 @@ Agencia digital que resuelve problemas digitales para PYMEs en Espana. 10 agente
 
 **Antes de responder a CUALQUIER petición creativa/estratégica (web, post, ads, copy, branding, propuesta, diseño, guión, estrategia, dashboard, sql, carrusel, etc.) EJECUTAR este checklist sin excepción. Omitir pasos = respuesta genérica = fallar.**
 
+0. **LEE `IDENTIDAD-PABLO.md` si no lo has leído en esta sesión.** Ahí están su visión (PACAME = mayores startups IA del mundo), obsesión activa (entidad IA socio con superpoderes), pricing (variable + suscripción/ofertas, estilo Hormozi), estilo (REALISMO BRUTAL, cero humo), directivas (nivel Uber/máximo, sin límites de sector). Cada output debe respetarlo. Si dudas de qué pensaría Pablo, consulta ese fichero o el cerebro vía `/api/neural/query`.
+
 1. **Identifica el agente PACAME** según las palabras clave del input. Tabla rápida:
    - `web`, `landing`, `hero`, `componente`, `formulario`, `frontend`, `React`, `Next.js`, `UI` → **PIXEL** (`agents/04-PIXEL.md`)
    - `carrusel`, `post`, `story`, `reel`, `Instagram`, `TikTok`, `social` → **PULSE** (`agents/06-PULSE.md`)
