@@ -19,6 +19,12 @@ import {
 } from "lucide-react";
 import { stripe } from "@/lib/stripe";
 import { createServerSupabase } from "@/lib/supabase/server";
+import {
+  formatAmount,
+  formatOrderRef,
+  formatDeliveryEta,
+  firstName,
+} from "@/lib/checkout/format";
 import Celebration from "@/components/effects/Celebration";
 
 // No ISR — esta pagina es dinamica por session_id
@@ -103,23 +109,6 @@ async function getService(slug: string | null): Promise<ServiceInfo | null> {
   }
 }
 
-function formatAmount(cents: number | null, currency: string): string {
-  if (cents == null) return "";
-  const amount = cents / 100;
-  return `${amount.toLocaleString("es-ES")} ${currency.toUpperCase()}`;
-}
-
-function formatOrderRef(sessionId: string | null): string {
-  if (!sessionId) return "PACAME-PEND";
-  return `PACAME-${sessionId.slice(-8).toUpperCase()}`;
-}
-
-function formatDeliveryEta(hours: number | null | undefined): string {
-  if (!hours) return "7-14 dias laborables";
-  if (hours <= 24) return `${hours} horas`;
-  return `${Math.round(hours / 24)} dias laborables`;
-}
-
 export default async function GraciasPage({
   searchParams,
 }: {
@@ -132,11 +121,11 @@ export default async function GraciasPage({
   // Service despues — fallback a slug de la URL o metadata Stripe
   const service = await getService(slug || order?.service_slug || null);
 
-  const orderRef = formatOrderRef(session_id || null);
-  const paidLabel = formatAmount(order?.amount_paid ?? null, order?.currency || "EUR");
+  const orderRef = formatOrderRef(session_id);
+  const paidLabel = formatAmount(order?.amount_paid, order?.currency || "EUR");
   const deliveryEta = formatDeliveryEta(service?.delivery_sla_hours);
   const productName = service?.name || order?.product_name || "Tu pedido PACAME";
-  const customerName = order?.customer_name?.split(" ")[0] || null;
+  const customerName = firstName(order?.customer_name);
   const customerEmail = order?.customer_email || null;
 
   return (
