@@ -59,7 +59,7 @@ export default function ConfirmDeletePage() {
             <p className="text-ink/70 font-body text-sm mb-6">{message}</p>
             <a
               href="/portal/privacy"
-              className="inline-block bg-accent-gold text-paper font-heading font-semibold px-6 py-3 rounded-xl hover:bg-accent-gold/90 transition"
+              className="inline-block bg-accent-gold text-ink font-heading font-semibold px-6 py-3 rounded-xl hover:bg-accent-gold/90 transition"
             >
               Ir al portal
             </a>
@@ -74,7 +74,7 @@ export default function ConfirmDeletePage() {
             <p className="text-ink/70 font-body text-sm mb-6">{message}</p>
             <a
               href="/portal"
-              className="inline-block bg-accent-gold text-paper font-heading font-semibold px-6 py-3 rounded-xl hover:bg-accent-gold/90 transition"
+              className="inline-block bg-accent-gold text-ink font-heading font-semibold px-6 py-3 rounded-xl hover:bg-accent-gold/90 transition"
             >
               Ir al portal
             </a>

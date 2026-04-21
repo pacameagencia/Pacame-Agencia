@@ -97,7 +97,7 @@ export default function AppAddonsGrid({ apps }: Props) {
                 <button
                   onClick={() => buy(app.slug)}
                   disabled={loadingSlug === app.slug}
-                  className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 disabled:opacity-50 text-paper font-heading font-semibold px-4 py-2 rounded-xl transition text-sm"
+                  className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 disabled:opacity-50 text-ink font-heading font-semibold px-4 py-2 rounded-xl transition text-sm"
                 >
                   {loadingSlug === app.slug ? (
                     <Loader2 className="w-4 h-4 animate-spin" />

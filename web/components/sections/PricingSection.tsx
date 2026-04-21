@@ -72,7 +72,7 @@ export default function PricingSection() {
                       <svg width="12" height="10" viewBox="0 0 16 12" fill="none" className="opacity-80">
                         <path d="M8 6C6 2 4 1 2 0.5C3 2 3 4 3.5 6C3 4 1.5 3 0 3C1.5 5 2.5 7 4 8C2.5 8 1 9 0 10.5C2 9.5 4 9 5.5 8C6.5 10 8 11 9 11.5L8 6Z" fill="#1a1a1a" />
                       </svg>
-                      <span className="text-xs font-body font-bold text-paper uppercase tracking-wider">
+                      <span className="text-xs font-body font-bold text-ink uppercase tracking-wider">
                         Mas popular
                       </span>
                       <svg width="12" height="10" viewBox="0 0 16 12" fill="none" className="opacity-80 scale-x-[-1]">
@@ -163,7 +163,7 @@ export default function PricingSection() {
                     size="lg"
                     className={`w-full ${
                       pkg.featured
-                        ? "bg-white text-paper hover:bg-white/90"
+                        ? "bg-white text-ink hover:bg-white/90"
                         : "border-accent-gold/20 hover:border-accent-gold/40 hover:bg-accent-gold/5"
                     }`}
                   />

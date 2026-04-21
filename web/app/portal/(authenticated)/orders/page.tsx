@@ -80,7 +80,7 @@ export default async function OrdersListPage() {
         </div>
         <Link
           href="/servicios"
-          className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-paper font-heading font-semibold px-5 py-2.5 rounded-xl transition"
+          className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-ink font-heading font-semibold px-5 py-2.5 rounded-xl transition"
         >
           Comprar otro servicio
           <ArrowRight className="w-4 h-4" />
@@ -98,7 +98,7 @@ export default async function OrdersListPage() {
           </p>
           <Link
             href="/servicios"
-            className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-paper font-heading font-semibold px-6 py-3 rounded-xl transition"
+            className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-ink font-heading font-semibold px-6 py-3 rounded-xl transition"
           >
             Ver catalogo
             <ArrowRight className="w-4 h-4" />

@@ -100,7 +100,7 @@ export default function NpsForm({ token }: { token: string }) {
         </p>
         <a
           href="/"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-gold text-paper font-semibold text-sm"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-gold text-ink font-semibold text-sm"
         >
           Volver al inicio <ArrowRight className="w-4 h-4" />
         </a>
@@ -128,7 +128,7 @@ export default function NpsForm({ token }: { token: string }) {
             href="https://g.page/r/pacameagencia/review"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-gold text-paper font-semibold text-sm"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-gold text-ink font-semibold text-sm"
           >
             Dejar review en Google <ArrowRight className="w-4 h-4" />
           </a>
@@ -220,7 +220,7 @@ export default function NpsForm({ token }: { token: string }) {
         type="button"
         disabled={score === null || status === "submitting"}
         onClick={submit}
-        className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-accent-gold text-paper font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed transition hover:brightness-110"
+        className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-accent-gold text-ink font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed transition hover:brightness-110"
       >
         {status === "submitting" ? (
           <>

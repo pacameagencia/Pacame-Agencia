@@ -54,7 +54,7 @@ export default function ExpressBuyButton({ serviceSlug, serviceName, priceCents 
       <button
         onClick={handleBuy}
         disabled={loading}
-        className="w-full bg-accent-gold hover:bg-accent-gold/90 disabled:opacity-60 disabled:cursor-not-allowed text-paper font-heading font-semibold py-4 px-6 rounded-xl text-lg flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl hover:shadow-accent-gold/20"
+        className="w-full bg-accent-gold hover:bg-accent-gold/90 disabled:opacity-60 disabled:cursor-not-allowed text-ink font-heading font-semibold py-4 px-6 rounded-xl text-lg flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl hover:shadow-accent-gold/20"
       >
         {loading ? (
           <>

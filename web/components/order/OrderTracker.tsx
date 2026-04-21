@@ -279,7 +279,7 @@ export default function OrderTracker({
               )}
               <button
                 onClick={() => setRatingOpen(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-accent-gold text-paper hover:bg-accent-gold/90 font-heading font-semibold text-sm transition"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-accent-gold text-ink hover:bg-accent-gold/90 font-heading font-semibold text-sm transition"
               >
                 <Star className="w-4 h-4" />
                 Valorar entregable
@@ -355,7 +355,7 @@ export default function OrderTracker({
               <button
                 onClick={submitRevision}
                 disabled={submittingRev || revisionText.trim().length < 10}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-accent-gold text-paper font-heading font-semibold text-sm disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-accent-gold text-ink font-heading font-semibold text-sm disabled:opacity-50"
               >
                 {submittingRev ? "Enviando..." : "Enviar"}
               </button>
@@ -407,7 +407,7 @@ export default function OrderTracker({
               <button
                 onClick={submitRating}
                 disabled={submittingRating || !ratingValue}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-accent-gold text-paper font-heading font-semibold text-sm disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-accent-gold text-ink font-heading font-semibold text-sm disabled:opacity-50"
               >
                 {submittingRating ? "Enviando..." : "Enviar valoracion"}
               </button>

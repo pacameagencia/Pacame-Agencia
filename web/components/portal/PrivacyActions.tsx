@@ -171,7 +171,7 @@ export default function PrivacyActions({
       <button
         onClick={handleRequestExport}
         disabled={busy}
-        className="inline-flex items-center gap-2 bg-accent-gold text-paper font-semibold px-5 py-2.5 rounded-xl hover:bg-accent-gold/90 disabled:opacity-50 transition"
+        className="inline-flex items-center gap-2 bg-accent-gold text-ink font-semibold px-5 py-2.5 rounded-xl hover:bg-accent-gold/90 disabled:opacity-50 transition"
       >
         {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
         Generar nuevo export

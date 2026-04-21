@@ -41,7 +41,7 @@ export default async function AppWelcomePage({
 
         <Link
           href="/portal/apps"
-          className="inline-flex items-center justify-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-paper font-heading font-semibold px-6 py-3 rounded-xl transition"
+          className="inline-flex items-center justify-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-ink font-heading font-semibold px-6 py-3 rounded-xl transition"
         >
           Configurar mi app
           <ArrowRight className="w-4 h-4" />

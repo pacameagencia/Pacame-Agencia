@@ -250,7 +250,7 @@ export default function SageChatWidget() {
                   <button
                     type="submit"
                     disabled={leadSubmitting}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-mint text-paper text-xs font-heading font-semibold hover:bg-mint/90 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-mint text-ink text-xs font-heading font-semibold hover:bg-mint/90 transition-colors disabled:opacity-50"
                   >
                     {leadSubmitting ? <Loader2 className="w-3 h-3 animate-spin" /> : <ArrowRight className="w-3 h-3" />}
                     Enviar

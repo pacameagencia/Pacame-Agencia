@@ -118,7 +118,7 @@ export default async function SubscriptionPage() {
           </p>
           <Link
             href="/planes"
-            className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-paper font-heading font-semibold px-6 py-3 rounded-xl transition"
+            className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-ink font-heading font-semibold px-6 py-3 rounded-xl transition"
           >
             Ver planes
             <ArrowRight className="w-4 h-4" />

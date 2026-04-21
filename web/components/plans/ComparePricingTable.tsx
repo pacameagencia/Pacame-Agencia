@@ -234,7 +234,7 @@ export default function ComparePricingTable({
                   style={plan.featured ? { width: "19%" } : { width: "18%" }}
                 >
                   {plan.featured && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent-gold text-paper text-[10px] font-heading font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 whitespace-nowrap">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent-gold text-ink text-[10px] font-heading font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 whitespace-nowrap">
                       <Sparkles className="w-2.5 h-2.5" />
                       POPULAR
                     </div>
@@ -338,7 +338,7 @@ export default function ComparePricingTable({
                     href="/planes"
                     className={`inline-flex items-center justify-center gap-1.5 w-full py-2.5 px-3 rounded-xl text-xs font-heading font-semibold transition ${
                       plan.featured
-                        ? "bg-accent-gold hover:bg-accent-gold/90 text-paper"
+                        ? "bg-accent-gold hover:bg-accent-gold/90 text-ink"
                         : "bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-ink"
                     }`}
                   >

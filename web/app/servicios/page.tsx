@@ -319,8 +319,8 @@ export default async function ServiciosPage() {
               >
                 {pkg.featured && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <div className="bg-ink rounded-full px-4 py-1.5 shadow-apple">
-                      <span className="text-xs font-body font-semibold text-paper uppercase tracking-wider">
+                    <div className="bg-paper rounded-full px-4 py-1.5 shadow-apple">
+                      <span className="text-xs font-body font-semibold text-ink uppercase tracking-wider">
                         Mas popular
                       </span>
                     </div>

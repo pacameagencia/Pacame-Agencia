@@ -107,7 +107,7 @@ export default function OrderRedirectPage() {
             </p>
             <a
               href="/portal/orders"
-              className="inline-block bg-accent-gold text-paper font-heading font-semibold px-6 py-3 rounded-xl hover:bg-accent-gold/90 transition"
+              className="inline-block bg-accent-gold text-ink font-heading font-semibold px-6 py-3 rounded-xl hover:bg-accent-gold/90 transition"
             >
               Ir a mis pedidos
             </a>
@@ -125,7 +125,7 @@ export default function OrderRedirectPage() {
             </p>
             <a
               href="/portal"
-              className="inline-block bg-accent-gold text-paper font-heading font-semibold px-6 py-3 rounded-xl hover:bg-accent-gold/90 transition"
+              className="inline-block bg-accent-gold text-ink font-heading font-semibold px-6 py-3 rounded-xl hover:bg-accent-gold/90 transition"
             >
               Ir al portal
             </a>

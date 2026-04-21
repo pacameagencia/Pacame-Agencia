@@ -165,7 +165,7 @@ export default async function AppsPage() {
           </p>
           <a
             href="mailto:hola@pacameagencia.com?subject=App custom PACAME"
-            className="inline-flex items-center gap-2 bg-accent-gold text-paper font-heading font-semibold px-6 py-3 rounded-xl hover:bg-accent-gold/90 transition"
+            className="inline-flex items-center gap-2 bg-accent-gold text-ink font-heading font-semibold px-6 py-3 rounded-xl hover:bg-accent-gold/90 transition"
           >
             Hablar con Pablo
             <ArrowRight className="w-4 h-4" />

@@ -37,7 +37,7 @@ const itemVariants = {
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-ink">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-paper">
       {/* Animated gradient mesh background */}
       <GradientMeshCanvas
         colors={["#7C3AED", "#4338CA", "#06B6D4", "#D4A853"]}

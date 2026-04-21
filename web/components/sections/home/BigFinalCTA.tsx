@@ -25,7 +25,7 @@ export default function BigFinalCTA() {
         />
       </div>
       {/* Overlay para legibilidad */}
-      <div className="absolute inset-0 bg-ink/60 pointer-events-none" />
+      <div className="absolute inset-0 bg-paper/60 pointer-events-none" />
 
       {/* Top/bottom hairline */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/40 to-transparent" />

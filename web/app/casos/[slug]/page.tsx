@@ -219,7 +219,7 @@ export default async function CaseStudyPage({
             {cs.solution}
           </p>
 
-          <div className="rounded-2xl bg-ink/60 border border-ink/[0.06] p-6">
+          <div className="rounded-2xl bg-paper/60 border border-ink/[0.06] p-6">
             <p className="text-xs uppercase tracking-[0.2em] text-accent-gold/80 font-body font-medium mb-4">
               Productos usados
             </p>
