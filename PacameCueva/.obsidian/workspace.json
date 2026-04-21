@@ -86,9 +86,23 @@
               "icon": "file-text",
               "title": "Release Notes"
             }
+          },
+          {
+            "id": "6b6dea7ccbb2a3f3",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "_dashboards/Hubs.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Hubs"
+            }
           }
         ],
-        "currentTab": 5
+        "currentTab": 6
       }
     ],
     "direction": "vertical"
@@ -326,12 +340,12 @@
       "smart-connections:Smart Lookup: Open lookup view": false
     }
   },
-  "active": "b948365e63b69da7",
+  "active": "6b6dea7ccbb2a3f3",
   "lastOpenFiles": [
+    "_dashboards/Actividad.md",
     "01-Agentes/01-nova.md",
     "_dashboards/Hubs.md",
     "_dashboards/Agentes.md",
-    "_dashboards/Actividad.md",
     "07-Sinapsis/SAGE-DIOS-reports_to.md",
     "07-Sinapsis/SAGE-COPY-delegates_to.md",
     "07-Sinapsis/PULSE-DIOS-reports_to.md",
