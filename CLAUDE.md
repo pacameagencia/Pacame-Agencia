@@ -25,6 +25,7 @@ strategy/          → Roadmap, pricing, personas
 ## Routing Rules (Progressive Disclosure)
 
 ### Agentes PACAME + Skills custom
+- **Crear CUALQUIER web (landing, portfolio, ecommerce, blog, SaaS, editor tipo Canva, dashboard, marketplace) → usa skill `pacame-web` (`.claude/skills/pacame-web/SKILL.md`) ← META-ORQUESTADOR POR DEFECTO**
 - Branding/identidad visual → lee `agents/01-NOVA.md` y `.claude/skills/branding.md`
 - SEO/contenido organico → lee `agents/02-ATLAS.md` y `.claude/skills/seo-audit.md`
 - Ads/embudos/CRO → lee `agents/03-NEXUS.md` y `.claude/skills/ads-campaign.md`
