@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import GlobalSearch from "@/components/search/GlobalSearch";
 import {
   verticalMenu,
+  personasMenu,
   productsByGoalMenu,
   appsMenu,
   resourcesMenu,
@@ -106,30 +107,81 @@ function MegaItem({ item, onClick }: { item: MenuItem; onClick?: () => void }) {
 
 function MegaSoluciones({ onItemClick }: { onItemClick?: () => void }) {
   return (
-    <div className="w-[920px] max-w-[calc(100vw-2rem)] bg-paper/95 backdrop-blur-2xl border border-accent-gold/15 rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.6)] p-6">
-      <div className="flex items-center justify-between mb-4">
+    <div className="w-[1100px] max-w-[calc(100vw-2rem)] bg-paper/95 backdrop-blur-2xl border border-accent-gold/15 rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.6)] p-6">
+      <div className="flex items-center justify-between mb-4 pb-4 border-b border-ink/[0.06]">
         <div>
-          <div className="text-[10px] font-mono tracking-wider text-accent-gold uppercase">
-            Soluciones por sector
+          <div className="text-[10px] font-mono tracking-[0.22em] text-accent-gold uppercase">
+            Soluciones · 8 sectores × 3 personas
           </div>
           <div className="text-sm text-ink/60 font-body mt-0.5">
-            8 sub-marcas PACAME especializadas · Web lista para tu industria
+            24 webs tier-1 listas para TU sub-audiencia exacta.{" "}
+            <span className="text-ink/80 font-medium">Gimnasio ≠ entrenador personal.</span>
           </div>
         </div>
-        <Link
-          href="/portafolio"
-          onClick={onItemClick}
-          className="text-xs text-accent-gold hover:text-accent-gold-soft transition inline-flex items-center gap-1"
-        >
-          Ver todas <ArrowRight className="w-3 h-3" />
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/encuentra-tu-solucion"
+            onClick={onItemClick}
+            className="text-xs text-ink/60 hover:text-accent-gold transition inline-flex items-center gap-1 border border-ink/10 hover:border-accent-gold/40 px-3 py-1.5 rounded-full font-mono uppercase tracking-wider"
+          >
+            Quiz 2 min
+          </Link>
+          <Link
+            href="/portafolio"
+            onClick={onItemClick}
+            className="text-xs text-accent-gold hover:text-accent-gold-soft transition inline-flex items-center gap-1"
+          >
+            Ver indice <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
       </div>
-      <div className="grid grid-cols-2 gap-1">
-        {verticalMenu.map((item) => (
-          <MegaItem key={item.href} item={item} onClick={onItemClick} />
-        ))}
+      <div className="grid grid-cols-4 gap-x-5 gap-y-6">
+        {personasMenu.map((entry) => {
+          const VIcon = entry.vertical_icon;
+          return (
+            <div key={entry.vertical_slug}>
+              <Link
+                href={`/portafolio/${entry.vertical_slug}`}
+                onClick={onItemClick}
+                className="group flex items-center gap-2 mb-2 pb-2 border-b border-ink/10 hover:border-accent-gold/40 transition-colors"
+              >
+                {VIcon && (
+                  <VIcon className="w-3.5 h-3.5 text-accent-gold flex-shrink-0" />
+                )}
+                <span className="font-heading font-semibold text-[13px] text-ink group-hover:text-accent-gold transition-colors truncate">
+                  PACAME {entry.vertical_label}
+                </span>
+              </Link>
+              <ul className="space-y-1">
+                {entry.personas.map((persona) => (
+                  <li key={persona.persona_slug}>
+                    <Link
+                      href={`/portafolio/${entry.vertical_slug}/${persona.persona_slug}`}
+                      onClick={onItemClick}
+                      className="group flex items-start gap-1.5 py-1 px-1.5 -mx-1.5 rounded hover:bg-accent-gold/[0.06] transition-colors"
+                    >
+                      <span className="text-[14px] leading-none mt-0.5 flex-shrink-0">
+                        {persona.emoji}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="text-[12.5px] text-ink/80 group-hover:text-ink font-body font-medium leading-tight truncate">
+                          {persona.name}
+                        </div>
+                        {persona.kicker && (
+                          <div className="text-[10px] font-mono text-ink/35 tracking-wider mt-0.5 truncate">
+                            {persona.kicker}
+                          </div>
+                        )}
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </div>
-      <div className="mt-4 pt-4 border-t border-ink/[0.06] flex items-center justify-between text-xs font-body">
+      <div className="mt-5 pt-4 border-t border-ink/[0.06] flex items-center justify-between text-xs font-body">
         <span className="text-ink/40">
           ¿Tu sector no esta? Te hacemos la web a medida en 14 dias.
         </span>

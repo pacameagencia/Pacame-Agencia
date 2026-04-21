@@ -119,6 +119,104 @@ export const verticalMenu: MenuItem[] = [
   },
 ];
 
+// ─── Sub-personas por vertical (24 items = 3 × 8 verticales) ─────
+// Usado en mega-menu "Soluciones" — desktop hover muestra las 3 personas
+// top del vertical + link "Ver ficha vertical completa".
+export interface PersonaMenuEntry {
+  vertical_slug: string;
+  vertical_label: string;
+  vertical_icon?: LucideIcon;
+  personas: Array<{
+    persona_slug: string;
+    name: string;
+    emoji?: string;
+    kicker?: string; // "DESDE X€ · Y DIAS"
+  }>;
+}
+
+export const personasMenu: PersonaMenuEntry[] = [
+  {
+    vertical_slug: "restaurante",
+    vertical_label: "Restaurante",
+    vertical_icon: Utensils,
+    personas: [
+      { persona_slug: "dueno-restaurante", name: "Dueño restaurante", emoji: "🍽️", kicker: "DESDE 1.499€ · 14 DIAS" },
+      { persona_slug: "bar-cafeteria", name: "Bar / Cafeteria", emoji: "☕", kicker: "DESDE 899€ · 10 DIAS" },
+      { persona_slug: "food-truck", name: "Food Truck", emoji: "🚚", kicker: "DESDE 799€ · 10 DIAS" },
+    ],
+  },
+  {
+    vertical_slug: "hotel",
+    vertical_label: "Hotel",
+    vertical_icon: Bed,
+    personas: [
+      { persona_slug: "hotel-boutique", name: "Hotel boutique", emoji: "🏨", kicker: "DESDE 3.499€ · 21 DIAS" },
+      { persona_slug: "hostel", name: "Hostel / Albergue", emoji: "🛏️", kicker: "DESDE 1.799€ · 14 DIAS" },
+      { persona_slug: "apartamentos-turisticos", name: "Airbnb owner", emoji: "🔑", kicker: "DESDE 2.499€ · 18 DIAS" },
+    ],
+  },
+  {
+    vertical_slug: "clinica",
+    vertical_label: "Clinica",
+    vertical_icon: Stethoscope,
+    personas: [
+      { persona_slug: "clinica-privada", name: "Clinica privada", emoji: "🏥", kicker: "DESDE 2.199€ · 18 DIAS" },
+      { persona_slug: "dentista", name: "Clinica dental", emoji: "🦷", kicker: "DESDE 1.999€ · 18 DIAS" },
+      { persona_slug: "fisioterapeuta", name: "Fisioterapeuta", emoji: "🦴", kicker: "DESDE 1.399€ · 14 DIAS" },
+    ],
+  },
+  {
+    vertical_slug: "gym",
+    vertical_label: "Gym",
+    vertical_icon: Dumbbell,
+    personas: [
+      { persona_slug: "gimnasio", name: "Gimnasio", emoji: "🏋️", kicker: "DESDE 2.699€ · 21 DIAS" },
+      { persona_slug: "entrenador-personal", name: "Entrenador personal", emoji: "💪", kicker: "DESDE 1.299€ · 12 DIAS" },
+      { persona_slug: "crossfit-box", name: "CrossFit box", emoji: "🔥", kicker: "DESDE 1.899€ · 16 DIAS" },
+    ],
+  },
+  {
+    vertical_slug: "inmobiliaria",
+    vertical_label: "Inmobiliaria",
+    vertical_icon: HomeIcon,
+    personas: [
+      { persona_slug: "inmobiliaria", name: "Agencia inmobiliaria", emoji: "🏢", kicker: "DESDE 3.999€ · 28 DIAS" },
+      { persona_slug: "dueno-airbnb", name: "Dueño Airbnb", emoji: "🔑", kicker: "DESDE 2.499€ · 18 DIAS" },
+      { persona_slug: "promotor", name: "Promotor obra nueva", emoji: "🏗️", kicker: "DESDE 5.999€ · 35 DIAS" },
+    ],
+  },
+  {
+    vertical_slug: "ecommerce",
+    vertical_label: "Shop",
+    vertical_icon: ShoppingBag,
+    personas: [
+      { persona_slug: "tienda-online", name: "Tienda DTC", emoji: "🛍️", kicker: "DESDE 2.999€ · 21 DIAS" },
+      { persona_slug: "dropshipping", name: "Dropshipping", emoji: "📦", kicker: "DESDE 1.899€ · 16 DIAS" },
+      { persona_slug: "marketplace-seller", name: "Marketplace seller", emoji: "🏪", kicker: "DESDE 1.599€ · 14 DIAS" },
+    ],
+  },
+  {
+    vertical_slug: "formacion",
+    vertical_label: "Academy",
+    vertical_icon: GraduationCap,
+    personas: [
+      { persona_slug: "academia", name: "Academia", emoji: "🎓", kicker: "DESDE 1.799€ · 16 DIAS" },
+      { persona_slug: "coach-solo", name: "Coach individual", emoji: "🧑‍🏫", kicker: "DESDE 1.199€ · 12 DIAS" },
+      { persona_slug: "universidad", name: "Universidad / MBA", emoji: "🎓", kicker: "DESDE 5.999€ · 42 DIAS" },
+    ],
+  },
+  {
+    vertical_slug: "saas",
+    vertical_label: "Core (SaaS)",
+    vertical_icon: Zap,
+    personas: [
+      { persona_slug: "early-stage", name: "Early-stage", emoji: "🚀", kicker: "DESDE 2.999€ · 24 DIAS" },
+      { persona_slug: "scaleup", name: "Scale-up (Serie A-B)", emoji: "📈", kicker: "DESDE 4.999€ · 35 DIAS" },
+      { persona_slug: "enterprise", name: "Enterprise (Serie C+)", emoji: "🏛️", kicker: "DESDE 9.999€ · 56 DIAS" },
+    ],
+  },
+];
+
 // ─── Productos marketplace (servicios por objetivo) ───────────────
 export const productsByGoalMenu: MenuGroup[] = [
   {
@@ -184,11 +282,12 @@ export const appsMenu: MenuItem[] = [
 
 // ─── Recursos ─────────────────────────────────────────────────────
 export const resourcesMenu: MenuItem[] = [
-  { label: "Blog", href: "/blog", desc: "Guias practicas de SEO, Ads, Web y IA", Icon: BookOpen },
-  { label: "Casos de exito", href: "/casos", desc: "Historias reales con numeros", Icon: Award },
+  { label: "Encuentra tu solucion", href: "/encuentra-tu-solucion", desc: "Quiz 2 min que te recomienda bundle personalizado", Icon: Target, kicker: "2 MIN · NUEVO", badge: "Nuevo" },
   { label: "Auditoria gratis", href: "/auditoria", desc: "Te decimos en 10 min donde pierdes trafico", Icon: Lightbulb, kicker: "GRATIS" },
   { label: "Calculadora ROI", href: "/calculadora-roi", desc: "Simula tu retorno antes de contratar", Icon: BarChart3 },
   { label: "7 errores comunes", href: "/7-errores", desc: "Los fallos digitales mas caros para PYMEs", Icon: FileText },
+  { label: "Blog", href: "/blog", desc: "Guias practicas de SEO, Ads, Web y IA", Icon: BookOpen },
+  { label: "Casos de exito", href: "/casos", desc: "Historias reales con numeros", Icon: Award },
   { label: "Refiere y gana", href: "/refiere", desc: "15% de comision recurrente por cliente", Icon: Users, kicker: "15% COMISION" },
 ];
 

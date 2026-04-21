@@ -8,29 +8,47 @@ import { createServerSupabase } from "@/lib/supabase/server";
 
 const BASE_URL = "https://pacameagencia.com";
 
-/** Fetch marketplace DB slugs (servicios express + apps) */
+/** Fetch marketplace DB slugs (servicios express + apps + personas) */
 async function fetchDbSlugs(): Promise<{
   marketplaceSlugs: string[];
   appSlugs: string[];
+  verticalSlugs: string[];
+  personaPaths: { vertical: string; persona: string }[];
 }> {
   try {
     const supabase = createServerSupabase();
-    const [svc, apps] = await Promise.all([
+    const [svc, apps, verticals, personas] = await Promise.all([
       supabase.from("service_catalog").select("slug").eq("is_active", true),
       supabase.from("apps_catalog").select("slug").eq("is_active", true),
+      supabase.from("portfolio_verticals").select("slug").eq("is_active", true),
+      supabase
+        .from("portfolio_personas")
+        .select("vertical_slug, persona_slug")
+        .eq("is_active", true),
     ]);
     return {
       marketplaceSlugs: (svc.data || []).map((r) => r.slug as string),
       appSlugs: (apps.data || []).map((r) => r.slug as string),
+      verticalSlugs: (verticals.data || []).map((r) => r.slug as string),
+      personaPaths: (personas.data || []).map((r) => ({
+        vertical: r.vertical_slug as string,
+        persona: r.persona_slug as string,
+      })),
     };
   } catch {
-    return { marketplaceSlugs: [], appSlugs: [] };
+    return {
+      marketplaceSlugs: [],
+      appSlugs: [],
+      verticalSlugs: [],
+      personaPaths: [],
+    };
   }
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
-  const { marketplaceSlugs, appSlugs } = await fetchDbSlugs();
+  const { marketplaceSlugs, appSlugs, verticalSlugs, personaPaths } =
+    await fetchDbSlugs();
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
@@ -115,12 +133,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
+  // Portfolio vertical index pages (8 rutas /portafolio/[slug])
+  const verticalIndexPages: MetadataRoute.Sitemap = verticalSlugs.map((slug) => ({
+    url: `${BASE_URL}/portafolio/${slug}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+  }));
+
+  // Portfolio persona pages (24 rutas /portafolio/[vertical]/[persona])
+  const personaPages: MetadataRoute.Sitemap = personaPaths.map((p) => ({
+    url: `${BASE_URL}/portafolio/${p.vertical}/${p.persona}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.9,
+  }));
+
   return [
     ...staticPages,
     ...marketplacePages,
     ...appPages,
     ...servicePages,
     ...nichePages,
+    ...verticalIndexPages,
+    ...personaPages,
     ...blogPages,
     ...casePages,
     ...seoPages,
