@@ -76,14 +76,14 @@ export async function fetchGoogleTrendsES(options: {
       const items = await r.json() as any[];
       if (!Array.isArray(items) || items.length === 0) continue;
 
-      return items.slice(0, options.limit ?? 25).map(it => ({
+      return items.slice(0, options.limit ?? 25).map((it): GoogleTrend => ({
         keyword: String(it.title || it.query || it.keyword || it.term || '').trim(),
         trafficLabel: it.traffic || it.trafficLabel || it.formattedTraffic,
         traffic: parseTrafficLabel(it.traffic || it.trafficLabel || it.formattedTraffic),
         category: it.category || it.topCategory,
         relatedQueries: it.relatedQueries || it.related_queries || [],
         pageUrl: it.pageUrl || it.url,
-        source: 'apify-google-trends',
+        source: 'apify-google-trends' as const,
       })).filter(t => t.keyword.length > 0);
     } catch (err) {
       console.warn(`[google-trends] actor ${actorId} error:`, (err as Error).message);
