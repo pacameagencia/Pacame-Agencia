@@ -73,6 +73,15 @@ export const NICHE_BENCHMARKS: NicheBenchmark[] = [
   // Espiritualidad / entretenimiento
   { key: 'entretenimiento',        label: 'Entretenimiento / contenido',  cpcEur: 0.35, ctrSeo: 0.04, ctrAd: 0.07, convSaaS: 0.01, arpuSaaSMedio: 8, convAfiliado: 0.04, comisionMedia: 8, googleFeeAdsense: 0.32 },
 
+  // Modelos nuevos (scanner v2.1)
+  { key: 'podcast-monetizado',     label: 'Podcast monetizado',           cpcEur: 0.15, ctrSeo: 0.02, ctrAd: 0.05, convSaaS: 0.005, arpuSaaSMedio: 7, convAfiliado: 0.03, comisionMedia: 12, googleFeeAdsense: 0.32 },
+  { key: 'community-premium',      label: 'Community / membership',       cpcEur: 0.90, ctrSeo: 0.025, ctrAd: 0.06, convSaaS: 0.02, arpuSaaSMedio: 35, convAfiliado: 0.04, comisionMedia: 25, googleFeeAdsense: 0.32 },
+  { key: 'extension-navegador',    label: 'Extension navegador freemium', cpcEur: 0.60, ctrSeo: 0.025, ctrAd: 0.07, convSaaS: 0.01, arpuSaaSMedio: 5, convAfiliado: 0.03, comisionMedia: 8, googleFeeAdsense: 0.32 },
+  { key: 'newsletter-substack',    label: 'Newsletter premium (Substack)', cpcEur: 1.20, ctrSeo: 0.03, ctrAd: 0.06, convSaaS: 0.03, arpuSaaSMedio: 12, convAfiliado: 0.04, comisionMedia: 18, googleFeeAdsense: 0.32 },
+  { key: 'gaming-casual',          label: 'Gaming casual / hiper-casual', cpcEur: 0.25, ctrSeo: 0.03, ctrAd: 0.09, convSaaS: 0.015, arpuSaaSMedio: 4, convAfiliado: 0.04, comisionMedia: 6, googleFeeAdsense: 0.32 },
+  { key: 'template-store',         label: 'Templates premium (Shopify/Notion/Figma)', cpcEur: 1.50, ctrSeo: 0.03, ctrAd: 0.07, convSaaS: 0.03, arpuSaaSMedio: 15, convAfiliado: 0.06, comisionMedia: 25, googleFeeAdsense: 0.32 },
+  { key: 'oss-hosting',            label: 'OSS hosting-as-a-service',     cpcEur: 2.20, ctrSeo: 0.025, ctrAd: 0.07, convSaaS: 0.02, arpuSaaSMedio: 60, convAfiliado: 0.02, comisionMedia: 80, googleFeeAdsense: 0.32 },
+
   // Default / generic
   { key: 'default',                label: 'Genérico',                     cpcEur: 0.50, ctrSeo: 0.025, ctrAd: 0.07, convSaaS: 0.01, arpuSaaSMedio: 20, convAfiliado: 0.03, comisionMedia: 15, googleFeeAdsense: 0.32 },
 ];
@@ -114,6 +123,13 @@ export function lookupBenchmark(keyword: string): NicheBenchmark {
     [/web|pagina\s+web|wordpress|shopify|ecommerce/, 'diseno-web'],
     [/coche|automov|moto|vehicul|segundamano/, 'automocion'],
     [/netflix|spotify|serie|pelicul|streaming|musica/, 'entretenimiento'],
+    [/podcast|radio|audio-show/, 'podcast-monetizado'],
+    [/comunidad|community|membership|club|discord/, 'community-premium'],
+    [/extension|chrome\s*extension|plugin\s*chrome|browser/, 'extension-navegador'],
+    [/newsletter|substack|beehiiv|boletin/, 'newsletter-substack'],
+    [/juego\s*casual|hipercasual|hyper-casual|puzzle|arcade/, 'gaming-casual'],
+    [/plantilla|template|tema\s+premium|theme/, 'template-store'],
+    [/pacame\s+(os|agenda|commerce|base|flow|analytics|stats|blog|docs|team|monitor)|oss\s*hosting|self.?host/, 'oss-hosting'],
   ];
   for (const [re, key] of rules) {
     if (re.test(q)) return BY_KEY[key];
