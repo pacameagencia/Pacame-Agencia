@@ -26,6 +26,7 @@ strategy/          → Roadmap, pricing, personas
 
 ### Agentes PACAME + Skills custom
 - **Crear CUALQUIER web (landing, portfolio, ecommerce, blog, SaaS, editor tipo Canva, dashboard, marketplace) → usa skill `pacame-web` (`.claude/skills/pacame-web/SKILL.md`) ← META-ORQUESTADOR POR DEFECTO**
+- **Crear fotos/carruseles/reels virales inspirados en IG (no genéricos) → usa skill `pacame-viral-visuals` (`.claude/skills/pacame-viral-visuals/SKILL.md`) ← OBLIGATORIO antes de imagen/qwen/remotion**
 - Branding/identidad visual → lee `agents/01-NOVA.md` y `.claude/skills/branding.md`
 - SEO/contenido organico → lee `agents/02-ATLAS.md` y `.claude/skills/seo-audit.md`
 - Ads/embudos/CRO → lee `agents/03-NEXUS.md` y `.claude/skills/ads-campaign.md`
