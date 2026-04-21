@@ -35,12 +35,13 @@ import { fetchProductHuntLaunches } from "@/lib/trends/product-hunt";
 import { googleAutocompleteBatch, estimateMonthlyVolumeFromAutocomplete } from "@/lib/trends/google-autocomplete";
 import { estimateRevenue, revenueToPromptString } from "@/lib/trends/revenue-estimator";
 import { validateOpportunity, type OpportunityCandidate } from "@/lib/trends/opportunity-validator";
+import { pickDailyOssSeeds } from "@/lib/trends/oss-catalog";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
 
 const MIN_REVENUE_EUR = 1000;
-const MAX_CANDIDATES_TO_LLM = 10;
+const MAX_CANDIDATES_TO_LLM = 7;
 
 interface SeedCandidate {
   keyword: string;
@@ -108,6 +109,17 @@ async function gatherSeeds(): Promise<SeedCandidate[]> {
     }
   }
 
+  // 5. OSS catalog (fork + rebrand PACAME) — rotación diaria de 5 de 25
+  const ossPicks = pickDailyOssSeeds(5, today);
+  for (const o of ossPicks) {
+    seeds.push({
+      keyword: o.brand,
+      source: 'oss-catalog',
+      context: `OSS replicable: github.com/${o.github} (${o.stars}★, ${o.license}, categoría ${o.category}). Rebrand PACAME propuesto: ${o.brand}. ${o.description}. Modelo de monetización: ${o.monetization_model}.`,
+      externalUrl: `https://github.com/${o.github}`,
+    });
+  }
+
   return seeds;
 }
 
@@ -151,33 +163,40 @@ async function enrichSeeds(seeds: SeedCandidate[]): Promise<EnrichedSeed[]> {
 }
 
 const LLM_SYSTEM_PROMPT = `Eres DIOS, orquestador PACAME. Recibes CANDIDATOS con datos duros reales
-(fecha + eventos próximos + trends + revenue calculado con fórmula). Tu trabajo:
-
-REFORMULAR cada candidato como OPORTUNIDAD DE NEGOCIO PACAME concreta.
+(fecha + eventos próximos + trends + revenue calculado con fórmula + OSS replicables).
+Tu trabajo: REFORMULAR cada candidato como OPORTUNIDAD DE NEGOCIO PACAME concreta.
 
 REGLAS INNEGOCIABLES:
 - NO inventes cifras. Usa SIEMPRE revenue_medio que te doy.
-- NO menciones eventos que ya pasaron (usa solo los eventos próximos listados).
+- NO menciones eventos que ya pasaron. Solo los eventos próximos listados.
 - Cada oportunidad debe tener: título, 2 vías de monetización (rueda servicios + activo propio),
   next_action de ≤3 días, tags.
 - Estilo PACAME: directo, tutear Pablo, frases cortas, nivel máximo (Uber/Calendly tier).
 - Modelo Hormozi: valor grande primero + recurrencia/upsell.
+
+DIVERSIDAD OBLIGATORIA:
+- Si generas 6 oportunidades, deben cubrir al MENOS 4 "type" distintos.
+- Nunca más de 2 oportunidades del mismo "type".
+- El espectro cubre TODO tipo de activo digital monetizable (directiva Pablo).
+
+Si un CANDIDATO viene de source=oss-catalog: type = "oss-fork". Propón fork+rebrand bajo
+el brand indicado. Monetización obligada: hosting-as-a-service + soporte/consultoría.
 
 Devuelve SOLO JSON con esta estructura exacta:
 {
   "opportunities": [
     {
       "title": "string",
-      "type": "web-nicho|saas-vertical|infoproducto|ecommerce|affiliate|app-movil|marketplace|otros",
+      "type": "web-nicho|saas-vertical|oss-fork|infoproducto|marketplace|app-movil|videojuego|extension-navegador|bot-telegram|bot-discord|plantilla-premium|herramienta-online|directorio|newsletter-premium|agencia-productizada|api-wrapper|micro-saas|plugin-vscode|plugin-figma|template-store|affiliate|community-membership|podcast|stock-ia|aaas|white-label|clon-tendencia-viral",
       "niche": "nicho preciso",
-      "monetization_vias": ["via 1 (servicio a cliente)", "via 2 (activo propio)"],
+      "monetization_vias": ["via 1 (servicio a cliente)", "via 2 (activo propio o suscripcion)"],
       "why_now": "cita evento/dato real próximo que lo justifica",
-      "revenue_medio_eur": 0,           // USAR el medio que te paso
-      "revenue_formula": "string",       // USAR la fórmula que te paso
+      "revenue_medio_eur": 0,            // USAR el medio que te paso (best method)
+      "revenue_formula": "string",        // USAR la fórmula del best method
       "execution_days": 7,
       "action": "proximo paso concreto",
-      "data_sources": ["url1","url2"],  // usar los que te paso
-      "search_volume_mes": 0,            // usar el que te paso
+      "data_sources": ["url1","url2"],   // usar los que te paso
+      "search_volume_mes": 0,             // usar el que te paso
       "keyword_seed": "string",
       "tags": ["tag1","tag2"]
     }
@@ -262,16 +281,29 @@ export async function GET(request: NextRequest) {
       ],
       {
         tier: 'titan',
-        maxTokens: 4096,
+        maxTokens: 6000,
         temperature: 0.4,
         agentId: 'dios',
         source: 'opportunity-scanner-v2',
       }
     );
-    const jsonMatch = res.content.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      const parsed = JSON.parse(jsonMatch[0]);
-      if (Array.isArray(parsed.opportunities)) llmCandidates = parsed.opportunities;
+    // Parser robusto: intenta varios enfoques
+    const content = res.content;
+    const firstBrace = content.indexOf('{');
+    const lastBrace = content.lastIndexOf('}');
+    if (firstBrace >= 0 && lastBrace > firstBrace) {
+      const jsonStr = content.slice(firstBrace, lastBrace + 1);
+      try {
+        const parsed = JSON.parse(jsonStr);
+        if (Array.isArray(parsed.opportunities)) llmCandidates = parsed.opportunities;
+      } catch {
+        // Fallback: extraer objetos opportunities uno a uno con regex
+        const opRegex = /\{\s*"title"\s*:[\s\S]*?"tags"\s*:\s*\[[^\]]*\]\s*\}/g;
+        const matches = content.match(opRegex) || [];
+        for (const m of matches) {
+          try { llmCandidates.push(JSON.parse(m)); } catch { /* skip */ }
+        }
+      }
     }
   } catch (e) {
     return NextResponse.json({ error: `llm_error: ${(e as Error).message}` }, { status: 502 });

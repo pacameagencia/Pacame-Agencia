@@ -16,7 +16,7 @@ export interface OSSCandidate {
   github: string;                    // 'owner/repo'
   name: string;
   brand: string;                      // 'PACAME XXX'
-  license: 'MIT' | 'Apache-2.0' | 'BSD' | 'AGPL' | 'BSL';
+  license: 'MIT' | 'Apache-2.0' | 'BSD' | 'AGPL' | 'BSL' | 'Sustainable';
   stars: number;                      // aproximado, última actualización manual
   category: string;
   rebrand_value: 'alto' | 'medio' | 'bajo';
