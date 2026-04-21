@@ -128,12 +128,16 @@ export async function POST(req: Request) {
     if (discoveryMatch) {
       discoveryId = await recordDiscovery({
         agentId: route.agent,
-        discoveryType: "pattern",
+        type: "pattern",
         title: discoveryMatch[1].slice(0, 200),
         description: llmResult.content.slice(0, 1000),
         impact: "medium",
-        source: body.channel || "neural/execute",
-        metadata: { stimulus_id: route.stimulus_id, provider: llmResult.provider, model: llmResult.model },
+        metadata: {
+          stimulus_id: route.stimulus_id,
+          provider: llmResult.provider,
+          model: llmResult.model,
+          source: body.channel || "neural/execute",
+        },
       });
     }
 
@@ -142,7 +146,7 @@ export async function POST(req: Request) {
     if (body.store_memory !== false && body.input.length > 20) {
       memoryId = await rememberMemory({
         agentId: route.agent,
-        memoryType: "episodic",
+        type: "episodic",
         title: body.input.slice(0, 150),
         content: `Q: ${body.input}\n\nA: ${llmResult.content.slice(0, 2000)}`,
         importance: 0.6,

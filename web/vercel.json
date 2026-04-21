@@ -23,6 +23,10 @@
     {
       "path": "/api/agents/maintenance",
       "schedule": "0 4 * * 1"
+    },
+    {
+      "path": "/api/neural/auto-discovery",
+      "schedule": "0 5 * * *"
     }
   ]
 }

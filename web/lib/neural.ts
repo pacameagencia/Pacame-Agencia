@@ -532,7 +532,7 @@ export async function semanticSearchNodes(
 
 export async function semanticSearchMemories(
   query: string,
-  options: { matchCount?: number; agentId?: string } = {}
+  options: { matchCount?: number; agentId?: string; minSimilarity?: number } = {}
 ): Promise<SemanticHit[]> {
   const vec = await embed(query);
   if (!vec) return [];
@@ -548,7 +548,8 @@ export async function semanticSearchMemories(
       console.warn("[semanticSearchMemories]", error.message);
       return [];
     }
-    return (data || []) as SemanticHit[];
+    const threshold = options.minSimilarity ?? 0.45;
+    return ((data || []) as SemanticHit[]).filter(h => h.similarity >= threshold);
   } catch (e) {
     console.warn("[semanticSearchMemories] exception:", (e as Error).message);
     return [];
@@ -647,11 +648,11 @@ const AGENT_HINT_MAP: Record<string, AgentId> = {
   sql: "core", migration: "core", rls: "core", "edge-function": "core",
   webhook: "core", cron: "core", docker: "core", vps: "core", nginx: "core",
   n8n: "core",
-  // PULSE — social media
+  // PULSE — social media (reel/reels + variants)
   social: "pulse", instagram: "pulse", tiktok: "pulse", reels: "pulse",
-  carrusel: "pulse", post: "pulse", story: "pulse", "video-corto": "pulse",
-  "community-management": "pulse", engagement: "pulse", hashtag: "pulse",
-  linkedin: "pulse", twitter: "pulse",
+  reel: "pulse", carrusel: "pulse", post: "pulse", story: "pulse",
+  "video-corto": "pulse", stories: "pulse", "community-management": "pulse",
+  engagement: "pulse", hashtag: "pulse", linkedin: "pulse", twitter: "pulse",
   // SAGE — estrategia, pricing, propuestas
   estrategia: "sage", pricing: "sage", consejo: "sage", proposal: "sage",
   propuesta: "sage", presupuesto: "sage", "cliente-nuevo": "sage",
@@ -690,7 +691,7 @@ export async function routeInput(params: {
   const { input } = params;
   const stimulus_id = await recordStimulus({
     source: params.source ?? "external_api",
-    channel: params.channel ?? null,
+    channel: params.channel,
     signal: input.slice(0, 200),
     payload: { full_input: input.slice(0, 2000) },
     intensity: 0.6,
