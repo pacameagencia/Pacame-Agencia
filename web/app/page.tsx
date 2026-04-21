@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import HomeHero from "@/components/sections/home/HomeHero";
+import HomeHeroCinematic from "@/components/sections/home/HomeHeroCinematic";
 
 // ISR: home — 1h cache
 export const revalidate = 3600;
 
 // Secciones diferidas para no bloquear First Paint del hero
+const EditorialMarquee = dynamic(
+  () => import("@/components/sections/home/EditorialMarquee")
+);
 const LogosBar = dynamic(() => import("@/components/sections/home/LogosBar"));
 const HowItWorksStripe = dynamic(
   () => import("@/components/sections/home/HowItWorksStripe")
@@ -48,8 +51,11 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      {/* A. Hero premium con stats live + trust badges */}
-      <HomeHero />
+      {/* A. Hero cinematico editorial — numbered index + bleed type + parallax */}
+      <HomeHeroCinematic />
+
+      {/* A2. Manifesto marquee — newsroom ticker bleed */}
+      <EditorialMarquee />
 
       {/* B. Logos bar social proof (sectores placeholder) */}
       <LogosBar />
