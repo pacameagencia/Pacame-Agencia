@@ -4,6 +4,7 @@ import { logAgentActivity } from "@/lib/agent-logger";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { findEmailsFromWebsite } from "@/lib/email-enrichment";
 import { llmChat, extractJSON } from "@/lib/llm";
+import { routeInput } from "@/lib/neural";
 
 const supabase = createServerSupabase();
 
@@ -181,6 +182,20 @@ export async function POST(request: NextRequest) {
     const { lead, audit } = body;
     const issuesText = (audit?.issues || []).join(", ");
 
+    // Cerebro neural: busca memorias/discoveries de leads similares para
+    // enriquecer el prompt con patrones aprendidos de outreach previos.
+    const brainInput = `outreach frio para ${lead.category || "negocio"} en ${lead.city || ""}`;
+    const route = await routeInput({
+      input: brainInput,
+      source: "agent",
+      channel: "leadgen-outreach",
+      agentHint: "copy",
+    }).catch(() => null);
+
+    const brainBlock = route?.context
+      ? `\n\nCONTEXTO CEREBRAL (patrones aprendidos de leads similares):\n${route.context}\n`
+      : "";
+
     const prompt = `Eres Copy, copywriter de PACAME, una agencia digital en Madrid.
 
 Genera 3 emails de outreach frio para este negocio:
@@ -190,7 +205,7 @@ UBICACION: ${lead.city}
 WEB: ${lead.website || "No tiene"}
 RATING: ${lead.rating}/5 (${lead.reviews} reseñas)
 PROBLEMAS WEB: ${issuesText || "Web no existe"}
-SCORE WEB: ${audit?.score || 0}/100
+SCORE WEB: ${audit?.score || 0}/100${brainBlock}
 
 REGLAS:
 - Tutea, tono cercano, sin ser agresivo
@@ -199,6 +214,7 @@ REGLAS:
 - No mencionar "IA" ni "agentes" - hablar de resultados
 - CTA: diagnostico gratuito en pacameagencia.com/contacto
 - Firma: Pablo Calleja, PACAME
+- Si hay contexto cerebral, usa los patrones que funcionaron antes
 
 Responde SOLO JSON valido:
 {"email_1": {"subject": "...", "body": "..."}, "email_2": {"subject": "...", "body": "..."}, "email_3": {"subject": "...", "body": "..."}}`;
@@ -206,7 +222,7 @@ Responde SOLO JSON valido:
     try {
       const res = await llmChat(
         [{ role: "user", content: prompt }],
-        { tier: "standard", maxTokens: 1200, agentId: "nexus", source: "leadgen-outreach" }
+        { tier: "standard", maxTokens: 1200, agentId: "copy", source: "leadgen-outreach" }
       );
 
       const emails = extractJSON(res.content);

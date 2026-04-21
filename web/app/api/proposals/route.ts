@@ -3,7 +3,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { verifyInternalAuth } from "@/lib/api-auth";
-import { fireSynapse, recordStimulus, rememberMemory } from "@/lib/neural";
+import { fireSynapse, recordStimulus, rememberMemory, routeInput } from "@/lib/neural";
 
 const supabase = createServerSupabase();
 
