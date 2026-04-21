@@ -6,6 +6,7 @@ import {
   getPortfolioVertical,
   listPortfolioVerticals,
 } from "@/lib/data/portfolio";
+import { listPersonasByVertical } from "@/lib/data/portfolio-personas";
 import {
   Utensils,
   Bed,
@@ -81,6 +82,9 @@ export default async function VerticalLandingPage({
   // Related verticals (up to 4, skip current)
   const allList = await listPortfolioVerticals();
   const related = allList.filter((r) => r.slug !== v.slug).slice(0, 4);
+
+  // Personas dentro del vertical (3 sub-audiences)
+  const personas = await listPersonasByVertical(v.slug);
 
   // Pasos del proceso (storytelling)
   const steps = [
@@ -408,6 +412,67 @@ export default async function VerticalLandingPage({
           </div>
         </div>
       </section>
+
+      {/* Personas dentro del vertical — sub-audiences clickable */}
+      {personas.length > 0 && (
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
+          <div className="flex items-baseline justify-between border-b border-ink/15 pb-3 mb-8">
+            <div className="flex items-baseline gap-3 text-[11px] font-mono uppercase tracking-[0.2em] text-ink/45">
+              <span style={{ color: accentColor }}>§ SUB-PERSONAS</span>
+              <span className="h-px w-8 bg-ink/20" />
+              <span>
+                {personas.length} variantes dentro de PACAME {v.sub_brand}
+              </span>
+            </div>
+          </div>
+          <h3 className="font-heading font-bold text-[clamp(1.5rem,3.5vw,2.5rem)] text-ink leading-[1.05] tracking-[-0.02em] mb-10 max-w-2xl">
+            PACAME {v.sub_brand} tiene{" "}
+            <span className="font-accent italic font-normal text-accent-gold">
+              tu version
+            </span>
+            .
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {personas.map((p) => {
+              const personaPrice = p.starting_price_cents
+                ? `${(p.starting_price_cents / 100).toLocaleString("es-ES")}€`
+                : "bajo presupuesto";
+              return (
+                <Link
+                  key={p.persona_slug}
+                  href={`/portafolio/${v.slug}/${p.persona_slug}`}
+                  className="group block p-6 rounded-3xl border border-ink/[0.08] hover:border-accent-gold/40 bg-paper hover:bg-ink/[0.02] transition-all hover:-translate-y-1"
+                  style={{
+                    background: `linear-gradient(135deg, ${accentColor}08 0%, transparent 50%)`,
+                  }}
+                >
+                  <div className="flex items-baseline justify-between mb-4">
+                    <div
+                      className="text-[10px] font-mono uppercase tracking-[0.22em]"
+                      style={{ color: accentColor }}
+                    >
+                      {p.persona_emoji} {p.persona_name}
+                    </div>
+                    <span className="text-[10px] font-mono text-ink/30">
+                      desde {personaPrice}
+                    </span>
+                  </div>
+                  <h4 className="font-heading font-bold text-[17px] text-ink leading-tight tracking-[-0.015em] mb-3 min-h-[3rem]">
+                    {p.persona_tagline}
+                  </h4>
+                  <p className="text-[13px] text-ink/55 font-body leading-relaxed line-clamp-2 mb-5">
+                    {p.pain_headline}
+                  </p>
+                  <div className="inline-flex items-center gap-1.5 text-[12px] font-heading font-semibold text-ink group-hover:text-accent-gold transition-colors">
+                    Ver ficha completa
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Final CTA */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 text-center">
