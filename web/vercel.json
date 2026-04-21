@@ -27,6 +27,10 @@
     {
       "path": "/api/neural/auto-discovery",
       "schedule": "0 5 * * *"
+    },
+    {
+      "path": "/api/neural/opportunity-scanner",
+      "schedule": "0 8 * * *"
     }
   ]
 }

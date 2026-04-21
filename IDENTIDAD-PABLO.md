@@ -10,7 +10,19 @@
 
 Pablo tiene hoy una **agencia digital "cotidiana"**: crea webs, gestiona redes sociales, crea logos. Es **desarrollador web**.
 
-PACAME no es esa agencia. PACAME es la evolución: una **solución IA con potencia nunca antes vista**, capaz de crear y mantener SaaS para empresas de más de 100 clientes **sin intervención humana**. Pablo solo **supervisa y da el camino junto a la IA**. El trabajo operativo lo hace la IA.
+PACAME no es esa agencia. PACAME es una **RUEDA DE SERVICIOS** que se compenetran: la IA construye **todo tipo de negocio online** (no solo SaaS) y lo monetizamos **por dos vías**:
+
+1. **Se lo vendemos a un cliente** como servicio operativo
+2. **Creamos el nuestro del mismo tipo** y facturamos directo (publicidad, suscripción, transacciones)
+
+**El activo es el MOLDE**. Una vez construido, se replica. Aunque no vendamos, facturamos con los nuestros.
+
+Ejemplos que Pablo cita directamente:
+- **Web nicho** de comida que está de moda → vive de publicidad
+- **SaaS para un servicio hiperespecífico** con mucha demanda
+- Un millón de ideas más en esa línea
+
+La IA opera **sin intervención humana**. Pablo solo **supervisa y da el camino**.
 
 ## Visión 5 años
 
@@ -85,8 +97,17 @@ TODO lo que construyamos debe estar **al nivel de las principales empresas del s
 - Webs → al nivel de las mejores landing del mundo
 - **Máxima valoración** siempre. Nunca "versión light".
 
-### 2. Sin límites de sector
-PACAME puede crear desde **videojuegos** hasta **SaaS de delivery** hasta **música** hasta **agenda** hasta **webs**. La IA detecta oportunidad, PACAME construye.
+### 2. Sin límites de sector ni de TIPO de negocio online
+PACAME puede crear desde **videojuegos** hasta **SaaS de delivery** hasta **música** hasta **agenda** hasta **webs nicho que viven de publicidad** hasta **marketplaces** hasta **infoproductos** hasta **apps móviles**. La IA detecta oportunidad, PACAME construye, y monetiza por las dos vías (venta + activo propio).
+
+### 2-bis. Facturación mínima 1.000€
+Cualquier oportunidad que el cerebro detecte/proponga debe tener potencial mínimo de **1.000€/mes**. Oportunidades bajo ese umbral se descartan. Aspiración: subir a 5k → 10k → 50k.
+
+### 2-ter. Detección proactiva (agentes escanean solos)
+Los agentes NO esperan a que Pablo pida ideas. Escanean cada día tendencias, estacionalidad, eventos, competencia, redes. Cada oportunidad detectada con potencial ≥1.000€ se registra como `agent_discovery type='opportunity'` y se notifica a Pablo.
+
+### 2-quater. Operación 24/7 independiente del PC de Pablo
+Todo vive en Vercel (web + API + cron) + VPS Hostinger (Ollama + pull). Si algo muere al apagar el PC, es bug crítico. El cerebro trabaja mientras Pablo duerme, come, viaja.
 
 ### 3. Realismo siempre
 Ver "Comunicación preferida" arriba. El cerebro NUNCA complace por complacer. Si algo no sirve, se dice. Si Pablo va equivocado, se le corrige.
