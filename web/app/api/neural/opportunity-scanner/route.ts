@@ -110,12 +110,14 @@ async function gatherSeeds(): Promise<SeedCandidate[]> {
   }
 
   // 5. OSS catalog (fork + rebrand PACAME) — rotación diaria de 5 de 25
+  // IMPORTANTE: keyword = nombre original (para autocomplete real)
+  // brand PACAME se pasa en context (LLM lo recoge)
   const ossPicks = pickDailyOssSeeds(5, today);
   for (const o of ossPicks) {
     seeds.push({
-      keyword: o.brand,
+      keyword: o.name.toLowerCase(), // "cal.com", "ghost", "umami", etc. — Google SÍ autocompleta
       source: 'oss-catalog',
-      context: `OSS replicable: github.com/${o.github} (${o.stars}★, ${o.license}, categoría ${o.category}). Rebrand PACAME propuesto: ${o.brand}. ${o.description}. Modelo de monetización: ${o.monetization_model}.`,
+      context: `OSS replicable: github.com/${o.github} (${o.stars}★, ${o.license}, categoría ${o.category}). Rebrand PACAME propuesto: ${o.brand}. ${o.description}. Modelo PACAME: ${o.monetization_model}. Tipo: oss-fork. Volumen estimado desde GitHub stars: ${Math.floor(o.stars / 2)} búsquedas/mes (proxy conservador).`,
       externalUrl: `https://github.com/${o.github}`,
     });
   }
@@ -156,10 +158,13 @@ async function enrichSeeds(seeds: SeedCandidate[]): Promise<EnrichedSeed[]> {
     });
   }
 
-  // Ordenar por revenue best y cortar a MAX_CANDIDATES_TO_LLM
-  return enriched
-    .sort((a, b) => b.revenueEstimate.best.value - a.revenueEstimate.best.value)
-    .slice(0, MAX_CANDIDATES_TO_LLM);
+  // Ordenar por revenue y cortar, pero garantizar que al menos 2 OSS seeds
+  // lleguen al LLM (son el caso oss-fork del catálogo replicable).
+  const sorted = enriched.sort((a, b) => b.revenueEstimate.best.value - a.revenueEstimate.best.value);
+  const ossSeeds = sorted.filter(s => s.source === 'oss-catalog').slice(0, 2);
+  const others = sorted.filter(s => s.source !== 'oss-catalog')
+    .slice(0, Math.max(1, MAX_CANDIDATES_TO_LLM - ossSeeds.length));
+  return [...ossSeeds, ...others];
 }
 
 const LLM_SYSTEM_PROMPT = `Eres DIOS, orquestador PACAME. Recibes CANDIDATOS con datos duros reales
@@ -218,6 +223,9 @@ function buildCandidatePrompt(candidates: EnrichedSeed[], eventsCtx: string, ide
     lines.push(`--- CANDIDATO ${i + 1} ---`);
     lines.push(`keyword_seed: ${c.keyword}`);
     lines.push(`source: ${c.source}`);
+    if (c.source === 'oss-catalog') {
+      lines.push(`⚠️ ESTE CANDIDATO ES OSS-FORK → type debe ser "oss-fork". Monetización: hosting-as-a-service + soporte.`);
+    }
     lines.push(`context: ${c.context}`);
     if (c.externalUrl) lines.push(`external_url: ${c.externalUrl}`);
     lines.push(`autocomplete_suggestions: ${c.autocompleteSuggestions.slice(0, 5).join(' | ')}`);
