@@ -264,7 +264,7 @@ export default function HomeHeroCinematic() {
           >
             <motion.div
               variants={ITEM_REVEAL}
-              className="sticky top-24 pt-0 lg:pt-6"
+              className="lg:sticky lg:top-24 pt-0 lg:pt-6"
             >
               {/* Department label */}
               <div className="flex items-center justify-between border-b border-ink/15 pb-3 mb-2">
