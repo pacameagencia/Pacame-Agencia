@@ -9,6 +9,9 @@ export const revalidate = 3600;
 const EditorialMarquee = dynamic(
   () => import("@/components/sections/home/EditorialMarquee")
 );
+const VisualShowcase = dynamic(
+  () => import("@/components/sections/home/VisualShowcase")
+);
 const LogosBar = dynamic(() => import("@/components/sections/home/LogosBar"));
 const HowItWorksStripe = dynamic(
   () => import("@/components/sections/home/HowItWorksStripe")
@@ -56,6 +59,9 @@ export default function HomePage() {
 
       {/* A2. Manifesto marquee — newsroom ticker bleed */}
       <EditorialMarquee />
+
+      {/* A3. VISUAL SHOWCASE — editorial photo spreads DALL-E 3 HD */}
+      <VisualShowcase />
 
       {/* B. Logos bar social proof (sectores placeholder) */}
       <LogosBar />
