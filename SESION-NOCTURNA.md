@@ -173,7 +173,7 @@ TypeScript check: **0 errores** ✅
 
 **Total vectores pgvector: 2057 items indexados.**
 
-El único nodo sin embedding es un skill con caracteres ilegibles para Ollama (`claude-md-progressive-disclosurer`). Impacto: 0.05%, no bloqueante.
+~~El único nodo sin embedding es un skill con caracteres ilegibles para Ollama (`claude-md-progressive-disclosurer`). Impacto: 0.05%, no bloqueante.~~ ✅ **ARREGLADO**: el skill estaba en chino con ~6000 chars + CRLF. Solución: embed manual con descripción en inglés del mismo skill via mini-script. **Cerebro ahora al 100.00% (1862/1862).**
 
 Embedders ejecutados (todos exit 0):
 - v1: 873 nodes procesados
@@ -218,7 +218,7 @@ curl -X POST https://pacameagencia.com/api/neural/fire \
 ## Qué queda pendiente
 
 ### No crítico (se puede hacer mañana con más contexto)
-1. **Integrar `routeInput` en endpoints existentes** (leads, proposals, nurture) — lo dejé para mañana porque son endpoints estables y no quería arriesgarme de noche.
+1. ~~**Integrar `routeInput` en endpoints existentes** (leads, proposals, nurture)~~ ✅ **HECHO** (commits `b0df70e` Obsidian Git auto + `cb9d488` manual). Los 3 endpoints ahora enriquecen el prompt con contexto cerebral antes de llamar al LLM.
 2. **Dashboard dedicado `/dashboard/brain`** con visualización pgvector — existe `/dashboard/neural` que cubre mucho, revisar si merece añadir vista 3D del grafo embebido.
 3. **Anomalía test 15**: "guion reel viral" → pixel en vez de copy. Investigar por qué el iterator matchea antes palabra fantasma. Fix en AGENT_HINT_MAP probablemente.
 4. **Re-test masivo** cuando v2 termine — verificar que skills matchean mejor con 1800 embebidos.
