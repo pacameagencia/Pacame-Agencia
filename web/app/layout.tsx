@@ -3,6 +3,7 @@ import { Space_Grotesk, Inter, JetBrains_Mono, Playfair_Display } from "next/fon
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SageChatWidget from "@/components/SageChatWidget";
 import CursorGlowWrapper from "@/components/effects/CursorGlowWrapper";
@@ -242,6 +243,7 @@ export default function RootLayout({
         <NoiseOverlay />
         <CursorGlowWrapper />
         <Header />
+        <Breadcrumbs />
         <main id="main-content">{children}</main>
         <Footer />
         <WhatsAppButton />
