@@ -7,236 +7,169 @@ import {
   MessageCircle,
   Send,
   ShieldCheck,
+  Award,
+  Zap,
+  CreditCard,
+  Lock,
 } from "lucide-react";
 import NewsletterForm from "@/components/NewsletterForm";
+import { footerColumns } from "@/lib/data/nav-menu";
 
-// Footer enterprise — Stripe/Amazon pattern con 5 columnas + newsletter + legal bar
-const footerGroups = {
-  Producto: [
-    { label: "Marketplace servicios", href: "/servicios" },
-    { label: "Apps productizadas", href: "/apps" },
-    { label: "Planes mensuales", href: "/planes" },
-    { label: "Paquetes combinados", href: "/servicios#paquetes" },
-    { label: "Para agencias", href: "/colabora" },
-  ],
-  Empresa: [
-    { label: "El equipo", href: "/equipo" },
-    { label: "Blog", href: "/blog" },
-    { label: "Portfolio", href: "/portfolio" },
-    { label: "Contacto", href: "/contacto" },
-    { label: "Partners", href: "/colabora" },
-  ],
-  Recursos: [
-    { label: "Auditoria gratis", href: "/auditoria" },
-    { label: "Calculadora ROI", href: "/calculadora-roi" },
-    { label: "7 errores de tu web", href: "/7-errores" },
-    { label: "FAQ", href: "/faq" },
-    { label: "Docs API", href: "/docs" },
-  ],
-  Legal: [
-    { label: "Privacidad", href: "/privacidad" },
-    { label: "Terminos", href: "/terminos-servicio" },
-    { label: "Cookies", href: "/cookies" },
-    { label: "Aviso legal", href: "/aviso-legal" },
-    { label: "Accesibilidad", href: "/accesibilidad" },
-  ],
-};
-
-const socials = [
-  { label: "LinkedIn", href: "https://linkedin.com/company/pacame", Icon: Linkedin },
-  { label: "X / Twitter", href: "https://twitter.com/pacameagencia", Icon: Send },
+const social = [
   { label: "Instagram", href: "https://instagram.com/pacameagencia", Icon: Instagram },
-  { label: "TikTok", href: "https://tiktok.com/@pacameagencia", Icon: MessageCircle },
+  { label: "LinkedIn", href: "https://linkedin.com/company/pacame", Icon: Linkedin },
   { label: "YouTube", href: "https://youtube.com/@pacameagencia", Icon: Youtube },
+  { label: "WhatsApp", href: "https://wa.me/34722669381", Icon: MessageCircle },
+  { label: "Email", href: "mailto:hola@pacameagencia.com", Icon: Mail },
+  { label: "Telegram", href: "https://t.me/pacameagencia", Icon: Send },
 ];
 
-function PacameLogo() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-      <defs>
-        <linearGradient
-          id="footer-logo-grad"
-          x1="0"
-          y1="0"
-          x2="28"
-          y2="28"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset="0%" stopColor="#7C3AED" />
-          <stop offset="50%" stopColor="#D4A853" />
-          <stop offset="100%" stopColor="#06B6D4" />
-        </linearGradient>
-      </defs>
-      <rect width="28" height="28" rx="7" fill="url(#footer-logo-grad)" />
-      <path
-        d="M9 21V7H14.5C17 7 19 9 19 11.5C19 14 17 16 14.5 16H12.5"
-        stroke="white"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        fill="none"
-      />
-      <circle cx="20" cy="8" r="1" fill="white" opacity="0.6" />
-      <circle cx="22" cy="12" r="0.7" fill="white" opacity="0.4" />
-    </svg>
-  );
-}
-
-function FooterColumn({
-  title,
-  links,
-}: {
-  title: string;
-  links: { label: string; href: string }[];
-}) {
-  return (
-    <div>
-      <h4 className="font-body text-[11px] font-semibold text-accent-gold/80 uppercase tracking-[0.18em] mb-5">
-        {title}
-      </h4>
-      <ul className="space-y-3">
-        {links.map((link) => (
-          <li key={link.href}>
-            <Link
-              href={link.href}
-              className="text-sm text-ink/55 hover:text-ink transition-colors duration-300"
-            >
-              {link.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+const trustSignals = [
+  { Icon: ShieldCheck, label: "GDPR compliant", sub: "LOPDGDD certificado" },
+  { Icon: Lock, label: "SSL + TLS 1.3", sub: "Cifrado bancario" },
+  { Icon: CreditCard, label: "Stripe Verified", sub: "Pagos seguros" },
+  { Icon: Award, label: "4.9/5 rating", sub: "47 clientes activos" },
+  { Icon: Zap, label: "Entrega en horas", sub: "Velocidad IA" },
+];
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0A0A0A] relative" role="contentinfo">
-      {/* Top golden hairline */}
+    <footer className="relative bg-paper border-t border-ink/[0.05] mt-20">
+      {/* Top glow divider */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/30 to-transparent" />
 
-      {/* Newsletter strip — sobre el footer */}
-      <div className="border-b border-white/[0.05]">
-        <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="font-accent font-bold text-2xl sm:text-3xl text-ink mb-2 text-balance">
-                Recibe <span className="gradient-text-gold">consejos digitales</span>{" "}
-                cada semana
-              </h3>
-              <p className="text-sm text-ink/50 font-body max-w-md">
-                Guias practicas de SEO, Ads, Web y RRSS para PYMEs. Sin spam, cancela cuando quieras.
-              </p>
+      {/* Newsletter CTA — full width editorial */}
+      <div className="border-b border-ink/[0.05]">
+        <div className="max-w-7xl mx-auto px-6 py-16 lg:py-20 grid lg:grid-cols-2 gap-10 items-center">
+          <div>
+            <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-accent-gold mb-3">
+              Newsletter semanal · Gratis · Sin spam
             </div>
-            <div className="md:pl-8">
-              <NewsletterForm />
-            </div>
+            <h3 className="font-heading font-bold text-3xl md:text-4xl text-ink leading-tight mb-3">
+              Recibe <span className="text-accent-gold">consejos digitales</span>{" "}
+              cada martes
+            </h3>
+            <p className="text-ink/60 font-body text-base md:text-lg leading-relaxed max-w-xl">
+              Guias practicas de SEO, Ads, Web y IA que aplicamos en los 47+ clientes
+              PACAME. Cancela cuando quieras.
+            </p>
+          </div>
+          <div>
+            <NewsletterForm />
           </div>
         </div>
       </div>
 
-      {/* Main columns */}
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-10">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 mb-14">
-          {/* Brand col — 2 wide */}
-          <div className="col-span-2">
-            <Link href="/" className="flex items-center gap-2.5 mb-5">
-              <PacameLogo />
-              <span className="font-heading font-bold text-lg text-ink">
+      {/* Trust signals bar */}
+      <div className="border-b border-ink/[0.05] bg-ink/[0.02]">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-8">
+            {trustSignals.map(({ Icon, label, sub }) => (
+              <div key={label} className="flex items-center gap-2.5 min-w-0">
+                <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center">
+                  <Icon className="w-4 h-4 text-accent-gold" />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-[13px] font-heading font-semibold text-ink leading-tight">
+                    {label}
+                  </div>
+                  <div className="text-[11px] text-ink/40 font-body leading-tight">
+                    {sub}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 5-column sitemap */}
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
+          {/* Brand column */}
+          <div className="col-span-2 md:col-span-2">
+            <Link href="/" className="inline-flex items-center gap-2.5 mb-4">
+              <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                <defs>
+                  <linearGradient id="footer-logo" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#2872A1" />
+                    <stop offset="50%" stopColor="#F1E194" />
+                    <stop offset="100%" stopColor="#5B0E14" />
+                  </linearGradient>
+                </defs>
+                <rect width="32" height="32" rx="8" fill="url(#footer-logo)" />
+                <path d="M10 24V8H17C19.76 8 22 10.24 22 13C22 15.76 19.76 18 17 18H14.5" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+              </svg>
+              <span className="font-heading font-bold text-xl text-ink tracking-tight">
                 PACAME
               </span>
             </Link>
-            <p className="text-[15px] text-ink/55 leading-relaxed max-w-xs mb-6">
-              Tu equipo digital completo. 10 agentes IA + 120 subespecialistas, liderados por humanos.
+            <p className="text-[13px] text-ink/60 font-body leading-relaxed mb-5 max-w-[280px]">
+              Tu equipo digital completo. 10 agentes IA + 120 sub-especialistas
+              supervisados por Pablo Calleja. Entrega en horas. Sin contratos de
+              permanencia. Sin humo.
             </p>
-
-            {/* Contact direct */}
-            <ul className="space-y-2 mb-6">
-              <li>
-                <a
-                  href="mailto:hola@pacameagencia.com"
-                  className="inline-flex items-center gap-2 text-sm text-ink/55 hover:text-ink transition-colors"
-                >
-                  <Mail className="w-3.5 h-3.5 text-accent-gold/60" />
-                  hola@pacameagencia.com
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://wa.me/34722669381"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm text-ink/55 hover:text-ink transition-colors"
-                >
-                  <MessageCircle className="w-3.5 h-3.5 text-accent-gold/60" />
-                  WhatsApp +34 722 669 381
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://t.me/pacameagencia"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm text-ink/55 hover:text-ink transition-colors"
-                >
-                  <Send className="w-3.5 h-3.5 text-accent-gold/60" />
-                  Telegram @pacameagencia
-                </a>
-              </li>
-            </ul>
-
-            {/* Socials */}
-            <nav aria-label="Redes sociales" className="flex items-center gap-2">
-              {socials.map(({ label, href, Icon }) => (
+            <div className="flex items-center gap-2">
+              {social.map(({ label, href, Icon }) => (
                 <a
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full border border-ink/[0.08] flex items-center justify-center text-ink/50 hover:text-accent-gold hover:border-accent-gold/30 transition-all duration-300"
+                  className="w-9 h-9 rounded-lg bg-ink/5 border border-ink/10 hover:bg-accent-gold/10 hover:border-accent-gold/30 text-ink/60 hover:text-accent-gold flex items-center justify-center transition-all"
                   aria-label={label}
                 >
                   <Icon className="w-4 h-4" />
                 </a>
               ))}
-            </nav>
+            </div>
           </div>
 
-          <FooterColumn title="Producto" links={footerGroups.Producto} />
-          <FooterColumn title="Empresa" links={footerGroups.Empresa} />
-          <FooterColumn title="Recursos" links={footerGroups.Recursos} />
-          <FooterColumn title="Legal" links={footerGroups.Legal} />
+          {/* Sitemap columns from data */}
+          {footerColumns.map((col) => (
+            <div key={col.title}>
+              <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-ink/40 mb-4">
+                {col.title}
+              </div>
+              <ul className="space-y-2.5">
+                {col.items.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="text-[13px] text-ink/60 hover:text-accent-gold transition-colors font-body"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
+      </div>
 
-        {/* Bottom bar — copyright + badges + social row */}
-        <div className="pt-8 border-t border-white/[0.05]">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-            {/* Copyright + location */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-x-5 gap-y-2">
-              <p className="text-xs text-ink/40 font-body">
-                &copy; {new Date().getFullYear()} PACAME. Todos los derechos reservados.
-              </p>
-              <p className="text-xs text-ink/40 font-body">
-                Pablo Calleja Mena · Madrid, Espana
-              </p>
-            </div>
-
-            {/* Trust badges mini */}
-            <div className="flex flex-wrap items-center gap-4 text-xs font-body text-ink/45">
-              <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-accent-gold/60" />
-                Stripe Verified
-              </span>
-              <span className="text-ink/15">·</span>
-              <span>GDPR compliant</span>
-              <span className="text-ink/15">·</span>
-              <span className="inline-flex items-center gap-1">
-                Made in Spain
-                <span role="img" aria-label="flag Spain">
-                  🇪🇸
-                </span>
-              </span>
-            </div>
+      {/* Bottom bar */}
+      <div className="border-t border-ink/[0.05]">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-[11px] font-body text-ink/40">
+          <div className="flex items-center gap-4 flex-wrap">
+            <span>© 2026 PACAME · Pablo Calleja</span>
+            <span className="hidden md:inline">·</span>
+            <span>Madrid · Made with care &amp; coffee</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link href="/privacidad" className="hover:text-ink/70 transition-colors">
+              Privacidad
+            </Link>
+            <Link href="/terminos-servicio" className="hover:text-ink/70 transition-colors">
+              Terminos
+            </Link>
+            <Link href="/cookies" className="hover:text-ink/70 transition-colors">
+              Cookies
+            </Link>
+            <Link href="/status" className="hover:text-ink/70 transition-colors inline-flex items-center gap-1.5">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-mint animate-pulse" />
+              Status operativo
+            </Link>
           </div>
         </div>
       </div>

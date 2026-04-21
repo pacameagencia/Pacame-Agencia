@@ -1,175 +1,260 @@
 "use client";
 
+/**
+ * PACAME Header tier-1 (Adobe/Apple/Hostinger class)
+ * - Mega menus storytelling con descripciones reales, no labels frios
+ * - "Soluciones" (8 verticales PACAME sub-brands)
+ * - "Productos" (por objetivo: Atraer / Cerrar / Operar)
+ * - "Apps" (productizadas)
+ * - "Recursos" (Blog, Casos, Auditoria gratis, ROI, Refiere)
+ * - "Empresa" (Sobre, Agentes, Contacto, Colabora)
+ * - Mobile: accordions + slide-in
+ */
+
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Menu,
-  X,
-  ChevronDown,
-  Sparkles,
-  Globe,
-  PenTool,
-  TrendingUp,
-  Instagram,
-  Target,
-  BarChart3,
-  Boxes,
-  Download,
-  Calendar,
-  MessageSquare,
-} from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import GlobalSearch from "@/components/search/GlobalSearch";
+import {
+  verticalMenu,
+  productsByGoalMenu,
+  appsMenu,
+  resourcesMenu,
+  companyMenu,
+  primaryLinks,
+  type MenuItem,
+  type MenuGroup,
+} from "@/lib/data/nav-menu";
 
-// Categorias servicios (matchea DB service_categories slugs)
-const servicesMenu = [
-  { slug: "branding", label: "Branding e Identidad", desc: "Logos, favicons, manual", Icon: Sparkles },
-  { slug: "web", label: "Web y Desarrollo", desc: "Landings, webs, tiendas", Icon: Globe },
-  { slug: "copy", label: "Copy y Contenido", desc: "Copywriting, blog, scripts", Icon: PenTool },
-  { slug: "seo", label: "SEO y Posicionamiento", desc: "Auditorias, link building", Icon: TrendingUp },
-  { slug: "social", label: "Redes Sociales", desc: "Posts, reels, estrategia", Icon: Instagram },
-  { slug: "ads", label: "Publicidad Digital", desc: "Meta, Google, TikTok Ads", Icon: Target },
-  { slug: "analytics", label: "Analytics y Datos", desc: "GA4, dashboards, KPIs", Icon: BarChart3 },
-  { slug: "templates", label: "Templates y Recursos", desc: "Plantillas, kits, descargables", Icon: Download },
-  { slug: "apps", label: "Apps y Automatizaciones", desc: "Chatbots, n8n, integraciones", Icon: Boxes },
-];
+type OpenMenu =
+  | "soluciones"
+  | "productos"
+  | "apps"
+  | "recursos"
+  | "empresa"
+  | null;
 
-// Menu "Apps" — apps productizadas de PACAME
-const appsMenu = [
-  {
-    slug: "contact-forms",
-    href: "/apps/contact-forms",
-    label: "Contact Forms",
-    desc: "Formularios inteligentes con IA, CRM y enrutado automatico",
-    Icon: MessageSquare,
-  },
-  {
-    slug: "agenda-pro",
-    href: "/apps/agenda",
-    label: "Agenda Pro",
-    desc: "Bookings, calendario, recordatorios y cobros integrados",
-    Icon: Calendar,
-  },
-  {
-    slug: "all-apps",
-    href: "/apps",
-    label: "Ver todas las apps",
-    desc: "Catalogo completo de apps PACAME con demo live",
-    Icon: Boxes,
-  },
-];
-
-const simpleLinks = [
-  { href: "/planes", label: "Planes" },
-  { href: "/casos", label: "Casos" },
-  { href: "/blog", label: "Blog" },
-  { href: "/auditoria", label: "Gratis" },
-  { href: "/contacto", label: "Contacto" },
-];
-
+// ─── Logo SVG ───────────────────────────────────────────────────
 function PacameLogo() {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-label="PACAME">
       <defs>
-        <linearGradient id="logo-grad" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#7C3AED" />
-          <stop offset="50%" stopColor="#D4A853" />
-          <stop offset="100%" stopColor="#06B6D4" />
+        <linearGradient id="logo-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#2872A1" />
+          <stop offset="50%" stopColor="#F1E194" />
+          <stop offset="100%" stopColor="#5B0E14" />
         </linearGradient>
       </defs>
-      <rect width="28" height="28" rx="7" fill="url(#logo-grad)" />
+      <rect width="32" height="32" rx="8" fill="url(#logo-grad)" />
       <path
-        d="M9 21V7H14.5C17 7 19 9 19 11.5C19 14 17 16 14.5 16H12.5"
+        d="M10 24V8H17C19.76 8 22 10.24 22 13C22 15.76 19.76 18 17 18H14.5"
         stroke="white"
-        strokeWidth="2.2"
+        strokeWidth="2.5"
         strokeLinecap="round"
         fill="none"
       />
-      <circle cx="20" cy="8" r="1" fill="white" opacity="0.6" />
-      <circle cx="22" cy="12" r="0.7" fill="white" opacity="0.4" />
-      <circle cx="9" cy="22" r="0.7" fill="white" opacity="0.4" />
+      <circle cx="23" cy="9" r="1.2" fill="white" opacity="0.7" />
+      <circle cx="25" cy="13" r="0.8" fill="white" opacity="0.5" />
     </svg>
   );
 }
 
-/**
- * Mega menu panel — Stripe/Linear style
- * Animated fade+scale, 3 cols, cerrado al click fuera
- */
-function MegaMenu({
-  items,
-  baseHref,
-  onItemClick,
-}: {
-  items: typeof servicesMenu | typeof appsMenu;
-  baseHref: string;
-  onItemClick?: () => void;
-}) {
-  // Tres columnas sobre desktop
+// ─── Mega menu item (card con kicker + icon + desc + badge) ─────
+function MegaItem({ item, onClick }: { item: MenuItem; onClick?: () => void }) {
+  const Icon = item.Icon;
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 8, scale: 0.98 }}
-      transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
-      className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-[780px] max-w-[calc(100vw-2rem)] bg-[#0F0F11]/95 backdrop-blur-2xl border border-accent-gold/15 rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.6)] p-6 z-50"
-      role="menu"
+    <Link
+      href={item.href}
+      onClick={onClick}
+      className="group flex items-start gap-3 p-3 rounded-xl hover:bg-white/[0.04] transition-colors duration-300"
+      role="menuitem"
     >
-      <div className="grid grid-cols-3 gap-2">
-        {items.map((item) => {
-          const href =
-            "href" in item ? item.href : `${baseHref}#${item.slug}`;
-          return (
-            <Link
-              key={item.slug}
-              href={href}
-              onClick={onItemClick}
-              className="group flex items-start gap-3 p-3 rounded-xl hover:bg-white/[0.04] transition-colors duration-300"
-              role="menuitem"
-            >
-              <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center group-hover:bg-accent-gold/20 transition-colors">
-                <item.Icon className="w-4 h-4 text-accent-gold" />
-              </div>
-              <div className="min-w-0">
-                <div className="text-sm font-heading font-semibold text-ink group-hover:text-accent-gold-soft transition-colors truncate">
-                  {item.label}
-                </div>
-                <div className="text-xs text-ink/45 font-body mt-0.5 leading-relaxed">
-                  {item.desc}
-                </div>
-              </div>
-            </Link>
-          );
-        })}
+      {Icon && (
+        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center group-hover:bg-accent-gold/20 group-hover:border-accent-gold/40 transition-colors">
+          <Icon className="w-4.5 h-4.5 text-accent-gold" />
+        </div>
+      )}
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2 mb-0.5">
+          <span className="text-sm font-heading font-semibold text-ink group-hover:text-accent-gold-soft transition-colors truncate">
+            {item.label}
+          </span>
+          {item.badge && (
+            <span className="flex-shrink-0 text-[9px] uppercase tracking-wider font-mono px-1.5 py-0.5 rounded bg-mint/15 text-mint border border-mint/30">
+              {item.badge}
+            </span>
+          )}
+        </div>
+        {item.desc && (
+          <div className="text-xs text-ink/50 font-body leading-snug mb-1">{item.desc}</div>
+        )}
+        {item.kicker && (
+          <div className="text-[10px] font-mono tracking-wider text-accent-gold/70 uppercase">
+            {item.kicker}
+          </div>
+        )}
       </div>
-
-      {/* Footer row */}
-      <div className="mt-5 pt-5 border-t border-ink/[0.06] flex items-center justify-between text-xs font-body">
-        <span className="text-ink/40">
-          24 productos · entrega en horas · sin permanencia
-        </span>
-        <Link
-          href={baseHref}
-          onClick={onItemClick}
-          className="text-accent-gold hover:text-accent-gold-soft transition-colors inline-flex items-center gap-1"
-        >
-          Ver todo
-          <ChevronDown className="w-3 h-3 -rotate-90" />
-        </Link>
-      </div>
-    </motion.div>
+    </Link>
   );
 }
 
+// ─── Layouts de mega menu ───────────────────────────────────────
+
+function MegaSoluciones({ onItemClick }: { onItemClick?: () => void }) {
+  return (
+    <div className="w-[920px] max-w-[calc(100vw-2rem)] bg-paper/95 backdrop-blur-2xl border border-accent-gold/15 rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.6)] p-6">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <div className="text-[10px] font-mono tracking-wider text-accent-gold uppercase">
+            Soluciones por sector
+          </div>
+          <div className="text-sm text-ink/60 font-body mt-0.5">
+            8 sub-marcas PACAME especializadas · Web lista para tu industria
+          </div>
+        </div>
+        <Link
+          href="/portafolio"
+          onClick={onItemClick}
+          className="text-xs text-accent-gold hover:text-accent-gold-soft transition inline-flex items-center gap-1"
+        >
+          Ver todas <ArrowRight className="w-3 h-3" />
+        </Link>
+      </div>
+      <div className="grid grid-cols-2 gap-1">
+        {verticalMenu.map((item) => (
+          <MegaItem key={item.href} item={item} onClick={onItemClick} />
+        ))}
+      </div>
+      <div className="mt-4 pt-4 border-t border-ink/[0.06] flex items-center justify-between text-xs font-body">
+        <span className="text-ink/40">
+          ¿Tu sector no esta? Te hacemos la web a medida en 14 dias.
+        </span>
+        <Link
+          href="/contacto"
+          onClick={onItemClick}
+          className="text-accent-gold hover:text-accent-gold-soft inline-flex items-center gap-1 font-medium"
+        >
+          Hablar con Pablo <ArrowRight className="w-3 h-3" />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function MegaProductos({ onItemClick }: { onItemClick?: () => void }) {
+  return (
+    <div className="w-[980px] max-w-[calc(100vw-2rem)] bg-paper/95 backdrop-blur-2xl border border-accent-gold/15 rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.6)] p-6">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <div className="text-[10px] font-mono tracking-wider text-accent-gold uppercase">
+            Servicios por objetivo
+          </div>
+          <div className="text-sm text-ink/60 font-body mt-0.5">
+            24 productos express · Desde 39€ · Entrega en horas
+          </div>
+        </div>
+        <Link
+          href="/servicios"
+          onClick={onItemClick}
+          className="text-xs text-accent-gold hover:text-accent-gold-soft transition inline-flex items-center gap-1"
+        >
+          Ver marketplace <ArrowRight className="w-3 h-3" />
+        </Link>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        {productsByGoalMenu.map((group: MenuGroup) => (
+          <div key={group.title}>
+            <div className="text-[11px] font-mono uppercase tracking-wider text-ink/40 mb-2 px-3">
+              {group.title}
+            </div>
+            <div className="flex flex-col gap-0.5">
+              {group.items.map((item) => (
+                <MegaItem key={item.href} item={item} onClick={onItemClick} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MegaApps({ onItemClick }: { onItemClick?: () => void }) {
+  return (
+    <div className="w-[560px] max-w-[calc(100vw-2rem)] bg-paper/95 backdrop-blur-2xl border border-accent-gold/15 rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.6)] p-6">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <div className="text-[10px] font-mono tracking-wider text-accent-gold uppercase">
+            Apps productizadas
+          </div>
+          <div className="text-sm text-ink/60 font-body mt-0.5">
+            SaaS listos para instalar · Sin contratar dev
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 gap-1">
+        {appsMenu.map((item) => (
+          <MegaItem key={item.href} item={item} onClick={onItemClick} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MegaRecursos({ onItemClick }: { onItemClick?: () => void }) {
+  return (
+    <div className="w-[760px] max-w-[calc(100vw-2rem)] bg-paper/95 backdrop-blur-2xl border border-accent-gold/15 rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.6)] p-6">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <div className="text-[10px] font-mono tracking-wider text-accent-gold uppercase">
+            Aprende + herramientas gratis
+          </div>
+          <div className="text-sm text-ink/60 font-body mt-0.5">
+            Todo lo que necesitas para decidir informado
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-1">
+        {resourcesMenu.map((item) => (
+          <MegaItem key={item.href} item={item} onClick={onItemClick} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MegaEmpresa({ onItemClick }: { onItemClick?: () => void }) {
+  return (
+    <div className="w-[560px] max-w-[calc(100vw-2rem)] bg-paper/95 backdrop-blur-2xl border border-accent-gold/15 rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.6)] p-6">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <div className="text-[10px] font-mono tracking-wider text-accent-gold uppercase">
+            Quienes somos
+          </div>
+          <div className="text-sm text-ink/60 font-body mt-0.5">
+            10 agentes IA + 120 sub-especialistas supervisados por Pablo
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 gap-1">
+        {companyMenu.map((item) => (
+          <MegaItem key={item.href} item={item} onClick={onItemClick} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Header principal ───────────────────────────────────────────
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openMenu, setOpenMenu] = useState<"services" | "apps" | null>(null);
-  const [mobileServices, setMobileServices] = useState(false);
-  const [mobileApps, setMobileApps] = useState(false);
+  const [openMenu, setOpenMenu] = useState<OpenMenu>(null);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const pathname = usePathname();
   const navRef = useRef<HTMLDivElement>(null);
 
@@ -179,7 +264,6 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Click fuera cierra el mega menu
   useEffect(() => {
     if (!openMenu) return;
     const handler = (e: MouseEvent) => {
@@ -198,27 +282,48 @@ export default function Header() {
     };
   }, [openMenu]);
 
-  // Cerrar en cambio de ruta
   useEffect(() => {
     setOpenMenu(null);
     setMobileOpen(false);
   }, [pathname]);
 
+  const closeMenu = () => setOpenMenu(null);
+
+  // Trigger button consistente
+  const trigger = (key: Exclude<OpenMenu, null>, label: string) => (
+    <button
+      onClick={() => setOpenMenu(openMenu === key ? null : key)}
+      onMouseEnter={() => setOpenMenu(key)}
+      className={cn(
+        "flex items-center gap-1 px-3.5 py-2 rounded-full text-[13px] font-medium font-body transition-all duration-300",
+        openMenu === key ? "text-ink bg-white/[0.06]" : "text-ink/60 hover:text-ink"
+      )}
+      aria-haspopup="true"
+      aria-expanded={openMenu === key}
+    >
+      {label}
+      <ChevronDown
+        className={cn(
+          "w-3 h-3 transition-transform duration-300",
+          openMenu === key && "rotate-180"
+        )}
+      />
+    </button>
+  );
+
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-apple",
-        scrolled
-          ? "bg-[#0A0A0A]/85 backdrop-blur-xl py-3"
-          : "bg-transparent py-5"
+        scrolled ? "bg-paper/85 backdrop-blur-xl py-3" : "bg-transparent py-5"
       )}
     >
       {scrolled && (
-        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/20 to-transparent" />
+        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-gold/30 to-transparent" />
       )}
 
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-5 lg:px-6">
+        <div className="flex items-center justify-between gap-3">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
             <div className="transition-transform duration-300 group-hover:scale-105">
@@ -236,54 +341,13 @@ export default function Header() {
             role="navigation"
             aria-label="Navegacion principal"
           >
-            {/* Services dropdown */}
-            <button
-              onClick={() =>
-                setOpenMenu(openMenu === "services" ? null : "services")
-              }
-              onMouseEnter={() => setOpenMenu("services")}
-              className={cn(
-                "flex items-center gap-1 px-3.5 py-2 rounded-full text-[13px] font-medium font-body transition-all duration-300",
-                pathname.startsWith("/servicios")
-                  ? "text-ink bg-white/[0.05]"
-                  : "text-ink/55 hover:text-ink"
-              )}
-              aria-haspopup="true"
-              aria-expanded={openMenu === "services"}
-            >
-              Servicios
-              <ChevronDown
-                className={cn(
-                  "w-3 h-3 transition-transform duration-300",
-                  openMenu === "services" && "rotate-180"
-                )}
-              />
-            </button>
+            {trigger("soluciones", "Soluciones")}
+            {trigger("productos", "Productos")}
+            {trigger("apps", "Apps")}
+            {trigger("recursos", "Recursos")}
+            {trigger("empresa", "Empresa")}
 
-            {/* Apps dropdown */}
-            <button
-              onClick={() => setOpenMenu(openMenu === "apps" ? null : "apps")}
-              onMouseEnter={() => setOpenMenu("apps")}
-              className={cn(
-                "flex items-center gap-1 px-3.5 py-2 rounded-full text-[13px] font-medium font-body transition-all duration-300",
-                pathname.startsWith("/apps")
-                  ? "text-ink bg-white/[0.05]"
-                  : "text-ink/55 hover:text-ink"
-              )}
-              aria-haspopup="true"
-              aria-expanded={openMenu === "apps"}
-            >
-              Apps
-              <ChevronDown
-                className={cn(
-                  "w-3 h-3 transition-transform duration-300",
-                  openMenu === "apps" && "rotate-180"
-                )}
-              />
-            </button>
-
-            {/* Simple links */}
-            {simpleLinks.map((link) => (
+            {primaryLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -292,12 +356,12 @@ export default function Header() {
                   "relative px-3.5 py-2 rounded-full text-[13px] font-medium font-body transition-all duration-300",
                   pathname === link.href
                     ? "text-ink"
-                    : "text-ink/55 hover:text-ink"
+                    : "text-ink/60 hover:text-ink"
                 )}
               >
                 {pathname === link.href && (
                   <motion.div
-                    className="absolute inset-0 rounded-full bg-white/[0.07] border border-accent-gold/10"
+                    className="absolute inset-0 rounded-full bg-white/[0.08] border border-accent-gold/15"
                     layoutId="activeNav"
                     transition={{ type: "spring", stiffness: 350, damping: 30 }}
                   />
@@ -306,43 +370,44 @@ export default function Header() {
               </Link>
             ))}
 
-            {/* Mega menu panels */}
+            {/* Mega menu panel */}
             <AnimatePresence mode="wait">
-              {openMenu === "services" && (
-                <MegaMenu
-                  key="services"
-                  items={servicesMenu}
-                  baseHref="/servicios"
-                  onItemClick={() => setOpenMenu(null)}
-                />
-              )}
-              {openMenu === "apps" && (
-                <MegaMenu
-                  key="apps"
-                  items={appsMenu}
-                  baseHref="/apps"
-                  onItemClick={() => setOpenMenu(null)}
-                />
+              {openMenu && (
+                <motion.div
+                  key={openMenu}
+                  initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                  transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
+                  className="absolute left-1/2 -translate-x-1/2 top-full mt-2 z-50"
+                  role="menu"
+                >
+                  {openMenu === "soluciones" && <MegaSoluciones onItemClick={closeMenu} />}
+                  {openMenu === "productos" && <MegaProductos onItemClick={closeMenu} />}
+                  {openMenu === "apps" && <MegaApps onItemClick={closeMenu} />}
+                  {openMenu === "recursos" && <MegaRecursos onItemClick={closeMenu} />}
+                  {openMenu === "empresa" && <MegaEmpresa onItemClick={closeMenu} />}
+                </motion.div>
               )}
             </AnimatePresence>
           </nav>
 
           {/* Search + CTA desktop */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
             <GlobalSearch />
             <Button
               variant="gradient"
               size="default"
               asChild
-              className="rounded-full text-[13px] px-5 h-9 hover:shadow-glow-gold/30 transition-shadow duration-500"
+              className="rounded-full text-[13px] px-5 h-9 hover:shadow-glow-gold transition-shadow duration-500"
             >
-              <Link href="/contacto">Hablar con el equipo</Link>
+              <Link href="/auditoria">Auditoria gratis</Link>
             </Button>
           </div>
 
           {/* Mobile toggle */}
           <button
-            className="lg:hidden p-2 rounded-full text-ink/60 hover:text-ink transition-colors"
+            className="lg:hidden p-2 rounded-full text-ink/70 hover:text-ink transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Cerrar menu" : "Abrir menu"}
             aria-expanded={mobileOpen}
@@ -362,114 +427,85 @@ export default function Header() {
               transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
             >
               <div className="h-px bg-gradient-to-r from-transparent via-accent-gold/20 to-transparent mb-4" />
-              <nav className="flex flex-col gap-0.5" aria-label="Navegacion movil">
-                {/* Collapsible Servicios */}
-                <button
-                  onClick={() => setMobileServices(!mobileServices)}
-                  className={cn(
-                    "px-4 py-3 rounded-xl text-[15px] font-medium font-body transition-all flex items-center justify-between",
-                    pathname.startsWith("/servicios")
-                      ? "text-ink bg-white/[0.06] border-l-2 border-accent-gold/40"
-                      : "text-ink/60 hover:text-ink"
-                  )}
-                  aria-expanded={mobileServices}
-                >
-                  <span>Servicios</span>
-                  <ChevronDown
-                    className={cn(
-                      "w-4 h-4 transition-transform duration-300",
-                      mobileServices && "rotate-180"
-                    )}
-                  />
-                </button>
-                <AnimatePresence>
-                  {mobileServices && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="overflow-hidden ml-4 pl-3 border-l border-accent-gold/15"
-                    >
-                      {servicesMenu.map((s) => (
-                        <Link
-                          key={s.slug}
-                          href={`/servicios#${s.slug}`}
-                          onClick={() => setMobileOpen(false)}
-                          className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-body text-ink/60 hover:text-ink transition-colors"
-                        >
-                          <s.Icon className="w-3.5 h-3.5 text-accent-gold/70" />
-                          {s.label}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
 
-                {/* Collapsible Apps */}
-                <button
-                  onClick={() => setMobileApps(!mobileApps)}
-                  className={cn(
-                    "px-4 py-3 rounded-xl text-[15px] font-medium font-body transition-all flex items-center justify-between",
-                    pathname.startsWith("/apps")
-                      ? "text-ink bg-white/[0.06] border-l-2 border-accent-gold/40"
-                      : "text-ink/60 hover:text-ink"
-                  )}
-                  aria-expanded={mobileApps}
-                >
-                  <span>Apps</span>
-                  <ChevronDown
-                    className={cn(
-                      "w-4 h-4 transition-transform duration-300",
-                      mobileApps && "rotate-180"
-                    )}
-                  />
-                </button>
-                <AnimatePresence>
-                  {mobileApps && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="overflow-hidden ml-4 pl-3 border-l border-accent-gold/15"
-                    >
-                      {appsMenu.map((a) => (
-                        <Link
-                          key={a.slug}
-                          href={a.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-body text-ink/60 hover:text-ink transition-colors"
-                        >
-                          <a.Icon className="w-3.5 h-3.5 text-accent-gold/70" />
-                          {a.label}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+              {/* Search mobile */}
+              <div className="mb-4">
+                <GlobalSearch />
+              </div>
 
-                {/* Simple links */}
-                {simpleLinks.map((link, i) => (
-                  <motion.div
-                    key={link.href}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.04, duration: 0.3 }}
-                  >
-                    <Link
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className={cn(
-                        "px-4 py-3 rounded-xl text-[15px] font-medium font-body transition-all block",
-                        pathname === link.href
-                          ? "text-ink bg-white/[0.06] border-l-2 border-accent-gold/40"
-                          : "text-ink/50 hover:text-ink"
+              <nav className="flex flex-col gap-1" aria-label="Navegacion movil">
+                {[
+                  { key: "m-soluciones", label: "Soluciones", items: verticalMenu },
+                  {
+                    key: "m-productos",
+                    label: "Productos",
+                    items: productsByGoalMenu.flatMap((g) => g.items),
+                  },
+                  { key: "m-apps", label: "Apps", items: appsMenu },
+                  { key: "m-recursos", label: "Recursos", items: resourcesMenu },
+                  { key: "m-empresa", label: "Empresa", items: companyMenu },
+                ].map((section) => (
+                  <div key={section.key}>
+                    <button
+                      onClick={() =>
+                        setMobileExpanded(
+                          mobileExpanded === section.key ? null : section.key
+                        )
+                      }
+                      className="w-full px-4 py-3 rounded-xl text-[15px] font-medium font-body text-ink/80 hover:text-ink flex items-center justify-between"
+                      aria-expanded={mobileExpanded === section.key}
+                    >
+                      <span>{section.label}</span>
+                      <ChevronDown
+                        className={cn(
+                          "w-4 h-4 transition-transform duration-300",
+                          mobileExpanded === section.key && "rotate-180"
+                        )}
+                      />
+                    </button>
+                    <AnimatePresence>
+                      {mobileExpanded === section.key && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="overflow-hidden ml-3 pl-3 border-l border-accent-gold/20"
+                        >
+                          {section.items.map((item) => {
+                            const Icon = item.Icon;
+                            return (
+                              <Link
+                                key={item.href}
+                                href={item.href}
+                                onClick={() => setMobileOpen(false)}
+                                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-body text-ink/60 hover:text-ink transition-colors"
+                              >
+                                {Icon && <Icon className="w-3.5 h-3.5 text-accent-gold/70" />}
+                                <span>{item.label}</span>
+                              </Link>
+                            );
+                          })}
+                        </motion.div>
                       )}
-                    >
-                      {link.label}
-                    </Link>
-                  </motion.div>
+                    </AnimatePresence>
+                  </div>
+                ))}
+
+                {primaryLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={cn(
+                      "px-4 py-3 rounded-xl text-[15px] font-medium font-body transition-all",
+                      pathname === link.href
+                        ? "text-ink bg-white/[0.06] border-l-2 border-accent-gold/40"
+                        : "text-ink/60 hover:text-ink"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
                 ))}
 
                 <div className="mt-4 px-4">
@@ -479,8 +515,8 @@ export default function Header() {
                     className="w-full rounded-full"
                     asChild
                   >
-                    <Link href="/contacto" onClick={() => setMobileOpen(false)}>
-                      Hablar con el equipo
+                    <Link href="/auditoria" onClick={() => setMobileOpen(false)}>
+                      Auditoria gratis
                     </Link>
                   </Button>
                 </div>
