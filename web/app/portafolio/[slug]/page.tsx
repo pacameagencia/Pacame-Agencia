@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   getPortfolioVertical,
   listPortfolioVerticals,
@@ -114,8 +115,60 @@ export default async function VerticalLandingPage({
   const primaryColor = v.color_primary || "#2872A1";
   const accentColor = v.color_accent || "#F1E194";
 
+  // Mapeo slug → imagen DALL-E 3 generada editorialmente
+  const HERO_IMAGE_BY_SLUG: Record<string, string> = {
+    restaurante: "/verticals/restaurante.png",
+    hotel: "/verticals/hotel.png",
+    clinica: "/verticals/clinica.png",
+    gym: "/verticals/gym.png",
+    inmobiliaria: "/verticals/inmobiliaria.png",
+    ecommerce: "/verticals/ecommerce.png",
+    formacion: "/verticals/formacion.png",
+    saas: "/verticals/saas.png",
+  };
+  const heroImageSrc = HERO_IMAGE_BY_SLUG[v.slug];
+
   return (
     <main className="min-h-screen bg-paper pb-24">
+      {/* Editorial image band — cinematic opening with DALL-E 3 HD vertical hero */}
+      {heroImageSrc && (
+        <section
+          className="relative pt-4 pb-2 overflow-hidden"
+          aria-label={`${v.sub_brand} — imagen editorial`}
+        >
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-baseline justify-between border-b border-ink/10 pb-3 mb-4 text-[10px] md:text-[11px] font-mono uppercase tracking-[0.22em] text-ink/45">
+              <span style={{ color: accentColor }}>{v.sub_brand}</span>
+              <span className="hidden md:inline">{v.vertical_label}</span>
+              <span>Edicion Ocean · N°24</span>
+            </div>
+            <div
+              className="relative aspect-[21/9] rounded-3xl overflow-hidden border border-ink/10"
+              style={{
+                boxShadow: `0 30px 80px -20px ${primaryColor}40, 0 12px 32px -8px rgba(0,0,0,0.40)`,
+              }}
+            >
+              <Image
+                src={heroImageSrc}
+                alt={`PACAME ${v.sub_brand} — ${v.hero_headline}`}
+                fill
+                sizes="(max-width: 1400px) 100vw, 1400px"
+                className="object-cover"
+                quality={90}
+                priority
+              />
+              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/50 via-black/10 to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 p-5 md:p-8 flex items-baseline justify-between gap-4 border-t border-white/15 text-[10px] md:text-[11px] font-mono uppercase tracking-[0.22em] text-white/70">
+                <span>Fotografia editorial Pacame</span>
+                <span style={{ color: accentColor }}>
+                  Arquitectura {v.vertical_label.toLowerCase()}
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Hero */}
       <section className="relative pt-8 pb-20 overflow-hidden">
         <div

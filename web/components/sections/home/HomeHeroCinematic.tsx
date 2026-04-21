@@ -20,6 +20,7 @@
  */
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useRef } from "react";
 import {
   motion,
@@ -28,6 +29,12 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+
+// Lazy to avoid SSR hydration mismatch + blocking first paint
+const FlowFieldCanvas = dynamic(
+  () => import("@/components/effects/FlowFieldCanvas"),
+  { ssr: false }
+);
 
 // ═══════════════════════════════════════════════════════════════════════════
 // DATA — numbered editorial index of 8 sub-marcas verticales
@@ -101,12 +108,24 @@ export default function HomeHeroCinematic() {
       aria-label="PACAME Agencia Digital — Hero"
     >
       {/* ─────────────────────────────────────────────────────────
-          BG-0 — editorial paper with subtle SVG grain overlay
-          (instead of particle constellation + gradient mesh)
+          BG-0a — algorithmic flow field (Organic Turbulence)
+          Perlin noise vector field, Ocean -> Violet -> Gold por velocity
+          ───────────────────────────────────────────────────────── */}
+      <FlowFieldCanvas
+        seed={2872}
+        count={850}
+        scale={0.0035}
+        speed={0.5}
+        opacity={0.55}
+        className="z-0"
+      />
+
+      {/* ─────────────────────────────────────────────────────────
+          BG-0b — editorial paper with subtle SVG grain overlay
           ───────────────────────────────────────────────────────── */}
       <div
         aria-hidden
-        className="absolute inset-0 opacity-[0.10] mix-blend-overlay pointer-events-none z-0"
+        className="absolute inset-0 opacity-[0.08] mix-blend-overlay pointer-events-none z-0"
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
