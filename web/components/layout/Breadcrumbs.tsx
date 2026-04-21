@@ -41,6 +41,7 @@ const LABELS: Record<string, string> = {
   accesibilidad: "Accesibilidad",
   status: "Status",
   review: "Dejar review",
+  comprar: "Comprar",
   gracias: "Gracias",
 };
 
@@ -56,13 +57,15 @@ function humanize(segment: string): string {
 export default function Breadcrumbs() {
   const pathname = usePathname();
 
-  // No renderizar en home, dashboard, portal, login
+  // No renderizar en home, dashboard, portal, login, ni en paginas transitorias (checkout + confirmacion)
   if (
     pathname === "/" ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/portal") ||
     pathname.startsWith("/login") ||
-    pathname.startsWith("/nps")
+    pathname.startsWith("/nps") ||
+    pathname.startsWith("/gracias") ||
+    pathname.startsWith("/comprar")
   ) {
     return null;
   }

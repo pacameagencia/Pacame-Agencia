@@ -152,10 +152,23 @@ export default function ComprarClient({ slug, name, priceCents, currency }: Prop
     }
   }
 
+  const stepIndex = step === "contact" ? 1 : step === "company" ? 2 : 3;
+
   return (
-    <div className="rounded-2xl border border-ink/[0.08] bg-ink/[0.03] overflow-hidden">
+    <div
+      className="rounded-2xl border border-ink/[0.08] bg-ink/[0.03] overflow-hidden"
+      role="form"
+      aria-label={`Checkout ${name} — paso ${stepIndex} de 3`}
+    >
       {/* Progress header */}
-      <div className="flex items-stretch border-b border-ink/[0.06]">
+      <div
+        className="flex items-stretch border-b border-ink/[0.06]"
+        role="progressbar"
+        aria-valuenow={stepIndex}
+        aria-valuemin={1}
+        aria-valuemax={3}
+        aria-label={`Progreso checkout: paso ${stepIndex} de 3`}
+      >
         {(["contact", "company", "review"] as const).map((s, idx) => {
           const isActive = step === s;
           const isDone =
@@ -171,6 +184,7 @@ export default function ComprarClient({ slug, name, priceCents, currency }: Prop
                   ? "bg-mint/[0.05]"
                   : "bg-transparent"
               }`}
+              aria-current={isActive ? "step" : undefined}
             >
               <div className="flex items-center gap-2">
                 <div
@@ -211,7 +225,11 @@ export default function ComprarClient({ slug, name, priceCents, currency }: Prop
       {/* Body */}
       <div className="p-6 md:p-8">
         {error && (
-          <div className="mb-5 p-3.5 rounded-xl bg-rose-400/10 border border-rose-400/30 text-rose-300 text-[13px]">
+          <div
+            className="mb-5 p-3.5 rounded-xl bg-rose-400/10 border border-rose-400/30 text-rose-300 text-[13px]"
+            role="alert"
+            aria-live="polite"
+          >
             {error}
           </div>
         )}
