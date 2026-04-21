@@ -155,7 +155,7 @@ export default function RefiereClient() {
               />
               <button
                 onClick={() => copy("link")}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent-gold text-paper text-xs font-semibold hover:brightness-110 transition"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent-gold text-ink text-xs font-semibold hover:brightness-110 transition"
               >
                 {copied === "link" ? (
                   <>
@@ -277,7 +277,7 @@ export default function RefiereClient() {
       <button
         type="submit"
         disabled={!email || loading}
-        className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-accent-gold text-paper font-semibold text-sm disabled:opacity-50 hover:brightness-110 transition"
+        className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-accent-gold text-ink font-semibold text-sm disabled:opacity-50 hover:brightness-110 transition"
       >
         {loading ? (
           <>

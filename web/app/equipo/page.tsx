@@ -192,7 +192,7 @@ export default function EquipoPage() {
                 <div className="lg:col-span-2 p-8 lg:p-10 flex flex-col justify-center">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center">
-                      <span className="font-heading font-bold text-paper text-xl">PC</span>
+                      <span className="font-heading font-bold text-ink text-xl">PC</span>
                     </div>
                     <div>
                       <h2 className="font-heading font-bold text-2xl text-white">

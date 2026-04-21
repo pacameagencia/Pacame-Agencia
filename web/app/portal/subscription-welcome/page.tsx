@@ -36,7 +36,7 @@ export default function SubscriptionWelcomePage() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/portal/subscription"
-            className="inline-flex items-center justify-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-paper font-heading font-semibold px-6 py-3 rounded-xl transition"
+            className="inline-flex items-center justify-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-ink font-heading font-semibold px-6 py-3 rounded-xl transition"
           >
             Ir a mi suscripcion
             <ArrowRight className="w-4 h-4" />

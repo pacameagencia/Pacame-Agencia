@@ -49,7 +49,7 @@ export default function CheckoutProgress({ currentStep }: CheckoutProgressProps)
                 className={cn(
                   "w-10 h-10 rounded-full flex items-center justify-center text-sm font-heading font-semibold border-2 transition-colors duration-300",
                   isCompleted
-                    ? "bg-accent-gold border-accent-gold text-paper"
+                    ? "bg-accent-gold border-accent-gold text-ink"
                     : isActive
                       ? "border-accent-gold bg-accent-gold/10 text-accent-gold"
                       : "border-ink/[0.12] bg-paper-deep text-ink/30"

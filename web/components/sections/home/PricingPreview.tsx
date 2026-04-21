@@ -100,7 +100,7 @@ export default function PricingPreview() {
               }`}
             >
               {plan.featured && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent-gold text-paper text-[10px] font-heading font-bold px-3 py-1 rounded-full inline-flex items-center gap-1">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent-gold text-ink text-[10px] font-heading font-bold px-3 py-1 rounded-full inline-flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
                   MOST POPULAR
                 </div>
@@ -145,7 +145,7 @@ export default function PricingPreview() {
                 href="/planes"
                 className={`w-full py-2.5 rounded-xl font-heading font-semibold text-sm text-center transition inline-flex items-center justify-center gap-2 ${
                   plan.featured
-                    ? "bg-accent-gold hover:bg-accent-gold/90 text-paper"
+                    ? "bg-accent-gold hover:bg-accent-gold/90 text-ink"
                     : "bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 text-ink"
                 }`}
               >

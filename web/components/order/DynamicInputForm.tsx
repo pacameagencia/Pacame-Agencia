@@ -124,7 +124,7 @@ export default function DynamicInputForm({ orderId, schema, defaults }: Props) {
                       }}
                       className={`px-3 py-1.5 rounded-full text-sm font-body transition border ${
                         isOn
-                          ? "bg-accent-gold text-paper border-accent-gold"
+                          ? "bg-accent-gold text-ink border-accent-gold"
                           : "bg-white/[0.04] text-ink/70 border-ink/[0.1] hover:border-accent-gold/40"
                       }`}
                     >
@@ -237,7 +237,7 @@ export default function DynamicInputForm({ orderId, schema, defaults }: Props) {
       <button
         type="submit"
         disabled={submitting}
-        className="w-full bg-accent-gold hover:bg-accent-gold/90 disabled:opacity-60 disabled:cursor-not-allowed text-paper font-heading font-semibold py-4 rounded-xl flex items-center justify-center gap-2 transition shadow-lg"
+        className="w-full bg-accent-gold hover:bg-accent-gold/90 disabled:opacity-60 disabled:cursor-not-allowed text-ink font-heading font-semibold py-4 rounded-xl flex items-center justify-center gap-2 transition shadow-lg"
       >
         {submitting ? (
           <>

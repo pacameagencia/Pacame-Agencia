@@ -93,7 +93,7 @@ export default async function GameDetailPage({
             {game.tags?.slice(0, 4).map((t) => (
               <span
                 key={t}
-                className="text-[11px] text-ink/50 bg-ink/5 px-2.5 py-1 rounded-full font-mono"
+                className="text-[11px] text-ink/50 bg-paper/5 px-2.5 py-1 rounded-full font-mono"
               >
                 {t}
               </span>
@@ -121,7 +121,7 @@ export default async function GameDetailPage({
           />
         ) : (
           <div
-            className="relative w-full rounded-3xl overflow-hidden bg-gradient-to-br from-brand-primary via-creative-deep to-ink"
+            className="relative w-full rounded-3xl overflow-hidden bg-gradient-to-br from-brand-primary via-creative-deep to-paper"
             style={{ paddingTop: "56.25%" }}
           >
             {game.cover_image_url && (
@@ -132,16 +132,16 @@ export default async function GameDetailPage({
               />
             )}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-10">
-              <div className="w-16 h-16 rounded-2xl bg-paper/10 backdrop-blur border border-paper/20 flex items-center justify-center mb-5">
+              <div className="w-16 h-16 rounded-2xl bg-paper/10 backdrop-blur border border-ink/20 flex items-center justify-center mb-5">
                 <Sparkles className="w-8 h-8 text-accent-gold" />
               </div>
               <div className="text-accent-gold font-mono text-xs uppercase tracking-[0.2em] mb-2">
                 Coming soon
               </div>
-              <h3 className="font-heading font-bold text-3xl text-paper mb-3">
+              <h3 className="font-heading font-bold text-3xl text-ink mb-3">
                 Estamos construyendo algo brutal
               </h3>
-              <p className="text-paper/70 font-body max-w-md">
+              <p className="text-ink/70 font-body max-w-md">
                 El equipo PACAME esta trabajando en esta experiencia. Te avisamos
                 cuando este lista.
               </p>

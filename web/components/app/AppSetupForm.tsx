@@ -193,7 +193,7 @@ export default function AppSetupForm({ instanceId, schema, initialConfig }: Prop
       <button
         type="submit"
         disabled={loading}
-        className="w-full inline-flex items-center justify-center gap-2 bg-accent-gold hover:bg-accent-gold/90 disabled:opacity-50 text-paper font-heading font-semibold py-3 rounded-xl transition"
+        className="w-full inline-flex items-center justify-center gap-2 bg-accent-gold hover:bg-accent-gold/90 disabled:opacity-50 text-ink font-heading font-semibold py-3 rounded-xl transition"
       >
         {loading && <Loader2 className="w-4 h-4 animate-spin" />}
         Activar app

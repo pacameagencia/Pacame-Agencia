@@ -268,7 +268,7 @@ export default function BrainDashboard() {
                 const actual = kpiActuals[key] || 0;
                 const pct = target > 0 ? Math.min(100, (actual / target) * 100) : 0;
                 return (
-                  <div key={key} className="bg-ink/50 rounded-xl p-3 border border-white/[0.04]">
+                  <div key={key} className="bg-paper/50 rounded-xl p-3 border border-white/[0.04]">
                     <div className="text-[11px] uppercase tracking-wide text-ink/40 font-body">
                       {key}
                     </div>

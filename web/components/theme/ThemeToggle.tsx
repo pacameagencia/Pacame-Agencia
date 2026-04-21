@@ -24,7 +24,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={nextTheme}
-      className="inline-flex items-center justify-center w-10 h-10 rounded-xl hover:bg-ink/5 transition text-ink/60 hover:text-ink"
+      className="inline-flex items-center justify-center w-10 h-10 rounded-xl hover:bg-paper/5 transition text-ink/60 hover:text-ink"
       aria-label={`Cambiar tema (actual: ${current})`}
       title={`Tema: ${theme === "system" ? "auto (sistema)" : theme}`}
     >

@@ -79,7 +79,7 @@ export default async function GamesPage() {
         {featured && (
           <Link
             href={`/games/${featured.slug}`}
-            className="group block mb-12 rounded-3xl overflow-hidden bg-ink text-paper relative aspect-[16/9] md:aspect-[21/9] hover:shadow-2xl transition-shadow"
+            className="group block mb-12 rounded-3xl overflow-hidden bg-paper text-ink relative aspect-[16/9] md:aspect-[21/9] hover:shadow-2xl transition-shadow"
           >
             {featured.cover_image_url ? (
               <img
@@ -88,11 +88,11 @@ export default async function GamesPage() {
                 className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-75 transition"
               />
             ) : (
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-primary via-creative-deep to-ink" />
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-primary via-creative-deep to-paper" />
             )}
 
             {/* Overlay content */}
-            <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12 bg-gradient-to-t from-ink via-ink/60 to-transparent">
+            <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12 bg-gradient-to-t from-paper via-paper/60 to-transparent">
               <div className="flex items-center gap-2 mb-3">
                 <Sparkles className="w-4 h-4 text-accent-gold" />
                 <span className="text-[11px] text-accent-gold font-mono uppercase tracking-wider">
@@ -103,7 +103,7 @@ export default async function GamesPage() {
                 {featured.title}
               </h2>
               {featured.description && (
-                <p className="text-paper/80 font-body max-w-xl leading-relaxed mb-5">
+                <p className="text-ink/80 font-body max-w-xl leading-relaxed mb-5">
                   {featured.description}
                 </p>
               )}
@@ -111,7 +111,7 @@ export default async function GamesPage() {
                 <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-gold text-ink font-semibold group-hover:brightness-110 transition">
                   <Play className="w-4 h-4" /> Jugar ahora
                 </span>
-                <span className="text-paper/60 font-mono text-xs ml-3">
+                <span className="text-ink/60 font-mono text-xs ml-3">
                   {featured.engine.toUpperCase()}
                 </span>
               </div>
@@ -132,7 +132,7 @@ export default async function GamesPage() {
                   href={`/games/${g.slug}`}
                   className="group block rounded-2xl overflow-hidden bg-paper-deep border border-ink/[0.06] hover:border-ink/[0.12] hover:shadow-lg transition-all"
                 >
-                  <div className="aspect-video relative bg-ink overflow-hidden">
+                  <div className="aspect-video relative bg-paper overflow-hidden">
                     {g.thumbnail_url ? (
                       <img
                         src={g.thumbnail_url}
@@ -141,10 +141,10 @@ export default async function GamesPage() {
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-brand-primary to-creative flex items-center justify-center">
-                        <Gamepad2 className="w-12 h-12 text-paper/40" />
+                        <Gamepad2 className="w-12 h-12 text-ink/40" />
                       </div>
                     )}
-                    <div className="absolute top-3 right-3 px-2 py-0.5 rounded-md bg-ink/80 backdrop-blur text-[10px] text-paper font-mono uppercase tracking-wider">
+                    <div className="absolute top-3 right-3 px-2 py-0.5 rounded-md bg-paper/80 backdrop-blur text-[10px] text-ink font-mono uppercase tracking-wider">
                       {g.engine}
                     </div>
                   </div>
@@ -162,7 +162,7 @@ export default async function GamesPage() {
                         {g.tags.slice(0, 3).map((t) => (
                           <span
                             key={t}
-                            className="text-[10px] text-ink/50 bg-ink/5 px-2 py-0.5 rounded-full font-mono"
+                            className="text-[10px] text-ink/50 bg-paper/5 px-2 py-0.5 rounded-full font-mono"
                           >
                             {t}
                           </span>

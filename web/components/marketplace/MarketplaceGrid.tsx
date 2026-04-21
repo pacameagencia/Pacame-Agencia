@@ -185,7 +185,7 @@ export default function MarketplaceGrid({ products, categories }: Props) {
               onClick={() => setSelectedCategory("all")}
               className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-body transition border ${
                 selectedCategory === "all"
-                  ? "bg-accent-gold text-paper border-accent-gold"
+                  ? "bg-accent-gold text-ink border-accent-gold"
                   : "bg-white/[0.04] text-ink/70 border-ink/[0.08] hover:border-accent-gold/40"
               }`}
             >
@@ -203,7 +203,7 @@ export default function MarketplaceGrid({ products, categories }: Props) {
                   onClick={() => setSelectedCategory(cat.slug)}
                   className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-body transition border ${
                     active
-                      ? "bg-accent-gold text-paper border-accent-gold"
+                      ? "bg-accent-gold text-ink border-accent-gold"
                       : "bg-white/[0.04] text-ink/70 border-ink/[0.08] hover:border-accent-gold/40"
                   }`}
                 >

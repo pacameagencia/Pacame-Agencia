@@ -198,7 +198,7 @@ export default function AgentesPage() {
       </section>
 
       {/* ===== DIVISION FILTERS ===== */}
-      <section className="py-8 sticky top-16 z-40 bg-ink/95 backdrop-blur-xl border-b border-ink/[0.06]">
+      <section className="py-8 sticky top-16 z-40 bg-paper/95 backdrop-blur-xl border-b border-ink/[0.06]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -221,7 +221,7 @@ export default function AgentesPage() {
               onClick={() => setActiveDivision(null)}
               className={`px-3 py-1.5 rounded-lg text-xs font-body transition-all ${
                 !activeDivision
-                  ? "bg-accent-gold text-paper"
+                  ? "bg-accent-gold text-ink"
                   : "bg-paper-deep text-ink/50 hover:text-ink/80 border border-ink/[0.06]"
               }`}
             >

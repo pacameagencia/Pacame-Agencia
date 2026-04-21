@@ -118,7 +118,7 @@ export default function DashboardPage() {
           <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
               <h1 className="font-heading font-bold text-3xl sm:text-4xl">
-                <span className="bg-gradient-to-r from-ink to-ink/60 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-paper to-paper/60 bg-clip-text text-transparent">
                   Hola, {client.name?.split(" ")[0] || "cliente"}
                 </span>
               </h1>

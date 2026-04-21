@@ -200,7 +200,7 @@ export default function SieteErroresPage() {
                     type="submit"
                     variant="secondary"
                     size="lg"
-                    className="bg-white text-paper hover:bg-white/90 font-heading font-bold"
+                    className="bg-white text-ink hover:bg-white/90 font-heading font-bold"
                     disabled={state === "sending"}
                   >
                     {state === "sending" ? (

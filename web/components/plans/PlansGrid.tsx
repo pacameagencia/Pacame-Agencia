@@ -20,7 +20,7 @@ export default function PlansGrid({ plans }: Props) {
             onClick={() => setInterval("month")}
             className={`px-5 py-2 rounded-full text-sm font-body font-medium transition ${
               interval === "month"
-                ? "bg-accent-gold text-paper"
+                ? "bg-accent-gold text-ink"
                 : "text-ink/60 hover:text-ink"
             }`}
           >
@@ -30,7 +30,7 @@ export default function PlansGrid({ plans }: Props) {
             onClick={() => setInterval("year")}
             className={`px-5 py-2 rounded-full text-sm font-body font-medium transition flex items-center gap-2 ${
               interval === "year"
-                ? "bg-accent-gold text-paper"
+                ? "bg-accent-gold text-ink"
                 : "text-ink/60 hover:text-ink"
             }`}
           >
@@ -38,7 +38,7 @@ export default function PlansGrid({ plans }: Props) {
             <span
               className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${
                 interval === "year"
-                  ? "bg-ink/20 text-paper"
+                  ? "bg-paper/20 text-ink"
                   : "bg-accent-gold/20 text-accent-gold"
               }`}
             >

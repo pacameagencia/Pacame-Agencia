@@ -67,7 +67,7 @@ export default function HomeHero() {
   const uptime = stats?.uptime_pct ?? 99.9;
 
   return (
-    <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-ink">
+    <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-paper">
       {/* Layered background — mesh + constellation para profundidad */}
       <GradientMeshCanvas
         colors={["#7C3AED", "#4338CA", "#06B6D4", "#D4A853"]}
@@ -172,7 +172,7 @@ export default function HomeHero() {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="relative bg-ink/80 p-4 sm:p-5 text-center"
+                className="relative bg-paper/80 p-4 sm:p-5 text-center"
               >
                 <div className="font-heading font-bold text-2xl sm:text-3xl text-ink mb-0.5 tabular-nums">
                   {stat.decimals ? (

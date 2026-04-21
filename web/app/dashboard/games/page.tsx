@@ -146,7 +146,7 @@ export default function GamesAdminPage() {
                     <div className="inline-flex items-center gap-2">
                       <button
                         onClick={() => toggleActive(g.id, !g.is_active)}
-                        className="px-2 py-1 rounded-md bg-ink/5 hover:bg-ink/10 text-xs text-ink/70 transition"
+                        className="px-2 py-1 rounded-md bg-paper/5 hover:bg-paper/10 text-xs text-ink/70 transition"
                       >
                         {g.is_active ? "Desactivar" : "Activar"}
                       </button>

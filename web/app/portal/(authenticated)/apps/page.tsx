@@ -62,7 +62,7 @@ export default async function AppsListPage() {
         </div>
         <Link
           href="/apps"
-          className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-paper font-heading font-semibold px-5 py-2.5 rounded-xl transition"
+          className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-ink font-heading font-semibold px-5 py-2.5 rounded-xl transition"
         >
           Descubrir mas apps
           <ArrowRight className="w-4 h-4" />
@@ -80,7 +80,7 @@ export default async function AppsListPage() {
           </p>
           <Link
             href="/planes"
-            className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-paper font-heading font-semibold px-6 py-3 rounded-xl transition"
+            className="inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-gold/90 text-ink font-heading font-semibold px-6 py-3 rounded-xl transition"
           >
             Ver planes y apps
             <ArrowRight className="w-4 h-4" />

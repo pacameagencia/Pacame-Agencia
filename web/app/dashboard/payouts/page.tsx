@@ -313,7 +313,7 @@ export default function PayoutsPage() {
                       <button
                         onClick={() => markPaid(row)}
                         disabled={paying === row.referrer_client_id}
-                        className="px-3 py-1.5 rounded-lg bg-accent-gold text-paper text-xs font-semibold hover:brightness-110 disabled:opacity-50 transition"
+                        className="px-3 py-1.5 rounded-lg bg-accent-gold text-ink text-xs font-semibold hover:brightness-110 disabled:opacity-50 transition"
                       >
                         {paying === row.referrer_client_id ? (
                           <Loader2 className="w-3.5 h-3.5 animate-spin" />

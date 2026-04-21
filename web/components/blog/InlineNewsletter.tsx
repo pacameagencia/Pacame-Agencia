@@ -59,12 +59,12 @@ export default function InlineNewsletter() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="tu@empresa.com"
-            className="w-full h-10 px-3 rounded-lg bg-ink/50 border border-ink/[0.08] text-ink text-sm font-body placeholder:text-ink/30 focus:border-accent-gold/50 outline-none transition-colors"
+            className="w-full h-10 px-3 rounded-lg bg-paper/50 border border-ink/[0.08] text-ink text-sm font-body placeholder:text-ink/30 focus:border-accent-gold/50 outline-none transition-colors"
           />
           <button
             type="submit"
             disabled={status === "sending"}
-            className="w-full h-10 rounded-lg bg-accent-gold text-paper font-body font-semibold text-sm hover:bg-accent-gold/90 transition-colors disabled:opacity-60"
+            className="w-full h-10 rounded-lg bg-accent-gold text-ink font-body font-semibold text-sm hover:bg-accent-gold/90 transition-colors disabled:opacity-60"
           >
             {status === "sending" ? "Enviando..." : "Suscribirme"}
           </button>

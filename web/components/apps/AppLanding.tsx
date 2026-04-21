@@ -97,7 +97,7 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
                   onClick={() => setInterval("month")}
                   className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
                     interval === "month"
-                      ? "bg-accent-gold text-paper"
+                      ? "bg-accent-gold text-ink"
                       : "text-ink/60"
                   }`}
                 >
@@ -108,7 +108,7 @@ export default function AppLanding({ app }: { app: AppLandingData }) {
                   disabled={!yearlyEur}
                   className={`px-4 py-1.5 rounded-full text-sm font-medium transition inline-flex items-center gap-1.5 disabled:opacity-40 ${
                     interval === "year"
-                      ? "bg-accent-gold text-paper"
+                      ? "bg-accent-gold text-ink"
                       : "text-ink/60"
                   }`}
                 >

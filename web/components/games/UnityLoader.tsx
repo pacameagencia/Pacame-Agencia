@@ -198,7 +198,7 @@ export default function UnityLoader({
 
   return (
     <div
-      className="relative w-full rounded-2xl overflow-hidden bg-ink shadow-2xl"
+      className="relative w-full rounded-2xl overflow-hidden bg-paper shadow-2xl"
       style={{ paddingTop: aspectToPadding(aspectRatio) }}
     >
       <canvas
@@ -209,9 +209,9 @@ export default function UnityLoader({
 
       {/* Loading overlay */}
       {!ready && !error && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-ink/95 backdrop-blur-sm">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-paper/95 backdrop-blur-sm">
           <Loader2 className="w-10 h-10 text-brand-primary animate-spin mb-4" />
-          <div className="text-paper/80 font-body text-sm mb-4">
+          <div className="text-ink/80 font-body text-sm mb-4">
             Cargando experiencia...
           </div>
           <div className="w-64 h-1.5 bg-paper/10 rounded-full overflow-hidden">
@@ -220,7 +220,7 @@ export default function UnityLoader({
               style={{ width: `${loadPct}%` }}
             />
           </div>
-          <div className="text-paper/40 font-mono text-[11px] mt-2">
+          <div className="text-ink/40 font-mono text-[11px] mt-2">
             {loadPct}%
           </div>
         </div>
@@ -228,12 +228,12 @@ export default function UnityLoader({
 
       {/* Error overlay */}
       {error && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-ink/95 backdrop-blur-sm p-6 text-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-paper/95 backdrop-blur-sm p-6 text-center">
           <AlertTriangle className="w-10 h-10 text-accent-burgundy mb-4" />
-          <div className="text-paper font-heading font-semibold mb-2">
+          <div className="text-ink font-heading font-semibold mb-2">
             No se puede cargar el juego
           </div>
-          <p className="text-paper/70 font-body text-sm max-w-md">{error}</p>
+          <p className="text-ink/70 font-body text-sm max-w-md">{error}</p>
         </div>
       )}
     </div>

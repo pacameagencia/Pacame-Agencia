@@ -28,7 +28,7 @@ export default function PackageCheckoutButton({ packageId, packageName, featured
         description={pricing.description}
         variant={featured ? "secondary" : "outline"}
         size="lg"
-        className={`w-full ${featured ? "bg-white text-paper hover:bg-white/90" : ""}`}
+        className={`w-full ${featured ? "bg-white text-ink hover:bg-white/90" : ""}`}
       />
       <Link
         href="/contacto"
