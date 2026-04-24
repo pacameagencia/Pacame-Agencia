@@ -17,11 +17,12 @@ type AvatarState = "idle" | "listening" | "thinking" | "speaking";
 type VoicePreset = { id: string; label: string; api: "elevenlabs" | "openai"; voice?: string };
 
 const VOICE_PRESETS: VoicePreset[] = [
-  { id: "onyx", label: "Onyx · Grave ES", api: "openai", voice: "onyx" },
-  { id: "nova", label: "Nova · Femenina", api: "openai", voice: "nova" },
-  { id: "ballad", label: "Ballad · Cálida", api: "openai", voice: "ballad" },
-  { id: "echo", label: "Echo · Neutra", api: "openai", voice: "echo" },
-  { id: "elevenlabs", label: "PACAME · ElevenLabs", api: "elevenlabs" },
+  { id: "onyx", label: "PACAME · Grave masculina", api: "elevenlabs", voice: "onyx" },
+  { id: "ash", label: "Firme masculina", api: "elevenlabs", voice: "ash" },
+  { id: "echo", label: "Cálida narrador", api: "elevenlabs", voice: "echo" },
+  { id: "ballad", label: "Cercana masculina", api: "elevenlabs", voice: "ballad" },
+  { id: "nova", label: "Vital femenina", api: "elevenlabs", voice: "nova" },
+  { id: "shimmer", label: "Profesional femenina", api: "elevenlabs", voice: "shimmer" },
 ];
 
 export default function CompaneroPage() {
@@ -115,10 +116,7 @@ export default function CompaneroPage() {
       const res = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          text,
-          voice: preset.api === "openai" ? preset.voice : undefined,
-        }),
+        body: JSON.stringify({ text, voice: preset.voice || preset.id }),
       });
 
       if (!res.ok) throw new Error(`TTS ${res.status}`);

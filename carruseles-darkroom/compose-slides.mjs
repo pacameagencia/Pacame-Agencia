@@ -631,7 +631,7 @@ const SLIDES = [
   },
   { id: "C2-S09", bg: "BG-06-reloj", render: (c) => heroTitleSVG({
       title: "349 €\nPARA SIEMPRE.",
-      sub: "Lifetime. Amortizado en 35 días. 10.373 € ahorrados en 3 años.",
+      sub: "Amortizado en 35 días. 10.373 € ahorrados en 3 años.",
       counter: c,
       titleSize: 156,
       titleFill: C.acid,

@@ -18,8 +18,25 @@ export const runtime = "nodejs";
 export const maxDuration = 30;
 
 const ELEVENLABS_KEY = process.env.ELEVENLABS_API_KEY;
-const ELEVENLABS_VOICE = process.env.ELEVENLABS_VOICE_ID || "YXGHKitgIMeIV5gGeQvP";
+// Brian — voz premade masculina grave, funciona en free tier (multilingual_v2).
+// Cuando Pablo suba el tier puede poner una custom: ej. YXGHKitgIMeIV5gGeQvP.
+const ELEVENLABS_VOICE = process.env.ELEVENLABS_VOICE_ID || "nPczCjzI2devNBz1zQrb";
+// multilingual_v2 es compatible con premade voices en free tier (turbo_v2_5 no lo es)
+const ELEVENLABS_MODEL = process.env.ELEVENLABS_MODEL || "eleven_multilingual_v2";
 const OPENAI_KEY = process.env.OPENAI_API_KEY;
+
+// Mapeo preset-id → voice_id premade (todos multilingüe, hablan español bien)
+const ELEVEN_VOICE_MAP: Record<string, string> = {
+  onyx: "nPczCjzI2devNBz1zQrb",   // Brian — deep, resonant male (PACAME default)
+  ash: "pNInz6obpgDQGcFmaJgB",    // Adam — dominant, firm
+  echo: "JBFqnCBsd6RMkjVDRZzb",   // George — warm storyteller
+  ballad: "cjVigY5qzO86Huf0OWal", // Eric — smooth, trustworthy
+  sage: "pqHfZKP75CvOlQylNhV4",   // Bill — wise, mature
+  nova: "cgSgspJ2msm6clMCkdW9",   // Jessica — playful bright female
+  shimmer: "EXAVITQu4vr4xnSDxMaL",// Sarah — mature reassuring female
+  coral: "hpp4J3VqNfWAUOO0d1Us",  // Bella — professional bright female
+  alloy: "XrExE9yKIg1WjnnlVkGX",  // Matilda — knowledgable female
+};
 
 export async function POST(req: NextRequest) {
   try {
@@ -33,7 +50,7 @@ export async function POST(req: NextRequest) {
 
     if (ELEVENLABS_KEY) {
       try {
-        const audio = await ttsElevenLabs(clean);
+        const audio = await ttsElevenLabs(clean, voice);
         return audioResponse(audio, "elevenlabs");
       } catch (e: any) {
         errors.push(`elevenlabs:${e.message}`);
@@ -88,9 +105,10 @@ function audioResponse(buf: ArrayBuffer, provider: string) {
 }
 
 // --- ElevenLabs ---
-async function ttsElevenLabs(text: string): Promise<ArrayBuffer> {
+async function ttsElevenLabs(text: string, voicePref?: string): Promise<ArrayBuffer> {
+  const voiceId = (voicePref && ELEVEN_VOICE_MAP[voicePref]) || ELEVENLABS_VOICE;
   const res = await fetch(
-    `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE}?output_format=mp3_44100_128`,
+    `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_128`,
     {
       method: "POST",
       headers: {
@@ -100,12 +118,15 @@ async function ttsElevenLabs(text: string): Promise<ArrayBuffer> {
       },
       body: JSON.stringify({
         text,
-        model_id: "eleven_turbo_v2_5",
-        voice_settings: { stability: 0.5, similarity_boost: 0.85, style: 0.55, use_speaker_boost: true },
+        model_id: ELEVENLABS_MODEL,
+        voice_settings: { stability: 0.5, similarity_boost: 0.85, style: 0.4, use_speaker_boost: true },
       }),
     }
   );
-  if (!res.ok) throw new Error(`${res.status}`);
+  if (!res.ok) {
+    const t = await res.text().catch(() => "");
+    throw new Error(`${res.status} ${t.slice(0, 120)}`);
+  }
   return await res.arrayBuffer();
 }
 
