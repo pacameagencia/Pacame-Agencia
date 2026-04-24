@@ -18,6 +18,7 @@ import ReferralCookieTracker from "@/components/referral/ReferralCookieTracker";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import CommandPalette from "@/components/command/CommandPalette";
+import ExitIntentPopup from "@/components/cro/ExitIntentPopup";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 
@@ -253,6 +254,7 @@ export default function RootLayout({
         <GoogleAnalytics />
         <ReferralCookieTracker />
         <CommandPalette />
+        <ExitIntentPopup />
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>
