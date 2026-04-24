@@ -19,7 +19,10 @@ function edgeLog(level: "info" | "warn" | "error", payload: Record<string, unkno
   );
 }
 
-export async function middleware(request: NextRequest) {
+// Next 16 deprecated "middleware" file + export convention in favor of "proxy".
+// Migrated on 2026-04-24 to resolve MIDDLEWARE_INVOCATION_FAILED errors in
+// production edge runtime.
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // ─── Request ID propagation ──────────────────────────────────────────
