@@ -309,6 +309,16 @@
             "id": "42feeb6cb947671c",
             "type": "leaf",
             "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Nueva pestaña"
+            }
+          },
+          {
+            "id": "1ace6b40e96e34ec",
+            "type": "leaf",
+            "state": {
               "type": "graph-analysis",
               "state": {},
               "icon": "GA-ICON",
@@ -316,7 +326,7 @@
             }
           }
         ],
-        "currentTab": 10
+        "currentTab": 12
       }
     ],
     "direction": "horizontal",
@@ -340,7 +350,7 @@
       "smart-connections:Smart Lookup: Open lookup view": false
     }
   },
-  "active": "6b6dea7ccbb2a3f3",
+  "active": "1ace6b40e96e34ec",
   "lastOpenFiles": [
     "_dashboards/Actividad.md",
     "01-Agentes/01-nova.md",

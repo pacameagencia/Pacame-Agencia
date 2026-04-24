@@ -1,0 +1,45 @@
+{
+  "description": "Catálogo de descargas Freepik para biblioteca personal PACAME. Editar antes de correr el downloader. 'count' se aplica por categoría. 'license': 'premium' requiere suscripción Freepik Premium activa en la API key.",
+  "categories": [
+    {
+      "slug": "mockups-producto",
+      "term": "product mockup packaging",
+      "content_type": "mockup",
+      "license": "premium",
+      "order_by": "popular",
+      "count": 10
+    },
+    {
+      "slug": "mockups-device",
+      "term": "iphone laptop mockup",
+      "content_type": "mockup",
+      "license": "premium",
+      "order_by": "popular",
+      "count": 10
+    },
+    {
+      "slug": "mockups-branding",
+      "term": "branding stationery mockup",
+      "content_type": "mockup",
+      "license": "premium",
+      "order_by": "popular",
+      "count": 10
+    },
+    {
+      "slug": "templates-instagram",
+      "term": "instagram post template business",
+      "content_type": "psd",
+      "license": "premium",
+      "order_by": "popular",
+      "count": 10
+    },
+    {
+      "slug": "logos-minimalist",
+      "term": "logo template minimalist brand",
+      "content_type": "vector",
+      "license": "premium",
+      "order_by": "popular",
+      "count": 10
+    }
+  ]
+}
