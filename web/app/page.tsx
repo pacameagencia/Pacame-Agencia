@@ -12,6 +12,12 @@ const EditorialMarquee = dynamic(
 const VisualShowcase = dynamic(
   () => import("@/components/sections/home/VisualShowcase")
 );
+const ClientLogoWall = dynamic(() => import("@/components/cro/ClientLogoWall"));
+const AuthoritySection = dynamic(() => import("@/components/cro/AuthoritySection"));
+const ScarcityBanner = dynamic(
+  () => import("@/components/cro/ScarcityCounter"),
+  { ssr: false }
+);
 const LogosBar = dynamic(() => import("@/components/sections/home/LogosBar"));
 const HowItWorksStripe = dynamic(
   () => import("@/components/sections/home/HowItWorksStripe")
@@ -54,6 +60,9 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
+      {/* SCARCITY BANNER — full width top */}
+      <ScarcityBanner variant="banner" />
+
       {/* A. Hero cinematico editorial — numbered index + bleed type + parallax */}
       <HomeHeroCinematic />
 
@@ -62,6 +71,12 @@ export default function HomePage() {
 
       {/* A3. VISUAL SHOWCASE — editorial photo spreads DALL-E 3 HD */}
       <VisualShowcase />
+
+      {/* A4. AUTHORITY SECTION — founder + certs + numeros */}
+      <AuthoritySection />
+
+      {/* A5. CLIENT LOGO WALL — social proof */}
+      <ClientLogoWall />
 
       {/* B. Logos bar social proof (sectores placeholder) */}
       <LogosBar />

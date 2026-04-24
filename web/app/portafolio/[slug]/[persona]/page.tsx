@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import {
   getPersona,
   listPersonas,
   listPersonasByVertical,
 } from "@/lib/data/portfolio-personas";
 import { getPortfolioVertical } from "@/lib/data/portfolio";
+
+const ScarcityCounter = dynamic(() => import("@/components/cro/ScarcityCounter"));
 import {
   ArrowUpRight,
   ArrowRight,
@@ -314,6 +317,11 @@ export default async function PersonaPage({
                   >
                     Reservar tu slot
                   </Link>
+
+                  {/* Scarcity slots disponibles este mes */}
+                  <div className="mt-4">
+                    <ScarcityCounter variant="card" />
+                  </div>
 
                   <div className="flex items-center justify-center gap-2 mt-4 text-[11px] text-ink/40 font-body">
                     <Shield className="w-3 h-3" />
