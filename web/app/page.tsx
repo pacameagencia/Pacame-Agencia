@@ -15,8 +15,7 @@ const VisualShowcase = dynamic(
 const ClientLogoWall = dynamic(() => import("@/components/cro/ClientLogoWall"));
 const AuthoritySection = dynamic(() => import("@/components/cro/AuthoritySection"));
 const ScarcityBanner = dynamic(
-  () => import("@/components/cro/ScarcityCounter"),
-  { ssr: false }
+  () => import("@/components/cro/ScarcityCounter")
 );
 const LogosBar = dynamic(() => import("@/components/sections/home/LogosBar"));
 const HowItWorksStripe = dynamic(
