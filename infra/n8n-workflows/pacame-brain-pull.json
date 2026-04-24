@@ -1,0 +1,92 @@
+{
+  "name": "PACAME Brain Pull (Supabase → Vault)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      },
+      "id": "trigger-cron",
+      "name": "Cron cada 5 min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/pacame && npx tsx tools/obsidian-sync/pull.ts 2>&1 | tail -20"
+      },
+      "id": "exec-pull",
+      "name": "Exec pull.ts",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.stdout }}",
+              "operation": "contains",
+              "value2": "memorias: +"
+            }
+          ]
+        }
+      },
+      "id": "has-delta",
+      "name": "¿Hay deltas?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [720, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID_PABLO }}",
+        "text": "🧠 Brain sync: {{ $json.stdout.match(/memorias: \\+\\d+, discoveries: \\+\\d+, sinapsis: \\+\\d+/)[0] }}\n\nAbre Obsidian → _dashboards/Actividad"
+      },
+      "id": "notify-telegram",
+      "name": "Notificar Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.1,
+      "position": [960, 240],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "PACAME Telegram Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Cron cada 5 min": {
+      "main": [[{ "node": "Exec pull.ts", "type": "main", "index": 0 }]]
+    },
+    "Exec pull.ts": {
+      "main": [[{ "node": "¿Hay deltas?", "type": "main", "index": 0 }]]
+    },
+    "¿Hay deltas?": {
+      "main": [
+        [{ "node": "Notificar Telegram", "type": "main", "index": 0 }],
+        []
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "active": false,
+  "versionId": "1",
+  "id": "pacame-brain-pull",
+  "meta": {
+    "instanceId": "pacame"
+  },
+  "tags": [
+    { "name": "cerebro" },
+    { "name": "supabase" }
+  ]
+}
