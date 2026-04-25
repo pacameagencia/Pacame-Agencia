@@ -118,17 +118,36 @@ export async function POST(request: NextRequest) {
   let finalDeploymentId = deployment_id;
   const materialized_at = new Date().toISOString();
 
-  if (deployment_id) {
+  // Si no nos pasaron deployment_id pero ya existe un deployment con este slug,
+  // lo reusamos (UPSERT por slug). Esto permite re-materializar al cliente sin
+  // chocar con el unique constraint y sin crear duplicados.
+  if (!deployment_id) {
+    const { data: existing } = await supabase
+      .from("client_deployments")
+      .select("id")
+      .eq("slug", slug)
+      .maybeSingle();
+    if (existing?.id) {
+      finalDeploymentId = existing.id;
+    }
+  }
+
+  if (finalDeploymentId) {
     const { error: updateError } = await supabase
       .from("client_deployments")
       .update({
+        template_id,
+        business_name: client.business_name,
+        city: client.city,
+        client_data: client,
+        plan: plan ?? {},
         slug,
         materialized_files: uploadedFiles,
         materialized_at,
         missing_vars,
         warnings,
       })
-      .eq("id", deployment_id);
+      .eq("id", finalDeploymentId);
 
     if (updateError) {
       return NextResponse.json(
