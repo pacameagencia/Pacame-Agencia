@@ -61,6 +61,11 @@ interface DeploymentRow {
   vapi_deployed_at?: string | null;
   n8n_workflow_ids?: string[] | null;
   n8n_deployed_at?: string | null;
+  n8n_workflows_active?: string[] | null;
+  n8n_activated_at?: string | null;
+  n8n_credentials_ids?: Record<string, string> | null;
+  vercel_git_repo?: string | null;
+  vercel_git_connected_at?: string | null;
 }
 
 interface DeployResult {
@@ -118,6 +123,10 @@ export default function FactoriaClientesPage() {
   const [error, setError] = useState<string | null>(null);
   const [deploying, setDeploying] = useState<string | null>(null);
   const [deployResult, setDeployResult] = useState<DeployResponse | null>(null);
+  const [activating, setActivating] = useState<string | null>(null);
+  const [activateResult, setActivateResult] = useState<{ ok?: boolean; credentials_created?: { type: string; id: string; name: string }[]; workflows_activated?: { id: string; name: string }[]; errors?: { step: string; detail: string }[] } | null>(null);
+  const [connectingGit, setConnectingGit] = useState<string | null>(null);
+  const [gitResult, setGitResult] = useState<{ ok?: boolean; project_id?: string; github_repo?: string; deployment_url?: string; error?: string } | null>(null);
 
   async function load() {
     try {
@@ -169,6 +178,49 @@ export default function FactoriaClientesPage() {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setDeploying(null);
+    }
+  }
+
+  async function activateN8n(id: string, credentials: Record<string, Record<string, string>>) {
+    setActivating(id);
+    setActivateResult(null);
+    try {
+      const res = await fetch("/api/factoria/deploy/activate-n8n", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deployment_id: id, credentials }),
+      });
+      const json = await res.json();
+      setActivateResult(json);
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setActivating(null);
+    }
+  }
+
+  async function connectGit(id: string, github_repo: string, branch: string, deploy: boolean) {
+    setConnectingGit(id);
+    setGitResult(null);
+    try {
+      const res = await fetch("/api/factoria/deploy/connect-git", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          deployment_id: id,
+          github_repo,
+          github_branch: branch,
+          trigger_deploy: deploy,
+        }),
+      });
+      const json = await res.json();
+      setGitResult(json);
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setConnectingGit(null);
     }
   }
 
@@ -281,6 +333,15 @@ export default function FactoriaClientesPage() {
                   onDeploy={(targets) => deployToProduction(active.id, targets)}
                   deploying={deploying === active.id}
                   result={deployResult?.deployment_id === active.id ? deployResult : null}
+                />
+                <CloseLoopPanel
+                  deployment={active}
+                  onActivate={(creds) => activateN8n(active.id, creds)}
+                  activating={activating === active.id}
+                  activateResult={activateResult}
+                  onConnectGit={(repo, branch, deploy) => connectGit(active.id, repo, branch, deploy)}
+                  connectingGit={connectingGit === active.id}
+                  gitResult={gitResult}
                 />
               </>
             ) : (
@@ -724,5 +785,266 @@ function LogEntry({ entry }: { entry: DeployLogEntry }) {
         {entry.status}
       </span>
     </li>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────────
+// Close-loop panel — credentials del cliente + repo Git Vercel
+// ──────────────────────────────────────────────────────────────────
+
+function CloseLoopPanel({
+  deployment,
+  onActivate,
+  activating,
+  activateResult,
+  onConnectGit,
+  connectingGit,
+  gitResult,
+}: {
+  deployment: DeploymentRow;
+  onActivate: (creds: Record<string, Record<string, string>>) => void;
+  activating: boolean;
+  activateResult: { ok?: boolean; credentials_created?: { type: string; id: string; name: string }[]; workflows_activated?: { id: string; name: string }[]; errors?: { step: string; detail: string }[] } | null;
+  onConnectGit: (repo: string, branch: string, deploy: boolean) => void;
+  connectingGit: boolean;
+  gitResult: { ok?: boolean; project_id?: string; github_repo?: string; deployment_url?: string; error?: string } | null;
+}) {
+  const hasN8nWorkflows = (deployment.n8n_workflow_ids?.length ?? 0) > 0;
+  const hasVercelProject = !!deployment.vercel_project_id;
+
+  const [supabaseHost, setSupabaseHost] = useState("");
+  const [supabaseSrk, setSupabaseSrk] = useState("");
+  const [twilioSid, setTwilioSid] = useState("");
+  const [twilioToken, setTwilioToken] = useState("");
+  const [githubRepo, setGithubRepo] = useState("");
+  const [githubBranch, setGithubBranch] = useState("main");
+  const [triggerDeploy, setTriggerDeploy] = useState(true);
+
+  function submitActivate(e: React.FormEvent) {
+    e.preventDefault();
+    const creds: Record<string, Record<string, string>> = {};
+    if (supabaseHost && supabaseSrk) {
+      creds.supabase = { host: supabaseHost, serviceRole: supabaseSrk };
+    }
+    if (twilioSid && twilioToken) {
+      creds.twilio = { accountSid: twilioSid, authToken: twilioToken };
+    }
+    if (Object.keys(creds).length === 0) return;
+    onActivate(creds);
+  }
+
+  function submitGit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!githubRepo) return;
+    onConnectGit(githubRepo, githubBranch || "main", triggerDeploy);
+  }
+
+  return (
+    <article className="bg-dark-card border border-mustard-500/40 divide-y divide-white/[0.04]">
+      <header className="p-6">
+        <div className="flex items-center gap-2 mb-2">
+          <Workflow className="w-5 h-5 text-mustard-500" />
+          <span className="font-mono text-[11px] tracking-[0.2em] uppercase text-mustard-500">
+            Cerrar el círculo
+          </span>
+        </div>
+        <p className="text-pacame-white/60 text-sm font-body max-w-2xl">
+          Activa los workflows n8n con las credentials reales del cliente · conecta repo Git al project Vercel para deploys automáticos.
+        </p>
+      </header>
+
+      {/* Activación n8n con credentials del cliente */}
+      <section className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-pacame-white/50 block mb-1">
+              Paso 1 · Activar workflows n8n
+            </span>
+            <h3 className="font-heading font-bold text-pacame-white text-lg">Credentials del cliente</h3>
+          </div>
+          {(deployment.n8n_workflows_active && (deployment.n8n_workflows_active as string[]).length > 0) ? (
+            <span className="font-mono text-[10px] tracking-[0.15em] uppercase px-2 py-1 bg-lime-pulse/20 text-lime-pulse">
+              ✓ {(deployment.n8n_workflows_active as string[]).length} activos
+            </span>
+          ) : (
+            <span className="font-mono text-[10px] tracking-[0.15em] uppercase px-2 py-1 bg-amber-signal/20 text-amber-signal">
+              Inactivos
+            </span>
+          )}
+        </div>
+
+        {!hasN8nWorkflows ? (
+          <p className="text-amber-signal text-sm font-mono">⚠ Despliega n8n primero antes de activar workflows.</p>
+        ) : (
+          <form onSubmit={submitActivate} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <CredField
+                label="Supabase host (cliente)"
+                placeholder="https://xyz.supabase.co"
+                value={supabaseHost}
+                onChange={setSupabaseHost}
+              />
+              <CredField
+                label="Supabase service_role_key"
+                placeholder="eyJ..."
+                value={supabaseSrk}
+                onChange={setSupabaseSrk}
+                type="password"
+              />
+              <CredField
+                label="Twilio Account SID"
+                placeholder="ACxxxx..."
+                value={twilioSid}
+                onChange={setTwilioSid}
+              />
+              <CredField
+                label="Twilio Auth Token"
+                placeholder="..."
+                value={twilioToken}
+                onChange={setTwilioToken}
+                type="password"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={activating || (!supabaseHost && !twilioSid)}
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-mustard-500 text-ink font-body text-sm font-medium hover:bg-mustard-400 transition-colors disabled:opacity-50 rounded-sm"
+            >
+              {activating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Workflow className="w-4 h-4" />}
+              {activating ? "Activando..." : "Crear credentials + activar workflows"}
+            </button>
+
+            {activateResult && (
+              <div className="mt-3 pt-3 border-t border-white/[0.06] text-sm space-y-1">
+                {activateResult.ok ? (
+                  <p className="text-lime-pulse font-mono text-[12px]">
+                    ✓ {activateResult.credentials_created?.length ?? 0} credentials · {activateResult.workflows_activated?.length ?? 0} workflows activos
+                  </p>
+                ) : null}
+                {activateResult.errors && activateResult.errors.length > 0 && (
+                  <ul className="text-rose-alert text-[12px] font-mono space-y-1">
+                    {activateResult.errors.map((e, i) => (
+                      <li key={i}>✗ {e.step}: {e.detail.slice(0, 150)}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+          </form>
+        )}
+      </section>
+
+      {/* Conectar Git Vercel */}
+      <section className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-pacame-white/50 block mb-1">
+              Paso 2 · Conectar repo Vercel
+            </span>
+            <h3 className="font-heading font-bold text-pacame-white text-lg">Auto-deploy desde Git</h3>
+          </div>
+          {deployment.vercel_git_repo ? (
+            <span className="font-mono text-[10px] tracking-[0.15em] uppercase px-2 py-1 bg-lime-pulse/20 text-lime-pulse">
+              ✓ {deployment.vercel_git_repo}
+            </span>
+          ) : (
+            <span className="font-mono text-[10px] tracking-[0.15em] uppercase px-2 py-1 bg-amber-signal/20 text-amber-signal">
+              No conectado
+            </span>
+          )}
+        </div>
+
+        {!hasVercelProject ? (
+          <p className="text-amber-signal text-sm font-mono">⚠ Despliega Vercel primero antes de conectar repo.</p>
+        ) : (
+          <form onSubmit={submitGit} className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="md:col-span-2">
+                <CredField
+                  label="GitHub repo (owner/repo)"
+                  placeholder="pacameagencia/Pacame-Agencia"
+                  value={githubRepo}
+                  onChange={setGithubRepo}
+                />
+              </div>
+              <CredField
+                label="Branch"
+                placeholder="main"
+                value={githubBranch}
+                onChange={setGithubBranch}
+              />
+            </div>
+            <label className="flex items-center gap-2 text-[12px] font-mono text-pacame-white/70">
+              <input
+                type="checkbox"
+                checked={triggerDeploy}
+                onChange={(e) => setTriggerDeploy(e.target.checked)}
+                className="accent-mustard-500"
+              />
+              Trigger deploy inmediato tras conectar
+            </label>
+            <button
+              type="submit"
+              disabled={connectingGit || !githubRepo}
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-mustard-500 text-ink font-body text-sm font-medium hover:bg-mustard-400 transition-colors disabled:opacity-50 rounded-sm"
+            >
+              {connectingGit ? <Loader2 className="w-4 h-4 animate-spin" /> : <GitBranch className="w-4 h-4" />}
+              {connectingGit ? "Conectando..." : "Conectar repo + deploy"}
+            </button>
+
+            {gitResult && (
+              <div className="mt-3 pt-3 border-t border-white/[0.06] text-[12px] font-mono space-y-1">
+                {gitResult.ok ? (
+                  <>
+                    <p className="text-lime-pulse">✓ Repo conectado a project {gitResult.project_id}</p>
+                    {gitResult.deployment_url && (
+                      <a
+                        href={gitResult.deployment_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-electric-violet hover:underline"
+                      >
+                        Deployment: {gitResult.deployment_url} ↗
+                      </a>
+                    )}
+                  </>
+                ) : (
+                  <p className="text-rose-alert">✗ {gitResult.error}</p>
+                )}
+              </div>
+            )}
+          </form>
+        )}
+      </section>
+    </article>
+  );
+}
+
+function CredField({
+  label,
+  placeholder,
+  value,
+  onChange,
+  type = "text",
+}: {
+  label: string;
+  placeholder?: string;
+  value: string;
+  onChange: (v: string) => void;
+  type?: "text" | "password";
+}) {
+  return (
+    <label className="block">
+      <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-pacame-white/50 block mb-1">
+        {label}
+      </span>
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full px-3 py-2 bg-pacame-black border border-white/10 text-pacame-white text-[12px] font-mono focus:outline-none focus:border-mustard-500 rounded-sm"
+      />
+    </label>
   );
 }
