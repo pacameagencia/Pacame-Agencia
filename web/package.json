@@ -11,7 +11,10 @@
     "brain:pull": "node scripts/brain-pull.mjs",
     "brain:loop": "node scripts/brain-loop.mjs",
     "referrals:seed": "node scripts/seed-referrals.mjs",
-    "referrals:test": "node --test lib/modules/referrals/__tests__/flow.test.mjs"
+    "referrals:test": "node --test lib/modules/referrals/__tests__/flow.test.mjs",
+    "referrals:migrate": "node scripts/migrate-referrals.mjs",
+    "referrals:migrate:print": "node scripts/migrate-referrals.mjs --print",
+    "referrals:seed-content": "node scripts/seed-pacame-content.mjs"
   },
   "dependencies": {
     "@google/stitch-sdk": "^0.1.0",

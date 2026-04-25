@@ -58,6 +58,12 @@ const ELEVEN_VOICE_MAP: Record<string, string> = {
   shimmer: "EXAVITQu4vr4xnSDxMaL",// Sarah — mature reassuring female
   coral: "hpp4J3VqNfWAUOO0d1Us",  // Bella — professional bright female
   alloy: "XrExE9yKIg1WjnnlVkGX",  // Matilda — knowledgable female
+  // Lucía — voz default de PACAME GPT (español de España, femenina mid-30s).
+  // ElevenLabs no tiene premade nativas ES-ES; con multilingual_v2 cualquier voz
+  // habla español pero el acento mejor para castellano neutro lo da Sarah.
+  // Si Pablo activa una voz ES-ES clonada → setear ELEVENLABS_LUCIA_VOICE_ID en Vercel
+  // y se usa en lugar de la premade.
+  lucia: process.env.ELEVENLABS_LUCIA_VOICE_ID || "EXAVITQu4vr4xnSDxMaL",
 };
 
 export async function POST(req: NextRequest) {
@@ -82,6 +88,22 @@ export async function POST(req: NextRequest) {
 
     const errors: string[] = [];
 
+    // Cuando se pide voz "lucia" (PACAME GPT), Edge va primero: garantiza
+    // acento ES-ES nativo (Elvira) gratis. Solo si Pablo configura una voz
+    // Lucía clonada en ElevenLabs (ELEVENLABS_LUCIA_VOICE_ID), invierte
+    // a ElevenLabs primero porque la voz custom será mejor que Edge.
+    const luciaPrefersElevenLabs = voice === "lucia" && !!process.env.ELEVENLABS_LUCIA_VOICE_ID;
+    const edgeFirst = voice === "lucia" && !luciaPrefersElevenLabs;
+
+    if (edgeFirst) {
+      try {
+        const audio = await ttsEdge(clean, voice);
+        return audioResponse(audio, "edge-microsoft");
+      } catch (e: any) {
+        errors.push(`edge:${e.message}`);
+      }
+    }
+
     if (ELEVENLABS_KEY) {
       try {
         const audio = await ttsElevenLabs(clean, voice);
@@ -100,11 +122,13 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    try {
-      const audio = await ttsEdge(clean, voice);
-      return audioResponse(audio, "edge-microsoft");
-    } catch (e: any) {
-      errors.push(`edge:${e.message}`);
+    if (!edgeFirst) {
+      try {
+        const audio = await ttsEdge(clean, voice);
+        return audioResponse(audio, "edge-microsoft");
+      } catch (e: any) {
+        errors.push(`edge:${e.message}`);
+      }
     }
 
     try {
@@ -195,6 +219,9 @@ async function ttsEdge(text: string, voicePref?: string): Promise<ArrayBuffer> {
     coral: "es-ES-ElviraNeural",
     ash: "es-ES-AlvaroNeural",
     shimmer: "es-ES-ElviraNeural",
+    // Lucía → voz castellana femenina nativa de Microsoft (gratis, calidad alta).
+    // Es el plan B garantizado si ElevenLabs falla o agota cuota.
+    lucia: "es-ES-ElviraNeural",
   };
   const voice = voiceMap[voicePref || ""] || "es-ES-AlvaroNeural";
 

@@ -8,6 +8,7 @@ import crypto from "node:crypto";
 import { getCurrentProductUser } from "@/lib/products/session";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { listAsesorClients } from "@/lib/products/asesor-pro/queries";
+import { sendClientInviteEmail } from "@/lib/products/asesor-pro/emails";
 
 export const runtime = "nodejs";
 
@@ -83,11 +84,31 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  // TODO: enviar email real con Resend si inviteToken
-  // por ahora devolvemos el link para que el asesor lo copie manualmente
   const inviteUrl = inviteToken
     ? `${request.nextUrl.origin}/p/asesor-pro/aceptar?token=${inviteToken}`
     : null;
 
-  return NextResponse.json({ client: data, invite_url: inviteUrl });
+  // Si invite + email + RESEND_API_KEY → enviar email automático
+  let emailSent = false;
+  let emailError: string | null = null;
+  if (inviteUrl && body.email && process.env.RESEND_API_KEY) {
+    try {
+      const emailId = await sendClientInviteEmail({
+        to: body.email,
+        client_fiscal_name: data.fiscal_name,
+        asesor_name: user.full_name ?? "Tu asesor",
+        invite_url: inviteUrl,
+      });
+      emailSent = !!emailId;
+    } catch (err) {
+      emailError = err instanceof Error ? err.message : String(err);
+    }
+  }
+
+  return NextResponse.json({
+    client: data,
+    invite_url: inviteUrl,
+    email_sent: emailSent,
+    email_error: emailError,
+  });
 }

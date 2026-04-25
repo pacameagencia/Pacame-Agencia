@@ -14,6 +14,7 @@ import {
   processRefundClawback,
   getReferralsAdapter,
 } from "@/lib/modules/referrals";
+import { isPacameProductEvent, handlePacameProductEvent } from "@/lib/products/stripe-handlers";
 
 const supabase = createServerSupabase();
 const referralConfig = loadReferralConfig();
@@ -36,6 +37,19 @@ export async function POST(request: NextRequest) {
   } else {
     // In development or before webhook secret is set, parse directly
     event = JSON.parse(body) as Stripe.Event;
+  }
+
+  // Routing: si es evento de producto PACAME (mini-SaaS, ej. AsesorPro),
+  // delegar al handler dedicado y saltarse la lógica de servicios PACAME
+  // (finances, referrals, onboarding) porque no aplica a productos SaaS.
+  if (isPacameProductEvent(event)) {
+    try {
+      const result = await handlePacameProductEvent(event);
+      return NextResponse.json({ received: true, source: "pacame-product", ...result });
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : String(err);
+      return NextResponse.json({ error: `pacame-product handler: ${detail}` }, { status: 500 });
+    }
   }
 
   try {
