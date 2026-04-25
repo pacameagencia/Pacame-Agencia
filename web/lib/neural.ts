@@ -756,3 +756,338 @@ export async function routeInput(params: {
     stimulus_id,
   };
 }
+
+// ============================================================================
+// AUTO-TOOLS — tool-creation autónoma
+// ============================================================================
+
+export type ToolKind = "endpoint" | "skill" | "script" | "subagent";
+export type ToolGapStatus =
+  | "pending" | "drafting" | "drafted" | "probation"
+  | "promoted" | "rejected" | "disabled" | "draft_failed" | "corrupted";
+
+export interface ToolGap {
+  id: string;
+  requested_by_agent: string;
+  intent: string;
+  examples: unknown;
+  status: ToolGapStatus;
+  tool_kind: ToolKind | null;
+  tool_name: string | null;
+  draft_path: string | null;
+  promoted_path: string | null;
+  code_hash: string | null;
+  usage_count: number;
+  success_count: number;
+  failure_count: number;
+  consecutive_failures: number;
+  last_invoked_at: string | null;
+  draft_tokens_used: number;
+  created_at: string;
+  drafted_at: string | null;
+  probation_started_at: string | null;
+  promoted_at: string | null;
+  metadata: Record<string, unknown>;
+}
+
+export interface SimilarGap {
+  gap_id: string;
+  similarity: number;
+  status: ToolGapStatus;
+  tool_kind: ToolKind | null;
+  tool_name: string | null;
+  draft_path: string | null;
+  intent: string;
+}
+
+/**
+ * Busca gaps similares por embedding del intent. Usa cosine distance via SQL.
+ * Devuelve top N con similarity descendente.
+ */
+export async function findSimilarGaps(
+  intent: string,
+  options: { matchCount?: number; minSimilarity?: number; kind?: ToolKind } = {}
+): Promise<SimilarGap[]> {
+  const vec = await embed(intent);
+  if (!vec) return [];
+  try {
+    const supabase = createServerSupabase();
+    const literal = `[${vec.join(",")}]`;
+    const matchCount = options.matchCount ?? 3;
+    const minSim = options.minSimilarity ?? 0.0;
+    // Inline SQL: no hay RPC dedicada, usamos el operador <=> (cosine distance)
+    const { data, error } = await supabase.rpc("find_similar_tool_gaps", {
+      query_embedding: literal,
+      match_count: matchCount,
+      filter_kind: options.kind ?? null,
+    });
+    if (error) {
+      // Si la función no existe aún (migración pendiente), fallback a query simple sin similarity
+      console.warn("[findSimilarGaps] RPC fallo, fallback:", error.message);
+      const { data: fb } = await supabase
+        .from("agent_tool_gaps")
+        .select("id, status, tool_kind, tool_name, draft_path, intent")
+        .ilike("intent", `%${intent.slice(0, 40)}%`)
+        .limit(matchCount);
+      return (fb || []).map((r) => ({
+        gap_id: r.id as string,
+        similarity: 0.5,
+        status: r.status as ToolGapStatus,
+        tool_kind: r.tool_kind as ToolKind | null,
+        tool_name: r.tool_name as string | null,
+        draft_path: r.draft_path as string | null,
+        intent: r.intent as string,
+      }));
+    }
+    return ((data || []) as SimilarGap[]).filter((h) => h.similarity >= minSim);
+  } catch (e) {
+    console.warn("[findSimilarGaps] exception:", (e as Error).message);
+    return [];
+  }
+}
+
+export interface RecordToolGapParams {
+  agent: AgentId | string;
+  intent: string;
+  examples?: unknown[];
+  metadata?: Record<string, unknown>;
+}
+
+/**
+ * Registra un gap de tool. Hace dedupe semántico (cosine ≥0.85): si encuentra
+ * un gap existente similar, devuelve su ID en vez de crear uno nuevo.
+ */
+export async function recordToolGap(
+  p: RecordToolGapParams
+): Promise<{ gap_id: string; deduped: boolean } | null> {
+  try {
+    // Dedupe semántico
+    const similar = await findSimilarGaps(p.intent, { matchCount: 1, minSimilarity: 0.85 });
+    if (similar.length > 0) {
+      return { gap_id: similar[0].gap_id, deduped: true };
+    }
+
+    const supabase = createServerSupabase();
+    const vec = await embed(p.intent);
+    const embeddingLiteral = vec ? `[${vec.join(",")}]` : null;
+    const { data, error } = await supabase
+      .from("agent_tool_gaps")
+      .insert({
+        requested_by_agent: p.agent,
+        intent: p.intent,
+        intent_embedding: embeddingLiteral,
+        examples: p.examples ?? [],
+        metadata: p.metadata ?? {},
+      })
+      .select("id")
+      .single();
+    if (error || !data) {
+      console.warn("[recordToolGap]", error?.message);
+      return null;
+    }
+    // Sinapsis: agente solicita ayuda a dios
+    void fireSynapse(p.agent, "dios", "consults", true);
+    return { gap_id: data.id as string, deduped: false };
+  } catch (e) {
+    console.warn("[recordToolGap] exception:", (e as Error).message);
+    return null;
+  }
+}
+
+export interface MarkToolDraftedParams {
+  gapId: string;
+  kind: ToolKind;
+  name: string;
+  draftPath: string;
+  codeHash: string;
+  tokensUsed: number;
+  metadata?: Record<string, unknown>;
+}
+
+export async function markToolDrafted(p: MarkToolDraftedParams): Promise<boolean> {
+  try {
+    const supabase = createServerSupabase();
+    const { error } = await supabase
+      .from("agent_tool_gaps")
+      .update({
+        status: "drafted",
+        tool_kind: p.kind,
+        tool_name: p.name,
+        draft_path: p.draftPath,
+        code_hash: p.codeHash,
+        draft_tokens_used: p.tokensUsed,
+        drafted_at: new Date().toISOString(),
+        metadata: p.metadata ?? {},
+      })
+      .eq("id", p.gapId);
+    if (error) {
+      console.warn("[markToolDrafted]", error.message);
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.warn("[markToolDrafted] exception:", (e as Error).message);
+    return false;
+  }
+}
+
+export async function markToolDraftFailed(gapId: string, reason: string): Promise<void> {
+  try {
+    const supabase = createServerSupabase();
+    await supabase
+      .from("agent_tool_gaps")
+      .update({
+        status: "draft_failed",
+        metadata: { draft_failure_reason: reason, failed_at: new Date().toISOString() },
+      })
+      .eq("id", gapId);
+  } catch {
+    /* no-op */
+  }
+}
+
+export interface RecordInvocationParams {
+  gapId: string;
+  toolName: string;
+  agent?: string | null;
+  success: boolean;
+  durationMs?: number;
+  error?: string | null;
+}
+
+/**
+ * Registra una invocación a auto-tool. Atómicamente:
+ *  - INSERT en auto_tool_invocations
+ *  - UPDATE counters en agent_tool_gaps (usage_count, success_count, failure_count, consecutive_failures, last_invoked_at)
+ *  - Si consecutive_failures alcanza 10, el trigger SQL marca status=disabled
+ */
+export async function recordToolInvocation(p: RecordInvocationParams): Promise<void> {
+  try {
+    const supabase = createServerSupabase();
+    // 1. Insert en log
+    await supabase.from("auto_tool_invocations").insert({
+      gap_id: p.gapId,
+      tool_name: p.toolName,
+      invoker_agent: p.agent ?? null,
+      success: p.success,
+      duration_ms: p.durationMs ?? null,
+      error_message: p.error ?? null,
+    });
+    // 2. Update counters: leer + escribir (no hay incremento atómico nativo en supabase-js)
+    const { data: cur } = await supabase
+      .from("agent_tool_gaps")
+      .select("usage_count, success_count, failure_count, consecutive_failures")
+      .eq("id", p.gapId)
+      .single();
+    if (!cur) return;
+    const usage = (cur.usage_count as number) + 1;
+    const succ = (cur.success_count as number) + (p.success ? 1 : 0);
+    const fail = (cur.failure_count as number) + (p.success ? 0 : 1);
+    const consecutive = p.success ? 0 : (cur.consecutive_failures as number) + 1;
+    await supabase
+      .from("agent_tool_gaps")
+      .update({
+        usage_count: usage,
+        success_count: succ,
+        failure_count: fail,
+        consecutive_failures: consecutive,
+        last_invoked_at: new Date().toISOString(),
+      })
+      .eq("id", p.gapId);
+  } catch (e) {
+    console.warn("[recordToolInvocation] exception:", (e as Error).message);
+  }
+}
+
+/**
+ * Reserva un nombre de auto-tool de forma atómica via INSERT ON CONFLICT DO NOTHING.
+ * Devuelve true si lo reservó, false si ya estaba tomado.
+ */
+export async function reserveToolName(name: string, gapId: string): Promise<boolean> {
+  try {
+    const supabase = createServerSupabase();
+    // upsert con onConflict='name' + ignoreDuplicates emula INSERT ... ON CONFLICT DO NOTHING
+    const { data, error } = await supabase
+      .from("auto_tool_names")
+      .upsert({ name, gap_id: gapId }, { onConflict: "name", ignoreDuplicates: true })
+      .select("name");
+    if (error) {
+      console.warn("[reserveToolName]", error.message);
+      return false;
+    }
+    return Array.isArray(data) && data.length > 0;
+  } catch (e) {
+    console.warn("[reserveToolName] exception:", (e as Error).message);
+    return false;
+  }
+}
+
+/**
+ * Promueve un gap drafted → probation (con probation_started_at).
+ * Si ya está en probation ≥7d con counters OK → marca como promoted y devuelve {promoted:true}.
+ * Si está en drafted pero counters no llegan a umbral, devuelve {promoted:false, reason}.
+ */
+export async function promoteToolGap(
+  gapId: string,
+  options: { minUsage?: number; minSuccessRate?: number; probationDays?: number } = {}
+): Promise<{ promoted: boolean; new_status?: ToolGapStatus; reason?: string }> {
+  const minUsage = options.minUsage ?? 5;
+  const minRate = options.minSuccessRate ?? 0.85;
+  const probationDays = options.probationDays ?? 7;
+  try {
+    const supabase = createServerSupabase();
+    const { data: gap } = await supabase
+      .from("agent_tool_gaps")
+      .select("*")
+      .eq("id", gapId)
+      .single();
+    if (!gap) return { promoted: false, reason: "gap not found" };
+
+    const usage = gap.usage_count as number;
+    const succ = gap.success_count as number;
+    const status = gap.status as ToolGapStatus;
+    const successRate = usage > 0 ? succ / usage : 0;
+
+    if (usage < minUsage) {
+      return { promoted: false, reason: `usage ${usage} < ${minUsage}` };
+    }
+    if (successRate < minRate) {
+      return { promoted: false, reason: `success_rate ${successRate.toFixed(2)} < ${minRate}` };
+    }
+
+    if (status === "drafted") {
+      await supabase
+        .from("agent_tool_gaps")
+        .update({
+          status: "probation",
+          probation_started_at: new Date().toISOString(),
+        })
+        .eq("id", gapId);
+      return { promoted: false, new_status: "probation", reason: "moved to probation" };
+    }
+
+    if (status === "probation") {
+      const probStart = gap.probation_started_at ? new Date(gap.probation_started_at as string) : null;
+      if (!probStart) {
+        return { promoted: false, reason: "probation_started_at missing" };
+      }
+      const ageDays = (Date.now() - probStart.getTime()) / 86400_000;
+      if (ageDays < probationDays) {
+        return { promoted: false, reason: `probation age ${ageDays.toFixed(1)}d < ${probationDays}d` };
+      }
+      await supabase
+        .from("agent_tool_gaps")
+        .update({
+          status: "promoted",
+          promoted_at: new Date().toISOString(),
+        })
+        .eq("id", gapId);
+      void fireSynapse("dios", gap.requested_by_agent as string, "learns_from", true);
+      return { promoted: true, new_status: "promoted" };
+    }
+
+    return { promoted: false, reason: `status ${status} not eligible` };
+  } catch (e) {
+    return { promoted: false, reason: (e as Error).message };
+  }
+}

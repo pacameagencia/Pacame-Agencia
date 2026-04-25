@@ -39,6 +39,14 @@
     {
       "path": "/api/neural/learn",
       "schedule": "15 9 * * *"
+    },
+    {
+      "path": "/api/neural/draft-tool",
+      "schedule": "5 11 * * *"
+    },
+    {
+      "path": "/api/neural/promote-tools",
+      "schedule": "30 9 * * *"
     }
   ]
 }

@@ -50,6 +50,10 @@ export default function AvatarHolograma({ state, analyser }: Props) {
     let blinkPhase = 0;
     let nextBlink = 3 + Math.random() * 3;
     let breathPhase = 0;
+    // Buffers reutilizables — NUNCA realocar en el tick loop (evita GC pressure en móvil).
+    // Tamaños: fftSize por defecto = 2048 (time domain); frequencyBinCount = fftSize/2.
+    let timeBuf: Uint8Array | null = null;
+    let freqBuf: Uint8Array | null = null;
 
     const tick = () => {
       const dt = 1 / 60;
@@ -62,14 +66,16 @@ export default function AvatarHolograma({ state, analyser }: Props) {
       // Amplitud audio real
       let target = 0;
       if (an && s === "speaking") {
-        const buf = new Uint8Array(an.fftSize);
-        an.getByteTimeDomainData(buf as any);
+        if (!timeBuf || timeBuf.length !== an.fftSize) {
+          timeBuf = new Uint8Array(an.fftSize);
+        }
+        an.getByteTimeDomainData(timeBuf as any);
         let sum = 0;
-        for (let i = 0; i < buf.length; i++) {
-          const v = (buf[i] - 128) / 128;
+        for (let i = 0; i < timeBuf.length; i++) {
+          const v = (timeBuf[i] - 128) / 128;
           sum += v * v;
         }
-        target = Math.min(1, Math.sqrt(sum / buf.length) * 4.5);
+        target = Math.min(1, Math.sqrt(sum / timeBuf.length) * 4.5);
       } else if (s === "listening") target = 0.18 + Math.abs(Math.sin(t * 1.6)) * 0.18;
       else if (s === "thinking") target = 0.15 + Math.abs(Math.sin(t * 4)) * 0.1;
       else target = 0.06 + Math.abs(Math.sin(t * 0.8)) * 0.05;
@@ -213,8 +219,11 @@ export default function AvatarHolograma({ state, analyser }: Props) {
       // === Waveform arc (solo speaking) ===
       const auralyser = analyserRef.current;
       if (auralyser && s === "speaking") {
-        const fd = new Uint8Array(auralyser.frequencyBinCount);
-        auralyser.getByteFrequencyData(fd as any);
+        if (!freqBuf || freqBuf.length !== auralyser.frequencyBinCount) {
+          freqBuf = new Uint8Array(auralyser.frequencyBinCount);
+        }
+        auralyser.getByteFrequencyData(freqBuf as any);
+        const fd = freqBuf;
         const bars = 80;
         const baseR = S * 0.36;
         ctx.save();

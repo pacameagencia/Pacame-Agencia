@@ -626,8 +626,9 @@ export async function materializeClient(input: {
   template_id: string;
   client: ClientInput;
   plan?: unknown;
+  modules_enabled?: { referrals?: boolean };
 }): Promise<MaterializationResult> {
-  const { template_id, client, plan } = input;
+  const { template_id, client, plan, modules_enabled } = input;
 
   if (!client.business_name || !client.city) {
     throw new Error("client.business_name and client.city are required");
@@ -684,6 +685,29 @@ export async function materializeClient(input: {
   addFile(`${slug}/_template-snapshot/copy-blocks.md`, await readTemplateFile(templateDir, "copy-blocks.md"), "text/markdown");
   addFile(`${slug}/_template-snapshot/seo-keywords.md`, await readTemplateFile(templateDir, "seo-keywords.md"), "text/markdown");
   addFile(`${slug}/_template-snapshot/automation-n8n.md`, await readTemplateFile(templateDir, "automation-n8n.md"), "text/markdown");
+
+  // Optional modules
+  if (modules_enabled?.referrals) {
+    const moduleDir = path.join(process.cwd(), "lib", "modules", "referrals", "sql");
+    const [schemaSql, rlsSql] = await Promise.all([
+      fs.readFile(path.join(moduleDir, "001_schema.sql"), "utf8").catch(() => ""),
+      fs.readFile(path.join(moduleDir, "002_rls.sql"), "utf8").catch(() => ""),
+    ]);
+    if (schemaSql) addFile(`${slug}/supabase/modules/referrals/001_schema.sql`, schemaSql, "application/sql");
+    if (rlsSql) addFile(`${slug}/supabase/modules/referrals/002_rls.sql`, rlsSql, "application/sql");
+    addFile(
+      `${slug}/MODULE-REFERRALS.md`,
+      `# Módulo Referrals activo\n\n` +
+        `Este tenant lleva el sistema de afiliados PACAME (Rewardful-style).\n\n` +
+        `## Pasos de instalación\n\n` +
+        `1. Ejecuta los SQL en \`supabase/modules/referrals/\` en tu Supabase.\n` +
+        `2. Añade variables al \`.env\`:\n\n` +
+        `\`\`\`\nREFERRAL_TENANT_ID=${slug}\nREFERRAL_COMMISSION_PERCENT=20\nREFERRAL_COOKIE_DAYS=30\nREFERRAL_MAX_MONTHS=12\nREFERRAL_ATTRIBUTION=last_click\n\`\`\`\n\n` +
+        `3. Monta \`<ReferralTrackerProvider />\` en tu \`app/layout.tsx\`.\n` +
+        `4. Tus enlaces de afiliado: \`https://tu-dominio.com/?ref=CODE\`.\n`,
+      "text/markdown",
+    );
+  }
 
   return {
     files,

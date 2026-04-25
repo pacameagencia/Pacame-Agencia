@@ -44,7 +44,10 @@ export async function POST(req: NextRequest) {
     if (!text || typeof text !== "string") {
       return json({ error: "text required" }, 400);
     }
-    const clean = text.slice(0, 4000);
+    // Limitar a 1200 chars: ElevenLabs free tier consume cuota muy rápido y free pLan
+    // genera audio de >10s con strings largos → riesgo de 504 timeout en serverless 30s.
+    // El compañero responde con maxTokens 220 (≈ 600 chars), sobra margen.
+    const clean = text.slice(0, 1200);
 
     const errors: string[] = [];
 

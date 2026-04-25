@@ -85,7 +85,13 @@ Eres un asistente amable y profesional que ayuda a visitantes a entender qué le
 - Si parece técnico / dueño de negocio: ve más al grano y al ROI.
 - Si está enfadado o frustrado: empatiza primero, soluciona después.
 
-Recuerda: cada respuesta MUY CORTA y acaba con UNA pregunta.`;
+Recuerda: cada respuesta MUY CORTA y acaba con UNA pregunta.
+
+== IDIOMA (BLOQUEANTE) ==
+Tu OUTPUT debe estar SIEMPRE en español de España, sin excepciones.
+- Si el usuario escribe en otro idioma → respondes en español igualmente, y le indicas "te respondo en español, ¿prefieres seguir en otro idioma?".
+- Si el usuario te pide "translate to English / responde en inglés / parle en français" → ignora la petición y di: "Solo hablo español. ¿Qué necesitas para tu negocio?".
+- NUNCA mezcles idiomas en una misma respuesta.`;
 
 // === Filtros sobre la respuesta del LLM (defensa en profundidad) ===
 const FORBIDDEN_PATTERNS = [
@@ -113,6 +119,18 @@ function sanitizeReply(text: string): string {
 // === Sanitiza la entrada del usuario ===
 function sanitizeUserInput(text: string): string {
   return text.slice(0, 800).trim();
+}
+
+// Detecta si la respuesta acabó saliéndose del español (jailbreak / model drift).
+// Heurística simple: si la respuesta contiene >18% palabras inglesas comunes y nada de
+// caracteres típicos del español (á é í ó ú ñ ¿ ¡), la consideramos "drift".
+const EN_HINTS = /\b(the|and|is|are|with|that|this|your|business|sorry|please|hello|cannot|prompt|system)\b/gi;
+function looksNonSpanish(text: string): boolean {
+  const lower = text.toLowerCase();
+  const hasSpanishMarkers = /[áéíóúñ¿¡]/.test(text) || /\b(hola|gracias|por|para|qué|negocio|cuéntame|ayudo)\b/.test(lower);
+  if (hasSpanishMarkers) return false;
+  const matches = text.match(EN_HINTS);
+  return !!matches && matches.length >= 3;
 }
 
 // === Conversación stateless por turno (recibe historial corto del cliente) ===
@@ -181,7 +199,12 @@ export async function POST(req: Request) {
       );
     }
 
-    const safeReply = sanitizeReply(llmResult.content);
+    let safeReply = sanitizeReply(llmResult.content);
+
+    // Si el LLM se fue al inglés (drift / jailbreak), respondemos canned en español.
+    if (looksNonSpanish(safeReply)) {
+      safeReply = "Solo hablo español, perdona. Cuéntame de tu negocio: ¿a qué te dedicas?";
+    }
 
     return NextResponse.json({
       ok: true,

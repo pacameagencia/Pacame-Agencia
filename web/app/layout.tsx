@@ -3,6 +3,7 @@ import { Fraunces, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { GlobalChromeTop, GlobalChromeBottom } from "@/components/layout/GlobalChrome";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { ReferralTrackerProvider } from "@/lib/modules/referrals/components/ReferralTrackerProvider";
 
 // Fraunces: serif expressivo mediterráneo, variable axes (SOFT/WONK/opsz)
 // Con `axes`, no pasamos weight/style (los gestiona el sistema variable)
@@ -206,6 +207,7 @@ export default function RootLayout({
         <main id="main-content">{children}</main>
         <GlobalChromeBottom />
         <GoogleAnalytics />
+        <ReferralTrackerProvider />
       </body>
     </html>
   );

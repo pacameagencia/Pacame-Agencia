@@ -7,8 +7,15 @@ import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { notifyPayment } from "@/lib/telegram";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import {
+  loadReferralConfig,
+  processCheckoutSession,
+  processInvoicePaid,
+  processRefundClawback,
+} from "@/lib/modules/referrals";
 
 const supabase = createServerSupabase();
+const referralConfig = loadReferralConfig();
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -234,6 +241,32 @@ export async function POST(request: NextRequest) {
           metadata: { client_id: clientId, amount, product: metadata.product },
         });
 
+        // Affiliate referral attribution
+        if (clientId) {
+          try {
+            const referralResult = await processCheckoutSession({
+              supabase,
+              config: referralConfig,
+              session,
+              referredUserId: clientId,
+            });
+            if (referralResult.created) {
+              await supabase.from("notifications").insert({
+                type: "referral_converted",
+                priority: "normal",
+                title: "Referido convertido",
+                message: `Cliente ${customerName} llegó vía afiliado.`,
+                data: { client_id: clientId, session_id: session.id },
+              });
+            }
+          } catch (err) {
+            console.warn(
+              "[stripe/webhook] referral attribution failed:",
+              err instanceof Error ? err.message : "unknown",
+            );
+          }
+        }
+
         break;
       }
 
@@ -260,6 +293,16 @@ export async function POST(request: NextRequest) {
             data: { invoice_id: invoice.id, amount },
           });
         }
+
+        // Affiliate commission (idempotent via UNIQUE source_event)
+        try {
+          await processInvoicePaid({ supabase, config: referralConfig, invoice });
+        } catch (err) {
+          console.warn(
+            "[stripe/webhook] commission generation failed:",
+            err instanceof Error ? err.message : "unknown",
+          );
+        }
         break;
       }
 
@@ -276,6 +319,38 @@ export async function POST(request: NextRequest) {
           message: `Un cliente ha cancelado su suscripcion: ${customerEmail}`,
           data: { subscription_id: subscription.id },
         });
+
+        try {
+          await processRefundClawback({
+            supabase,
+            config: referralConfig,
+            subscriptionId: subscription.id,
+          });
+        } catch (err) {
+          console.warn(
+            "[stripe/webhook] subscription clawback failed:",
+            err instanceof Error ? err.message : "unknown",
+          );
+        }
+        break;
+      }
+
+      case "charge.refunded": {
+        const charge = event.data.object as Stripe.Charge;
+        const chargeInvoice = (charge as any).invoice;
+        const invoiceId = typeof chargeInvoice === "string" ? chargeInvoice : null;
+        try {
+          await processRefundClawback({
+            supabase,
+            config: referralConfig,
+            invoiceId,
+          });
+        } catch (err) {
+          console.warn(
+            "[stripe/webhook] refund clawback failed:",
+            err instanceof Error ? err.message : "unknown",
+          );
+        }
         break;
       }
 

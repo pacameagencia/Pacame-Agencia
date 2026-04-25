@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe, PACAME_PRODUCTS, type ProductKey } from "@/lib/stripe";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { createServerSupabase } from "@/lib/supabase/server";
+import {
+  attachReferralToCheckoutSession,
+  readRefCookieFromRequest,
+} from "@/lib/modules/referrals";
 
 const supabase = createServerSupabase();
 
@@ -158,7 +162,11 @@ export async function POST(request: NextRequest) {
       sessionParams.invoice_creation = { enabled: true };
     }
 
-    const session = await stripe.checkout.sessions.create(sessionParams);
+    // Attach affiliate referral (if cookie present) — must run after metadata is finalised
+    const refCookie = readRefCookieFromRequest(request);
+    const finalParams = attachReferralToCheckoutSession(sessionParams, refCookie);
+
+    const session = await stripe.checkout.sessions.create(finalParams);
 
     return NextResponse.json({
       url: session.url,

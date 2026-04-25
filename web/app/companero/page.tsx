@@ -92,6 +92,24 @@ export default function CompaneroPage() {
     audioCtxRef.current?.resume().catch(() => {});
   }, []);
 
+  // Cleanup AudioContext + recognition + audio cuando se desmonta la página
+  useEffect(() => {
+    return () => {
+      try { recognitionRef.current?.stop(); } catch {}
+      const a = audioRef.current;
+      if (a) { try { a.pause(); a.src = ""; } catch {} }
+      const ctx = audioCtxRef.current;
+      if (ctx && ctx.state !== "closed") { ctx.close().catch(() => {}); }
+    };
+  }, []);
+
+  // Trim mensajes a últimos 30 (evita crecer indefinido en sesiones largas)
+  useEffect(() => {
+    if (messages.length > 30) {
+      setMessages((m) => m.slice(-30));
+    }
+  }, [messages.length]);
+
   // === Speech Recognition ===
   useEffect(() => {
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -167,6 +185,8 @@ export default function CompaneroPage() {
         if (!res.ok) throw new Error("tts");
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
+        // Pausa cualquier audio anterior antes de cambiar src — previene AbortError en iOS Safari
+        try { audio.pause(); } catch {}
         audio.src = url;
         const cleanup = () => { URL.revokeObjectURL(url); resolve(); };
         audio.onended = cleanup;
@@ -337,8 +357,8 @@ export default function CompaneroPage() {
         )}
       </section>
 
-      {/* Status humano */}
-      <p className={`jc-status jc-st-${state}`}>{statusText[state]}</p>
+      {/* Status humano (aria-live para lectores de pantalla) */}
+      <p className={`jc-status jc-st-${state}`} role="status" aria-live="polite">{statusText[state]}</p>
 
       {/* Botón gigante con TEXTO claro */}
       <div className="jc-action" onClick={ensureAudioGraph}>
