@@ -5,12 +5,12 @@ tags:
   - type/strategy
   - strategy/vision
   - strategy/positioning
-created: '2026-04-25T07:35:08.543Z'
+created: '2026-04-25T07:45:40.369Z'
 source_path: >-
   C:\Users\Pacame24\Downloads\PACAME
   AGENCIA\PacameCueva\05-Strategy\factoria-de-soluciones-con-ia.md
-neural_id: 3ee3ddb6-77ba-4a7f-ab72-f27045a041cd
-updated: '2026-04-25T07:35:08.543Z'
+neural_id: 8f2d44b0-e445-4fb3-a91d-e4699bbec84f
+updated: '2026-04-25T07:45:40.368Z'
 ---
 
 # Factoría de Soluciones con IA
