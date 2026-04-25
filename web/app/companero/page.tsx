@@ -1,13 +1,14 @@
 /**
- * /companero — Compañero IA PACAME (modo conversación continua tipo Siri).
+ * /companero — JARVIS de PACAME (asistente IA público).
  *
- * Flujo:
- *   - 1 click en el botón grande → entra en modo conversación
- *   - Loop: escucha → procesa → habla → escucha de nuevo (auto)
- *   - Click otra vez → sale del modo
- *   - Si el usuario habla mientras el avatar habla → barge-in (corta y escucha)
+ * Diseñado para que CUALQUIER usuario lo use sin instrucciones:
+ * - Un solo botón grande con texto claro
+ * - Saludo automático al entrar
+ * - Voz fija (Brian) — sin opciones que confundan
+ * - Conversación continua tipo Siri tras tocar el botón
+ * - Cero jerga técnica ni info interna PACAME
  *
- * Voz: /api/tts (ElevenLabs). Avatar: SVG character con expresiones reales.
+ * Endpoint: /api/companero (público, sanitizado, NO neural/execute)
  */
 "use client";
 
@@ -18,45 +19,34 @@ import "./companero.css";
 type Message = { role: "user" | "assistant"; text: string; ts: number };
 type AvatarState = "idle" | "listening" | "thinking" | "speaking";
 
-const VOICE_PRESETS = [
-  { id: "onyx", label: "Brian (grave)" },
-  { id: "ash", label: "Adam (firme)" },
-  { id: "echo", label: "George (cálido)" },
-  { id: "ballad", label: "Eric (cercano)" },
-  { id: "nova", label: "Jessica (vital)" },
-  { id: "shimmer", label: "Sarah (pro)" },
-];
+const GREETING = "Hola, soy Jarvis, el asistente de PACAME. Cuéntame, ¿a qué te dedicas?";
 
 export default function CompaneroPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [state, setState] = useState<AvatarState>("idle");
   const [convMode, setConvMode] = useState(false);
-  const [voice, setVoice] = useState("onyx");
   const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
-  const [showText, setShowText] = useState(true);
   const [permissionDenied, setPermissionDenied] = useState(false);
-  const [interim, setInterim] = useState(""); // texto parcial mientras hablas
+  const [interim, setInterim] = useState("");
+  const [audioReady, setAudioReady] = useState(false);
+  const [greeted, setGreeted] = useState(false);
 
-  // refs
   const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
-  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const convModeRef = useRef(convMode);
   const stateRef = useRef(state);
-  const voiceRef = useRef(voice);
   const isListeningRef = useRef(false);
   const recogStopByMeRef = useRef(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { convModeRef.current = convMode; }, [convMode]);
   useEffect(() => { stateRef.current = state; }, [state]);
-  useEffect(() => { voiceRef.current = voice; }, [voice]);
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
 
-  // --- Audio graph (AudioContext + Analyser) inicializado al primer click ---
+  // Audio graph init al primer click
   const ensureAudioGraph = useCallback(() => {
     if (!audioRef.current) return;
     if (!audioCtxRef.current) {
@@ -70,24 +60,21 @@ export default function CompaneroPage() {
         src.connect(an);
         an.connect(ctx.destination);
         audioCtxRef.current = ctx;
-        sourceRef.current = src;
         analyserRef.current = an;
         setAnalyser(an);
-      } catch (e) {
-        console.error("[companero] audio graph", e);
-      }
+        setAudioReady(true);
+      } catch {}
     }
     audioCtxRef.current?.resume().catch(() => {});
   }, []);
 
-  // --- Inicializar SpeechRecognition (con auto-restart en convMode) ---
+  // SpeechRecognition
   useEffect(() => {
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SR) return;
-
     const recog = new SR();
-    recog.continuous = false;       // 1 frase por turno (más fiable)
-    recog.interimResults = true;     // muestra texto mientras hablas
+    recog.continuous = false;
+    recog.interimResults = true;
     recog.lang = "es-ES";
     recog.maxAlternatives = 1;
 
@@ -121,7 +108,6 @@ export default function CompaneroPage() {
         setState("idle");
         return;
       }
-      // no-speech / aborted: si seguimos en convMode, reintentar tras pausa breve
       if (convModeRef.current && stateRef.current === "listening") {
         setTimeout(() => {
           if (convModeRef.current) startListening();
@@ -131,7 +117,6 @@ export default function CompaneroPage() {
 
     recog.onend = () => {
       isListeningRef.current = false;
-      // Si se paró sola y seguimos en convMode → reabrir (a menos que estemos pensando/hablando)
       if (
         convModeRef.current &&
         !recogStopByMeRef.current &&
@@ -149,15 +134,10 @@ export default function CompaneroPage() {
 
   const startListening = () => {
     const recog = recognitionRef.current;
-    if (!recog) return;
-    if (isListeningRef.current) return;
-    try {
-      recog.start();
-    } catch (e) {
-      // a veces "InvalidStateError" si aún no se cerró el anterior
-      setTimeout(() => {
-        try { recog.start(); } catch {}
-      }, 250);
+    if (!recog || isListeningRef.current) return;
+    try { recog.start(); }
+    catch {
+      setTimeout(() => { try { recog.start(); } catch {} }, 250);
     }
   };
 
@@ -169,7 +149,6 @@ export default function CompaneroPage() {
     isListeningRef.current = false;
   };
 
-  // --- TTS (devuelve promesa que resuelve al terminar el audio) ---
   const speak = (text: string): Promise<void> =>
     new Promise(async (resolve) => {
       const audio = audioRef.current;
@@ -181,31 +160,25 @@ export default function CompaneroPage() {
         const res = await fetch("/api/tts", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text, voice: voiceRef.current }),
+          body: JSON.stringify({ text, voice: "onyx" }),
         });
-        if (!res.ok) throw new Error(`tts ${res.status}`);
+        if (!res.ok) throw new Error("tts");
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
         audio.src = url;
-        const cleanup = () => {
-          URL.revokeObjectURL(url);
-          resolve();
-        };
+        const cleanup = () => { URL.revokeObjectURL(url); resolve(); };
         audio.onended = cleanup;
         audio.onerror = cleanup;
         await audio.play();
-      } catch (err) {
-        console.error("[companero] speak", err);
-        // fallback browser TTS
+      } catch {
         if ("speechSynthesis" in window) {
           const u = new SpeechSynthesisUtterance(text);
-          u.lang = "es-ES";
-          u.rate = 1.05;
+          u.lang = "es-ES"; u.rate = 1.05;
           u.onend = () => resolve();
           u.onerror = () => resolve();
           window.speechSynthesis.speak(u);
         } else {
-          setTimeout(resolve, 1500);
+          setTimeout(resolve, 1200);
         }
       }
     });
@@ -213,59 +186,62 @@ export default function CompaneroPage() {
   const sendMessage = async (text?: string) => {
     const content = (text ?? input).trim();
     if (!content) return;
-    setMessages((m) => [...m, { role: "user", text: content, ts: Date.now() }]);
+    const userMsg = { role: "user" as const, text: content, ts: Date.now() };
+    const newMessages = [...messages, userMsg];
+    setMessages(newMessages);
     setInput("");
     setState("thinking");
 
     try {
-      const res = await fetch("/api/neural/execute", {
+      // Historial corto para contexto del LLM (max 6 turnos previos)
+      const history = newMessages.slice(-7, -1).map((m) => ({ role: m.role, content: m.text }));
+      const res = await fetch("/api/companero", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          input: content,
-          source: "user",
-          channel: "companero",
-          mode: "answer",
-        }),
+        body: JSON.stringify({ input: content, history }),
       });
       const json = await res.json();
-      const reply: string = json.reply || json.error || "Hubo un problema procesando tu mensaje.";
+      const reply: string = json.reply || "Disculpa, no te he entendido. ¿Me lo repites?";
       setMessages((m) => [...m, { role: "assistant", text: reply, ts: Date.now() }]);
       await speak(reply);
 
-      // Volvemos a escuchar si el usuario sigue en modo conversación
       if (convModeRef.current) {
         setState("listening");
-        setTimeout(() => {
-          if (convModeRef.current) startListening();
-        }, 250);
+        setTimeout(() => { if (convModeRef.current) startListening(); }, 250);
       } else {
         setState("idle");
       }
-    } catch (e) {
+    } catch {
       setMessages((m) => [
         ...m,
-        { role: "assistant", text: "Error de conexión. Inténtalo de nuevo.", ts: Date.now() },
+        { role: "assistant", text: "Ahora mismo no te oigo bien. Vuelve a intentarlo.", ts: Date.now() },
       ]);
       setState("idle");
     }
   };
 
-  // --- Toggle modo conversación (botón principal grande) ---
+  // Saludo automático al primer click (incluso antes de hablar)
+  const greet = async () => {
+    if (greeted) return;
+    setGreeted(true);
+    setMessages([{ role: "assistant", text: GREETING, ts: Date.now() }]);
+    await speak(GREETING);
+  };
+
+  // Botón principal: si no ha saludado, saluda + activa modo. Si está activo, para.
   const toggleConversation = async () => {
     ensureAudioGraph();
 
     if (convMode) {
       setConvMode(false);
       stopListening();
-      // Si está hablando, callar
       const audio = audioRef.current;
       if (audio && !audio.paused) audio.pause();
       setState("idle");
       return;
     }
 
-    // Pide permiso explícito de micrófono primero (UX clara)
+    // Permiso de mic
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       stream.getTracks().forEach((t) => t.stop());
@@ -273,8 +249,13 @@ export default function CompaneroPage() {
       setPermissionDenied(true);
       return;
     }
-
     setPermissionDenied(false);
+
+    // Si no ha saludado, saluda primero
+    if (!greeted) {
+      await greet();
+    }
+
     setConvMode(true);
     setState("listening");
     startListening();
@@ -282,6 +263,8 @@ export default function CompaneroPage() {
 
   const sendText = () => {
     if (!input.trim()) return;
+    ensureAudioGraph();
+    if (!greeted) setGreeted(true);
     sendMessage(input);
   };
 
@@ -294,6 +277,11 @@ export default function CompaneroPage() {
 
   const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
 
+  // Texto del botón según estado (claro para abuelos)
+  const btnLabel = convMode
+    ? (state === "speaking" ? "Te respondo..." : state === "thinking" ? "Pensando..." : "Te escucho. Habla.")
+    : (greeted ? "Tócame para hablar" : "Tócame y empezamos");
+
   return (
     <main className="comp-root" onClick={ensureAudioGraph}>
       <div className="comp-bg-1" aria-hidden />
@@ -304,83 +292,62 @@ export default function CompaneroPage() {
         <div className="brand">
           <div className="brand-logo" />
           <div>
-            <div className="brand-name">PACAME</div>
-            <div className="brand-sub">tu compañero IA</div>
+            <div className="brand-name">JARVIS</div>
+            <div className="brand-sub">tu asistente PACAME</div>
           </div>
         </div>
-
-        <div className="header-right">
-          <select
-            className="voice-pick"
-            value={voice}
-            onChange={(e) => setVoice(e.target.value)}
-            aria-label="Voz"
-          >
-            {VOICE_PRESETS.map((p) => (
-              <option key={p.id} value={p.id}>{p.label}</option>
-            ))}
-          </select>
-          <button
-            className={`pill ${showText ? "pill-on" : ""}`}
-            onClick={() => setShowText(!showText)}
-            title="Mostrar/ocultar texto"
-          >
-            {showText ? "💬 texto" : "🔇 sin texto"}
-          </button>
-        </div>
+        <a href="/" className="home-link" aria-label="Volver al inicio">← inicio</a>
       </header>
 
       <section className="stage">
         <AvatarHolograma state={state} analyser={analyser} />
 
         <div className={`status-pill status-${state}`}>
-          {state === "idle" && (convMode ? "listo, dime" : "tócame para hablar")}
-          {state === "listening" && (interim ? `«${interim}…»` : "te escucho…")}
-          {state === "thinking" && "pensando…"}
-          {state === "speaking" && "hablando"}
+          {state === "idle" && (convMode ? "Listo, dime" : greeted ? "Toca el botón abajo" : "Bienvenido")}
+          {state === "listening" && (interim ? `«${interim}…»` : "Te escucho…")}
+          {state === "thinking" && "Pensando…"}
+          {state === "speaking" && "Hablando contigo"}
         </div>
 
-        {showText && lastAssistant && (
-          <div className="speech-bubble">
+        {lastAssistant && (
+          <div className="speech-bubble" key={lastAssistant.ts}>
             <p>{lastAssistant.text}</p>
           </div>
         )}
 
         {permissionDenied && (
           <div className="warn-banner">
-            ⚠️ Necesito permiso del micrófono. Haz click en el candado del navegador → Microphone → Allow → recarga.
+            ⚠️ Para hablar necesito permiso de tu micro. Pulsa el candado del navegador → Microphone → Permitir, y recarga la página.
           </div>
         )}
       </section>
 
-      {/* Botón principal — el "Pou" se toca aquí */}
+      {/* Botón principal — el que toca un usuario sin instrucciones */}
       <div className="main-controls">
         <button
           className={`talk-btn ${convMode ? "talk-active" : ""} talk-${state}`}
           onClick={toggleConversation}
-          aria-label={convMode ? "Detener conversación" : "Empezar conversación"}
+          aria-label={btnLabel}
         >
           <div className="talk-rings">
             <span /><span /><span />
           </div>
           {convMode ? (
-            <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor" aria-hidden>
               <rect x="6" y="6" width="12" height="12" rx="2" />
             </svg>
           ) : (
-            <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
               <rect x="9" y="2" width="6" height="12" rx="3" />
               <path d="M5 11a7 7 0 0 0 14 0" />
               <line x1="12" y1="19" x2="12" y2="22" />
             </svg>
           )}
         </button>
-        <p className="talk-hint">
-          {convMode ? "Estoy en conversación contigo · toca para parar" : "Toca para iniciar conversación"}
-        </p>
+        <p className="talk-hint">{btnLabel}</p>
       </div>
 
-      {/* Input texto opcional (siempre disponible) */}
+      {/* Input texto: alternativa para quien no quiere hablar (móvil ruidoso, sin permiso de mic, etc) */}
       <div className="text-input-bar">
         <input
           className="text-input"
@@ -388,25 +355,17 @@ export default function CompaneroPage() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="…o escríbeme aquí"
+          placeholder="…o escríbeme aquí si prefieres"
           disabled={state === "thinking"}
         />
-        <button className="send" onClick={sendText} disabled={state === "thinking" || !input.trim()}>
+        <button className="send" onClick={sendText} disabled={state === "thinking" || !input.trim()} aria-label="Enviar">
           ➤
         </button>
       </div>
 
-      {showText && messages.length > 1 && (
-        <details className="history">
-          <summary>Conversación ({messages.length} mensajes)</summary>
-          <div className="history-list">
-            {messages.map((m, i) => (
-              <div key={i} className={`hist-msg hist-${m.role}`}>{m.text}</div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
-        </details>
-      )}
+      <p className="legal-note">
+        Tu conversación no se guarda. Respondo solo sobre PACAME y tu negocio. ¿Prefieres a un humano? <a href="https://wa.me/34722669381?text=Hola%20PACAME">WhatsApp</a> o <a href="mailto:hola@pacameagencia.com">email</a>.
+      </p>
 
       <audio ref={audioRef} hidden preload="auto" playsInline />
     </main>

@@ -4,7 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import SageChatWidget from "@/components/SageChatWidget";
+import JarvisFloatingButton from "@/components/JarvisFloatingButton";
 import CursorGlowWrapper from "@/components/effects/CursorGlowWrapper";
 import CookieConsent from "@/components/CookieConsent";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -217,7 +217,7 @@ export default function RootLayout({
         <Footer />
         <WhatsAppButton />
         <BackToTop />
-        <SageChatWidget />
+        <JarvisFloatingButton />
         <CookieConsent />
         <GoogleAnalytics />
       </body>

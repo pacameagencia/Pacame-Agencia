@@ -76,34 +76,32 @@
   opacity: 0.65;
   letter-spacing: 0.04em;
 }
-.header-right { display: flex; gap: 8px; align-items: center; }
-.voice-pick {
-  padding: 7px 12px;
-  background: rgba(255,255,255,0.08);
-  color: #f1f5f9;
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 999px;
-  font-size: 12px;
-  cursor: pointer;
-  outline: none;
-  font-family: inherit;
-  backdrop-filter: blur(10px);
-}
-.voice-pick:hover { background: rgba(255,255,255,0.14); }
-.voice-pick option { background: #0c1224; color: #f1f5f9; }
-.pill {
-  padding: 7px 12px;
+.home-link {
+  color: rgba(241,245,249,0.75);
+  font-size: 13px;
+  text-decoration: none;
+  padding: 8px 14px;
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.12);
-  color: #f1f5f9;
   border-radius: 999px;
-  cursor: pointer;
-  font-size: 12px;
-  font-family: inherit;
   backdrop-filter: blur(10px);
+  transition: background 0.2s;
 }
-.pill-on { background: rgba(125,211,252,0.18); border-color: rgba(125,211,252,0.4); color: #bae6fd; }
-.pill:hover { background: rgba(255,255,255,0.14); }
+.home-link:hover { background: rgba(255,255,255,0.14); color: #f1f5f9; }
+
+.legal-note {
+  position: relative;
+  z-index: 5;
+  font-size: 11.5px;
+  color: rgba(241,245,249,0.55);
+  text-align: center;
+  margin: 6px 0 0;
+  max-width: 540px;
+  line-height: 1.45;
+  padding: 0 16px;
+}
+.legal-note a { color: #93c5fd; text-decoration: none; }
+.legal-note a:hover { text-decoration: underline; }
 
 /* === Stage del avatar === */
 .stage {
