@@ -105,6 +105,15 @@ strategy/          → Roadmap, pricing, personas
 - Extraer patron probado como skill reutilizable → skill `extract`
 - Promover aprendizajes de memoria a reglas CLAUDE.md → skill `promote`
 
+### dotskills (vincentkoc, AGPL-3.0)
+- Limpiar diff de ruido IA antes de PR → skill `dotskills/technical-deslop`
+- Generar docs tecnicas dev-ready → skill `dotskills/technical-documentation`
+- Disenar integraciones vendor-agnostic con rollout → skill `dotskills/technical-integrations`
+- Detectar patrones repetidos en logs y proponer nuevos skills → skill `dotskills/technical-skill-finder`
+
+### Tooling CLI
+- tokenjuice (npm global): compactador de output ruidoso (git, pnpm, docker, rg) para ahorrar tokens en Claude Code. Instalado globalmente, integracion con Claude Code via `tokenjuice install claude-code` si se activa.
+
 ## Coding Conventions
 - TypeScript strict mode, no `any`
 - Componentes React: functional, props tipados, composition pattern
