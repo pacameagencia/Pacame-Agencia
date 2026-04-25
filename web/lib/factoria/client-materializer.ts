@@ -265,6 +265,9 @@ export type BusinessConfig = typeof BUSINESS_CONFIG;
 
 function vapiAssistantConfig(vars: Record<string, unknown>, prompt: string): string {
   const c = vars.client as ClientInput;
+  // Voice ID válido de 11labs. Usamos el de PACAME por defecto (Brian, multilingual_v2).
+  // Cliente puede sobreescribir vía VAPI_DEFAULT_VOICE_ID env var.
+  const voiceId = process.env.VAPI_DEFAULT_VOICE_ID || process.env.ELEVENLABS_VOICE_ID || "nPczCjzI2devNBz1zQrb";
   return JSON.stringify(
     {
       name: `recepcionista-${slugify(c.business_name)}`,
@@ -276,7 +279,7 @@ function vapiAssistantConfig(vars: Record<string, unknown>, prompt: string): str
       },
       voice: {
         provider: "11labs",
-        voiceId: "spanish_female_warm",
+        voiceId,
         stability: 0.5,
         similarityBoost: 0.75,
       },
