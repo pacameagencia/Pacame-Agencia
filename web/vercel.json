@@ -25,6 +25,10 @@
       "schedule": "0 4 * * 1"
     },
     {
+      "path": "/api/neural/factoria-package",
+      "schedule": "0 4 * * *"
+    },
+    {
       "path": "/api/neural/auto-discovery",
       "schedule": "0 5 * * *"
     },
