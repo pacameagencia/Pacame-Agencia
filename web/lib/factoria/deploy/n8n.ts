@@ -12,7 +12,9 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { appendDeployLog } from "./log";
 
 const BUCKET = "client-deployments";
-const DEFAULT_N8N_BASE = "https://n8n.pacame.es";
+// URL correcta del n8n self-hosted en VPS Hostinger 72.62.185.125
+// (n8n.pacame.es está deprecada y no resuelve DNS).
+const DEFAULT_N8N_BASE = "https://n8n.pacameagencia.com";
 
 export interface N8nDeployResult {
   ok: boolean;
@@ -94,46 +96,72 @@ export async function deployToN8n(deployment: DeploymentRow): Promise<N8nDeployR
     return { ok: false, error: "no workflow files found in storage" };
   }
 
+  // Idempotencia: query existing workflows con tag = slug para reusar IDs.
+  const existingByName = new Map<string, string>();
+  try {
+    const listResp = await fetch(
+      `${baseUrl}/api/v1/workflows?tags=${encodeURIComponent(deployment.slug)}&limit=100`,
+      { headers: { "X-N8N-API-KEY": apiKey } }
+    );
+    if (listResp.ok) {
+      const list = (await listResp.json()) as { data?: { id: string; name: string }[] };
+      for (const wf of list.data ?? []) {
+        existingByName.set(wf.name, wf.id);
+      }
+    }
+  } catch {
+    // Si falla list, seguimos asumiendo que no hay existentes.
+  }
+
   const workflowIds: string[] = [];
   const partialErrors: string[] = [];
 
   for (const file of files) {
+    const wfName = (file.json as { name?: string }).name ?? file.name;
+    const existingId = existingByName.get(wfName);
+    const isUpdate = !!existingId;
+
     await appendDeployLog(supabase, deployment.id, {
       target: "n8n",
-      action: `import-workflow:${file.name}`,
+      action: `${isUpdate ? "update" : "import"}-workflow:${file.name}`,
       status: "in_progress",
+      detail: isUpdate ? { reusing_id: existingId } : undefined,
     });
 
     try {
-      const response = await fetch(`${baseUrl}/api/v1/workflows`, {
-        method: "POST",
-        headers: {
-          "X-N8N-API-KEY": apiKey,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(file.json),
-      });
+      const response = await fetch(
+        isUpdate ? `${baseUrl}/api/v1/workflows/${existingId}` : `${baseUrl}/api/v1/workflows`,
+        {
+          method: isUpdate ? "PUT" : "POST",
+          headers: {
+            "X-N8N-API-KEY": apiKey,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(file.json),
+        }
+      );
 
       if (!response.ok) {
         const text = await response.text();
         partialErrors.push(`${file.name}: ${response.status} ${text.slice(0, 200)}`);
         await appendDeployLog(supabase, deployment.id, {
           target: "n8n",
-          action: `import-workflow:${file.name}`,
+          action: `${isUpdate ? "update" : "import"}-workflow:${file.name}`,
           status: "error",
           detail: `${response.status}: ${text.slice(0, 300)}`,
         });
         continue;
       }
 
-      const created = (await response.json()) as { id?: string; name?: string };
-      if (created.id) {
-        workflowIds.push(String(created.id));
+      const result = (await response.json()) as { id?: string; name?: string };
+      const wfId = result.id || existingId;
+      if (wfId) {
+        workflowIds.push(String(wfId));
         await appendDeployLog(supabase, deployment.id, {
           target: "n8n",
-          action: `import-workflow:${file.name}`,
+          action: `${isUpdate ? "update" : "import"}-workflow:${file.name}`,
           status: "ok",
-          detail: { workflow_id: created.id, name: created.name },
+          detail: { workflow_id: wfId, name: result.name ?? wfName, mode: isUpdate ? "updated" : "created" },
         });
       }
     } catch (err) {
@@ -141,7 +169,7 @@ export async function deployToN8n(deployment: DeploymentRow): Promise<N8nDeployR
       partialErrors.push(`${file.name}: ${detail}`);
       await appendDeployLog(supabase, deployment.id, {
         target: "n8n",
-        action: `import-workflow:${file.name}`,
+        action: `${isUpdate ? "update" : "import"}-workflow:${file.name}`,
         status: "error",
         detail: `network: ${detail}`,
       });

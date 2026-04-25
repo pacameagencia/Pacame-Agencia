@@ -331,14 +331,40 @@ function vapiAssistantConfig(vars: Record<string, unknown>, prompt: string): str
   );
 }
 
+/**
+ * Genera UUID v4 determinista a partir de slug + label.
+ * n8n requiere `id` por nodo. Usamos hash deterministc para que el ID
+ * sea estable entre re-materializaciones (idempotencia en re-deploy).
+ */
+function nodeId(slug: string, label: string): string {
+  // Hash simple FNV-1a → UUID v4 format
+  let h = 2166136261;
+  const s = `${slug}:${label}`;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  const hex = (h >>> 0).toString(16).padStart(8, "0");
+  return `${hex}-${slug.slice(0, 4).padEnd(4, "0")}-4${slug.slice(4, 7).padEnd(3, "0")}-a${hex.slice(0, 3)}-${hex}${hex.slice(0, 4)}`;
+}
+
 function n8nWorkflowConfirmReserva(vars: Record<string, unknown>): string {
   const c = vars.client as ClientInput;
   const slug = (vars.deployment as { slug: string }).slug;
+  // Credentials referenciadas. Pablo (o el preflight) debe crear estas
+  // credentials en n8n ANTES de activar el workflow. El materializador
+  // sólo deja las refs preparadas con placeholders que se rellenan al
+  // crear las credentials con los nombres convencionales.
+  const supabaseCredName = `pacame-${slug}-supabase`;
+  const twilioCredName = `pacame-${slug}-twilio`;
+
   return JSON.stringify(
     {
       name: `[${slug}] confirmar-reserva`,
+      active: false,
       nodes: [
         {
+          id: nodeId(slug, "webhook-booking"),
           parameters: {
             httpMethod: "POST",
             path: `${slug}/booking-created`,
@@ -347,28 +373,56 @@ function n8nWorkflowConfirmReserva(vars: Record<string, unknown>): string {
           },
           name: "Webhook",
           type: "n8n-nodes-base.webhook",
+          typeVersion: 2,
           position: [240, 300],
         },
         {
+          id: nodeId(slug, "supabase-insert-booking"),
           parameters: {
-            tenant_id: slug,
-            table: "bookings",
-            operation: "insert",
+            operation: "create",
+            tableId: "bookings",
+            fieldsUi: {
+              fieldValues: [
+                { fieldId: "tenant_id", fieldValue: slug },
+                { fieldId: "party_size", fieldValue: "={{ $json.party_size }}" },
+                { fieldId: "booking_date", fieldValue: "={{ $json.booking_date }}" },
+                { fieldId: "booking_time", fieldValue: "={{ $json.booking_time }}" },
+                { fieldId: "customer_name", fieldValue: "={{ $json.customer_name }}" },
+                { fieldId: "customer_phone", fieldValue: "={{ $json.customer_phone }}" },
+                { fieldId: "notes", fieldValue: "={{ $json.notes }}" },
+                { fieldId: "status", fieldValue: "confirmed" },
+              ],
+            },
           },
           name: "Supabase Insert",
           type: "n8n-nodes-base.supabase",
+          typeVersion: 1,
           position: [460, 300],
+          credentials: {
+            supabaseApi: {
+              id: "REPLACE_WITH_SUPABASE_CRED_ID",
+              name: supabaseCredName,
+            },
+          },
         },
         {
+          id: nodeId(slug, "twilio-whatsapp"),
           parameters: {
             from: `whatsapp:${c.phone_whatsapp ?? ""}`,
-            to: "={{$json.customer_phone}}",
+            to: "={{ $json.customer_phone }}",
             messageType: "text",
-            message: `Hola {{$json.customer_name}}, tu reserva está confirmada:\n\n📅 {{$json.booking_date_human}}\n🕐 {{$json.booking_time}}\n👥 {{$json.party_size}} personas\n📍 ${c.street ?? c.city}\n\nSi necesitas modificar algo, responde a este mensaje.\nTe recordamos 2 horas antes.\n\n¡Hasta pronto!\n${c.business_name}`,
+            message: `Hola {{ $json.customer_name }}, tu reserva está confirmada:\n\n📅 {{ $json.booking_date }}\n🕐 {{ $json.booking_time }}\n👥 {{ $json.party_size }} personas\n📍 ${c.street ?? c.city}\n\nSi necesitas modificar algo, responde a este mensaje.\nTe recordamos 2 horas antes.\n\n¡Hasta pronto!\n${c.business_name}`,
           },
           name: "Enviar WhatsApp Confirmación",
           type: "n8n-nodes-base.twilio",
+          typeVersion: 1,
           position: [680, 300],
+          credentials: {
+            twilioApi: {
+              id: "REPLACE_WITH_TWILIO_CRED_ID",
+              name: twilioCredName,
+            },
+          },
         },
       ],
       connections: {
@@ -380,6 +434,13 @@ function n8nWorkflowConfirmReserva(vars: Record<string, unknown>): string {
         { name: "factoria-hosteleria" },
         { name: slug },
       ],
+      // Hint para el deployer: mapea credenciales por nombre.
+      pinData: {},
+      meta: {
+        templateId: "hosteleria-v1",
+        templateNode: "confirmar-reserva",
+        tenant: slug,
+      },
     },
     null,
     2

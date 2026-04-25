@@ -72,28 +72,53 @@ export async function deployToVapi(deployment: DeploymentRow): Promise<VapiDeplo
     return { ok: false, error: "assistant config not found in storage" };
   }
 
-  // Crear assistant en Vapi
+  // Idempotencia: si ya existe vapi_assistant_id, hacer PATCH en lugar de POST.
+  const { data: existing } = await supabase
+    .from("client_deployments")
+    .select("vapi_assistant_id")
+    .eq("id", deployment.id)
+    .single();
+  const existingId = (existing?.vapi_assistant_id as string | undefined) ?? null;
+
+  // Verificar que el assistant existente realmente sigue en Vapi.
+  let useExisting = false;
+  if (existingId) {
+    try {
+      const checkResp = await fetch(`${VAPI_BASE}/assistant/${existingId}`, {
+        headers: { Authorization: `Bearer ${apiKey}` },
+      });
+      if (checkResp.ok) useExisting = true;
+    } catch {
+      // Si network error, intentamos POST (crear nuevo)
+    }
+  }
+
+  const action = useExisting ? "update-assistant" : "create-assistant";
   await appendDeployLog(supabase, deployment.id, {
     target: "vapi",
-    action: "create-assistant",
+    action,
     status: "in_progress",
+    detail: useExisting ? { reusing_id: existingId } : undefined,
   });
 
   let response: Response;
   try {
-    response = await fetch(`${VAPI_BASE}/assistant`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(config),
-    });
+    response = await fetch(
+      useExisting ? `${VAPI_BASE}/assistant/${existingId}` : `${VAPI_BASE}/assistant`,
+      {
+        method: useExisting ? "PATCH" : "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(config),
+      }
+    );
   } catch (err) {
     const detail = err instanceof Error ? err.message : String(err);
     await appendDeployLog(supabase, deployment.id, {
       target: "vapi",
-      action: "create-assistant",
+      action,
       status: "error",
       detail: `network: ${detail}`,
     });
@@ -104,15 +129,15 @@ export async function deployToVapi(deployment: DeploymentRow): Promise<VapiDeplo
     const text = await response.text();
     await appendDeployLog(supabase, deployment.id, {
       target: "vapi",
-      action: "create-assistant",
+      action,
       status: "error",
       detail: `${response.status}: ${text.slice(0, 500)}`,
     });
     return { ok: false, error: `vapi ${response.status}: ${text.slice(0, 200)}` };
   }
 
-  const created = (await response.json()) as { id?: string };
-  const assistantId = created.id;
+  const result = (await response.json()) as { id?: string };
+  const assistantId = result.id || existingId;
   if (!assistantId) {
     return { ok: false, error: "vapi response missing id" };
   }
@@ -128,9 +153,9 @@ export async function deployToVapi(deployment: DeploymentRow): Promise<VapiDeplo
 
   await appendDeployLog(supabase, deployment.id, {
     target: "vapi",
-    action: "create-assistant",
+    action,
     status: "ok",
-    detail: { assistant_id: assistantId },
+    detail: { assistant_id: assistantId, mode: useExisting ? "patched" : "created" },
   });
 
   return {
