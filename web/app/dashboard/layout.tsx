@@ -16,6 +16,7 @@ import { supabase } from "@/lib/supabase/client";
 const navItems = [
   { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { label: "Factoría", href: "/dashboard/factoria", icon: Factory },
+  { label: "Despliegues", href: "/dashboard/factoria/clientes", icon: Building2 },
   { label: "Oficina", href: "/dashboard/office", icon: Building2 },
   { label: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   { label: "Clientes", href: "/dashboard/clients", icon: Users },

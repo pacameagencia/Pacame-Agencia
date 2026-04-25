@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Layers, Play, Loader2, ChevronRight, AlertCircle } from "lucide-react";
+import { Layers, Play, Loader2, ChevronRight, AlertCircle, Package, Download } from "lucide-react";
+import Link from "next/link";
 
 interface AvailableTemplate {
   id: string;
@@ -88,11 +89,24 @@ const EXAMPLE_CASES = [
   },
 ];
 
+interface MaterializeResponse {
+  ok: boolean;
+  deployment_id?: string;
+  slug?: string;
+  files?: { path: string; signed_url: string; bytes: number }[];
+  missing_vars?: string[];
+  warnings?: string[];
+  error?: string;
+}
+
 export default function FactoriaTemplatesPage() {
   const [templates, setTemplates] = useState<AvailableTemplate[]>([]);
   const [deploying, setDeploying] = useState(false);
   const [result, setResult] = useState<DeployResponse | null>(null);
   const [activeExample, setActiveExample] = useState<string | null>(null);
+  const [activePayload, setActivePayload] = useState<Record<string, unknown> | null>(null);
+  const [materializing, setMaterializing] = useState(false);
+  const [materialized, setMaterialized] = useState<MaterializeResponse | null>(null);
 
   useEffect(() => {
     fetch("/api/factoria/template-deploy")
@@ -103,7 +117,9 @@ export default function FactoriaTemplatesPage() {
   async function deployTemplate(templateId: string, payload: Record<string, unknown>, label: string) {
     setDeploying(true);
     setActiveExample(label);
+    setActivePayload(payload);
     setResult(null);
+    setMaterialized(null);
     try {
       const res = await fetch("/api/factoria/template-deploy", {
         method: "POST",
@@ -116,6 +132,38 @@ export default function FactoriaTemplatesPage() {
       setResult({ ok: false, error: err instanceof Error ? err.message : String(err) });
     } finally {
       setDeploying(false);
+    }
+  }
+
+  async function materialize() {
+    if (!result?.ok || !result.plan || !activePayload) return;
+    setMaterializing(true);
+    setMaterialized(null);
+    try {
+      const res = await fetch("/api/factoria/materialize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          template_id: result.template_id ?? "hosteleria-v1",
+          client: activePayload,
+          plan: result.plan,
+        }),
+      });
+      const json = (await res.json()) as MaterializeResponse;
+      setMaterialized(json);
+    } catch (err) {
+      setMaterialized({ ok: false, error: err instanceof Error ? err.message : String(err) });
+    } finally {
+      setMaterializing(false);
+    }
+  }
+
+  async function downloadZip() {
+    if (!materialized?.deployment_id) return;
+    const res = await fetch(`/api/factoria/materialize/${materialized.deployment_id}/zip`);
+    const json = await res.json();
+    if (json.zip_url) {
+      window.open(json.zip_url, "_blank");
     }
   }
 
@@ -215,7 +263,92 @@ export default function FactoriaTemplatesPage() {
         <section className="space-y-6">
           <div className="border-t-2 border-electric-violet/30 pt-6">
             {result.ok && result.plan ? (
-              <DeploymentPlanView plan={result.plan} client={result.client} provider={result.provider} />
+              <>
+                <DeploymentPlanView plan={result.plan} client={result.client} provider={result.provider} />
+
+                {/* Materializar archivos */}
+                <div className="mt-8 p-6 bg-dark-card border-2 border-electric-violet/40">
+                  <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
+                    <div>
+                      <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-electric-violet block mb-1">
+                        Paso 2 · Materializar
+                      </span>
+                      <h3 className="font-heading font-bold text-xl text-pacame-white mb-1">
+                        Generar archivos físicos del cliente
+                      </h3>
+                      <p className="font-body text-pacame-white/70 text-sm max-w-2xl">
+                        Convierte el plan en archivos reales (.env, configs, prompts, workflows, SQL) listos para desplegar a Vercel + n8n + Vapi.
+                      </p>
+                    </div>
+                    <button
+                      onClick={materialize}
+                      disabled={materializing || !!materialized?.ok}
+                      className={`inline-flex items-center gap-2 px-5 py-3 font-body text-sm font-medium transition-colors disabled:opacity-50 rounded-sm ${
+                        materialized?.ok
+                          ? "bg-lime-pulse/20 text-lime-pulse"
+                          : "bg-electric-violet text-white hover:bg-electric-violet/90"
+                      }`}
+                    >
+                      {materializing ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Materializando...
+                        </>
+                      ) : materialized?.ok ? (
+                        <>
+                          <Package className="w-4 h-4" />
+                          Materializado · {materialized.files?.length} archivos
+                        </>
+                      ) : (
+                        <>
+                          <Package className="w-4 h-4" />
+                          Materializar archivos
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {materialized && (
+                    <div className="border-t border-white/[0.06] pt-4">
+                      {materialized.ok ? (
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3 text-sm">
+                            <span className="font-mono text-[11px] tracking-[0.15em] uppercase text-pacame-white/60">
+                              slug
+                            </span>
+                            <code className="font-mono text-pacame-white">{materialized.slug}</code>
+                          </div>
+                          <div className="flex items-center gap-3 flex-wrap">
+                            <button
+                              onClick={downloadZip}
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-mustard-500 text-ink font-body text-sm font-medium hover:bg-mustard-400 transition-colors rounded-sm"
+                            >
+                              <Download className="w-4 h-4" />
+                              Descargar ZIP
+                            </button>
+                            <Link
+                              href={`/dashboard/factoria/clientes`}
+                              className="inline-flex items-center gap-2 px-4 py-2 border border-electric-violet text-electric-violet font-body text-sm font-medium hover:bg-electric-violet hover:text-white transition-colors rounded-sm"
+                            >
+                              Ver en despliegues
+                            </Link>
+                          </div>
+                          {materialized.missing_vars && materialized.missing_vars.length > 0 && (
+                            <p className="text-amber-signal/80 text-[12px] font-mono">
+                              Variables sin valor: {materialized.missing_vars.join(", ")}
+                            </p>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="flex items-start gap-3 text-rose-alert text-sm">
+                          <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                          <span>{materialized.error}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </>
             ) : (
               <div className="flex items-start gap-3 p-4 border border-rose-alert/30 bg-rose-alert/5">
                 <AlertCircle className="w-5 h-5 text-rose-alert flex-shrink-0 mt-0.5" />
