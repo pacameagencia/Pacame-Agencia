@@ -46,8 +46,9 @@ export async function processCheckoutSession(params: {
   config: ReferralConfig;
   session: Stripe.Checkout.Session;
   referredUserId: string;
+  extraMetadata?: Record<string, unknown>;
 }): Promise<{ created: boolean; reason?: string }> {
-  const { supabase, config, session, referredUserId } = params;
+  const { supabase, config, session, referredUserId, extraMetadata } = params;
 
   const visitorUuid = session.client_reference_id;
   const metadataAffiliateId = (session.metadata?.ref_affiliate_id as string | undefined) || null;
@@ -96,6 +97,7 @@ export async function processCheckoutSession(params: {
       stripe_subscription_id: subscriptionId,
       status: "converted",
       converted_at: new Date().toISOString(),
+      metadata: { session_id: session.id, ...extraMetadata },
     },
     { onConflict: "tenant_id,referred_user_id" },
   );
@@ -122,8 +124,9 @@ export async function processInvoicePaid(params: {
   supabase: SupabaseClient;
   config: ReferralConfig;
   invoice: Stripe.Invoice;
+  extraMetadata?: Record<string, unknown>;
 }): Promise<{ created: boolean; reason?: string; amountCents?: number }> {
-  const { supabase, config, invoice } = params;
+  const { supabase, config, invoice, extraMetadata } = params;
 
   const invoiceSubscription = (invoice as any).subscription;
   const subscriptionId = typeof invoiceSubscription === "string" ? invoiceSubscription : null;
@@ -181,6 +184,11 @@ export async function processInvoicePaid(params: {
       month_index: monthIndex,
       status: "pending",
       due_at: dueAt,
+      metadata: {
+        billing_reason: invoice.billing_reason,
+        invoice_number: invoice.number,
+        ...extraMetadata,
+      },
     },
     { onConflict: "tenant_id,source_event", ignoreDuplicates: true },
   );

@@ -9,9 +9,14 @@ import {
 import { getAuthedUser } from "@/lib/modules/referrals/session";
 
 export async function POST(request: NextRequest) {
-  let body: { ref?: string; path?: string };
+  let body: {
+    ref?: string;
+    path?: string;
+    utm?: { source?: string; medium?: string; campaign?: string };
+    referer?: string;
+  };
   try {
-    body = (await request.json()) as { ref?: string; path?: string };
+    body = (await request.json()) as typeof body;
   } catch {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
@@ -34,6 +39,8 @@ export async function POST(request: NextRequest) {
     existingCookie,
     authenticatedUserId: authed?.id ?? null,
     landedPath: body.path,
+    utm: body.utm,
+    httpReferer: body.referer || request.headers.get("referer"),
   });
 
   if (!result.ok) {

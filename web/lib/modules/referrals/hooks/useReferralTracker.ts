@@ -19,7 +19,16 @@ export function useReferralTracker(urlParam: string = "ref") {
       method: "POST",
       credentials: "include",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ ref, path: window.location.pathname }),
+      body: JSON.stringify({
+        ref,
+        path: window.location.pathname,
+        utm: {
+          source: params.get("utm_source") || undefined,
+          medium: params.get("utm_medium") || undefined,
+          campaign: params.get("utm_campaign") || undefined,
+        },
+        referer: document.referrer || undefined,
+      }),
       signal: controller.signal,
       keepalive: true,
     }).catch(() => {

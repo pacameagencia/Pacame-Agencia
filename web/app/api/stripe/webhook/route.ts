@@ -259,6 +259,13 @@ export async function POST(request: NextRequest) {
               config: referralConfig,
               session,
               referredUserId,
+              extraMetadata: {
+                product: metadata.product || null,
+                services: metadata.services || null,
+                amount_eur: amount,
+                pacame_source: metadata.pacame_source || null,
+                proposal_id: metadata.proposal_id || null,
+              },
             });
             if (referralResult.created) {
               await supabase.from("notifications").insert({
@@ -306,7 +313,15 @@ export async function POST(request: NextRequest) {
 
         // Affiliate commission (idempotent via UNIQUE source_event)
         try {
-          await processInvoicePaid({ supabase, config: referralConfig, invoice });
+          await processInvoicePaid({
+            supabase,
+            config: referralConfig,
+            invoice,
+            extraMetadata: {
+              amount_eur: amount,
+              customer_email: customerEmail,
+            },
+          });
         } catch (err) {
           console.warn(
             "[stripe/webhook] commission generation failed:",

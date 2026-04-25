@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { ReferralConfig } from "./config";
 import type { RefCookieValue } from "./cookie";
@@ -22,8 +22,10 @@ export async function resolveAttribution(params: {
   existingCookie: RefCookieValue | null;
   authenticatedUserId: string | null;
   landedPath?: string;
+  utm?: { source?: string | null; medium?: string | null; campaign?: string | null };
+  httpReferer?: string | null;
 }): Promise<AttributionResult> {
-  const { supabase, config, refCode, request, existingCookie, authenticatedUserId } = params;
+  const { supabase, config, refCode, request, existingCookie, authenticatedUserId, utm, httpReferer } = params;
 
   const { data: affiliate, error } = await supabase
     .from("aff_affiliates")
@@ -68,6 +70,10 @@ export async function resolveAttribution(params: {
       user_agent: userAgent,
       fingerprint: fingerprint(ip, userAgent, acceptLang),
       landed_path: params.landedPath || null,
+      http_referer: httpReferer || null,
+      utm_source: utm?.source || null,
+      utm_medium: utm?.medium || null,
+      utm_campaign: utm?.campaign || null,
     })
     .select("id")
     .single<{ id: string }>();
