@@ -10,7 +10,8 @@
     "brain:learn": "node -e \"const u=process.argv.slice(1).filter(a=>a.startsWith('--')).reduce((q,a)=>{const [k,v]=a.replace('--','').split('=');q[k]=v||true;return q},{});const qs=Object.entries(u).map(([k,v])=>v===true?k:`${k}=${encodeURIComponent(v)}`).join('&');fetch(`http://localhost:3000/api/neural/learn${qs?`?${qs}`:''}`).then(r=>r.json()).then(j=>console.log(JSON.stringify(j,null,2)))\"",
     "brain:pull": "node scripts/brain-pull.mjs",
     "brain:loop": "node scripts/brain-loop.mjs",
-    "referrals:seed": "node scripts/seed-referrals.mjs"
+    "referrals:seed": "node scripts/seed-referrals.mjs",
+    "referrals:test": "node --test lib/modules/referrals/__tests__/flow.test.mjs"
   },
   "dependencies": {
     "@google/stitch-sdk": "^0.1.0",

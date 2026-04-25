@@ -17,6 +17,28 @@ import { NextRequest } from "next/server";
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
+// === Rate limit por IP + límite total de chars/min ===
+// Defensa contra abuso: TTS público consume cuota ElevenLabs (10k chars/mes free).
+// Un atacante con scripts podría agotarla en minutos sin esto.
+const TTS_WINDOW_MS = 60_000;        // ventana 1 min
+const TTS_MAX_REQUESTS = 8;          // 8 requests / min / IP
+const TTS_MAX_CHARS_PER_IP = 2400;   // 2400 chars / min / IP (≈4 frases largas)
+type TtsBucket = { count: number; chars: number; resetAt: number };
+const ttsBuckets = new Map<string, TtsBucket>();
+function ttsRateLimit(ip: string, charsLen: number): { ok: boolean; reason?: string } {
+  const now = Date.now();
+  const b = ttsBuckets.get(ip);
+  if (!b || now > b.resetAt) {
+    ttsBuckets.set(ip, { count: 1, chars: charsLen, resetAt: now + TTS_WINDOW_MS });
+    return { ok: true };
+  }
+  if (b.count >= TTS_MAX_REQUESTS) return { ok: false, reason: "too_many_requests" };
+  if (b.chars + charsLen > TTS_MAX_CHARS_PER_IP) return { ok: false, reason: "char_quota_exceeded" };
+  b.count++;
+  b.chars += charsLen;
+  return { ok: true };
+}
+
 const ELEVENLABS_KEY = process.env.ELEVENLABS_API_KEY;
 // Brian — voz premade masculina grave, funciona en free tier (multilingual_v2).
 // Cuando Pablo suba el tier puede poner una custom: ej. YXGHKitgIMeIV5gGeQvP.
@@ -44,10 +66,19 @@ export async function POST(req: NextRequest) {
     if (!text || typeof text !== "string") {
       return json({ error: "text required" }, 400);
     }
-    // Limitar a 1200 chars: ElevenLabs free tier consume cuota muy rápido y free pLan
-    // genera audio de >10s con strings largos → riesgo de 504 timeout en serverless 30s.
+    // Limitar a 1200 chars: ElevenLabs free tier consume cuota muy rápido.
     // El compañero responde con maxTokens 220 (≈ 600 chars), sobra margen.
     const clean = text.slice(0, 1200);
+
+    // Rate limit por IP — protege la cuota de ElevenLabs de abuso público
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+      req.headers.get("x-real-ip") ||
+      "anon";
+    const rl = ttsRateLimit(ip, clean.length);
+    if (!rl.ok) {
+      return json({ error: "rate_limited", reason: rl.reason }, 429);
+    }
 
     const errors: string[] = [];
 

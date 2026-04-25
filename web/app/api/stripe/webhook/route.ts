@@ -12,6 +12,7 @@ import {
   processCheckoutSession,
   processInvoicePaid,
   processRefundClawback,
+  getReferralsAdapter,
 } from "@/lib/modules/referrals";
 
 const supabase = createServerSupabase();
@@ -241,14 +242,23 @@ export async function POST(request: NextRequest) {
           metadata: { client_id: clientId, amount, product: metadata.product },
         });
 
-        // Affiliate referral attribution
-        if (clientId) {
-          try {
+        // Affiliate referral attribution — resolve referred user via adapter
+        try {
+          const referredUserId =
+            clientId ||
+            (await getReferralsAdapter().resolveUserIdFromStripe({
+              stripeCustomerId:
+                typeof session.customer === "string" ? session.customer : null,
+              customerEmail: session.customer_email,
+              sessionMetadata: (session.metadata as Record<string, string>) || {},
+            }));
+
+          if (referredUserId) {
             const referralResult = await processCheckoutSession({
               supabase,
               config: referralConfig,
               session,
-              referredUserId: clientId,
+              referredUserId,
             });
             if (referralResult.created) {
               await supabase.from("notifications").insert({
@@ -256,15 +266,15 @@ export async function POST(request: NextRequest) {
                 priority: "normal",
                 title: "Referido convertido",
                 message: `Cliente ${customerName} llegó vía afiliado.`,
-                data: { client_id: clientId, session_id: session.id },
+                data: { client_id: referredUserId, session_id: session.id },
               });
             }
-          } catch (err) {
-            console.warn(
-              "[stripe/webhook] referral attribution failed:",
-              err instanceof Error ? err.message : "unknown",
-            );
           }
+        } catch (err) {
+          console.warn(
+            "[stripe/webhook] referral attribution failed:",
+            err instanceof Error ? err.message : "unknown",
+          );
         }
 
         break;

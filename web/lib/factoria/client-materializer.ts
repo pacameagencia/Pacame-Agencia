@@ -681,25 +681,7 @@ export async function materializeClient(input: {
 
   // Optional modules
   if (modules_enabled?.referrals) {
-    const moduleDir = path.join(process.cwd(), "lib", "modules", "referrals", "sql");
-    const [schemaSql, rlsSql] = await Promise.all([
-      fs.readFile(path.join(moduleDir, "001_schema.sql"), "utf8").catch(() => ""),
-      fs.readFile(path.join(moduleDir, "002_rls.sql"), "utf8").catch(() => ""),
-    ]);
-    if (schemaSql) addFile(`${slug}/supabase/modules/referrals/001_schema.sql`, schemaSql, "application/sql");
-    if (rlsSql) addFile(`${slug}/supabase/modules/referrals/002_rls.sql`, rlsSql, "application/sql");
-    addFile(
-      `${slug}/MODULE-REFERRALS.md`,
-      `# Módulo Referrals activo\n\n` +
-        `Este tenant lleva el sistema de afiliados PACAME (Rewardful-style).\n\n` +
-        `## Pasos de instalación\n\n` +
-        `1. Ejecuta los SQL en \`supabase/modules/referrals/\` en tu Supabase.\n` +
-        `2. Añade variables al \`.env\`:\n\n` +
-        `\`\`\`\nREFERRAL_TENANT_ID=${slug}\nREFERRAL_COMMISSION_PERCENT=20\nREFERRAL_COOKIE_DAYS=30\nREFERRAL_MAX_MONTHS=12\nREFERRAL_ATTRIBUTION=last_click\n\`\`\`\n\n` +
-        `3. Monta \`<ReferralTrackerProvider />\` en tu \`app/layout.tsx\`.\n` +
-        `4. Tus enlaces de afiliado: \`https://tu-dominio.com/?ref=CODE\`.\n`,
-      "text/markdown",
-    );
+    await injectReferralsModule(slug, addFile);
   }
 
   return {
@@ -710,4 +692,141 @@ export async function materializeClient(input: {
     resolved_vars: Array.from(allResolved),
     warnings,
   };
+}
+
+/**
+ * Copia el árbol completo de `web/lib/modules/referrals/` al output del cliente,
+ * además de los SQL, las API routes Next.js, el .env de ejemplo y un README de
+ * integración. Resultado: el cliente recibe un módulo plug-and-play.
+ */
+async function injectReferralsModule(
+  slug: string,
+  addFile: (path: string, content: string, contentType: string) => void,
+): Promise<void> {
+  const moduleRoot = path.join(process.cwd(), "lib", "modules", "referrals");
+  const apiRoot = path.join(process.cwd(), "app", "api", "referrals");
+
+  // Copia recursiva del módulo TS
+  for (const file of await walk(moduleRoot)) {
+    const rel = path.relative(moduleRoot, file).split(path.sep).join("/");
+    if (rel.startsWith("__tests__/")) continue;
+    const content = await fs.readFile(file, "utf8");
+    const contentType = inferContentType(rel);
+    addFile(`${slug}/lib/modules/referrals/${rel}`, content, contentType);
+  }
+
+  // Copia recursiva de los endpoints API
+  try {
+    for (const file of await walk(apiRoot)) {
+      const rel = path.relative(apiRoot, file).split(path.sep).join("/");
+      const content = await fs.readFile(file, "utf8");
+      addFile(`${slug}/app/api/referrals/${rel}`, content, "text/typescript");
+    }
+  } catch {
+    // optional — apps que no usen Next.js App Router pueden no tener este folder
+  }
+
+  // .env append y README de integración
+  addFile(
+    `${slug}/.env.referrals.example`,
+    [
+      `# --- Affiliate / referrals module (Rewardful-style) ---`,
+      `REFERRAL_TENANT_ID=${slug}`,
+      `REFERRAL_URL_PARAM=ref`,
+      `REFERRAL_COOKIE_DAYS=30`,
+      `REFERRAL_COMMISSION_PERCENT=20`,
+      `REFERRAL_MAX_MONTHS=12`,
+      `REFERRAL_ATTRIBUTION=last_click`,
+      `REFERRAL_APPROVAL_DAYS=30`,
+      `REFERRAL_IP_CONVERSION_CAP_24H=5`,
+      `REFERRAL_VISIT_RATE_LIMIT_PER_HOUR=20`,
+      ``,
+    ].join("\n"),
+    "text/plain",
+  );
+
+  addFile(
+    `${slug}/MODULE-REFERRALS.md`,
+    [
+      `# Módulo Referrals — Sistema de afiliados Rewardful-style`,
+      ``,
+      `Este tenant viene con el módulo de afiliados PACAME activado.`,
+      ``,
+      `## Instalación (5 minutos)`,
+      ``,
+      `1. **Aplicar SQL en tu Supabase**`,
+      `   \`\`\`bash`,
+      `   psql "$DATABASE_URL" -f supabase/modules/referrals/001_schema.sql`,
+      `   psql "$DATABASE_URL" -f supabase/modules/referrals/002_rls.sql`,
+      `   \`\`\``,
+      ``,
+      `2. **Copia el contenido de \`.env.referrals.example\` a tu \`.env.local\`** y ajusta \`REFERRAL_TENANT_ID\`.`,
+      ``,
+      `3. **Monta el tracker** en tu \`app/layout.tsx\`:`,
+      `   \`\`\`tsx`,
+      `   import { ReferralTrackerProvider } from "@/lib/modules/referrals/components/ReferralTrackerProvider";`,
+      `   // ...`,
+      `   <ReferralTrackerProvider />`,
+      `   \`\`\``,
+      ``,
+      `4. **Si tu app no usa la auth de PACAME**, en \`app/layout.tsx\` (o en un \`bootstrap.ts\` de servidor) inyecta tu adapter:`,
+      `   \`\`\`ts`,
+      `   import { setReferralsAdapter } from "@/lib/modules/referrals";`,
+      `   setReferralsAdapter({ getAuthedUser: myAuthLookup, resolveUserIdFromStripe: myStripeLookup });`,
+      `   \`\`\``,
+      ``,
+      `5. **Engancha el webhook de Stripe** llamando a \`processCheckoutSession\`, \`processInvoicePaid\` y \`processRefundClawback\` (ver ejemplos en \`app/api/stripe/webhook/route.ts\` del repo PACAME).`,
+      ``,
+      `6. **Valida el setup** llamando a \`GET /api/referrals/health\`. Cuando devuelva \`{ status: "ok" }\` ya está vivo.`,
+      ``,
+      `## Enlaces de afiliado`,
+      ``,
+      `Cualquier usuario activo del tenant llama a \`POST /api/referrals/affiliates\` y recibe su \`referral_code\`. Su URL será \`https://tu-dominio.com/?ref=CODE\`.`,
+      ``,
+      `## Comisiones`,
+      ``,
+      `Cada \`invoice.paid\` de Stripe genera una fila en \`aff_commissions\` (estado \`pending\`). El cron diario \`/api/referrals/approve-pending\` las pasa a \`approved\` cuando vence el período de hold (default 30d). Marca como pagadas con \`POST /api/referrals/payouts/mark-paid\`.`,
+      ``,
+      `## Anti-fraude`,
+      ``,
+      `- Self-referral bloqueado en \`resolveAttribution\` y en \`processCheckoutSession\`.`,
+      `- Rate limit por IP: \`REFERRAL_VISIT_RATE_LIMIT_PER_HOUR\`.`,
+      `- IP cap 24h: si una IP genera más de N conversiones distintas marca al afiliado como \`suspicious\`.`,
+      `- Idempotencia frente a webhook duplicados: UNIQUE \`(tenant_id, source_event)\`.`,
+      ``,
+    ].join("\n"),
+    "text/markdown",
+  );
+
+  // SQL ya en el árbol copiado (lib/modules/referrals/sql/), pero lo duplico en
+  // supabase/ para que el dev lo encuentre al ejecutar las migraciones.
+  const moduleDir = path.join(moduleRoot, "sql");
+  const [schemaSql, rlsSql] = await Promise.all([
+    fs.readFile(path.join(moduleDir, "001_schema.sql"), "utf8").catch(() => ""),
+    fs.readFile(path.join(moduleDir, "002_rls.sql"), "utf8").catch(() => ""),
+  ]);
+  if (schemaSql) addFile(`${slug}/supabase/modules/referrals/001_schema.sql`, schemaSql, "application/sql");
+  if (rlsSql) addFile(`${slug}/supabase/modules/referrals/002_rls.sql`, rlsSql, "application/sql");
+}
+
+async function walk(root: string): Promise<string[]> {
+  const out: string[] = [];
+  async function visit(dir: string) {
+    const entries = await fs.readdir(dir, { withFileTypes: true }).catch(() => []);
+    for (const e of entries) {
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) await visit(full);
+      else if (e.isFile()) out.push(full);
+    }
+  }
+  await visit(root);
+  return out;
+}
+
+function inferContentType(relativePath: string): string {
+  if (relativePath.endsWith(".ts") || relativePath.endsWith(".tsx")) return "text/typescript";
+  if (relativePath.endsWith(".sql")) return "application/sql";
+  if (relativePath.endsWith(".md")) return "text/markdown";
+  if (relativePath.endsWith(".json")) return "application/json";
+  return "text/plain";
 }

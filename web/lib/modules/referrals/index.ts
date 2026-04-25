@@ -1,6 +1,11 @@
 export { loadReferralConfig, REF_COOKIE_NAME } from "./config";
 export type { ReferralConfig, AttributionMode } from "./config";
 
+export { setReferralsAdapter, getReferralsAdapter } from "./adapters";
+export type { ReferralsAdapter, AuthedUser } from "./adapters";
+
+export { getAuthedUser } from "./session";
+
 export {
   readRefCookie,
   readRefCookieFromRequest,
