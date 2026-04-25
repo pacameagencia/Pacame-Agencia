@@ -88,22 +88,68 @@ export async function POST(req: NextRequest) {
 
     const errors: string[] = [];
 
-    // Cuando se pide voz "lucia" (PACAME GPT), Edge va primero: garantiza
-    // acento ES-ES nativo (Elvira) gratis. Solo si Pablo configura una voz
-    // Lucía clonada en ElevenLabs (ELEVENLABS_LUCIA_VOICE_ID), invierte
-    // a ElevenLabs primero porque la voz custom será mejor que Edge.
-    const luciaPrefersElevenLabs = voice === "lucia" && !!process.env.ELEVENLABS_LUCIA_VOICE_ID;
-    const edgeFirst = voice === "lucia" && !luciaPrefersElevenLabs;
+    // ─── Modo PACAME GPT (voice="lucia") ───────────────────────────────────
+    // Cascada distinta: priorizamos voces NATIVAS castellanas garantizadas
+    // sobre voces multilingual americanas que "hablan español".
+    //
+    // Orden:
+    //   1. ElevenLabs Lucía custom (solo si Pablo configuró ELEVENLABS_LUCIA_VOICE_ID)
+    //   2. Edge es-ES-ElviraNeural (gratis, castellano nativo, calidad alta)
+    //   3. Google Translate TTS (gratis, castellano por defecto, calidad media)
+    //   4. OpenAI shimmer (calidad alta pero acento americano)
+    //   5. ElevenLabs Sarah (último recurso — americana hablando español)
+    //
+    // Justificación: en local Windows el WebSocket de Edge a veces falla.
+    // Google Translate, aunque robótica, suena 100% castellana — mejor que
+    // Sarah multilingual_v2 para el oído del español de pie.
+    if (voice === "lucia") {
+      const wantElevenFirst = !!process.env.ELEVENLABS_LUCIA_VOICE_ID && !!ELEVENLABS_KEY;
 
-    if (edgeFirst) {
+      if (wantElevenFirst) {
+        try {
+          const audio = await ttsElevenLabs(clean, voice);
+          return audioResponse(audio, "elevenlabs-lucia-custom");
+        } catch (e: any) {
+          errors.push(`elevenlabs-custom:${e.message}`);
+        }
+      }
+
       try {
         const audio = await ttsEdge(clean, voice);
         return audioResponse(audio, "edge-microsoft");
       } catch (e: any) {
         errors.push(`edge:${e.message}`);
       }
+
+      try {
+        const audio = await ttsGoogleTranslate(clean);
+        return audioResponse(audio, "google-translate");
+      } catch (e: any) {
+        errors.push(`google-translate:${e.message}`);
+      }
+
+      if (OPENAI_KEY) {
+        try {
+          const audio = await ttsOpenAI(clean, "shimmer");
+          return audioResponse(audio, "openai");
+        } catch (e: any) {
+          errors.push(`openai:${e.message}`);
+        }
+      }
+
+      if (ELEVENLABS_KEY && !wantElevenFirst) {
+        try {
+          const audio = await ttsElevenLabs(clean, voice);
+          return audioResponse(audio, "elevenlabs");
+        } catch (e: any) {
+          errors.push(`elevenlabs:${e.message}`);
+        }
+      }
+
+      return json({ error: "Lucía sin voz disponible", details: errors }, 502);
     }
 
+    // ─── Modo legacy (voice ≠ "lucia"): cascada original ──────────────────
     if (ELEVENLABS_KEY) {
       try {
         const audio = await ttsElevenLabs(clean, voice);
@@ -122,13 +168,11 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    if (!edgeFirst) {
-      try {
-        const audio = await ttsEdge(clean, voice);
-        return audioResponse(audio, "edge-microsoft");
-      } catch (e: any) {
-        errors.push(`edge:${e.message}`);
-      }
+    try {
+      const audio = await ttsEdge(clean, voice);
+      return audioResponse(audio, "edge-microsoft");
+    } catch (e: any) {
+      errors.push(`edge:${e.message}`);
     }
 
     try {

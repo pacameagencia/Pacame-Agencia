@@ -46,10 +46,11 @@ export function isPacameProductEvent(event: Stripe.Event): boolean {
     const sub = event.data.object as Stripe.Subscription;
     return !!sub.metadata?.pacame_product_id;
   }
-  // invoice.* — buscar en subscription details (metadata propia o linked sub)
+  // invoice.* — buscar metadata en subscription_details (en versión SDK con apiVersion 2025-03-31)
   if (event.type.startsWith("invoice.")) {
     const inv = event.data.object as Stripe.Invoice;
-    const meta = (inv.subscription_details?.metadata ?? inv.metadata ?? {}) as Stripe.Metadata;
+    const subDetails = (inv as { subscription_details?: { metadata?: Stripe.Metadata } }).subscription_details;
+    const meta = (subDetails?.metadata ?? inv.metadata ?? {}) as Stripe.Metadata;
     return !!meta.pacame_product_id;
   }
   return false;
@@ -159,7 +160,7 @@ async function handleSubscriptionDeleted(sub: Stripe.Subscription) {
 }
 
 async function handlePaymentFailed(invoice: Stripe.Invoice) {
-  const subDetails = invoice.subscription_details;
+  const subDetails = (invoice as { subscription_details?: { metadata?: Stripe.Metadata } }).subscription_details;
   const meta = extractPacameMeta(subDetails?.metadata ?? invoice.metadata ?? undefined);
   if (!meta.pacame_user_id || !meta.pacame_product_id) {
     return { ok: false, action: "payment_failed", detail: "missing metadata" };
