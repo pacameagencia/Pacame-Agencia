@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Star } from "lucide-react";
-import { motion } from "framer-motion";
 import ScrollReveal from "@/components/ui/scroll-reveal";
 import GoldenDivider from "@/components/effects/GoldenDivider";
 import CountUpNumber from "@/components/effects/CountUpNumber";
@@ -104,7 +103,7 @@ function getInitials(name: string): string {
 
 function ReviewCard({ t }: { t: Review }) {
   return (
-    <div className="rounded-2xl p-6 border border-ink/[0.06] bg-paper-deep w-[340px] flex-shrink-0 mx-2.5 relative overflow-hidden">
+    <div className="rounded-2xl p-6 border border-white/[0.06] bg-dark-card w-[340px] flex-shrink-0 mx-2.5 relative overflow-hidden">
       {/* Top border accent — service color */}
       <div
         className="absolute top-0 inset-x-0 h-[2px]"
@@ -116,12 +115,12 @@ function ReviewCard({ t }: { t: Review }) {
       {/* Stars — golden */}
       <div className="flex gap-0.5 mb-5">
         {[...Array(t.rating)].map((_, i) => (
-          <Star key={i} className="w-3.5 h-3.5 fill-accent-gold text-accent-gold" />
+          <Star key={i} className="w-3.5 h-3.5 fill-olympus-gold text-olympus-gold" />
         ))}
       </div>
 
       {/* Quote */}
-      <p className="text-[15px] text-ink/60 font-body leading-relaxed mb-6">
+      <p className="text-[15px] text-pacame-white/60 font-body leading-relaxed mb-6">
         &ldquo;{t.text}&rdquo;
       </p>
 
@@ -134,10 +133,10 @@ function ReviewCard({ t }: { t: Review }) {
           {t.initials}
         </div>
         <div className="flex-1 min-w-0">
-          <div className="text-sm font-body font-medium text-ink/80">
+          <div className="text-sm font-body font-medium text-pacame-white/80">
             {t.name}
           </div>
-          <div className="text-xs text-ink/30 font-body">{t.role}</div>
+          <div className="text-xs text-pacame-white/30 font-body">{t.role}</div>
         </div>
       </div>
     </div>
@@ -180,7 +179,7 @@ export default function TestimonialsSection() {
   const marqueeReverseItems = [...marqueeReverse, ...marqueeReverse];
 
   return (
-    <section className="section-padding bg-paper relative overflow-hidden">
+    <section className="section-padding bg-pacame-black relative overflow-hidden">
       {/* Golden divider */}
       <div className="px-6">
         <GoldenDivider variant="star" />
@@ -192,18 +191,18 @@ export default function TestimonialsSection() {
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="flex gap-0.5">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-accent-gold text-accent-gold" />
+                <Star key={i} className="w-5 h-5 fill-olympus-gold text-olympus-gold" />
               ))}
             </div>
-            <span className="font-heading font-bold text-2xl text-ink">
+            <span className="font-heading font-bold text-2xl text-pacame-white">
               <CountUpNumber target={4.9} duration={2} suffix="/5" />
             </span>
           </div>
 
-          <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-4 uppercase tracking-[0.2em]">
+          <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
             Resultados reales
           </p>
-          <h2 className="font-accent font-bold text-section text-ink mb-6 text-balance">
+          <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
             El trabajo habla.{" "}
             <span className="gradient-text-gold">Los clientes tambien.</span>
           </h2>
@@ -217,16 +216,16 @@ export default function TestimonialsSection() {
           <svg width="40" height="32" viewBox="0 0 40 32" fill="none" className="mx-auto mb-6 opacity-40">
             <path d="M0 32V20C0 8.95 7.17 2.17 17 0L18.5 4C12.17 6.17 8.67 10.83 8 16H16V32H0ZM24 32V20C24 8.95 31.17 2.17 41 0L42.5 4C36.17 6.17 32.67 10.83 32 16H40V32H24Z" fill="#D4A853" />
           </svg>
-          <p className="font-accent text-2xl sm:text-3xl text-ink/80 leading-relaxed mb-8">
+          <p className="font-accent text-2xl sm:text-3xl text-pacame-white/80 leading-relaxed mb-8">
             En 3 dias tenia una web corporativa que ninguna agencia me habia podido hacer en 2 meses.
           </p>
           <div className="flex items-center justify-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-brand-primary/15 flex items-center justify-center font-heading font-bold text-sm text-brand-primary border border-brand-primary/20">
+            <div className="w-10 h-10 rounded-full bg-electric-violet/15 flex items-center justify-center font-heading font-bold text-sm text-electric-violet border border-electric-violet/20">
               CM
             </div>
             <div className="text-left">
-              <div className="text-sm font-body font-medium text-ink/80">Carlos Martinez</div>
-              <div className="text-xs text-ink/30 font-body">Constructor — Madrid</div>
+              <div className="text-sm font-body font-medium text-pacame-white/80">Carlos Martinez</div>
+              <div className="text-xs text-pacame-white/30 font-body">Constructor — Madrid</div>
             </div>
           </div>
         </div>
@@ -234,8 +233,8 @@ export default function TestimonialsSection() {
 
       {/* Double marquee */}
       <div className="relative space-y-4">
-        <div className="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-paper to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-paper to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-pacame-black to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-pacame-black to-transparent z-10 pointer-events-none" />
 
         {/* Row 1 — left to right */}
         <div className="overflow-hidden py-2">

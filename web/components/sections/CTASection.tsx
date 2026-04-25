@@ -1,108 +1,126 @@
 "use client";
 
 import Link from "next/link";
-import dynamic from "next/dynamic";
-import { ArrowRight, MessageSquare } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import ScrollReveal from "@/components/ui/scroll-reveal";
-import MagneticButton from "@/components/effects/MagneticButton";
-import { TextSpotlight } from "@/components/ui/text-spotlight";
-import { ShinyButton } from "@/components/ui/shiny-button";
-
-const GradientMeshCanvas = dynamic(
-  () => import("@/components/effects/GradientMeshCanvas"),
-  { ssr: false }
-);
+import Image from "next/image";
+import { ArrowUpRight, MessageSquare } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function CTASection() {
   return (
-    <section className="section-padding bg-paper relative overflow-hidden">
-      {/* Background gradient mesh — low intensity */}
-      <div className="absolute inset-0 pointer-events-none opacity-40">
-        <GradientMeshCanvas
-          colors={["#D4A853", "#7C3AED", "#06B6D4", "#FF6B9D"]}
-          speed={0.15}
-          intensity={0.06}
-        />
-      </div>
+    <section className="relative bg-indigo-600 text-paper overflow-hidden">
+      {/* Grain + azulejo overlay sutil */}
+      <div className="absolute inset-0 bg-azulejo opacity-[0.06] pointer-events-none" />
 
-      <ScrollReveal className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-        <div className="rounded-3xl p-10 sm:p-16 border border-accent-gold/15 bg-paper-deep/80 backdrop-blur-sm relative overflow-hidden">
-          {/* Orbiting golden border light */}
-          <div
-            className="absolute inset-0 rounded-3xl pointer-events-none"
-            style={{
-              background: "conic-gradient(from 0deg, transparent 0%, transparent 70%, rgba(212,168,83,0.15) 80%, transparent 90%, transparent 100%)",
-              animation: "border-orbit 8s linear infinite",
-            }}
-          />
-          {/* Inner mask to keep the orbit on the border only */}
-          <div className="absolute inset-[1px] rounded-3xl bg-paper-deep/95 pointer-events-none" />
+      <div className="relative max-w-7xl mx-auto px-6 py-24 md:py-32">
+        {/* ── Grid split: imagen + copy ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Imagen arquitectura mediterránea */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: [0.7, 0, 0.3, 1] }}
+            className="lg:col-span-5"
+          >
+            <div
+              className="relative aspect-[4/5] overflow-hidden"
+              style={{ boxShadow: "10px 10px 0 #E8B730" }}
+            >
+              <Image
+                src="/redesign/arch-mediterranean.png"
+                alt="Arquitectura mediterránea — el siguiente paso"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 40vw"
+              />
+              <div className="absolute top-4 left-4 bg-paper text-ink px-4 py-2 font-mono text-[10px] tracking-[0.3em] uppercase">
+                Capítulo · Final
+              </div>
+            </div>
+          </motion.div>
 
-          <div className="relative z-10">
-            {/* Headline */}
-            <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-6 uppercase tracking-[0.2em]">
+          {/* Copy + CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.15, ease: [0.7, 0, 0.3, 1] }}
+            className="lg:col-span-7"
+          >
+            <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-mustard-500 mb-6 block">
               El siguiente paso
-            </p>
+            </span>
 
-            <h2 className="font-accent font-bold text-display text-ink mb-6 text-balance">
+            <h2
+              className="font-display mb-10 text-balance"
+              style={{
+                fontSize: "clamp(2.5rem, 6vw, 5.5rem)",
+                lineHeight: "1.0",
+                letterSpacing: "-0.035em",
+                fontWeight: 500,
+              }}
+            >
               Tienes un problema digital.
-              <br />
-              <span className="gradient-text-aurora">Nosotros lo resolvemos.</span>
+              <span
+                className="block italic font-light"
+                style={{
+                  color: "#E8B730",
+                  fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 144',
+                }}
+              >
+                Nosotros lo resolvemos.
+              </span>
             </h2>
 
-            <p className="text-lg text-ink/40 font-body mb-4 max-w-md mx-auto">
-              30 minutos de llamada. Sin compromiso. Sin presupuestos ciegos.
+            <p className="font-sans text-paper/80 text-[18px] leading-relaxed max-w-lg mb-4">
+              Treinta minutos de llamada. Sin compromiso. Sin presupuestos ciegos.
             </p>
 
-            <TextSpotlight
-              text="El unico riesgo es no intentarlo."
-              textClassName="font-accent text-xl sm:text-2xl font-bold"
-              spotlightColor="212, 168, 83"
-              spotlightSize={300}
-              animateOnPhone
-              className="mb-10 max-w-md mx-auto"
-            />
+            <p
+              className="font-display italic text-paper/95 text-2xl max-w-lg mb-12"
+              style={{ fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 144' }}
+            >
+              El único riesgo es no intentarlo.
+            </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
-              <MagneticButton>
-                <ShinyButton
-                  gradientFrom="#D4A853"
-                  gradientTo="#06B6D4"
-                  gradientOpacity={0.8}
-                  className="group min-w-[260px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
-                >
-                  <Link href="/contacto" className="flex items-center gap-2 text-ink">
-                    Agendar llamada gratis
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </ShinyButton>
-              </MagneticButton>
-              <Button variant="outline" size="xl" asChild className="group rounded-full min-w-[200px] border-accent-gold/20 hover:border-accent-gold/40 hover:bg-accent-gold/5">
-                <Link href="mailto:hola@pacameagencia.com">
-                  <MessageSquare className="w-4 h-4" />
-                  Escribir por email
-                </Link>
-              </Button>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-10">
+              <Link
+                href="/contacto"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-mustard-500 text-ink font-sans font-semibold text-[15px] tracking-wide transition-all duration-300 hover:bg-mustard-400 rounded-sm"
+                style={{ boxShadow: "5px 5px 0 #F4EFE3" }}
+              >
+                Agendar llamada gratis
+                <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform duration-300" />
+              </Link>
+
+              <Link
+                href="mailto:hola@pacameagencia.com"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-paper text-paper font-sans font-medium text-[15px] tracking-wide transition-all duration-300 hover:bg-paper hover:text-ink rounded-sm"
+              >
+                <MessageSquare className="w-4 h-4" />
+                Escribir por email
+              </Link>
             </div>
 
-            {/* Trust signals — golden dots */}
-            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-ink/30 font-body">
+            {/* Trust signals — línea editorial */}
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-8 border-t border-paper/20">
               {[
-                "Respuesta en menos de 2h",
+                "Respuesta · bajo 2h",
                 "Sin compromiso",
-                "Presupuesto en 24h",
-              ].map((signal) => (
+                "Presupuesto · 24h",
+              ].map((signal, i) => (
                 <div key={signal} className="flex items-center gap-2">
-                  <span className="block w-1.5 h-1.5 rounded-full bg-accent-gold animate-pulse" />
-                  {signal}
+                  {i > 0 && <span className="w-1 h-1 rounded-full bg-mustard-500" aria-hidden="true" />}
+                  <span className="font-mono text-[11px] tracking-[0.2em] uppercase text-paper/60">
+                    {signal}
+                  </span>
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
-      </ScrollReveal>
+      </div>
     </section>
   );
 }

@@ -35,27 +35,27 @@ const rows: ComparisonRow[] = [
 function CellContent({ value, highlight }: { value: CellValue; highlight?: boolean }) {
   if (value === "yes") {
     return (
-      <div className={`flex items-center justify-center ${highlight ? "text-accent-gold" : "text-ink/25"}`}>
+      <div className={`flex items-center justify-center ${highlight ? "text-olympus-gold" : "text-pacame-white/25"}`}>
         <Check className="w-4 h-4" />
       </div>
     );
   }
   if (value === "no") {
     return (
-      <div className="flex items-center justify-center text-ink/15">
+      <div className="flex items-center justify-center text-pacame-white/15">
         <X className="w-4 h-4" />
       </div>
     );
   }
   if (value === "partial") {
     return (
-      <div className="flex items-center justify-center text-ink/20">
+      <div className="flex items-center justify-center text-pacame-white/20">
         <Minus className="w-4 h-4" />
       </div>
     );
   }
   return (
-    <span className={`text-xs font-body ${highlight ? "text-ink font-medium" : "text-ink/40"}`}>
+    <span className={`text-xs font-body ${highlight ? "text-pacame-white font-medium" : "text-pacame-white/40"}`}>
       {value}
     </span>
   );
@@ -84,7 +84,7 @@ const summaryCards = [
 
 export default function ComparisonSection() {
   return (
-    <section className="section-padding bg-paper relative">
+    <section className="section-padding bg-pacame-black relative">
       {/* Golden divider */}
       <div className="px-6">
         <GoldenDivider variant="laurel" />
@@ -92,13 +92,13 @@ export default function ComparisonSection() {
 
       <div className="max-w-6xl mx-auto px-6">
         <ScrollReveal className="text-center mb-16">
-          <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-4 uppercase tracking-[0.2em]">
+          <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
             Comparativa
           </p>
-          <h2 className="font-accent font-bold text-section text-ink mb-6 text-balance">
+          <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
             PACAME vs las alternativas.{" "}
             <FancyText
-              className="font-accent font-bold text-section text-accent-gold/15"
+              className="font-accent font-bold text-section text-olympus-gold/15"
               fillClassName="gradient-text-gold"
               stagger={0.06}
               duration={1}
@@ -111,27 +111,27 @@ export default function ComparisonSection() {
 
         {/* Table */}
         <ScrollReveal>
-          <div className="rounded-2xl border border-ink/[0.06] overflow-hidden bg-paper-deep">
+          <div className="rounded-2xl border border-white/[0.06] overflow-hidden bg-dark-card">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[640px]">
                 <thead>
-                  <tr className="border-b border-ink/[0.06]">
-                    <th className="text-left p-4 text-xs font-body font-medium text-ink/30 uppercase tracking-wider w-[200px]">
+                  <tr className="border-b border-white/[0.06]">
+                    <th className="text-left p-4 text-xs font-body font-medium text-pacame-white/30 uppercase tracking-wider w-[200px]">
                       Criterio
                     </th>
-                    <th className="p-4 text-center text-xs font-body font-medium text-ink/30 uppercase tracking-wider">
+                    <th className="p-4 text-center text-xs font-body font-medium text-pacame-white/30 uppercase tracking-wider">
                       Agencia
                     </th>
-                    <th className="p-4 text-center text-xs font-body font-medium text-ink/30 uppercase tracking-wider">
+                    <th className="p-4 text-center text-xs font-body font-medium text-pacame-white/30 uppercase tracking-wider">
                       Freelancer
                     </th>
-                    <th className="p-4 text-center text-xs font-body font-medium text-ink/30 uppercase tracking-wider">
+                    <th className="p-4 text-center text-xs font-body font-medium text-pacame-white/30 uppercase tracking-wider">
                       DIY
                     </th>
                     {/* PACAME column header — golden */}
-                    <th className="p-4 text-center text-xs font-body font-semibold text-accent-gold uppercase tracking-wider relative">
-                      <div className="absolute inset-0 bg-accent-gold/[0.06]" />
-                      <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-accent-gold/60 to-transparent" />
+                    <th className="p-4 text-center text-xs font-body font-semibold text-olympus-gold uppercase tracking-wider relative">
+                      <div className="absolute inset-0 bg-olympus-gold/[0.06]" />
+                      <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-olympus-gold/60 to-transparent" />
                       <span className="relative">PACAME</span>
                     </th>
                   </tr>
@@ -143,8 +143,8 @@ export default function ComparisonSection() {
                       className="border-b border-white/[0.03] last:border-0 group/row hover:bg-white/[0.01] transition-colors duration-300 relative"
                     >
                       {/* Golden left indicator on hover */}
-                      <td className="p-4 text-sm font-body text-ink/50 relative">
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 group-hover/row:h-6 bg-accent-gold/50 transition-all duration-300 rounded-r" />
+                      <td className="p-4 text-sm font-body text-pacame-white/50 relative">
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 group-hover/row:h-6 bg-olympus-gold/50 transition-all duration-300 rounded-r" />
                         {row.feature}
                       </td>
                       <td className="p-4 text-center">
@@ -157,7 +157,7 @@ export default function ComparisonSection() {
                         <CellContent value={row.diy} />
                       </td>
                       <td className="p-4 text-center relative">
-                        <div className="absolute inset-0 bg-accent-gold/[0.04]" />
+                        <div className="absolute inset-0 bg-olympus-gold/[0.04]" />
                         <div className="relative">
                           <CellContent value={row.pacame} highlight />
                         </div>
@@ -177,11 +177,11 @@ export default function ComparisonSection() {
               <CardTilt tiltMaxAngle={8} scale={1.02}>
               <CardTiltContent>
               <motion.div
-                className="group rounded-2xl p-6 border border-ink/[0.06] bg-paper-deep transition-all duration-500 ease-apple hover:border-accent-gold/20 relative overflow-hidden"
+                className="group rounded-2xl p-6 border border-white/[0.06] bg-dark-card transition-all duration-500 ease-apple hover:border-olympus-gold/20 relative overflow-hidden"
                 whileHover={{ y: -3 }}
               >
                 {/* Hover golden glow */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br from-accent-gold/[0.04] to-transparent" />
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br from-olympus-gold/[0.04] to-transparent" />
 
                 <div className="relative">
                   <div className="flex items-center justify-between mb-3">
@@ -192,12 +192,12 @@ export default function ComparisonSection() {
                       {card.vs}
                     </span>
                     {/* Trophy on hover */}
-                    <Trophy className="w-4 h-4 text-accent-gold/0 group-hover:text-accent-gold/50 transition-all duration-500" />
+                    <Trophy className="w-4 h-4 text-olympus-gold/0 group-hover:text-olympus-gold/50 transition-all duration-500" />
                   </div>
-                  <div className="font-heading font-bold text-ink text-base mb-2">
+                  <div className="font-heading font-bold text-pacame-white text-base mb-2">
                     {card.stat}
                   </div>
-                  <p className="text-sm text-ink/35 font-body leading-relaxed">{card.detail}</p>
+                  <p className="text-sm text-pacame-white/35 font-body leading-relaxed">{card.detail}</p>
                 </div>
               </motion.div>
               </CardTiltContent>
