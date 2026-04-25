@@ -148,6 +148,10 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--cyan);
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .jcomp-status-dot {
   width: 7px; height: 7px;
@@ -363,6 +367,44 @@
   overflow: hidden;
 }
 
+/* Burbuja flotante sobre el avatar (sólo móvil) */
+.jcomp-mobile-bubble {
+  display: none;
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: min(86vw, 480px);
+  padding: 12px 16px;
+  background: rgba(8, 18, 32, 0.92);
+  border: 1px solid var(--line-strong);
+  border-left: 2px solid var(--cyan);
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-0);
+  backdrop-filter: blur(10px);
+  z-index: 6;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+}
+.jcomp-mobile-bubble p { margin: 0; }
+.jcomp-mobile-warn {
+  display: none;
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: min(90vw, 480px);
+  padding: 10px 14px;
+  background: rgba(244, 63, 94, 0.18);
+  border: 1px solid rgba(244, 63, 94, 0.45);
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: #fecaca;
+  z-index: 7;
+  text-align: center;
+}
+
 .jarvis-figure {
   position: relative;
   width: 100%;
@@ -397,15 +439,23 @@
 .jcomp-bottombar {
   position: relative;
   z-index: 5;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 24px;
-  padding: 16px 24px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 14px 24px 12px;
   border-top: 1px solid var(--line);
   background: linear-gradient(0deg, rgba(3, 6, 12, 0.95) 0%, rgba(3, 6, 12, 0.5) 100%);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+.jcomp-bottombar-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
 }
 
 .jcomp-control {
@@ -492,9 +542,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  max-width: 560px;
-  margin: 0 auto;
-  width: 100%;
+  flex: 1;
   background: rgba(8, 18, 32, 0.6);
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -535,9 +583,8 @@
 .jcomp-text-input button:disabled { opacity: 0.35; cursor: not-allowed; }
 
 .jcomp-legal {
-  grid-column: 1 / -1;
   text-align: center;
-  margin: 4px 0 0;
+  margin: 0;
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.1em;
@@ -571,23 +618,22 @@
   .jarvis-svg { max-height: 80%; }
 
   .jcomp-bottombar {
-    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px 14px 10px;
+  }
+  .jcomp-bottombar-row {
     gap: 12px;
-    padding: 14px 14px 10px;
   }
-  .jcomp-control { order: 1; }
-  .jcomp-text-input { order: 2; max-width: 100%; }
-  .jcomp-legal { order: 3; font-size: 9.5px; }
+  .jcomp-legal { font-size: 9.5px; }
+  .jcomp-talk { width: 60px; height: 60px; }
+  .jcomp-talk-hint { display: none; } /* en móvil el hint cabe en el status pill */
 
-  .jcomp-talk { width: 64px; height: 64px; }
+  /* Mostrar burbuja flotante + warning en móvil */
+  .jcomp-mobile-bubble { display: block; }
+  .jcomp-mobile-warn { display: block; }
 
-  /* Mobile: mostrar burbuja flotante sobre el stage en vez de panel lateral */
-  .jcomp-stage::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
+  /* Status pill más estrecha en móvil */
+  .jcomp-status-pill { max-width: 140px; padding: 5px 10px; font-size: 10px; }
 }
 
 /* Tablet */

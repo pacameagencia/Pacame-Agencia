@@ -1,17 +1,8 @@
 import type { Metadata } from "next";
 import { Fraunces, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
-import JarvisFloatingButton from "@/components/JarvisFloatingButton";
-import CursorGlowWrapper from "@/components/effects/CursorGlowWrapper";
-import CookieConsent from "@/components/CookieConsent";
+import { GlobalChromeTop, GlobalChromeBottom } from "@/components/layout/GlobalChrome";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import LoadingScreen from "@/components/effects/LoadingScreen";
-import ScrollProgress from "@/components/effects/ScrollProgress";
-import NoiseOverlay from "@/components/effects/NoiseOverlay";
-import BackToTop from "@/components/effects/BackToTop";
 
 // Fraunces: serif expressivo mediterráneo, variable axes (SOFT/WONK/opsz)
 // Con `axes`, no pasamos weight/style (los gestiona el sistema variable)
@@ -208,17 +199,9 @@ export default function RootLayout({
         >
           Saltar al contenido
         </a>
-        <LoadingScreen />
-        <ScrollProgress />
-        <NoiseOverlay />
-        <CursorGlowWrapper />
-        <Header />
+        <GlobalChromeTop />
         <main id="main-content">{children}</main>
-        <Footer />
-        <WhatsAppButton />
-        <BackToTop />
-        <JarvisFloatingButton />
-        <CookieConsent />
+        <GlobalChromeBottom />
         <GoogleAnalytics />
       </body>
     </html>

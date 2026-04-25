@@ -345,6 +345,18 @@ export default function CompaneroPage() {
         {/* Avatar central — protagonista */}
         <div className="jcomp-stage">
           <AvatarHolograma state={state} analyser={analyser} />
+
+          {/* Burbuja flotante (sólo móvil — en desktop está en panel izq) */}
+          {lastAssistant && (
+            <div className="jcomp-mobile-bubble">
+              <p>{lastAssistant.text}</p>
+            </div>
+          )}
+          {permissionDenied && (
+            <div className="jcomp-mobile-warn">
+              ⚠️ Activa el micro en el candado del navegador para hablar.
+            </div>
+          )}
         </div>
 
         {/* Logs derecho */}
@@ -353,52 +365,54 @@ export default function CompaneroPage() {
         </aside>
       </section>
 
-      {/* Bottom bar: botón principal + input texto + nota legal */}
+      {/* Bottom bar: botón principal · input texto · nota legal */}
       <footer className="jcomp-bottombar" onClick={ensureAudioGraph}>
-        <div className="jcomp-control">
-          <motion.button
-            whileTap={{ scale: 0.94 }}
-            whileHover={{ scale: 1.04 }}
-            className={`jcomp-talk jcomp-talk-${state} ${convMode ? "is-active" : ""}`}
-            onClick={toggleConversation}
-            aria-label={btnHint}
-          >
-            <span className="jcomp-talk-glow" />
-            <span className="jcomp-talk-pulse" />
-            {convMode ? (
-              <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor" aria-hidden>
-                <rect x="6" y="6" width="12" height="12" rx="2" />
-              </svg>
-            ) : (
-              <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <rect x="9" y="2" width="6" height="12" rx="3" />
-                <path d="M5 11a7 7 0 0 0 14 0" />
-                <line x1="12" y1="19" x2="12" y2="22" />
-              </svg>
-            )}
-          </motion.button>
-          <span className="jcomp-talk-hint">{btnHint}</span>
-        </div>
+        <div className="jcomp-bottombar-row">
+          <div className="jcomp-control">
+            <motion.button
+              whileTap={{ scale: 0.94 }}
+              whileHover={{ scale: 1.04 }}
+              className={`jcomp-talk jcomp-talk-${state} ${convMode ? "is-active" : ""}`}
+              onClick={toggleConversation}
+              aria-label={btnHint}
+            >
+              <span className="jcomp-talk-glow" />
+              <span className="jcomp-talk-pulse" />
+              {convMode ? (
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor" aria-hidden>
+                  <rect x="6" y="6" width="12" height="12" rx="2" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <rect x="9" y="2" width="6" height="12" rx="3" />
+                  <path d="M5 11a7 7 0 0 0 14 0" />
+                  <line x1="12" y1="19" x2="12" y2="22" />
+                </svg>
+              )}
+            </motion.button>
+            <span className="jcomp-talk-hint">{btnHint}</span>
+          </div>
 
-        <div className="jcomp-text-input">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="…o escríbeme aquí si prefieres"
-            disabled={state === "thinking"}
-          />
-          <button onClick={sendText} disabled={state === "thinking" || !input.trim()} aria-label="Enviar">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
-          </button>
+          <div className="jcomp-text-input">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="…o escríbeme aquí si prefieres"
+              disabled={state === "thinking"}
+            />
+            <button onClick={sendText} disabled={state === "thinking" || !input.trim()} aria-label="Enviar">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <p className="jcomp-legal">
-          stateless · no guardo conversaciones · ¿prefieres hablar con un humano?{" "}
+          stateless · sin grabación ·{" "}
           <a href="https://wa.me/34722669381?text=Hola%20PACAME">WhatsApp</a>{" · "}
           <a href="mailto:hola@pacameagencia.com">email</a>
         </p>
