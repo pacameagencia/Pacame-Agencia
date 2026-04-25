@@ -28,6 +28,7 @@ export default function CompaneroPage() {
   const [convMode, setConvMode] = useState(false);
   const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
   const [permissionDenied, setPermissionDenied] = useState(false);
+  const [permissionGranted, setPermissionGranted] = useState(false);
   const [interim, setInterim] = useState("");
   const [audioReady, setAudioReady] = useState(false);
   const [greeted, setGreeted] = useState(false);
@@ -45,6 +46,60 @@ export default function CompaneroPage() {
   useEffect(() => { convModeRef.current = convMode; }, [convMode]);
   useEffect(() => { stateRef.current = state; }, [state]);
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
+
+  // === Auto-petición de permiso de micrófono al cargar la página ===
+  // - Si el navegador soporta Permissions API, comprobamos primero el estado:
+  //   · 'granted' → ya está concedido, listos
+  //   · 'denied'  → mostramos banner explicativo
+  //   · 'prompt'  → pedimos auto-mente con getUserMedia (Chrome/Edge/Firefox lo permiten;
+  //                 iOS Safari requiere gesto, fallará silencioso → se pedirá al primer click)
+  // - Si no hay Permissions API, intentamos getUserMedia directamente.
+  useEffect(() => {
+    let cancelled = false;
+    const requestMicPermission = async () => {
+      if (!navigator.mediaDevices?.getUserMedia) return;
+      try {
+        // Intenta consultar estado actual primero (no dispara prompt)
+        const perms: any = (navigator as any).permissions;
+        if (perms?.query) {
+          try {
+            const status = await perms.query({ name: "microphone" as PermissionName });
+            if (status.state === "granted") {
+              if (!cancelled) setPermissionGranted(true);
+              return;
+            }
+            if (status.state === "denied") {
+              if (!cancelled) setPermissionDenied(true);
+              return;
+            }
+            // 'prompt' → seguimos abajo y pedimos
+          } catch {
+            // algunos navegadores no soportan { name: 'microphone' } — caemos abajo
+          }
+        }
+
+        // Pedimos permiso (esto dispara el prompt nativo del navegador)
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // No retenemos el stream — solo era para forzar el prompt
+        stream.getTracks().forEach((t) => t.stop());
+        if (!cancelled) {
+          setPermissionGranted(true);
+          setPermissionDenied(false);
+        }
+      } catch (err: any) {
+        // En iOS Safari sin gesto → NotAllowedError. Lo silenciamos y dejamos
+        // que el botón principal lo pida de nuevo en el primer click.
+        if (err?.name === "NotAllowedError" || err?.name === "PermissionDeniedError") {
+          // Solo marca denied si NO es por falta de gesto (esos casos no tienen 'denied' en Permissions API)
+          // En la práctica: si Permissions devolvió 'prompt' y aquí falla = denegó manualmente.
+          if (!cancelled) setPermissionDenied(true);
+        }
+      }
+    };
+    // Pequeño retraso para no chocar con el "permission prompt" durante el loadingScreen
+    const t = setTimeout(requestMicPermission, 800);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, []);
 
   // Audio graph init al primer click
   const ensureAudioGraph = useCallback(() => {
@@ -241,13 +296,16 @@ export default function CompaneroPage() {
       return;
     }
 
-    // Permiso de mic
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      stream.getTracks().forEach((t) => t.stop());
-    } catch {
-      setPermissionDenied(true);
-      return;
+    // Si aún no tenemos permiso, lo pedimos (al haber gesto del usuario funciona en iOS también)
+    if (!permissionGranted) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach((t) => t.stop());
+        setPermissionGranted(true);
+      } catch {
+        setPermissionDenied(true);
+        return;
+      }
     }
     setPermissionDenied(false);
 
@@ -303,7 +361,13 @@ export default function CompaneroPage() {
         <AvatarHolograma state={state} analyser={analyser} />
 
         <div className={`status-pill status-${state}`}>
-          {state === "idle" && (convMode ? "Listo, dime" : greeted ? "Toca el botón abajo" : "Bienvenido")}
+          {state === "idle" && (
+            convMode ? "Listo, dime" :
+            greeted ? "Toca el botón abajo" :
+            permissionGranted ? "Micro listo · toca el botón" :
+            permissionDenied ? "Falta permiso del micro" :
+            "Bienvenido"
+          )}
           {state === "listening" && (interim ? `«${interim}…»` : "Te escucho…")}
           {state === "thinking" && "Pensando…"}
           {state === "speaking" && "Hablando contigo"}
