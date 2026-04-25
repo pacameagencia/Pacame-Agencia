@@ -91,10 +91,14 @@
             "id": "6b6dea7ccbb2a3f3",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Vista gráfica"
+              "type": "markdown",
+              "state": {
+                "file": "_dashboards/Red.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Red"
             }
           }
         ],
@@ -349,10 +353,12 @@
   "active": "6b6dea7ccbb2a3f3",
   "lastOpenFiles": [
     "_dashboards/Hubs.md",
+    "_dashboards/Decay.md",
+    "08-Memorias/NEXUS/2026-04-16-funnel-design-tofu-mofu-bofu.md",
+    "_dashboards/Actividad.md",
     "08-Memorias/DIOS/2026-04-25-vida-propia-roadmap-5-fases.md",
     "09-Discoveries/2026-04-25-auto-entrenamiento-y-vida-propia-agentes-ia.md",
     "05-Strategy/factoria-de-soluciones-con-ia.md",
-    "_dashboards/Actividad.md",
     "01-Agentes/01-nova.md",
     "_dashboards/Agentes.md",
     "07-Sinapsis/SAGE-DIOS-reports_to.md",
@@ -372,8 +378,6 @@
     "07-Sinapsis/CORE-PIXEL-collaborates_with.md",
     "07-Sinapsis/COPY-DIOS-reports_to.md",
     "07-Sinapsis/ATLAS-PULSE-delegates_to.md",
-    "07-Sinapsis/ATLAS-DIOS-reports_to.md",
-    "07-Sinapsis/ATLAS-COPY-collaborates_with.md",
     "_templates/memoria.md.tmp.19164.1776608842109",
     "_dashboards/Decay.md.tmp.19164.1776608835957",
     "_dashboards/Agentes.md.tmp.19164.1776608828936",
