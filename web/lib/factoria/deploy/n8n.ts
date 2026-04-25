@@ -96,17 +96,21 @@ export async function deployToN8n(deployment: DeploymentRow): Promise<N8nDeployR
     return { ok: false, error: "no workflow files found in storage" };
   }
 
-  // Idempotencia: query existing workflows con tag = slug para reusar IDs.
+  // Idempotencia: query existing workflows y filtra por prefix `[slug]` en name.
+  // n8n no soporta `tags` en POST/PUT body (es read-only), así que filtramos
+  // por nombre que el materializador prefija con `[slug] ...`.
   const existingByName = new Map<string, string>();
   try {
-    const listResp = await fetch(
-      `${baseUrl}/api/v1/workflows?tags=${encodeURIComponent(deployment.slug)}&limit=100`,
-      { headers: { "X-N8N-API-KEY": apiKey } }
-    );
+    const listResp = await fetch(`${baseUrl}/api/v1/workflows?limit=250`, {
+      headers: { "X-N8N-API-KEY": apiKey },
+    });
     if (listResp.ok) {
       const list = (await listResp.json()) as { data?: { id: string; name: string }[] };
+      const slugPrefix = `[${deployment.slug}]`;
       for (const wf of list.data ?? []) {
-        existingByName.set(wf.name, wf.id);
+        if (wf.name.startsWith(slugPrefix)) {
+          existingByName.set(wf.name, wf.id);
+        }
       }
     }
   } catch {

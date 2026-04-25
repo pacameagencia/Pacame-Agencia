@@ -358,10 +358,11 @@ function n8nWorkflowConfirmReserva(vars: Record<string, unknown>): string {
   const supabaseCredName = `pacame-${slug}-supabase`;
   const twilioCredName = `pacame-${slug}-twilio`;
 
+  // n8n rechaza `active`, `tags`, `pinData`, `meta` en POST/PUT body
+  // (todos marcados read-only). Esos se gestionan vía PATCH posterior.
   return JSON.stringify(
     {
       name: `[${slug}] confirmar-reserva`,
-      active: false,
       nodes: [
         {
           id: nodeId(slug, "webhook-booking"),
@@ -430,17 +431,9 @@ function n8nWorkflowConfirmReserva(vars: Record<string, unknown>): string {
         "Supabase Insert": { main: [[{ node: "Enviar WhatsApp Confirmación", type: "main", index: 0 }]] },
       },
       settings: { executionOrder: "v1" },
-      tags: [
-        { name: "factoria-hosteleria" },
-        { name: slug },
-      ],
-      // Hint para el deployer: mapea credenciales por nombre.
-      pinData: {},
-      meta: {
-        templateId: "hosteleria-v1",
-        templateNode: "confirmar-reserva",
-        tenant: slug,
-      },
+      // NOTA: n8n rechaza `tags`, `pinData`, `meta` en el body con
+      // "request/body/X is read-only". Esos campos se gestionan vía endpoints
+      // separados después de crear el workflow.
     },
     null,
     2
