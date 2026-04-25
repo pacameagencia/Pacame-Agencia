@@ -91,14 +91,10 @@
             "id": "6b6dea7ccbb2a3f3",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "_dashboards/Hubs.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Hubs"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Vista gráfica"
             }
           }
         ],
@@ -350,14 +346,14 @@
       "smart-connections:Smart Lookup: Open lookup view": false
     }
   },
-  "active": "1ace6b40e96e34ec",
+  "active": "6b6dea7ccbb2a3f3",
   "lastOpenFiles": [
+    "_dashboards/Hubs.md",
     "08-Memorias/DIOS/2026-04-25-vida-propia-roadmap-5-fases.md",
     "09-Discoveries/2026-04-25-auto-entrenamiento-y-vida-propia-agentes-ia.md",
     "05-Strategy/factoria-de-soluciones-con-ia.md",
     "_dashboards/Actividad.md",
     "01-Agentes/01-nova.md",
-    "_dashboards/Hubs.md",
     "_dashboards/Agentes.md",
     "07-Sinapsis/SAGE-DIOS-reports_to.md",
     "07-Sinapsis/SAGE-COPY-delegates_to.md",
