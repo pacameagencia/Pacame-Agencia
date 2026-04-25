@@ -218,6 +218,28 @@ El componente consume:
 
 ---
 
+## 8.5 Biblioteca de contenido para afiliados
+
+Cada afiliado puede acceder, desde su panel, a banners, copy de email,
+posts pre-redactados, scripts de video y plantillas que el admin sube
+desde `/dashboard/referrals-admin/content`. El módulo trackea views y
+descargas por asset.
+
+**Tabla**: `aff_content_assets` (creada por la migración 003).
+
+**Endpoints**:
+- `GET /api/referrals/admin/content` — admin: listar.
+- `POST /api/referrals/admin/content` — admin: crear (campos: type, title, body, preview_url, download_url, tags, …).
+- `PATCH /api/referrals/admin/content` — admin: editar parcialmente.
+- `DELETE /api/referrals/admin/content?id=ID` — admin: borrar.
+- `GET /api/referrals/content` — afiliado: lista los activos.
+- `POST /api/referrals/content/track-download` body `{ asset_id }` — afiliado: incrementa contador y devuelve URL.
+
+**Componente listo**: `<AffiliateContentLibrary />` (importado por
+defecto en el panel afiliado, tab "Contenido para vender").
+
+---
+
 ## 9. Tests
 
 ```bash

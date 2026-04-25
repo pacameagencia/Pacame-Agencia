@@ -56,94 +56,110 @@ const QUALITY = "high";
 const SLIDES = [
   {
     n: 1,
-    role: "HOOK",
+    role: "HOOK · COVER WOW",
     label: "¿CUÁNTO PAGAS AL AÑO EN IA?",
-    prompt: `Editorial magazine cover photograph, vertical 2:3 aspect ratio.
-Composition: top-down 45-degree angle view of a dark wooden table in a dim noir-style room. Strong negative space at the top half reserved for typography. Asymmetric framing.
-Lighting: a single acid green neon practical light slashing horizontally across the scene from the left side, casting deep chiaroscuro shadows. Color graded cold black-green with subtle warmth only on the brightest highlights. Cinematic film noir.
-Subject: a worn dark wooden table covered with many crumpled thermal paper receipts printed with blurry illegible numbers, scattered organically. Receipts have slight curl and worn edges. Realistic paper texture.
-Atmosphere: heavy 35mm film grain, subtle vignette, cinematic noir editorial mood, quiet tension.
+    prompt: `MAXIMUM-IMPACT cinematic magazine cover photograph, vertical 2:3 aspect ratio. SCROLL-STOPPING editorial cover designed to dominate the Instagram feed.
+Composition: dramatic low-angle wide shot of a dark wooden table covered in crumpled thermal paper receipts and small crumpled euro bills, shot with extreme depth and atmospheric perspective. Strong vertical negative space at the top reserved for the headline. Cinematic depth with foreground receipt elements out of focus blurred and a sharp midground subject.
+Lighting: a single intense acid green neon practical light beam cutting horizontally across the scene from the left, creating dramatic god-rays through floating dust particles and faint smoke. Deep chiaroscuro black shadows. One subtle warm rim light on the top-most receipt. Color graded cinematic teal-green-black, EXTREME contrast.
+Subject: a worn dark wooden table dramatically covered with dozens of crumpled thermal paper receipts printed with blurry illegible euro amounts, scattered organically with realistic paper texture, slight curl, dust particles in the air, faint volumetric atmosphere.
+Atmosphere: heavy 35mm film grain, deep vignette, cinematic noir editorial mood, quiet psychological tension, premium magazine quality (think NYT Magazine cover crossed with David Fincher film still).
+
+PSYCHOLOGICAL TRIGGER: pattern interrupt + loss aversion + curiosity gap.
 
 TYPOGRAPHY (CRITICAL — render exactly):
-At the top third of the image, render the Spanish text exactly: "¿CUÁNTO PAGAS AL AÑO EN IA?" in three lines maximum, using a bold condensed sans-serif typeface (Anton style, ALL CAPS), color clean off-white #F2F2F2. The Spanish inverted question mark "¿" must appear at the start and "?" at the end. The accent mark on Á in CUÁNTO must be visible and crisp. Generous letter-spacing, perfectly aligned center-left.
-Below it, a smaller subtitle in clean sans-serif, render exactly: "Suma. No estimes. Suma." in acid green #CFFF00 color, single line.
-At the bottom right corner, in tiny clean caps, render: "DARK ROOM" in acid green #CFFF00 with letter-spacing.
+At the top half of the image, render the Spanish text exactly: "¿CUÁNTO PAGAS AL AÑO EN IA?" in MASSIVE bold condensed sans-serif typeface (Anton style, ALL CAPS), color clean off-white #F2F2F2, three lines maximum, perfectly readable. The Spanish inverted question mark "¿" at the start and standard "?" at the end. The accent mark on Á in CUÁNTO must be visible, crisp and properly placed. Generous letter-spacing, perfectly aligned center-left, dominant element.
+Directly below the headline, smaller bold sans-serif subtitle, render exactly: "Suma. No estimes. Suma." in acid green #CFFF00, single line, letter-spaced.
+At the bottom-LEFT corner, in tiny clean letter-spaced caps, render: "DARK ROOM" in acid green #CFFF00.
+At the bottom-RIGHT corner, very small subtle watermark, render exactly: "@ PACAME" in muted off-white #6F6F6F, ALL CAPS letter-spaced, like a creator credit on editorial photography. Maximum 4% of image height.
 
-Quality directives: editorial magazine cover quality, professional clean typography, no character overlap, no spelling errors, no typos, perfect kerning, generous padding around all text, balanced composition. The text must NOT touch image edges. Three vertically stacked text blocks with proper spacing.`,
+Quality directives: editorial magazine cover quality at the level of a premium publication, professional clean typography, NO character overlap, NO spelling errors, NO typos, perfect kerning, generous padding around all text blocks, balanced composition, scroll-stopping WOW factor for Instagram feed. Text must NOT touch image edges and must NOT overlap with paper receipts.`,
   },
   {
     n: 2,
-    role: "DOLOR",
+    role: "DOLOR · ANCHOR PRICING",
     label: "308 € AL MES",
-    prompt: `Editorial slow-motion photograph, vertical 2:3 aspect ratio.
-Composition: medium close-up shot, asymmetric framing with strong dramatic negative space on the upper portion reserved for typography. Subject sits in the lower-right two-thirds.
-Lighting: hard acid green practical rim light from the right side, deep chiaroscuro black shadows, a single soft spotlight from above creating volumetric god rays. Subtle warm orange ember highlights at paper edges. Cinematic color grading cool green-black.
-Subject: several 50 euro banknotes suspended mid-air, frozen in slow-motion, falling toward a matte pitch-black surface below. Paper edges slightly curled with tiny warm orange glowing highlights at the tips. Realistic banknote textures with visible details.
-Atmosphere: heavy 35mm film grain, high contrast editorial magazine style, stillness and tension.
+    prompt: `Cinematic slow-motion editorial photograph, vertical 2:3 aspect ratio. Editorial magazine quality.
+Composition: dramatic medium close-up shot, asymmetric framing with strong dramatic negative space on the upper-LEFT reserved for typography. Subject (banknotes) sits in the lower-right two-thirds, with one banknote slightly out of focus in the foreground for cinematic depth.
+Lighting: hard acid green practical rim light from the right side, deep chiaroscuro black shadows, a single soft spotlight from above creating volumetric god rays through dust particles. Subtle warm orange ember-like highlights at paper edges suggesting heat. Cinematic color grading cool green-black with dramatic teal contrast.
+Subject: several real-looking 50 euro banknotes suspended mid-air, frozen in slow-motion, falling toward a matte pitch-black surface below. Paper edges slightly curled with tiny warm orange glowing highlights at the tips. Realistic banknote textures with visible engraved details, security threads, and color depth.
+Atmosphere: heavy 35mm film grain, high contrast editorial magazine style, stillness and tension, premium photography.
+
+PSYCHOLOGICAL TRIGGER: anchor pricing high (so next slides feel cheap) + loss aversion (money slipping away).
 
 TYPOGRAPHY (CRITICAL — render exactly):
-At the upper-left negative space, render the Spanish text exactly: "308 €" in massive bold condensed sans-serif (Anton style, ALL CAPS), color acid green #CFFF00, dominant largest element. The Euro symbol "€" must be perfectly rendered with exactly one space between "308" and "€".
-Directly below it, smaller bold sans-serif text in off-white #F2F2F2: "AL MES".
-Below that, even smaller editorial sans-serif in gray #8E8E8E, render exactly: "(suma de las 12 herramientas premium)" with Spanish parentheses.
-At the bottom right corner, tiny: "DARK ROOM" in acid green #CFFF00 ALL CAPS with letter-spacing.
+At the upper-left negative space, render the Spanish text exactly: "308 €" in MASSIVE bold condensed sans-serif (Anton style, ALL CAPS), color acid green #CFFF00, dominant largest element on the image. The Euro symbol "€" must be perfectly rendered with exactly one space between "308" and "€" (eight-character total: 3-0-8-space-€).
+Directly below it, smaller bold sans-serif text in clean off-white #F2F2F2: "AL MES" letter-spaced.
+Below that, even smaller editorial sans-serif in muted gray #8E8E8E, render exactly: "(suma de las 12 herramientas premium)" with Spanish parentheses.
+At the bottom-LEFT corner, tiny: "DARK ROOM" in acid green #CFFF00 ALL CAPS with letter-spacing.
+At the bottom-RIGHT corner, very small subtle watermark: "@ PACAME" in muted off-white #6F6F6F, ALL CAPS letter-spaced, creator credit style.
 
-Quality directives: editorial magazine cover quality, perfect Euro symbol rendering, no character overlap, no spelling errors, no typos, perfect kerning, generous padding. Three text blocks vertically stacked, no overlap with banknotes.`,
+Quality directives: editorial magazine cover quality, perfect Euro symbol "€" rendering, perfect comma if used, NO character overlap, NO spelling errors, NO typos, perfect kerning, generous padding. Three text blocks vertically stacked plus two corner credits, no overlap with banknotes.`,
   },
   {
     n: 3,
-    role: "REVELACION",
+    role: "REVELACIÓN · PATTERN INTERRUPT",
     label: "ENTRA EN DARK ROOM",
-    prompt: `Cinematic noir photograph, vertical 2:3 aspect ratio.
-Composition: centered symmetric framing with one-point perspective converging at a door at the end of the hallway. Ultra-wide cinematic feel. Vertical negative space at the lower third reserved for typography.
-Lighting: intense acid green practical neon light spilling outward from inside a slightly ajar metal door at the end of the dark hallway. Strong backlight silhouette effect, deep black shadows on hallway walls. Color graded cold green-black. Theatrical noir lighting climax.
-Subject: narrow dark hallway with pitch black concrete walls (subtle texture visible), a single black metal door at the far end slightly open revealing bright acid green neon glow inside. Heavy volumetric fog drifting near the floor, lit by the green glow.
-Atmosphere: 35mm film grain, mysterious threshold moment, editorial moody, cinematic.
+    prompt: `MAXIMUM-IMPACT cinematic noir photograph, vertical 2:3 aspect ratio. Editorial magazine cover quality.
+Composition: centered symmetric framing with strong one-point perspective converging at a door at the end of a dark hallway. Ultra-wide cinematic anamorphic feel with subtle barrel distortion. Vertical negative space at the lower third reserved for typography. Foreground frame edges slightly darker (vignette).
+Lighting: intense acid green practical neon light spilling outward from inside a slightly ajar matte black metal door at the end of the dark hallway, creating dramatic god-rays through volumetric fog. Strong backlight silhouette effect on the door frame, deep black shadows on hallway walls. Color graded cold green-black. Theatrical noir lighting climax with one warm rim light hint.
+Subject: narrow dark hallway with pitch black concrete walls (subtle texture and stains visible), a single matte black metal door at the far end slightly open revealing bright acid green neon glow inside. Heavy volumetric fog drifting low near the floor, illuminated by the green glow. Visible dust particles floating in the light beam.
+Atmosphere: 35mm film grain, mysterious threshold moment, editorial moody, cinematic David Fincher / Denis Villeneuve aesthetic.
+
+PSYCHOLOGICAL TRIGGER: curiosity gap + pattern interrupt (visual reveal mid-carousel breaks scroll rhythm).
 
 TYPOGRAPHY (CRITICAL — render exactly):
 At the lower third of the image (the negative space below the door), render the Spanish text exactly:
 Line 1: "ENTRA EN"
 Line 2: "DARK ROOM."
-Use bold condensed sans-serif (Anton style, ALL CAPS), color clean off-white #F2F2F2, massive scale, perfectly centered horizontally.
-Below the title, smaller subtitle in acid green #CFFF00, render exactly: "12 herramientas. 1 acceso." single line, perfectly centered.
-At the bottom right corner, tiny: "darkroomcreative.cloud" in clean monospace JetBrains Mono style, color #8E8E8E.
+Use MASSIVE bold condensed sans-serif (Anton style, ALL CAPS), color clean off-white #F2F2F2, perfectly centered horizontally, dominant element.
+Below the title, smaller subtitle in acid green #CFFF00 letter-spaced, render exactly: "12 herramientas. 1 acceso." single line, perfectly centered.
+At the bottom-LEFT corner, tiny: "darkroomcreative.cloud" in clean monospace JetBrains Mono style, color muted #8E8E8E.
+At the bottom-RIGHT corner, very small subtle watermark: "@ PACAME" in muted off-white #6F6F6F, ALL CAPS letter-spaced, creator credit style.
 
-Quality directives: editorial magazine quality, professional clean typography, no character overlap, no spelling errors, no typos, perfect kerning, generous padding. The dot/period after "ROOM." must be visible. The text must NOT overlap with the hallway/door image. The "DARK ROOM" must be properly kerned with even letter-spacing.`,
+Quality directives: editorial magazine cover quality, professional clean typography, NO character overlap, NO spelling errors, NO typos, perfect kerning, generous padding. The period after "ROOM." must be visible. Text must NOT overlap with the hallway/door image subject. "DARK ROOM" properly kerned with even letter-spacing. The Á accent in any Spanish text must be perfect.`,
   },
   {
     n: 4,
-    role: "SOLUCION",
+    role: "SOLUCIÓN · CONTRAST ANCHOR",
     label: "24,90 €/MES",
-    prompt: `Dark cinematic macro close-up photograph, vertical 2:3 aspect ratio.
-Composition: centered subject with strong negative space at the top half reserved for typography. Macro lens shot, shallow depth of field.
-Lighting: subject self-illuminated subtly by a warm soft key light, with a single acid green practical rim light on the metal casing edges from the side. Pitch black ambient. Noir chiaroscuro. Color graded black with green accent.
-Subject: a single matte black metal vintage key lying diagonally on a pitch-black matte velvet surface. A small rectangular acid green tag with neon glow is attached to it via a tiny black string. The tag has subtle paper texture, slightly worn, with reflective edges. The key has realistic metallic shine on its bow.
-Atmosphere: subtle 35mm film grain, premium editorial mood, quiet expensive vibe.
+    prompt: `Dark cinematic macro close-up photograph, vertical 2:3 aspect ratio. Editorial magazine quality (think Wallpaper* or Monocle product shot crossed with cinematic noir).
+Composition: centered subject with strong negative space at the top half reserved for typography. Macro lens shot, shallow depth of field with creamy background bokeh, subject sharp.
+Lighting: subject self-illuminated subtly by a warm soft key light from above-front, with a single acid green practical rim light on the metal casing edges from the side. Pitch black ambient. Noir chiaroscuro with one warm warm point and one acid green rim. Color graded black with green accent.
+Subject: a single matte black metal vintage skeleton key lying diagonally on a pitch-black matte velvet/leather surface. A small rectangular acid green glowing tag with subtle neon halo is attached to it via a tiny black braided string. The tag has subtle paper texture, slightly worn edges. The key has realistic metallic shine on its bow with subtle reflections.
+Atmosphere: subtle 35mm film grain, premium editorial mood, quiet expensive luxury vibe.
+
+PSYCHOLOGICAL TRIGGER: contrast anchor (308 € → 24,90 € feels free) + reciprocity/value reveal + visual metaphor (key = access).
 
 TYPOGRAPHY (CRITICAL — render exactly):
-At the upper third of the image, render the Spanish text exactly: "24,90 €" in massive bold condensed sans-serif (Anton style), color acid green #CFFF00, dominant largest element. The European decimal comma must be visible (",") not a period. The Euro symbol "€" must be perfectly rendered with exactly one space after "90".
-Directly below it, smaller text "/MES" in clean off-white #F2F2F2 ALL CAPS bold sans-serif.
-Below the price block, in editorial sans-serif color off-white #F2F2F2, render exactly: "o 349 € PARA SIEMPRE" — with "PARA SIEMPRE" slightly emphasized in acid green #CFFF00.
-On the green tag attached to the key (small text), render exactly: "LIFETIME" in dark color, letter-spaced ALL CAPS.
-At the bottom right corner, tiny: "DARK ROOM" in acid green #CFFF00 ALL CAPS letter-spaced.
+At the upper third of the image, render the Spanish text exactly: "24,90 €" in MASSIVE bold condensed sans-serif (Anton style, ALL CAPS), color acid green #CFFF00, dominant largest element. The European decimal comma must be visible (",") NOT a period. The Euro symbol "€" must be perfectly rendered with exactly one space after "90" (seven-character total: 2-4-comma-9-0-space-€).
+Directly below it, smaller text "/MES" in clean off-white #F2F2F2 ALL CAPS bold sans-serif letter-spaced.
+Below the price block, in editorial sans-serif color off-white #F2F2F2, render exactly: "o 349 € PARA SIEMPRE." — with "PARA SIEMPRE" emphasized in acid green #CFFF00.
+On the green tag attached to the key (tiny text on the tag itself), render exactly: "LIFETIME" in dark #0A0A0A on the green tag, letter-spaced ALL CAPS.
+At the bottom-LEFT corner, tiny: "DARK ROOM" in acid green #CFFF00 ALL CAPS letter-spaced.
+At the bottom-RIGHT corner, very small subtle watermark: "@ PACAME" in muted off-white #6F6F6F, ALL CAPS letter-spaced, creator credit style.
 
-Quality directives: editorial magazine cover quality, perfect Euro symbol rendering, perfect comma in "24,90", no character overlap, no spelling errors, no typos, perfect kerning, generous padding. Three text blocks vertically stacked plus tag text, no overlap with key subject.`,
+Quality directives: editorial magazine cover quality, PERFECT Euro symbol "€" rendering, PERFECT comma in "24,90", NO character overlap, NO spelling errors, NO typos, perfect kerning, generous padding. Three text blocks vertically stacked plus tag text plus two corner credits, no overlap with key subject.`,
   },
   {
     n: 5,
-    role: "CTA",
+    role: "CTA · SCARCITY + AUTHORITY",
     label: "darkroomcreative.cloud",
-    prompt: `Cinematic noir climax photograph, vertical 2:3 aspect ratio.
-Composition: centered symmetric framing with strong perspective. Door fills the upper two-thirds of the frame. Lower third reserved for typography negative space.
-Lighting: a black metal door now FULLY OPEN at the end of a dark hallway, brilliant acid green neon light flooding outward like a beacon, creating dramatic god-rays through heavy volumetric fog. Strong glow halo around the door frame. Theatrical maximum lighting climax. Color graded green-black with dramatic light contrast.
-Subject: silhouette of an anonymous human figure (no facial features visible, just a shape) standing at the threshold about to step through the door into the green light. The hallway frames the silhouette dramatically.
-Atmosphere: 35mm film grain, cinematic climax, editorial moody, sense of arrival.
+    prompt: `MAXIMUM-IMPACT cinematic noir climax photograph, vertical 2:3 aspect ratio. Editorial magazine final-page closing image.
+Composition: centered symmetric framing with strong one-point perspective. Door fills the upper two-thirds of the frame. Lower third reserved for typography negative space. Slight low-angle for hero feel.
+Lighting: a matte black metal door now FULLY OPEN at the end of a dark hallway, brilliant acid green neon light flooding outward like a beacon, creating dramatic god-rays through heavy volumetric fog and dust particles. Strong glow halo around the door frame creating bloom effect. Theatrical maximum lighting climax. Color graded green-black with dramatic high-key acid green inside the door frame.
+Subject: silhouette of an anonymous human figure (no facial features, no recognisable shape — just a dark anonymous human form from behind) standing at the threshold about to step through the door into the green light. The hallway frames the silhouette dramatically.
+Atmosphere: 35mm film grain, cinematic climax, editorial moody, sense of arrival and inevitability.
+
+PSYCHOLOGICAL TRIGGER: scarcity ("últimas plazas lifetime") + authority (sense of crossing into something exclusive) + commitment ("quienes entran no salen").
 
 TYPOGRAPHY (CRITICAL — render exactly):
-In the lower third of the image (the negative space below the silhouette), render exactly: "darkroomcreative.cloud" in clean monospace typeface (JetBrains Mono style), color acid green #CFFF00, medium scale, single line, perfectly centered horizontally. Each letter must be character-perfect — no missing characters, no extra characters.
-Directly below it, smaller text in clean off-white #F2F2F2 sans-serif ALL CAPS: "LINK EN BIO" with letter-spacing.
-At the very top corner (small), render: "DARK ROOM" in acid green #CFFF00 ALL CAPS letter-spaced.
+In the lower third of the image (the negative space below the silhouette), render the URL exactly: "darkroomcreative.cloud" in clean monospace typeface (JetBrains Mono style), color acid green #CFFF00, medium scale, single line, perfectly centered horizontally. Each character must be precisely rendered — no missing chars, no extra chars: d-a-r-k-r-o-o-m-c-r-e-a-t-i-v-e-(dot)-c-l-o-u-d.
+Directly below it, smaller text in clean off-white #F2F2F2 sans-serif ALL CAPS letter-spaced: "LINK EN BIO".
+Above the URL, smaller text in muted gray #8E8E8E render exactly: "ÚLTIMAS PLAZAS LIFETIME — 349 €" all-caps letter-spaced.
+At the top-LEFT corner, small: "DARK ROOM" in acid green #CFFF00 ALL CAPS letter-spaced.
+At the top-RIGHT corner, very small subtle watermark: "@ PACAME" in muted off-white #6F6F6F, ALL CAPS letter-spaced, creator credit style.
 
-Quality directives: editorial magazine cover quality, perfect URL rendering letter by letter, no character overlap, no spelling errors, no typos, generous padding. The URL must be readable and complete: d-a-r-k-r-o-o-m-c-r-e-a-t-i-v-e-dot-c-l-o-u-d. No overlap with figure silhouette.`,
+Quality directives: editorial magazine cover quality, PERFECT URL rendering letter by letter, PERFECT Á accent in ÚLTIMAS, NO character overlap, NO spelling errors, NO typos, generous padding. Text must NOT overlap with figure silhouette. The URL must be readable and complete with no character missing.`,
   },
 ];
 

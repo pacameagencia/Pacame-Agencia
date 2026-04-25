@@ -26,6 +26,7 @@ const navItems = [
   { label: "Campanas", href: "/dashboard/campaigns", icon: Megaphone },
   { label: "Propuestas", href: "/dashboard/proposals", icon: FileCheck },
   { label: "Referidos", href: "/dashboard/referrals", icon: Award },
+  { label: "Afiliados", href: "/dashboard/referrals-admin", icon: Award },
   { label: "Llamadas", href: "/dashboard/calls", icon: Phone },
   { label: "WhatsApp", href: "/dashboard/conversations", icon: MessageCircle },
   { label: "Comercial", href: "/dashboard/commercial", icon: TrendingUp },
