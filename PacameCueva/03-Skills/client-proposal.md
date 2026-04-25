@@ -3,7 +3,7 @@ type: skill
 title: Client_Proposal_Generator
 tags:
   - type/skill
-created: '2026-04-19T14:25:39.414Z'
+created: '2026-04-25T21:44:20.453Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/.claude/skills/client-proposal.md'
 neural_id: ee0e373a-f9ef-4421-88fe-a57c10cee491
 ---

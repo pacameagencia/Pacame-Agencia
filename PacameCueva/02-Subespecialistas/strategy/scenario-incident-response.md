@@ -4,7 +4,7 @@ title: scenario-incident-response
 tags:
   - type/subspecialist
   - domain/strategy
-created: '2026-04-19T14:25:37.683Z'
+created: '2026-04-25T21:44:18.126Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/strategy/runbooks/scenario-incident-response.md

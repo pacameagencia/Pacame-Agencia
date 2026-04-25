@@ -9,7 +9,7 @@ tags:
   - research
   - content_idea
   - agent/ATLAS
-created: '2026-04-19T14:26:26.696Z'
+created: '2026-04-25T21:44:34.029Z'
 neural_id: 26005be9-4635-4b5a-aa95-5b8c175e9554
 importance: 0.9
 accessed_count: 0

@@ -4,7 +4,7 @@ title: marketing-reddit-community-builder
 tags:
   - type/subspecialist
   - domain/marketing
-created: '2026-04-19T14:25:23.533Z'
+created: '2026-04-25T21:44:08.003Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/marketing/marketing-reddit-community-builder.md

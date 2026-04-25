@@ -1,25 +1,26 @@
 ---
 type: synapse
 title: NEXUS reports_to DIOS
-agent: NEXUS
 tags:
   - type/synapse
   - synapse/reports_to
+  - type/synapse-strong
   - agent/NEXUS
-created: '2026-04-20T08:48:13.766Z'
-source_path: >-
-  C:\Users\Pacame24\Downloads\PACAME
-  AGENCIA\PacameCueva\07-Sinapsis\NEXUS-DIOS-reports_to.md
-neural_id: cf783d62-c50e-46b2-b28a-778d82e93a5f
-updated: '2026-04-20T08:48:13.766Z'
+  - agent/DIOS
+created: '2026-04-25T21:44:33.821Z'
+neural_id: a43589f7-224b-450c-9e57-d75a7a1fe331
+weight: 1
+fire_count: 13
+success_count: 13
+updated: '2026-04-25T13:01:18.150219+00:00'
 ---
 > **NEXUS → DIOS** vía `reports_to`
 
-**Peso:** `█████████████████░░░` 0.870
+**Peso:** `████████████████████` 1.000
 
-- Veces activada: **6**
-- Éxitos: **6** (100%)
-- Último disparo: 2026-04-19T12:32:19.144+00:00
+- Veces activada: **13**
+- Éxitos: **13** (100%)
+- Último disparo: 2026-04-25T13:01:18.150219+00:00
 
 ## Protagonistas
 - Desde: [[01-NEXUS|NEXUS]]

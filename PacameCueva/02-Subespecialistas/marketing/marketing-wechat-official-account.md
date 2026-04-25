@@ -4,7 +4,7 @@ title: marketing-wechat-official-account
 tags:
   - type/subspecialist
   - domain/marketing
-created: '2026-04-19T14:25:24.412Z'
+created: '2026-04-25T21:44:08.628Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/marketing/marketing-wechat-official-account.md

@@ -4,7 +4,7 @@ title: terminal-integration-specialist
 tags:
   - type/subspecialist
   - domain/spatial-computing
-created: '2026-04-19T14:25:28.650Z'
+created: '2026-04-25T21:44:11.615Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/spatial-computing/terminal-integration-specialist.md

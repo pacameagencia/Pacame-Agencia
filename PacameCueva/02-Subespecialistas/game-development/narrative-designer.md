@@ -4,7 +4,7 @@ title: narrative-designer
 tags:
   - type/subspecialist
   - domain/game-development
-created: '2026-04-19T14:25:21.141Z'
+created: '2026-04-25T21:44:03.849Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/game-development/narrative-designer.md

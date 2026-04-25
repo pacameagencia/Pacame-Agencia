@@ -3,7 +3,7 @@ type: skill
 title: Interactive_Prototyping
 tags:
   - type/skill
-created: '2026-04-19T14:25:39.991Z'
+created: '2026-04-25T21:44:20.931Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/.claude/skills/interactive-prototyping.md

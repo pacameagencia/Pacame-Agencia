@@ -3,7 +3,7 @@ type: workflow
 title: seo-content-cluster
 tags:
   - type/workflow
-created: '2026-04-19T14:25:38.325Z'
+created: '2026-04-25T21:44:19.200Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/workflows/seo-content-cluster.md'
 neural_id: 4d495cee-eb7d-42f7-8b57-2b259eebda24
 ---

@@ -4,7 +4,7 @@ title: support-support-responder
 tags:
   - type/subspecialist
   - domain/support
-created: '2026-04-19T14:25:33.496Z'
+created: '2026-04-25T21:44:15.492Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/support/support-support-responder.md

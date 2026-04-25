@@ -3,7 +3,7 @@ type: strategy
 title: growth-strategy
 tags:
   - type/strategy
-created: '2026-04-19T14:25:38.685Z'
+created: '2026-04-25T21:44:19.558Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/strategy/growth-strategy.md'
 neural_id: 76b2751b-d833-4216-9031-a8ad61392602
 ---

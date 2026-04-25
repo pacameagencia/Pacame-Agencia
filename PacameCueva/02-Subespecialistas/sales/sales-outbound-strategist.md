@@ -4,7 +4,7 @@ title: sales-outbound-strategist
 tags:
   - type/subspecialist
   - domain/sales
-created: '2026-04-19T14:25:28.034Z'
+created: '2026-04-25T21:44:11.221Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/sales/sales-outbound-strategist.md

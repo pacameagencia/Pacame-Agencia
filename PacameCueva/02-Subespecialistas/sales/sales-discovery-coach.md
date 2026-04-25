@@ -4,7 +4,7 @@ title: sales-discovery-coach
 tags:
   - type/subspecialist
   - domain/sales
-created: '2026-04-19T14:25:27.742Z'
+created: '2026-04-25T21:44:11.029Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/sales/sales-discovery-coach.md

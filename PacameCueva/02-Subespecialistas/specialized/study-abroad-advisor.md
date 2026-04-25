@@ -4,7 +4,7 @@ title: study-abroad-advisor
 tags:
   - type/subspecialist
   - domain/specialized
-created: '2026-04-19T14:25:32.253Z'
+created: '2026-04-25T21:44:14.488Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/specialized/study-abroad-advisor.md

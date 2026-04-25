@@ -3,7 +3,7 @@ type: workflow
 title: client-onboarding
 tags:
   - type/workflow
-created: '2026-04-19T14:25:38.042Z'
+created: '2026-04-25T21:44:19.010Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/workflows/client-onboarding.md'
 neural_id: 36f3e8f9-6c1d-46c5-a843-e7f1fffe3705
 ---

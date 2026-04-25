@@ -3,7 +3,7 @@ type: strategy
 title: business-strategy
 tags:
   - type/strategy
-created: '2026-04-19T14:25:38.556Z'
+created: '2026-04-25T21:44:19.472Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/strategy/business-strategy.md'
 neural_id: 76e21335-617a-4fbd-b044-399e05597eba
 ---

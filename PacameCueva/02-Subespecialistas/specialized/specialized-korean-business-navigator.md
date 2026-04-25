@@ -4,7 +4,7 @@ title: specialized-korean-business-navigator
 tags:
   - type/subspecialist
   - domain/specialized
-created: '2026-04-19T14:25:31.657Z'
+created: '2026-04-25T21:44:14.030Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/specialized/specialized-korean-business-navigator.md

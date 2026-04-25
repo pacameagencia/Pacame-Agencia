@@ -1,25 +1,26 @@
 ---
 type: synapse
 title: DIOS orchestrates PIXEL
-agent: DIOS
 tags:
   - type/synapse
   - synapse/orchestrates
+  - type/synapse-strong
   - agent/DIOS
-created: '2026-04-20T08:48:13.967Z'
-source_path: >-
-  C:\Users\Pacame24\Downloads\PACAME
-  AGENCIA\PacameCueva\07-Sinapsis\DIOS-PIXEL-orchestrates.md
-neural_id: 059c46f2-3245-46d4-bf29-a4e58b98c2e8
-updated: '2026-04-20T08:48:13.967Z'
+  - agent/PIXEL
+created: '2026-04-25T21:44:33.808Z'
+neural_id: ac3741c4-d3f1-45f5-ae62-ac95fc56c1f9
+weight: 1
+fire_count: 29
+success_count: 29
+updated: '2026-04-25T18:01:55.712495+00:00'
 ---
 > **DIOS → PIXEL** vía `orchestrates`
 
 **Peso:** `████████████████████` 1.000
 
-- Veces activada: **15**
-- Éxitos: **15** (100%)
-- Último disparo: 2026-04-19T12:31:46.336526+00:00
+- Veces activada: **29**
+- Éxitos: **29** (100%)
+- Último disparo: 2026-04-25T18:01:55.712495+00:00
 
 ## Protagonistas
 - Desde: [[01-DIOS|DIOS]]

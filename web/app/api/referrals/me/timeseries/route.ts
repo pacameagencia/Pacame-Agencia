@@ -17,12 +17,10 @@ export async function GET(request: NextRequest) {
   const days = Math.min(Math.max(Number(request.nextUrl.searchParams.get("days") || 30), 1), 180);
   const since = new Date(Date.now() - days * 86400_000).toISOString();
 
-  const { data: affiliate } = await supabase
-    .from("aff_affiliates")
-    .select("id")
-    .eq("tenant_id", config.tenantId)
-    .eq("user_id", authed.id)
-    .maybeSingle<{ id: string }>();
+  const baseQ = supabase.from("aff_affiliates").select("id").eq("tenant_id", config.tenantId);
+  const { data: affiliate } = authed.affiliateOnly
+    ? await baseQ.eq("id", authed.id).maybeSingle<{ id: string }>()
+    : await baseQ.eq("user_id", authed.id).maybeSingle<{ id: string }>();
   if (!affiliate) return NextResponse.json({ error: "not_enrolled" }, { status: 404 });
 
   const [{ data: visits }, { data: refs }] = await Promise.all([

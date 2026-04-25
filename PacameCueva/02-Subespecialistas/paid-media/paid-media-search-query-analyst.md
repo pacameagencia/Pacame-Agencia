@@ -4,7 +4,7 @@ title: paid-media-search-query-analyst
 tags:
   - type/subspecialist
   - domain/paid-media
-created: '2026-04-19T14:25:25.683Z'
+created: '2026-04-25T21:44:09.460Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/paid-media/paid-media-search-query-analyst.md

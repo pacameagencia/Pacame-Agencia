@@ -5,7 +5,7 @@ agent: DIOS
 tags:
   - type/agent
   - agent/DIOS
-created: '2026-04-19T14:25:15.177Z'
+created: '2026-04-25T21:44:01.486Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/agents/PACAME-PLAN-COMPLETO.md'
 neural_id: 084ab75b-68a6-463d-83dc-c26127387550
 ---

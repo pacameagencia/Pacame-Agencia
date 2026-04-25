@@ -5,7 +5,7 @@ agent: SAGE
 tags:
   - type/agent
   - agent/SAGE
-created: '2026-04-19T14:25:14.635Z'
+created: '2026-04-25T21:44:01.038Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/agents/07-SAGE.md'
 neural_id: 67740fe6-fe54-4287-a407-651c97c88c46
 ---

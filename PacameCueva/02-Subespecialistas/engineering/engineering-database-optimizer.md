@@ -4,7 +4,7 @@ title: engineering-database-optimizer
 tags:
   - type/subspecialist
   - domain/engineering
-created: '2026-04-19T14:25:17.923Z'
+created: '2026-04-25T21:44:04.716Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/engineering/engineering-database-optimizer.md

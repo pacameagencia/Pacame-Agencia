@@ -4,7 +4,7 @@ title: marketing-instagram-curator
 tags:
   - type/subspecialist
   - domain/marketing
-created: '2026-04-19T14:25:22.782Z'
+created: '2026-04-25T21:44:07.447Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/marketing/marketing-instagram-curator.md

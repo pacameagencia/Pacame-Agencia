@@ -9,7 +9,7 @@ tags:
   - secrets
   - devops
   - agent/CORE
-created: '2026-04-19T14:26:26.545Z'
+created: '2026-04-25T21:44:33.906Z'
 neural_id: 4906164f-4b78-4b95-acf7-5787ee331428
 importance: 0.9
 accessed_count: 0

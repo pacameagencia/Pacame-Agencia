@@ -4,7 +4,7 @@ title: paid-media-paid-social-strategist
 tags:
   - type/subspecialist
   - domain/paid-media
-created: '2026-04-19T14:25:25.279Z'
+created: '2026-04-25T21:44:09.181Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/paid-media/paid-media-paid-social-strategist.md

@@ -8,7 +8,7 @@ tags:
   - brand
   - colores
   - agent/NOVA
-created: '2026-04-19T14:26:26.432Z'
+created: '2026-04-25T21:44:33.873Z'
 neural_id: bdbc1062-8080-4a47-ae78-d6de0b46b25c
 importance: 0.9
 accessed_count: 0

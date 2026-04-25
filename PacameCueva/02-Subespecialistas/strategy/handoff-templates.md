@@ -4,7 +4,7 @@ title: handoff-templates
 tags:
   - type/subspecialist
   - domain/strategy
-created: '2026-04-19T14:25:36.610Z'
+created: '2026-04-25T21:44:17.949Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/strategy/coordination/handoff-templates.md

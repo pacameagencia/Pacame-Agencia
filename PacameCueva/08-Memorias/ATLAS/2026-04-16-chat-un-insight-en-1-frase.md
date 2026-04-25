@@ -8,7 +8,7 @@ tags:
   - chat
   - consulta
   - agent/ATLAS
-created: '2026-04-19T14:26:26.669Z'
+created: '2026-04-25T21:44:34.011Z'
 neural_id: 9b977545-9603-4f88-b29e-cfdc3b82f1b1
 importance: 0.3
 accessed_count: 0

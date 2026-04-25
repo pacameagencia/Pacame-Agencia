@@ -9,7 +9,7 @@ tags:
   - landing
   - structure
   - agent/COPY
-created: '2026-04-19T14:26:26.575Z'
+created: '2026-04-25T21:44:33.952Z'
 neural_id: 5c3da2c3-784b-4f1c-8ae5-a83e7b9f14cc
 importance: 0.9
 accessed_count: 0

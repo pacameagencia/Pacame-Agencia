@@ -9,7 +9,7 @@ tags:
   - research
   - content_idea
   - agent/COPY
-created: '2026-04-19T14:26:26.711Z'
+created: '2026-04-25T21:44:34.037Z'
 neural_id: 69bb4501-9e61-4fd9-81ea-20c17a6ed22b
 importance: 0.9
 accessed_count: 0

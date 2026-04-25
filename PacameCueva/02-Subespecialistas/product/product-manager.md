@@ -4,7 +4,7 @@ title: product-manager
 tags:
   - type/subspecialist
   - domain/product
-created: '2026-04-19T14:25:26.293Z'
+created: '2026-04-25T21:44:09.924Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/product/product-manager.md

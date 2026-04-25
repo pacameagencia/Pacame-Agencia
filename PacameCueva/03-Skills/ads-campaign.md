@@ -3,7 +3,7 @@ type: skill
 title: Ads_Campaign_Manager
 tags:
   - type/skill
-created: '2026-04-19T14:25:39.060Z'
+created: '2026-04-25T21:44:20.094Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/.claude/skills/ads-campaign.md'
 neural_id: e5aa7239-af01-43ce-adea-67167d28a2bf
 ---

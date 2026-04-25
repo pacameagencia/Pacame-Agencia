@@ -4,7 +4,7 @@ title: project-management-project-shepherd
 tags:
   - type/subspecialist
   - domain/project-management
-created: '2026-04-19T14:25:26.882Z'
+created: '2026-04-25T21:44:10.370Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/project-management/project-management-project-shepherd.md

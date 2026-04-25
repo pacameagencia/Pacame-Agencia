@@ -4,7 +4,7 @@ title: workflow-with-memory
 tags:
   - type/subspecialist
   - domain/examples
-created: '2026-04-19T14:25:20.660Z'
+created: '2026-04-25T21:44:03.483Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/examples/workflow-with-memory.md

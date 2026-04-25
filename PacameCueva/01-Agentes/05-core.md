@@ -5,7 +5,7 @@ agent: CORE
 tags:
   - type/agent
   - agent/CORE
-created: '2026-04-19T14:25:14.362Z'
+created: '2026-04-25T21:44:00.860Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/agents/05-CORE.md'
 neural_id: 3f9cbbef-5529-4a87-b660-e2f19cd90be7
 ---

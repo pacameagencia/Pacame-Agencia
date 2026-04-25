@@ -8,7 +8,7 @@ tags:
   - dominio
   - branding
   - agent/ATLAS
-created: '2026-04-19T14:26:26.436Z'
+created: '2026-04-25T21:44:33.886Z'
 neural_id: 0a5ebc66-dad1-4f76-9dc0-cc6aeedaafb9
 importance: 0.95
 accessed_count: 0

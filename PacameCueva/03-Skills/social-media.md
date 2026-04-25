@@ -3,7 +3,7 @@ type: skill
 title: Social_Media_Strategy
 tags:
   - type/skill
-created: '2026-04-19T14:25:40.325Z'
+created: '2026-04-25T21:44:21.195Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/.claude/skills/social-media.md'
 neural_id: 22122182-55aa-4ef1-a5e1-e54900de3b17
 ---

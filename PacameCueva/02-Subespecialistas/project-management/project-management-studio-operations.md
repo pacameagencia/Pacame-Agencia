@@ -4,7 +4,7 @@ title: project-management-studio-operations
 tags:
   - type/subspecialist
   - domain/project-management
-created: '2026-04-19T14:25:27.013Z'
+created: '2026-04-25T21:44:10.458Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/project-management/project-management-studio-operations.md

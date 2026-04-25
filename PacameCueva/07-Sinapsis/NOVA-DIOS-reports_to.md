@@ -1,25 +1,26 @@
 ---
 type: synapse
 title: NOVA reports_to DIOS
-agent: NOVA
 tags:
   - type/synapse
   - synapse/reports_to
+  - type/synapse-strong
   - agent/NOVA
-created: '2026-04-20T08:48:13.792Z'
-source_path: >-
-  C:\Users\Pacame24\Downloads\PACAME
-  AGENCIA\PacameCueva\07-Sinapsis\NOVA-DIOS-reports_to.md
-neural_id: eb311562-658b-4c0d-b7a5-57cc5d167bc4
-updated: '2026-04-20T08:48:13.792Z'
+  - agent/DIOS
+created: '2026-04-25T21:44:33.827Z'
+neural_id: 65973bca-7479-4853-98dc-727688855933
+weight: 0.89
+fire_count: 7
+success_count: 7
+updated: '2026-04-24T18:02:30.882664+00:00'
 ---
 > **NOVA → DIOS** vía `reports_to`
 
-**Peso:** `█████████████████░░░` 0.830
+**Peso:** `██████████████████░░` 0.890
 
-- Veces activada: **4**
-- Éxitos: **4** (100%)
-- Último disparo: 2026-04-16T18:33:19.63228+00:00
+- Veces activada: **7**
+- Éxitos: **7** (100%)
+- Último disparo: 2026-04-24T18:02:30.882664+00:00
 
 ## Protagonistas
 - Desde: [[01-NOVA|NOVA]]

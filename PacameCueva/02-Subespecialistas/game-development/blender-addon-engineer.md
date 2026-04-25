@@ -4,7 +4,7 @@ title: blender-addon-engineer
 tags:
   - type/subspecialist
   - domain/game-development
-created: '2026-04-19T14:25:34.573Z'
+created: '2026-04-25T21:44:16.347Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/game-development/blender/blender-addon-engineer.md

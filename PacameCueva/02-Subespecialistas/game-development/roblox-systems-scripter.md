@@ -4,7 +4,7 @@ title: roblox-systems-scripter
 tags:
   - type/subspecialist
   - domain/game-development
-created: '2026-04-19T14:25:35.289Z'
+created: '2026-04-25T21:44:16.880Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/game-development/roblox-studio/roblox-systems-scripter.md

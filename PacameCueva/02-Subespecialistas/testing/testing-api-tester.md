@@ -4,7 +4,7 @@ title: testing-api-tester
 tags:
   - type/subspecialist
   - domain/testing
-created: '2026-04-19T14:25:33.728Z'
+created: '2026-04-25T21:44:15.687Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/testing/testing-api-tester.md

@@ -4,7 +4,7 @@ title: visionos-spatial-engineer
 tags:
   - type/subspecialist
   - domain/spatial-computing
-created: '2026-04-19T14:25:28.779Z'
+created: '2026-04-25T21:44:11.701Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/spatial-computing/visionos-spatial-engineer.md

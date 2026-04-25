@@ -4,7 +4,7 @@ title: backend-architect-with-memory
 tags:
   - type/subspecialist
   - domain/integrations
-created: '2026-04-19T14:25:36.375Z'
+created: '2026-04-25T21:44:17.742Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/integrations/mcp-memory/backend-architect-with-memory.md

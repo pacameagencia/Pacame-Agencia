@@ -9,7 +9,7 @@ tags:
   - principles
   - ethics
   - agent/LENS
-created: '2026-04-19T14:26:26.587Z'
+created: '2026-04-25T21:44:33.959Z'
 neural_id: d5093d64-aeb0-4036-a4e1-64ca5d4a40e3
 importance: 0.9
 accessed_count: 0

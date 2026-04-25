@@ -4,7 +4,7 @@ title: sales-pipeline-analyst
 tags:
   - type/subspecialist
   - domain/sales
-created: '2026-04-19T14:25:28.176Z'
+created: '2026-04-25T21:44:11.322Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/sales/sales-pipeline-analyst.md

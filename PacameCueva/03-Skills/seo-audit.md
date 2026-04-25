@@ -3,7 +3,7 @@ type: skill
 title: SEO_Audit_Generator
 tags:
   - type/skill
-created: '2026-04-19T14:25:40.214Z'
+created: '2026-04-25T21:44:21.109Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/.claude/skills/seo-audit.md'
 neural_id: b42037f0-505b-4c8f-8e60-442264135630
 ---

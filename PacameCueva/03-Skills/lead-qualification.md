@@ -3,7 +3,7 @@ type: skill
 title: Lead_Qualification_Scorer
 tags:
   - type/skill
-created: '2026-04-19T14:25:40.102Z'
+created: '2026-04-25T21:44:21.020Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/.claude/skills/lead-qualification.md

@@ -1,3 +1,15 @@
+---
+type: concept
+title: INSTRUCCIONES-ACTIVACION
+tags:
+  - type/concept
+created: '2026-04-25T21:46:09.334Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\INSTRUCCIONES-ACTIVACION.md
+neural_id: 6b19b956-8dc6-4360-ad26-72308fce462d
+updated: '2026-04-25T21:46:09.333Z'
+---
 # Factoría de Soluciones con IA — Activación del Cerebro PACAME
 
 Este vault Obsidian es la capa visual y editable del **cerebro neuronal PACAME**. Cada nota es una neurona; cada wikilink, una sinapsis; cada edición, un impulso que viaja a Supabase y se convierte en memoria persistente.
@@ -7,16 +19,35 @@ Este vault Obsidian es la capa visual y editable del **cerebro neuronal PACAME**
 
 ---
 
-## 🟢 Arrancar el cerebro en Windows (cada vez que Pablo abra Obsidian)
+## 🟢 Arrancar el cerebro en Windows
 
-### 1. Doble click al watcher local
+### 1. Watcher automático (Task Scheduler — registrado 2026-04-25)
+
+La tarea **`PACAME-BrainWatcher`** ya está registrada en Windows Task Scheduler. Arranca al login del usuario, reinicia hasta 3× si falla, y mantiene `chokidar` vivo en background.
+
+Verificar estado:
+```powershell
+Get-ScheduledTask -TaskName "PACAME-BrainWatcher" | Select-Object TaskName, State
+Get-ScheduledTaskInfo -TaskName "PACAME-BrainWatcher" | Select-Object LastRunTime, LastTaskResult
 ```
-tools/obsidian-sync/brain-watch.bat
+
+Estado esperado: `State: Running` mientras la sesión esté activa.
+
+Arranque manual (si la tarea está parada):
+```powershell
+Start-ScheduledTask -TaskName "PACAME-BrainWatcher"
 ```
-- Arranca `chokidar` con debounce 2 s.
-- Cada cambio en `PacameCueva/` → upsert en Supabase.
-- Wikilinks entre agentes → `fire_synapse()`.
-- **Deja la ventana abierta** mientras trabajas.
+
+Re-registrar la tarea desde cero si se pierde:
+```powershell
+$action = New-ScheduledTaskAction -Execute "C:\Users\Pacame24\Downloads\PACAME AGENCIA\tools\obsidian-sync\brain-watch.bat" -WorkingDirectory "C:\Users\Pacame24\Downloads\PACAME AGENCIA\tools\obsidian-sync"
+$trigger = New-ScheduledTaskTrigger -AtLogOn -User $env:USERNAME
+$settings = New-ScheduledTaskSettingsSet -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1) -StartWhenAvailable -ExecutionTimeLimit (New-TimeSpan -Hours 0)
+$principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
+Register-ScheduledTask -TaskName "PACAME-BrainWatcher" -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Force
+```
+
+Doble click manual de respaldo: `tools/obsidian-sync/brain-watch.bat`.
 
 ### 2. Abrir Obsidian Desktop y apuntar a `PacameCueva/`
 - 13 plugins activos (smart-connections, local-rest-api, dataview, templater, kanban, excalidraw, graph-analysis, omnisearch, remotely-save, git, calendar, tasks, style-settings).
@@ -92,7 +123,7 @@ bash infra/deploy-brain-vps.sh
 | `POST /api/neural/route` | Input texto → agente primario + colaboradores por keyword+embedding |
 | `POST /api/neural/query` | Búsqueda semántica en knowledge_nodes (pgvector HNSW) |
 | `POST /api/neural/fire` | Dispara sinapsis (refuerza weight hebbian) |
-| `POST /api/neural/decay` | Cron 3 am UTC: decay memorias + sinapsis inactivas |
+| `GET /api/agents/neural-decay` | Cron 3 am UTC: decay memorias + sinapsis inactivas (RPCs `decay_memories`, `decay_synapses`) |
 | `POST /api/neural/execute` | Ejecuta tarea + opción `store_memory:true` |
 | `POST /api/neural/auto-discovery` | Cron 5 am UTC: sinapsis emergentes + market signals |
 | `POST /api/neural/opportunity-scanner` | Detecta oportunidades comerciales desde discoveries |
@@ -140,7 +171,7 @@ PacameCueva/
 | MCP pacame-vault no responde | Reload Obsidian (`Ctrl+R`) → verifica plugin Local REST API activo → comprueba puerto 27124 |
 | Cert self-signed bloquea MCP | El flag `OBSIDIAN_VERIFY_SSL=false` ya está en `.claude/mcp.json`. Si persiste, activa insecure server (puerto 27123 HTTP) en el plugin y cambia `OBSIDIAN_PORT=27123`, `OBSIDIAN_PROTOCOL=http` |
 | Pull VPS devuelve +0/+0/+0 | Correcto si nada cambió. Ver `cat /var/log/pacame/pull.log` |
-| Watcher no detecta cambios | Mata `brain-watch.bat`, doble click de nuevo. Chokidar a veces pierde watchers tras suspender Windows |
+| Watcher no detecta cambios | `Stop-ScheduledTask -TaskName "PACAME-BrainWatcher"; Start-ScheduledTask -TaskName "PACAME-BrainWatcher"`. Chokidar a veces pierde watchers tras suspender Windows |
 | Embeddings desfasados | `cd tools/obsidian-sync && npx tsx embed-brain.ts` (re-embebe skills) o `npx tsx embed-discoveries.ts` |
 
 ---

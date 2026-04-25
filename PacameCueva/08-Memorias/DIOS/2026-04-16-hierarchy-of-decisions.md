@@ -8,7 +8,7 @@ tags:
   - orchestration
   - decision-framework
   - agent/DIOS
-created: '2026-04-19T14:26:26.494Z'
+created: '2026-04-25T21:44:33.907Z'
 neural_id: 32d469c1-f9f2-49f4-9366-1848136f3d59
 importance: 0.98
 accessed_count: 0

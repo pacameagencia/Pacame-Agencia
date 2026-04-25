@@ -4,7 +4,7 @@ title: product-sprint-prioritizer
 tags:
   - type/subspecialist
   - domain/product
-created: '2026-04-19T14:25:26.408Z'
+created: '2026-04-25T21:44:10.012Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/product/product-sprint-prioritizer.md

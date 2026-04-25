@@ -1,25 +1,26 @@
 ---
 type: synapse
 title: ATLAS reports_to DIOS
-agent: ATLAS
 tags:
   - type/synapse
   - synapse/reports_to
+  - type/synapse-strong
   - agent/ATLAS
-created: '2026-04-20T08:48:13.764Z'
-source_path: >-
-  C:\Users\Pacame24\Downloads\PACAME
-  AGENCIA\PacameCueva\07-Sinapsis\ATLAS-DIOS-reports_to.md
-neural_id: deb33c97-00ea-4179-bf51-d71d5cff3d52
-updated: '2026-04-20T08:48:13.764Z'
+  - agent/DIOS
+created: '2026-04-25T21:44:33.817Z'
+neural_id: 15916a33-249a-4514-9e6e-0a547e4fdbbb
+weight: 1
+fire_count: 16
+success_count: 16
+updated: '2026-04-25T18:03:09.479684+00:00'
 ---
 > **ATLAS → DIOS** vía `reports_to`
 
-**Peso:** `███████████████████░` 0.930
+**Peso:** `████████████████████` 1.000
 
-- Veces activada: **9**
-- Éxitos: **9** (100%)
-- Último disparo: 2026-04-19T12:32:33.255621+00:00
+- Veces activada: **16**
+- Éxitos: **16** (100%)
+- Último disparo: 2026-04-25T18:03:09.479684+00:00
 
 ## Protagonistas
 - Desde: [[01-ATLAS|ATLAS]]

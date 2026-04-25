@@ -4,7 +4,7 @@ title: design-ux-researcher
 tags:
   - type/subspecialist
   - domain/design
-created: '2026-04-19T14:25:16.597Z'
+created: '2026-04-25T21:44:02.746Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/design/design-ux-researcher.md

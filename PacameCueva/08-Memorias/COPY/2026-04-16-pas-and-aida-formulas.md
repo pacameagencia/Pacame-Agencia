@@ -9,7 +9,7 @@ tags:
   - formulas
   - conversion
   - agent/COPY
-created: '2026-04-19T14:26:26.570Z'
+created: '2026-04-25T21:44:33.951Z'
 neural_id: 9e561ea7-5ff6-4863-b277-6e1abb3ccb1e
 importance: 0.95
 accessed_count: 0

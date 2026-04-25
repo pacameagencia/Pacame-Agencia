@@ -3,7 +3,7 @@ type: workflow
 title: lead-gen-pipeline
 tags:
   - type/workflow
-created: '2026-04-19T14:25:38.150Z'
+created: '2026-04-25T21:44:19.097Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/workflows/lead-gen-pipeline.md'
 neural_id: 72d0c742-b7bb-45ea-acd2-32e9091ab59f
 ---

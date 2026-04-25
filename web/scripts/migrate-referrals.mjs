@@ -33,7 +33,12 @@ const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const dbUrl = process.env.DATABASE_URL;
 
 const sqlDir = path.join(__dirname, "..", "lib", "modules", "referrals", "sql");
-const files = ["001_schema.sql", "002_rls.sql", "003_admin_extensions.sql"];
+const files = [
+  "001_schema.sql",
+  "002_rls.sql",
+  "003_admin_extensions.sql",
+  "004_public_signup.sql",
+];
 
 const combined = files
   .map((f) => `-- =====[ ${f} ]=====\n${readFileSync(path.join(sqlDir, f), "utf8")}`)

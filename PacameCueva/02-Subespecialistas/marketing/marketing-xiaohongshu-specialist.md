@@ -4,7 +4,7 @@ title: marketing-xiaohongshu-specialist
 tags:
   - type/subspecialist
   - domain/marketing
-created: '2026-04-19T14:25:24.685Z'
+created: '2026-04-25T21:44:08.802Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/marketing/marketing-xiaohongshu-specialist.md

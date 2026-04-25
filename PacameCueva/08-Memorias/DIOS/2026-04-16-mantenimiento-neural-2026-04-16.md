@@ -9,7 +9,7 @@ tags:
   - mantenimiento
   - decay
   - agent/DIOS
-created: '2026-04-19T14:26:26.618Z'
+created: '2026-04-25T21:44:33.968Z'
 neural_id: 1ee6f1e1-1ba6-4fcf-a585-5180c1f0cf9b
 importance: 0.3
 accessed_count: 0

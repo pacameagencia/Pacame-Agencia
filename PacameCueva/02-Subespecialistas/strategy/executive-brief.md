@@ -4,7 +4,7 @@ title: EXECUTIVE-BRIEF
 tags:
   - type/subspecialist
   - domain/strategy
-created: '2026-04-19T14:25:32.602Z'
+created: '2026-04-25T21:44:14.756Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/strategy/EXECUTIVE-BRIEF.md

@@ -4,7 +4,7 @@ title: macos-spatial-metal-engineer
 tags:
   - type/subspecialist
   - domain/spatial-computing
-created: '2026-04-19T14:25:28.529Z'
+created: '2026-04-25T21:44:11.499Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/spatial-computing/macos-spatial-metal-engineer.md

@@ -8,7 +8,7 @@ tags:
   - topologia
   - red
   - agent/DIOS
-created: '2026-04-19T14:26:26.442Z'
+created: '2026-04-25T21:44:33.878Z'
 neural_id: eb26a2d3-7745-45ed-9b76-274eaea1c1ea
 importance: 0.98
 accessed_count: 0

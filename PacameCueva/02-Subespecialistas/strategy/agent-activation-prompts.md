@@ -4,7 +4,7 @@ title: agent-activation-prompts
 tags:
   - type/subspecialist
   - domain/strategy
-created: '2026-04-19T14:25:36.505Z'
+created: '2026-04-25T21:44:17.829Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/strategy/coordination/agent-activation-prompts.md

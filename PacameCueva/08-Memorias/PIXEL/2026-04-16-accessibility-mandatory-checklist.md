@@ -9,7 +9,7 @@ tags:
   - accessibility
   - wcag
   - agent/PIXEL
-created: '2026-04-19T14:26:26.534Z'
+created: '2026-04-25T21:44:33.960Z'
 neural_id: c4a57548-a721-49a8-9d44-96345a901775
 importance: 0.88
 accessed_count: 0

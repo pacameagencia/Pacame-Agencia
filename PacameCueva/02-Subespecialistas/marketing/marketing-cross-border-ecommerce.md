@@ -4,7 +4,7 @@ title: marketing-cross-border-ecommerce
 tags:
   - type/subspecialist
   - domain/marketing
-created: '2026-04-19T14:25:22.434Z'
+created: '2026-04-25T21:44:07.182Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/marketing/marketing-cross-border-ecommerce.md

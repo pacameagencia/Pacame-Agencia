@@ -4,7 +4,7 @@ title: marketing-content-creator
 tags:
   - type/subspecialist
   - domain/marketing
-created: '2026-04-19T14:25:22.322Z'
+created: '2026-04-25T21:44:07.094Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/marketing/marketing-content-creator.md

@@ -1,17 +1,18 @@
 ---
 type: synapse
 title: DIOS orchestrates COPY
-agent: DIOS
 tags:
   - type/synapse
   - synapse/orchestrates
+  - type/synapse-strong
   - agent/DIOS
-created: '2026-04-20T08:48:13.765Z'
-source_path: >-
-  C:\Users\Pacame24\Downloads\PACAME
-  AGENCIA\PacameCueva\07-Sinapsis\DIOS-COPY-orchestrates.md
-neural_id: 7c4011d4-64e5-4862-b65e-3f20c9adadba
-updated: '2026-04-20T08:48:13.765Z'
+  - agent/COPY
+created: '2026-04-25T21:44:33.823Z'
+neural_id: 53a417b4-239d-4d3e-bc97-ab9f2593e5c8
+weight: 0.93
+fire_count: 2
+success_count: 2
+updated: '2026-04-16T23:13:28.550651+00:00'
 ---
 > **DIOS → COPY** vía `orchestrates`
 

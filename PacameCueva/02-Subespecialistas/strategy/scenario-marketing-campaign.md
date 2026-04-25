@@ -4,7 +4,7 @@ title: scenario-marketing-campaign
 tags:
   - type/subspecialist
   - domain/strategy
-created: '2026-04-19T14:25:37.794Z'
+created: '2026-04-25T21:44:18.212Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/strategy/runbooks/scenario-marketing-campaign.md

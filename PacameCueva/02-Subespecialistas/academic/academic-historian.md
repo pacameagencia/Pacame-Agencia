@@ -4,7 +4,7 @@ title: academic-historian
 tags:
   - type/subspecialist
   - domain/academic
-created: '2026-04-19T14:25:15.580Z'
+created: '2026-04-25T21:44:01.960Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/academic/academic-historian.md

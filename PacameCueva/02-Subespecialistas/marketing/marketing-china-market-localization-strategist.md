@@ -4,7 +4,7 @@ title: marketing-china-market-localization-strategist
 tags:
   - type/subspecialist
   - domain/marketing
-created: '2026-04-19T14:25:22.205Z'
+created: '2026-04-25T21:44:06.994Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/marketing/marketing-china-market-localization-strategist.md

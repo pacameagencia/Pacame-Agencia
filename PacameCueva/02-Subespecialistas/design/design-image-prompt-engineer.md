@@ -4,7 +4,7 @@ title: design-image-prompt-engineer
 tags:
   - type/subspecialist
   - domain/design
-created: '2026-04-19T14:25:16.099Z'
+created: '2026-04-25T21:44:02.340Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/design/design-image-prompt-engineer.md

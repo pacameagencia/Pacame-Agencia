@@ -4,7 +4,7 @@ title: agentic-identity-trust
 tags:
   - type/subspecialist
   - domain/specialized
-created: '2026-04-19T14:25:29.360Z'
+created: '2026-04-25T21:44:12.185Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/specialized/agentic-identity-trust.md

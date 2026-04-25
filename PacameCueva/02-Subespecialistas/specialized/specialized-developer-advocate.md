@@ -4,7 +4,7 @@ title: specialized-developer-advocate
 tags:
   - type/subspecialist
   - domain/specialized
-created: '2026-04-19T14:25:31.298Z'
+created: '2026-04-25T21:44:13.729Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/specialized/specialized-developer-advocate.md

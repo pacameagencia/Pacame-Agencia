@@ -8,7 +8,7 @@ tags:
   - chat
   - consulta
   - agent/SAGE
-created: '2026-04-19T14:26:26.665Z'
+created: '2026-04-25T21:44:34.009Z'
 neural_id: 2aec5312-7caa-46f9-9d4e-9488bc8c4f9f
 importance: 0.3
 accessed_count: 0

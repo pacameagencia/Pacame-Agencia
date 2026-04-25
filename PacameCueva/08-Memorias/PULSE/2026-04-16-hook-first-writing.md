@@ -9,7 +9,7 @@ tags:
   - copywriting
   - hooks
   - agent/PULSE
-created: '2026-04-19T14:26:26.554Z'
+created: '2026-04-25T21:44:33.962Z'
 neural_id: 06bbbafb-2513-4303-8a4b-2e36daf58546
 importance: 0.88
 accessed_count: 0

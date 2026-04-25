@@ -4,7 +4,7 @@ title: corporate-training-designer
 tags:
   - type/subspecialist
   - domain/specialized
-created: '2026-04-19T14:25:29.941Z'
+created: '2026-04-25T21:44:12.652Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/specialized/corporate-training-designer.md

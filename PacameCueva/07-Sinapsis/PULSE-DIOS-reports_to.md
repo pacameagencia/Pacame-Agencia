@@ -1,25 +1,26 @@
 ---
 type: synapse
 title: PULSE reports_to DIOS
-agent: PULSE
 tags:
   - type/synapse
   - synapse/reports_to
+  - type/synapse-strong
   - agent/PULSE
-created: '2026-04-20T08:48:13.768Z'
-source_path: >-
-  C:\Users\Pacame24\Downloads\PACAME
-  AGENCIA\PacameCueva\07-Sinapsis\PULSE-DIOS-reports_to.md
-neural_id: 2849b356-72ae-42d5-a49c-ba93e9fb7687
-updated: '2026-04-20T08:48:13.768Z'
+  - agent/DIOS
+created: '2026-04-25T21:44:33.825Z'
+neural_id: 7436ef61-85dc-46c6-8001-fd4c73da6d71
+weight: 0.93
+fire_count: 9
+success_count: 9
+updated: '2026-04-25T18:03:03.692004+00:00'
 ---
 > **PULSE → DIOS** vía `reports_to`
 
-**Peso:** `█████████████████░░░` 0.850
+**Peso:** `███████████████████░` 0.930
 
-- Veces activada: **5**
-- Éxitos: **5** (100%)
-- Último disparo: 2026-04-19T06:16:41.914228+00:00
+- Veces activada: **9**
+- Éxitos: **9** (100%)
+- Último disparo: 2026-04-25T18:03:03.692004+00:00
 
 ## Protagonistas
 - Desde: [[01-PULSE|PULSE]]

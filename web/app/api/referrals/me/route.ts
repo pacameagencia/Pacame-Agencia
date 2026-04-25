@@ -10,19 +10,19 @@ export async function GET(request: NextRequest) {
   const supabase = createServerSupabase();
   const config = loadReferralConfig();
 
-  const { data: affiliate } = await supabase
+  const baseQuery = supabase
     .from("aff_affiliates")
     .select("id, referral_code, email, status, campaign_id, created_at")
-    .eq("tenant_id", config.tenantId)
-    .eq("user_id", authed.id)
-    .maybeSingle<{
-      id: string;
-      referral_code: string;
-      email: string;
-      status: string;
-      campaign_id: string | null;
-      created_at: string;
-    }>();
+    .eq("tenant_id", config.tenantId);
+  const { data: affiliate } = authed.affiliateOnly
+    ? await baseQuery.eq("id", authed.id).maybeSingle<{
+        id: string; referral_code: string; email: string; status: string;
+        campaign_id: string | null; created_at: string;
+      }>()
+    : await baseQuery.eq("user_id", authed.id).maybeSingle<{
+        id: string; referral_code: string; email: string; status: string;
+        campaign_id: string | null; created_at: string;
+      }>();
 
   if (!affiliate) {
     return NextResponse.json({ error: "not_enrolled" }, { status: 404 });

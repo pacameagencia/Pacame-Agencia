@@ -4,7 +4,7 @@ title: testing-accessibility-auditor
 tags:
   - type/subspecialist
   - domain/testing
-created: '2026-04-19T14:25:33.608Z'
+created: '2026-04-25T21:44:15.593Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/testing/testing-accessibility-auditor.md

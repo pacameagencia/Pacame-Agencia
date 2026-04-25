@@ -9,7 +9,7 @@ tags:
   - db
   - proceso
   - agent/CORE
-created: '2026-04-19T14:26:26.421Z'
+created: '2026-04-25T21:44:33.888Z'
 neural_id: 7a54ddc6-0b66-42fd-a30f-8c021bebc658
 importance: 0.95
 accessed_count: 0

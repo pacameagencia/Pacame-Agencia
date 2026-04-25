@@ -5,7 +5,7 @@ agent: PULSE
 tags:
   - type/agent
   - agent/PULSE
-created: '2026-04-19T14:25:14.503Z'
+created: '2026-04-25T21:44:00.950Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/agents/06-PULSE.md'
 neural_id: 3d59f9dc-e1e6-43f8-ab3b-e368e68f439f
 ---

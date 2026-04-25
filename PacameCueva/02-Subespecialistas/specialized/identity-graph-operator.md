@@ -4,7 +4,7 @@ title: identity-graph-operator
 tags:
   - type/subspecialist
   - domain/specialized
-created: '2026-04-19T14:25:30.411Z'
+created: '2026-04-25T21:44:13.058Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/specialized/identity-graph-operator.md

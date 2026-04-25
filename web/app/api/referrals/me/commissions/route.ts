@@ -15,12 +15,10 @@ export async function GET(request: NextRequest) {
   const supabase = createServerSupabase();
   const config = loadReferralConfig();
 
-  const { data: affiliate } = await supabase
-    .from("aff_affiliates")
-    .select("id")
-    .eq("tenant_id", config.tenantId)
-    .eq("user_id", authed.id)
-    .maybeSingle<{ id: string }>();
+  const baseQ = supabase.from("aff_affiliates").select("id").eq("tenant_id", config.tenantId);
+  const { data: affiliate } = authed.affiliateOnly
+    ? await baseQ.eq("id", authed.id).maybeSingle<{ id: string }>()
+    : await baseQ.eq("user_id", authed.id).maybeSingle<{ id: string }>();
   if (!affiliate) return NextResponse.json({ error: "not_enrolled" }, { status: 404 });
 
   const { data, error } = await supabase

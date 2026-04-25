@@ -4,7 +4,7 @@ title: marketing-ai-citation-strategist
 tags:
   - type/subspecialist
   - domain/marketing
-created: '2026-04-19T14:25:21.369Z'
+created: '2026-04-25T21:44:06.386Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/marketing/marketing-ai-citation-strategist.md

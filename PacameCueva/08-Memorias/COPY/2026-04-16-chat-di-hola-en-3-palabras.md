@@ -8,7 +8,7 @@ tags:
   - chat
   - consulta
   - agent/COPY
-created: '2026-04-19T14:26:26.683Z'
+created: '2026-04-25T21:44:34.023Z'
 neural_id: d2980c24-4fc7-482b-8dc3-273590bbe666
 importance: 0.3
 accessed_count: 0

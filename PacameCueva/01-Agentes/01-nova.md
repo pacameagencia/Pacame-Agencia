@@ -5,7 +5,7 @@ agent: NOVA
 tags:
   - type/agent
   - agent/NOVA
-created: '2026-04-19T14:25:13.865Z'
+created: '2026-04-25T21:44:00.449Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/agents/01-NOVA.md'
 neural_id: 19224d70-f8e1-4821-aa34-b1b6b819eac4
 ---

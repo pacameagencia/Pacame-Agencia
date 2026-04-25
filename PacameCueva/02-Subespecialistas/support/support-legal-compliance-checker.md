@@ -4,7 +4,7 @@ title: support-legal-compliance-checker
 tags:
   - type/subspecialist
   - domain/support
-created: '2026-04-19T14:25:33.385Z'
+created: '2026-04-25T21:44:15.373Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/support/support-legal-compliance-checker.md

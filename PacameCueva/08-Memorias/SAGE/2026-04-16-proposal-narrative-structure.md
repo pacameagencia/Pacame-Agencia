@@ -9,7 +9,7 @@ tags:
   - proposal
   - narrative
   - agent/SAGE
-created: '2026-04-19T14:26:26.509Z'
+created: '2026-04-25T21:44:33.915Z'
 neural_id: 8c66adc6-aa94-4ef8-857d-5215f0b29e30
 importance: 0.92
 accessed_count: 0

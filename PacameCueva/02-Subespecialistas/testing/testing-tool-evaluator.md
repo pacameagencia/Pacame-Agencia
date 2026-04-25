@@ -4,7 +4,7 @@ title: testing-tool-evaluator
 tags:
   - type/subspecialist
   - domain/testing
-created: '2026-04-19T14:25:34.328Z'
+created: '2026-04-25T21:44:16.147Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/testing/testing-tool-evaluator.md

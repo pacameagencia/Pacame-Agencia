@@ -4,7 +4,7 @@ title: engineering-devops-automator
 tags:
   - type/subspecialist
   - domain/engineering
-created: '2026-04-19T14:25:18.041Z'
+created: '2026-04-25T21:44:04.807Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/engineering/engineering-devops-automator.md

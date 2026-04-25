@@ -5,7 +5,7 @@ agent: COPY
 tags:
   - type/agent
   - agent/COPY
-created: '2026-04-19T14:25:14.751Z'
+created: '2026-04-25T21:44:01.185Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/agents/08-COPY.md'
 neural_id: 365249b2-fbe5-4663-848c-4c3267ff09cc
 ---

@@ -3,7 +3,7 @@ type: skill
 title: Design_System
 tags:
   - type/skill
-created: '2026-04-19T14:25:39.752Z'
+created: '2026-04-25T21:44:20.747Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/.claude/skills/design-system.md'
 neural_id: 71ef4309-db06-47c7-9227-c2c6d4e902d3
 ---

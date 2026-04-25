@@ -4,7 +4,7 @@ title: product-feedback-synthesizer
 tags:
   - type/subspecialist
   - domain/product
-created: '2026-04-19T14:25:26.170Z'
+created: '2026-04-25T21:44:09.830Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/product/product-feedback-synthesizer.md

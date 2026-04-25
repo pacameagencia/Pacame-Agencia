@@ -3,7 +3,7 @@ type: skill
 title: Brand_Identity_Builder
 tags:
   - type/skill
-created: '2026-04-19T14:25:39.302Z'
+created: '2026-04-25T21:44:20.360Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/.claude/skills/branding.md'
 neural_id: 96cd8b16-1a01-4e23-8c01-372984791552
 ---

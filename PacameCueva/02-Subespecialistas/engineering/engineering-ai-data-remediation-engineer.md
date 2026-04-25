@@ -4,7 +4,7 @@ title: engineering-ai-data-remediation-engineer
 tags:
   - type/subspecialist
   - domain/engineering
-created: '2026-04-19T14:25:16.982Z'
+created: '2026-04-25T21:44:04.020Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/engineering/engineering-ai-data-remediation-engineer.md

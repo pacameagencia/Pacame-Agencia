@@ -4,7 +4,7 @@ title: project-management-jira-workflow-steward
 tags:
   - type/subspecialist
   - domain/project-management
-created: '2026-04-19T14:25:26.747Z'
+created: '2026-04-25T21:44:10.270Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/project-management/project-management-jira-workflow-steward.md

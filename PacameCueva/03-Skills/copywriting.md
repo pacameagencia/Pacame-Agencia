@@ -3,7 +3,7 @@ type: skill
 title: Copywriting_Engine
 tags:
   - type/skill
-created: '2026-04-19T14:25:39.524Z'
+created: '2026-04-25T21:44:20.541Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/.claude/skills/copywriting.md'
 neural_id: a320c119-7564-4c12-aeb7-1c33e25e6206
 ---

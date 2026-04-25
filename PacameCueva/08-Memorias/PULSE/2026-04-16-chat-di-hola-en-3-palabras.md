@@ -8,7 +8,7 @@ tags:
   - chat
   - consulta
   - agent/PULSE
-created: '2026-04-19T14:26:26.688Z'
+created: '2026-04-25T21:44:34.026Z'
 neural_id: df785b22-59da-4b41-9dc0-2840855fafb6
 importance: 0.3
 accessed_count: 0

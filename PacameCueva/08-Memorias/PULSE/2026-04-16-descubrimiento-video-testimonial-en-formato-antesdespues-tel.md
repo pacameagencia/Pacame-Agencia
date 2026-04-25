@@ -9,7 +9,7 @@ tags:
   - research
   - content_idea
   - agent/PULSE
-created: '2026-04-19T14:26:26.659Z'
+created: '2026-04-25T21:44:34.004Z'
 neural_id: b6934742-3a93-41f5-b680-ca873af03f80
 importance: 0.9
 accessed_count: 0

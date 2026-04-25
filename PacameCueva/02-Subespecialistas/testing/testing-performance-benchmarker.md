@@ -4,7 +4,7 @@ title: testing-performance-benchmarker
 tags:
   - type/subspecialist
   - domain/testing
-created: '2026-04-19T14:25:33.963Z'
+created: '2026-04-25T21:44:15.876Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/testing/testing-performance-benchmarker.md

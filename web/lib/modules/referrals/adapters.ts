@@ -11,8 +11,15 @@
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { readAffiliateSessionFromRequest } from "./affiliate-auth";
 
-export type AuthedUser = { id: string; email: string };
+export type AuthedUser = {
+  id: string;
+  email: string;
+  /** When true, this user authenticated via the standalone affiliate cookie
+   * — the `id` is the `aff_affiliates.id`, NOT a clients.id. */
+  affiliateOnly?: boolean;
+};
 
 export type ReferralsAdapter = {
   /**
@@ -56,6 +63,13 @@ export function getReferralsAdapter(): ReferralsAdapter {
 const PACAME_CLIENT_COOKIE = "pacame_client_auth";
 
 async function defaultGetAuthedUser(request: Request): Promise<AuthedUser | null> {
+  // 1. Standalone affiliate cookie (signup público)
+  const affSession = readAffiliateSessionFromRequest(request);
+  if (affSession) {
+    return { id: affSession.affiliate_id, email: affSession.email, affiliateOnly: true };
+  }
+
+  // 2. PACAME client cookie
   const cookieHeader = request.headers.get("cookie");
   if (!cookieHeader) return null;
 

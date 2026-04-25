@@ -4,7 +4,7 @@ title: xr-cockpit-interaction-specialist
 tags:
   - type/subspecialist
   - domain/spatial-computing
-created: '2026-04-19T14:25:28.893Z'
+created: '2026-04-25T21:44:11.812Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/spatial-computing/xr-cockpit-interaction-specialist.md

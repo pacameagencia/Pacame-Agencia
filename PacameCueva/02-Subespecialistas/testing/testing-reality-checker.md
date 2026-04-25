@@ -4,7 +4,7 @@ title: testing-reality-checker
 tags:
   - type/subspecialist
   - domain/testing
-created: '2026-04-19T14:25:34.079Z'
+created: '2026-04-25T21:44:15.967Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/testing/testing-reality-checker.md

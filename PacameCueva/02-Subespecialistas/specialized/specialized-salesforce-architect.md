@@ -4,7 +4,7 @@ title: specialized-salesforce-architect
 tags:
   - type/subspecialist
   - domain/specialized
-created: '2026-04-19T14:25:31.998Z'
+created: '2026-04-25T21:44:14.305Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/specialized/specialized-salesforce-architect.md

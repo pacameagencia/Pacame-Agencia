@@ -4,7 +4,7 @@ title: xr-interface-architect
 tags:
   - type/subspecialist
   - domain/spatial-computing
-created: '2026-04-19T14:25:29.131Z'
+created: '2026-04-25T21:44:11.994Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/spatial-computing/xr-interface-architect.md

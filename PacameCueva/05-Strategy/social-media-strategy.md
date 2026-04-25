@@ -3,7 +3,7 @@ type: strategy
 title: social-media-strategy
 tags:
   - type/strategy
-created: '2026-04-19T14:25:38.938Z'
+created: '2026-04-25T21:44:19.918Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/strategy/social-media-strategy.md'
 neural_id: 75cab7ed-0a26-4529-8209-e651a0a5b504
 ---

@@ -4,7 +4,7 @@ title: project-management-experiment-tracker
 tags:
   - type/subspecialist
   - domain/project-management
-created: '2026-04-19T14:25:26.639Z'
+created: '2026-04-25T21:44:10.186Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/project-management/project-management-experiment-tracker.md

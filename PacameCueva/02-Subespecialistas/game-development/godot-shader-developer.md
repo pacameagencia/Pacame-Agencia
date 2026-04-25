@@ -4,7 +4,7 @@ title: godot-shader-developer
 tags:
   - type/subspecialist
   - domain/game-development
-created: '2026-04-19T14:25:34.921Z'
+created: '2026-04-25T21:44:16.619Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/game-development/godot/godot-shader-developer.md

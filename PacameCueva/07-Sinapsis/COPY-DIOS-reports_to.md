@@ -1,25 +1,26 @@
 ---
 type: synapse
 title: COPY reports_to DIOS
-agent: COPY
 tags:
   - type/synapse
   - synapse/reports_to
+  - type/synapse-strong
   - agent/COPY
-created: '2026-04-20T08:48:13.966Z'
-source_path: >-
-  C:\Users\Pacame24\Downloads\PACAME
-  AGENCIA\PacameCueva\07-Sinapsis\COPY-DIOS-reports_to.md
-neural_id: 798cb9ff-1196-427d-bfe3-d7088ed8790a
-updated: '2026-04-20T08:48:13.966Z'
+  - agent/DIOS
+created: '2026-04-25T21:44:33.830Z'
+neural_id: 34ee7461-5c7a-4af8-8005-67a6563ea4e3
+weight: 0.87
+fire_count: 6
+success_count: 6
+updated: '2026-04-25T06:52:29.164659+00:00'
 ---
 > **COPY → DIOS** vía `reports_to`
 
-**Peso:** `████████████████░░░░` 0.790
+**Peso:** `█████████████████░░░` 0.870
 
-- Veces activada: **2**
-- Éxitos: **2** (100%)
-- Último disparo: 2026-04-17T12:49:59.278299+00:00
+- Veces activada: **6**
+- Éxitos: **6** (100%)
+- Último disparo: 2026-04-25T06:52:29.164659+00:00
 
 ## Protagonistas
 - Desde: [[01-COPY|COPY]]

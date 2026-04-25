@@ -4,7 +4,7 @@ title: sales-deal-strategist
 tags:
   - type/subspecialist
   - domain/sales
-created: '2026-04-19T14:25:27.628Z'
+created: '2026-04-25T21:44:10.931Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/sales/sales-deal-strategist.md

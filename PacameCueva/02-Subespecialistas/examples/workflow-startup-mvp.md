@@ -4,7 +4,7 @@ title: workflow-startup-mvp
 tags:
   - type/subspecialist
   - domain/examples
-created: '2026-04-19T14:25:20.542Z'
+created: '2026-04-25T21:44:03.339Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/examples/workflow-startup-mvp.md

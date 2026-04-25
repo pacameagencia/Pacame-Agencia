@@ -3,7 +3,7 @@ type: skill
 title: Figma_To_Code
 tags:
   - type/skill
-created: '2026-04-19T14:25:39.882Z'
+created: '2026-04-25T21:44:20.837Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/.claude/skills/figma-to-code.md'
 neural_id: 31e0acd1-1c89-46e1-a4bb-e85a845cd7d1
 ---

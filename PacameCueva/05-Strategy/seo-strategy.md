@@ -3,7 +3,7 @@ type: strategy
 title: seo-strategy
 tags:
   - type/strategy
-created: '2026-04-19T14:25:38.811Z'
+created: '2026-04-25T21:44:19.833Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/strategy/seo-strategy.md'
 neural_id: 0fff5a5b-f174-401a-830b-873f21f3e9b1
 ---

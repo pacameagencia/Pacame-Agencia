@@ -1,17 +1,18 @@
 ---
 type: synapse
 title: SAGE delegates_to COPY
-agent: SAGE
 tags:
   - type/synapse
   - synapse/delegates_to
+  - type/synapse-strong
   - agent/SAGE
-created: '2026-04-20T08:48:13.965Z'
-source_path: >-
-  C:\Users\Pacame24\Downloads\PACAME
-  AGENCIA\PacameCueva\07-Sinapsis\SAGE-COPY-delegates_to.md
-neural_id: e6306258-5071-4ad4-9d8b-434da23ba3bd
-updated: '2026-04-20T08:48:13.965Z'
+  - agent/COPY
+created: '2026-04-25T21:44:33.831Z'
+neural_id: 7aae77fb-e3f8-4e30-8672-6d0b0d6cdefa
+weight: 0.85
+fire_count: 1
+success_count: 1
+updated: '2026-04-15T19:50:47.292396+00:00'
 ---
 > **SAGE → COPY** vía `delegates_to`
 

@@ -3,7 +3,7 @@ type: skill
 title: Deploy_Workflow
 tags:
   - type/skill
-created: '2026-04-19T14:25:39.642Z'
+created: '2026-04-25T21:44:20.637Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/.claude/skills/deploy-workflow.md'
 neural_id: 7bc5f5e8-c3b8-459a-a555-dbc1bdb03ef2
 ---

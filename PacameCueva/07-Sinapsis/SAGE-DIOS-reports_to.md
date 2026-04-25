@@ -1,25 +1,26 @@
 ---
 type: synapse
 title: SAGE reports_to DIOS
-agent: SAGE
 tags:
   - type/synapse
   - synapse/reports_to
+  - type/synapse-strong
   - agent/SAGE
-created: '2026-04-20T08:48:13.791Z'
-source_path: >-
-  C:\Users\Pacame24\Downloads\PACAME
-  AGENCIA\PacameCueva\07-Sinapsis\SAGE-DIOS-reports_to.md
-neural_id: 44d08016-2e82-428a-9088-89186784a31c
-updated: '2026-04-20T08:48:13.791Z'
+  - agent/DIOS
+created: '2026-04-25T21:44:33.815Z'
+neural_id: 60c203c0-5bca-4b60-ab09-a360a712bef0
+weight: 1
+fire_count: 39
+success_count: 39
+updated: '2026-04-25T18:03:15.863342+00:00'
 ---
 > **SAGE → DIOS** vía `reports_to`
 
 **Peso:** `████████████████████` 1.000
 
-- Veces activada: **16**
-- Éxitos: **16** (100%)
-- Último disparo: 2026-04-19T12:29:42.47267+00:00
+- Veces activada: **39**
+- Éxitos: **39** (100%)
+- Último disparo: 2026-04-25T18:03:15.863342+00:00
 
 ## Protagonistas
 - Desde: [[01-SAGE|SAGE]]

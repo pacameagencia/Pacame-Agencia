@@ -4,7 +4,7 @@ title: marketing-linkedin-content-creator
 tags:
   - type/subspecialist
   - domain/marketing
-created: '2026-04-19T14:25:23.020Z'
+created: '2026-04-25T21:44:07.615Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/marketing/marketing-linkedin-content-creator.md

@@ -9,7 +9,7 @@ tags:
   - kpi
   - framework
   - agent/LENS
-created: '2026-04-19T14:26:26.472Z'
+created: '2026-04-25T21:44:33.956Z'
 neural_id: fa6ea415-80b2-4dd5-abb2-a73efde100d9
 importance: 0.92
 accessed_count: 0

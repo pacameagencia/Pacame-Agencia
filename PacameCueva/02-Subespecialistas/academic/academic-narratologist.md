@@ -4,7 +4,7 @@ title: academic-narratologist
 tags:
   - type/subspecialist
   - domain/academic
-created: '2026-04-19T14:25:15.697Z'
+created: '2026-04-25T21:44:02.065Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/academic/academic-narratologist.md

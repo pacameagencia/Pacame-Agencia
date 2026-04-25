@@ -4,7 +4,7 @@ title: engineering-security-engineer
 tags:
   - type/subspecialist
   - domain/engineering
-created: '2026-04-19T14:25:19.244Z'
+created: '2026-04-25T21:44:05.686Z'
 source_path: >-
   C:/Users/Pacame24/Downloads/PACAME
   AGENCIA/agency-agents/engineering/engineering-security-engineer.md

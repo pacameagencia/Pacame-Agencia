@@ -8,7 +8,7 @@ tags:
   - orchestration
   - workflow
   - agent/DIOS
-created: '2026-04-19T14:26:26.482Z'
+created: '2026-04-25T21:44:33.910Z'
 neural_id: 6837ba1c-0472-4058-b514-1d76e2bec10a
 importance: 0.92
 accessed_count: 0

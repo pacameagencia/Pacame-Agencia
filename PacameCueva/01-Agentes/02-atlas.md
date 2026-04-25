@@ -5,7 +5,7 @@ agent: ATLAS
 tags:
   - type/agent
   - agent/ATLAS
-created: '2026-04-19T14:25:13.990Z'
+created: '2026-04-25T21:44:00.562Z'
 source_path: 'C:/Users/Pacame24/Downloads/PACAME AGENCIA/agents/02-ATLAS.md'
 neural_id: 27171cbb-5b9e-4143-9fb5-51430640e714
 ---
