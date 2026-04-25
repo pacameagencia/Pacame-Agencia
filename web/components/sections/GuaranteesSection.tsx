@@ -48,7 +48,7 @@ export default function GuaranteesSection() {
   const prefersReduced = useReducedMotion();
 
   return (
-    <section className="section-padding relative bg-[#0A0A0A]">
+    <section className="section-padding relative bg-paper">
       <div className="px-6">
         <GoldenDivider variant="laurel" />
       </div>
@@ -64,14 +64,14 @@ export default function GuaranteesSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-4 uppercase tracking-[0.2em]">
+          <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
             Nuestro compromiso
           </p>
-          <h2 className="font-accent font-bold text-section text-ink mb-4 text-balance">
+          <h2 className="font-accent font-bold text-section text-pacame-white mb-4 text-balance">
             Garantias que{" "}
             <span className="gradient-text-gold">puedes tocar</span>
           </h2>
-          <p className="text-lg text-ink/40 font-body max-w-2xl mx-auto">
+          <p className="text-lg text-pacame-white/40 font-body max-w-2xl mx-auto">
             No hablamos de promesas vacias. Cada garantia esta respaldada por procesos reales y compromiso contractual.
           </p>
         </motion.div>
@@ -83,7 +83,7 @@ export default function GuaranteesSection() {
               <CardTilt key={item.title} tiltMaxAngle={8} scale={1.02}>
               <CardTiltContent>
               <motion.div
-                className="group relative rounded-2xl p-7 bg-paper-deep border border-ink/[0.06] hover:border-accent-gold/15 transition-all duration-500 card-golden-shine"
+                className="group relative rounded-2xl p-7 bg-dark-card border border-white/[0.06] hover:border-olympus-gold/15 transition-all duration-500 card-golden-shine"
                 initial={prefersReduced ? {} : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -102,10 +102,10 @@ export default function GuaranteesSection() {
                   <Icon className="w-6 h-6" style={{ color: item.accent }} />
                 </div>
 
-                <h3 className="font-heading font-bold text-lg text-ink mb-2">
+                <h3 className="font-heading font-bold text-lg text-pacame-white mb-2">
                   {item.title}
                 </h3>
-                <p className="text-sm text-ink/45 font-body leading-relaxed">
+                <p className="text-sm text-pacame-white/45 font-body leading-relaxed">
                   {item.description}
                 </p>
               </motion.div>

@@ -1,182 +1,235 @@
 "use client";
 
 import Link from "next/link";
-import { Monitor, Search, Share2, Megaphone, Palette, ArrowRight, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import ScrollReveal, { StaggerContainer, StaggerItem } from "@/components/ui/scroll-reveal";
-import GoldenDivider from "@/components/effects/GoldenDivider";
-import { NovaSigil, AtlasSigil, NexusSigil, PixelSigil, PulseSigil } from "@/components/icons/agent-sigils";
-import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
+import { ArrowUpRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 const services = [
   {
-    icon: Monitor,
-    sigil: PixelSigil,
-    name: "Desarrollo Web",
-    description: "Desde landing pages hasta apps complejas. Next.js, Tailwind, Supabase.",
-    price: "Desde 300 EUR",
-    deadline: "2-40 dias",
-    color: "#06B6D4",
+    number: "01",
+    kicker: "Construcción",
+    name: "Desarrollo web",
+    description:
+      "Desde landing pages de alto impacto hasta aplicaciones complejas a medida. Next.js, Tailwind, Supabase. Stack moderno, SEO desde el código.",
+    price: "Desde 300 €",
+    deadline: "2–40 días",
     href: "/servicios#web",
+    accent: "#B54E30",
   },
   {
-    icon: Search,
-    sigil: AtlasSigil,
+    number: "02",
+    kicker: "Visibilidad",
     name: "SEO",
-    description: "Posicionamiento organico que genera demanda real. Auditorias, contenidos, link building.",
-    price: "Desde 300 EUR",
-    deadline: "Resultados en 60-90 dias",
-    color: "#2563EB",
+    description:
+      "Posicionamiento orgánico que genera demanda real. Auditorías técnicas, contenido, link building con criterio editorial.",
+    price: "Desde 300 €",
+    deadline: "60–90 días",
     href: "/servicios#seo",
+    accent: "#283B70",
   },
   {
-    icon: Share2,
-    sigil: PulseSigil,
-    name: "Redes Sociales",
-    description: "Contenido que conecta y convierte. Estrategia, diseno, copy y community.",
-    price: "Desde 300 EUR/mes",
+    number: "03",
+    kicker: "Conversación",
+    name: "Redes sociales",
+    description:
+      "Contenido que conecta y convierte. Estrategia, diseño, copy y community — todo en un mismo equipo.",
+    price: "Desde 300 €/mes",
     deadline: "Calendario en 48h",
-    color: "#EC4899",
     href: "/servicios#redes",
+    accent: "#E8B730",
   },
   {
-    icon: Megaphone,
-    sigil: NexusSigil,
-    name: "Publicidad Digital",
-    description: "Meta Ads y Google Ads que generan ROI. Embudos completos con automatizacion.",
-    price: "Desde 400 EUR/mes",
-    deadline: "Campanas live en 3-5 dias",
-    color: "#EA580C",
+    number: "04",
+    kicker: "Adquisición",
+    name: "Publicidad digital",
+    description:
+      "Meta Ads y Google Ads con embudos completos y automatización. Medimos todo, optimizamos semanalmente.",
+    price: "Desde 400 €/mes",
+    deadline: "Live en 3–5 días",
     href: "/servicios#ads",
+    accent: "#CB6B47",
   },
   {
-    icon: Palette,
-    sigil: NovaSigil,
+    number: "05",
+    kicker: "Identidad",
     name: "Branding",
-    description: "Identidad visual que se recuerda. Logo, paleta, tipografia y manual de marca.",
-    price: "Desde 400 EUR",
-    deadline: "Logo en 3-5 dias",
-    color: "#7C3AED",
+    description:
+      "Identidad visual que se recuerda. Logo, paleta, tipografía y manual de marca. Diseño con intención, no plantillas.",
+    price: "Desde 400 €",
+    deadline: "Logo en 3–5 días",
     href: "/servicios#branding",
+    accent: "#6B7535",
   },
 ];
 
 export default function ServicesSection() {
   return (
-    <section className="section-padding bg-paper relative">
-      {/* Golden divider */}
-      <div className="px-6">
-        <GoldenDivider variant="laurel" />
-      </div>
+    <section id="services" className="relative section-padding bg-paper">
+      {/* Pattern azulejo decorativo top-right */}
+      <div
+        className="absolute top-16 right-0 w-80 h-80 bg-azulejo opacity-40 pointer-events-none"
+        aria-hidden="true"
+      />
 
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Header */}
-        <ScrollReveal className="text-center mb-20">
-          <p className="text-[13px] font-body font-medium text-accent-gold/70 mb-4 uppercase tracking-[0.2em]">
-            Servicios
-          </p>
-          <h2 className="font-accent font-bold text-section text-ink mb-6 text-balance">
-            Todo lo digital.{" "}
-            <span className="gradient-text-gold">Un solo equipo.</span>
-          </h2>
-          <p className="text-lg text-ink/40 max-w-lg mx-auto font-body">
-            Desde un logo hasta un SaaS completo. No necesitas cinco proveedores.
-          </p>
-        </ScrollReveal>
+      <div className="max-w-6xl mx-auto px-6 relative">
+        {/* ── Header estilo portada de sección ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-20 pb-10 border-b-2 border-ink">
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 14 14" className="text-terracotta-500" aria-hidden="true">
+                <circle cx="7" cy="7" r="6" fill="currentColor" />
+              </svg>
+              <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-terracotta-500 font-medium">
+                Capítulo I
+              </span>
+            </div>
+          </div>
+          <div className="lg:col-span-7">
+            <h2 className="font-display text-ink text-balance" style={{ fontSize: "clamp(2.25rem, 5vw, 4rem)", lineHeight: "1.02", letterSpacing: "-0.03em", fontWeight: 500 }}>
+              Todo lo digital.
+              <span className="block italic font-light" style={{ color: "#B54E30", fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 144' }}>
+                Un solo equipo.
+              </span>
+            </h2>
+          </div>
+          <div className="lg:col-span-3 lg:self-end">
+            <p className="font-sans text-ink-soft text-[15px] leading-relaxed">
+              Desde un logo hasta un SaaS completo.
+              <span className="block mt-2 font-mono text-[11px] tracking-wide text-ink-mute uppercase">
+                Sin cinco proveedores. Sin fricción.
+              </span>
+            </p>
+          </div>
+        </div>
 
-        {/* Services grid */}
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-16" staggerDelay={0.08}>
-          {services.map((service) => {
-            const Sigil = service.sigil;
-            return (
-              <StaggerItem key={service.name}>
-                <CardTilt tiltMaxAngle={10} scale={1.02}><CardTiltContent>
-                  <Link
-                    href={service.href}
-                    className="group block rounded-2xl p-7 card-apple card-golden-shine h-full relative overflow-hidden"
-                  >
-                    {/* Sigil icon with rotating ring */}
-                    <div className="relative w-14 h-14 mb-6 flex items-center justify-center">
-                      {/* Rotating dashed ring */}
-                      <div
-                        className="absolute inset-0 rounded-full border border-dashed opacity-20 group-hover:opacity-40 transition-opacity duration-500"
-                        style={{
-                          borderColor: service.color,
-                          animation: "sigil-rotate 20s linear infinite",
-                        }}
-                      />
-                      <Sigil color={service.color} size={28} />
-                    </div>
+        {/* ── Grid de servicios — entradas estilo índice editorial ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+          {services.map((s, i) => (
+            <ServiceEntry key={s.number} service={s} position={i} />
+          ))}
 
-                    {/* Content */}
-                    <h3 className="font-heading font-bold text-xl text-ink mb-2">
-                      {service.name}
-                    </h3>
-                    <p className="text-sm text-ink/45 font-body leading-relaxed mb-6">
-                      {service.description}
-                    </p>
-
-                    {/* Meta */}
-                    <div className="flex items-center justify-between border-t border-accent-gold/10 pt-5 mt-auto">
-                      <span className="text-sm font-heading font-semibold text-ink/70">
-                        {service.price}
-                      </span>
-                      <span className="flex items-center gap-1.5 text-xs text-ink/30 font-body">
-                        <Clock className="w-3 h-3" />
-                        {service.deadline}
-                      </span>
-                    </div>
-
-                    {/* Hover arrow */}
-                    <div className="absolute top-7 right-7 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-apple">
-                      <ArrowRight className="w-4 h-4 text-accent-gold/60" />
-                    </div>
-                  </Link>
-                </CardTiltContent></CardTilt>
-              </StaggerItem>
-            );
-          })}
-
-          {/* Custom project card — aurora gradient */}
-          <StaggerItem>
-            <CardTilt tiltMaxAngle={10} scale={1.02}><CardTiltContent>
-              <Link
-                href="/contacto"
-                className="group block rounded-2xl p-7 relative overflow-hidden h-full"
-                style={{
-                  background: "linear-gradient(135deg, #7C3AED 0%, #FF6B9D 25%, #D4A853 50%, #4ECDC4 75%, #06B6D4 100%)",
-                  backgroundSize: "400% 400%",
-                  animation: "text-shimmer 8s ease infinite",
-                }}
+          {/* ── Bloque "Proyecto a medida" — full card editorial ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
+            className="md:col-span-2 mt-12"
+          >
+            <Link
+              href="/contacto"
+              className="group relative block bg-ink text-paper p-12 md:p-16 overflow-hidden"
+              style={{ boxShadow: "6px 6px 0 #B54E30" }}
+            >
+              {/* Sol rotatorio fondo */}
+              <svg
+                className="absolute -right-20 -bottom-20 w-96 h-96 opacity-15 animate-sun-rotate"
+                viewBox="0 0 400 400"
+                aria-hidden="true"
               >
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/15 transition-colors duration-500" />
-                <div className="relative z-10 flex flex-col h-full">
-                  <h3 className="font-accent font-bold text-xl text-white mb-2">
-                    Proyecto a medida
-                  </h3>
-                  <p className="text-sm text-white/70 font-body leading-relaxed mb-6 flex-1">
-                    Algo especifico en mente? Te decimos si podemos y cuanto cuesta. 30 minutos, sin compromiso.
-                  </p>
-                  <div className="flex items-center gap-2 text-sm text-white/90 font-body font-medium">
-                    Cuentanos tu proyecto
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </Link>
-            </CardTiltContent></CardTilt>
-          </StaggerItem>
-        </StaggerContainer>
+                <circle cx="200" cy="200" r="80" fill="#E8B730" />
+                {Array.from({ length: 20 }).map((_, idx) => (
+                  <line
+                    key={idx}
+                    x1="200"
+                    y1="100"
+                    x2="200"
+                    y2="70"
+                    stroke="#E8B730"
+                    strokeWidth="4"
+                    transform={`rotate(${(idx * 360) / 20} 200 200)`}
+                  />
+                ))}
+              </svg>
 
-        {/* CTA */}
-        <ScrollReveal className="text-center">
-          <Button variant="outline" size="lg" asChild className="group rounded-full border-accent-gold/20 hover:border-accent-gold/40 hover:bg-accent-gold/5">
-            <Link href="/servicios">
-              Ver todos los servicios y precios
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+                <div className="md:col-span-8">
+                  <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-mustard-500 mb-4 block">
+                    Proyecto a medida
+                  </span>
+                  <h3 className="font-display text-paper mb-5" style={{ fontSize: "clamp(2rem, 4vw, 3.25rem)", lineHeight: "1.02", fontWeight: 500 }}>
+                    ¿Tienes algo más específico entre manos?
+                  </h3>
+                  <p className="font-sans text-paper/70 text-[17px] leading-relaxed max-w-xl">
+                    Cuéntanos qué necesitas y te decimos si encaja, cuánto cuesta y cuándo lo tendrás. Treinta minutos, sin compromiso.
+                  </p>
+                </div>
+                <div className="md:col-span-4 md:text-right">
+                  <span className="inline-flex items-center gap-3 font-sans font-medium text-mustard-500 text-[17px]">
+                    Reservar reunión
+                    <ArrowUpRight className="w-5 h-5 group-hover:rotate-45 transition-transform duration-500" />
+                  </span>
+                </div>
+              </div>
             </Link>
-          </Button>
-        </ScrollReveal>
+          </motion.div>
+        </div>
+
+        {/* ── CTA inferior ── */}
+        <div className="mt-20 text-center">
+          <Link
+            href="/servicios"
+            className="group inline-flex items-center gap-3 link-editorial font-display text-2xl italic text-ink"
+            style={{ fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 144' }}
+          >
+            Ver todos los servicios y precios
+            <ArrowUpRight className="w-5 h-5 text-terracotta-500 group-hover:rotate-45 transition-transform duration-500" />
+          </Link>
+        </div>
       </div>
     </section>
+  );
+}
+
+function ServiceEntry({ service, position }: { service: typeof services[number]; position: number }) {
+  const isRightColumn = position % 2 === 1;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.7, delay: (position % 2) * 0.08, ease: [0.7, 0, 0.3, 1] }}
+      className={`group border-ink/20 ${
+        isRightColumn ? "border-t md:border-t md:border-l" : "border-t"
+      } ${position >= services.length - 2 && position < services.length ? "md:border-b" : ""}`}
+    >
+      <Link href={service.href} className="block p-8 md:p-10 hover:bg-sand-100 transition-colors duration-500 relative">
+        {/* Número ornamental */}
+        <span
+          className="absolute top-6 right-8 font-display italic text-6xl opacity-25 group-hover:opacity-60 transition-opacity duration-500"
+          style={{
+            color: service.accent,
+            fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 144',
+            fontWeight: 300,
+          }}
+        >
+          {service.number}
+        </span>
+
+        <div className="relative z-10 max-w-sm">
+          <span className="kicker block mb-4" style={{ color: service.accent }}>
+            {service.kicker}
+          </span>
+          <h3 className="font-display font-medium text-3xl text-ink mb-4 group-hover:text-terracotta-500 transition-colors duration-300" style={{ fontVariationSettings: '"SOFT" 40, "WONK" 0, "opsz" 100' }}>
+            {service.name}
+          </h3>
+          <p className="font-sans text-ink-soft text-[15px] leading-relaxed mb-6">
+            {service.description}
+          </p>
+
+          {/* Meta en línea editorial */}
+          <div className="flex items-center gap-4 pt-5 border-t border-ink/15">
+            <span className="font-mono text-[11px] tracking-wide uppercase text-ink font-medium">
+              {service.price}
+            </span>
+            <span className="w-1 h-1 rounded-full bg-ink-mute" aria-hidden="true" />
+            <span className="font-mono text-[11px] tracking-wide uppercase text-ink-mute">
+              {service.deadline}
+            </span>
+            <ArrowUpRight className="w-4 h-4 ml-auto text-ink-mute group-hover:text-terracotta-500 group-hover:rotate-45 transition-all duration-500" />
+          </div>
+        </div>
+      </Link>
+    </motion.div>
   );
 }
