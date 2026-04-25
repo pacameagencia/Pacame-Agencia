@@ -15,6 +15,13 @@ import {
   Database,
   Mic,
   Workflow,
+  Rocket,
+  Globe,
+  Phone,
+  GitBranch,
+  XCircle,
+  AlertCircle,
+  PauseCircle,
 } from "lucide-react";
 
 interface MaterializedFile {
@@ -22,6 +29,14 @@ interface MaterializedFile {
   signed_url: string;
   bytes: number;
   content_type: string;
+}
+
+interface DeployLogEntry {
+  ts: string;
+  target: string;
+  action: string;
+  status: string;
+  detail?: string | Record<string, unknown>;
 }
 
 interface DeploymentRow {
@@ -37,6 +52,34 @@ interface DeploymentRow {
   missing_vars: string[] | null;
   warnings: string[] | null;
   created_at: string;
+  deploy_state?: string | null;
+  deploy_log?: DeployLogEntry[] | null;
+  vercel_url?: string | null;
+  vercel_project_id?: string | null;
+  vercel_deployed_at?: string | null;
+  vapi_assistant_id?: string | null;
+  vapi_deployed_at?: string | null;
+  n8n_workflow_ids?: string[] | null;
+  n8n_deployed_at?: string | null;
+}
+
+interface DeployResult {
+  ok?: boolean;
+  skipped_reason?: string;
+  error?: string;
+  project_id?: string;
+  project_url?: string;
+  assistant_id?: string;
+  workflow_count?: number;
+  workflow_ids?: string[];
+}
+
+interface DeployResponse {
+  ok: boolean;
+  deployment_id: string;
+  results: { vercel?: DeployResult; vapi?: DeployResult; n8n?: DeployResult };
+  summary: { ok: number; skipped: number; failed: number };
+  deploy_state: string;
 }
 
 interface DeploymentsResponse {
@@ -73,6 +116,8 @@ export default function FactoriaClientesPage() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [zipLoading, setZipLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [deploying, setDeploying] = useState<string | null>(null);
+  const [deployResult, setDeployResult] = useState<DeployResponse | null>(null);
 
   async function load() {
     try {
@@ -104,6 +149,26 @@ export default function FactoriaClientesPage() {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setZipLoading(null);
+    }
+  }
+
+  async function deployToProduction(id: string, targets: ("vercel" | "vapi" | "n8n")[] = ["vercel", "vapi", "n8n"]) {
+    setDeploying(id);
+    setDeployResult(null);
+    try {
+      const res = await fetch("/api/factoria/deploy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deployment_id: id, targets }),
+      });
+      const json = (await res.json()) as DeployResponse;
+      setDeployResult(json);
+      // Reload deployments para refrescar estado
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setDeploying(null);
     }
   }
 
@@ -203,13 +268,21 @@ export default function FactoriaClientesPage() {
           </aside>
 
           {/* Detalle */}
-          <main className="lg:col-span-8">
+          <main className="lg:col-span-8 space-y-4">
             {active ? (
-              <DeploymentDetail
-                deployment={active}
-                onGenerateZip={() => generateZip(active.id)}
-                zipGenerating={zipLoading === active.id}
-              />
+              <>
+                <DeploymentDetail
+                  deployment={active}
+                  onGenerateZip={() => generateZip(active.id)}
+                  zipGenerating={zipLoading === active.id}
+                />
+                <DeployPanel
+                  deployment={active}
+                  onDeploy={(targets) => deployToProduction(active.id, targets)}
+                  deploying={deploying === active.id}
+                  result={deployResult?.deployment_id === active.id ? deployResult : null}
+                />
+              </>
             ) : (
               <div className="bg-dark-card border border-white/[0.06] p-8 text-center text-pacame-white/40">
                 Selecciona un cliente
@@ -418,4 +491,238 @@ function groupByDir(files: MaterializedFile[]): Record<string, MaterializedFile[
     groups[dir].push(file);
   }
   return groups;
+}
+
+// ──────────────────────────────────────────────────────────────────
+// Deploy panel — botón "Desplegar a producción" + estado por destino
+// ──────────────────────────────────────────────────────────────────
+
+const DEPLOY_TARGETS: { id: "vercel" | "vapi" | "n8n"; label: string; icon: React.ComponentType<{ className?: string }>; envVar: string }[] = [
+  { id: "vercel", label: "Vercel", icon: Globe, envVar: "VERCEL_TOKEN" },
+  { id: "vapi", label: "Vapi (recepcionista IA)", icon: Phone, envVar: "VAPI_API_KEY" },
+  { id: "n8n", label: "n8n (workflows)", icon: GitBranch, envVar: "N8N_API_KEY" },
+];
+
+function DeployPanel({
+  deployment,
+  onDeploy,
+  deploying,
+  result,
+}: {
+  deployment: DeploymentRow;
+  onDeploy: (targets: ("vercel" | "vapi" | "n8n")[]) => void;
+  deploying: boolean;
+  result: DeployResponse | null;
+}) {
+  const log = deployment.deploy_log ?? [];
+  const recentLog = log.slice(-15).reverse();
+
+  return (
+    <article className="bg-dark-card border border-electric-violet/30 divide-y divide-white/[0.04]">
+      <header className="p-6">
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Rocket className="w-5 h-5 text-electric-violet" />
+              <span className="font-mono text-[11px] tracking-[0.2em] uppercase text-electric-violet">
+                Deploy a producción
+              </span>
+              <DeployStateBadge state={deployment.deploy_state ?? "not_started"} />
+            </div>
+            <p className="text-pacame-white/60 text-sm font-body max-w-xl">
+              Crea el proyecto en Vercel · sube assistant a Vapi · importa workflows a n8n. Los destinos sin API key configurada se saltan automáticamente.
+            </p>
+          </div>
+          <button
+            onClick={() => onDeploy(["vercel", "vapi", "n8n"])}
+            disabled={deploying || !deployment.materialized_at}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-electric-violet text-white font-body text-sm font-medium hover:bg-electric-violet/90 transition-colors disabled:opacity-50 rounded-sm"
+          >
+            {deploying ? <Loader2 className="w-4 h-4 animate-spin" /> : <Rocket className="w-4 h-4" />}
+            {deploying ? "Desplegando..." : "Desplegar a producción"}
+          </button>
+        </div>
+      </header>
+
+      {/* Estado por destino */}
+      <section className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        {DEPLOY_TARGETS.map((t) => (
+          <TargetStateCard
+            key={t.id}
+            target={t}
+            deployment={deployment}
+            result={result?.results?.[t.id]}
+            onDeployOne={() => onDeploy([t.id])}
+            disabled={deploying}
+          />
+        ))}
+      </section>
+
+      {/* Resumen último run */}
+      {result && (
+        <section className="p-6 bg-white/[0.02]">
+          <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-pacame-white/50 block mb-3">
+            Último run · {new Date().toLocaleTimeString("es-ES")}
+          </span>
+          <div className="flex items-center gap-4 text-sm font-mono">
+            <span className="text-lime-pulse">✓ {result.summary.ok} OK</span>
+            <span className="text-amber-signal">⊘ {result.summary.skipped} saltados</span>
+            <span className="text-rose-alert">✗ {result.summary.failed} fallos</span>
+            <span className="ml-auto text-electric-violet">deploy_state: {result.deploy_state}</span>
+          </div>
+        </section>
+      )}
+
+      {/* Log */}
+      {recentLog.length > 0 && (
+        <section className="p-6">
+          <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-pacame-white/50 block mb-3">
+            Deploy log (últimos {recentLog.length})
+          </span>
+          <ul className="space-y-1 max-h-72 overflow-auto">
+            {recentLog.map((entry, i) => (
+              <LogEntry key={i} entry={entry} />
+            ))}
+          </ul>
+        </section>
+      )}
+    </article>
+  );
+}
+
+function DeployStateBadge({ state }: { state: string }) {
+  const map: Record<string, { color: string; icon: React.ComponentType<{ className?: string }>; label: string }> = {
+    not_started: { color: "bg-white/10 text-pacame-white/50", icon: PauseCircle, label: "no iniciado" },
+    partial: { color: "bg-amber-signal/20 text-amber-signal", icon: AlertCircle, label: "parcial" },
+    shipped: { color: "bg-lime-pulse/20 text-lime-pulse", icon: CheckCircle2, label: "shipped" },
+    error: { color: "bg-rose-alert/20 text-rose-alert", icon: XCircle, label: "error" },
+  };
+  const cfg = map[state] ?? map.not_started;
+  const Icon = cfg.icon;
+  return (
+    <span className={`inline-flex items-center gap-1.5 font-mono text-[9px] tracking-[0.15em] uppercase px-2 py-0.5 ${cfg.color}`}>
+      <Icon className="w-3 h-3" />
+      {cfg.label}
+    </span>
+  );
+}
+
+function TargetStateCard({
+  target,
+  deployment,
+  result,
+  onDeployOne,
+  disabled,
+}: {
+  target: { id: "vercel" | "vapi" | "n8n"; label: string; icon: React.ComponentType<{ className?: string }>; envVar: string };
+  deployment: DeploymentRow;
+  result?: DeployResult;
+  onDeployOne: () => void;
+  disabled: boolean;
+}) {
+  const Icon = target.icon;
+
+  // Determinar estado actual del target
+  let state: "ok" | "skipped" | "error" | "not_started" = "not_started";
+  let detail: React.ReactNode = "Listo para desplegar";
+  let externalLink: string | null = null;
+
+  if (target.id === "vercel" && deployment.vercel_project_id) {
+    state = "ok";
+    detail = `Project: ${deployment.vercel_project_id.slice(0, 12)}`;
+    externalLink = deployment.vercel_url ?? null;
+  } else if (target.id === "vapi" && deployment.vapi_assistant_id) {
+    state = "ok";
+    detail = `Assistant: ${deployment.vapi_assistant_id.slice(0, 12)}`;
+    externalLink = `https://dashboard.vapi.ai/assistants/${deployment.vapi_assistant_id}`;
+  } else if (target.id === "n8n" && deployment.n8n_workflow_ids && deployment.n8n_workflow_ids.length > 0) {
+    state = "ok";
+    detail = `${deployment.n8n_workflow_ids.length} workflows importados`;
+  }
+
+  // Override con resultado del último run
+  if (result?.skipped_reason) {
+    state = "skipped";
+    detail = result.skipped_reason;
+  } else if (result?.error) {
+    state = "error";
+    detail = result.error.slice(0, 80);
+  } else if (result?.ok) {
+    state = "ok";
+  }
+
+  const stateColors: Record<typeof state, { border: string; icon: string }> = {
+    ok: { border: "border-lime-pulse/30", icon: "text-lime-pulse" },
+    error: { border: "border-rose-alert/40", icon: "text-rose-alert" },
+    skipped: { border: "border-amber-signal/30", icon: "text-amber-signal" },
+    not_started: { border: "border-white/[0.06]", icon: "text-pacame-white/40" },
+  };
+
+  const stateIconMap = {
+    ok: <CheckCircle2 className={`w-4 h-4 ${stateColors[state].icon}`} />,
+    error: <XCircle className={`w-4 h-4 ${stateColors[state].icon}`} />,
+    skipped: <PauseCircle className={`w-4 h-4 ${stateColors[state].icon}`} />,
+    not_started: <Clock className={`w-4 h-4 ${stateColors[state].icon}`} />,
+  };
+
+  return (
+    <div className={`p-4 border ${stateColors[state].border} bg-white/[0.01]`}>
+      <div className="flex items-start justify-between gap-2 mb-3">
+        <div className="flex items-center gap-2">
+          <Icon className="w-4 h-4 text-pacame-white/60" />
+          <span className="font-heading font-bold text-pacame-white text-sm">{target.label}</span>
+        </div>
+        {stateIconMap[state]}
+      </div>
+      <p className="text-pacame-white/65 text-[12px] font-mono leading-relaxed mb-3 break-words">{detail}</p>
+      {state === "skipped" && (
+        <p className="text-amber-signal/80 text-[10px] font-mono mb-3">
+          Configura {target.envVar} en .env.local para activar
+        </p>
+      )}
+      <div className="flex items-center justify-between gap-2">
+        <button
+          onClick={onDeployOne}
+          disabled={disabled}
+          className="text-[11px] font-mono text-electric-violet hover:text-electric-violet/80 disabled:opacity-50 transition-colors"
+        >
+          {state === "ok" ? "Re-desplegar" : "Desplegar solo este"}
+        </button>
+        {externalLink && (
+          <a
+            href={externalLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-pacame-white/40 hover:text-electric-violet transition-colors"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function LogEntry({ entry }: { entry: DeployLogEntry }) {
+  const statusColors: Record<string, string> = {
+    ok: "text-lime-pulse",
+    error: "text-rose-alert",
+    skipped: "text-amber-signal",
+    in_progress: "text-electric-violet",
+  };
+  const ts = new Date(entry.ts).toLocaleTimeString("es-ES", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  return (
+    <li className="flex items-start gap-3 text-[11px] font-mono leading-relaxed">
+      <span className="text-pacame-white/30 flex-shrink-0">{ts}</span>
+      <span className="text-pacame-white/50 uppercase tracking-[0.1em] w-12 flex-shrink-0">{entry.target}</span>
+      <span className="text-pacame-white/70 flex-1 truncate">{entry.action}</span>
+      <span className={`uppercase font-bold flex-shrink-0 ${statusColors[entry.status] ?? "text-pacame-white/50"}`}>
+        {entry.status}
+      </span>
+    </li>
+  );
 }

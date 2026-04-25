@@ -332,7 +332,7 @@ export async function GET(request: NextRequest) {
       impact: "medium",
       confidence: 0.75,
       actionable: true,
-      suggestedAction: payload.applications[0] || null,
+      suggestedAction: payload.applications[0] || undefined,
       metadata: {
         source: "auto-learn",
         topic,
