@@ -35,6 +35,10 @@
     {
       "path": "/api/neural/opportunity-scanner",
       "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/neural/learn",
+      "schedule": "15 */6 * * *"
     }
   ]
 }

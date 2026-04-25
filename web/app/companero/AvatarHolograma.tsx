@@ -211,9 +211,10 @@ export default function AvatarHolograma({ state, analyser }: Props) {
       ctx.restore();
 
       // === Waveform arc (solo speaking) ===
-      if (an && s === "speaking") {
-        const fd = new Uint8Array(an.frequencyBinCount);
-        an.getByteFrequencyData(fd as any);
+      const auralyser = analyserRef.current;
+      if (auralyser && s === "speaking") {
+        const fd = new Uint8Array(auralyser.frequencyBinCount);
+        auralyser.getByteFrequencyData(fd as any);
         const bars = 80;
         const baseR = S * 0.36;
         ctx.save();
