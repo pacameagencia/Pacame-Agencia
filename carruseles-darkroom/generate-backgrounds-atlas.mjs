@@ -50,16 +50,16 @@ const FORCED_MODEL = process.argv.find((a) => a.startsWith("--model="))?.split("
 const MODELS_CASCADE = FORCED_MODEL
   ? [{ id: FORCED_MODEL }]
   : [
-      // 1. FREE — Baidu ERNIE Image Turbo. Si la calidad convence, coste $0.
-      { id: "baidu/ERNIE-Image-Turbo/text-to-image" },
-      // 2. $0.08/img — Google Nano Banana 2. Top calidad editorial.
-      { id: "google/nano-banana-2/text-to-image" },
-      // 3. $0.032/img — ByteDance Seedream v5 Lite. Excelente para typography/poster.
+      // 1. $0.012/img — OpenAI gpt-image-2 (the one Pablo wanted). 18 imgs = $0.22.
+      { id: "openai/gpt-image-2-developer/text-to-image" },
+      // 2. $0.06/img — Google Imagen 4 Ultra. Top cinemático alternativo.
+      { id: "google/imagen4-ultra" },
+      // 3. $0.032/img — ByteDance Seedream v5 Lite. Typography/poster king.
       { id: "bytedance/seedream-v5.0-lite" },
-      // 4. $0.028/img — Qwen Image 2.0.
-      { id: "qwen/qwen-image-2.0/text-to-image" },
-      // 5. $0.026/img — Alibaba Wan-2.7. El más barato.
-      { id: "alibaba/wan-2.7/text-to-image" },
+      // 4. $0.012/img — Flux Dev. Great editorial fallback.
+      { id: "black-forest-labs/flux-dev" },
+      // 5. $0.003/img — Flux Schnell. Cheapest emergency fallback.
+      { id: "black-forest-labs/flux-schnell" },
     ];
 
 const VARIATIONS = 3;
