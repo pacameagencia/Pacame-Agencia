@@ -45,10 +45,24 @@ const N8N_CRED_TYPE_MAP: Record<keyof ClientCredentials, { type: string; placeho
   twilio: {
     type: "twilioApi",
     placeholder: "REPLACE_WITH_TWILIO_CRED_ID",
-    buildData: (i) => ({
-      accountSid: i.accountSid,
-      authToken: i.authToken,
-    }),
+    // n8n schema twilioApi requiere `authType` discriminator. Usamos
+    // authToken (más común) por defecto. Para apiKey, pasar `apiKeySid` y
+    // `apiKeySecret` en lugar de `authToken`.
+    buildData: (i) => {
+      if (i.apiKeySid && i.apiKeySecret) {
+        return {
+          authType: "apiKey",
+          accountSid: i.accountSid,
+          apiKeySid: i.apiKeySid,
+          apiKeySecret: i.apiKeySecret,
+        };
+      }
+      return {
+        authType: "authToken",
+        accountSid: i.accountSid,
+        authToken: i.authToken,
+      };
+    },
   },
 };
 

@@ -137,7 +137,7 @@ export async function GET(request: NextRequest) {
   const { data, error } = await supabase
     .from("client_deployments")
     .select(
-      "id, slug, business_name, deploy_state, deploy_log, vercel_url, vercel_project_id, vercel_deployed_at, vapi_assistant_id, vapi_deployed_at, n8n_workflow_ids, n8n_deployed_at"
+      "id, slug, business_name, deploy_state, deploy_log, vercel_url, vercel_project_id, vercel_deployed_at, vercel_git_repo, vercel_git_connected_at, vapi_assistant_id, vapi_deployed_at, n8n_workflow_ids, n8n_deployed_at, n8n_workflows_active, n8n_activated_at, n8n_credentials_ids"
     )
     .eq("id", deploymentId)
     .single();

@@ -72,27 +72,27 @@ export async function connectVercelToGit(input: VercelGitInput): Promise<VercelG
     detail: { repo: input.github_repo, branch: input.github_branch ?? "main" },
   });
 
-  // PATCH project para asociar gitRepository
+  // POST /v9/projects/{id}/link asocia el repo Git al project existente.
+  // Vercel rechaza `gitRepository` en PATCH del project; el endpoint /link
+  // es el correcto para conectar a un project ya creado.
   try {
-    const patchResp = await vercelFetch(`/v9/projects/${projectId}`, apiKey, {
-      method: "PATCH",
+    const linkResp = await vercelFetch(`/v9/projects/${projectId}/link`, apiKey, {
+      method: "POST",
       body: JSON.stringify({
-        gitRepository: {
-          type: "github",
-          repo: input.github_repo,
-        },
+        type: "github",
+        repo: input.github_repo,
       }),
     });
 
-    if (!patchResp.ok) {
-      const text = await patchResp.text();
+    if (!linkResp.ok) {
+      const text = await linkResp.text();
       await appendDeployLog(supabase, input.deployment_id, {
         target: "vercel",
         action: "connect-git",
         status: "error",
-        detail: `${patchResp.status}: ${text.slice(0, 300)}`,
+        detail: `${linkResp.status}: ${text.slice(0, 300)}`,
       });
-      return { ok: false, error: `vercel patch ${patchResp.status}: ${text.slice(0, 200)}` };
+      return { ok: false, error: `vercel link ${linkResp.status}: ${text.slice(0, 200)}` };
     }
   } catch (err) {
     const detail = err instanceof Error ? err.message : String(err);

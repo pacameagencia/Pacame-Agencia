@@ -205,7 +205,7 @@ export async function GET(request: NextRequest) {
 
   let query = supabase
     .from("client_deployments")
-    .select("id, slug, template_id, business_name, city, status, materialized_at, materialized_files, zip_url, missing_vars, warnings, created_at")
+    .select("id, slug, template_id, business_name, city, status, materialized_at, materialized_files, zip_url, missing_vars, warnings, created_at, deploy_state, vercel_project_id, vercel_url, vercel_deployed_at, vercel_git_repo, vercel_git_connected_at, vapi_assistant_id, vapi_deployed_at, n8n_workflow_ids, n8n_deployed_at, n8n_workflows_active, n8n_activated_at, n8n_credentials_ids, deploy_log")
     .order("created_at", { ascending: false });
 
   if (deploymentId) {
