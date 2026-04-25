@@ -43,7 +43,7 @@ PACAME es una agencia digital autonoma con 9 agentes IA, 27 API routes, 17 pagin
 |-------------|--------|----------|------|
 | **Resend** | CODIGO OK, API KEY EN VERCEL | Enviar emails de nurturing, propuestas, reportes | Falta verificar dominio en resend.com (tarea Pablo) |
 | **Telegram Bot** | CONFIGURADO EN VERCEL | Alertas a Pablo (leads calientes, emergencias) | Bot token + chat ID configurados |
-| **Vapi** | CONFIGURADO | Llamadas de voz IA | API key + numero +34 722 669 381 |
+| **Vapi** | CONFIGURADO | Llamadas de voz IA | API key + numero +34 604 190 129 |
 
 ### INTEGRADAS — CODIGO LISTO, FALTA API KEY (2/11)
 
@@ -233,7 +233,7 @@ Cada agente hace trabajo REAL, no solo reporta:
 2. ~~**Telegram Bot**~~ — CONFIGURADO. Bot token + chat ID en Vercel. Alertas de leads calientes, sistema degradado, web caida.
 3. ~~**Deploy Vercel**~~ — LIVE en pacameagencia.com. 1670 paginas + 24 API routes.
 4. ~~**Cron schedule**~~ — 3 ejecuciones diarias (6AM, 12PM, 18PM UTC) via Vercel Cron.
-5. ~~**Vapi**~~ — CONFIGURADO. API key + numero +34 722 669 381 + webhook.
+5. ~~**Vapi**~~ — CONFIGURADO. API key + numero +34 604 190 129 + webhook.
 
 ### PRIORIDAD 1 — Solo falta API key (Pablo)
 1. **Verificar dominio Resend** — Los emails podrian ir a spam si el dominio no esta verificado. Tarea de Pablo en resend.com/domains.
