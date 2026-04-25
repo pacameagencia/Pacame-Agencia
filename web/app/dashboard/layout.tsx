@@ -7,7 +7,7 @@ import {
   DollarSign, Settings, ChevronLeft, Menu, X,
   MessageSquare, Bell, ClipboardCheck, CreditCard,
   Megaphone, FileCheck, Phone, Rocket, Building2, Award, LogOut,
-  TrendingUp, MessageCircle, Lightbulb, Network,
+  TrendingUp, MessageCircle, Lightbulb, Network, Factory,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,7 @@ import { supabase } from "@/lib/supabase/client";
 
 const navItems = [
   { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Factoría", href: "/dashboard/factoria", icon: Factory },
   { label: "Oficina", href: "/dashboard/office", icon: Building2 },
   { label: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   { label: "Clientes", href: "/dashboard/clients", icon: Users },
