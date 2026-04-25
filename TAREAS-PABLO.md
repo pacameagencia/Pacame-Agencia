@@ -9,12 +9,35 @@ Cosas que solo tu puedes hacer. De mas a menos prioritaria.
 - Cambialo en Vercel → Environment Variables → `DASHBOARD_PASSWORD`
 - **Por que:** cualquiera que vea el codigo puede entrar
 
-### 2. ~~Crear cuenta Vapi + comprar numero~~ ✅ HECHO
-- ✅ Cuenta Vapi creada
-- ✅ Numero +34 722 669 381 registrado (via Twilio)
-- ✅ `VAPI_API_KEY` y `VAPI_PHONE_NUMBER_ID` configurados en Vercel
-- ✅ Webhook configurado: `https://pacameagencia.com/api/calls/webhook`
+### 2. Vapi / Twilio — migrar caller ID al nuevo numero +34 604 190 129
+- ⚠️ **Cambio de numero empresa**: el numero viejo era +34 722 669 381 (ahora movil personal de Pablo). El nuevo numero empresa es **+34 604 190 129**.
+- ✅ Numero +34 604 190 129 dado de alta en Vapi.
+- ✅ Numero +34 604 190 129 dado de alta como sending number en Twilio.
+- ✅ `TWILIO_PHONE_NUMBER=+34604190129` actualizado en Vercel (Production + Development). Preview usa default del codigo.
+- [ ] **Meter manualmente** en Vercel el nuevo `VAPI_PHONE_NUMBER_ID` (el UUID que da Vapi al numero +34 604 190 129). Vercel → Settings → Environment Variables → editar `VAPI_PHONE_NUMBER_ID` → pegar UUID → aplicar a Production + Preview + Development.
+- [ ] SSH al VPS (72.62.185.125) y actualizar `voice-server/.env`:
+  ```
+  TWILIO_PHONE_NUMBER=+34604190129
+  VOICE_MODE=test
+  VOICE_TEST_ALLOWED_PHONES=+34722669381
+  ```
+  Luego reiniciar:
+  ```
+  docker compose restart voice-server   # o: pm2 restart voice
+  ```
+- ✅ Webhook ya configurado: `https://pacameagencia.com/api/calls/webhook`
 - ✅ Pipeline completo: llamada → transcripcion → analisis IA → notificacion
+
+### 2.b — Modo test de llamadas (SEGURIDAD) ✅ INSTALADO
+- ✅ **Guard instalado en 3 capas** (`web/app/api/calls/route.ts`, `web/lib/brain/channels/voice.ts`, `voice-server/server.js`). Mientras `VOICE_MODE=test`, Vapi/Twilio SOLO llama a los numeros de `VOICE_TEST_ALLOWED_PHONES`. Cualquier otro destino devuelve 403.
+- ✅ Default seguro en el codigo: `VOICE_MODE=test`, allowlist = `+34722669381` (movil personal de Pablo). Aunque falten las env vars en un entorno, el comportamiento por defecto es bloquear todo excepto a Pablo.
+- ✅ Vercel configurado: `VOICE_MODE=test` + `VOICE_TEST_ALLOWED_PHONES=+34722669381` en Production + Development. Preview hereda del default del codigo (tambien test + movil Pablo).
+- [ ] Configurar en el **VPS `voice-server/.env`** (ver tarea 2, arriba).
+- [ ] **Cuando todo este probado**, activar llamadas a leads reales:
+  - Vercel production: cambiar `VOICE_MODE=live`.
+  - VPS voice-server: cambiar `VOICE_MODE=live` en el .env + restart.
+  - Dejar `VOICE_MODE=test` en development (y preview via default) para que el dev/staging siga seguro.
+- [ ] **Como probar ya**: desde dashboard → Llamadas → pulsar "Llamar" y marcar tu movil (+34 722 669 381). Intenta tambien con otro numero → debe devolver error "voice_test_mode_blocked".
 
 ### 3. Crear cuenta ElevenLabs (opcional)
 - Ir a https://elevenlabs.io → Crear cuenta
