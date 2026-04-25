@@ -125,7 +125,8 @@ export async function processInvoicePaid(params: {
 }): Promise<{ created: boolean; reason?: string; amountCents?: number }> {
   const { supabase, config, invoice } = params;
 
-  const subscriptionId = typeof invoice.subscription === "string" ? invoice.subscription : null;
+  const invoiceSubscription = (invoice as any).subscription;
+  const subscriptionId = typeof invoiceSubscription === "string" ? invoiceSubscription : null;
   if (!subscriptionId) return { created: false, reason: "no_subscription" };
   if (!invoice.id) return { created: false, reason: "no_invoice_id" };
   if ((invoice.amount_paid ?? 0) <= 0) return { created: false, reason: "zero_amount" };
