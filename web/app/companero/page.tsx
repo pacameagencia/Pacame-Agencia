@@ -1,20 +1,26 @@
 /**
- * /companero — JARVIS de PACAME · interfaz comando holográfico.
- * Layout grid HUD: panel izq (estado/conversación) | avatar central | log stream derecho.
- * Mobile: stack vertical, avatar protagonista, panel y logs colapsados.
+ * /companero — JARVIS de PACAME (mobile-first, abuela-friendly).
+ *
+ * Diseño:
+ *   - Mobile principal (la mayoría del tráfico): avatar arriba, bocadillo enorme,
+ *     botón mega con texto claro, tipografía grande, colores cálidos.
+ *   - Desktop: misma jerarquía, más respiro lateral, panel discreto opcional.
+ *   - SIN logs técnicos. SIN jerga. Que lo entienda mi abuela.
+ *
+ * Flujo conversación: 1 toque → loop continuo escuchar→pensar→hablar→escuchar.
+ * Voz Brian (ElevenLabs). Endpoint público sanitizado /api/companero.
  */
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AvatarHolograma from "./AvatarHolograma";
-import LogStream from "./LogStream";
 import "./companero.css";
 
 type Message = { role: "user" | "assistant"; text: string; ts: number };
 type AvatarState = "idle" | "listening" | "thinking" | "speaking";
 
-const GREETING = "Hola, soy Jarvis, el asistente de PACAME. Cuéntame, ¿a qué te dedicas?";
+const GREETING = "Hola, soy Jarvis. Cuéntame, ¿a qué te dedicas?";
 
 export default function CompaneroPage() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -39,7 +45,7 @@ export default function CompaneroPage() {
   useEffect(() => { convModeRef.current = convMode; }, [convMode]);
   useEffect(() => { stateRef.current = state; }, [state]);
 
-  // === Auto-petición de permiso de micrófono al cargar ===
+  // === Auto-petición de permiso de mic al cargar ===
   useEffect(() => {
     let cancelled = false;
     const ask = async () => {
@@ -66,7 +72,6 @@ export default function CompaneroPage() {
     return () => { cancelled = true; clearTimeout(t); };
   }, []);
 
-  // === Audio graph ===
   const ensureAudioGraph = useCallback(() => {
     if (!audioRef.current) return;
     if (!audioCtxRef.current) {
@@ -248,175 +253,145 @@ export default function CompaneroPage() {
 
   const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
 
-  const stateText = {
-    idle: convMode ? "LISTO" : (greeted ? "PAUSA" : permissionGranted ? "ON · STANDBY" : permissionDenied ? "MIC DENEGADO" : "ARRANCANDO"),
-    listening: interim ? "TRANSCRIBIENDO" : "ESCUCHANDO",
-    thinking: "PROCESANDO",
-    speaking: "RESPONDIENDO",
-  }[state];
+  // Texto en HUMANO — nada de jerga
+  const statusText: Record<AvatarState, string> = {
+    idle: convMode ? "Listo, dime" :
+          greeted ? "Pulsa para seguir" :
+          permissionGranted ? "Pulsa el botón de abajo" :
+          permissionDenied ? "Activa el micro para hablar" :
+          "Hola, ¿hablamos?",
+    listening: interim ? `“${interim}…”` : "Te estoy escuchando",
+    thinking: "Pensando…",
+    speaking: "Hablando contigo",
+  };
 
-  const btnHint = convMode
-    ? (state === "speaking" ? "respondiendo…" : state === "thinking" ? "pensando…" : "te escucho · habla")
-    : (greeted ? "tocar para continuar" : "tocar y empezamos");
+  // Texto del botón
+  const btnText = convMode
+    ? (state === "speaking" ? "Te respondo…" :
+       state === "thinking" ? "Pensando…" :
+       "Habla, te escucho")
+    : "Pulsa para hablar";
 
   return (
-    <main className="jcomp">
-      {/* Background layers */}
-      <div className="jcomp-bg" aria-hidden>
-        <div className="jcomp-grid" />
-        <div className="jcomp-vignette" />
-        <div className="jcomp-noise" />
+    <main className="jc">
+      {/* Fondo cálido */}
+      <div className="jc-bg" aria-hidden>
+        <div className="jc-blob jc-blob-1" />
+        <div className="jc-blob jc-blob-2" />
+        <div className="jc-blob jc-blob-3" />
       </div>
 
-      {/* Top bar HUD */}
-      <header className="jcomp-topbar">
-        <div className="jcomp-brand">
-          <div className="jcomp-brand-mark" />
-          <div className="jcomp-brand-text">
-            <span className="jcomp-brand-1">PACAME · JARVIS</span>
-            <span className="jcomp-brand-2">comando asistente · v1.0</span>
-          </div>
+      {/* Top simple */}
+      <header className="jc-top">
+        <a href="/" className="jc-back" aria-label="Volver">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </a>
+        <div className="jc-brand">
+          <span className="jc-brand-name">JARVIS</span>
+          <span className="jc-brand-sub">tu asistente PACAME</span>
         </div>
-        <div className="jcomp-status">
-          <motion.span
-            key={state}
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`jcomp-status-pill jcomp-st-${state}`}
-          >
-            <span className="jcomp-status-dot" />
-            {stateText}
-          </motion.span>
-          <a href="/" className="jcomp-back" aria-label="Volver al inicio">← inicio</a>
-        </div>
+        <div className="jc-spacer" />
       </header>
 
-      {/* Main grid: avatar centro · panel izq · logs der */}
-      <section className="jcomp-grid-main">
-        {/* Panel izquierdo — info última respuesta + transcript */}
-        <aside className="jcomp-panel jcomp-panel-left">
-          <div className="jcomp-panel-header">
-            <span className="jcomp-panel-tag">RESPUESTA</span>
-            <span className="jcomp-panel-meta">canal · web</span>
-          </div>
-          <div className="jcomp-panel-body">
-            <AnimatePresence mode="wait">
-              {lastAssistant ? (
-                <motion.div
-                  key={lastAssistant.ts}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.35 }}
-                  className="jcomp-bubble"
-                >
-                  <p>{lastAssistant.text}</p>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="empty"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="jcomp-bubble jcomp-bubble-empty"
-                >
-                  <p>Esperando tu primera pregunta. Toca el botón inferior para empezar a hablar, o escribe abajo.</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {interim && state === "listening" && (
-              <div className="jcomp-interim">«{interim}…»</div>
-            )}
-          </div>
-
-          {permissionDenied && (
-            <div className="jcomp-warn">
-              <strong>Micrófono bloqueado.</strong>
-              <p>Pulsa el candado del navegador → Microphone → Permitir → recarga.</p>
-            </div>
-          )}
-
-          <div className="jcomp-panel-footer">
-            <span>cifrado · stateless</span>
-            <span>v1.0</span>
-          </div>
-        </aside>
-
-        {/* Avatar central — protagonista */}
-        <div className="jcomp-stage">
-          <AvatarHolograma state={state} analyser={analyser} />
-
-          {/* Burbuja flotante (sólo móvil — en desktop está en panel izq) */}
-          {lastAssistant && (
-            <div className="jcomp-mobile-bubble">
-              <p>{lastAssistant.text}</p>
-            </div>
-          )}
-          {permissionDenied && (
-            <div className="jcomp-mobile-warn">
-              ⚠️ Activa el micro en el candado del navegador para hablar.
-            </div>
-          )}
-        </div>
-
-        {/* Logs derecho */}
-        <aside className="jcomp-panel jcomp-panel-right">
-          <LogStream state={state} />
-        </aside>
+      {/* Avatar protagonista */}
+      <section className="jc-avatar">
+        <AvatarHolograma state={state} analyser={analyser} />
       </section>
 
-      {/* Bottom bar: botón principal · input texto · nota legal */}
-      <footer className="jcomp-bottombar" onClick={ensureAudioGraph}>
-        <div className="jcomp-bottombar-row">
-          <div className="jcomp-control">
-            <motion.button
-              whileTap={{ scale: 0.94 }}
-              whileHover={{ scale: 1.04 }}
-              className={`jcomp-talk jcomp-talk-${state} ${convMode ? "is-active" : ""}`}
-              onClick={toggleConversation}
-              aria-label={btnHint}
+      {/* Bocadillo grande con la última respuesta o saludo */}
+      <section className="jc-message">
+        <AnimatePresence mode="wait">
+          {lastAssistant ? (
+            <motion.div
+              key={lastAssistant.ts}
+              initial={{ opacity: 0, y: 10, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}
+              className="jc-bubble"
             >
-              <span className="jcomp-talk-glow" />
-              <span className="jcomp-talk-pulse" />
-              {convMode ? (
-                <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor" aria-hidden>
-                  <rect x="6" y="6" width="12" height="12" rx="2" />
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <rect x="9" y="2" width="6" height="12" rx="3" />
-                  <path d="M5 11a7 7 0 0 0 14 0" />
-                  <line x1="12" y1="19" x2="12" y2="22" />
-                </svg>
-              )}
-            </motion.button>
-            <span className="jcomp-talk-hint">{btnHint}</span>
-          </div>
+              <p>{lastAssistant.text}</p>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="welcome"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="jc-bubble jc-bubble-welcome"
+            >
+              <p>Hola, soy <strong>Jarvis</strong>. Te ayudo con tu negocio. Pulsa el botón grande de abajo y cuéntame qué necesitas.</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-          <div className="jcomp-text-input">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="…o escríbeme aquí si prefieres"
-              disabled={state === "thinking"}
-            />
-            <button onClick={sendText} disabled={state === "thinking" || !input.trim()} aria-label="Enviar">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
+        {interim && state === "listening" && (
+          <div className="jc-interim">“{interim}…”</div>
+        )}
+
+        {permissionDenied && (
+          <div className="jc-warn">
+            Para hablar necesito permiso del micrófono. Pulsa el candado de la barra del navegador → Microphone → Permitir.
+          </div>
+        )}
+      </section>
+
+      {/* Status humano */}
+      <p className={`jc-status jc-st-${state}`}>{statusText[state]}</p>
+
+      {/* Botón gigante con TEXTO claro */}
+      <div className="jc-action" onClick={ensureAudioGraph}>
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.02 }}
+          className={`jc-talk jc-talk-${state} ${convMode ? "is-active" : ""}`}
+          onClick={toggleConversation}
+          aria-label={btnText}
+        >
+          <span className="jc-talk-pulse" aria-hidden />
+          <span className="jc-talk-pulse jc-talk-pulse-2" aria-hidden />
+          <span className="jc-talk-icon">
+            {convMode ? (
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor" aria-hidden>
+                <rect x="6" y="6" width="12" height="12" rx="2.5" />
               </svg>
-            </button>
-          </div>
-        </div>
+            ) : (
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <rect x="9" y="2" width="6" height="12" rx="3" />
+                <path d="M5 11a7 7 0 0 0 14 0" />
+                <line x1="12" y1="19" x2="12" y2="22" />
+              </svg>
+            )}
+          </span>
+          <span className="jc-talk-text">{btnText}</span>
+        </motion.button>
+      </div>
 
-        <p className="jcomp-legal">
-          stateless · sin grabación ·{" "}
-          <a href="https://wa.me/34722669381?text=Hola%20PACAME">WhatsApp</a>{" · "}
-          <a href="mailto:hola@pacameagencia.com">email</a>
-        </p>
-      </footer>
+      {/* Input de texto opcional */}
+      <div className="jc-input-row">
+        <input
+          className="jc-input"
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="…o escribe aquí si prefieres"
+          disabled={state === "thinking"}
+        />
+        <button className="jc-send" onClick={sendText} disabled={state === "thinking" || !input.trim()} aria-label="Enviar">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </button>
+      </div>
+
+      <p className="jc-foot">
+        Si prefieres a un humano:{" "}
+        <a href="https://wa.me/34722669381?text=Hola%20PACAME">WhatsApp</a>{" o "}
+        <a href="mailto:hola@pacameagencia.com">email</a>
+      </p>
 
       <audio ref={audioRef} hidden preload="auto" playsInline />
     </main>
