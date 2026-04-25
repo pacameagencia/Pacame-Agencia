@@ -106,27 +106,61 @@ function buildClientVars(client: ClientInput, slug: string): Record<string, unkn
   // con vars opcionales. Cualquier var crítica que falte queda en `missing`.
   const businessSlug = slugify(client.business_name);
 
+  // Datos derivados / inferidos
+  const enrichedClient = {
+    ...client,
+    business_legal_name: client.business_legal_name ?? client.business_name,
+    business_type: client.business_type ?? "restaurante",
+    slug: businessSlug,
+    language_primary: client.language_primary ?? "es",
+    language_secondary: client.language_secondary ?? "ninguno",
+    pets_allowed: client.pets_allowed ?? false,
+    booking_deposit_percentage: client.booking_deposit_percentage ?? 0,
+    year_opened: client.year_opened ?? new Date().getFullYear() - 5,
+    seats_count: client.seats_count ?? 0,
+    turn_capacity_lunch: client.turn_capacity_lunch ?? Math.round((client.seats_count ?? 0) * 1.4),
+    turn_capacity_dinner: client.turn_capacity_dinner ?? Math.round((client.seats_count ?? 0) * 1.6),
+    average_ticket_eur: client.average_ticket_eur ?? 30,
+    accessibility: client.accessibility ?? "Consultar disponibilidad de acceso accesible",
+    parking_info: client.parking_info ?? "Consultar zonas de aparcamiento cercanas",
+    opening_hours: client.opening_hours ?? "Consultar en web",
+    specialties: client.specialties ?? "Consultar carta",
+    private_events_info: "Eventos privados disponibles, escalar al humano para propuesta",
+    address: [client.street, client.neighborhood, client.city, client.postal_code]
+      .filter(Boolean)
+      .join(", "),
+    address_short: client.street ?? client.city,
+    public_transport_short: "Consultar opciones de transporte público local",
+    deposit_amount: client.booking_deposit_percentage
+      ? `${Math.round(((client.average_ticket_eur ?? 30) * client.booking_deposit_percentage) / 100)} €`
+      : "no aplica",
+    business_name_short: client.business_name.split(" ").slice(0, 2).join(" "),
+    menu_url: `https://${businessSlug}.com/carta`,
+    owner_telegram_handle: "owner_handle_pendiente",
+  };
+
+  // Variables del despliegue
+  const deployment = {
+    slug,
+    created_at: new Date().toISOString(),
+    template_id: "hosteleria-v1",
+  };
+
+  // Variables PACAME (constantes)
+  const pacame = {
+    contact_email: "hola@pacameagencia.com",
+    whatsapp: "+34722669381",
+    web: "https://pacameagencia.com",
+  };
+
+  // Devuelve TODAS las variables del cliente disponibles en root level
+  // (compatibilidad con plantillas que usan {{business_name}} directo)
+  // Y también bajo el namespace `client.` para uso explícito.
   return {
-    client: {
-      ...client,
-      business_legal_name: client.business_legal_name ?? client.business_name,
-      business_type: client.business_type ?? "restaurante",
-      slug: businessSlug,
-      language_primary: client.language_primary ?? "es",
-      pets_allowed: client.pets_allowed ?? false,
-      booking_deposit_percentage: client.booking_deposit_percentage ?? 0,
-      year_opened: client.year_opened ?? new Date().getFullYear() - 5,
-    },
-    deployment: {
-      slug,
-      created_at: new Date().toISOString(),
-      template_id: "hosteleria-v1",
-    },
-    pacame: {
-      contact_email: "hola@pacameagencia.com",
-      whatsapp: "+34722669381",
-      web: "https://pacameagencia.com",
-    },
+    ...enrichedClient,
+    client: enrichedClient,
+    deployment,
+    pacame,
   };
 }
 

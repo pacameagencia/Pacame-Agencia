@@ -196,11 +196,32 @@ export function validateRequiredVars(
  *
  * "Casa Marisol Cádiz" → "casa-marisol-cadiz"
  */
+// Mapeo manual exhaustivo de caracteres acentuados / especiales españoles.
+// Evitamos depender de String.normalize("NFD") + regex unicode property
+// escape porque Turbopack/SWC en algunos targets no transpila bien
+// `\p{M}/gu` y se cuelan caracteres acentuados en los slugs.
+const SLUG_CHAR_MAP: Record<string, string> = {
+  á: "a", à: "a", ä: "a", â: "a", ã: "a", å: "a",
+  é: "e", è: "e", ë: "e", ê: "e",
+  í: "i", ì: "i", ï: "i", î: "i",
+  ó: "o", ò: "o", ö: "o", ô: "o", õ: "o",
+  ú: "u", ù: "u", ü: "u", û: "u",
+  ñ: "n", ç: "c",
+  Á: "A", À: "A", Ä: "A", Â: "A", Ã: "A", Å: "A",
+  É: "E", È: "E", Ë: "E", Ê: "E",
+  Í: "I", Ì: "I", Ï: "I", Î: "I",
+  Ó: "O", Ò: "O", Ö: "O", Ô: "O", Õ: "O",
+  Ú: "U", Ù: "U", Ü: "U", Û: "U",
+  Ñ: "N", Ç: "C",
+};
+
 export function slugify(input: string): string {
-  return input
+  let mapped = "";
+  for (const ch of input) {
+    mapped += SLUG_CHAR_MAP[ch] ?? ch;
+  }
+  return mapped
     .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "") // remove diacritics
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 60);
