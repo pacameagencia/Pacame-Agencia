@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import crypto from "node:crypto";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity, updateAgentStatus } from "@/lib/agent-logger";
 import { notifyPablo, wrapEmailTemplate } from "@/lib/resend";
@@ -7,6 +8,38 @@ import { getLogger } from "@/lib/observability/logger";
 const supabase = createServerSupabase();
 
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
+const VAPI_WEBHOOK_SECRET = process.env.VAPI_WEBHOOK_SECRET?.trim();
+
+/**
+ * Verifica firma del webhook Vapi (Sprint 24 security).
+ * Vapi soporta dos formatos según versión: shared-secret literal o HMAC-SHA256.
+ * Probamos ambos en orden — comparación timing-safe.
+ */
+function verifyVapiSignature(rawBody: string, headerSig: string | null): boolean {
+  if (!VAPI_WEBHOOK_SECRET || !headerSig) return false;
+  // Formato 1: shared secret literal
+  if (
+    headerSig.length === VAPI_WEBHOOK_SECRET.length &&
+    crypto.timingSafeEqual(Buffer.from(headerSig), Buffer.from(VAPI_WEBHOOK_SECRET))
+  ) {
+    return true;
+  }
+  // Formato 2: HMAC-SHA256
+  try {
+    const expected = crypto
+      .createHmac("sha256", VAPI_WEBHOOK_SECRET)
+      .update(rawBody)
+      .digest("hex");
+    const cleanSig = headerSig.replace(/^sha256=/, "");
+    if (cleanSig.length !== expected.length) return false;
+    return crypto.timingSafeEqual(
+      Buffer.from(expected, "hex"),
+      Buffer.from(cleanSig, "hex"),
+    );
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Vapi Webhook Handler
@@ -22,7 +55,25 @@ const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    // SECURITY (Sprint 24): exigir firma válida en producción.
+    const rawBody = await request.text();
+    const sig =
+      request.headers.get("x-vapi-signature") ||
+      request.headers.get("x-vapi-secret");
+    const isProd = process.env.NODE_ENV === "production";
+
+    if (!VAPI_WEBHOOK_SECRET) {
+      if (isProd) {
+        console.error("[vapi webhook] VAPI_WEBHOOK_SECRET not configured in production");
+        return NextResponse.json({ error: "webhook_misconfigured" }, { status: 500 });
+      }
+      console.warn("[vapi webhook] VAPI_WEBHOOK_SECRET missing — accepting unsigned event (dev only)");
+    } else if (!verifyVapiSignature(rawBody, sig)) {
+      console.warn("[vapi webhook] invalid or missing signature");
+      return NextResponse.json({ error: "invalid_signature" }, { status: 401 });
+    }
+
+    const body = JSON.parse(rawBody);
     const { type, call } = body;
 
     // Vapi sends call data in the `call` field

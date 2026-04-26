@@ -14,20 +14,29 @@ export async function POST(request: NextRequest) {
   const body = await request.text();
   const sig = request.headers.get("stripe-signature");
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const isProd = process.env.NODE_ENV === "production";
 
   let event: Stripe.Event;
 
-  // If webhook secret is configured, verify signature
-  if (webhookSecret && sig) {
+  // SECURITY (Sprint 24): fail-fast en producción si falta el secret;
+  // rechazar request sin signature; verificar HMAC siempre que sea posible.
+  if (!webhookSecret) {
+    if (isProd) {
+      console.error("[stripe webhook] STRIPE_WEBHOOK_SECRET not configured in production");
+      return NextResponse.json({ error: "webhook_misconfigured" }, { status: 500 });
+    }
+    console.warn("[stripe webhook] STRIPE_WEBHOOK_SECRET missing — accepting unsigned event (dev only)");
+    event = JSON.parse(body) as Stripe.Event;
+  } else if (!sig) {
+    return NextResponse.json({ error: "missing_signature" }, { status: 400 });
+  } else {
     try {
       event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Webhook signature verification failed";
-      return NextResponse.json({ error: message }, { status: 400 });
+      console.error("[stripe webhook] signature verification failed:", message);
+      return NextResponse.json({ error: "invalid_signature" }, { status: 400 });
     }
-  } else {
-    // In development or before webhook secret is set, parse directly
-    event = JSON.parse(body) as Stripe.Event;
   }
 
   try {
