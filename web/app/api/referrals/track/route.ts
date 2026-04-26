@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
     request,
     existingCookie,
     authenticatedUserId: authed?.id ?? null,
+    authenticatedAffiliateId: authed?.affiliateOnly ? authed.id : null,
     landedPath: body.path,
     utm: body.utm,
     httpReferer: body.referer || request.headers.get("referer"),

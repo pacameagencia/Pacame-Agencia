@@ -21,11 +21,17 @@ export async function resolveAttribution(params: {
   request: Request;
   existingCookie: RefCookieValue | null;
   authenticatedUserId: string | null;
+  /** When the authenticated principal is a standalone affiliate (no client),
+   * this is the aff_affiliates.id — we use it to block self-referral too. */
+  authenticatedAffiliateId?: string | null;
   landedPath?: string;
   utm?: { source?: string | null; medium?: string | null; campaign?: string | null };
   httpReferer?: string | null;
 }): Promise<AttributionResult> {
-  const { supabase, config, refCode, request, existingCookie, authenticatedUserId, utm, httpReferer } = params;
+  const {
+    supabase, config, refCode, request, existingCookie,
+    authenticatedUserId, authenticatedAffiliateId, utm, httpReferer,
+  } = params;
 
   const { data: affiliate, error } = await supabase
     .from("aff_affiliates")
@@ -37,7 +43,13 @@ export async function resolveAttribution(params: {
   if (error || !affiliate) return { ok: false, reason: "unknown_code" };
   if (affiliate.status !== "active") return { ok: false, reason: "unknown_code" };
 
+  // Self-referral block:
+  //  - PACAME-client affiliate: compare client user_id
+  //  - Public affiliate (no user_id): compare aff_affiliates.id
   if (authenticatedUserId && authenticatedUserId === affiliate.user_id) {
+    return { ok: false, reason: "self_referral" };
+  }
+  if (authenticatedAffiliateId && authenticatedAffiliateId === affiliate.id) {
     return { ok: false, reason: "self_referral" };
   }
 
