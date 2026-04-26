@@ -1,13 +1,16 @@
-// Agent Activity Logger — logs actions to Supabase for the Oficina PACAME
-// Used server-side by API routes to automatically track what each agent does
+// Agent Activity Logger — logs actions to Supabase for la Oficina PACAME.
+// Used server-side by API routes (crons + handlers) para trackear qué hace cada agente.
+//
+// CRÍTICO: usar el cliente con SERVICE_ROLE_KEY. Las tablas agent_activities,
+// agent_states, agent_discoveries tienen RLS activo con políticas
+// `service_role_write_*` (escritura) y `anon_read_*` (sólo lectura).
+// Si este logger usase anon key, los inserts fallarían con
+// "42501 row-level security violation" y el catch silente los tragaría —
+// agent_activities quedaría mute (regresión observada 2026-04-16 → 2026-04-26).
 
-import { createClient } from "@supabase/supabase-js";
-import { getLogger } from "@/lib/observability/logger";
+import { createServerSupabase } from "@/lib/supabase/server";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
-);
+const supabase = createServerSupabase();
 
 type ActivityType = "task_started" | "task_completed" | "insight" | "alert" | "update" | "delivery";
 
@@ -21,7 +24,7 @@ interface LogActivityParams {
 
 export async function logAgentActivity({ agentId, type, title, description, metadata }: LogActivityParams) {
   try {
-    await supabase.from("agent_activities").insert({
+    const { error: actErr } = await supabase.from("agent_activities").insert({
       agent_id: agentId.toLowerCase(),
       type,
       title,
@@ -29,6 +32,9 @@ export async function logAgentActivity({ agentId, type, title, description, meta
       metadata: metadata || {},
       created_at: new Date().toISOString(),
     });
+    if (actErr) {
+      console.error("[agent-logger] insert activity failed:", actErr.message, actErr.code);
+    }
 
     // Update agent state
     const statusMap: Partial<Record<ActivityType, string>> = {
@@ -39,24 +45,23 @@ export async function logAgentActivity({ agentId, type, title, description, meta
 
     const newStatus = statusMap[type];
     if (newStatus) {
-      await supabase.from("agent_states").upsert({
+      const { error: stErr } = await supabase.from("agent_states").upsert({
         agent_id: agentId.toLowerCase(),
         status: newStatus,
         current_task: type === "task_started" ? title : null,
         last_activity: new Date().toISOString(),
       }, { onConflict: "agent_id" });
+      if (stErr) console.error("[agent-logger] upsert state failed:", stErr.message, stErr.code);
     } else {
-      await supabase.from("agent_states").upsert({
+      const { error: stErr } = await supabase.from("agent_states").upsert({
         agent_id: agentId.toLowerCase(),
         last_activity: new Date().toISOString(),
       }, { onConflict: "agent_id" });
+      if (stErr) console.error("[agent-logger] upsert state failed:", stErr.message, stErr.code);
     }
   } catch (err) {
-    // Non-blocking para el caller, pero SIEMPRE logeamos el error.
-    getLogger({ agentId, fn: "logAgentActivity" }).warn(
-      { err: err instanceof Error ? err : new Error(String(err)) },
-      "agent_logger.insert_failed",
-    );
+    // Non-blocking — pero ahora SÍ logueamos a stderr para diagnóstico.
+    console.error("[agent-logger] unexpected error:", err instanceof Error ? err.message : String(err));
   }
 }
 
@@ -68,11 +73,8 @@ export async function updateAgentStatus(agentId: string, status: string, current
       current_task: currentTask ?? null,
       last_activity: new Date().toISOString(),
     }, { onConflict: "agent_id" });
-  } catch (err) {
-    getLogger({ agentId, fn: "updateAgentStatus" }).warn(
-      { err: err instanceof Error ? err : new Error(String(err)) },
-      "agent_logger.status_upsert_failed",
-    );
+  } catch {
+    // Non-blocking
   }
 }
 
@@ -91,11 +93,8 @@ export async function incrementAgentTasks(agentId: string) {
         tasks_completed: (data.tasks_completed || 0) + 1,
       }).eq("agent_id", agentId.toLowerCase());
     }
-  } catch (err) {
-    getLogger({ agentId, fn: "incrementAgentTasks" }).warn(
-      { err: err instanceof Error ? err : new Error(String(err)) },
-      "agent_logger.increment_failed",
-    );
+  } catch {
+    // Non-blocking
   }
 }
 
@@ -159,11 +158,8 @@ export async function logAgentDiscovery({
       metadata: { discovery_type: type, impact, confidence },
       created_at: new Date().toISOString(),
     });
-  } catch (err) {
-    getLogger({ agentId, fn: "logAgentDiscovery" }).warn(
-      { err: err instanceof Error ? err : new Error(String(err)) },
-      "agent_logger.discovery_failed",
-    );
+  } catch {
+    // Non-blocking
   }
 }
 
@@ -200,10 +196,7 @@ export async function logAgentHandoff(
       metadata: { handoff: true, target: toAgent.toLowerCase(), synapse_type: synapseType, success },
       created_at: new Date().toISOString(),
     });
-  } catch (err) {
-    getLogger({ fromAgent, toAgent, fn: "logAgentHandoff" }).warn(
-      { err: err instanceof Error ? err : new Error(String(err)) },
-      "agent_logger.handoff_failed",
-    );
+  } catch {
+    // Non-blocking
   }
 }
