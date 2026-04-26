@@ -1,4 +1,5 @@
--- Migración 017 — Hebbian inverse: decay de sinapsis no disparadas en >stale_days.
+-- Migración 022 — Hebbian inverse: decay de sinapsis no disparadas en >stale_days.
+-- (renombrada desde 017_decay_synapses.sql para evitar colisión con 017_asesorpro_realtime.sql)
 -- Llamada desde web/app/api/agents/neural-decay/route.ts (Vercel cron 03:00 UTC).
 -- Antes de esta migración el endpoint hacía catch silente del error y synapses_decayed
 -- siempre era 0. Ahora la red poda conexiones inactivas y refleja "uso real".

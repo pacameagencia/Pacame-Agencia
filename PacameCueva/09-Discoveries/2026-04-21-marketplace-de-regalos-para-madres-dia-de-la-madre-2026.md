@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Marketplace de Regalos para Madres (Día de la Madre 2026)
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:33.986Z'
-neural_id: d8b67539-96bf-4794-acd4-5c659cce4aa6
-confidence: 0.75
-actionable: true
-updated: '2026-04-21T15:41:39.083597+00:00'
+created: '2026-04-26T19:24:45.000Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-21-marketplace-de-regalos-para-madres-dia-de-la-madre-2026.md
+neural_id: e741d230-879f-4b8e-834b-f091992db550
+updated: '2026-04-26T19:24:45.000Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

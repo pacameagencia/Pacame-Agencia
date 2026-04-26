@@ -1,18 +1,19 @@
 ---
 type: discovery
 title: Falsa Señal de Demanda Baja en Presupuestos Intermedios
-agent: LENS
+agent: DIOS
 tags:
   - type/discovery
   - discovery/market_signal
   - impact/high
   - status/new
-  - agent/LENS
-created: '2026-04-25T21:44:34.077Z'
-neural_id: a62d1f98-c299-48c8-9591-a282f2245e42
-confidence: 0.7
-actionable: true
-updated: '2026-04-23T12:53:20.504745+00:00'
+  - agent/DIOS
+created: '2026-04-26T19:24:45.962Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-23-falsa-senal-de-demanda-baja-en-presupuestos-intermedios.md
+neural_id: 4fc5cffa-55f1-428e-b9dc-061b073a223a
+updated: '2026-04-26T19:24:45.962Z'
 ---
 > **Tipo:** market_signal · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

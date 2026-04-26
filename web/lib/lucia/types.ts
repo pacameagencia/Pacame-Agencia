@@ -6,7 +6,11 @@
 export type Role = "user" | "assistant";
 
 export interface ChatMessage {
+  /** Id local inmutable (React key). Generado en cliente. */
   id: string;
+  /** Id real en pacame_gpt_messages cuando el server persistió. Necesario
+   *  para acciones (PDF, email, recordatorio) que referencian el mensaje. */
+  serverId?: string;
   role: Role;
   content: string;
   /** ms epoch */

@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: PACAME Insights - Hosting de Analytics Empresarial
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.034Z'
-neural_id: 69f01a46-d0bb-46fc-aeee-e9ad8491b6ad
-confidence: 0.75
-actionable: true
-updated: '2026-04-22T08:19:24.54248+00:00'
+created: '2026-04-26T19:24:45.953Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-22-pacame-insights---hosting-de-analytics-empresarial.md
+neural_id: e7f22f57-8819-4f04-8d52-8cf9a51a301b
+updated: '2026-04-26T19:24:45.953Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

@@ -31,6 +31,7 @@ const VAULT_TYPE_TO_DB: Record<NodeType, string> = {
   discovery: 'hypothesis',
   synapse: 'concept',
   client: 'entity',
+  'self-project': 'entity',
   concept: 'concept',
 };
 
@@ -48,6 +49,7 @@ function inferTypeFromPath(abs: string): NodeType {
   if (rel.startsWith('07-Sinapsis/')) return 'synapse';
   if (rel.startsWith('08-Memorias/')) return 'memory';
   if (rel.startsWith('09-Discoveries/')) return 'discovery';
+  if (rel.startsWith('10-Proyectos-Propios/')) return 'self-project';
   return 'concept';
 }
 

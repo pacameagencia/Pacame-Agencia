@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: MerchandisingExpress - Tienda Dropshipping de Merchandising de Eurovisión
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.012Z'
-neural_id: d1a31982-3961-4d78-a2cb-2469ccfcdcbb
-confidence: 0.75
-actionable: true
-updated: '2026-04-21T18:24:48.473169+00:00'
+created: '2026-04-26T19:24:44.994Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-21-merchandisingexpress---tienda-dropshipping-de-merchandising-.md
+neural_id: a6e48f83-6391-4fc2-b971-24fe4ab7714f
+updated: '2026-04-26T19:24:44.994Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

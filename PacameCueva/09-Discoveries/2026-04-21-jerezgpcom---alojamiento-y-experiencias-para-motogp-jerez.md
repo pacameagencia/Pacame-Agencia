@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: JerezGP.com - Alojamiento y Experiencias para MotoGP Jerez
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.008Z'
-neural_id: b8ede854-a56a-4498-a772-4c5429c2fbd5
-confidence: 0.75
-actionable: true
-updated: '2026-04-21T18:24:46.755398+00:00'
+created: '2026-04-26T19:24:45.050Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-21-jerezgpcom---alojamiento-y-experiencias-para-motogp-jerez.md
+neural_id: 4f91d6af-627b-453a-aa4e-b8b87743c9eb
+updated: '2026-04-26T19:24:45.050Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

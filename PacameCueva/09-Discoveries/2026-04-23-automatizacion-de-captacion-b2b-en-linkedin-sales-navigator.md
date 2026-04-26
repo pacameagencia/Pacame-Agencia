@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Automatización de Captación B2B en LinkedIn Sales Navigator
-agent: NEXUS
 tags:
   - type/discovery
   - discovery/optimization
   - impact/high
   - status/new
-  - agent/NEXUS
-created: '2026-04-25T21:44:34.061Z'
-neural_id: 102e5209-a95b-4f86-aabf-7341efcb6e5f
-confidence: 0.7
-actionable: true
-updated: '2026-04-23T06:36:23.884395+00:00'
+created: '2026-04-26T19:24:45.970Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-23-automatizacion-de-captacion-b2b-en-linkedin-sales-navigator.md
+neural_id: 9e516486-854f-4883-a2ba-29223dce5ac3
+updated: '2026-04-26T19:24:45.970Z'
 ---
 > **Tipo:** optimization · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

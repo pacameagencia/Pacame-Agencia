@@ -4,18 +4,17 @@ title: >-
   SaaS de delivery a nivel Uber/Glovo es viable si integras hardware
   (terminales, GPS, sensores IoT) y software en un ecosistema cerrado (logística
   + pagos + flota).
-agent: DIOS
 tags:
   - type/discovery
   - discovery/pattern
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:33.983Z'
-neural_id: 5505497b-0657-4e41-92c1-32d8f156fc00
-confidence: 0.7
-actionable: true
-updated: '2026-04-21T12:56:48.199368+00:00'
+created: '2026-04-26T19:24:45.002Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-21-saas-de-delivery-a-nivel-uberglovo-es-viable-si-integras-har.md
+neural_id: 373b7975-3e75-4b8f-b1c8-476b7167dfd0
+updated: '2026-04-26T19:24:45.002Z'
 ---
 > **Tipo:** pattern · **Impacto:** medium · **Confianza:** 0.70 · **Status:** new
 

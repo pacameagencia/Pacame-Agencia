@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: WeekendPlanner - App de planes para puentes y fines de semana largos
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.005Z'
-neural_id: 60473574-5a18-45e8-aa9e-0de733b45b18
-confidence: 0.75
-actionable: true
-updated: '2026-04-21T18:22:56.254212+00:00'
+created: '2026-04-26T19:24:45.979Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-21-weekendplanner---app-de-planes-para-puentes-y-fines-de-seman.md
+neural_id: 5b4881a5-5223-4fdd-8562-1747ad9ca0dd
+updated: '2026-04-26T19:24:45.979Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

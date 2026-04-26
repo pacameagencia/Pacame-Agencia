@@ -7,7 +7,7 @@
  * Sin auth → 401 (front renderiza el botón "Iniciar sesión").
  */
 
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { getCurrentProductUser } from "@/lib/products/session";
 import {
@@ -22,7 +22,37 @@ export const dynamic = "force-dynamic";
 const PRODUCT_ID = "pacame-gpt";
 const FREE_DAILY_LIMIT = 20;
 
-export async function GET() {
+// Rate limit suave: /me se llama en cada montaje del front + tras cada turno
+// de chat. Permitimos 60 req/min por IP (1/seg) — más que suficiente para
+// uso legítimo, frena pollers abusivos.
+const RL_WINDOW_MS = 60_000;
+const RL_MAX = 60;
+type Bucket = { count: number; resetAt: number };
+const buckets = new Map<string, Bucket>();
+function rateLimit(ip: string): boolean {
+  const now = Date.now();
+  const b = buckets.get(ip);
+  if (!b || now > b.resetAt) {
+    buckets.set(ip, { count: 1, resetAt: now + RL_WINDOW_MS });
+    return true;
+  }
+  b.count++;
+  return b.count <= RL_MAX;
+}
+
+export async function GET(req: NextRequest) {
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+    req.headers.get("x-real-ip") ||
+    "anon";
+  if (!rateLimit(ip)) {
+    return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
+  }
+
+  return handleMe();
+}
+
+async function handleMe() {
   const user = await getCurrentProductUser();
   if (!user) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
 

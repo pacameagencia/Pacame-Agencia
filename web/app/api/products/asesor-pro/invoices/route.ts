@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentProductUser } from "@/lib/products/session";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { getClientContext } from "@/lib/products/asesor-pro/client-queries";
+import { notifyInvoiceCreated } from "@/lib/products/asesor-pro/notifications";
 
 export const runtime = "nodejs";
 
@@ -148,6 +149,14 @@ export async function POST(request: NextRequest) {
     message: `${body.customer_fiscal_name} · ${(data.total_cents / 100).toFixed(2)} €`,
     action_url: `/app/asesor-pro/facturas?id=${data.id}`,
   });
+
+  // Telegram al asesor
+  notifyInvoiceCreated({
+    asesor_user_id: ctx.asesor_user_id,
+    client_name: ctx.fiscal_name,
+    number,
+    total_eur: data.total_cents / 100,
+  }).catch(() => {});
 
   return NextResponse.json({ invoice: data });
 }

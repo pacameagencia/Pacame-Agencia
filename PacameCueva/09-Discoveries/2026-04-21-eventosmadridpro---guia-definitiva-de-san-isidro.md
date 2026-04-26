@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: EventosMadrid.pro - Guía Definitiva de San Isidro
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.010Z'
-neural_id: 8611078c-97c6-4c37-b5e5-9b2122f11f04
-confidence: 0.75
-actionable: true
-updated: '2026-04-21T18:24:47.630115+00:00'
+created: '2026-04-26T19:24:45.046Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-21-eventosmadridpro---guia-definitiva-de-san-isidro.md
+neural_id: 3572aa3b-c9bb-4a97-8c28-19a444a65322
+updated: '2026-04-26T19:24:45.046Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

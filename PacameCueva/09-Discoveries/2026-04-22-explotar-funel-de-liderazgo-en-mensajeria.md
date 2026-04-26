@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Explotar Funel de Liderazgo en Mensajería
-agent: NEXUS
 tags:
   - type/discovery
   - discovery/technique
   - impact/medium
   - status/new
-  - agent/NEXUS
-created: '2026-04-25T21:44:34.032Z'
-neural_id: bab16f6a-51e4-45c5-81a4-3e60b3d7fbc6
-confidence: 0.7
-actionable: true
-updated: '2026-04-22T06:37:59.707397+00:00'
+created: '2026-04-26T19:24:45.977Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-22-explotar-funel-de-liderazgo-en-mensajeria.md
+neural_id: b3cf8e85-f312-48c7-81ba-beac54c8dede
+updated: '2026-04-26T19:24:45.977Z'
 ---
 > **Tipo:** technique · **Impacto:** medium · **Confianza:** 0.70 · **Status:** new
 

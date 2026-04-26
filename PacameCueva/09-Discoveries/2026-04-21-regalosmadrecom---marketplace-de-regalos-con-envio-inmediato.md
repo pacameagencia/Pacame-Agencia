@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: RegalosMadre.com - Marketplace de Regalos con Envío Inmediato
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.016Z'
-neural_id: 3cef9940-86c2-4c27-8e41-9d9f4269dfd7
-confidence: 0.75
-actionable: true
-updated: '2026-04-21T18:24:50.280587+00:00'
+created: '2026-04-26T19:24:45.026Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-21-regalosmadrecom---marketplace-de-regalos-con-envio-inmediato.md
+neural_id: 9f2f08bb-6575-4ba4-b968-9d153efbf7ba
+updated: '2026-04-26T19:24:45.026Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

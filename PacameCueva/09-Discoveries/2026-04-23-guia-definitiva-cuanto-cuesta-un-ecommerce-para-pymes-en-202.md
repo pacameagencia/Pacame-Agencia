@@ -3,18 +3,17 @@ type: discovery
 title: >-
   Guía definitiva: ¿Cuánto cuesta un Ecommerce para PYMES en 2025? (Análisis
   completo de costes)
-agent: ATLAS
 tags:
   - type/discovery
   - discovery/content_idea
   - impact/high
   - status/new
-  - agent/ATLAS
-created: '2026-04-25T21:44:34.080Z'
-neural_id: 148d46d5-b50c-4040-8648-4f8983e0838b
-confidence: 0.7
-actionable: true
-updated: '2026-04-23T18:56:43.38892+00:00'
+created: '2026-04-26T19:24:46.144Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-23-guia-definitiva-cuanto-cuesta-un-ecommerce-para-pymes-en-202.md
+neural_id: ebe9dfc2-1775-44d6-85eb-3383ab116329
+updated: '2026-04-26T19:24:46.144Z'
 ---
 > **Tipo:** content_idea · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

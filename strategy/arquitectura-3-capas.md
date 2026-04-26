@@ -22,7 +22,7 @@ La maquinaria que lo produce todo. Aquí viven los 10 agentes, los 798 skills, l
 ### 👥 Capa 2 — Clientes de PACAME
 Negocios externos que contratan a la factoría. Son DUEÑOS de su propia infraestructura. PACAME sólo entrega y mantiene.
 
-- **Ejemplos**: Ecomglobalbox (César Veld), La Caleta Manchega, Joyería Royo, Clara Women, Bravamood, etc.
+- **Ejemplos**: Ecomglobalbox (César Veld), Joyería Royo, Clara Women, Bravamood, etc.
 - **Propietario**: cada cliente.
 - **Revenue**: el cliente factura; PACAME cobra fee aparte.
 - **Datos**: el cliente los tiene. PACAME guarda SÓLO metadata del encargo (nombre, estado, factura, fecha).
@@ -33,7 +33,7 @@ Negocios externos que contratan a la factoría. Son DUEÑOS de su propia infraes
 ### 🚀 Capa 3 — Proyectos Propios de Pablo
 Productos SaaS que Pablo crea y opera él mismo, usando la potencia de PACAME como MOTOR de construcción. Son productos, no servicios.
 
-- **Ejemplos**: Dark Room (darkroomcreative.cloud).
+- **Ejemplos**: Dark Room (darkroomcreative.cloud), La Caleta Manchega (lacaletamanchega.com / .es / .online), Asesor Pro (mini-SaaS asesores fiscales), PromptForge, PacameGPT.
 - **Propietario**: Pablo.
 - **Revenue**: MRR recurrente del usuario final.
 - **Datos**: usuarios finales del producto (no son ni de PACAME ni del cliente Ecomglobalbox).
@@ -80,10 +80,10 @@ La clave: **la factoría se reutiliza; los datos/marca/dinero NO se cruzan**.
 |---|---|---|---|
 | **Supabase proyectos** | `Pacame Agencia` (kfmnllpscheodgxnutkw) | (clientes tienen su infra propia en sus instancias) | `dark-room-prod` (kxqcyukivvfygvrxxant) ✓ ARREGLADO |
 | **Supabase org** | `pacameagencia` ✓ SOLO factoría | — | `Dark Room IO` (vlznxeibibkaqqfvnivz) ✓ AISLADO |
-| **Vercel projects** | `web` → pacameagencia.com | `caleta-gestiona`, `caleta-gestiona-n1x7`, `lacaletamanchegaalbacete`, `lacaleta-gestion` | `dark-room` → darkroomcreative.cloud |
+| **Vercel projects** | `web` → pacameagencia.com | `pacame-casa-marisol-cadiz` (Casa Marisol) | `dark-room` → darkroomcreative.cloud, `caleta-gestiona`, `caleta-gestiona-n1x7`, `lacaletamanchegaalbacete`, `lacaleta-gestion` |
 | **Vercel team** | `pacames-projects` ⚠️ mezcla las 3 capas | Misma que PACAME ⚠️ | Misma que PACAME ⚠️ |
 | **Stripe cuenta** | PACAME LIVE | del cliente (independiente) | ⚠️ reutiliza PACAME (decisión velocidad) |
-| **Dominios Hostinger** | pacameagencia.com | lacaletamanchega.{com,es,online}, clarawomen.shop, joyeriaroyo.com, la42.es, eternalhug.shop, lexdigital.es, bravamood.com, aldabasrestaurante.es, elabrazoeterno.shop | darkroomcreative.cloud |
+| **Dominios Hostinger** | pacameagencia.com | clarawomen.shop, joyeriaroyo.com, la42.es, eternalhug.shop, lexdigital.es, bravamood.com, aldabasrestaurante.es, elabrazoeterno.shop | darkroomcreative.cloud, lacaletamanchega.{com,es,online} |
 | **VPS** | Hostinger KVM2 72.62.185.125 (Gemma, n8n, voice) | propios | Contabo EU Windows (pendiente S4) |
 | **Email ops** | hola@pacameagencia.com | del cliente | ops@darkroomcreative.cloud (pendiente) |
 | **AdsPower** | — | — | cuenta Pablo personal ⚠️ compartida, ideal cuenta ops@darkroom dedicada |

@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: 'Puentes y Escapadas: Guía de Fin de Semana Largo'
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.106Z'
-neural_id: 4a625e42-6f61-4a81-b27a-fb74f479d7da
-confidence: 0.75
-actionable: true
-updated: '2026-04-24T08:17:36.59711+00:00'
+created: '2026-04-26T19:24:46.853Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-24-puentes-y-escapadas-guia-de-fin-de-semana-largo.md
+neural_id: 0ed52298-a87e-4d70-9165-8b1035566156
+updated: '2026-04-26T19:24:46.853Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

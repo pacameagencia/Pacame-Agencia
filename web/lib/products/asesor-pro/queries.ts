@@ -103,6 +103,126 @@ export async function listUnreadAlerts(asesorUserId: string, limit = 20): Promis
   return (data ?? []) as AsesorAlert[];
 }
 
+export interface AsesorInvoiceListItem {
+  id: string;
+  asesor_client_id: string;
+  client_fiscal_name: string;
+  number: string | null;
+  series: string | null;
+  issue_date: string;
+  customer_fiscal_name: string | null;
+  total_cents: number;
+  iva_cents: number;
+  subtotal_cents: number;
+  status: string;
+  reviewed_by_asesor_at: string | null;
+  pdf_url: string | null;
+}
+
+export async function listAllInvoices(
+  asesorUserId: string,
+  filters?: { client_id?: string | null; quarter?: 1 | 2 | 3 | 4 | null; year?: number | null; only_pending?: boolean }
+): Promise<AsesorInvoiceListItem[]> {
+  const supabase = createServerSupabase();
+
+  let query = supabase
+    .from("asesorpro_invoices")
+    .select(
+      "id, asesor_client_id, number, series, issue_date, customer_fiscal_name, total_cents, iva_cents, subtotal_cents, status, reviewed_by_asesor_at, pdf_url, asesorpro_clients!inner(fiscal_name)"
+    )
+    .eq("asesor_user_id", asesorUserId)
+    .order("issue_date", { ascending: false })
+    .limit(200);
+
+  if (filters?.client_id) query = query.eq("asesor_client_id", filters.client_id);
+  if (filters?.only_pending) query = query.is("reviewed_by_asesor_at", null);
+
+  if (filters?.quarter && filters?.year) {
+    const startMonth = (filters.quarter - 1) * 3;
+    const start = new Date(filters.year, startMonth, 1).toISOString().slice(0, 10);
+    const end = new Date(filters.year, startMonth + 3, 0).toISOString().slice(0, 10);
+    query = query.gte("issue_date", start).lte("issue_date", end);
+  }
+
+  const { data } = await query;
+  return ((data ?? []) as unknown as Array<AsesorInvoiceListItem & { asesorpro_clients: { fiscal_name: string } }>).map(
+    (r) => ({
+      id: r.id,
+      asesor_client_id: r.asesor_client_id,
+      client_fiscal_name: r.asesorpro_clients?.fiscal_name ?? "—",
+      number: r.number,
+      series: r.series,
+      issue_date: r.issue_date,
+      customer_fiscal_name: r.customer_fiscal_name,
+      total_cents: r.total_cents,
+      iva_cents: r.iva_cents,
+      subtotal_cents: r.subtotal_cents,
+      status: r.status,
+      reviewed_by_asesor_at: r.reviewed_by_asesor_at,
+      pdf_url: r.pdf_url,
+    })
+  );
+}
+
+export interface AsesorExpenseListItem {
+  id: string;
+  asesor_client_id: string;
+  client_fiscal_name: string;
+  expense_date: string;
+  vendor_name: string | null;
+  vendor_nif: string | null;
+  category: string | null;
+  base_cents: number;
+  iva_cents: number;
+  total_cents: number;
+  status: string;
+  photo_url: string | null;
+}
+
+export async function listAllExpenses(
+  asesorUserId: string,
+  filters?: { client_id?: string | null; status?: string | null }
+): Promise<AsesorExpenseListItem[]> {
+  const supabase = createServerSupabase();
+  let query = supabase
+    .from("asesorpro_expenses")
+    .select(
+      "id, asesor_client_id, expense_date, vendor_name, vendor_nif, category, base_cents, iva_cents, total_cents, status, photo_url, asesorpro_clients!inner(fiscal_name)"
+    )
+    .eq("asesor_user_id", asesorUserId)
+    .order("expense_date", { ascending: false })
+    .limit(200);
+  if (filters?.client_id) query = query.eq("asesor_client_id", filters.client_id);
+  if (filters?.status) query = query.eq("status", filters.status);
+  const { data } = await query;
+  return ((data ?? []) as unknown as Array<AsesorExpenseListItem & { asesorpro_clients: { fiscal_name: string } }>).map(
+    (r) => ({
+      id: r.id,
+      asesor_client_id: r.asesor_client_id,
+      client_fiscal_name: r.asesorpro_clients?.fiscal_name ?? "—",
+      expense_date: r.expense_date,
+      vendor_name: r.vendor_name,
+      vendor_nif: r.vendor_nif,
+      category: r.category,
+      base_cents: r.base_cents,
+      iva_cents: r.iva_cents,
+      total_cents: r.total_cents,
+      status: r.status,
+      photo_url: r.photo_url,
+    })
+  );
+}
+
+export async function markAlertRead(asesorUserId: string, alertId: string): Promise<boolean> {
+  const supabase = createServerSupabase();
+  const { error } = await supabase
+    .from("asesorpro_alerts")
+    .update({ read_at: new Date().toISOString() })
+    .eq("id", alertId)
+    .eq("asesor_user_id", asesorUserId);
+  return !error;
+}
+
 export async function getDashboardStats(asesorUserId: string): Promise<DashboardStats> {
   const supabase = createServerSupabase();
   const monthStart = new Date();

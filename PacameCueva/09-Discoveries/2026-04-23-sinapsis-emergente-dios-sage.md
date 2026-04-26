@@ -1,18 +1,19 @@
 ---
 type: discovery
 title: 'Sinapsis emergente: DIOS → SAGE'
-agent: DIOS
+agent: SAGE
 tags:
   - type/discovery
   - discovery/pattern
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.057Z'
-neural_id: 4324fec8-b8f2-4cda-9832-7535bda34e38
-confidence: 1
-actionable: true
-updated: '2026-04-23T05:03:44.884999+00:00'
+  - agent/SAGE
+created: '2026-04-26T19:24:46.855Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-23-sinapsis-emergente-dios-sage.md
+neural_id: 4dd1b7d0-7d3e-471c-b896-b07838148df5
+updated: '2026-04-26T19:24:46.855Z'
 ---
 > **Tipo:** pattern · **Impacto:** medium · **Confianza:** 1.00 · **Status:** new
 

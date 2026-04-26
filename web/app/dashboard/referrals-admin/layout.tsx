@@ -9,6 +9,7 @@ const TABS = [
   { href: "/dashboard/referrals-admin/tracking", label: "Tracking" },
   { href: "/dashboard/referrals-admin/commissions", label: "Comisiones" },
   { href: "/dashboard/referrals-admin/content", label: "Contenido" },
+  { href: "/dashboard/referrals-admin/configuracion", label: "Configuración" },
 ];
 
 export default function ReferralsAdminLayout({

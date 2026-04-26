@@ -1,5 +1,7 @@
 -- =============================================================================
--- PACAME — Migracion 007: Observabilidad LLM + mantenimiento de la red neural
+-- PACAME — Migracion 021: Observabilidad LLM + mantenimiento de la red neural
+-- (renombrada desde 007_observability_and_maintenance.sql para resolver
+-- colisión con 007_platform_premium.sql)
 -- =============================================================================
 -- 1. Tabla agent_llm_usage: tracking token + coste por llamada a LLM
 -- 2. Funcion backfill_episodic_to_semantic(): promueve episodicas viejas e

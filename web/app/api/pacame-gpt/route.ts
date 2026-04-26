@@ -299,31 +299,30 @@ async function streamFromAnthropic(
             } else if (evt.type === "message_delta") {
               usageOut = evt.usage?.output_tokens ?? usageOut;
             } else if (evt.type === "message_stop") {
-              if (looksNonSpanish(fullText)) {
-                const canned = "Solo hablo español, perdona. ¿Qué te ayudo a hacer?";
-                send({ type: "drift", reason: "non_spanish", replacement: canned });
-                send({ type: "done", fullText: canned });
-                if (convId) {
-                  await persistMessage(convId, "assistant", canned, {
-                    llm_provider: "claude",
-                    llm_model: modelReturned,
-                    tokens_in: usageIn,
-                    tokens_out: usageOut,
-                    latency_ms: Date.now() - startedAt,
-                  });
-                }
-              } else {
-                send({ type: "done", fullText });
-                if (convId) {
-                  await persistMessage(convId, "assistant", fullText, {
-                    llm_provider: "claude",
-                    llm_model: modelReturned,
-                    tokens_in: usageIn,
-                    tokens_out: usageOut,
-                    latency_ms: Date.now() - startedAt,
-                  });
-                }
+              // Re-sanitización del texto completo: pilla patrones que se
+              // partieron entre chunks (ej. "Ver"+"cel" individualmente
+              // pasaron, pero "Vercel" en el agregado se debe filtrar).
+              const finalSanitized = sanitizeOut(fullText);
+              const drift = looksNonSpanish(finalSanitized);
+              const finalText = drift
+                ? "Solo hablo español, perdona. ¿Qué te ayudo a hacer?"
+                : finalSanitized;
+              if (drift) {
+                send({ type: "drift", reason: "non_spanish", replacement: finalText });
               }
+              // Persistir y devolver messageId al cliente para acciones (PDF/email/recordar).
+              let savedId: string | null = null;
+              if (convId) {
+                const persisted = await persistMessage(convId, "assistant", finalText, {
+                  llm_provider: "claude",
+                  llm_model: modelReturned,
+                  tokens_in: usageIn,
+                  tokens_out: usageOut,
+                  latency_ms: Date.now() - startedAt,
+                });
+                savedId = persisted?.id ?? null;
+              }
+              send({ type: "done", fullText: finalText, messageId: savedId });
             } else if (evt.type === "error") {
               send({ type: "error", message: evt.error?.message || "upstream_error" });
             }
@@ -378,20 +377,23 @@ async function runFallbackNonStreaming(
       reply = "Solo hablo español, perdona. ¿Qué te ayudo a hacer?";
     }
 
+    let savedId: string | null = null;
     if (ctx) {
-      await persistMessage(ctx.convId, "assistant", reply, {
+      const persisted = await persistMessage(ctx.convId, "assistant", reply, {
         llm_provider: result.provider,
         llm_model: result.model,
         tokens_in: result.tokensIn,
         tokens_out: result.tokensOut,
         latency_ms: result.latencyMs,
       });
+      savedId = persisted?.id ?? null;
     }
 
     return jsonResponse({
       ok: true,
       reply,
       conversationId: ctx?.convId ?? null,
+      messageId: savedId,
       tier: ctx?.gate.tier ?? "anonymous",
       remaining: ctx?.gate.remaining ?? null,
       model: result.model,

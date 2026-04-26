@@ -9,11 +9,12 @@ tags:
   - research
   - optimization
   - agent/NOVA
-created: '2026-04-25T21:44:34.079Z'
-neural_id: b695c877-f52d-4df8-98e5-862610d69d4a
-importance: 0.6
-accessed_count: 0
-updated: '2026-04-19T18:35:34.743867+00:00'
+created: '2026-04-26T19:24:45.039Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\08-Memorias\NOVA\2026-04-19-descubrimiento-posicionamiento-por-nivel-de-inversion.md
+neural_id: ad332b90-514a-4fdb-8dfa-ab0dfc66e192
+updated: '2026-04-26T19:24:45.039Z'
 ---
 > **Tipo:** semantic · **Importancia:** 0.60 · **Accedida:** 0 veces
 

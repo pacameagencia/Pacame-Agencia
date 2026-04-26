@@ -82,34 +82,24 @@ async function ensureBucket() {
 }
 
 async function uploadFile(localPath, remotePath) {
-  // IG Graph API requires JPEG · convert PNG → JPEG on the fly
-  const jpgPath = remotePath.replace(/\.png$/i, ".jpg");
-  // IG Graph API rejects progressive JPEGs in some cases · use baseline + standard quality
+  // IG Graph API rejected Supabase Storage URLs (subcode 2207052).
+  // Workaround: upload to catbox.moe (simpler CDN, IG-compatible).
   const buf = await sharp(localPath)
     .jpeg({ quality: 90, progressive: false, mozjpeg: false, chromaSubsampling: "4:2:0" })
     .toBuffer();
-  // Try delete first (upsert behavior)
-  await fetch(`${SUPA_URL}/storage/v1/object/${BUCKET}/${jpgPath}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${SUPA_KEY}`, apikey: SUPA_KEY },
-  }).catch(() => {});
-  // Upload as JPEG
-  const r = await fetch(`${SUPA_URL}/storage/v1/object/${BUCKET}/${jpgPath}`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${SUPA_KEY}`,
-      apikey: SUPA_KEY,
-      "Content-Type": "image/jpeg",
-      "x-upsert": "true",
-    },
-    body: buf,
-  });
+  const fd = new FormData();
+  fd.append("reqtype", "fileupload");
+  fd.append("fileToUpload", new Blob([buf], { type: "image/jpeg" }), "slide.jpg");
+  const r = await fetch("https://catbox.moe/user/api.php", { method: "POST", body: fd });
   if (!r.ok) {
     const err = await r.text();
-    throw new Error(`Upload ${jpgPath} failed: ${err.slice(0, 300)}`);
+    throw new Error(`catbox upload failed ${r.status}: ${err.slice(0, 200)}`);
   }
-  // Public URL
-  return `${SUPA_URL}/storage/v1/object/public/${BUCKET}/${jpgPath}`;
+  const url = (await r.text()).trim();
+  if (!url.startsWith("https://")) {
+    throw new Error(`catbox unexpected response: ${url.slice(0, 200)}`);
+  }
+  return url;
 }
 
 // ─── Instagram Graph API helpers ───────────────────────────────

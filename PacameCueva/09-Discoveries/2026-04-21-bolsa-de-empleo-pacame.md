@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Bolsa de Empleo PACAME
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.027Z'
-neural_id: 296ec274-4de8-4ae3-a9d4-dc706b00d932
-confidence: 0.75
-actionable: true
-updated: '2026-04-21T18:31:48.216135+00:00'
+created: '2026-04-26T19:24:45.042Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-21-bolsa-de-empleo-pacame.md
+neural_id: 1947e39f-6e5f-4f68-9a4e-c078b7aa1a60
+updated: '2026-04-26T19:24:45.042Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

@@ -8,7 +8,7 @@ export default function AfiliadosPage() {
       <section className="border-b border-ink/10 bg-paper">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <span className="inline-block rounded-sm bg-mustard-500/20 px-3 py-1 text-xs uppercase tracking-wider text-ink">
-            Programa de afiliados
+            Programa de afiliados PACAME · 2026
           </span>
           <h1 className="mt-4 max-w-3xl font-heading text-5xl leading-tight md:text-6xl">
             Vive de recomendar <span className="text-terracotta-500">PACAME</span>.
@@ -20,12 +20,25 @@ export default function AfiliadosPage() {
             sociales, branding — todo lo que vendes son cosas que las PYMEs
             necesitan sí o sí.
           </p>
+
+          <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink/70">
+            <span className="inline-flex items-center gap-1.5">
+              <span className="text-emerald-700">✓</span> Cero riesgo · 0 € de inversión
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="text-emerald-700">✓</span> Registro en 30 segundos
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="text-emerald-700">✓</span> Pago directo a tu IBAN, PayPal o Bizum
+            </span>
+          </div>
+
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/afiliados/registro"
               className="rounded-sm bg-terracotta-500 px-6 py-3 text-paper hover:bg-terracotta-600"
             >
-              Quiero empezar a ganar dinero
+              Quiero empezar a ganar dinero →
             </Link>
             <Link
               href="#calculadora"
@@ -35,8 +48,18 @@ export default function AfiliadosPage() {
             </Link>
           </div>
           <p className="mt-4 text-xs text-ink/50">
-            Registro instantáneo · sin tarjeta · panel pro incluido
+            Sin tarjeta · sin permanencia · panel pro incluido
           </p>
+        </div>
+      </section>
+
+      {/* Social proof — números reales del programa */}
+      <section className="border-b border-ink/10 bg-ink text-paper">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 py-10 md:grid-cols-4">
+          <ProofStat number="20%" label="comisión recurrente" />
+          <ProofStat number="12 meses" label="por cada cliente" />
+          <ProofStat number="9 servicios" label="que puedes vender" />
+          <ProofStat number="30 días" label="de cookie tracking" />
         </div>
       </section>
 
@@ -83,6 +106,40 @@ export default function AfiliadosPage() {
               pasa a aprobada y la pagamos en tu medio elegido. Reporting
               total en tu panel.
             </Step>
+          </div>
+        </div>
+      </section>
+
+      {/* Perfiles tipo: para quién encaja */}
+      <section className="border-b border-ink/10 bg-paper">
+        <div className="mx-auto max-w-6xl px-6 py-16">
+          <h2 className="font-heading text-3xl">Para quién es esto</h2>
+          <p className="mt-2 max-w-2xl text-sm text-ink/60">
+            Si te dedicas a algo de esto, ya tienes audiencia que necesita PACAME. Solo tienes
+            que mandarles tu enlace.
+          </p>
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            <Profile
+              role="Freelance digital"
+              metric="3 webs/mes"
+              monthly="480 €/mes"
+              annual="5 760 €/año"
+              text="Ya recomiendas servicios a tus clientes. Ahora cobras por hacerlo. Tu trabajo: enviar 1 email a tu lista."
+            />
+            <Profile
+              role="Consultor de negocios"
+              metric="2 SEO + 2 Redes"
+              monthly="198 €/mes recurrente"
+              annual="2 376 €/año mes 1"
+              text="Tus clientes preguntan ‘¿quién me lleva la web?’ cada semana. Una respuesta = 198 €/mes en tu cuenta."
+            />
+            <Profile
+              role="Creador de contenido"
+              metric="5 ventas/mes"
+              monthly="800 €/mes recurrente"
+              annual="9 600 €/año"
+              text="Tu audiencia confía en ti. Una mención por semana en historias / hilos / vídeos = ingresos pasivos reales."
+            />
           </div>
         </div>
       </section>
@@ -189,6 +246,23 @@ export default function AfiliadosPage() {
         </div>
       </section>
 
+      {/* Garantía + transparencia */}
+      <section className="border-b border-ink/10 bg-mustard-500/10">
+        <div className="mx-auto max-w-4xl px-6 py-12 text-center">
+          <h3 className="font-heading text-2xl">Cero riesgo. Cero letra pequeña.</h3>
+          <p className="mt-3 text-sm text-ink/75">
+            No necesitas tarjeta. No firmas permanencia. Si en 90 días no has cobrado nada,
+            simplemente cierras la cuenta y no debes nada — esto no es para todo el mundo y
+            lo sabemos. Si vendes, cobras lo prometido al céntimo.
+          </p>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-4 text-xs text-ink/60">
+            <span>📍 PACAME · Madrid · CIF español</span>
+            <span>📞 +34 722 669 381</span>
+            <span>✉️ hola@pacameagencia.com</span>
+          </div>
+        </div>
+      </section>
+
       {/* CTA final */}
       <section className="bg-terracotta-500 text-paper">
         <div className="mx-auto max-w-4xl px-6 py-16 text-center">
@@ -200,11 +274,41 @@ export default function AfiliadosPage() {
             href="/afiliados/registro"
             className="mt-6 inline-block rounded-sm bg-paper px-6 py-3 text-ink hover:bg-paper/90"
           >
-            Crear mi cuenta gratis
+            Crear mi cuenta gratis →
           </Link>
+          <p className="mt-3 text-xs text-paper/70">
+            Tienes acceso al panel y a tu enlace en menos de 1 minuto.
+          </p>
         </div>
       </section>
     </main>
+  );
+}
+
+function ProofStat({ number, label }: { number: string; label: string }) {
+  return (
+    <div className="text-center">
+      <div className="font-heading text-3xl text-mustard-500 md:text-4xl">{number}</div>
+      <div className="mt-1 text-xs uppercase tracking-wider text-paper/70">{label}</div>
+    </div>
+  );
+}
+
+function Profile({
+  role, metric, monthly, annual, text,
+}: {
+  role: string; metric: string; monthly: string; annual: string; text: string;
+}) {
+  return (
+    <article className="rounded-md border border-ink/10 bg-paper p-5">
+      <div className="text-xs uppercase tracking-wider text-ink/50">{role}</div>
+      <div className="mt-2 font-heading text-xl text-ink">{metric}</div>
+      <div className="mt-3 flex items-baseline gap-2">
+        <span className="font-heading text-2xl text-terracotta-500">{monthly}</span>
+        <span className="text-xs text-ink/50">{annual}</span>
+      </div>
+      <p className="mt-3 text-sm text-ink/70">{text}</p>
+    </article>
   );
 }
 

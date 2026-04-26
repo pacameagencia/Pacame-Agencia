@@ -20,6 +20,7 @@ const VAULT_TYPE_TO_DB: Record<NodeType, string> = {
   discovery: 'hypothesis',
   synapse: 'concept',
   client: 'entity',
+  'self-project': 'entity',
   concept: 'concept',
 };
 
@@ -138,6 +139,7 @@ async function ensureVaultDirs() {
     PATHS.vaultDirs.sinapsis,
     PATHS.vaultDirs.memorias,
     PATHS.vaultDirs.discoveries,
+    PATHS.vaultDirs.proyectosPropios,
     PATHS.vaultDirs.templates,
     PATHS.vaultDirs.dashboards,
   ];

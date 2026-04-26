@@ -3,8 +3,38 @@ const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID?.trim();
 const TELEGRAM_API = "https://api.telegram.org";
 
 interface TelegramSendOptions {
-  parse_mode?: "HTML" | "MarkdownV2";
+  parse_mode?: "HTML" | "MarkdownV2" | "Markdown";
   disable_notification?: boolean;
+}
+
+/**
+ * Manda un mensaje al chat_id que se le indique. Pensado para multi-tenant
+ * (cada asesor/cliente tiene su propio chat_id).
+ */
+export async function sendTelegramMessage(
+  chatId: string,
+  text: string,
+  options: TelegramSendOptions = {}
+): Promise<boolean> {
+  if (!TELEGRAM_BOT_TOKEN) return false;
+  try {
+    const res = await fetch(
+      `${TELEGRAM_API}/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text,
+          parse_mode: options.parse_mode || "HTML",
+          disable_notification: options.disable_notification || false,
+        }),
+      }
+    );
+    return res.ok;
+  } catch {
+    return false;
+  }
 }
 
 /**

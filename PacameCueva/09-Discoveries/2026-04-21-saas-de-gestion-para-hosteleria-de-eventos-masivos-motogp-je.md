@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: SaaS de Gestión para Hostelería de Eventos Masivos (MotoGP Jerez)
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:33.988Z'
-neural_id: 13b570d0-0353-4400-bc27-62af93788575
-confidence: 0.75
-actionable: true
-updated: '2026-04-21T15:41:40.1131+00:00'
+created: '2026-04-26T19:24:45.945Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-21-saas-de-gestion-para-hosteleria-de-eventos-masivos-motogp-je.md
+neural_id: 01a04f8a-be3d-4750-bdc8-774668c6366e
+updated: '2026-04-26T19:24:45.945Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

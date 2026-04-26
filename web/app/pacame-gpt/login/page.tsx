@@ -37,11 +37,6 @@ export default function PacameGPTLoginPage() {
         body: JSON.stringify({ email, password, redirect_to: "/pacame-gpt" }),
       });
       const json = await res.json();
-      if (res.status === 404) {
-        setError("Ese email no está registrado. Cámbiate a 'Crear cuenta gratis'.");
-        setMode("signup");
-        return;
-      }
       if (!res.ok || !json.ok) {
         setError(humanError(json.error || "login_failed"));
         return;
@@ -331,12 +326,8 @@ function primaryBtnStyle(disabled: boolean): React.CSSProperties {
 
 function humanError(code: string): string {
   switch (code) {
-    case "invalid_password":
-      return "La contraseña no es correcta. Vuelve a intentarlo.";
-    case "user_has_no_password":
-      return "Esta cuenta aún no tiene contraseña. Crea una nueva con 'Crear cuenta gratis'.";
-    case "user_not_found":
-      return "Ese email no está registrado.";
+    case "invalid_credentials":
+      return "Email o contraseña no correctos. Si nunca has entrado, dale a 'Crear cuenta gratis'.";
     case "valid email required":
       return "Ese email no parece válido.";
     default:

@@ -27,6 +27,7 @@ import { verifyInternalAuth } from "@/lib/api-auth";
 import { recordDiscovery, routeInput } from "@/lib/neural";
 import { llmChat } from "@/lib/llm";
 import { sendTelegram } from "@/lib/telegram";
+import { logAgentActivity } from "@/lib/agent-logger";
 
 import { upcomingSpanishEvents, eventsContextString } from "@/lib/trends/spanish-events";
 import { fetchGoogleTrendsES } from "@/lib/trends/google-trends";
@@ -404,6 +405,24 @@ export async function GET(request: NextRequest) {
     ].join('\n');
     try { await sendTelegram(msg); telegramSent = true; } catch { /* no-op */ }
   }
+
+  await logAgentActivity({
+    agentId: "dios",
+    type: "update",
+    title: "Opportunity scanner — oportunidades detectadas",
+    description: `Validadas ${valid.length}/${llmCandidates.length}. ${discoveryIds.length} discoveries grabados. ${telegramSent ? "Telegram top3 enviado." : "Telegram skip."}`,
+    metadata: {
+      seeds_count: seeds.length,
+      enriched_count: enriched.length,
+      pre_filtered_count: preFiltered.length,
+      valid_count: valid.length,
+      rejected_count: rejected.length,
+      discovery_ids: discoveryIds,
+      telegram_sent: telegramSent,
+      latency_ms: Date.now() - started,
+      source: "cron",
+    },
+  });
 
   return NextResponse.json({
     ok: true,

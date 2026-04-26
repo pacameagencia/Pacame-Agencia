@@ -18,6 +18,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { promoteToolGap, type ToolGap } from "@/lib/neural";
 import { verifyInternalAuth } from "@/lib/api-auth";
+import { logAgentActivity } from "@/lib/agent-logger";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -81,13 +82,31 @@ export async function GET(request: NextRequest) {
     .eq("tool_kind", "subagent")
     .gte("usage_count", 5);
 
+  const promotedToProbation = results.filter((r) => r.new_status === "probation").length;
+  const promotedToProduction = results.filter((r) => r.promoted).length;
+
+  await logAgentActivity({
+    agentId: "core",
+    type: "update",
+    title: "Promote tools — evaluación de drafts",
+    description: `${results.length} candidatos. ${promotedToProbation}→probation. ${promotedToProduction}→promoted. ${(subagentReady || []).length} subagentes esperando aprobación manual.`,
+    metadata: {
+      candidates_checked: results.length,
+      promoted_to_probation: promotedToProbation,
+      promoted_to_production: promotedToProduction,
+      subagent_awaiting: (subagentReady || []).length,
+      duration_ms: Date.now() - startedAt,
+      source: "cron",
+    },
+  });
+
   return NextResponse.json({
     ok: true,
     durationMs: Date.now() - startedAt,
     candidates_checked: results.length,
     results,
-    promoted_to_probation: results.filter((r) => r.new_status === "probation").length,
-    promoted_to_production: results.filter((r) => r.promoted).length,
+    promoted_to_probation: promotedToProbation,
+    promoted_to_production: promotedToProduction,
     subagent_awaiting_manual_approval: (subagentReady || []).length,
     subagent_pending: subagentReady || [],
   });

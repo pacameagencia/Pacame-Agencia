@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Sistema de Micro-Servicios de Automatización por Suscripción
-agent: SAGE
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/high
   - status/new
-  - agent/SAGE
-created: '2026-04-25T21:44:34.133Z'
-neural_id: 9846136f-58ac-4d8d-8cea-34a6a704f287
-confidence: 0.7
-actionable: true
-updated: '2026-04-25T18:03:16.396533+00:00'
+created: '2026-04-26T19:24:46.869Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-25-sistema-de-micro-servicios-de-automatizacion-por-suscripcion.md
+neural_id: 3fd65c97-2aee-4148-89fd-6ef986bd97a5
+updated: '2026-04-26T19:24:46.869Z'
 ---
 > **Tipo:** service_idea · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

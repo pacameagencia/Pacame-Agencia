@@ -8,11 +8,12 @@ tags:
   - impact/medium
   - status/new
   - agent/DIOS
-created: '2026-04-25T21:44:34.085Z'
-neural_id: 294a36df-4aef-4cb0-a8fa-b102a4b4ef95
-confidence: 1
-actionable: true
-updated: '2026-04-24T05:44:29.772068+00:00'
+created: '2026-04-26T19:24:46.858Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-24-sinapsis-emergente-sage-dios.md
+neural_id: 1bba15e2-755e-444e-961f-d6a149d8d51e
+updated: '2026-04-26T19:24:46.858Z'
 ---
 > **Tipo:** pattern · **Impacto:** medium · **Confianza:** 1.00 · **Status:** new
 

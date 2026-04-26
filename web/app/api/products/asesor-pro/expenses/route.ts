@@ -10,6 +10,7 @@ import { getCurrentProductUser } from "@/lib/products/session";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { getClientContext } from "@/lib/products/asesor-pro/client-queries";
 import { extractReceiptOCR } from "@/lib/products/asesor-pro/ocr";
+import { notifyExpenseUploaded } from "@/lib/products/asesor-pro/notifications";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -147,6 +148,16 @@ export async function POST(request: NextRequest) {
       message: `${(totalCents / 100).toFixed(2)} € · confianza OCR ${(ocr.confidence * 100).toFixed(0)}%`,
       action_url: `/app/asesor-pro/gastos?id=${data.id}`,
     });
+
+    // Telegram al asesor (silencioso si no configurado)
+    notifyExpenseUploaded({
+      asesor_user_id: ctx.asesor_user_id,
+      client_name: ctx.fiscal_name,
+      vendor: ocr.vendor_name ?? "",
+      total_eur: totalCents / 100,
+      confidence: ocr.confidence,
+      expense_id: data.id,
+    }).catch(() => {});
 
     return NextResponse.json({ expense: data, ocr });
   }

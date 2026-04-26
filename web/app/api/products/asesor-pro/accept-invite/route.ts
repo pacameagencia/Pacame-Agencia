@@ -13,6 +13,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { findOrCreateUser, createSession, buildSessionCookie } from "@/lib/products/auth";
+import { isValidEmail } from "@/lib/validators";
+import { notifyInviteAccepted } from "@/lib/products/asesor-pro/notifications";
 
 export const runtime = "nodejs";
 
@@ -35,8 +37,11 @@ export async function POST(request: NextRequest) {
   if (!token || !email || !password) {
     return NextResponse.json({ error: "token, email y password requeridos" }, { status: 400 });
   }
+  if (!isValidEmail(email)) {
+    return NextResponse.json({ error: "email_invalido" }, { status: 400 });
+  }
   if (password.length < 8) {
-    return NextResponse.json({ error: "password mínimo 8 chars" }, { status: 400 });
+    return NextResponse.json({ error: "password_corta", hint: "Mínimo 8 caracteres." }, { status: 400 });
   }
 
   const supabase = createServerSupabase();
@@ -84,6 +89,23 @@ export async function POST(request: NextRequest) {
       invite_token: null, // single-use
     })
     .eq("id", client.id);
+
+  // Telegram al asesor
+  notifyInviteAccepted({
+    asesor_user_id: client.asesor_user_id,
+    client_name: client.fiscal_name,
+  }).catch(() => {});
+
+  // Alerta in-app
+  await supabase.from("asesorpro_alerts").insert({
+    asesor_user_id: client.asesor_user_id,
+    asesor_client_id: client.id,
+    type: "invite_accepted",
+    severity: "info",
+    title: `${client.fiscal_name} ha aceptado la invitación`,
+    message: "Ya puede facturar y subir gastos desde su panel.",
+    action_url: `/app/asesor-pro/clientes/${client.id}`,
+  });
 
   // Crear sesión
   const session = await createSession(user.id);

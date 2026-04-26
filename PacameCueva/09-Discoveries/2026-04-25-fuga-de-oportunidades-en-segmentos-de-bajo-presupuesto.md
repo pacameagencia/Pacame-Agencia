@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Fuga de Oportunidades en Segmentos de Bajo Presupuesto
-agent: LENS
 tags:
   - type/discovery
   - discovery/optimization
   - impact/high
   - status/new
-  - agent/LENS
-created: '2026-04-25T21:44:34.129Z'
-neural_id: 955f0f43-bec8-4c90-850b-df6ef5ff369a
-confidence: 0.7
-actionable: true
-updated: '2026-04-25T13:01:24.969866+00:00'
+created: '2026-04-26T19:24:46.812Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-25-fuga-de-oportunidades-en-segmentos-de-bajo-presupuesto.md
+neural_id: 75a7a650-a512-48dd-afcc-73d2b40bf1d5
+updated: '2026-04-26T19:24:46.812Z'
 ---
 > **Tipo:** optimization · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

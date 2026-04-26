@@ -1,18 +1,19 @@
 ---
 type: discovery
 title: 'Sinapsis emergente: ATLAS → COPY'
-agent: DIOS
+agent: COPY
 tags:
   - type/discovery
   - discovery/pattern
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.058Z'
-neural_id: 64a9862c-50b1-43d9-9830-410171bcaf42
-confidence: 1
-actionable: true
-updated: '2026-04-23T05:03:45.549962+00:00'
+  - agent/COPY
+created: '2026-04-26T19:24:46.702Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-23-sinapsis-emergente-atlas-copy.md
+neural_id: 3e8d6624-7040-44fb-bdf0-84ce04216224
+updated: '2026-04-26T19:24:46.702Z'
 ---
 > **Tipo:** pattern · **Impacto:** medium · **Confianza:** 1.00 · **Status:** new
 

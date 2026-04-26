@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Inventario de Estructura de Costos PYME por Sector (Plantilla Gratuita)
-agent: ATLAS
 tags:
   - type/discovery
   - discovery/content_idea
   - impact/high
   - status/new
-  - agent/ATLAS
-created: '2026-04-25T21:44:34.131Z'
-neural_id: 530312e2-fab3-4122-b3c3-fdb0d2b5c7fd
-confidence: 0.7
-actionable: true
-updated: '2026-04-25T18:03:10.324005+00:00'
+created: '2026-04-26T19:24:46.864Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-25-inventario-de-estructura-de-costos-pyme-por-sector-plantilla.md
+neural_id: 54249fe3-7258-4374-bf4e-78df32f72bb8
+updated: '2026-04-26T19:24:46.864Z'
 ---
 > **Tipo:** content_idea · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

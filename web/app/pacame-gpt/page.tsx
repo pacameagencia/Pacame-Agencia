@@ -23,6 +23,7 @@ import {
   deleteConversation as localDelete,
 } from "@/lib/lucia/storage";
 import type { ChatMessage, Conversation } from "@/lib/lucia/types";
+import QuickActions from "./QuickActions";
 import "./pacame-gpt.css";
 
 const TASKS = [
@@ -296,7 +297,7 @@ export default function PacameGPTPage() {
           <div className="pg-thread" ref={threadRef}>
             <div className="pg-thread-inner">
               {messages.map((m) => (
-                <MessageRow key={m.id} msg={m} />
+                <MessageRow key={m.id} msg={m} authenticated={authenticated} />
               ))}
               {sending && messages[messages.length - 1]?.role !== "assistant" && (
                 <div className="pg-row">
@@ -347,25 +348,42 @@ export default function PacameGPTPage() {
 /*                         Subcomponents                       */
 /* ─────────────────────────────────────────────────────────── */
 
-function MessageRow({ msg }: { msg: ChatMessage }) {
+function MessageRow({
+  msg,
+  authenticated,
+}: {
+  msg: ChatMessage;
+  authenticated: boolean;
+}) {
   const isUser = msg.role === "user";
+  const showActions =
+    !isUser && !msg.pending && msg.content.length > 12;
   return (
     <div className={`pg-row ${isUser ? "pg-row-user" : ""}`}>
       {!isUser && <LuciaAvatar size="sm" typing={!!msg.pending && msg.content.length === 0} />}
-      <div className={`pg-bubble ${isUser ? "is-user" : "is-bot"}`}>
-        {msg.pending && msg.content.length === 0 ? (
-          <span className="pg-typing-inline" aria-label="Lucía está escribiendo">
-            <span /><span /><span />
-          </span>
-        ) : (
-          <>{msg.content}</>
-        )}
-        <div className="pg-meta">
-          {new Date(msg.ts).toLocaleTimeString("es-ES", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+      <div style={{ display: "flex", flexDirection: "column", maxWidth: "78%", alignItems: isUser ? "flex-end" : "flex-start" }}>
+        <div className={`pg-bubble ${isUser ? "is-user" : "is-bot"}`} style={{ maxWidth: "100%" }}>
+          {msg.pending && msg.content.length === 0 ? (
+            <span className="pg-typing-inline" aria-label="Lucía está escribiendo">
+              <span /><span /><span />
+            </span>
+          ) : (
+            <>{msg.content}</>
+          )}
+          <div className="pg-meta">
+            {new Date(msg.ts).toLocaleTimeString("es-ES", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </div>
         </div>
+        {showActions && (
+          <QuickActions
+            serverId={msg.serverId}
+            content={msg.content}
+            authenticated={authenticated}
+          />
+        )}
       </div>
     </div>
   );

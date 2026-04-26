@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: 'Hostelería Jerez: Eventos y Reservas VIP MotoGP'
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.104Z'
-neural_id: dcac1698-c14a-40b6-b166-e84c412f902b
-confidence: 0.75
-actionable: true
-updated: '2026-04-24T08:17:35.695792+00:00'
+created: '2026-04-26T19:24:46.915Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-24-hosteleria-jerez-eventos-y-reservas-vip-motogp.md
+neural_id: 147d4786-2791-4cc3-ae27-bd8c4775f89a
+updated: '2026-04-26T19:24:46.915Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

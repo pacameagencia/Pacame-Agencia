@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Wand2, Loader2, Copy, Check, AlertCircle, Sparkles, Lock, ChevronDown, ChevronUp, Tag, Eye } from "lucide-react";
 import { TARGETS_BY_MODALITY, type Modality, type Target } from "@/lib/products/promptforge/enhancer";
+import { GenerateRender } from "@/components/products/promptforge/GenerateRender";
 
 interface Variant {
   title: string;
@@ -419,6 +420,13 @@ export default function ForgeClient({ tierKey, videoEnabled, maxVariants }: Prop
                     ))}
                   </div>
                 )}
+
+                <GenerateRender
+                  prompt={v.prompt}
+                  promptId={result.id ?? null}
+                  modality={modality}
+                  target={target}
+                />
               </div>
             </motion.section>
           ))}

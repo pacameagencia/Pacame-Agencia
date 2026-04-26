@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Cápsulas 'Arreglo el Error IA' en Short-Form Video
-agent: PULSE
 tags:
   - type/discovery
   - discovery/content_idea
   - impact/high
   - status/new
-  - agent/PULSE
-created: '2026-04-25T21:44:34.109Z'
-neural_id: 82ff12dd-ed55-4a0a-9de1-37759b7cbf6f
-confidence: 0.7
-actionable: true
-updated: '2026-04-24T12:37:11.345427+00:00'
+created: '2026-04-26T19:24:46.859Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-24-capsulas-arreglo-el-error-ia-en-short-form-video.md
+neural_id: ff0483bc-dbe8-4c42-b908-095adcaff722
+updated: '2026-04-26T19:24:46.859Z'
 ---
 > **Tipo:** content_idea · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

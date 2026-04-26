@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Plataforma de Reconversión Laboral (IA + Mentores)
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:33.984Z'
-neural_id: 3e1034ab-dfe3-4a98-a597-63b4e544316b
-confidence: 0.75
-actionable: true
-updated: '2026-04-21T15:32:52.346817+00:00'
+created: '2026-04-26T19:24:45.028Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-21-plataforma-de-reconversion-laboral-ia-mentores.md
+neural_id: 9dc6215a-fff3-4f11-aa69-69ed8cd8e17e
+updated: '2026-04-26T19:24:45.028Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

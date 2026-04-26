@@ -54,23 +54,16 @@ export async function POST(request: NextRequest) {
     .eq("email", email)
     .maybeSingle();
 
-  if (!user) {
-    // No revelamos si el email existe (mejor UX que decir "no existe": el front
-    // ofrece el flujo de signup unificado). Devolvemos 404 explícito para que
-    // el caller pueda decidir redirigir.
-    return NextResponse.json({ error: "user_not_found" }, { status: 404 });
-  }
+  // Respuesta unificada para los tres "fracasos" (no existe / sin password /
+  // password mal). Evita enumeración de cuentas: un atacante no puede saber
+  // si un email está registrado.
+  const INVALID = NextResponse.json(
+    { error: "invalid_credentials" },
+    { status: 401 }
+  );
 
-  if (!user.password_hash) {
-    return NextResponse.json(
-      { error: "user_has_no_password", hint: "Inicia trial para crear contraseña." },
-      { status: 401 }
-    );
-  }
-
-  if (!verifyPassword(password, user.password_hash)) {
-    return NextResponse.json({ error: "invalid_password" }, { status: 401 });
-  }
+  if (!user || !user.password_hash) return INVALID;
+  if (!verifyPassword(password, user.password_hash)) return INVALID;
 
   // Sesión nueva (rota token previo si lo había).
   const session = await createSession(user.id);

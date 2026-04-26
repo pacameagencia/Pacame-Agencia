@@ -1,4 +1,5 @@
--- Migración 018 — Formalización de tablas de telemetría neural.
+-- Migración 023 — Formalización de tablas de telemetría neural.
+-- (renombrada desde 018_agent_activities_formal.sql para evitar colisión con 018_promptforge_product.sql)
 -- agent_activities y agent_states existen en producción desde la migración manual
 -- infra/supabase-pending-migration.sql, pero nunca llegaron a infra/migrations/.
 -- Esta migración las versiona oficialmente con IF NOT EXISTS (idempotente).

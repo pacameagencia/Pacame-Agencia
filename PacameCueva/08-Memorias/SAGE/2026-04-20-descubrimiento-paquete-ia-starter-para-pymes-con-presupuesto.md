@@ -9,11 +9,12 @@ tags:
   - research
   - service_idea
   - agent/SAGE
-created: '2026-04-25T21:44:34.084Z'
-neural_id: 45e3e8ba-27a6-47c1-a989-ca93606ec914
-importance: 0.9
-accessed_count: 0
-updated: '2026-04-20T06:30:07.129017+00:00'
+created: '2026-04-26T19:24:45.052Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\08-Memorias\SAGE\2026-04-20-descubrimiento-paquete-ia-starter-para-pymes-con-presupuesto.md
+neural_id: 6ae3a4c2-9e95-48ef-a663-67e07f91f57a
+updated: '2026-04-26T19:24:45.052Z'
 ---
 > **Tipo:** semantic · **Importancia:** 0.90 · **Accedida:** 0 veces
 

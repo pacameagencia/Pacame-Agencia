@@ -3,18 +3,17 @@ type: discovery
 title: >-
   Paquete de IA para Automatización de Atención al Cliente (Chatbot Inteligente
   + Analítica de Conversaciones)
-agent: SAGE
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/SAGE
-created: '2026-04-25T21:44:34.111Z'
-neural_id: 71d3880d-5ba7-4d96-af7f-2661bf00337f
-confidence: 0.7
-actionable: true
-updated: '2026-04-24T12:37:15.617614+00:00'
+created: '2026-04-26T19:24:46.861Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-24-paquete-de-ia-para-automatizacion-de-atencion-al-cliente-cha.md
+neural_id: d1380217-32b8-4627-af71-d98e38b801b5
+updated: '2026-04-26T19:24:46.861Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.70 · **Status:** new
 

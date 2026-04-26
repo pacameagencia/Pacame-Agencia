@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2, AlertCircle, ArrowUpRight, Check } from "lucide-react";
+import { isValidEmail } from "@/lib/validators";
 
 interface InviteData {
   valid: boolean;
@@ -21,6 +22,7 @@ export default function AcceptInviteClient({ token }: { token: string }) {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string; full_name?: string }>({});
 
   useEffect(() => {
     if (!token) {
@@ -42,6 +44,13 @@ export default function AcceptInviteClient({ token }: { token: string }) {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    const fe: typeof fieldErrors = {};
+    if (!isValidEmail(email)) fe.email = "Introduce un email válido.";
+    if (fullName.trim().length < 2) fe.full_name = "Indica tu nombre completo.";
+    if (password.length < 8) fe.password = "Mínimo 8 caracteres.";
+    setFieldErrors(fe);
+    if (Object.keys(fe).length > 0) return;
+
     setSubmitting(true);
     setError(null);
     try {
@@ -144,6 +153,7 @@ export default function AcceptInviteClient({ token }: { token: string }) {
             onChange={setEmail}
             placeholder="tu@email.com"
             required
+            error={fieldErrors.email}
           />
           <Field
             label="Nombre"
@@ -152,6 +162,7 @@ export default function AcceptInviteClient({ token }: { token: string }) {
             onChange={setFullName}
             placeholder="Tu nombre"
             required
+            error={fieldErrors.full_name}
           />
           <Field
             label="Contraseña (mínimo 8 caracteres)"
@@ -161,6 +172,7 @@ export default function AcceptInviteClient({ token }: { token: string }) {
             placeholder=""
             required
             minLength={8}
+            error={fieldErrors.password}
           />
 
           {error && (
@@ -203,6 +215,7 @@ function Field({
   placeholder,
   required,
   minLength,
+  error,
 }: {
   label: string;
   type: "text" | "email" | "password";
@@ -211,6 +224,7 @@ function Field({
   placeholder?: string;
   required?: boolean;
   minLength?: number;
+  error?: string;
 }) {
   return (
     <label className="block">
@@ -222,8 +236,14 @@ function Field({
         placeholder={placeholder}
         required={required}
         minLength={minLength}
-        className="w-full px-4 py-3 bg-paper border border-ink/30 text-ink text-[15px] focus:outline-none focus:border-ink"
+        aria-invalid={Boolean(error)}
+        className={`w-full px-4 py-3 bg-paper border ${
+          error ? "border-rose-alert" : "border-ink/30"
+        } text-ink text-[15px] focus:outline-none focus:border-ink`}
       />
+      {error && (
+        <span className="block mt-1 font-sans text-[12px] text-rose-alert">{error}</span>
+      )}
     </label>
   );
 }

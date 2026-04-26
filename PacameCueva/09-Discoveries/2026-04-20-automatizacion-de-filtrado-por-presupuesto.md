@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Automatización de Filtrado por Presupuesto
-agent: NEXUS
 tags:
   - type/discovery
   - discovery/optimization
   - impact/high
   - status/new
-  - agent/NEXUS
-created: '2026-04-25T21:44:33.979Z'
-neural_id: 35b8be11-0b46-4d25-9330-afb1bb1c0973
-confidence: 0.7
-actionable: true
-updated: '2026-04-20T06:30:13.925988+00:00'
+created: '2026-04-26T19:24:45.081Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-20-automatizacion-de-filtrado-por-presupuesto.md
+neural_id: 8f34447b-0498-4e3d-85ab-f1ada52f4802
+updated: '2026-04-26T19:24:45.081Z'
 ---
 > **Tipo:** optimization · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

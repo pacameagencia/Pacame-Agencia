@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Reels Educativos de Nicho para TI
-agent: PULSE
 tags:
   - type/discovery
   - discovery/technique
   - impact/high
   - status/new
-  - agent/PULSE
-created: '2026-04-25T21:44:34.130Z'
-neural_id: ae0868a8-a46f-4628-af2b-b9c47e1de424
-confidence: 0.7
-actionable: true
-updated: '2026-04-25T18:03:05.733196+00:00'
+created: '2026-04-26T19:24:46.870Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-25-reels-educativos-de-nicho-para-ti.md
+neural_id: f79ebd60-d8ed-4068-9748-454b9a73f3fc
+updated: '2026-04-26T19:24:46.870Z'
 ---
 > **Tipo:** technique · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

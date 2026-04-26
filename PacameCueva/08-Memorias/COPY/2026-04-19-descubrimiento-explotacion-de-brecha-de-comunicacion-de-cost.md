@@ -9,11 +9,12 @@ tags:
   - research
   - content_idea
   - agent/COPY
-created: '2026-04-25T21:44:34.077Z'
-neural_id: b780ebf1-8736-4248-80cf-300a662e68b9
-importance: 0.9
-accessed_count: 0
-updated: '2026-04-19T18:35:29.789169+00:00'
+created: '2026-04-26T19:24:45.044Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\08-Memorias\COPY\2026-04-19-descubrimiento-explotacion-de-brecha-de-comunicacion-de-cost.md
+neural_id: fc961d91-ba95-4713-ae17-0027a4d106d0
+updated: '2026-04-26T19:24:45.044Z'
 ---
 > **Tipo:** semantic · **Importancia:** 0.90 · **Accedida:** 0 veces
 

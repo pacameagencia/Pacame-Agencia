@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: PACAME Private AI - LLM Local Empresarial
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.036Z'
-neural_id: cf0b1dcf-5f3d-402e-b07b-b9e9a6634c13
-confidence: 0.75
-actionable: true
-updated: '2026-04-22T08:19:25.573039+00:00'
+created: '2026-04-26T19:24:45.961Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-22-pacame-private-ai---llm-local-empresarial.md
+neural_id: 48ea2086-59f7-4643-b4f5-7679388ea76e
+updated: '2026-04-26T19:24:45.961Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

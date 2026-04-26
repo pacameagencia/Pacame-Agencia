@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Regalos Top para Madres (y para cualquier ocasión)
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.103Z'
-neural_id: abb1563a-93d6-4a10-9e1c-26292ed99f25
-confidence: 0.75
-actionable: true
-updated: '2026-04-24T08:17:34.787686+00:00'
+created: '2026-04-26T19:24:46.857Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-24-regalos-top-para-madres-y-para-cualquier-ocasion.md
+neural_id: 32104603-352b-4ad1-ab60-3815b7f093d5
+updated: '2026-04-26T19:24:46.857Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

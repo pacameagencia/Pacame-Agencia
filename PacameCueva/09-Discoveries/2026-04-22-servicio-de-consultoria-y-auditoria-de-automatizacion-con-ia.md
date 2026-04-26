@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Servicio de Consultoría y Auditoría de Automatización con IA
-agent: SAGE
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/high
   - status/new
-  - agent/SAGE
-created: '2026-04-25T21:44:34.031Z'
-neural_id: f52825b8-ed26-4285-9599-4209f33f9586
-confidence: 0.7
-actionable: true
-updated: '2026-04-22T06:37:30.604188+00:00'
+created: '2026-04-26T19:24:45.726Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-22-servicio-de-consultoria-y-auditoria-de-automatizacion-con-ia.md
+neural_id: 734675be-73ef-4ba5-8d58-7ed36c818026
+updated: '2026-04-26T19:24:45.726Z'
 ---
 > **Tipo:** service_idea · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

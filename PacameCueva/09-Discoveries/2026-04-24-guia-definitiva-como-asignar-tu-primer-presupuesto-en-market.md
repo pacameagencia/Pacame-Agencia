@@ -3,18 +3,17 @@ type: discovery
 title: >-
   Guía definitiva: Cómo asignar tu primer presupuesto en marketing digital
   (desde 500€/mes)
-agent: ATLAS
 tags:
   - type/discovery
   - discovery/content_idea
   - impact/high
   - status/new
-  - agent/ATLAS
-created: '2026-04-25T21:44:34.107Z'
-neural_id: c80ab4fc-540d-41ae-89c7-db4cb7380ef9
-confidence: 0.7
-actionable: true
-updated: '2026-04-24T12:37:05.944968+00:00'
+created: '2026-04-26T19:24:46.862Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-24-guia-definitiva-como-asignar-tu-primer-presupuesto-en-market.md
+neural_id: 9ee9f5a1-ccf2-4bef-965b-d8d9bcb0792d
+updated: '2026-04-26T19:24:46.862Z'
 ---
 > **Tipo:** content_idea · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Plus, Search, X, ArrowUpRight, Loader2, Copy, Check } from "lucide-react";
 import type { AsesorClient } from "@/lib/products/asesor-pro/queries";
+import { validateClientCreate, type FieldError } from "@/lib/validators";
 
 interface Props {
   initialClients: AsesorClient[];
@@ -38,6 +39,7 @@ export default function ClientesClient({ initialClients }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [inviteUrl, setInviteUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const filtered = clients.filter((c) => {
     if (!search.trim()) return true;
@@ -51,6 +53,16 @@ export default function ClientesClient({ initialClients }: Props) {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+
+    const validation = validateClientCreate(form);
+    if (validation.length > 0) {
+      const fe: Record<string, string> = {};
+      for (const v of validation) fe[v.field] = v.message;
+      setFieldErrors(fe);
+      return;
+    }
+    setFieldErrors({});
+
     setSubmitting(true);
     setError(null);
     setInviteUrl(null);
@@ -62,7 +74,13 @@ export default function ClientesClient({ initialClients }: Props) {
       });
       const json = await res.json();
       if (!res.ok) {
-        setError(json.error ?? "error creando cliente");
+        if (json.error === "validation_failed" && Array.isArray(json.details)) {
+          const fe: Record<string, string> = {};
+          for (const v of json.details as FieldError[]) fe[v.field] = v.message;
+          setFieldErrors(fe);
+        } else {
+          setError(json.error ?? "error creando cliente");
+        }
         return;
       }
       setClients([json.client, ...clients]);
@@ -115,10 +133,10 @@ export default function ClientesClient({ initialClients }: Props) {
           style={{ boxShadow: "5px 5px 0 #283B70" }}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <Field label="Razón social" required value={form.fiscal_name} onChange={(v) => setForm({ ...form, fiscal_name: v })} placeholder="Ej: Casa Marisol S.L." />
-            <Field label="NIF / CIF" required value={form.nif} onChange={(v) => setForm({ ...form, nif: v })} placeholder="Ej: B12345678" />
-            <Field label="Email" type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} placeholder="opcional" />
-            <Field label="Teléfono" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} placeholder="opcional" />
+            <Field label="Razón social" required value={form.fiscal_name} onChange={(v) => setForm({ ...form, fiscal_name: v })} placeholder="Ej: Casa Marisol S.L." error={fieldErrors.fiscal_name} />
+            <Field label="NIF / CIF" required value={form.nif} onChange={(v) => setForm({ ...form, nif: v })} placeholder="Ej: B12345678" error={fieldErrors.nif} />
+            <Field label="Email" type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} placeholder="opcional" error={fieldErrors.email} />
+            <Field label="Teléfono" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} placeholder="opcional" error={fieldErrors.phone} />
             <Field label="Ciudad" value={form.city} onChange={(v) => setForm({ ...form, city: v })} placeholder="opcional" />
             <label className="block">
               <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-ink-mute block mb-2">
@@ -284,6 +302,7 @@ function Field({
   onChange,
   placeholder,
   required,
+  error,
 }: {
   label: string;
   type?: "text" | "email";
@@ -291,6 +310,7 @@ function Field({
   onChange: (v: string) => void;
   placeholder?: string;
   required?: boolean;
+  error?: string;
 }) {
   return (
     <label className="block">
@@ -304,8 +324,14 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
-        className="w-full px-3 py-2 bg-paper border border-ink/30 text-ink text-[14px] focus:outline-none focus:border-indigo-600 placeholder:text-ink-mute/50"
+        aria-invalid={Boolean(error)}
+        className={`w-full px-3 py-2 bg-paper border ${
+          error ? "border-rose-alert" : "border-ink/30"
+        } text-ink text-[14px] focus:outline-none focus:border-indigo-600 placeholder:text-ink-mute/50`}
       />
+      {error && (
+        <span className="block mt-1 font-sans text-[12px] text-rose-alert">{error}</span>
+      )}
     </label>
   );
 }

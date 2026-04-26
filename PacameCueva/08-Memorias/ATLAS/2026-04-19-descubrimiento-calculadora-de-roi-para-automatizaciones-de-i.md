@@ -9,11 +9,12 @@ tags:
   - research
   - content_idea
   - agent/ATLAS
-created: '2026-04-25T21:44:34.075Z'
-neural_id: 8302d2a4-0ce1-4a66-9d24-520290591bfc
-importance: 0.9
-accessed_count: 0
-updated: '2026-04-19T18:35:22.60561+00:00'
+created: '2026-04-26T19:24:45.021Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\08-Memorias\ATLAS\2026-04-19-descubrimiento-calculadora-de-roi-para-automatizaciones-de-i.md
+neural_id: 5c41297e-df14-4a33-901d-571d53198387
+updated: '2026-04-26T19:24:45.021Z'
 ---
 > **Tipo:** semantic · **Importancia:** 0.90 · **Accedida:** 0 veces
 

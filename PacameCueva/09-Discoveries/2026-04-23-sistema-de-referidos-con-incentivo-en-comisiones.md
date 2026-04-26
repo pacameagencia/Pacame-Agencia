@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Sistema de Referidos con Incentivo en Comisiones
-agent: NEXUS
 tags:
   - type/discovery
   - discovery/market_signal
   - impact/high
   - status/new
-  - agent/NEXUS
-created: '2026-04-25T21:44:34.076Z'
-neural_id: e731cb52-a8a5-4879-8516-c084968970dd
-confidence: 0.7
-actionable: true
-updated: '2026-04-23T12:53:14.971472+00:00'
+created: '2026-04-26T19:24:46.849Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-23-sistema-de-referidos-con-incentivo-en-comisiones.md
+neural_id: 56b31529-fa63-4cda-8f70-c79c67850b75
+updated: '2026-04-26T19:24:46.849Z'
 ---
 > **Tipo:** market_signal · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

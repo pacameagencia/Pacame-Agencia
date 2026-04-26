@@ -17,7 +17,9 @@ SSH_KEY="${SSH_KEY:-$HOME/.ssh/hostinger_vps}"
 CONTAINER="n8n-n8n-1"
 REMOTE_DIR="/tmp/pacame-workflows"
 
-WORKFLOWS_DIR="$(cd "$(dirname "$0")/../n8n/workflows" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+WORKFLOWS_DIR="$(cd "$SCRIPT_DIR/../n8n/workflows" && pwd)"
+PREPARE_PY="$SCRIPT_DIR/n8n-prepare.py"
 
 if [ ! -d "$WORKFLOWS_DIR" ]; then
   echo "ERROR: no se encuentra $WORKFLOWS_DIR"
@@ -50,7 +52,11 @@ copy_to_vps() {
 # -------------------------------------------------------------------
 TMP_LOCAL="$(mktemp -d)"
 echo "[1/4] Inyectando id + versionId en todos los workflows..."
-WORKFLOWS_DIR="$WORKFLOWS_DIR" TMP_LOCAL="$TMP_LOCAL" python '/c/Users/Pacame24/Downloads/PACAME AGENCIA/.claude/worktrees/hopeful-proskuriakova/infra/scripts/n8n-prepare.py'
+if [ ! -f "$PREPARE_PY" ]; then
+  echo "ERROR: no se encuentra $PREPARE_PY"
+  exit 1
+fi
+WORKFLOWS_DIR="$WORKFLOWS_DIR" TMP_LOCAL="$TMP_LOCAL" python3 "$PREPARE_PY"
 
 echo "[2/4] Copiando $TMP_LOCAL/*.json al VPS ($REMOTE_DIR)..."
 run_remote "mkdir -p $REMOTE_DIR && rm -f $REMOTE_DIR/*.json"

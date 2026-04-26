@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Guía de presupuesto para proyectos de IA por sector y tamaño PYME
-agent: ATLAS
 tags:
   - type/discovery
   - discovery/content_idea
   - impact/high
   - status/new
-  - agent/ATLAS
-created: '2026-04-25T21:44:34.029Z'
-neural_id: 7cd9fc28-21e3-4aad-be43-d2eb2e662f54
-confidence: 0.7
-actionable: true
-updated: '2026-04-22T06:37:22.771786+00:00'
+created: '2026-04-26T19:24:45.943Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-22-guia-de-presupuesto-para-proyectos-de-ia-por-sector-y-tamano.md
+neural_id: 23e5af11-2173-4f62-9f29-a959abdbfa50
+updated: '2026-04-26T19:24:45.943Z'
 ---
 > **Tipo:** content_idea · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

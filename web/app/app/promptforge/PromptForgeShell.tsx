@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Wand2, History, Bookmark, LayoutTemplate, LogOut, Menu, X, Clock } from "lucide-react";
+import { ToastProvider } from "@/components/ui/toast";
 
 const NAV = [
   { label: "Forge", href: "/app/promptforge", icon: Wand2 },
@@ -33,6 +34,7 @@ export default function PromptForgeShell({
   }
 
   return (
+    <ToastProvider>
     <div className="min-h-screen bg-paper flex">
       <aside
         className={`fixed inset-y-0 left-0 z-50 w-60 bg-paper border-r-2 border-ink transform transition-transform duration-200 lg:relative lg:translate-x-0 ${
@@ -113,5 +115,6 @@ export default function PromptForgeShell({
         <main className="flex-1 p-4 lg:p-8 overflow-auto">{children}</main>
       </div>
     </div>
+    </ToastProvider>
   );
 }

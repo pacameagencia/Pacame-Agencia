@@ -11,6 +11,7 @@ export type NodeType =
   | 'discovery'
   | 'synapse'
   | 'client'
+  | 'self-project'
   | 'concept';
 
 export interface VaultFrontmatter {

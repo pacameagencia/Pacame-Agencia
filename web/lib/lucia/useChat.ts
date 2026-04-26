@@ -65,6 +65,7 @@ export function useChat({
           }
           const msgs: ChatMessage[] = (json.messages || []).map((m: any) => ({
             id: m.id,
+            serverId: m.id, // ya viene de DB
             role: m.role,
             content: m.content,
             ts: new Date(m.created_at).getTime(),
@@ -182,17 +183,23 @@ export function useChat({
                 meta.conversationId &&
                 meta.conversationId !== activeConvId
               ) {
-                // El backend creó una conversación nueva por nosotros.
                 setActiveConvId(meta.conversationId);
                 if (onConversationCreated) onConversationCreated(meta.conversationId);
               }
+            },
+            (fullText, messageId) => {
+              // Cuando el servidor cierra con `done`, sustituimos lo acumulado
+              // por el texto completo (ya sanitizado y con drift resuelto).
+              placeholder.content = fullText;
+              // Mantenemos `id` local como key React, pero adoptamos el id
+              // de DB en serverId para que QuickActions pueda referenciarlo.
+              if (messageId) placeholder.serverId = messageId;
             }
           );
           placeholder.pending = false;
           setMessages((prev) =>
             prev.map((m) => (m.id === assistantId ? { ...placeholder } : m))
           );
-          // Persistencia local solo si modo anónimo (en modo auth lo guarda el server).
           if (!authenticated && convIdLocal) {
             localAppend(convIdLocal, "assistant", placeholder.content);
           }
@@ -203,6 +210,7 @@ export function useChat({
             json.reply || "Disculpa, no te he entendido. ¿Me lo repites?";
           placeholder.content = reply;
           placeholder.pending = false;
+          if (json.messageId) placeholder.serverId = json.messageId;
           setMessages((prev) =>
             prev.map((m) => (m.id === assistantId ? { ...placeholder } : m))
           );
@@ -262,7 +270,8 @@ export function useChat({
 async function consumeStream(
   body: ReadableStream<Uint8Array>,
   onDelta: (delta: string) => void,
-  onMeta: (meta: { conversationId: string | null; tier: string; remaining: number | null }) => void
+  onMeta: (meta: { conversationId: string | null; tier: string; remaining: number | null }) => void,
+  onDone: (fullText: string, messageId: string | null) => void
 ): Promise<void> {
   const reader = body.getReader();
   const decoder = new TextDecoder();
@@ -301,8 +310,13 @@ async function consumeStream(
         } else if (evt.type === "text" && typeof evt.delta === "string") {
           onDelta(evt.delta);
         } else if (evt.type === "drift" && typeof evt.replacement === "string") {
-          onDelta("\n\n" + evt.replacement);
+          // El servidor avisa de drift al inglés con un canned reemplazo. Lo
+          // dejamos al evento `done` para que reemplace todo el contenido,
+          // no añadimos nada aquí (evita duplicar el texto canned).
         } else if (evt.type === "done") {
+          if (typeof evt.fullText === "string") {
+            onDone(evt.fullText, (evt as any).messageId ?? null);
+          }
           return;
         } else if (evt.type === "error") {
           throw new Error(evt.message || "stream_error");

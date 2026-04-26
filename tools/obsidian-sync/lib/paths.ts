@@ -30,6 +30,7 @@ export const PATHS = {
     sinapsis: '07-Sinapsis',
     memorias: '08-Memorias',
     discoveries: '09-Discoveries',
+    proyectosPropios: '10-Proyectos-Propios',
     templates: '_templates',
     dashboards: '_dashboards',
   },

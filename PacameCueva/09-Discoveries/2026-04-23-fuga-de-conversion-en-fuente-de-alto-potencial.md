@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Fuga de Conversión en Fuente de Alto Potencial
-agent: LENS
 tags:
   - type/discovery
   - discovery/optimization
   - impact/high
   - status/new
-  - agent/LENS
-created: '2026-04-25T21:44:34.064Z'
-neural_id: 0118317a-c6f9-420a-bedf-a8b0c4a82df9
-confidence: 0.7
-actionable: true
-updated: '2026-04-23T06:36:51.207886+00:00'
+created: '2026-04-26T19:24:45.934Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-23-fuga-de-conversion-en-fuente-de-alto-potencial.md
+neural_id: d84c99cb-770d-4345-8add-20ee856a4962
+updated: '2026-04-26T19:24:45.934Z'
 ---
 > **Tipo:** optimization · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

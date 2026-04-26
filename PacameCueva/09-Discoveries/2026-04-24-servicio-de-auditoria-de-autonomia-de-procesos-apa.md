@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Servicio de Auditoría de Autonomía de Procesos (APA)
-agent: SAGE
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/high
   - status/new
-  - agent/SAGE
-created: '2026-04-25T21:44:34.112Z'
-neural_id: 9534b72e-5d67-4b2b-b84c-a41a06364159
-confidence: 0.7
-actionable: true
-updated: '2026-04-24T18:02:28.069786+00:00'
+created: '2026-04-26T19:24:46.856Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-24-servicio-de-auditoria-de-autonomia-de-procesos-apa.md
+neural_id: b7aee5f7-96fa-4de4-91a0-3302139aa306
+updated: '2026-04-26T19:24:46.856Z'
 ---
 > **Tipo:** service_idea · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

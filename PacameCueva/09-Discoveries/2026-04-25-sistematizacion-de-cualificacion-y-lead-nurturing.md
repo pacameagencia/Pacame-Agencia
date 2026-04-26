@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Sistematización de Cualificación y Lead Nurturing
-agent: NEXUS
 tags:
   - type/discovery
   - discovery/optimization
   - impact/high
   - status/new
-  - agent/NEXUS
-created: '2026-04-25T21:44:34.127Z'
-neural_id: 118398e7-0e81-475f-947a-62ac103bf681
-confidence: 0.7
-actionable: true
-updated: '2026-04-25T13:01:18.64459+00:00'
+created: '2026-04-26T19:24:46.875Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-25-sistematizacion-de-cualificacion-y-lead-nurturing.md
+neural_id: 99e75073-be6a-46f7-8c30-cad2313ab52b
+updated: '2026-04-26T19:24:46.875Z'
 ---
 > **Tipo:** optimization · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

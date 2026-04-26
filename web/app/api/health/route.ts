@@ -52,6 +52,66 @@ async function checkVoiceServer(): Promise<HealthCheck> {
   }
 }
 
+async function checkN8n(): Promise<HealthCheck> {
+  const url = process.env.N8N_BASE_URL;
+  if (!url) return { ok: true, error: "not configured" };
+  const t0 = Date.now();
+  try {
+    const res = await fetch(`${url}/healthz`, { signal: AbortSignal.timeout(3000) });
+    return { ok: res.ok, latency_ms: Date.now() - t0 };
+  } catch (err) {
+    return {
+      ok: false,
+      latency_ms: Date.now() - t0,
+      error: err instanceof Error ? err.message : "unknown",
+    };
+  }
+}
+
+async function checkGemma(): Promise<HealthCheck> {
+  const url = process.env.GEMMA_API_URL;
+  if (!url) return { ok: true, error: "not configured" };
+  const t0 = Date.now();
+  try {
+    const res = await fetch(`${url}/api/tags`, { signal: AbortSignal.timeout(3000) });
+    return { ok: res.ok, latency_ms: Date.now() - t0 };
+  } catch (err) {
+    return {
+      ok: false,
+      latency_ms: Date.now() - t0,
+      error: err instanceof Error ? err.message : "unknown",
+    };
+  }
+}
+
+async function checkCronActivity(): Promise<HealthCheck> {
+  const t0 = Date.now();
+  try {
+    const supabase = createServerSupabase();
+    const since = new Date(Date.now() - 26 * 3_600_000).toISOString();
+    const { count, error } = await supabase
+      .from("agent_activities")
+      .select("id", { count: "exact", head: true })
+      .gte("created_at", since);
+    const latency_ms = Date.now() - t0;
+    if (error) return { ok: false, latency_ms, error: error.message };
+    if ((count ?? 0) === 0) {
+      return {
+        ok: false,
+        latency_ms,
+        error: "agent_activities sin inserts en 26h — crons Vercel posiblemente caídos o CRON_SECRET divergente",
+      };
+    }
+    return { ok: true, latency_ms };
+  } catch (err) {
+    return {
+      ok: false,
+      latency_ms: Date.now() - t0,
+      error: err instanceof Error ? err.message : "unknown",
+    };
+  }
+}
+
 export async function GET() {
   const envPresent = {
     CLAUDE_API_KEY: !!process.env.CLAUDE_API_KEY,
@@ -65,9 +125,12 @@ export async function GET() {
     TELEGRAM_BOT_TOKEN: !!process.env.TELEGRAM_BOT_TOKEN,
   };
 
-  const [supabaseHealth, voiceHealth] = await Promise.all([
+  const [supabaseHealth, voiceHealth, n8nHealth, gemmaHealth, cronHealth] = await Promise.all([
     checkSupabase(),
     checkVoiceServer(),
+    checkN8n(),
+    checkGemma(),
+    checkCronActivity(),
   ]);
 
   const ok =
@@ -80,12 +143,15 @@ export async function GET() {
   return NextResponse.json(
     {
       ok,
-      version: "vigorous-brown",
+      version: "spanish-modernism",
       timestamp: new Date().toISOString(),
       env: envPresent,
       checks: {
         supabase: supabaseHealth,
         voice_server: voiceHealth,
+        n8n: n8nHealth,
+        gemma: gemmaHealth,
+        cron_activity: cronHealth,
       },
     },
     { status: ok ? 200 : 503 }

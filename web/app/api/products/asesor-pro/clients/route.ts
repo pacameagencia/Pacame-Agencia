@@ -9,6 +9,7 @@ import { getCurrentProductUser } from "@/lib/products/session";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { listAsesorClients } from "@/lib/products/asesor-pro/queries";
 import { sendClientInviteEmail } from "@/lib/products/asesor-pro/emails";
+import { validateClientCreate, normalizeNIF } from "@/lib/validators";
 
 export const runtime = "nodejs";
 
@@ -50,8 +51,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "invalid JSON" }, { status: 400 });
   }
 
-  if (!body.fiscal_name || !body.nif) {
-    return NextResponse.json({ error: "fiscal_name y nif requeridos" }, { status: 400 });
+  const validationErrors = validateClientCreate({
+    fiscal_name: body.fiscal_name,
+    nif: body.nif,
+    email: body.email,
+    phone: body.phone,
+  });
+  if (validationErrors.length > 0) {
+    return NextResponse.json({ error: "validation_failed", details: validationErrors }, { status: 400 });
   }
 
   const supabase = createServerSupabase();
@@ -64,7 +71,7 @@ export async function POST(request: NextRequest) {
     .insert({
       asesor_user_id: user.id,
       fiscal_name: body.fiscal_name.trim(),
-      nif: body.nif.trim().toUpperCase(),
+      nif: normalizeNIF(body.nif),
       trade_name: body.trade_name ?? null,
       email: body.email?.trim().toLowerCase() ?? null,
       phone: body.phone ?? null,

@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Plataforma de Experiencias y Eventos en Madrid (San Isidro 2026)
-agent: DIOS
 tags:
   - type/discovery
   - discovery/service_idea
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:33.989Z'
-neural_id: c2efeb74-db42-4d9d-84c3-8a47b75044d2
-confidence: 0.75
-actionable: true
-updated: '2026-04-21T15:41:41.123136+00:00'
+created: '2026-04-26T19:24:45.004Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-21-plataforma-de-experiencias-y-eventos-en-madrid-san-isidro-20.md
+neural_id: fb5340d5-a5cc-413c-9c60-32e0347769f1
+updated: '2026-04-26T19:24:45.004Z'
 ---
 > **Tipo:** service_idea · **Impacto:** medium · **Confianza:** 0.75 · **Status:** new
 

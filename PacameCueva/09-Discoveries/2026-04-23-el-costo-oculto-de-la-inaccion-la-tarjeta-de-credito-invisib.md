@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: 'El Costo Oculto de la Inacción: La Tarjeta de Crédito Invisible de tu PYME'
-agent: COPY
 tags:
   - type/discovery
   - discovery/content_idea
   - impact/high
   - status/new
-  - agent/COPY
-created: '2026-04-25T21:44:34.083Z'
-neural_id: 59504b53-e8f0-4a07-b1c0-74ea99b16b6c
-confidence: 0.7
-actionable: true
-updated: '2026-04-23T18:56:52.68013+00:00'
+created: '2026-04-26T19:24:45.971Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-23-el-costo-oculto-de-la-inaccion-la-tarjeta-de-credito-invisib.md
+neural_id: 9fb421f2-6b84-40e8-90c9-fd04393a9302
+updated: '2026-04-26T19:24:45.971Z'
 ---
 > **Tipo:** content_idea · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

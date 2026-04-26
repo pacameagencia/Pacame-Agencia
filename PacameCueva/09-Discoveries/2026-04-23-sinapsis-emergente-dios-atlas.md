@@ -1,18 +1,19 @@
 ---
 type: discovery
 title: 'Sinapsis emergente: DIOS → ATLAS'
-agent: DIOS
+agent: ATLAS
 tags:
   - type/discovery
   - discovery/pattern
   - impact/medium
   - status/new
-  - agent/DIOS
-created: '2026-04-25T21:44:34.060Z'
-neural_id: 0d0aedc2-a2a2-45e1-826a-ffe7c6b81ab6
-confidence: 1
-actionable: true
-updated: '2026-04-23T05:03:46.072144+00:00'
+  - agent/ATLAS
+created: '2026-04-26T19:24:46.705Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-23-sinapsis-emergente-dios-atlas.md
+neural_id: 455dd7df-a88c-432a-88dc-7250cdfe2b86
+updated: '2026-04-26T19:24:46.705Z'
 ---
 > **Tipo:** pattern · **Impacto:** medium · **Confianza:** 1.00 · **Status:** new
 

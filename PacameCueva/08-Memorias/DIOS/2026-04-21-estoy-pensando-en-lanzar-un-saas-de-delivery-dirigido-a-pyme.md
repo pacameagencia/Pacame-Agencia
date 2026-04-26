@@ -11,11 +11,12 @@ tags:
   - api
   - think
   - agent/DIOS
-created: '2026-04-25T21:44:34.136Z'
-neural_id: d9eeb536-95b0-4c29-b7c3-2aeb154fbcd5
-importance: 0.6
-accessed_count: 0
-updated: '2026-04-21T12:56:50.828993+00:00'
+created: '2026-04-26T19:24:45.078Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\08-Memorias\DIOS\2026-04-21-estoy-pensando-en-lanzar-un-saas-de-delivery-dirigido-a-pyme.md
+neural_id: 78d8b89c-381c-46d1-b1f3-48c48638c1a3
+updated: '2026-04-26T19:24:45.078Z'
 ---
 > **Tipo:** episodic · **Importancia:** 0.60 · **Accedida:** 0 veces
 

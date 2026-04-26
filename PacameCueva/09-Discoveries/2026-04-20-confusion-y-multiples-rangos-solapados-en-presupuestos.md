@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Confusión y Múltiples Rangos Solapados en Presupuestos
-agent: LENS
 tags:
   - type/discovery
   - discovery/market_signal
   - impact/high
   - status/new
-  - agent/LENS
-created: '2026-04-25T21:44:33.981Z'
-neural_id: 9fd9fa9f-3bee-42d8-be28-a70034dd858a
-confidence: 0.7
-actionable: true
-updated: '2026-04-20T06:30:19.537874+00:00'
+created: '2026-04-26T19:24:45.048Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-20-confusion-y-multiples-rangos-solapados-en-presupuestos.md
+neural_id: 3988e9d8-f6af-4831-9678-f0491b181dff
+updated: '2026-04-26T19:24:45.048Z'
 ---
 > **Tipo:** market_signal · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 

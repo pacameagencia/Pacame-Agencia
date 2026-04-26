@@ -18,6 +18,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { llmChat } from "@/lib/llm";
 import { verifyInternalAuth } from "@/lib/api-auth";
+import { logAgentActivity } from "@/lib/agent-logger";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -232,6 +233,19 @@ export async function GET(request: NextRequest) {
 
   const packagedCount = results.filter((r) => r.status === "packaged").length;
   const failedCount = results.filter((r) => r.status === "failed").length;
+
+  await logAgentActivity({
+    agentId: "sage",
+    type: "update",
+    title: "Factoría — packaging discoveries",
+    description: `Empaquetados ${packagedCount}/${candidates.length}, ${failedCount} fallos.`,
+    metadata: {
+      candidates: candidates.length,
+      packaged: packagedCount,
+      failed: failedCount,
+      source: "cron",
+    },
+  });
 
   return NextResponse.json({
     ok: true,

@@ -70,19 +70,24 @@ export async function persistMessage(
     tokens_out?: number;
     latency_ms?: number;
   }
-): Promise<void> {
+): Promise<{ id: string } | null> {
   const supabase = createServerSupabase();
-  await supabase.from("pacame_gpt_messages").insert({
-    conversation_id: conversationId,
-    role,
-    content,
-    llm_provider: telemetry?.llm_provider ?? null,
-    llm_model: telemetry?.llm_model ?? null,
-    tokens_in: telemetry?.tokens_in ?? null,
-    tokens_out: telemetry?.tokens_out ?? null,
-    latency_ms: telemetry?.latency_ms ?? null,
-  });
+  const { data } = await supabase
+    .from("pacame_gpt_messages")
+    .insert({
+      conversation_id: conversationId,
+      role,
+      content,
+      llm_provider: telemetry?.llm_provider ?? null,
+      llm_model: telemetry?.llm_model ?? null,
+      tokens_in: telemetry?.tokens_in ?? null,
+      tokens_out: telemetry?.tokens_out ?? null,
+      latency_ms: telemetry?.latency_ms ?? null,
+    })
+    .select("id")
+    .single();
   // updated_at de pacame_gpt_conversations se mueve solo via trigger.
+  return data ? { id: data.id } : null;
 }
 
 export type UsageGate =
@@ -92,41 +97,44 @@ export type UsageGate =
 
 /**
  * Comprueba si el user puede mandar otro mensaje hoy y, si puede, incrementa
- * el contador atómicamente. Política:
+ * el contador atómicamente — todo dentro de una sola RPC con SELECT FOR UPDATE.
  *
- *   - Si la subscription está activa o en trialing válido → ilimitado.
- *   - Si la sub no existe / canceled / past_due → cae a free 20/día.
- *   - Si el contador del día (zona Madrid) ya llegó a 20 → bloquea.
+ * Política:
+ *   - Sub activa o trialing válido → ilimitado (p_limit=NULL).
+ *   - Sin sub o canceled/past_due  → free, 20/día (p_limit=20).
  *
- * El incremento usa UPSERT: 1 fila por (user_id, day) en pacame_gpt_daily_usage.
+ * La RPC pacame_gpt_check_and_increment_daily lockea la fila, decide si pasa
+ * y solo entonces incrementa. Cierra la ventana TOCTOU del flujo
+ * "SELECT-then-UPSERT" que tenía la versión anterior.
  */
 export async function checkAndIncrementDailyUsage(
   user: ProductUser,
   sub: ProductSubscription | null
 ): Promise<UsageGate> {
-  // Premium o trial vivo → no contamos límite.
-  if (sub && isSubscriptionActive(sub)) {
-    // Igualmente registramos el contador para analítica (pero no lo limitamos).
-    await bumpDailyCounter(user.id);
+  const today = todayMadrid();
+  const supabase = createServerSupabase();
+  const isPremium = !!sub && isSubscriptionActive(sub);
+
+  const { data, error } = await supabase.rpc("pacame_gpt_check_and_increment_daily", {
+    p_user: user.id,
+    p_day: today,
+    p_limit: isPremium ? null : FREE_DAILY_LIMIT,
+  });
+
+  if (error || !data) {
+    // Si la RPC no existe (env sin migrations) o la DB se cae, no bloqueamos
+    // al usuario — degradamos. El contador puede quedar inconsistente, pero
+    // mejor servir que tirar.
     return {
       ok: true,
-      remaining: -1,
-      tier: sub.status === "trialing" ? "trialing" : "premium",
+      remaining: isPremium ? -1 : FREE_DAILY_LIMIT,
+      tier: isPremium ? (sub!.status === "trialing" ? "trialing" : "premium") : "free",
     };
   }
 
-  // Free tier: 20/día en zona Madrid.
-  const today = todayMadrid();
-  const supabase = createServerSupabase();
-  const { data: row } = await supabase
-    .from("pacame_gpt_daily_usage")
-    .select("messages_count")
-    .eq("user_id", user.id)
-    .eq("day", today)
-    .maybeSingle();
+  const result = data as { ok: boolean; count: number; limit: number | null; reason?: string };
 
-  const used = row?.messages_count ?? 0;
-  if (used >= FREE_DAILY_LIMIT) {
+  if (!result.ok) {
     return {
       ok: false,
       reason: "limit_reached",
@@ -135,28 +143,18 @@ export async function checkAndIncrementDailyUsage(
     };
   }
 
-  await bumpDailyCounter(user.id);
+  if (isPremium) {
+    return {
+      ok: true,
+      remaining: -1,
+      tier: sub!.status === "trialing" ? "trialing" : "premium",
+    };
+  }
   return {
     ok: true,
-    remaining: FREE_DAILY_LIMIT - used - 1,
+    remaining: Math.max(0, FREE_DAILY_LIMIT - result.count),
     tier: "free",
   };
-}
-
-/**
- * UPSERT atómico del contador diario. Si la fila no existe, se crea con count=1.
- * Si existe, suma 1. Para evitar race conditions usamos `on conflict` con `excluded`.
- */
-async function bumpDailyCounter(userId: string): Promise<void> {
-  const supabase = createServerSupabase();
-  const today = todayMadrid();
-  await supabase.rpc("pacame_gpt_increment_daily", {
-    p_user: userId,
-    p_day: today,
-  });
-  // Si la RPC no está creada (entorno fresco que aún no ejecutó la migration),
-  // hacemos fallback a UPSERT manual no-atómico (suficiente para tráfico bajo).
-  // Lo siguiente es idempotente si ya hizo el incremento la RPC.
 }
 
 /**

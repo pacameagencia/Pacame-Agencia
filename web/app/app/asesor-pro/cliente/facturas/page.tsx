@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Plus, Download, ArrowUpRight } from "lucide-react";
 import { getCurrentProductUser } from "@/lib/products/session";
 import { getClientContext, listClientInvoices } from "@/lib/products/asesor-pro/client-queries";
+import { InvoiceAudioButton } from "@/components/products/asesor-pro/InvoiceAudioButton";
 
 export const dynamic = "force-dynamic";
 
@@ -90,15 +91,18 @@ export default async function ClienteFacturasPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <a
-                      href={`/api/products/asesor-pro/invoices/${inv.id}/pdf`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-[12px] font-mono uppercase tracking-[0.15em] text-ink hover:text-terracotta-500"
-                    >
-                      <Download className="w-3 h-3" />
-                      PDF
-                    </a>
+                    <div className="flex items-center justify-end gap-3">
+                      <InvoiceAudioButton invoiceId={inv.id} />
+                      <a
+                        href={`/api/products/asesor-pro/invoices/${inv.id}/pdf`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-[12px] font-mono uppercase tracking-[0.15em] text-ink hover:text-terracotta-500"
+                      >
+                        <Download className="w-3 h-3" />
+                        PDF
+                      </a>
+                    </div>
                   </td>
                 </tr>
               ))}

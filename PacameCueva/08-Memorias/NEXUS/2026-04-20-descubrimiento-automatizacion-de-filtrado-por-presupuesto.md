@@ -9,11 +9,12 @@ tags:
   - research
   - optimization
   - agent/NEXUS
-created: '2026-04-25T21:44:34.086Z'
-neural_id: 8b480de5-4554-4ed5-89e0-66964327e3e4
-importance: 0.9
-accessed_count: 0
-updated: '2026-04-20T06:30:13.919329+00:00'
+created: '2026-04-26T19:24:44.923Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\08-Memorias\NEXUS\2026-04-20-descubrimiento-automatizacion-de-filtrado-por-presupuesto.md
+neural_id: 1bec061f-5730-4e41-89f3-1986ee4223f5
+updated: '2026-04-26T19:24:44.923Z'
 ---
 > **Tipo:** semantic · **Importancia:** 0.90 · **Accedida:** 0 veces
 

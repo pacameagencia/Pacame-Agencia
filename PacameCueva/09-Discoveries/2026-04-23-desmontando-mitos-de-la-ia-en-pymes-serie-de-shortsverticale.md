@@ -1,18 +1,17 @@
 ---
 type: discovery
 title: Desmontando Mitos de la IA en PYMES (Serie de Shorts/Verticales)
-agent: PULSE
 tags:
   - type/discovery
   - discovery/content_idea
   - impact/high
   - status/new
-  - agent/PULSE
-created: '2026-04-25T21:44:34.079Z'
-neural_id: e0f94e88-ccd0-49c9-9648-7effd2488b11
-confidence: 0.7
-actionable: true
-updated: '2026-04-23T18:56:33.381849+00:00'
+created: '2026-04-26T19:24:45.963Z'
+source_path: >-
+  C:\Users\Pacame24\Downloads\PACAME
+  AGENCIA\PacameCueva\09-Discoveries\2026-04-23-desmontando-mitos-de-la-ia-en-pymes-serie-de-shortsverticale.md
+neural_id: 60fbe1f3-f104-4754-827f-08ab5b66c5dc
+updated: '2026-04-26T19:24:45.963Z'
 ---
 > **Tipo:** content_idea · **Impacto:** high · **Confianza:** 0.70 · **Status:** new
 
