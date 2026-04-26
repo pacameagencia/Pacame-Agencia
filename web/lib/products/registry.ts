@@ -76,13 +76,16 @@ export function getRecommendedTier(product: PacameProduct): ProductTier {
 
 /**
  * Formatea limits como bullets human-readable.
- * { clients: 50, sii_export: true } → ["50 clientes", "Export SII"]
+ * { clients: 50, monthly_pack: true } → ["50 clientes", "Pack mensual ZIP"]
  */
 const LIMIT_LABELS: Record<string, (v: number | boolean) => string | null> = {
   clients: (v) => (v === -1 ? "Clientes ilimitados" : `${v} clientes`),
   asesores: (v) => (v === 1 ? "1 asesor" : v === -1 ? "Asesores ilimitados" : `${v} asesores`),
-  sii_export: (v) => (v ? "Export SII a Hacienda" : null),
+  monthly_pack: (v) => (v ? "Pack mensual ZIP auto-empaquetado" : null),
   api: (v) => (v ? "API + integraciones" : null),
+  prompts_per_month: (v) => (v === -1 ? "Prompts ilimitados" : `${v} prompts/mes`),
+  variants_per_prompt: (v) => `${v} variantes por prompt`,
+  video_targets: (v) => (v ? "Targets de vídeo (Sora · Veo · Kling)" : null),
 };
 
 export function formatTierLimits(tier: ProductTier): string[] {

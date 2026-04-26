@@ -7,9 +7,9 @@ import { CheckoutCTA } from "./CheckoutCTA";
 export const dynamic = "force-dynamic";
 
 const TIER_NARRATIVE: Record<string, { headline: string; sub: string }> = {
-  start: { headline: "Empieza solo", sub: "Hasta 10 clientes, ideal para arrancar." },
-  pro: { headline: "Despacho profesional", sub: "Sin límites, equipo de hasta 3 asesores y SII." },
-  studio: { headline: "Estudio multinacional", sub: "Marca blanca, API y volumen ilimitado." },
+  solo: { headline: "Asesor Solo", sub: "Hasta 15 clientes. Ideal para arrancar sin marearte." },
+  pro: { headline: "Asesor Pro", sub: "50 clientes y pack mensual auto-empaquetado en ZIP." },
+  despacho: { headline: "Despacho", sub: "Clientes ilimitados, hasta 5 asesores y API." },
 };
 
 function priceLabel(tier: ProductTier) {

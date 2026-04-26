@@ -7,8 +7,8 @@ import type { PipelineCard, AsesorClient } from "@/lib/products/asesor-pro/queri
 
 const COLUMNS: { id: PipelineCard["status"]; label: string; accent: string; sub: string }[] = [
   { id: "pendiente", label: "Pendiente", accent: "#E8B730", sub: "Por revisar" },
-  { id: "revisado", label: "Revisado", accent: "#283B70", sub: "Listo para Hacienda" },
-  { id: "presentado", label: "Presentado", accent: "#6B7535", sub: "En Hacienda" },
+  { id: "revisado", label: "Revisado", accent: "#283B70", sub: "Listo para empaquetar" },
+  { id: "presentado", label: "Empaquetado", accent: "#6B7535", sub: "Pack mensual generado" },
   { id: "cerrado", label: "Cerrado", accent: "#1A1813", sub: "Trimestre cerrado" },
 ];
 
