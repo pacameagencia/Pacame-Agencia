@@ -16,6 +16,7 @@ export interface AsesorClient {
   iva_regime: string;
   status: "invited" | "active" | "paused" | "archived";
   invite_accepted_at: string | null;
+  client_user_id: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -61,7 +62,7 @@ export async function listAsesorClients(asesorUserId: string): Promise<AsesorCli
   const supabase = createServerSupabase();
   const { data } = await supabase
     .from("asesorpro_clients")
-    .select("id, fiscal_name, trade_name, nif, email, phone, city, iva_regime, status, invite_accepted_at, created_at, updated_at")
+    .select("id, fiscal_name, trade_name, nif, email, phone, city, iva_regime, status, invite_accepted_at, client_user_id, created_at, updated_at")
     .eq("asesor_user_id", asesorUserId)
     .neq("status", "archived")
     .order("created_at", { ascending: false });
