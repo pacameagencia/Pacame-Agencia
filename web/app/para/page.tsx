@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     siteName: "PACAME",
     type: "website",
     locale: "es_ES",
-    images: ["/generated/og/servicios.png"],
+    images: ["/generated/optimized/og/servicios.webp"],
   },
 };
 
@@ -130,7 +130,7 @@ export default function ParaIndexPage() {
                   <div className="relative aspect-[4/5] overflow-hidden bg-sand-100">
                     {imageSlug ? (
                       <Image
-                        src={`/generated/sectors/${imageSlug}.png`}
+                        src={`/generated/optimized/sectors/${imageSlug}.webp`}
                         alt={`Sector ${niche.namePlural}`}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

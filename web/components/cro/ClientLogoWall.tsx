@@ -70,7 +70,7 @@ export default function ClientLogoWall() {
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-sand-100">
                 <Image
-                  src={`/generated/sectors/${c.slug}.png`}
+                  src={`/generated/optimized/sectors/${c.slug}.webp`}
                   alt={`${c.sector} — caso PACAME representativo`}
                   fill
                   sizes="(max-width: 768px) 50vw, 25vw"

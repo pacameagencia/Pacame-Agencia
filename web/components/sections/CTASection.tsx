@@ -27,7 +27,7 @@ export default function CTASection() {
               style={{ boxShadow: "10px 10px 0 #E8B730" }}
             >
               <Image
-                src="/generated/hero-cinematic-bg.png"
+                src="/generated/optimized/hero-cinematic-bg.webp"
                 alt="Arquitectura mediterránea — el siguiente paso"
                 fill
                 className="object-cover"

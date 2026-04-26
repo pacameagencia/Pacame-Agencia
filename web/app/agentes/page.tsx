@@ -193,7 +193,7 @@ export default function AgentesPage() {
                     style={{ borderColor: agent.color }}
                   >
                     <Image
-                      src={`/generated/agents/${agent.id}.png`}
+                      src={`/generated/optimized/agents/${agent.id}.webp`}
                       alt={`Retrato editorial de ${agent.name} (personaje IA)`}
                       fill
                       sizes="56px"

@@ -16,7 +16,7 @@ const services = [
     deadline: "2–40 días",
     href: "/servicios#web",
     accent: "#B54E30",
-    image: "/generated/services/web.png",
+    image: "/generated/optimized/services/web.webp",
   },
   {
     number: "02",
@@ -28,7 +28,7 @@ const services = [
     deadline: "60–90 días",
     href: "/servicios#seo",
     accent: "#283B70",
-    image: "/generated/services/seo.png",
+    image: "/generated/optimized/services/seo.webp",
   },
   {
     number: "03",
@@ -40,7 +40,7 @@ const services = [
     deadline: "Calendario en 48h",
     href: "/servicios#redes",
     accent: "#E8B730",
-    image: "/generated/services/social.png",
+    image: "/generated/optimized/services/social.webp",
   },
   {
     number: "04",
@@ -52,7 +52,7 @@ const services = [
     deadline: "Live en 3–5 días",
     href: "/servicios#ads",
     accent: "#CB6B47",
-    image: "/generated/services/ads.png",
+    image: "/generated/optimized/services/ads.webp",
   },
   {
     number: "05",
@@ -64,7 +64,7 @@ const services = [
     deadline: "Logo en 3–5 días",
     href: "/servicios#branding",
     accent: "#6B7535",
-    image: "/generated/services/branding.png",
+    image: "/generated/optimized/services/branding.webp",
   },
 ];
 

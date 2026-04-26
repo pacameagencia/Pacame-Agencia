@@ -25,7 +25,7 @@ export default function Hero() {
       {/* Hero poster generado con GPT Image 2 — capa cinematográfica de fondo */}
       <div className="absolute inset-0 pointer-events-none">
         <Image
-          src="/generated/hero-poster.png"
+          src="/generated/optimized/hero-poster.webp"
           alt=""
           fill
           priority

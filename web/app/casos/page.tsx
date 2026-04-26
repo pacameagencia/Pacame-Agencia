@@ -109,7 +109,7 @@ export default function CasosPage() {
                         style={{ background: cs.coverGradient }}
                       >
                         <Image
-                          src={`/generated/cases/case-${((caseStudies.indexOf(cs) % 6) + 1)}.png`}
+                          src={`/generated/optimized/cases/case-${((caseStudies.indexOf(cs) % 6) + 1)}.webp`}
                           alt={`Mockup editorial ${cs.clientName}`}
                           fill
                           sizes="(max-width: 768px) 100vw, 33vw"

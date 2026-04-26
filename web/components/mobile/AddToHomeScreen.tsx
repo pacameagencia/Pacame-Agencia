@@ -109,7 +109,7 @@ export default function AddToHomeScreen() {
         <div className="flex items-start gap-3 p-4 pr-10">
           <div className="relative w-12 h-12 flex-shrink-0 rounded-md overflow-hidden border border-ink/10">
             <Image
-              src="/generated/mobile/pwa-icon-512.png"
+              src="/generated/optimized/mobile/pwa-icon-512.webp"
               alt="PACAME app icon"
               fill
               sizes="48px"

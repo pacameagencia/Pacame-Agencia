@@ -194,7 +194,7 @@ export default function AgentsSection() {
                       style={{ borderColor: accent }}
                     >
                       <Image
-                        src={`/generated/agents/${agent.id}.png`}
+                        src={`/generated/optimized/agents/${agent.id}.webp`}
                         alt={`${agent.name} — agente IA editorial PACAME (personaje generado)`}
                         fill
                         sizes="56px"

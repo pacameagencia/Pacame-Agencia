@@ -131,22 +131,22 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
     title: "PACAME",
     startupImage: [
-      { url: "/generated/mobile/splash-light.png", media: "(prefers-color-scheme: light)" },
-      { url: "/generated/mobile/splash-dark.png", media: "(prefers-color-scheme: dark)" },
+      { url: "/generated/optimized/mobile/splash-light.webp", media: "(prefers-color-scheme: light)" },
+      { url: "/generated/optimized/mobile/splash-dark.webp", media: "(prefers-color-scheme: dark)" },
     ],
   },
   icons: {
     icon: [
       { url: "/icon.png", sizes: "192x192", type: "image/png" },
-      { url: "/generated/mobile/pwa-icon-512.png", sizes: "512x512", type: "image/png" },
+      { url: "/generated/optimized/mobile/pwa-icon-512.webp", sizes: "512x512", type: "image/png" },
     ],
     apple: [
-      { url: "/generated/mobile/pwa-icon-512.png", sizes: "180x180", type: "image/png" },
+      { url: "/generated/optimized/mobile/pwa-icon-512.webp", sizes: "180x180", type: "image/png" },
     ],
     other: [
       {
         rel: "mask-icon",
-        url: "/generated/mobile/pwa-icon-monochrome.png",
+        url: "/generated/optimized/mobile/pwa-icon-monochrome.webp",
         color: "#B54E30",
       },
     ],
