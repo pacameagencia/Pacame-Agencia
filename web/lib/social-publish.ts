@@ -2,14 +2,15 @@
  * Social Media Publishing Library
  *
  * Supports:
- * - Meta Graph API (Instagram + Facebook)
+ * - Meta Graph API (Instagram + Facebook) — usa META_SYSTEM_USER_TOKEN si está
  * - LinkedIn API
  * - Buffer API (fallback for all platforms)
  *
  * Priority: Direct API > Buffer
  */
 
-const META_PAGE_TOKEN = process.env.META_PAGE_ACCESS_TOKEN;
+import { getMetaToken, hasMetaToken } from "@/lib/meta-token";
+
 const META_PAGE_ID = process.env.META_PAGE_ID;
 const INSTAGRAM_ACCOUNT_ID = process.env.INSTAGRAM_ACCOUNT_ID;
 const LINKEDIN_ACCESS_TOKEN = process.env.LINKEDIN_ACCESS_TOKEN;
@@ -39,9 +40,11 @@ interface PublishOptions {
  * Check which platforms are configured for direct publishing.
  */
 export function getConfiguredPlatforms(): Record<string, boolean> {
+  const hasFb = hasMetaToken("page");
+  const hasIg = hasMetaToken("instagram");
   return {
-    facebook: !!(META_PAGE_TOKEN && META_PAGE_ID),
-    instagram: !!(META_PAGE_TOKEN && INSTAGRAM_ACCOUNT_ID),
+    facebook: !!(hasFb && META_PAGE_ID),
+    instagram: !!(hasIg && INSTAGRAM_ACCOUNT_ID),
     linkedin: !!(LINKEDIN_ACCESS_TOKEN && LINKEDIN_ORG_ID),
     buffer: !!BUFFER_ACCESS_TOKEN,
   };
@@ -56,12 +59,12 @@ export async function publishContent(options: PublishOptions): Promise<PublishRe
   // Try direct API first
   switch (platform) {
     case "facebook":
-      if (META_PAGE_TOKEN && META_PAGE_ID) {
+      if (hasMetaToken("page") && META_PAGE_ID) {
         return publishToFacebook(options);
       }
       break;
     case "instagram":
-      if (META_PAGE_TOKEN && INSTAGRAM_ACCOUNT_ID) {
+      if (hasMetaToken("instagram") && INSTAGRAM_ACCOUNT_ID) {
         return publishToInstagram(options);
       }
       break;
@@ -89,11 +92,12 @@ export async function publishContent(options: PublishOptions): Promise<PublishRe
 async function publishToFacebook(options: PublishOptions): Promise<PublishResult> {
   const { text, imageUrl, link, hashtags } = options;
   const fullText = [text, hashtags].filter(Boolean).join("\n\n");
+  const pageToken = getMetaToken("page");
 
   try {
     let endpoint = `${GRAPH_API}/${META_PAGE_ID}/feed`;
     const params: Record<string, string> = {
-      access_token: META_PAGE_TOKEN!,
+      access_token: pageToken,
       message: fullText,
     };
 
@@ -133,6 +137,7 @@ async function publishToInstagram(options: PublishOptions): Promise<PublishResul
   }
 
   const caption = [text, hashtags].filter(Boolean).join("\n\n");
+  const igToken = getMetaToken("instagram");
 
   try {
     // Step 1: Create media container
@@ -144,7 +149,7 @@ async function publishToInstagram(options: PublishOptions): Promise<PublishResul
         body: JSON.stringify({
           image_url: imageUrl,
           caption,
-          access_token: META_PAGE_TOKEN,
+          access_token: igToken,
         }),
       }
     );
@@ -164,7 +169,7 @@ async function publishToInstagram(options: PublishOptions): Promise<PublishResul
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           creation_id: container.id,
-          access_token: META_PAGE_TOKEN,
+          access_token: igToken,
         }),
       }
     );

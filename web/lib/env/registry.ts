@@ -408,9 +408,17 @@ export const envRegistry = {
   },
   META_PAGE_ACCESS_TOKEN: {
     category: "social",
-    description: "Facebook Page access token",
+    description: "Facebook Page access token (legado, prefiere META_SYSTEM_USER_TOKEN)",
     required_in: [],
     provider: "Meta",
+    example: "EAA...",
+  },
+  META_SYSTEM_USER_TOKEN: {
+    category: "social",
+    description: "Meta System User token PERMANENTE (no expira) — cubre WhatsApp + IG + FB + Ads. Generar en business.facebook.com → System Users. Ver infra/docs/meta-system-user-token.md",
+    required_in: [],
+    provider: "Meta Business Manager",
+    generate_url: "https://business.facebook.com/settings/system-users",
     example: "EAA...",
   },
   LINKEDIN_ACCESS_TOKEN: {

@@ -5,16 +5,25 @@
  * - Send/receive DMs (Instagram Messaging API)
  * - Publish posts (container-based)
  * - Read insights
+ *
+ * Token resolution: usa META_SYSTEM_USER_TOKEN si está (permanente) — fallback a
+ * INSTAGRAM_ACCESS_TOKEN (long-lived 60d). Ver web/lib/meta-token.ts.
  */
+
+import { getMetaToken } from "./meta-token";
 
 const INSTAGRAM_APP_ID = process.env.INSTAGRAM_APP_ID;
 const INSTAGRAM_APP_SECRET = process.env.INSTAGRAM_APP_SECRET;
 const GRAPH_API = "https://graph.instagram.com";
 const GRAPH_FB_API = "https://graph.facebook.com/v21.0";
 
-// Runtime token — loaded from env, updated after OAuth
-let accessToken = process.env.INSTAGRAM_ACCESS_TOKEN || process.env.META_PAGE_ACCESS_TOKEN || "";
+// Runtime overrides (set tras OAuth en /api/instagram/callback). Si vacío → fallback a getMetaToken().
+let accessTokenOverride = "";
 let igAccountId = process.env.INSTAGRAM_ACCOUNT_ID || "";
+
+function resolveToken(): string {
+  return accessTokenOverride || getMetaToken("instagram");
+}
 
 export const INSTAGRAM_VERIFY_TOKEN = process.env.INSTAGRAM_VERIFY_TOKEN || "pacame_ig_verify_2026";
 
@@ -91,7 +100,7 @@ export async function exchangeCodeForToken(
   };
 
   // Update runtime values
-  accessToken = longData.access_token;
+  accessTokenOverride = longData.access_token;
   igAccountId = shortData.user_id;
 
   return {
@@ -103,16 +112,18 @@ export async function exchangeCodeForToken(
 
 /**
  * Refresh a long-lived token (call every ~50 days via cron).
+ * Solo necesario si NO se usa META_SYSTEM_USER_TOKEN (permanente).
  */
 export async function refreshToken(): Promise<{
   accessToken: string;
   expiresIn: number;
 }> {
+  const current = resolveToken();
   const res = await fetch(
     `${GRAPH_API}/refresh_access_token?` +
       new URLSearchParams({
         grant_type: "ig_refresh_token",
-        access_token: accessToken,
+        access_token: current,
       })
   );
 
@@ -127,7 +138,7 @@ export async function refreshToken(): Promise<{
     expires_in: number;
   };
 
-  accessToken = data.access_token;
+  accessTokenOverride = data.access_token;
 
   return { accessToken: data.access_token, expiresIn: data.expires_in };
 }
@@ -147,7 +158,7 @@ export async function sendInstagramDM(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${resolveToken()}`,
       },
       body: JSON.stringify({
         recipient: { id: recipientId },
@@ -195,7 +206,7 @@ export async function publishPost(
       body: JSON.stringify({
         image_url: options.imageUrl,
         caption,
-        access_token: accessToken,
+        access_token: resolveToken(),
       }),
     });
 
@@ -212,7 +223,7 @@ export async function publishPost(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         creation_id: container.id,
-        access_token: accessToken,
+        access_token: resolveToken(),
       }),
     });
 
@@ -248,7 +259,7 @@ export async function publishCarousel(
         body: JSON.stringify({
           image_url: item.imageUrl,
           is_carousel_item: true,
-          access_token: accessToken,
+          access_token: resolveToken(),
         }),
       });
 
@@ -269,7 +280,7 @@ export async function publishCarousel(
         media_type: "CAROUSEL",
         caption: fullCaption,
         children: childIds,
-        access_token: accessToken,
+        access_token: resolveToken(),
       }),
     });
 
@@ -286,7 +297,7 @@ export async function publishCarousel(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         creation_id: carousel.id,
-        access_token: accessToken,
+        access_token: resolveToken(),
       }),
     });
 
@@ -326,7 +337,7 @@ export async function getInsights(): Promise<{
         new URLSearchParams({
           metric: metrics,
           period: "day",
-          access_token: accessToken,
+          access_token: resolveToken(),
         })
     );
 
@@ -377,7 +388,7 @@ export async function getRecentMedia(limit = 10): Promise<{
         new URLSearchParams({
           fields: "id,caption,media_type,timestamp,like_count,comments_count",
           limit: String(limit),
-          access_token: accessToken,
+          access_token: resolveToken(),
         })
     );
 
@@ -428,7 +439,7 @@ export async function replyToComment(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message: text,
-        access_token: accessToken,
+        access_token: resolveToken(),
       }),
     });
 
@@ -447,7 +458,7 @@ export async function replyToComment(
 // ─── Helpers ────────────────────────────────────────────────────
 
 export function isConfigured(): boolean {
-  return !!(accessToken && igAccountId);
+  return !!(resolveToken() && igAccountId);
 }
 
 export function getAccountId(): string {
@@ -455,10 +466,10 @@ export function getAccountId(): string {
 }
 
 export function getAccessToken(): string {
-  return accessToken;
+  return resolveToken();
 }
 
 export function setCredentials(token: string, accountId: string): void {
-  accessToken = token;
+  accessTokenOverride = token;
   igAccountId = accountId;
 }
