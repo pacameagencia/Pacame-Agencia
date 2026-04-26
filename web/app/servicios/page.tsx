@@ -68,11 +68,11 @@ const iconMap: Record<string, React.ComponentType<{ className?: string; style?: 
 };
 
 const serviceCategories = [
-  { id: "web", color: "#06B6D4" },
+  { id: "web", color: "#283B70" },
   { id: "seo", color: "#2563EB" },
   { id: "redes", color: "#EC4899" },
   { id: "ads", color: "#EA580C" },
-  { id: "branding", color: "#7C3AED" },
+  { id: "branding", color: "#B54E30" },
 ];
 
 function ServicesJsonLd() {
@@ -153,7 +153,7 @@ export default async function ServiciosPage() {
               Marketplace Express
             </a>
             {services.map((s) => {
-              const catColor = serviceCategories.find((c) => c.id === s.id)?.color || "#7C3AED";
+              const catColor = serviceCategories.find((c) => c.id === s.id)?.color || "#B54E30";
               return (
                 <a
                   key={s.id}
@@ -186,7 +186,7 @@ export default async function ServiciosPage() {
 
       {/* Services */}
       {services.map((service, sIdx) => {
-        const catColor = serviceCategories.find((c) => c.id === service.id)?.color || "#7C3AED";
+        const catColor = serviceCategories.find((c) => c.id === service.id)?.color || "#B54E30";
         const Icon = iconMap[service.icon];
         return (
           <section
@@ -387,8 +387,8 @@ export default async function ServiciosPage() {
           </p>
           <MagneticButton>
             <ShinyButton
-              gradientFrom="#D4A853"
-              gradientTo="#7C3AED"
+              gradientFrom="#E8B730"
+              gradientTo="#B54E30"
               gradientOpacity={0.8}
               className="group min-w-[260px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
             >

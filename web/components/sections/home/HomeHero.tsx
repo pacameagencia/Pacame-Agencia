@@ -70,7 +70,7 @@ export default function HomeHero() {
     <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-paper">
       {/* Layered background — mesh + constellation para profundidad */}
       <GradientMeshCanvas
-        colors={["#7C3AED", "#4338CA", "#06B6D4", "#D4A853"]}
+        colors={["#B54E30", "#283B70", "#283B70", "#E8B730"]}
         speed={0.22}
         intensity={0.09}
       />
@@ -122,8 +122,8 @@ export default function HomeHero() {
           >
             <MagneticButton>
               <ShinyButton
-                gradientFrom="#D4A853"
-                gradientTo="#7C3AED"
+                gradientFrom="#E8B730"
+                gradientTo="#B54E30"
                 gradientOpacity={0.85}
                 className="group min-w-[220px] h-13 px-7 text-[15px] font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
               >

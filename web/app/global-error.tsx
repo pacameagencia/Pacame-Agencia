@@ -50,7 +50,7 @@ export default function GlobalError({
             fontSize: 18,
             fontWeight: 700,
             letterSpacing: "0.12em",
-            color: "#D4A574",
+            color: "#E8B730",
           }}
         >
           PACAME
@@ -78,7 +78,7 @@ export default function GlobalError({
               justifyContent: "center",
               margin: "0 auto 28px",
               fontSize: 36,
-              color: "#D4A574",
+              color: "#E8B730",
               fontWeight: 700,
               boxShadow: "0 20px 60px -20px rgba(212,165,116,0.35)",
             }}
@@ -144,7 +144,7 @@ export default function GlobalError({
               style={{
                 display: "inline-block",
                 padding: "14px 28px",
-                background: "#D4A574",
+                background: "#E8B730",
                 color: "#0a0a0a",
                 borderRadius: 9999,
                 fontWeight: 600,

@@ -105,7 +105,7 @@ export default function DashboardPage() {
 
   const primaryColor = getComputedStyle(document.documentElement)
     .getPropertyValue("--client-primary")
-    .trim() || "#7C3AED";
+    .trim() || "#B54E30";
 
   return (
     <div className="space-y-8">
@@ -259,21 +259,21 @@ export default function DashboardPage() {
               description: "Comparte logos, documentos o recursos",
               href: "/portal/files",
               icon: FileUp,
-              color: "#06B6D4",
+              color: "#283B70",
             },
             {
               label: "Enviar mensaje",
               description: "Habla con tu equipo PACAME",
               href: "/portal/messages",
               icon: MessageSquare,
-              color: "#7C3AED",
+              color: "#B54E30",
             },
             {
               label: "Ver pagos",
               description: "Historial de facturacion",
               href: "/portal/payments",
               icon: Receipt,
-              color: "#D4A853",
+              color: "#E8B730",
             },
           ].map((action) => (
             <Link key={action.href} href={action.href}>

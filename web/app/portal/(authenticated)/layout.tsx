@@ -46,8 +46,8 @@ export default async function PortalAuthenticatedLayout({
     .eq("read", false)
     .neq("sender", "client");
 
-  const primaryColor = brandSettings?.primary_color ?? "#7C3AED";
-  const secondaryColor = brandSettings?.secondary_color ?? "#06B6D4";
+  const primaryColor = brandSettings?.primary_color ?? "#B54E30";
+  const secondaryColor = brandSettings?.secondary_color ?? "#283B70";
   const logoUrl = brandSettings?.logo_url ?? null;
   const clientName = client.business_name || client.name || "Cliente";
 

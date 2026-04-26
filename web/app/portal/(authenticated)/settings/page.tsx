@@ -36,8 +36,8 @@ const fontOptions = [
 export default function SettingsPage() {
   const [settings, setSettings] = useState<BrandSettings>({
     logo_url: null,
-    primary_color: "#7C3AED",
-    secondary_color: "#06B6D4",
+    primary_color: "#B54E30",
+    secondary_color: "#283B70",
     font_heading: "Space Grotesk",
     font_body: "Inter",
     company_tagline: "",

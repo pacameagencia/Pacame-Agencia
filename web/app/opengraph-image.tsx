@@ -43,7 +43,7 @@ export default async function Image() {
             left: 0,
             right: 0,
             height: "4px",
-            background: "linear-gradient(90deg, #8B5CF6, #06B6D4, #84CC16)",
+            background: "linear-gradient(90deg, #8B5CF6, #283B70, #84CC16)",
             display: "flex",
           }}
         />
@@ -62,7 +62,7 @@ export default async function Image() {
               width: "56px",
               height: "56px",
               borderRadius: "16px",
-              background: "linear-gradient(135deg, #8B5CF6, #06B6D4)",
+              background: "linear-gradient(135deg, #8B5CF6, #283B70)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -103,7 +103,7 @@ export default async function Image() {
           <span>Tu equipo digital completo.</span>
           <span
             style={{
-              background: "linear-gradient(90deg, #8B5CF6, #06B6D4)",
+              background: "linear-gradient(90deg, #8B5CF6, #283B70)",
               backgroundClip: "text",
               color: "transparent",
             }}
@@ -137,9 +137,9 @@ export default async function Image() {
           }}
         >
           {[
-            { name: "Nova", color: "#7C3AED" },
+            { name: "Nova", color: "#B54E30" },
             { name: "Atlas", color: "#2563EB" },
-            { name: "Pixel", color: "#06B6D4" },
+            { name: "Pixel", color: "#283B70" },
             { name: "Nexus", color: "#EA580C" },
             { name: "Pulse", color: "#EC4899" },
             { name: "Sage", color: "#D97706" },

@@ -15,7 +15,7 @@ interface Particle {
   decay: number;
 }
 
-const COLORS = ["#D4A853", "#7C3AED", "#06B6D4", "#FF6B9D", "#4ECDC4", "#F5F5F7"];
+const COLORS = ["#E8B730", "#B54E30", "#283B70", "#FF6B9D", "#4ECDC4", "#F5F5F7"];
 
 interface CelebrationProps {
   trigger?: boolean;

@@ -15,10 +15,10 @@ const agentMeta: Record<string, {
   specialty: string;
 }> = {
   dios:  { role: "Orquestador del Sistema", icon: Brain,      color: "#FFFFFF", specialty: "Coordina los 9 agentes, auditoria semanal" },
-  nova:  { role: "Directora Creativa",      icon: Sparkles,   color: "#7C3AED", specialty: "Modera resenas, auditoria de marca" },
+  nova:  { role: "Directora Creativa",      icon: Sparkles,   color: "#B54E30", specialty: "Modera resenas, auditoria de marca" },
   atlas: { role: "Estratega SEO",           icon: Globe,      color: "#2563EB", specialty: "Genera blog posts, audita 1600 paginas SEO" },
   nexus: { role: "Head of Growth",          icon: TrendingUp, color: "#EA580C", specialty: "Nurturing automatico, analiza campanas" },
-  pixel: { role: "Lead Frontend",           icon: Layout,     color: "#06B6D4", specialty: "Health checks web, detecta caidas" },
+  pixel: { role: "Lead Frontend",           icon: Layout,     color: "#283B70", specialty: "Health checks web, detecta caidas" },
   core:  { role: "Arquitecto Backend",      icon: Terminal,   color: "#16A34A", specialty: "Monitoriza Supabase, Claude API, alertas" },
   pulse: { role: "Head of Social Media",    icon: Heart,      color: "#EC4899", specialty: "Genera y publica contenido RRSS" },
   sage:  { role: "Chief Strategy Officer",  icon: Compass,    color: "#D97706", specialty: "Cualifica leads, genera propuestas, followups" },
@@ -28,7 +28,7 @@ const agentMeta: Record<string, {
 
 const statusConfig: Record<string, { label: string; color: string; pulse: boolean }> = {
   working:   { label: "Trabajando",  color: "#84CC16", pulse: true },
-  idle:      { label: "Disponible",  color: "#06B6D4", pulse: false },
+  idle:      { label: "Disponible",  color: "#283B70", pulse: false },
   reviewing: { label: "Revisando",   color: "#F59E0B", pulse: true },
   waiting:   { label: "En espera",   color: "#D97706", pulse: false },
   offline:   { label: "Offline",     color: "#6B7280", pulse: false },
@@ -157,8 +157,8 @@ export default function AgentsPage() {
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
         {[
           { label: "Activos ahora", value: `${workingCount}/10`, color: "#84CC16", icon: Zap },
-          { label: "Tareas hoy", value: String(totalTasksToday), color: "#06B6D4", icon: Activity },
-          { label: "Total completadas", value: String(totalCompleted), color: "#7C3AED", icon: CheckCircle2 },
+          { label: "Tareas hoy", value: String(totalTasksToday), color: "#283B70", icon: Activity },
+          { label: "Total completadas", value: String(totalCompleted), color: "#B54E30", icon: CheckCircle2 },
           { label: "Alertas", value: String(activityCounts.alert || 0), color: "#EF4444", icon: XCircle },
           { label: "Entregas", value: String(activityCounts.delivery || 0), color: "#16A34A", icon: DollarSign },
         ].map((stat) => {
@@ -267,8 +267,8 @@ export default function AgentsPage() {
                             backgroundColor:
                               act.type === "alert" ? "#EF4444" :
                               act.type === "delivery" ? "#16A34A" :
-                              act.type === "insight" ? "#7C3AED" :
-                              act.type === "task_completed" ? "#06B6D4" :
+                              act.type === "insight" ? "#B54E30" :
+                              act.type === "task_completed" ? "#283B70" :
                               "#F59E0B",
                           }}
                         />

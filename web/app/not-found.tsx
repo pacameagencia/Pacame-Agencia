@@ -163,8 +163,8 @@ export default function NotFound() {
         >
           <MagneticButton>
             <ShinyButton
-              gradientFrom="#D4A853"
-              gradientTo="#7C3AED"
+              gradientFrom="#E8B730"
+              gradientTo="#B54E30"
               gradientOpacity={0.8}
               className="group min-w-[220px] h-12 px-6 text-sm font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
             >

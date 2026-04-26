@@ -186,7 +186,7 @@ export default function EquipoPage() {
             <ScrollReveal delay={0.2}>
             <CardTilt tiltMaxAngle={4} scale={1.01}>
             <CardTiltContent>
-            <div className="rounded-2xl overflow-hidden relative border border-accent-gold/30" style={{ background: "linear-gradient(135deg, #7C3AED 0%, #D4A853 50%, #06B6D4 100%)" }}>
+            <div className="rounded-2xl overflow-hidden relative border border-accent-gold/30" style={{ background: "linear-gradient(135deg, #B54E30 0%, #E8B730 50%, #283B70 100%)" }}>
               <div className="absolute inset-0 bg-black/20" />
               <div className="relative z-10 grid grid-cols-1 lg:grid-cols-5 gap-0">
                 <div className="lg:col-span-2 p-8 lg:p-10 flex flex-col justify-center">
@@ -262,8 +262,8 @@ export default function EquipoPage() {
             <div className="space-y-5">
               {[
                 { step: "1", agent: "Sage", color: "#D97706", text: "Diagnostica tu negocio y define la estrategia" },
-                { step: "2", agent: "Nova", color: "#7C3AED", text: "Disena la identidad visual y la direccion creativa" },
-                { step: "3", agent: "Pixel + Core", color: "#06B6D4", text: "Construyen la web, la app o la plataforma" },
+                { step: "2", agent: "Nova", color: "#B54E30", text: "Disena la identidad visual y la direccion creativa" },
+                { step: "3", agent: "Pixel + Core", color: "#283B70", text: "Construyen la web, la app o la plataforma" },
                 { step: "4", agent: "Atlas", color: "#2563EB", text: "Optimiza para SEO y posiciona en Google" },
                 { step: "5", agent: "Nexus", color: "#EA580C", text: "Monta el embudo, los ads y la automatizacion" },
                 { step: "6", agent: "Pulse", color: "#EC4899", text: "Crea el contenido y gestiona las redes sociales" },
@@ -304,8 +304,8 @@ export default function EquipoPage() {
           </p>
           <MagneticButton>
             <ShinyButton
-              gradientFrom="#D4A853"
-              gradientTo="#7C3AED"
+              gradientFrom="#E8B730"
+              gradientTo="#B54E30"
               gradientOpacity={0.8}
               className="group min-w-[280px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
             >

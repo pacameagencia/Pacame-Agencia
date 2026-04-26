@@ -19,7 +19,7 @@ function hexToRgb(hex: string): [number, number, number] {
 }
 
 export default function GradientMeshCanvas({
-  colors = ["#7C3AED", "#4338CA", "#06B6D4", "#D4A853"],
+  colors = ["#B54E30", "#283B70", "#283B70", "#E8B730"],
   speed = 0.3,
   intensity = 0.12,
   className = "",

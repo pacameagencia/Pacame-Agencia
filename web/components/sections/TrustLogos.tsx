@@ -13,7 +13,7 @@
  *
  * Cada badge muestra estado real: verificado / en revisión / en proceso.
  *
- * Color contrast fix: clases `text-pacame-white/25` que tras el remap
+ * Color contrast fix: clases `text-ink/55` que tras el remap
  * quedaban invisibles (ink/25 sobre paper) → `text-ink/45`.
  */
 

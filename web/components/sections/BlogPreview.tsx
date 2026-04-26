@@ -24,7 +24,7 @@ export default function BlogPreview() {
               <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
                 Blog
               </p>
-              <h2 className="font-accent font-bold text-section text-pacame-white text-balance">
+              <h2 className="font-accent font-bold text-section text-ink text-balance">
                 Conocimiento que{" "}
                 <span className="gradient-text-gold">se convierte en negocio.</span>
               </h2>
@@ -60,7 +60,7 @@ export default function BlogPreview() {
                   />
                   <div
                     className="absolute bottom-2 left-12 w-16 h-16 rounded-full opacity-10 blur-lg"
-                    style={{ backgroundColor: "#D4A853" }}
+                    style={{ backgroundColor: "#E8B730" }}
                   />
                   {/* Category pill overlay */}
                   <div className="absolute bottom-3 left-4">
@@ -79,25 +79,25 @@ export default function BlogPreview() {
                 <div className="p-7">
                   {/* Meta */}
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="flex items-center gap-1.5 text-xs text-pacame-white/30 font-body">
+                    <div className="flex items-center gap-1.5 text-xs text-ink/60 font-body">
                       <Clock className="w-3 h-3" />
                       {post.readTime}
                     </div>
                   </div>
 
                   {/* Title */}
-                  <h3 className={`font-heading font-bold text-pacame-white mb-3 leading-snug group-hover:text-olympus-gold transition-colors duration-300 ${i === 0 ? "text-xl" : "text-lg"}`}>
+                  <h3 className={`font-heading font-bold text-ink mb-3 leading-snug group-hover:text-olympus-gold transition-colors duration-300 ${i === 0 ? "text-xl" : "text-lg"}`}>
                     {post.title}
                   </h3>
 
                   {/* Excerpt */}
-                  <p className={`text-sm text-pacame-white/40 font-body leading-relaxed mb-6 ${i === 0 ? "line-clamp-4" : "line-clamp-2"}`}>
+                  <p className={`text-sm text-ink/65 font-body leading-relaxed mb-6 ${i === 0 ? "line-clamp-4" : "line-clamp-2"}`}>
                     {post.excerpt}
                   </p>
 
                   {/* Author */}
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-xs text-pacame-white/30 font-body">
+                    <div className="flex items-center gap-2 text-xs text-ink/60 font-body">
                       <span
                         className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold font-heading border border-white/10"
                         style={{ backgroundColor: `${post.color}15`, color: post.color }}
@@ -107,7 +107,7 @@ export default function BlogPreview() {
                       por {post.agentName}
                     </div>
                     <ArrowRight
-                      className="w-4 h-4 text-pacame-white/10 group-hover:text-olympus-gold group-hover:translate-x-1 transition-all duration-300"
+                      className="w-4 h-4 text-ink/10 group-hover:text-olympus-gold group-hover:translate-x-1 transition-all duration-300"
                     />
                   </div>
                 </div>

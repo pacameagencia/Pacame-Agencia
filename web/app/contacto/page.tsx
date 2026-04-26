@@ -341,8 +341,8 @@ function ContactoForm() {
                   ) : (
                     <MagneticButton>
                       <ShinyButton
-                        gradientFrom="#D4A853"
-                        gradientTo="#7C3AED"
+                        gradientFrom="#E8B730"
+                        gradientTo="#B54E30"
                         gradientOpacity={0.8}
                         className="group min-w-[220px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
                       >
@@ -458,7 +458,7 @@ function ContactoForm() {
               <ScrollReveal delay={0.3}>
               <CardTilt tiltMaxAngle={6} scale={1.02}>
               <CardTiltContent>
-              <div className="rounded-2xl p-6 relative overflow-hidden border border-accent-gold/20" style={{ background: "linear-gradient(135deg, #7C3AED 0%, #D4A853 50%, #06B6D4 100%)" }}>
+              <div className="rounded-2xl p-6 relative overflow-hidden border border-accent-gold/20" style={{ background: "linear-gradient(135deg, #B54E30 0%, #E8B730 50%, #283B70 100%)" }}>
                 <div className="absolute inset-0 bg-black/20" />
                 <div className="relative z-10">
                   <Calendar className="w-6 h-6 text-white mb-3" />

@@ -22,7 +22,7 @@ export default function MiniSparkline({
   values,
   width = 120,
   height = 32,
-  color = "#D4A574",
+  color = "#E8B730",
   fillOpacity = 0.15,
   strokeWidth = 1.5,
   minY,

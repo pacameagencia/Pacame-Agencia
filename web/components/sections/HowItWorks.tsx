@@ -16,7 +16,7 @@ const steps = [
     title: "Cuentanos tu problema",
     description:
       "Agenda una llamada de 30 minutos con Pablo. Escuchamos primero, cotizamos despues. Sin formularios eternos.",
-    color: "#7C3AED",
+    color: "#B54E30",
     agents: ["sage"],
   },
   {
@@ -24,7 +24,7 @@ const steps = [
     title: "El equipo entra en accion",
     description:
       "Sage diagnostica, Nova disena, Pixel construye, Atlas posiciona. Cada agente hace lo suyo. En paralelo.",
-    color: "#06B6D4",
+    color: "#283B70",
     agents: ["sage", "nova", "pixel", "atlas"],
   },
   {
@@ -39,10 +39,10 @@ const steps = [
 
 const agentColors: Record<string, string> = {
   sage: "#D97706",
-  nova: "#7C3AED",
-  pixel: "#06B6D4",
+  nova: "#B54E30",
+  pixel: "#283B70",
   atlas: "#2563EB",
-  pablo: "#D4A853",
+  pablo: "#E8B730",
 };
 
 function AnimatedPath() {
@@ -67,8 +67,8 @@ function AnimatedPath() {
         />
         <defs>
           <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#7C3AED" />
-            <stop offset="50%" stopColor="#D4A853" />
+            <stop offset="0%" stopColor="#B54E30" />
+            <stop offset="50%" stopColor="#E8B730" />
             <stop offset="100%" stopColor="#84CC16" />
           </linearGradient>
         </defs>
@@ -90,7 +90,7 @@ export default function HowItWorks() {
           <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
             Como funciona
           </p>
-          <h2 className="font-accent font-bold text-section text-pacame-white text-balance">
+          <h2 className="font-accent font-bold text-section text-ink text-balance">
             De problema a solucion.{" "}
             <FancyText
               className="font-accent font-bold text-section text-olympus-gold/15"
@@ -140,10 +140,10 @@ export default function HowItWorks() {
                     0{step.number}
                   </div>
 
-                  <h3 className="font-heading font-bold text-xl text-pacame-white mb-3">
+                  <h3 className="font-heading font-bold text-xl text-ink mb-3">
                     {step.title}
                   </h3>
-                  <p className="text-[15px] text-pacame-white/40 font-body leading-relaxed mb-4 max-w-lg">
+                  <p className="text-[15px] text-ink/65 font-body leading-relaxed mb-4 max-w-lg">
                     {step.description}
                   </p>
 
@@ -159,7 +159,7 @@ export default function HowItWorks() {
                         {agent.charAt(0).toUpperCase()}
                       </div>
                     ))}
-                    <span className="text-[11px] text-pacame-white/25 font-body ml-1.5">
+                    <span className="text-[11px] text-ink/55 font-body ml-1.5">
                       {step.agents.map((a) => a.charAt(0).toUpperCase() + a.slice(1)).join(", ")}
                     </span>
                   </div>
@@ -173,7 +173,7 @@ export default function HowItWorks() {
         <ScrollReveal className="text-center" delay={0.3}>
           <div className="inline-block rounded-2xl px-8 py-5 border border-olympus-gold/15 bg-dark-card mb-10 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-olympus-gold/[0.03] via-transparent to-olympus-gold/[0.03]" />
-            <p className="font-accent font-bold text-lg sm:text-xl text-pacame-white text-balance relative">
+            <p className="font-accent font-bold text-lg sm:text-xl text-ink text-balance relative">
               Lo que una agencia tarda semanas,{" "}
               <span className="gradient-text-aurora">nosotros lo entregamos en dias.</span>
             </p>

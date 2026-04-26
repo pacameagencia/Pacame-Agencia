@@ -133,19 +133,23 @@ export default function Hero() {
             custom={4}
             className="lg:col-span-6 flex flex-col sm:flex-row gap-4"
           >
+            {/* Primary CTA — dominante visual + tap target 56px mobile */}
             <Link
               href="/servicios"
-              className="group inline-flex items-center justify-center gap-3 px-7 py-4 bg-terracotta-500 text-paper font-sans font-medium text-[15px] tracking-wide transition-all duration-300 hover:bg-terracotta-600 rounded-sm"
+              className="group inline-flex items-center justify-center gap-3 px-8 py-4 min-h-[56px] bg-terracotta-500 text-paper font-sans font-semibold text-[16px] tracking-wide transition-all duration-300 hover:bg-terracotta-600 hover:translate-x-[-2px] hover:translate-y-[-2px] rounded-sm focus:outline-none focus-visible:ring-4 focus-visible:ring-terracotta-500/40 active:scale-[0.98]"
               style={{ boxShadow: "5px 5px 0 #1A1813" }}
+              aria-label="Ver servicios — desde 300 euros"
             >
               Ver servicios desde 300&nbsp;€
-              <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform duration-300" />
+              <ArrowUpRight className="w-5 h-5 group-hover:rotate-45 transition-transform duration-300" />
             </Link>
+            {/* Secondary CTA — text link editorial, no compite con el primary */}
             <Link
               href="/contacto"
-              className="group inline-flex items-center justify-center gap-3 px-7 py-4 border-2 border-ink text-ink font-sans font-medium text-[15px] tracking-wide transition-all duration-300 hover:bg-ink hover:text-paper rounded-sm"
+              className="group inline-flex items-center justify-center sm:justify-start gap-2 px-2 py-3 min-h-[44px] font-display italic text-ink/70 hover:text-ink text-[17px] underline decoration-ink/20 hover:decoration-terracotta-500 underline-offset-4 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 rounded-sm"
+              style={{ fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 144' }}
             >
-              Hablar con el equipo
+              o hablar con el equipo →
             </Link>
           </motion.div>
 

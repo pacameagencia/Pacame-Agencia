@@ -138,8 +138,8 @@ export default function CheckoutStep3({
       {/* CTA Button */}
       <ShinyButton
         className="w-full h-14 cursor-pointer"
-        gradientFrom="#D4A853"
-        gradientTo="#7C3AED"
+        gradientFrom="#E8B730"
+        gradientTo="#B54E30"
         onClick={loading ? undefined : onConfirm}
       >
         <span className="flex items-center gap-2.5 px-6 py-3 text-base font-heading font-semibold text-ink">

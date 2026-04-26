@@ -19,11 +19,11 @@ import {
 } from "@/lib/data/agency-agents";
 
 const pacameParentMap: Record<string, { name: string; color: string; icon: string }> = {
-  pixel: { name: "Pixel", color: "#06B6D4", icon: "Layout" },
+  pixel: { name: "Pixel", color: "#283B70", icon: "Layout" },
   core: { name: "Core", color: "#16A34A", icon: "Terminal" },
   atlas: { name: "Atlas", color: "#2563EB", icon: "Globe" },
   nexus: { name: "Nexus", color: "#EA580C", icon: "TrendingUp" },
-  nova: { name: "Nova", color: "#7C3AED", icon: "Sparkles" },
+  nova: { name: "Nova", color: "#B54E30", icon: "Sparkles" },
   pulse: { name: "Pulse", color: "#EC4899", icon: "Heart" },
   sage: { name: "Sage", color: "#D97706", icon: "Compass" },
 };

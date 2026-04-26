@@ -30,9 +30,9 @@ interface ClientFile {
 }
 
 const typeConfig: Record<string, { label: string; color: string; Icon: typeof File }> = {
-  logo: { label: "Logo", color: "#D4A853", Icon: Image },
-  brand_asset: { label: "Marca", color: "#7C3AED", Icon: Image },
-  content: { label: "Contenido", color: "#06B6D4", Icon: FileText },
+  logo: { label: "Logo", color: "#E8B730", Icon: Image },
+  brand_asset: { label: "Marca", color: "#B54E30", Icon: Image },
+  content: { label: "Contenido", color: "#283B70", Icon: FileText },
   document: { label: "Documento", color: "#84CC16", Icon: FileText },
   other: { label: "Otro", color: "#6B7280", Icon: File },
 };

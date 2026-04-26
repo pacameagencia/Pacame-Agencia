@@ -9,15 +9,25 @@
   --font-inter: 'Inter', sans-serif;
   --font-jetbrains-mono: 'JetBrains Mono', monospace;
 
-  --color-bg: #0A0A0A;
-  --color-text: #F5F5F7;
-  --color-primary: #7C3AED;
-  --color-secondary: #4338CA;
-  --color-accent: #06B6D4;
-  --color-slate: #86868B;
-  --color-card: #161617;
-  --color-elevated: #1D1D1F;
-  --color-border: rgba(255, 255, 255, 0.08);
+  /* Spanish Modernism — single source of truth (Sprint 23 fix) */
+  --color-bg: #F4EFE3;             /* paper */
+  --color-text: #1A1813;           /* ink */
+  --color-primary: #B54E30;        /* terracotta */
+  --color-secondary: #283B70;      /* indigo */
+  --color-accent: #E8B730;         /* mustard */
+  --color-slate: #6E6858;          /* ink-mute */
+  --color-card: #F9F5EA;           /* sand-50 */
+  --color-elevated: #FFFFFF;
+  --color-border: rgba(26, 24, 19, 0.10);
+
+  /* iPhone safe area insets */
+  --sai-top: env(safe-area-inset-top);
+  --sai-bottom: env(safe-area-inset-bottom);
+  --sai-left: env(safe-area-inset-left);
+  --sai-right: env(safe-area-inset-right);
+
+  /* Mobile bottom nav height (56px + safe area) */
+  --bottom-nav-h: calc(56px + env(safe-area-inset-bottom));
 }
 
 * {
@@ -40,6 +50,68 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+
+  /* Mobile app-like UX */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  overscroll-behavior-y: none;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Padding bottom para no tapar contenido con BottomNavigation en móvil */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: var(--bottom-nav-h);
+  }
+}
+
+/* Mobile safe area utilities */
+.safe-top { padding-top: var(--sai-top); }
+.safe-bottom { padding-bottom: var(--sai-bottom); }
+.safe-x { padding-left: var(--sai-left); padding-right: var(--sai-right); }
+
+/* Touch feedback utility (apply to interactive elements) */
+.touch-feedback {
+  transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.touch-feedback:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+/* Disable bounce scroll on iOS for app-feel (only outside scrollable areas) */
+html {
+  /* Allow text selection in content despite the body rule */
+  -webkit-user-select: auto;
+  user-select: auto;
+  /* Smooth iOS scroll */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Status bar tinting for PWA standalone */
+@media (display-mode: standalone) {
+  body {
+    padding-top: var(--sai-top);
+  }
+}
+
+/* Skeleton shimmer for loading states */
+@keyframes pacame-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.pacame-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(26, 24, 19, 0.05) 0%,
+    rgba(26, 24, 19, 0.10) 50%,
+    rgba(26, 24, 19, 0.05) 100%
+  );
+  background-size: 200% 100%;
+  animation: pacame-shimmer 1.4s ease-in-out infinite;
 }
 
 /* Typography - Apple-like precision */
@@ -168,10 +240,10 @@ code, pre, .font-mono {
   background: conic-gradient(
     from var(--glow-angle, 0deg),
     transparent 0%,
-    #D4A853 10%,
-    #7C3AED 30%,
-    #06B6D4 50%,
-    #D4A853 70%,
+    #E8B730 10%,
+    #B54E30 30%,
+    #283B70 50%,
+    #E8B730 70%,
     transparent 80%
   );
   opacity: 0.5;
@@ -204,28 +276,28 @@ code, pre, .font-mono {
 /* ==================== GRADIENT TEXT ==================== */
 
 .gradient-text {
-  background: linear-gradient(135deg, #7C3AED 0%, #4338CA 40%, #06B6D4 100%);
+  background: linear-gradient(135deg, #B54E30 0%, #283B70 40%, #283B70 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-vivid {
-  background: linear-gradient(to right, #a78bfa 0%, #7C3AED 40%, #06B6D4 100%);
+  background: linear-gradient(to right, #B54E30 0%, #B54E30 40%, #283B70 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-gold {
-  background: linear-gradient(135deg, #D4A853 0%, #F0D68A 50%, #D4A853 100%);
+  background: linear-gradient(135deg, #E8B730 0%, #F0D68A 50%, #E8B730 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-aurora {
-  background: linear-gradient(135deg, #7C3AED 0%, #FF6B9D 25%, #D4A853 50%, #4ECDC4 75%, #06B6D4 100%);
+  background: linear-gradient(135deg, #B54E30 0%, #FF6B9D 25%, #E8B730 50%, #4ECDC4 75%, #283B70 100%);
   background-size: 200% 200%;
   animation: gradientMove 8s ease infinite;
   -webkit-background-clip: text;
@@ -234,7 +306,7 @@ code, pre, .font-mono {
 }
 
 .gradient-text-divine {
-  background: linear-gradient(to right, #F0D68A 0%, #D4A853 40%, #CD7F32 100%);
+  background: linear-gradient(to right, #F0D68A 0%, #E8B730 40%, #CD7F32 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -242,7 +314,7 @@ code, pre, .font-mono {
 
 /* Text shimmer hover effect */
 .text-shimmer-hover {
-  background: linear-gradient(90deg, currentColor 40%, #D4A853 50%, currentColor 60%);
+  background: linear-gradient(90deg, currentColor 40%, #E8B730 50%, currentColor 60%);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -441,7 +513,7 @@ code, pre, .font-mono {
 /* ==================== FOCUS ==================== */
 
 :focus-visible {
-  outline: 2px solid #D4A853;
+  outline: 2px solid #E8B730;
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -556,7 +628,7 @@ input[type="range"].premium-range::-webkit-slider-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #D4A853;
+  background: #E8B730;
   cursor: pointer;
   box-shadow: 0 0 10px rgba(212, 168, 83, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -569,7 +641,7 @@ input[type="range"].premium-range::-moz-range-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #D4A853;
+  background: #E8B730;
   cursor: pointer;
   border: none;
   box-shadow: 0 0 10px rgba(212, 168, 83, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);

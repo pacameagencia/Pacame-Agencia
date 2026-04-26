@@ -385,8 +385,8 @@ export default function PublicProposalPage() {
               ) : (
                 <MagneticButton>
                   <ShinyButton
-                    gradientFrom="#D4A853"
-                    gradientTo="#7C3AED"
+                    gradientFrom="#E8B730"
+                    gradientTo="#B54E30"
                     gradientOpacity={0.8}
                     className="min-w-[320px] h-16 px-10 text-lg font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
                   >

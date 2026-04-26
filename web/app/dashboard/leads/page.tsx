@@ -11,9 +11,9 @@ import {
 import { Button } from "@/components/ui/button";
 
 const statusLabels: Record<string, { label: string; color: string }> = {
-  new: { label: "Nuevo", color: "#06B6D4" },
+  new: { label: "Nuevo", color: "#283B70" },
   contacted: { label: "Contactado", color: "#2563EB" },
-  nurturing: { label: "Nurturing", color: "#7C3AED" },
+  nurturing: { label: "Nurturing", color: "#B54E30" },
   qualified: { label: "Cualificado", color: "#D97706" },
   proposal_sent: { label: "Propuesta enviada", color: "#EA580C" },
   proposal_viewed: { label: "Propuesta vista", color: "#EC4899" },

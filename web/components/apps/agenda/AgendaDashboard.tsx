@@ -134,7 +134,7 @@ export default function AgendaDashboard({
     if (res.ok) setServices((ss) => ss.filter((s) => s.id !== serviceId));
   }
 
-  const widgetHtml = `<div data-pacame-agenda="${instanceId}" data-primary="#D4A574"></div>
+  const widgetHtml = `<div data-pacame-agenda="${instanceId}" data-primary="#E8B730"></div>
 <script src="https://pacameagencia.com/api/apps/pacame-agenda/widget.js" async></script>`;
 
   function copyWidget() {

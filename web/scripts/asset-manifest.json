@@ -446,6 +446,132 @@
       "ratio": "1024x1024",
       "destDir": "public/generated",
       "prompt": "Geometric sun-burst pattern in Cruz Novillo modernist style. Terracotta center with concentric rays in indigo and mustard on paper-tone. Symmetric, magazine-grade illustration. No text, no logos."
+    },
+    {
+      "slug": "mobile/hero-vertical",
+      "category": "mobile-hero",
+      "ratio": "1024x1536",
+      "destDir": "public/generated",
+      "prompt": "Vertical mobile editorial hero, 2:3 aspect. Terracotta sun rising over modernist Mediterranean rooftops, Cruz Novillo abstraction, paper-tone sky, indigo arches at base, mustard accent. Magazine cover composition optimized for portrait mobile viewport. No text, no logos."
+    },
+    {
+      "slug": "mobile/splash-light",
+      "category": "mobile-splash",
+      "ratio": "1024x1536",
+      "destDir": "public/generated",
+      "prompt": "Vertical splash screen for iOS PWA, 2:3 aspect. Centered terracotta sun emblem on paper-tone gradient background, modernist Cruz Novillo geometric simplicity, indigo accent rays. Calm and inviting. Negative space center for app logo overlay. No text."
+    },
+    {
+      "slug": "mobile/splash-dark",
+      "category": "mobile-splash",
+      "ratio": "1024x1536",
+      "destDir": "public/generated",
+      "prompt": "Vertical splash screen for iOS PWA dark mode, 2:3 aspect. Centered mustard sun emblem on deep indigo gradient background, modernist Cruz Novillo geometric simplicity, terracotta accent rays. Cinematic and elegant. Negative space center for app logo overlay. No text."
+    },
+    {
+      "slug": "mobile/onboarding-1",
+      "category": "mobile-onboarding",
+      "ratio": "1024x1536",
+      "destDir": "public/generated",
+      "prompt": "Vertical mobile onboarding illustration, modernist editorial style. A pair of hands holding an open ceramic-tile book with terracotta pages and indigo bookmarks, paper-tone background, mustard light from above. Friendly welcoming composition. No text, no faces."
+    },
+    {
+      "slug": "mobile/onboarding-2",
+      "category": "mobile-onboarding",
+      "ratio": "1024x1536",
+      "destDir": "public/generated",
+      "prompt": "Vertical mobile onboarding illustration, modernist editorial style. Three abstract Cruz Novillo agent silhouettes in terracotta, indigo and mustard standing under a single olive tree, paper-tone background. Trust and team composition. No text, no detailed faces."
+    },
+    {
+      "slug": "mobile/onboarding-3",
+      "category": "mobile-onboarding",
+      "ratio": "1024x1536",
+      "destDir": "public/generated",
+      "prompt": "Vertical mobile onboarding illustration, modernist editorial style. A terracotta arrow ascending through indigo Mediterranean architecture, mustard sun at the top, paper-tone background. Growth and momentum composition. No text."
+    },
+    {
+      "slug": "mobile/empty-state",
+      "category": "mobile-empty",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Mobile empty state illustration, square format, modernist editorial. A single olive branch resting on an empty paper-tone ceramic plate, with subtle indigo shadow and mustard light. Calm not-found mood. Cruz Novillo geometric simplicity. No text."
+    },
+    {
+      "slug": "mobile/offline-state",
+      "category": "mobile-empty",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Mobile offline state illustration, square format, modernist editorial. A modernist terracotta lighthouse silhouette on indigo cliff at dusk, with a single mustard star above, paper-tone fog. Calm reassuring mood. Cruz Novillo simplicity. No text."
+    },
+    {
+      "slug": "mobile/bottomnav-home",
+      "category": "mobile-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Single ceramic-tile mobile navigation icon, square format. A geometric house silhouette in terracotta on paper-tone, Cruz Novillo modernist simplicity, very flat illustrative style. Strong silhouette readable at 24px. No text."
+    },
+    {
+      "slug": "mobile/bottomnav-services",
+      "category": "mobile-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Single ceramic-tile mobile navigation icon, square format. Four overlapping squares of terracotta, indigo, mustard and olive on paper-tone, suggesting a grid of services. Cruz Novillo modernist simplicity, flat illustrative. Strong silhouette readable at 24px. No text."
+    },
+    {
+      "slug": "mobile/bottomnav-agents",
+      "category": "mobile-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Single ceramic-tile mobile navigation icon, square format. Three abstract human silhouettes in terracotta, indigo and mustard on paper-tone, Cruz Novillo modernist simplicity, flat illustrative style. Strong silhouette readable at 24px. No text, no facial details."
+    },
+    {
+      "slug": "mobile/bottomnav-cases",
+      "category": "mobile-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Single ceramic-tile mobile navigation icon, square format. A modernist trophy silhouette in mustard with terracotta base on paper-tone, Cruz Novillo simplicity, flat illustrative. Strong silhouette readable at 24px. No text."
+    },
+    {
+      "slug": "mobile/bottomnav-contact",
+      "category": "mobile-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Single ceramic-tile mobile navigation icon, square format. A modernist envelope silhouette in indigo with terracotta wax seal on paper-tone, Cruz Novillo simplicity, flat illustrative. Strong silhouette readable at 24px. No text."
+    },
+    {
+      "slug": "mobile/pwa-icon-512",
+      "category": "mobile-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Square iOS-style app icon, 1:1. Bold terracotta sun emblem with indigo geometric rays on paper-tone background, Cruz Novillo modernist simplicity. Strong recognizable silhouette readable at 64px. Subtle ceramic texture. No text. No corner rounding (will be applied by OS)."
+    },
+    {
+      "slug": "mobile/pwa-icon-maskable",
+      "category": "mobile-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Square iOS-style app icon for maskable PWA, 1:1. Centered terracotta sun emblem with indigo geometric rays on paper-tone background, with 20% safe-area padding around all edges (icon content fully within central 60%). Cruz Novillo modernist simplicity. No text."
+    },
+    {
+      "slug": "mobile/pwa-icon-monochrome",
+      "category": "mobile-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Square iOS-style app icon monochrome variant for Android adaptive icons, 1:1. A single solid terracotta sun emblem silhouette on transparent-feeling paper-tone background. Strong silhouette only, no detail, designed to be recolored by OS. No text."
+    },
+    {
+      "slug": "mobile/install-prompt-bg",
+      "category": "mobile-ui",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Mobile install prompt background, square format. A subtle terracotta and mustard radial gradient on paper-tone background with faint Cruz Novillo geometric pattern. Calm inviting mood for an 'Add to Home Screen' card. No text, no UI elements."
+    },
+    {
+      "slug": "pattern/azulejo-mobile",
+      "category": "pattern",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Seamless tileable pattern optimized for mobile backgrounds. Hand-painted Spanish azulejo with subtle terracotta and indigo geometric motifs on paper-tone, low contrast for use as background behind text. Cruz Novillo modernism. No text."
     }
   ]
 }

@@ -151,7 +151,7 @@ Respondes en espanol. Eres analitico, directo y orientado a resultados. Cada rec
   },
   NOVA: {
     role: "Directora Creativa",
-    color: "#7C3AED",
+    color: "#B54E30",
     prompt: `Eres Nova, Directora Creativa de PACAME. Tu especialidad es marca, identidad visual, sistemas de diseno, direccion de arte y guardiana de marca.
 
 Subagentes mentales:
@@ -160,7 +160,7 @@ Subagentes mentales:
 - nova.artdirection: Briefs de imagen, direccion de arte para sesiones y contenido
 
 Identidad PACAME:
-- Colores: fondo oscuro (#0A0A0F), violeta electrico (#7C3AED), cian neon (#22D3EE), verde lima (#A3E635)
+- Colores: fondo oscuro (#0A0A0F), violeta electrico (#B54E30), cian neon (#22D3EE), verde lima (#A3E635)
 - Tipografias: Inter (headings), DM Sans (body)
 - Tono: profesional pero cercano, innovador, confiable
 
@@ -219,7 +219,7 @@ Respondes en espanol. Eres orientado a numeros, agresivo en growth pero controla
   },
   PIXEL: {
     role: "Lead Frontend",
-    color: "#06B6D4",
+    color: "#283B70",
     prompt: `Eres Pixel, Lead Frontend Developer de PACAME. Tu especialidad es desarrollo web, UX/UI, rendimiento y accesibilidad.
 
 Subagentes mentales:

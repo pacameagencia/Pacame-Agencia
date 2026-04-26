@@ -11,9 +11,9 @@ import {
 } from "lucide-react";
 
 const typeConfig: Record<string, { label: string; color: string; icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }> }> = {
-  trend:              { label: "Tendencia",       color: "#7C3AED", icon: TrendingUp },
+  trend:              { label: "Tendencia",       color: "#B54E30", icon: TrendingUp },
   service_idea:       { label: "Nuevo servicio",  color: "#16A34A", icon: Lightbulb },
-  technique:          { label: "Tecnica",         color: "#06B6D4", icon: Zap },
+  technique:          { label: "Tecnica",         color: "#283B70", icon: Zap },
   competitor_insight: { label: "Competencia",     color: "#EF4444", icon: Eye },
   optimization:       { label: "Optimizacion",    color: "#F59E0B", icon: Target },
   market_signal:      { label: "Mercado",         color: "#EA580C", icon: BarChart3 },
@@ -23,13 +23,13 @@ const typeConfig: Record<string, { label: string; color: string; icon: React.Com
 const impactConfig: Record<string, { label: string; color: string }> = {
   critical: { label: "Critico",  color: "#EF4444" },
   high:     { label: "Alto",     color: "#F59E0B" },
-  medium:   { label: "Medio",    color: "#06B6D4" },
+  medium:   { label: "Medio",    color: "#283B70" },
   low:      { label: "Bajo",     color: "#6B7280" },
 };
 
 const statusConfig: Record<string, { label: string; color: string }> = {
-  new:          { label: "Nuevo",         color: "#7C3AED" },
-  reviewed:     { label: "Revisado",      color: "#06B6D4" },
+  new:          { label: "Nuevo",         color: "#B54E30" },
+  reviewed:     { label: "Revisado",      color: "#283B70" },
   implementing: { label: "Implementando", color: "#F59E0B" },
   implemented:  { label: "Implementado",  color: "#16A34A" },
   dismissed:    { label: "Descartado",    color: "#6B7280" },
@@ -43,7 +43,7 @@ const agentIcons: Record<string, React.ComponentType<{ className?: string; style
 
 const agentColors: Record<string, string> = {
   sage: "#D97706", atlas: "#2563EB", pulse: "#EC4899", nexus: "#EA580C",
-  lens: "#8B5CF6", copy: "#F59E0B", nova: "#7C3AED", pixel: "#06B6D4",
+  lens: "#8B5CF6", copy: "#F59E0B", nova: "#B54E30", pixel: "#283B70",
   core: "#16A34A", dios: "#FFFFFF",
 };
 
@@ -159,9 +159,9 @@ export default function DiscoveriesPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: "Nuevos", value: stats.new, color: "#7C3AED", icon: Star },
+          { label: "Nuevos", value: stats.new, color: "#B54E30", icon: Star },
           { label: "Implementados", value: stats.implemented, color: "#16A34A", icon: CheckCircle2 },
-          { label: "Total", value: stats.total, color: "#06B6D4", icon: Lightbulb },
+          { label: "Total", value: stats.total, color: "#283B70", icon: Lightbulb },
           { label: "Agentes activos", value: stats.agents, color: "#F59E0B", icon: Brain },
         ].map(stat => {
           const StatIcon = stat.icon;
@@ -231,7 +231,7 @@ export default function DiscoveriesPage() {
             const sConf = statusConfig[dStatus] || statusConfig.new;
             const TypeIcon = tConf.icon;
             const AgentIcon = agentIcons[d.agent_id] || Brain;
-            const agentColor = agentColors[d.agent_id] || "#7C3AED";
+            const agentColor = agentColors[d.agent_id] || "#B54E30";
 
             return (
               <div

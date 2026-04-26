@@ -70,9 +70,9 @@ export default function LoadingScreen() {
             >
               <defs>
                 <linearGradient id="loading-logo-grad" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#7C3AED" />
-                  <stop offset="50%" stopColor="#D4A853" />
-                  <stop offset="100%" stopColor="#06B6D4" />
+                  <stop offset="0%" stopColor="#B54E30" />
+                  <stop offset="50%" stopColor="#E8B730" />
+                  <stop offset="100%" stopColor="#283B70" />
                 </linearGradient>
               </defs>
               <motion.rect
@@ -123,7 +123,7 @@ export default function LoadingScreen() {
               <motion.div
                 className="h-full rounded-full"
                 style={{
-                  background: "linear-gradient(90deg, #7C3AED, #D4A853, #06B6D4)",
+                  background: "linear-gradient(90deg, #B54E30, #E8B730, #283B70)",
                   width: `${progress}%`,
                 }}
                 transition={{ duration: 0.1 }}

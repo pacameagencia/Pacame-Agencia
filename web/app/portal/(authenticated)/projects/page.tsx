@@ -71,8 +71,8 @@ export default function ProjectsPage() {
 
   const primaryColor =
     typeof document !== "undefined"
-      ? getComputedStyle(document.documentElement).getPropertyValue("--client-primary").trim() || "#7C3AED"
-      : "#7C3AED";
+      ? getComputedStyle(document.documentElement).getPropertyValue("--client-primary").trim() || "#B54E30"
+      : "#B54E30";
 
   return (
     <div className="space-y-8">

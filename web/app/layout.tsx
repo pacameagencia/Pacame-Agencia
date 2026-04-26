@@ -15,6 +15,8 @@ import NoiseOverlay from "@/components/effects/NoiseOverlay";
 import BackToTop from "@/components/effects/BackToTop";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 import ReferralCookieTracker from "@/components/referral/ReferralCookieTracker";
+import BottomNavigation from "@/components/mobile/BottomNavigation";
+import AddToHomeScreen from "@/components/mobile/AddToHomeScreen";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import CommandPalette from "@/components/command/CommandPalette";
@@ -126,8 +128,28 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
     title: "PACAME",
+    startupImage: [
+      { url: "/generated/mobile/splash-light.png", media: "(prefers-color-scheme: light)" },
+      { url: "/generated/mobile/splash-dark.png", media: "(prefers-color-scheme: dark)" },
+    ],
+  },
+  icons: {
+    icon: [
+      { url: "/icon.png", sizes: "192x192", type: "image/png" },
+      { url: "/generated/mobile/pwa-icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/generated/mobile/pwa-icon-512.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      {
+        rel: "mask-icon",
+        url: "/generated/mobile/pwa-icon-monochrome.png",
+        color: "#B54E30",
+      },
+    ],
   },
   formatDetection: {
     telephone: false,
@@ -157,86 +179,12 @@ export default function RootLayout({
       className={`${GeistSans.variable} ${GeistMono.variable} ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable}`}
     >
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "PACAME",
-              url: "https://pacameagencia.com",
-              potentialAction: {
-                "@type": "SearchAction",
-                target: {
-                  "@type": "EntryPoint",
-                  urlTemplate: "https://pacameagencia.com/servicios?q={search_term_string}",
-                },
-                "query-input": "required name=search_term_string",
-              },
-            }),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "ProfessionalService",
-              name: "PACAME",
-              alternateName: "PACAME Agencia Digital",
-              url: "https://pacameagencia.com",
-              logo: "https://pacameagencia.com/opengraph-image",
-              description:
-                "Agencia digital con 7 agentes IA especializados. Diseno web, SEO, publicidad digital, redes sociales y branding para PYMEs en Espana.",
-              telephone: "+34722669381",
-              email: "hola@pacameagencia.com",
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "Madrid",
-                addressCountry: "ES",
-              },
-              geo: {
-                "@type": "GeoCoordinates",
-                latitude: 40.4168,
-                longitude: -3.7038,
-              },
-              areaServed: {
-                "@type": "Country",
-                name: "Espana",
-              },
-              priceRange: "300 EUR - 15.000 EUR",
-              openingHoursSpecification: {
-                "@type": "OpeningHoursSpecification",
-                dayOfWeek: [
-                  "Monday",
-                  "Tuesday",
-                  "Wednesday",
-                  "Thursday",
-                  "Friday",
-                ],
-                opens: "09:00",
-                closes: "20:00",
-              },
-              sameAs: [
-                "https://instagram.com/pacameagencia",
-                "https://linkedin.com/company/pacame",
-                "https://twitter.com/pacameagencia",
-              ],
-              founder: {
-                "@type": "Person",
-                name: "Pablo Calleja",
-                jobTitle: "CEO",
-              },
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "4.9",
-                reviewCount: "47",
-                bestRating: "5",
-              },
-            }),
-          }}
-        />
+        {/* JSON-LD Organization + WebSite (consolidado en OrganizationJsonLd, Sprint 23) */}
         <OrganizationJsonLd />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://api.atlascloud.ai" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
       </head>
       <body className="bg-paper text-ink font-sans antialiased">
         <ThemeProvider>
@@ -263,6 +211,8 @@ export default function RootLayout({
         <ReferralCookieTracker />
         <CommandPalette />
         <ExitIntentPopup />
+        <BottomNavigation />
+        <AddToHomeScreen />
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>

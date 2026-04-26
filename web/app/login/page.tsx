@@ -94,8 +94,8 @@ export default function LoginPage() {
                 </Button>
               ) : (
                 <ShinyButton
-                  gradientFrom="#D4A853"
-                  gradientTo="#7C3AED"
+                  gradientFrom="#E8B730"
+                  gradientTo="#B54E30"
                   gradientOpacity={0.8}
                   className="w-full h-12"
                 >
