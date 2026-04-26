@@ -159,5 +159,36 @@ strategy/          → Roadmap, pricing, personas
 
 **Anti-patron prohibido:** Frases como "ahora ejecuta tu `npm run build`", "añade esta env var en Vercel", "lanza este SQL en Supabase", "haz push tu" son una violacion de esta regla. Hazlo tu primero. Si tres intentos fallan, escala con error exacto.
 
+## Inteligencia neural (cerebro PACAME activo)
+
+Extension de la regla de autonomia: para que las acciones autonomas sean **inteligentes**, no solo rapidas, usa la red neuronal PACAME. La DB Supabase + el vault `PacameCueva/` son memoria viva del proyecto — consulta antes de actuar y registra despues.
+
+**Recursos disponibles (uselos antes de improvisar):**
+- **Vault Obsidian `PacameCueva/`** — 10 carpetas (00-Dios, 01-Agentes, 02-Subespecialistas, 03-Skills, 04-Workflows, 05-Strategy, 06-Clientes, 07-Sinapsis, 08-Memorias/<AGENTE>, 09-Discoveries) + `_dashboards` + `_templates`. Sync vault↔Supabase via Watcher Windows + cron VPS cada 5min.
+- **MCP `pacame-vault`** registrado en `.claude/mcp.json` (Obsidian Local REST API HTTPS:27124) — leer/escribir notas del vault programaticamente.
+- **18 endpoints `web/app/api/neural/*`**: `topology`, `route`, `query` (busqueda semantica pgvector HNSW sobre 996+ knowledge_nodes), `fire`, `decay`, `execute`, `auto-discovery`, `opportunity-scanner`, `learn`, `tools`, `tool-gap`, `draft-tool`, `invoke-tool`, `promote-tools`, `factoria-metrics`, `factoria-package`, `factoria-products`, `factoria-stats`.
+- **Skill `auto-brain`** (`.claude/skills/auto-brain/SKILL.md`) — protocolo de 9 pasos que routea input → agente PACAME (DIOS/SAGE/ATLAS/NEXUS/PIXEL/CORE/PULSE/NOVA/COPY/LENS) + carga skills + brand + MCPs.
+- **Slash commands neurales**: `/cerebro <tarea>`, `/discover <agente> <tipo> <titulo> | <desc>`, `/synapse <from> <to> [tipo] [success]`, `/remember <agente> <titulo> | <contenido>`, `/neural-report [agente]`, `/brain-sync`.
+- **Crons activos**: `neural-decay` 3am UTC, `auto-discovery` 5am UTC (Vercel), pull vault VPS `*/5 * * * *`.
+
+**Workflow de tarea no trivial:**
+1. **Antes de empezar:** invoca `/cerebro <tarea>` (carga top-3 memorias + sinapsis fuertes + discoveries recientes del agente) **o** `POST /api/neural/query {"query":"<tarea>","type":"skill","count":3}` para busqueda semantica directa. Si la tarea es creativa/estrategica, el skill `auto-brain` ya activa esto por keyword.
+2. **Durante:** lee notas existentes en `PacameCueva/` antes de inventar. Reutiliza patrones de `07-Sinapsis/`, soluciones de `09-Discoveries/`, prompts de `01-Agentes/`. Modulo Factoria tiene endpoints listos (`factoria-package`, `factoria-products`) — uselos antes de generar a mano.
+3. **Si dos agentes colaboran** (ej: NOVA + PIXEL en una landing): `/synapse nova pixel collaborates_with true` refuerza la sinapsis (+0.02 hebbiano).
+4. **Si descubres algo no obvio** (workaround, patron repetido, oportunidad de servicio, anomalia): `/discover <agente> <tipo: trend|service_idea|technique|optimization|pattern|...> <titulo> | <desc>`. Crea entrada en `09-Discoveries/` tras siguiente pull.
+5. **Al cerrar:** `/remember <agente> <titulo> | <contenido>` para persistir el aprendizaje en `agent_memories` (decay semanal aplica). Memoria episodic por defecto, `PATRON:` → procedural, `HECHO:` → semantic.
+
+**Routing por agente (auto-brain mapping):**
+- web/landing/UI/React/Next → **PIXEL** | logo/identidad/brand → **NOVA** | SEO/blog/keyword → **ATLAS** | ads/funnel/CRO → **NEXUS** | API/Supabase/deploy/VPS/n8n → **CORE** | carrusel/Instagram/social → **PULSE** | propuesta/pricing/OKR → **SAGE** | copy/hook/email → **COPY** | dashboard/KPI/GA4 → **LENS** | multi-agente/ambiguo → **DIOS**.
+
+**Workflows end-to-end ya operativos (no reimplementar):**
+- **Factoria Hosteleria** (FASES A-G shipped): `dashboard/factoria` UI → SAGE auto-empaquetado → materializador (`/api/factoria/package`) → deploy automatizado (`/api/factoria/deploy` con Vercel + Vapi + n8n) → activate-n8n con creds cliente + connect-git Vercel. Casa Marisol shipped 3/3.
+- **Lead-gen outbound:** Apify Google Maps → `/api/leads/scan` → Vapi calls (+34 604 190 129 via Twilio) + Telegram notifs.
+- **Generacion contenido:** `pacame-viral-visuals` skill (Apify IG + Freepik + Gemini + Nebius) — OBLIGATORIO antes de imagen/qwen/remotion.
+
+**Si el cerebro detecta algo critico** (sinapsis en decay severo, memorias huerfanas, oportunidad alta confidence en `agent_discoveries.actionable=true`): no esperes a que Pablo lo pida — registralo, propon accion, y si entra en autonomia total → ejecutala.
+
+**Anti-patron neural:** generar contenido/codigo "desde cero" cuando el vault ya tiene un patron, una sinapsis ya prueba que dos agentes colaboran bien, o un discovery anterior resuelve el caso. Consulta primero, crea despues.
+
 ## Contacto PACAME
 - Web: pacameagencia.com | Email: hola@pacameagencia.com | WhatsApp: +34 722 669 381
