@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
@@ -21,6 +22,18 @@ const fadeUp = {
 export default function Hero() {
   return (
     <section className="relative min-h-screen bg-paper overflow-hidden pt-32 pb-24">
+      {/* Hero poster generado con GPT Image 2 — capa cinematográfica de fondo */}
+      <div className="absolute inset-0 pointer-events-none">
+        <Image
+          src="/generated/hero-poster.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-[0.16] mix-blend-multiply"
+        />
+      </div>
+
       {/* Grid baseline sutil — solo como guía tipográfica editorial */}
       <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" />
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -15,6 +16,7 @@ const services = [
     deadline: "2–40 días",
     href: "/servicios#web",
     accent: "#B54E30",
+    image: "/generated/services/web.png",
   },
   {
     number: "02",
@@ -26,6 +28,7 @@ const services = [
     deadline: "60–90 días",
     href: "/servicios#seo",
     accent: "#283B70",
+    image: "/generated/services/seo.png",
   },
   {
     number: "03",
@@ -37,6 +40,7 @@ const services = [
     deadline: "Calendario en 48h",
     href: "/servicios#redes",
     accent: "#E8B730",
+    image: "/generated/services/social.png",
   },
   {
     number: "04",
@@ -48,6 +52,7 @@ const services = [
     deadline: "Live en 3–5 días",
     href: "/servicios#ads",
     accent: "#CB6B47",
+    image: "/generated/services/ads.png",
   },
   {
     number: "05",
@@ -59,6 +64,7 @@ const services = [
     deadline: "Logo en 3–5 días",
     href: "/servicios#branding",
     accent: "#6B7535",
+    image: "/generated/services/branding.png",
   },
 ];
 
@@ -205,6 +211,17 @@ function ServiceEntry({ service, position }: { service: typeof services[number];
         >
           {service.number}
         </span>
+
+        {/* Icono cerámico generado con GPT Image 2 */}
+        <div className="relative w-20 h-20 md:w-24 md:h-24 mb-6 overflow-hidden rounded-sm border border-ink/10 bg-sand-50">
+          <Image
+            src={service.image}
+            alt={`Icono modernista de ${service.name}`}
+            fill
+            sizes="(max-width: 768px) 80px, 96px"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+        </div>
 
         <div className="relative z-10 max-w-sm">
           <span className="kicker block mb-4" style={{ color: service.accent }}>

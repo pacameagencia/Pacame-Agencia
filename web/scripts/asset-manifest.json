@@ -1,0 +1,451 @@
+{
+  "version": "1.0.0",
+  "description": "PACAME Atlas Cloud asset manifest — 63 visuals Spanish Modernism for pacameagencia.com",
+  "stylePreamble": "Spanish Modernism aesthetic. Paper #F4EFE3 background, terracotta #B54E30, indigo #283B70, mustard #E8B730, olive #6B7535. Hand-painted ceramic-tile feel. Editorial poster style. Inspired by Cruz Novillo and Loewe brand identity. Mediterranean warmth. Magazine-quality composition. No text, no watermarks, no logos, no AI artifacts. No neon, no purple, no cyan. Strictly the palette above.",
+  "negativePrompt": "text, words, letters, watermarks, logos, brand marks, neon colors, purple, violet, cyan, magenta, low quality, blurry, distorted, deformed, extra fingers, AI fingerprints, plastic skin, oversaturated, HDR overdone, lens flare cheap, beauty filter, plastic looking",
+  "assets": [
+    {
+      "slug": "hero-poster",
+      "category": "hero",
+      "ratio": "1536x1024",
+      "model": "openai/gpt-image-2-developer/text-to-image",
+      "destDir": "public/generated",
+      "prompt": "Editorial cinematic poster. A geometric terracotta sun rising over Mediterranean rooftops in Cruz Novillo abstract simplicity. Paper-tone arena sky #F4EFE3. Modernist abstract sun rays in indigo #283B70 and mustard #E8B730. Warm depth and Loewe-grade craftsmanship. Magazine cover quality. No people, no text."
+    },
+    {
+      "slug": "hero-mobile",
+      "category": "hero",
+      "ratio": "1024x1536",
+      "destDir": "public/generated",
+      "prompt": "Vertical editorial poster. Geometric terracotta sun composition with Mediterranean arches below. Paper-tone background, modernist Cruz Novillo simplicity. Indigo arcs at base, mustard accents. Magazine cover for mobile, vertical 2:3 aspect. No people, no text."
+    },
+    {
+      "slug": "hero-cinematic-bg",
+      "category": "hero",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Atmospheric Mediterranean light-and-shadow composition for cinematic web hero background. Soft warm golden hour wash over abstract terracotta and ochre tiles, indigo shadows, mustard highlights, paper-tone overall. Negative space for text overlay on left third. No people, no text, no logos."
+    },
+    {
+      "slug": "services/web",
+      "category": "service-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. Single hand-painted azulejo metaphor for web design: a stylized monitor with terracotta frame and indigo grid pattern inside. Paper background, Loewe-grade ceramic finish. Flat illustrative style, no realism. No text."
+    },
+    {
+      "slug": "services/seo",
+      "category": "service-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. Single hand-painted azulejo metaphor for SEO: a Mediterranean compass rose in indigo and mustard with terracotta center. Paper background, Cruz Novillo geometric simplicity. Flat illustrative style. No text."
+    },
+    {
+      "slug": "services/social",
+      "category": "service-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. Single hand-painted azulejo metaphor for social media: a stylized terracotta megaphone with indigo sound rays and mustard accent. Paper background, ceramic-painted finish. Flat illustrative style. No text."
+    },
+    {
+      "slug": "services/ads",
+      "category": "service-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. Single hand-painted azulejo metaphor for digital advertising: a terracotta concentric target with indigo arrow piercing center, mustard halo. Paper background, Cruz Novillo geometric simplicity. Flat illustrative style. No text."
+    },
+    {
+      "slug": "services/branding",
+      "category": "service-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. Single hand-painted azulejo metaphor for branding: a terracotta wax seal stamp with mustard imprint and indigo ribbon. Paper background, Loewe-grade craftsmanship. Flat illustrative style. No text, no actual seal letters."
+    },
+    {
+      "slug": "services/consulting",
+      "category": "service-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. Single hand-painted azulejo metaphor for strategic consulting: a terracotta chess knight with indigo board squares behind, mustard accent. Paper background, ceramic finish. Flat illustrative style. No text."
+    },
+    {
+      "slug": "services/analytics",
+      "category": "service-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. Single hand-painted azulejo metaphor for analytics: an indigo bar-chart silhouette ascending with terracotta peak and mustard data points. Paper background, Cruz Novillo geometric simplicity. Flat illustrative style. No text, no actual numbers."
+    },
+    {
+      "slug": "services/automation",
+      "category": "service-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. Single hand-painted azulejo metaphor for automation: an interlocking terracotta and indigo gear pair with mustard center spark. Paper background, Loewe-grade ceramic finish. Flat illustrative style. No text."
+    },
+    {
+      "slug": "agents/nova",
+      "category": "agent-portrait",
+      "ratio": "1024x1536",
+      "model": "openai/gpt-image-2-developer/text-to-image",
+      "destDir": "public/generated",
+      "prompt": "Editorial portrait, magazine-cover quality. A Spanish woman in her early 30s, warm intelligent gaze, slight knowing smile. Wearing a terracotta wool sweater. Natural side light from a window, soft indigo backdrop. Medium-format film grain, painterly Fraunces-mood. Character: creative director and brand strategist energy, confident creative warmth. Paper-tone overall warmth. Pulitzer-grade photojournalism. No logos, no text, no brand marks."
+    },
+    {
+      "slug": "agents/atlas",
+      "category": "agent-portrait",
+      "ratio": "1024x1536",
+      "destDir": "public/generated",
+      "prompt": "Editorial portrait, magazine-cover quality. A Spanish man in his early 40s, analytical sharp gaze, calm composure. Wearing a deep indigo button-down shirt. Side natural light, mustard-and-paper backdrop with subtle modernist texture. Medium-format film grain, Fraunces serif mood. Character: SEO and analytics architect, methodical and strategic. Painterly editorial style. No logos, no text."
+    },
+    {
+      "slug": "agents/nexus",
+      "category": "agent-portrait",
+      "ratio": "1024x1536",
+      "destDir": "public/generated",
+      "prompt": "Editorial portrait, magazine-cover quality. A Spanish person in late 20s, extroverted confident gaze, warm energy. Wearing a mustard-toned linen jacket over a paper-toned shirt. Bright Mediterranean natural light, terracotta wall behind. Medium-format film grain, Fraunces editorial mood. Character: paid-ads and growth specialist, fast and decisive. Painterly editorial style. No logos, no text."
+    },
+    {
+      "slug": "agents/pixel",
+      "category": "agent-portrait",
+      "ratio": "1024x1536",
+      "destDir": "public/generated",
+      "prompt": "Editorial portrait, magazine-cover quality. A Spanish designer in early 30s, focused thoughtful gaze, gentle smile. Wearing a deep indigo turtleneck. Soft window light, paper-tone backdrop with a hint of olive shadow. Medium-format film grain, Fraunces editorial mood. Character: frontend designer and UI craftsman, precise and aesthetic. Painterly editorial style. No logos, no text."
+    },
+    {
+      "slug": "agents/core",
+      "category": "agent-portrait",
+      "ratio": "1024x1536",
+      "destDir": "public/generated",
+      "prompt": "Editorial portrait, magazine-cover quality. A Spanish senior engineer in early 50s, calm gaze with deep experience. Wearing a charcoal-on-indigo work shirt. Side natural light, olive-tinted backdrop. Medium-format film grain, Fraunces editorial mood. Character: backend systems architect, dependable and exact. Painterly editorial style. No logos, no text."
+    },
+    {
+      "slug": "agents/pulse",
+      "category": "agent-portrait",
+      "ratio": "1024x1536",
+      "destDir": "public/generated",
+      "prompt": "Editorial portrait, magazine-cover quality. A Spanish person in mid-20s, vibrant social gaze, easy laugh. Wearing a mustard t-shirt under a terracotta jacket. Bright Mediterranean light, paper-tone backdrop. Medium-format film grain, Fraunces editorial mood. Character: community and social media manager, outgoing and present. Painterly editorial style. No logos, no text."
+    },
+    {
+      "slug": "agents/sage",
+      "category": "agent-portrait",
+      "ratio": "1024x1536",
+      "destDir": "public/generated",
+      "prompt": "Editorial portrait, magazine-cover quality. A Spanish strategist in mid-40s, thoughtful contemplative gaze, slight grin. Wearing a deep terracotta blazer over a paper-tone shirt. Side natural light, indigo backdrop with subtle texture. Medium-format film grain, Fraunces editorial mood. Character: business strategist and pricing advisor, wise and witty. Painterly editorial style. No logos, no text."
+    },
+    {
+      "slug": "sectors/restaurant",
+      "category": "sector-photo",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Authentic Spanish bistro interior at golden hour. Warm terracotta-and-paper walls, polished olive-wood tables with a single glass of vermouth on one, indigo ceramic plates stacked, soft Mediterranean light through wooden shutters. No people facing camera. Editorial restaurant photography, magazine quality. Spanish Modernism palette only. No text, no menus, no logos."
+    },
+    {
+      "slug": "sectors/hotel",
+      "category": "sector-photo",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Boutique Mediterranean hotel lobby in soft afternoon light. Paper-tone walls, terracotta tile floor, indigo velvet sofa, mustard linen lampshade, large arched window letting in warm sun. No people. Editorial hospitality photography, magazine quality. Spanish Modernism aesthetic. No text, no logos."
+    },
+    {
+      "slug": "sectors/clinic",
+      "category": "sector-photo",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Modern Spanish dental or medical clinic waiting area. Clean paper-tone walls, indigo accent stripe, terracotta floor mat, olive-wood reception desk, mustard pendant lamps overhead. Soft natural light. No people. Editorial healthcare photography, magazine quality. Calm professional warmth. No text, no medical logos."
+    },
+    {
+      "slug": "sectors/gym",
+      "category": "sector-photo",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Boutique Mediterranean gym studio interior. Polished olive-wood floor, terracotta accent wall, mustard pendant lights, single indigo dumbbell rack, soft warm light. No people. Editorial fitness photography, magazine quality. Spanish Modernism palette. No text, no brand logos."
+    },
+    {
+      "slug": "sectors/realestate",
+      "category": "sector-photo",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Restored Andalusian apartment interior at golden hour. Paper-tone walls with original terracotta-tile floors, indigo painted door frame, mustard linen curtain catching light, olive-wood beam overhead. No people. Editorial interior photography, magazine quality. Spanish Modernism aesthetic. No text, no logos."
+    },
+    {
+      "slug": "sectors/ecommerce",
+      "category": "sector-photo",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Artisan Spanish e-commerce packaging studio scene. Paper-tone craft kraft boxes stacked on olive-wood table, terracotta pottery sample, mustard ribbon on a single box, indigo ink stamp pad. Soft natural light. No people. Editorial commerce photography, magazine quality. Spanish Modernism. No text, no brand marks."
+    },
+    {
+      "slug": "sectors/academy",
+      "category": "sector-photo",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Boutique academy or learning studio interior. Paper-tone walls, terracotta floor tile, indigo chalkboard, olive-wood communal table with a single notebook open, mustard pendant lamp. Warm natural light. No people. Editorial education photography. Spanish Modernism. No text content visible, no logos."
+    },
+    {
+      "slug": "sectors/saas",
+      "category": "sector-photo",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Mediterranean SaaS workspace. Travertine desk, paper-tone walls, indigo lamp, terracotta-bound notebook, mustard pencil holder, olive-wood shelf with a few books. Soft natural light. No people, no screens visible. Editorial workspace photography, magazine quality. Spanish Modernism aesthetic. No text, no logos."
+    },
+    {
+      "slug": "cases/case-1",
+      "category": "case-mockup",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial product mockup. A Macbook screen and an iPhone screen on a travertine desk, both displaying an abstract editorial website in indigo, terracotta and paper tones. Cruz Novillo geometric layouts visible. Soft Mediterranean window light, an olive-wood plant pot in the corner, a mustard-toned coffee cup. No real text, no brand logos, no UI buttons readable, just abstract editorial color blocks."
+    },
+    {
+      "slug": "cases/case-2",
+      "category": "case-mockup",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial product mockup. A Macbook on a paper-tone editorial backdrop showing an abstract dashboard with indigo charts, terracotta cards, mustard accents. Side natural light, a terracotta ceramic mug nearby. Magazine-quality product photography. No real text, no brand logos."
+    },
+    {
+      "slug": "cases/case-3",
+      "category": "case-mockup",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial product mockup. Three iPhones in indigo cases on a terracotta surface, each screen showing a different abstract layout in paper, mustard and olive tones. Top-down composition with soft Mediterranean shadow. No real text, no brand logos."
+    },
+    {
+      "slug": "cases/case-4",
+      "category": "case-mockup",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial product mockup. A Macbook screen showing an abstract e-commerce layout in indigo and terracotta, on an olive-wood desk with a paper-toned ceramic plate to the side, mustard linen napkin. Warm natural light. Magazine product photography. No real text, no brand logos."
+    },
+    {
+      "slug": "cases/case-5",
+      "category": "case-mockup",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial product mockup. iPad screen on a terracotta tile floor showing an abstract editorial magazine spread with indigo, paper and mustard tones. Soft side light, an olive-wood pen beside it. Magazine product photography. No real text, no brand logos."
+    },
+    {
+      "slug": "cases/case-6",
+      "category": "case-mockup",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial product mockup. Macbook and iPhone overlapping on a paper-tone backdrop, each displaying abstract booking-flow screens in indigo, terracotta and mustard. Mediterranean afternoon light, a terracotta succulent pot nearby. Magazine product photography. No real text, no brand logos."
+    },
+    {
+      "slug": "og/home",
+      "category": "og-image",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner. A geometric terracotta sun rising over modernist Mediterranean rooftops. Indigo arches at the base, mustard accents. Left third of the composition kept clean for title overlay. Cruz Novillo abstraction, Loewe palette warmth. Magazine cover composition. No text, no logos."
+    },
+    {
+      "slug": "og/servicios",
+      "category": "og-image",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner. Five overlapping ceramic azulejo tiles in terracotta, indigo, mustard and olive, each suggesting one service (web, SEO, social, ads, branding) through abstract symbols. Paper-tone background. Left third clean for title overlay. Magazine cover quality. No text."
+    },
+    {
+      "slug": "og/planes",
+      "category": "og-image",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner. Four stacked ceramic shapes ascending in size from terracotta to indigo, suggesting pricing tiers, on paper-tone background with mustard accent line. Cruz Novillo geometric clarity. Left third clean for title overlay. Magazine quality. No text, no numbers."
+    },
+    {
+      "slug": "og/agentes",
+      "category": "og-image",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner. Seven editorial portrait silhouettes arranged in a Cruz Novillo grid, each in a different Spanish Modernism palette tone (terracotta, indigo, mustard, olive, paper). Magazine cover composition with left third clean for title overlay. Painterly editorial style. No text, no faces detailed."
+    },
+    {
+      "slug": "og/casos",
+      "category": "og-image",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner. A travertine desk arrangement with overlapping Macbook, iPhone and editorial print samples in indigo and terracotta tones. Mediterranean light from the side. Left third clean for title overlay. Magazine product photography. No real text on screens, no brand logos."
+    },
+    {
+      "slug": "og/contacto",
+      "category": "og-image",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner. A single terracotta ceramic mug on an olive-wood table with an open paper-tone notebook, an indigo fountain pen, and warm Mediterranean window light. Conversation-warm composition. Left third clean for title overlay. Magazine quality. No text on the notebook."
+    },
+    {
+      "slug": "og/blog",
+      "category": "og-image",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner. A stack of paper-tone editorial magazines with terracotta and indigo spines on an olive-wood surface, mustard ribbon bookmark hanging out of one. Warm side light. Left third clean for title overlay. Magazine cover quality. No real text on covers, no logos."
+    },
+    {
+      "slug": "og/gratis",
+      "category": "og-image",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner. A terracotta gift box opened revealing a paper-tone wrapped tool set with indigo accents and a mustard ribbon. Cruz Novillo geometric clarity. Left third clean for title overlay. Magazine quality. No text, no logos."
+    },
+    {
+      "slug": "og/apps",
+      "category": "og-image",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner. An iPhone and an iPad on a paper-tone backdrop, each screen showing an abstract app interface in indigo, terracotta and mustard tones. Magazine product composition. Left third clean for title overlay. No real text, no brand logos."
+    },
+    {
+      "slug": "og/refiere",
+      "category": "og-image",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner. Two interlocking terracotta and indigo Mediterranean handshake silhouettes with a mustard halo between them. Cruz Novillo geometric simplicity. Left third clean for title overlay. Magazine cover quality. No text, no logos."
+    },
+    {
+      "slug": "og/sector-restaurant",
+      "category": "og-programmatic",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner for restaurants vertical. Stylized terracotta plate with abstract olive sprig and a single mustard glass on paper-tone background. Cruz Novillo geometric clarity. Left third clean for title overlay. Magazine quality. No text, no logos."
+    },
+    {
+      "slug": "og/sector-hotel",
+      "category": "og-programmatic",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner for hotels vertical. A stylized terracotta key on a paper-tone surface with indigo Mediterranean arch silhouette behind, mustard accent. Cruz Novillo geometric clarity. Left third clean. Magazine quality. No text, no logos."
+    },
+    {
+      "slug": "og/sector-clinic",
+      "category": "og-programmatic",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner for clinics vertical. A stylized indigo cross or caduceus silhouette on paper-tone, with terracotta and mustard accents. Cruz Novillo geometric clarity. Left third clean. Magazine quality. No text, no medical logos."
+    },
+    {
+      "slug": "og/sector-gym",
+      "category": "og-programmatic",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner for gyms vertical. A stylized terracotta dumbbell silhouette on paper-tone with indigo and mustard accent strokes. Cruz Novillo geometric clarity. Left third clean. Magazine quality. No text, no logos."
+    },
+    {
+      "slug": "og/sector-realestate",
+      "category": "og-programmatic",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner for real-estate vertical. A stylized indigo Mediterranean house silhouette on paper-tone with terracotta roof and mustard window. Cruz Novillo geometric simplicity. Left third clean. Magazine quality. No text, no logos."
+    },
+    {
+      "slug": "og/sector-ecommerce",
+      "category": "og-programmatic",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner for e-commerce vertical. A stylized terracotta package box with mustard ribbon on paper-tone background, indigo silhouette of a market basket behind. Cruz Novillo geometric clarity. Left third clean. Magazine quality. No text, no logos."
+    },
+    {
+      "slug": "og/sector-academy",
+      "category": "og-programmatic",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner for academies vertical. A stylized indigo open-book silhouette on paper-tone with terracotta and mustard accent pages. Cruz Novillo geometric clarity. Left third clean. Magazine quality. No text on pages, no logos."
+    },
+    {
+      "slug": "og/sector-saas",
+      "category": "og-programmatic",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner for SaaS vertical. A stylized indigo cloud silhouette with terracotta gear inside and mustard data dots on paper-tone. Cruz Novillo geometric clarity. Left third clean. Magazine quality. No text, no logos."
+    },
+    {
+      "slug": "og/ciudad-template",
+      "category": "og-programmatic",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial Open Graph banner template for any Spanish city programmatic page. Abstract Mediterranean cityscape silhouette in indigo and terracotta on paper-tone background, with mustard sun in the upper right. Cruz Novillo geometric simplicity. Left third clean for city name overlay. Magazine quality. No text, no specific city landmarks, no logos."
+    },
+    {
+      "slug": "icons/check",
+      "category": "custom-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. A single hand-painted azulejo check-mark in terracotta on paper-tone, mustard halo accent. Cruz Novillo geometric simplicity. Flat illustrative style. No text."
+    },
+    {
+      "slug": "icons/arrow",
+      "category": "custom-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. A single hand-painted azulejo arrow pointing up-right in indigo on paper-tone, terracotta accent line. Cruz Novillo geometric clarity. Flat illustrative style. No text."
+    },
+    {
+      "slug": "icons/star",
+      "category": "custom-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. A single hand-painted azulejo eight-pointed star in mustard on paper-tone, terracotta center, indigo accent. Cruz Novillo geometric simplicity. Flat illustrative style. No text."
+    },
+    {
+      "slug": "icons/quote",
+      "category": "custom-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. A single hand-painted azulejo opening quotation mark in terracotta on paper-tone, indigo accent below. Cruz Novillo geometric simplicity. Flat illustrative style. No text."
+    },
+    {
+      "slug": "icons/shield",
+      "category": "custom-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. A single hand-painted azulejo shield silhouette in indigo on paper-tone, terracotta cross detail and mustard halo. Cruz Novillo geometric simplicity. Flat illustrative style. No text, no heraldry."
+    },
+    {
+      "slug": "icons/bolt",
+      "category": "custom-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. A single hand-painted azulejo lightning bolt in mustard on paper-tone, terracotta outline, indigo background spark. Cruz Novillo geometric simplicity. Flat illustrative style. No text."
+    },
+    {
+      "slug": "icons/heart",
+      "category": "custom-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. A single hand-painted azulejo geometric heart in terracotta on paper-tone, indigo outline and mustard accent. Cruz Novillo geometric simplicity. Flat illustrative style. No text."
+    },
+    {
+      "slug": "icons/brain",
+      "category": "custom-icon",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Modernist ceramic-tile icon. A single hand-painted azulejo abstract brain or thinking-knot in indigo on paper-tone, terracotta neuron lines and mustard spark. Cruz Novillo geometric simplicity. Flat illustrative style. No text."
+    },
+    {
+      "slug": "pattern/azulejo-1",
+      "category": "pattern",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Seamless tileable pattern, hand-painted Spanish azulejo. Geometric four-fold symmetry in terracotta, indigo and mustard on paper-tone background. Cruz Novillo and traditional Sevillian ceramic fusion. No text, no logos. Tileable seamlessly."
+    },
+    {
+      "slug": "pattern/azulejo-2",
+      "category": "pattern",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Seamless tileable pattern, hand-painted Spanish azulejo. Eight-pointed star motif with olive and terracotta on paper-tone background, mustard center, indigo accents. Traditional Andalusian ceramic style. No text. Tileable seamlessly."
+    },
+    {
+      "slug": "pattern/paper-grain-2",
+      "category": "pattern",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Subtle paper-grain texture overlay. Warm paper #F4EFE3 base with very faint terracotta and olive fiber specks, hand-laid feel. Tileable seamlessly. No text, no images, just texture."
+    },
+    {
+      "slug": "pattern/sun-burst",
+      "category": "pattern",
+      "ratio": "1024x1024",
+      "destDir": "public/generated",
+      "prompt": "Geometric sun-burst pattern in Cruz Novillo modernist style. Terracotta center with concentric rays in indigo and mustard on paper-tone. Symmetric, magazine-grade illustration. No text, no logos."
+    }
+  ]
+}

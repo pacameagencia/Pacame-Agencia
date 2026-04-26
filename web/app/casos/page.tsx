@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPin, Briefcase } from "lucide-react";
 import { caseStudies } from "@/lib/data/case-studies";
@@ -102,17 +103,24 @@ export default function CasosPage() {
                       href={`/casos/${cs.slug}`}
                       className="group block h-full rounded-2xl bg-paper-deep border border-ink/[0.06] overflow-hidden hover:border-accent-gold/30 transition-all duration-300 card-golden-shine"
                     >
-                      {/* Cover gradient */}
+                      {/* Cover: mockup editorial generado + métrica overlay */}
                       <div
                         className="relative h-48 flex items-center justify-center overflow-hidden"
                         style={{ background: cs.coverGradient }}
                       >
+                        <Image
+                          src={`/generated/cases/case-${((caseStudies.indexOf(cs) % 6) + 1)}.png`}
+                          alt={`Mockup editorial ${cs.clientName}`}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          className="object-cover opacity-45 mix-blend-multiply"
+                        />
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0.2),rgba(0,0,0,0.6))]" />
-                        <div className="relative text-center px-6">
-                          <p className="text-[9vw] md:text-[5vw] lg:text-6xl font-heading font-bold text-ink leading-none">
+                        <div className="relative text-center px-6 z-10">
+                          <p className="text-[9vw] md:text-[5vw] lg:text-6xl font-heading font-bold text-paper leading-none drop-shadow-[2px_2px_0_rgba(26,24,19,0.5)]">
                             {cs.metricHeadline}
                           </p>
-                          <p className="text-xs text-ink/90 font-body font-medium uppercase tracking-[0.15em] mt-2">
+                          <p className="text-xs text-paper/95 font-body font-medium uppercase tracking-[0.15em] mt-2">
                             {cs.metricSubtitle}
                           </p>
                         </div>

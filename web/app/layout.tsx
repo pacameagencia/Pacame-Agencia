@@ -113,9 +113,14 @@ export const metadata: Metadata = {
     canonical: "https://pacameagencia.com",
   },
   verification: {
-    google: "B2h8SzjtvgC881Mq7jebvGxsYkLM2OQ5mqUcVs6wgyo",
+    google: process.env.GOOGLE_SITE_VERIFICATION || "B2h8SzjtvgC881Mq7jebvGxsYkLM2OQ5mqUcVs6wgyo",
+    yandex: process.env.YANDEX_SITE_VERIFICATION,
     other: {
-      "facebook-domain-verification": "rehhyn7no1pavyifad76quzrb8m21x",
+      "facebook-domain-verification":
+        process.env.FACEBOOK_DOMAIN_VERIFICATION ||
+        "rehhyn7no1pavyifad76quzrb8m21x",
+      "msvalidate.01": process.env.BING_SITE_VERIFICATION || "",
+      "p:domain_verify": process.env.PINTEREST_DOMAIN_VERIFICATION || "",
     },
   },
   manifest: "/manifest.webmanifest",
@@ -131,13 +136,13 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" },
-    { media: "(prefers-color-scheme: light)", color: "#D4A574" },
+    { media: "(prefers-color-scheme: dark)", color: "#1A1813" },
+    { media: "(prefers-color-scheme: light)", color: "#F4EFE3" },
   ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  colorScheme: "dark",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -149,7 +154,7 @@ export default function RootLayout({
     <html
       lang="es"
       suppressHydrationWarning
-      className={`${GeistSans.variable} ${GeistMono.variable} ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable} dark`}
+      className={`${GeistSans.variable} ${GeistMono.variable} ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable}`}
     >
       <head>
         <script
