@@ -18,6 +18,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // ─── Affiliate panel protection ─────────────────────────
+  if (pathname.startsWith("/afiliados/panel")) {
+    const token = request.cookies.get("pacame_aff_auth")?.value;
+    if (!token) {
+      const loginUrl = new URL("/afiliados/login", request.url);
+      loginUrl.searchParams.set("from", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+    return NextResponse.next();
+  }
+
   // ─── Portal protection (clients) ────────────────────────
   if (pathname.startsWith("/portal")) {
     // Allow login page and reset-password without auth
@@ -39,5 +50,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/portal/:path*"],
+  matcher: ["/dashboard/:path*", "/portal/:path*", "/afiliados/panel/:path*"],
 };

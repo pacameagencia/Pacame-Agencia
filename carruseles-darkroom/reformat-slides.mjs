@@ -6,7 +6,7 @@
  * Slides 1-4: position:top (headers de texto arriba)
  * Slide 5: position:center (URL + sub críticos en zona media-baja)
  *
- * Adicionalmente: añade watermark "@ PACAME" sintético en cada slide
+ * Adicionalmente: añade watermark "@darkroom" sintético en cada slide
  * con Sharp SVG overlay en esquina superior-derecha (zona libre en raws).
  *
  * También genera versión Story 1080×1920 con padding negro.
@@ -37,7 +37,7 @@ const SLIDE_CONFIG = [
   { n: 5, position: "center", role: "CTA"         }, // preserva URL
 ];
 
-// SVG overlay watermark "@ PACAME" en esquina superior-derecha · sutil pero legible
+// SVG overlay watermark "@darkroom" en esquina superior-derecha · sutil pero legible
 function watermarkSvg(width = 1080, height = 1350) {
   const fontSize = 22;
   const padding = 36;
@@ -52,7 +52,7 @@ function watermarkSvg(width = 1080, height = 1350) {
     letter-spacing="3"
     fill="#CFFF00"
     fill-opacity="0.65"
-    text-anchor="end">@ PACAME</text>
+    text-anchor="end">@darkroom</text>
 </svg>`.trim();
 }
 
@@ -77,7 +77,7 @@ async function reformatStory(rawPath, outPath) {
 }
 
 async function main() {
-  console.log("Reformateando 5 slides con estrategia per-slide + watermark @ PACAME sintético\n");
+  console.log("Reformateando 5 slides con estrategia per-slide + watermark @darkroom sintético\n");
 
   console.log("=== FEED (1080×1350 · 4:5) ===");
   for (const cfg of SLIDE_CONFIG) {

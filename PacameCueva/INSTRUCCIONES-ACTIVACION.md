@@ -173,17 +173,21 @@ PacameCueva/
 | Pull VPS devuelve +0/+0/+0 | Correcto si nada cambió. Ver `cat /var/log/pacame/pull.log` |
 | Watcher no detecta cambios | `Stop-ScheduledTask -TaskName "PACAME-BrainWatcher"; Start-ScheduledTask -TaskName "PACAME-BrainWatcher"`. Chokidar a veces pierde watchers tras suspender Windows |
 | Embeddings desfasados | `cd tools/obsidian-sync && npx tsx embed-brain.ts` (re-embebe skills) o `npx tsx embed-discoveries.ts` |
+| `verify.ts` reporta `Cron activity: 0` | Los crons de Vercel no han escrito en `agent_activities` recientemente. No afecta al vault local pero indica que `/api/agents/cron`, `/api/neural/learn` y `/api/agents/neural-decay` posiblemente no estén deployados o estén fallando antes de `logAgentActivity()`. Acción: revisar Vercel deployments + logs (`vercel logs --follow`) y confirmar `CRON_SECRET` configurado en producción. |
 
 ---
 
-## 📦 Estado actual (auditado 2026-04-24)
+## 📦 Estado actual (auditoría adversarial 2026-04-26)
 
-- Supabase: 996/997 knowledge_nodes embebidos (768-dim, nomic-embed-text vía Ollama VPS).
-- Vault local: 21 sinapsis, 10 carpetas memorias, 24+ discoveries, 120+ subespecialistas, 9 dashboards.
-- VPS pull cron: operativo, último run `2026-04-24T21:20` incremental +0/+0/+0.
-- Plugins Obsidian activos: 13.
+- Supabase: knowledge_nodes embebidos + 35 sinapsis + 216 memorias + 152 discoveries (post catch-up 2026-04-25).
+- Vault local: 9 dashboards, 184 subespecialistas, 21 skills, 12 agentes, 8 strategy.
+- Watcher: **Task Scheduler `PACAME-BrainWatcher`** registrado, estado Running.
+- VPS pull cron: operativo cada 5 min vía pm2.
+- Plugins Obsidian activos: 13/13 con `data.json` configurado.
 - Endpoints neurales: 8/8.
-- Slash commands: 6/6.
-- MCP pacame-vault: **registrado** (este commit).
+- Crons Vercel: 12/12 (decay con RPC `decay_synapses` arreglado en migración 017).
+- Slash commands: 6/6 con skill wrapper en `03-Skills/`.
 
 Cada nueva sesión debería arrancar con `/cerebro <tarea>` para que el agente correcto entre a la conversación con su memoria ya cargada.
+
+Smoke test rápido: `cd tools/obsidian-sync && npx tsx verify.ts` debe imprimir todo `[OK]`.

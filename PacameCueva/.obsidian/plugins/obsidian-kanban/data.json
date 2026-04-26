@@ -1,0 +1,28 @@
+{
+  "new-line-trigger": "shift-enter",
+  "show-checkboxes": true,
+  "new-card-insertion-method": "prepend",
+  "new-note-folder": "06-Clientes",
+  "new-note-template": "_templates/cliente.md",
+  "date-display-format": "YYYY-MM-DD",
+  "date-format": "YYYY-MM-DD",
+  "time-format": "HH:mm",
+  "show-relative-date": true,
+  "link-date-to-daily-note": true,
+  "hide-tags-display": false,
+  "hide-tags-in-title": true,
+  "metadata-keys": [
+    {
+      "metadataKey": "agente",
+      "label": "Agente",
+      "shouldHideLabel": false,
+      "containsMarkdown": false
+    },
+    {
+      "metadataKey": "tier",
+      "label": "Tier",
+      "shouldHideLabel": false,
+      "containsMarkdown": false
+    }
+  ]
+}

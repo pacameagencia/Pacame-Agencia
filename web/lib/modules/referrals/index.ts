@@ -39,10 +39,7 @@ export type { Campaign, Affiliate } from "./db";
 export { loadAffiliateStats } from "./stats";
 export type { AffiliateStats } from "./stats";
 
-export { Tabs } from "./components/Tabs";
-export type { TabItem } from "./components/Tabs";
-export { StatusPill } from "./components/StatusPill";
-export { SparkChart } from "./components/SparkChart";
-export type { SparkPoint } from "./components/SparkChart";
-export { AffiliateContentLibrary } from "./components/AffiliateContentLibrary";
-export type { ContentAsset } from "./components/AffiliateContentLibrary";
+// Components/hooks: import these from `@/lib/modules/referrals/client`
+// from Client Components, NOT from this barrel — this file pulls in
+// server-only code (next/headers, service-role supabase) and breaks
+// when imported transitively from a 'use client' tree.

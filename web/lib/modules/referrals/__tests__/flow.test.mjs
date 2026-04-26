@@ -68,11 +68,12 @@ async function setupCampaign(overrides = {}) {
 }
 
 async function createAffiliate(suffix, campaignId) {
+  const { randomUUID } = await import("node:crypto");
   const { data, error } = await supabase
     .from("aff_affiliates")
     .insert({
       tenant_id: TENANT,
-      user_id: `00000000-0000-0000-0000-${String(suffix).padStart(12, "0")}`,
+      user_id: randomUUID(),
       email: `aff-${suffix}@test.local`,
       referral_code: `code-${suffix}`,
       campaign_id: campaignId,

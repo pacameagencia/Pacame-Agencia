@@ -1,0 +1,14 @@
+{
+  "noInfinity": true,
+  "noZero": true,
+  "allFileExtensions": false,
+  "allFolders": true,
+  "addUnresolved": false,
+  "showImgThumbnails": false,
+  "exclusionTags": [],
+  "exclusionRegex": "",
+  "defaultAnalyser": "Co-Citations",
+  "defaultSubtypeHalf": "Top",
+  "debugMode": false,
+  "superDebugMode": false
+}
