@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { redirect } from "next/navigation";
 import { getCurrentProductUser } from "@/lib/products/session";
 import { getActiveSubscription, daysLeftInTrial } from "@/lib/products/subscriptions";
@@ -8,6 +8,21 @@ export const metadata: Metadata = {
   title: "AsesorPro · PACAME",
   description: "Panel del asesor fiscal",
   robots: { index: false, follow: false },
+  manifest: "/api/asesor-pro-manifest",
+  appleWebApp: {
+    capable: true,
+    title: "AsesorPro",
+    statusBarStyle: "black-translucent",
+  },
+  applicationName: "AsesorPro",
+  formatDetection: { telephone: false },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#283B70",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default async function AsesorProAppLayout({ children }: { children: React.ReactNode }) {

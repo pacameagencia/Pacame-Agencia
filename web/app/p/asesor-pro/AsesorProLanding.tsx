@@ -12,6 +12,7 @@ import {
 import type { PacameProduct, ProductTier } from "@/lib/products/registry";
 import { isValidEmail } from "@/lib/validators";
 import { PanelTour } from "./PanelTour";
+import { AppLaunchOverlay } from "@/components/products/AppLauncher";
 
 interface TierWithLimits extends ProductTier {
   limits_formatted: string[];
@@ -771,6 +772,7 @@ function SignupSection({ product }: { product: PacameProduct }) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string; full_name?: string }>({});
+  const [launching, setLaunching] = useState(false);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -794,7 +796,10 @@ function SignupSection({ product }: { product: PacameProduct }) {
         setError(json.error ?? "No se pudo iniciar el trial.");
         return;
       }
-      router.push(json.redirect ?? `/app/${product.id}`);
+      const target = json.redirect ?? `/app/${product.id}`;
+      setLaunching(true);
+      router.prefetch(target);
+      window.setTimeout(() => router.push(target), 700);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -866,6 +871,12 @@ function SignupSection({ product }: { product: PacameProduct }) {
           Tus datos quedan en Supabase EU · Stripe gestiona los pagos · Sin spam jamás
         </p>
       </div>
+      <AppLaunchOverlay
+        open={launching}
+        name={product.name}
+        color={product.marketing.primary_color ?? "#283B70"}
+        accentColor="#FAF6EE"
+      />
     </section>
   );
 }

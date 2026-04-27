@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Check, Loader2, AlertCircle, Sparkles } from "lucide-react";
 import type { PacameProduct, ProductTier } from "@/lib/products/registry";
+import { AppLaunchOverlay } from "@/components/products/AppLauncher";
 
 interface TierWithLimits extends ProductTier {
   limits_formatted: string[];
@@ -354,6 +355,7 @@ function SignupSection({ product, primary, accent }: { product: PacameProduct; p
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [launching, setLaunching] = useState(false);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -371,7 +373,10 @@ function SignupSection({ product, primary, accent }: { product: PacameProduct; p
         setError(json.error ?? "Algo falló al crear la cuenta");
         return;
       }
-      router.push(json.redirect ?? `/app/${product.id}`);
+      const target = json.redirect ?? `/app/${product.id}`;
+      setLaunching(true);
+      router.prefetch(target);
+      window.setTimeout(() => router.push(target), 700);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -464,6 +469,12 @@ function SignupSection({ product, primary, accent }: { product: PacameProduct; p
           </form>
         </div>
       </div>
+      <AppLaunchOverlay
+        open={launching}
+        name={product.name}
+        color={primary}
+        accentColor={accent || "#FAF6EE"}
+      />
     </section>
   );
 }

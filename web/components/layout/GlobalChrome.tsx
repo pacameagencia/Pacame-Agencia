@@ -20,7 +20,13 @@ import ScrollProgress from "@/components/effects/ScrollProgress";
 import NoiseOverlay from "@/components/effects/NoiseOverlay";
 import BackToTop from "@/components/effects/BackToTop";
 
-const APP_ROUTES = ["/companero", "/afiliados"];
+const APP_ROUTES = [
+  "/companero",
+  "/afiliados",
+  "/app",         // /app/asesor-pro, /app/promptforge, futuros SaaS
+  "/pacame-gpt",
+  "/lucia",
+];
 
 function isAppRoute(pathname: string | null): boolean {
   if (!pathname) return false;

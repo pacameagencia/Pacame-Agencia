@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { redirect } from "next/navigation";
 import { getCurrentProductUser } from "@/lib/products/session";
 import { getActiveSubscription, daysLeftInTrial } from "@/lib/products/subscriptions";
@@ -7,6 +7,21 @@ import PromptForgeShell from "./PromptForgeShell";
 export const metadata: Metadata = {
   title: "PromptForge · PACAME",
   robots: { index: false, follow: false },
+  manifest: "/api/promptforge-manifest",
+  appleWebApp: {
+    capable: true,
+    title: "PromptForge",
+    statusBarStyle: "black-translucent",
+  },
+  applicationName: "PromptForge",
+  formatDetection: { telephone: false },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#B54E30",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default async function PromptForgeLayout({ children }: { children: React.ReactNode }) {

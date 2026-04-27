@@ -41,6 +41,7 @@
     "simplex-noise": "^4.0.3",
     "stripe": "^22.0.0",
     "tailwind-merge": "^2.5.5",
+    "web-push": "^3.6.7",
     "ws": "^8.18.0",
     "zod": "^4.3.6"
   },
@@ -51,6 +52,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/web-push": "^3.6.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "15.1.0",
