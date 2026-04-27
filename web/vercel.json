@@ -1,60 +1,12 @@
 {
   "crons": [
     {
-      "path": "/api/agents/cron",
-      "schedule": "0 6 * * *"
+      "path": "/api/agents/master-cron",
+      "schedule": "*/5 * * * *"
     },
     {
-      "path": "/api/agents/cron",
-      "schedule": "0 12 * * *"
-    },
-    {
-      "path": "/api/agents/cron",
-      "schedule": "0 18 * * *"
-    },
-    {
-      "path": "/api/agents/weekly-audit",
-      "schedule": "0 7 * * 1"
-    },
-    {
-      "path": "/api/agents/neural-decay",
-      "schedule": "0 3 * * *"
-    },
-    {
-      "path": "/api/agents/maintenance",
-      "schedule": "0 4 * * 1"
-    },
-    {
-      "path": "/api/marketplace/upsell-cron",
-      "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/auth/cleanup-cron",
-      "schedule": "0 4 * * 0"
-    },
-    {
-      "path": "/api/gdpr/purge-cron",
-      "schedule": "0 3 * * *"
-    },
-    {
-      "path": "/api/marketplace/outreach-cron",
-      "schedule": "0 10 * * 1-5"
-    },
-    {
-      "path": "/api/marketplace/outreach-followup-cron",
-      "schedule": "0 14 * * 1-5"
-    },
-    {
-      "path": "/api/marketplace/brain-cron",
-      "schedule": "0 7 * * 1-5"
-    },
-    {
-      "path": "/api/apps/pacame-agenda/reminders-cron",
-      "schedule": "0 18 * * *"
-    },
-    {
-      "path": "/api/marketplace/lifecycle-cron",
-      "schedule": "0 11 * * *"
+      "path": "/api/health",
+      "schedule": "0 */6 * * *"
     }
   ]
 }
