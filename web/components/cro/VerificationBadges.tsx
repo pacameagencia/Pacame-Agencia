@@ -149,28 +149,46 @@ export default function VerificationBadges({
   );
 }
 
-/** Default association list for layout-level use. */
+/**
+ * Default association list para layout-level use.
+ *
+ * REGLA Sprint 26 (Pablo): solo logos oficiales. Para asociaciones
+ * (Sequra/ICEX/Cámara/Confebask/ENAC) NO existe brand-mark en simple-icons
+ * y NO tenemos derecho de uso confirmado → mantenemos placeholder con
+ * `logo: undefined` (el componente renderiza wordmark editorial). Cuando
+ * Pablo confirme la verificación, descargamos el SVG oficial de la propia
+ * organización y se sustituye aquí.
+ */
 export const PACAME_ASSOCIATIONS: Verification[] = [
-  { name: "Sequra", logo: "/logos/associations/sequra.svg", status: "pending", type: "association" },
-  { name: "ICEX España", logo: "/logos/associations/icex.svg", status: "pending", type: "association" },
-  { name: "Cámara Madrid", logo: "/logos/associations/camara.svg", status: "pending", type: "association" },
-  { name: "Confebask", logo: "/logos/associations/confebask.svg", status: "pending", type: "association" },
-  { name: "ENAC", logo: "/logos/associations/enac.svg", status: "pending", type: "association" },
+  { name: "Sequra", status: "pending", type: "association" },
+  { name: "ICEX España", status: "pending", type: "association" },
+  { name: "Cámara Madrid", status: "pending", type: "association" },
+  { name: "Confebask", status: "pending", type: "association" },
+  { name: "ENAC", status: "pending", type: "association" },
 ];
 
+/**
+ * Tech partners con logos OFICIALES (simple-icons CC0).
+ * Stripe/Vercel/Supabase verified = SDK/cuenta activa con permisos full.
+ * Google/Meta = review = aplicación enviada al programa partner.
+ */
 export const PACAME_PARTNERS: Verification[] = [
-  { name: "Stripe Verified", logo: "/logos/partners/stripe.svg", status: "verified", type: "partner" },
-  { name: "Google Partner", logo: "/logos/partners/google.svg", status: "review", type: "partner" },
-  { name: "Meta Business", logo: "/logos/partners/meta.svg", status: "review", type: "partner" },
-  { name: "Vercel", logo: "/logos/partners/vercel.svg", status: "verified", type: "partner" },
-  { name: "Supabase", logo: "/logos/partners/supabase.svg", status: "verified", type: "partner" },
-  { name: "GDPR / LOPDGDD", logo: "/logos/partners/gdpr.svg", status: "verified", type: "partner" },
+  { name: "Stripe", logo: "/logos/brands/stripe.svg", status: "verified", type: "partner" },
+  { name: "Google", logo: "/logos/brands/google.svg", status: "review", type: "partner" },
+  { name: "Meta", logo: "/logos/brands/meta.svg", status: "review", type: "partner" },
+  { name: "Vercel", logo: "/logos/brands/vercel.svg", status: "verified", type: "partner" },
+  { name: "Supabase", logo: "/logos/brands/supabase.svg", status: "verified", type: "partner" },
+  { name: "GDPR / LOPDGDD", status: "verified", type: "partner" },
 ];
 
+/**
+ * Press: NO tenemos derecho de uso de logos hasta que aparezca mención
+ * editorial real. Mantenemos placeholder con wordmark editorial.
+ */
 export const PACAME_PRESS: Verification[] = [
-  { name: "Forbes España", logo: "/logos/press/forbes.svg", status: "pending", type: "press" },
-  { name: "El País", logo: "/logos/press/elpais.svg", status: "pending", type: "press" },
-  { name: "Genbeta", logo: "/logos/press/genbeta.svg", status: "pending", type: "press" },
-  { name: "Marketing4Ecommerce", logo: "/logos/press/m4e.svg", status: "pending", type: "press" },
-  { name: "Startup Pulse", logo: "/logos/press/startup-pulse.svg", status: "pending", type: "press" },
+  { name: "Forbes España", status: "pending", type: "press" },
+  { name: "El País", status: "pending", type: "press" },
+  { name: "Genbeta", status: "pending", type: "press" },
+  { name: "Marketing4Ecommerce", status: "pending", type: "press" },
+  { name: "Startup Pulse", status: "pending", type: "press" },
 ];

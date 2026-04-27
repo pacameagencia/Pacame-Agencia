@@ -43,12 +43,14 @@ export const PACAME_ORG = {
   ],
   /** Slots — only emitted when status === "verified" */
   pendingVerifications: [
-    { name: "Sequra", logo: "/logos/associations/sequra.svg", status: "pending" as const },
-    { name: "ICEX", logo: "/logos/associations/icex.svg", status: "pending" as const },
-    { name: "Cámara de Madrid", logo: "/logos/associations/camara.svg", status: "pending" as const },
-    { name: "Stripe Verified Partner", logo: "/logos/partners/stripe.svg", status: "pending" as const },
-    { name: "Google Partner", logo: "/logos/partners/google.svg", status: "pending" as const },
-    { name: "Meta Business Partner", logo: "/logos/partners/meta.svg", status: "pending" as const },
+    // Asociaciones: sin logo hasta verificación oficial (Pablo confirma)
+    { name: "Sequra", status: "pending" as const },
+    { name: "ICEX", status: "pending" as const },
+    { name: "Cámara de Madrid", status: "pending" as const },
+    // Tech partners: logos oficiales simple-icons (CC0)
+    { name: "Stripe Verified Partner", logo: "/logos/brands/stripe.svg", status: "pending" as const },
+    { name: "Google Partner", logo: "/logos/brands/google.svg", status: "pending" as const },
+    { name: "Meta Business Partner", logo: "/logos/brands/meta.svg", status: "pending" as const },
   ],
   verifiedAwards: [] as Array<{ name: string; year: string; url?: string }>,
   verifiedMemberships: [] as Array<{ name: string; url?: string }>,
