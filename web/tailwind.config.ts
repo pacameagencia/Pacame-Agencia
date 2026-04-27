@@ -102,6 +102,49 @@ const config: Config = {
         "dark-card": "#F9F5EA",
         "dark-elevated": "#FFFFFF",
         "dark-surface": "#EBE3D0",
+
+        // ═════════════════════════════════════════════════════════
+        // ── Tech-IA Design System (Sprint 25) ──
+        // Paleta dark dominante + light mode. Linear/Anthropic/Vercel inspired.
+        // Accent placeholder hasta que Pablo confirme paleta final.
+        // CSS vars en globals.css permiten override 1-line.
+        // ═════════════════════════════════════════════════════════
+        tech: {
+          // Dark mode (default)
+          bg: "var(--tech-bg, #0A0A0B)",                // near-black warm
+          surface: "var(--tech-surface, #111114)",      // cards
+          elevated: "var(--tech-elevated, #17171B)",    // raised
+          border: "var(--tech-border, #26262C)",        // borders
+          "border-soft": "var(--tech-border-soft, #1F1F24)",
+
+          // Text on dark
+          text: "var(--tech-text, #F4F4F5)",            // primary
+          "text-soft": "var(--tech-text-soft, #A1A1AA)",
+          "text-mute": "var(--tech-text-mute, #71717A)",
+          "text-faint": "var(--tech-text-faint, #52525B)",
+
+          // Accent system (1-line override via CSS vars)
+          accent: "var(--tech-accent, #FF6B35)",        // warm orange humano
+          "accent-soft": "var(--tech-accent-soft, #FFB088)",
+          "accent-glow": "var(--tech-accent-glow, rgba(255,107,53,0.25))",
+          "accent-2": "var(--tech-accent-2, #7C3AED)",  // violet glow puntual
+          "accent-2-soft": "var(--tech-accent-2-soft, #B196FF)",
+
+          // Light mode (off-white, no #FFF puro)
+          "bg-light": "var(--tech-bg-light, #FAFAFA)",
+          "surface-light": "var(--tech-surface-light, #F4F4F5)",
+          "elevated-light": "var(--tech-elevated-light, #FFFFFF)",
+          "border-light": "var(--tech-border-light, #E4E4E7)",
+          "text-light": "var(--tech-text-light, #0A0A0B)",
+          "text-light-soft": "var(--tech-text-light-soft, #52525B)",
+          "text-light-mute": "var(--tech-text-light-mute, #71717A)",
+
+          // Status colors (semantic)
+          success: "var(--tech-success, #22C55E)",
+          warning: "var(--tech-warning, #F59E0B)",
+          danger: "var(--tech-danger, #EF4444)",
+          info: "var(--tech-info, #3B82F6)",
+        },
       },
       fontFamily: {
         // Fraunces: serif expressivo para titulares (estético mediterráneo)
@@ -132,6 +175,18 @@ const config: Config = {
         "olympus-radial": "radial-gradient(ellipse at 30% 20%, rgba(232,183,48,0.08) 0%, rgba(181,78,48,0.04) 40%, transparent 70%)",
         "gold-shimmer": "linear-gradient(90deg, transparent, rgba(232,183,48,0.15), transparent)",
         "paper-grain": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+
+        // ── Tech-IA Gradients (Sprint 25, CSS-only) ──
+        "tech-mesh":
+          "radial-gradient(at 20% 20%, var(--tech-accent-glow) 0px, transparent 50%), radial-gradient(at 80% 60%, rgba(124,58,237,0.18) 0px, transparent 60%), radial-gradient(at 50% 100%, rgba(255,107,53,0.12) 0px, transparent 70%)",
+        "tech-aurora":
+          "linear-gradient(135deg, var(--tech-accent, #FF6B35) 0%, transparent 35%, var(--tech-accent-2, #7C3AED) 100%)",
+        "tech-glow-radial":
+          "radial-gradient(ellipse at center, var(--tech-accent-glow) 0%, transparent 70%)",
+        "tech-grid":
+          "linear-gradient(rgba(244,244,245,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(244,244,245,0.04) 1px, transparent 1px)",
+        "tech-noise":
+          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
       },
       boxShadow: {
         // Sombras orgánicas cálidas, no neón
@@ -146,6 +201,23 @@ const config: Config = {
         "apple-xl": "0 30px 60px rgba(26,24,19,0.10), 0 12px 24px rgba(26,24,19,0.06)",
         stamp: "2px 2px 0 rgba(26,24,19,1)",        // sello artesanal
         "stamp-lg": "4px 4px 0 rgba(26,24,19,1)",
+
+        // ── Tech-IA Shadows (Sprint 25) ──
+        // Sombras Apple-grade multi-layer para depth real
+        "tech-sm": "0 1px 2px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.2)",
+        "tech": "0 4px 12px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.2)",
+        "tech-lg":
+          "0 16px 40px rgba(0,0,0,0.45), 0 8px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05)",
+        "tech-xl":
+          "0 32px 80px rgba(0,0,0,0.5), 0 16px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08)",
+        "tech-glow":
+          "0 0 60px var(--tech-accent-glow), 0 0 24px var(--tech-accent-glow)",
+        "tech-glow-sm":
+          "0 0 24px var(--tech-accent-glow), 0 0 8px var(--tech-accent-glow)",
+        "tech-ring":
+          "0 0 0 1px var(--tech-border), 0 0 0 4px var(--tech-accent-glow)",
+        "tech-inner":
+          "inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.3)",
       },
       animation: {
         "fade-up": "fadeUp 0.9s cubic-bezier(0.23, 1, 0.32, 1) forwards",
@@ -159,6 +231,14 @@ const config: Config = {
         "text-shimmer": "text-shimmer 4s ease-in-out infinite",
         "parallax-float": "parallax-float 14s ease-in-out infinite",
         "sun-rotate": "sun-rotate 60s linear infinite",
+
+        // ── Tech-IA Animations (Sprint 25) ──
+        "kinetic-reveal": "kineticReveal 0.9s cubic-bezier(0.23, 1, 0.32, 1) forwards",
+        "mask-wipe": "maskWipe 1.2s cubic-bezier(0.7, 0, 0.3, 1) forwards",
+        "magnetic-pulse": "magneticPulse 2.4s ease-in-out infinite",
+        "gradient-orbit": "gradientOrbit 24s linear infinite",
+        "glow-breathe": "glowBreathe 4s ease-in-out infinite",
+        "scroll-hint": "scrollHint 2.4s ease-in-out infinite",
       },
       keyframes: {
         fadeUp: {
@@ -176,6 +256,33 @@ const config: Config = {
         "sun-rotate": {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(360deg)" },
+        },
+
+        // ── Tech-IA Keyframes (Sprint 25) ──
+        kineticReveal: {
+          "0%": { opacity: "0", transform: "translateY(60px)", filter: "blur(8px)" },
+          "100%": { opacity: "1", transform: "translateY(0)", filter: "blur(0)" },
+        },
+        maskWipe: {
+          "0%": { clipPath: "inset(0 0 100% 0)" },
+          "100%": { clipPath: "inset(0 0 0 0)" },
+        },
+        magneticPulse: {
+          "0%, 100%": { boxShadow: "0 0 0 0 var(--tech-accent-glow)" },
+          "50%": { boxShadow: "0 0 0 12px transparent" },
+        },
+        gradientOrbit: {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
+        glowBreathe: {
+          "0%, 100%": { opacity: "0.4", transform: "scale(1)" },
+          "50%": { opacity: "0.7", transform: "scale(1.02)" },
+        },
+        scrollHint: {
+          "0%, 100%": { transform: "translateY(0)", opacity: "0.4" },
+          "50%": { transform: "translateY(8px)", opacity: "1" },
         },
       },
       borderRadius: {

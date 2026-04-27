@@ -5,18 +5,57 @@
 @tailwind utilities;
 
 :root {
+  /* ═══════════════════════════════════════════════════════════════
+   * PACAME — Tech-IA Design System (Sprint 25)
+   * Dark mode default. Light mode via .light class on <html>.
+   * Override 1-line: cambia --tech-accent para retematizar todo.
+   * ═══════════════════════════════════════════════════════════════ */
+
+  /* Tech accent — Pablo iterará con sus fotos */
+  --tech-accent: #FF6B35;                      /* warm orange humano */
+  --tech-accent-soft: #FFB088;
+  --tech-accent-glow: rgba(255, 107, 53, 0.25);
+  --tech-accent-2: #7C3AED;                    /* violet glow puntual */
+  --tech-accent-2-soft: #B196FF;
+
+  /* Tech base (DARK por defecto) */
+  --tech-bg: #0A0A0B;                          /* near-black warm */
+  --tech-surface: #111114;
+  --tech-elevated: #17171B;
+  --tech-border: #26262C;
+  --tech-border-soft: #1F1F24;
+
+  --tech-text: #F4F4F5;
+  --tech-text-soft: #A1A1AA;
+  --tech-text-mute: #71717A;
+  --tech-text-faint: #52525B;
+
+  /* Tech light mode tokens (referencia para .light) */
+  --tech-bg-light: #FAFAFA;
+  --tech-surface-light: #F4F4F5;
+  --tech-elevated-light: #FFFFFF;
+  --tech-border-light: #E4E4E7;
+  --tech-text-light: #0A0A0B;
+  --tech-text-light-soft: #52525B;
+  --tech-text-light-mute: #71717A;
+
+  /* Status semantic */
+  --tech-success: #22C55E;
+  --tech-warning: #F59E0B;
+  --tech-danger: #EF4444;
+  --tech-info: #3B82F6;
+
+  /* ── Legacy Spanish Modernism (mantener para portal/dashboard/herramientas) ── */
   --font-space-grotesk: 'Space Grotesk', sans-serif;
   --font-inter: 'Inter', sans-serif;
   --font-jetbrains-mono: 'JetBrains Mono', monospace;
-
-  /* Spanish Modernism — single source of truth (Sprint 23 fix) */
   --color-bg: #F4EFE3;             /* paper */
   --color-text: #1A1813;           /* ink */
-  --color-primary: #B54E30;        /* terracotta */
-  --color-secondary: #283B70;      /* indigo */
-  --color-accent: #E8B730;         /* mustard */
-  --color-slate: #6E6858;          /* ink-mute */
-  --color-card: #F9F5EA;           /* sand-50 */
+  --color-primary: #B54E30;
+  --color-secondary: #283B70;
+  --color-accent: #E8B730;
+  --color-slate: #6E6858;
+  --color-card: #F9F5EA;
   --color-elevated: #FFFFFF;
   --color-border: rgba(26, 24, 19, 0.10);
 
@@ -28,6 +67,32 @@
 
   /* Mobile bottom nav height (56px + safe area) */
   --bottom-nav-h: calc(56px + env(safe-area-inset-bottom));
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ * Light mode — activado vía .light en <html> (next-themes class strategy)
+ * Override de las 5 vars críticas; resto del sistema cambia por cascade.
+ * ═══════════════════════════════════════════════════════════════ */
+.light {
+  --tech-bg: #FAFAFA;
+  --tech-surface: #F4F4F5;
+  --tech-elevated: #FFFFFF;
+  --tech-border: #E4E4E7;
+  --tech-border-soft: #F0F0F2;
+  --tech-text: #0A0A0B;
+  --tech-text-soft: #52525B;
+  --tech-text-mute: #71717A;
+  --tech-text-faint: #A1A1AA;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ * Páginas con la nueva estética tech (las 5 core marcan body class
+ * `theme-tech` para activar dark/light dinámico). Resto de páginas
+ * conservan paleta Spanish Modernism legacy (paper bg).
+ * ═══════════════════════════════════════════════════════════════ */
+body.theme-tech {
+  background-color: var(--tech-bg);
+  color: var(--tech-text);
 }
 
 * {
@@ -112,6 +177,106 @@ html {
   );
   background-size: 200% 100%;
   animation: pacame-shimmer 1.4s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ * Tech-IA utilities (Sprint 25)
+ * ═══════════════════════════════════════════════════════════════ */
+
+/* Cinematic char-split wrapper (pareja con animejs text.split) */
+.char-split-clip {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+.char-split-clip > span {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Cursor custom helpers */
+[data-cursor="hover"] { cursor: none; }
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid var(--tech-accent);
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 220ms cubic-bezier(0.23, 1, 0.32, 1),
+              height 220ms cubic-bezier(0.23, 1, 0.32, 1),
+              opacity 200ms ease-out,
+              background-color 200ms ease-out;
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+.cursor-ring--hover {
+  width: 64px;
+  height: 64px;
+  background: var(--tech-accent-glow);
+}
+@media (max-width: 1023px), (hover: none), (prefers-reduced-motion: reduce) {
+  .cursor-ring { display: none !important; }
+  [data-cursor="hover"] { cursor: auto !important; }
+}
+
+/* Tech-IA scrollbar (solo en theme-tech) */
+body.theme-tech::-webkit-scrollbar {
+  width: 8px;
+  background: var(--tech-bg);
+}
+body.theme-tech::-webkit-scrollbar-thumb {
+  background: var(--tech-border);
+  border-radius: 4px;
+}
+body.theme-tech::-webkit-scrollbar-thumb:hover {
+  background: var(--tech-text-faint);
+}
+
+/* Tech-IA selection */
+body.theme-tech ::selection {
+  background: var(--tech-accent);
+  color: var(--tech-bg);
+}
+
+/* Reveal mask wipe (pareja con SectionTransition) */
+.mask-wipe-init {
+  clip-path: inset(0 0 100% 0);
+  will-change: clip-path;
+}
+
+/* Magnetic pulse para CTAs primary */
+.magnetic-pulse {
+  position: relative;
+  isolation: isolate;
+}
+.magnetic-pulse::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: var(--tech-accent-glow);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 400ms ease-out;
+  filter: blur(12px);
+}
+.magnetic-pulse:hover::before {
+  opacity: 1;
+}
+
+/* Reduce-motion respect — desactiva todo lo que se mueve */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Typography - Apple-like precision */

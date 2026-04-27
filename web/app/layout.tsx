@@ -1,17 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/layout/Header";
+import Header from "@/components/layout/HeaderTech";
 import Footer from "@/components/layout/Footer";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SageChatWidget from "@/components/SageChatWidget";
-import CursorGlowWrapper from "@/components/effects/CursorGlowWrapper";
 import CookieConsent from "@/components/CookieConsent";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import LoadingScreen from "@/components/effects/LoadingScreen";
 import ScrollProgress from "@/components/effects/ScrollProgress";
-import NoiseOverlay from "@/components/effects/NoiseOverlay";
 import BackToTop from "@/components/effects/BackToTop";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 import ReferralCookieTracker from "@/components/referral/ReferralCookieTracker";
@@ -21,36 +17,12 @@ import ThemeProvider from "@/components/providers/ThemeProvider";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import CommandPalette from "@/components/command/CommandPalette";
 import ExitIntentPopup from "@/components/cro/ExitIntentPopup";
+import CursorRing from "@/components/effects/CursorRing";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-space-grotesk",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-jetbrains-mono",
-  display: "swap",
-});
-
-const playfairDisplay = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-playfair",
-  display: "swap",
-});
+// Sprint 25: solo Geist + GeistMono. Legacy fonts (Fraunces, Inter, Space Grotesk,
+// JetBrains Mono, Playfair) eliminadas. Páginas legacy caen a system fallback.
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://pacameagencia.com"),
@@ -176,7 +148,7 @@ export default function RootLayout({
     <html
       lang="es"
       suppressHydrationWarning
-      className={`${GeistSans.variable} ${GeistMono.variable} ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable}`}
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
     >
       <head>
         {/* JSON-LD Organization + WebSite (consolidado en OrganizationJsonLd, Sprint 23) */}
@@ -186,33 +158,31 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://api.atlascloud.ai" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
       </head>
-      <body className="bg-paper text-ink font-sans antialiased">
+      <body className="bg-tech-bg text-tech-text font-sans antialiased">
         <ThemeProvider>
           <SmoothScrollProvider>
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-brand-primary focus:text-white focus:rounded-lg focus:text-sm focus:font-body"
-        >
-          Saltar al contenido
-        </a>
-        <LoadingScreen />
-        <ScrollProgress />
-        <NoiseOverlay />
-        <CursorGlowWrapper />
-        <Header />
-        <Breadcrumbs />
-        <main id="main-content">{children}</main>
-        <Footer />
-        <WhatsAppButton />
-        <BackToTop />
-        <SageChatWidget />
-        <CookieConsent />
-        <GoogleAnalytics />
-        <ReferralCookieTracker />
-        <CommandPalette />
-        <ExitIntentPopup />
-        <BottomNavigation />
-        <AddToHomeScreen />
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-tech-accent focus:text-tech-bg focus:rounded-md focus:text-sm focus:font-medium focus-visible:ring-4 focus-visible:ring-tech-accent-glow"
+            >
+              Saltar al contenido
+            </a>
+            <ScrollProgress />
+            <CursorRing />
+            <Header />
+            <Breadcrumbs />
+            <main id="main-content">{children}</main>
+            <Footer />
+            <WhatsAppButton />
+            <BackToTop />
+            <SageChatWidget />
+            <CookieConsent />
+            <GoogleAnalytics />
+            <ReferralCookieTracker />
+            <CommandPalette />
+            <ExitIntentPopup />
+            <BottomNavigation />
+            <AddToHomeScreen />
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>

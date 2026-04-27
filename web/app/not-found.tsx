@@ -10,10 +10,6 @@ import MagneticButton from "@/components/effects/MagneticButton";
 import GoldenDivider from "@/components/effects/GoldenDivider";
 import { FancyText } from "@/components/ui/fancy-text";
 
-const ConstellationBackground = dynamic(
-  () => import("@/components/effects/ConstellationBackground"),
-  { ssr: false }
-);
 
 const containerVariants = {
   hidden: {},
@@ -74,7 +70,6 @@ export default function NotFound() {
   return (
     <div className="bg-paper min-h-screen flex items-center justify-center relative overflow-hidden py-20">
       {/* Constellation background */}
-      <ConstellationBackground density={30} />
 
       {/* Ambient glow dorado */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-olympus-radial pointer-events-none" />
