@@ -86,25 +86,30 @@ export async function GET(request: NextRequest) {
 
   const dueTasks = SCHEDULE.filter((t) => shouldFire(t, now));
 
-  const results: Array<{ path: string; status: number; ms: number; error?: string }> = [];
-  for (const task of dueTasks) {
-    const t0 = Date.now();
-    try {
-      const res = await fetch(`${baseUrl}${task.path}`, {
-        method: task.method || "GET",
-        headers: { Authorization: `Bearer ${cronSecret}` },
-        signal: AbortSignal.timeout(280_000),
-      });
-      results.push({ path: task.path, status: res.status, ms: Date.now() - t0 });
-    } catch (err) {
-      results.push({
-        path: task.path,
-        status: 0,
-        ms: Date.now() - t0,
-        error: err instanceof Error ? err.message : "unknown",
-      });
-    }
-  }
+  // Dispatch en paralelo: Vercel Hobby maxDuration=300s. Si dispatchara serial
+  // 13 endpoints × ~30s c/u = 390s (timeout). En paralelo el tiempo total es
+  // el del endpoint más lento (~120s). Los endpoints son independientes entre
+  // sí (cada uno escribe a su propia tabla / dimensión del cerebro).
+  const results = await Promise.all(
+    dueTasks.map(async (task) => {
+      const t0 = Date.now();
+      try {
+        const res = await fetch(`${baseUrl}${task.path}`, {
+          method: task.method || "GET",
+          headers: { Authorization: `Bearer ${cronSecret}` },
+          signal: AbortSignal.timeout(280_000),
+        });
+        return { path: task.path, status: res.status, ms: Date.now() - t0 };
+      } catch (err) {
+        return {
+          path: task.path,
+          status: 0,
+          ms: Date.now() - t0,
+          error: err instanceof Error ? err.message : "unknown",
+        } as { path: string; status: number; ms: number; error?: string };
+      }
+    })
+  );
 
   const okCount = results.filter((r) => r.status >= 200 && r.status < 300).length;
   const failCount = results.length - okCount;
