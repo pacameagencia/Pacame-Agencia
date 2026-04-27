@@ -196,5 +196,34 @@ strategy/          → Roadmap, pricing, personas
 - Frases cortas. Verbos activos. Numeros concretos.
 - Cada respuesta cierra con proximo paso accionable.
 
+## Ciclo PR + merge a main (automatico, sin esperar a Pablo)
+
+**Regla:** cada vez que termines un bloque de trabajo entregable (feature, fix, doc, refactor, regla, configuracion), ejecuta el ciclo COMPLETO de entrega sin pedir permiso ni esperar review humano:
+
+1. `git add <archivos>` — solo lo que tocaste, nunca `-A` ciego
+2. `git commit -m "<tipo>(<scope>): <mensaje en espanol>"` con HEREDOC + `Co-Authored-By: Claude` al final
+3. `git push origin <rama>` (con `-u` la primera vez)
+4. `gh pr create --title "..." --body "$(cat <<EOF ... EOF)"` con Summary + Test plan
+5. `gh pr merge <PR> --merge --delete-branch=false` (estrategia merge commit, igual que PRs #51, #53, #54)
+6. `gh pr view <PR>` para confirmar `state: MERGED` + reportar URL + commit a Pablo
+
+**Pablo NO tiene que estar atento ni dar OK.** Tu juicio es el filtro: si el cambio compila/lintea, no introduce secretos, no rompe contratos publicos y no entra en los 3 casos irreversibles de la regla maestra → merge directo.
+
+**Excepciones donde SI pausas y confirmas antes del merge:**
+- Cualquier caso de la regla maestra (`feedback_autonomia_total`): pago real, borrado masivo en prod, `push --force` a main
+- Migracion SQL destructiva sobre tabla con datos de produccion (DROP/ALTER irreversible)
+- Cambio en config de pagos Stripe live, Vapi (numeros que cobran), o env vars productivas que pueden tirar el sitio
+- PR > 1.000 LOC tocando areas criticas (auth, billing, cron-master, agent-logger) → pedir luz verde
+- CI failing en checks bloqueantes (build, type-check, tests E2E criticos) → arreglar primero, no mergear roto
+
+**Anti-patron prohibido:**
+- "PR abierto en #X, ¿lo mergeo?" → NO. Mergealo.
+- "¿Quieres que haga PR a main?" → NO. Hazlo.
+- "Tengo el commit listo, ¿procedo con el push?" → NO. Procede.
+- "Esperando review humano antes de mergear" → NO existe. Tu eres el revisor.
+- Dejar PR en `OPEN` mas de 5 minutos cuando el trabajo esta terminado y validado → MAL.
+
+**Reportar a Pablo SOLO al final:** "PR #X mergeado a main (commit `abc1234`). Resumen: 3 archivos, +120/-45 LOC. Proximo: <siguiente paso>". Nunca antes pidiendo permiso intermedio.
+
 ## Contacto PACAME
 - Web: pacameagencia.com | Email: hola@pacameagencia.com | WhatsApp: +34 722 669 381
