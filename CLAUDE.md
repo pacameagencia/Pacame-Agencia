@@ -3,6 +3,86 @@
 ## Proyecto
 Agencia digital que resuelve problemas digitales para PYMEs en Espana. 10 agentes IA + 120 subespecialistas, supervisados por Pablo Calleja.
 
+## ⚠️ PROTOCOLO VISUAL-FIRST (OBLIGATORIO)
+
+**Antes de escribir/editar cualquier archivo .tsx, .jsx, .css, .html, .svg, .png, o generar cualquier diseño/imagen/asset visual, EJECUTAR este checklist:**
+
+1. **¿Necesito imagen/foto/mockup?** → Invocar skill `imagen` (Google Gemini). NUNCA usar `<svg>` genérico, placeholders, ni "al estilo de" sin imagen real.
+2. **¿Es UI nueva o rediseño?** → Invocar skill `frontend-design` para carácter visual distintivo. NO escribir HTML a pelo con gradientes Tailwind genéricos.
+3. **¿Existe diseño Figma de referencia?** → MCP `mcp__Figma__get_design_context` + `get_screenshot` antes de codear.
+4. **¿Necesito design tokens/paleta?** → Skill `ui-designer` (desde captura) o `theme-factory` (para artefactos).
+5. **¿Requiere interacción rica (scroll, reveals, transitions)?** → Framer Motion + skill `react-view-transitions`.
+6. **¿Arte ambiental / generativo / fondos?** → Skill `algorithmic-art` (p5.js) o `canvas-design`.
+7. **¿Experiencia multi-página interactiva?** → Skill `web-artifacts-builder`.
+8. **¿Video/voz?** → Skill `remotion` / `ffmpeg` (video), `elevenlabs` (voz).
+9. **¿Dashboard de datos?** → Skill `data:build-dashboard` + `d3-viz`.
+10. **Antes de dar por terminado**: invocar subagente `visual-reviewer` (`.claude/agents/visual-reviewer.md`) que bloquea diseño genérico.
+
+**Inventario completo con árbol de decisión**: `strategy/visual-toolkit.md`.
+
+**Regla dura**: si la tarea es visual y no estoy invocando un skill/MCP de la lista, estoy fallando. Parar y elegir la herramienta correcta antes de codear.
+
+---
+
+## 🧠 PROTOCOLO CEREBRO PACAME (OBLIGATORIO, precede a cualquier generación)
+
+**Antes de responder a CUALQUIER petición creativa/estratégica (web, post, ads, copy, branding, propuesta, diseño, guión, estrategia, dashboard, sql, carrusel, etc.) EJECUTAR este checklist sin excepción. Omitir pasos = respuesta genérica = fallar.**
+
+0. **LEE `IDENTIDAD-PABLO.md` si no lo has leído en esta sesión.** Ahí están su visión (PACAME = mayores startups IA del mundo), obsesión activa (entidad IA socio con superpoderes), pricing (variable + suscripción/ofertas, estilo Hormozi), estilo (REALISMO BRUTAL, cero humo), directivas (nivel Uber/máximo, sin límites de sector). Cada output debe respetarlo. Si dudas de qué pensaría Pablo, consulta ese fichero o el cerebro vía `/api/neural/query`.
+
+1. **Identifica el agente PACAME** según las palabras clave del input. Tabla rápida:
+   - `web`, `landing`, `hero`, `componente`, `formulario`, `frontend`, `React`, `Next.js`, `UI` → **PIXEL** (`agents/04-PIXEL.md`)
+   - `carrusel`, `post`, `story`, `reel`, `Instagram`, `TikTok`, `social` → **PULSE** (`agents/06-PULSE.md`)
+   - `logo`, `identidad`, `paleta`, `tipografía`, `banner`, `mockup`, `brand` → **NOVA** (`agents/01-NOVA.md`)
+   - `ads`, `campaña`, `funnel`, `CRO`, `lead-magnet`, `Meta Ads`, `Google Ads`, `ROAS` → **NEXUS** (`agents/03-NEXUS.md`)
+   - `SEO`, `blog`, `artículo`, `keyword`, `orgánico`, `meta-description`, `sitemap` → **ATLAS** (`agents/02-ATLAS.md`)
+   - `copy`, `hook`, `subject`, `guión`, `email`, `titular`, `CTA`, `newsletter` → **COPY** (`agents/08-COPY.md`)
+   - `propuesta`, `presupuesto`, `cliente nuevo`, `cotización`, `pricing`, `estrategia`, `pivot` → **SAGE** (`agents/07-SAGE.md`)
+   - `dashboard`, `métrica`, `KPI`, `GA4`, `reporte`, `cohort`, `LTV`, `CAC`, `churn` → **LENS** (`agents/09-LENS.md`)
+   - `API`, `Supabase`, `migration`, `deploy`, `infra`, `webhook`, `cron`, `VPS`, `n8n`, `edge-function` → **CORE** (`agents/05-CORE.md`)
+   - Multi-agente / orquestación / no sabes → **DIOS** (`agents/DIOS.md` o `agents/00-DIOS.md`)
+
+2. **LEE el `.md` completo** del agente identificado (no el resumen — el archivo completo) para cargar su persona, tono, competencias, ejemplos.
+
+3. **Carga los skills relevantes**. Tabla por tipo de tarea:
+   - Branding → skill `branding`, `design-system`, `ui-designer`
+   - Web/frontend → skill `web-development`, `frontend-design`, `figma-to-code`, `theme-factory`, `visual-design-exploration`
+   - Carrusel/post → skill `social-media`, `ad-creative`, `infographics`, `canvas-design`
+   - Ads/CRO → skill `ads-campaign`, `landing-page-generator`, `paid-ads`
+   - Copy → skill `copywriting`, `marketing-psychology`, `cold-email`
+   - Propuesta → skill `client-proposal`, `contract-and-proposal-writer`
+   - SEO → skill `seo-audit`, `programmatic-seo`, `content-strategy`
+   - Dashboard → skill `analytics-report`, `d3-viz`, `data:build-dashboard`
+   - Deploy → skill `deploy-workflow`, `docker-deployment`
+   - Si dudas → ejecuta `SELECT label FROM knowledge_nodes WHERE node_type='skill' ORDER BY embedding <=> '<query-embed>' LIMIT 5;` vía `/api/neural/query`.
+
+4. **Carga brand/tone PACAME** (mandatorio si output público): tono directo, cercano, sin humo, tutear siempre, frases cortas, verbos activos, números concretos, cierre con próximo paso accionable. Contacto: `hola@pacameagencia.com` | WhatsApp `+34 722 669 381`.
+
+5. **Usa MCPs específicos cuando aplique**:
+   - Visual → `mcp__Figma__*`, `mcp__Canva__*`, `mcp__Claude_in_Chrome__*` (referencia competencia)
+   - Data → `mcp__3c7cb4c1-c1c5-4ce8-88c3-fea3adbdfcf1__execute_sql` (Supabase)
+   - Imagen → skill `imagen` (Gemini) + `mcp__e1c45596-*` (Canva)
+   - Voz → skill `elevenlabs` + MCP ElevenLabs
+   - Pagos → `mcp__78d1b60c-*` (Stripe)
+   - Leads/prospecting → `mcp__Vibe_Prospecting__*`
+
+6. **Usa el mejor modelo disponible para la tarea**:
+   - Creatividad / decisión crítica → Claude Sonnet 4.6 o Opus 4.7 (`tier: titan/premium`)
+   - Volumen / outreach → DeepSeek-V3.2 671B (`tier: standard`)
+   - Clasificación / parse → Gemma 4 e2b VPS (`tier: economy`, gratis)
+   - Vía `llmChat()` de `web/lib/llm.ts`.
+
+7. **Registra aprendizaje** (vía endpoints existentes):
+   - Intercambio útil → `POST /api/neural/execute` con `store_memory:true`
+   - Pattern nuevo → `recordDiscovery()` en la respuesta o línea `DISCOVERY: …` al final del output
+   - Delegación exitosa → `fireSynapse('dios','<agent>','delegates_to',true)`
+
+8. **NUNCA output genérico**. Si falta contexto crítico (industria, cliente, briefing, assets), **pregunta 2-3 datos al usuario** antes de generar. Pedir brief bien hecho > generar relleno.
+
+**Regla dura**: si saltas del input a la generación sin pasar por los 8 pasos, estás rompiendo el contrato PACAME. Parar y releer este bloque.
+
+---
+
 ## Tech Stack
 - **Frontend:** Next.js 15, React 19, TypeScript, TailwindCSS, Radix UI, Framer Motion
 - **Backend:** Supabase (Postgres + RLS + Realtime), Stripe, Claude API
@@ -18,15 +98,13 @@ workflows/         → SOPs en Markdown (WAT framework)
 tools/             → Scripts Python para automatizaciones
 infra/             → Scripts de despliegue y VPS
 strategy/          → Roadmap, pricing, personas
-.claude/skills/    → 374 skills del proyecto + 424 globales (798 totales)
+.claude/skills/    → 374 skills proyecto + 424 globales (798 totales)
 .claude/agents/    → Subagentes con model routing
 ```
 
 ## Routing Rules (Progressive Disclosure)
 
 ### Agentes PACAME + Skills custom
-- **Crear CUALQUIER web (landing, portfolio, ecommerce, blog, SaaS, editor tipo Canva, dashboard, marketplace) → usa skill `pacame-web` (`.claude/skills/pacame-web/SKILL.md`) ← META-ORQUESTADOR POR DEFECTO**
-- **Crear fotos/carruseles/reels virales inspirados en IG (no genéricos) → usa skill `pacame-viral-visuals` (`.claude/skills/pacame-viral-visuals/SKILL.md`) ← OBLIGATORIO antes de imagen/qwen/remotion**
 - Branding/identidad visual → lee `agents/01-NOVA.md` y `.claude/skills/branding.md`
 - SEO/contenido organico → lee `agents/02-ATLAS.md` y `.claude/skills/seo-audit.md`
 - Ads/embudos/CRO → lee `agents/03-NEXUS.md` y `.claude/skills/ads-campaign.md`
@@ -105,15 +183,6 @@ strategy/          → Roadmap, pricing, personas
 - Extraer patron probado como skill reutilizable → skill `extract`
 - Promover aprendizajes de memoria a reglas CLAUDE.md → skill `promote`
 
-### dotskills (vincentkoc, AGPL-3.0)
-- Limpiar diff de ruido IA antes de PR → skill `dotskills/technical-deslop`
-- Generar docs tecnicas dev-ready → skill `dotskills/technical-documentation`
-- Disenar integraciones vendor-agnostic con rollout → skill `dotskills/technical-integrations`
-- Detectar patrones repetidos en logs y proponer nuevos skills → skill `dotskills/technical-skill-finder`
-
-### Tooling CLI
-- tokenjuice (npm global): compactador de output ruidoso (git, pnpm, docker, rg) para ahorrar tokens en Claude Code. Instalado globalmente, integracion con Claude Code via `tokenjuice install claude-code` si se activa.
-
 ## Coding Conventions
 - TypeScript strict mode, no `any`
 - Componentes React: functional, props tipados, composition pattern
@@ -126,69 +195,6 @@ strategy/          → Roadmap, pricing, personas
 - Tutear siempre. Tono directo, cercano, sin humo.
 - Frases cortas. Verbos activos. Numeros concretos.
 - Cada respuesta cierra con proximo paso accionable.
-
-## Modo de ejecucion (autonomia total)
-
-**Regla maestra:** Ejecuta TU MISMO todo lo que el entorno permita. Pedir a Pablo que haga algo manualmente es el ULTIMO recurso, solo cuando no exista forma programatica.
-
-**Capacidades activas en este proyecto (uselas antes de delegar):**
-- Bash + Vercel CLI (`vercel deploy`, `vercel env add`, `vercel env pull`, `vercel link`)
-- GitHub CLI (`gh pr create`, `gh pr merge`, `gh release create`, `gh secret set`)
-- Supabase MCP (migraciones, SQL, edge functions, branches, advisors)
-- Cloudflare MCP (D1, KV, R2, Workers, Hyperdrive)
-- Hostinger API para DNS y dominios — key en memoria `reference_apis_pacame`
-- SSH al VPS Hostinger 72.62.185.125 (n8n, Gemma 4, Ollama, Nginx)
-- npm scripts (`dev`, `build`, `test`, `lint`) y git completo (commit, push, merge)
-- Scripts del repo: `infra/scripts/apply-migration.py`, generadores de la Factoria
-
-**Ejecuta SIN preguntar:**
-- Commits, push a ramas feature, abrir/mergear PRs
-- `npm run dev/build/test`, deploys a Vercel preview Y produccion
-- `vercel env add/rm` en cualquier entorno (development, preview, production)
-- Aplicar migraciones a Supabase via script o MCP
-- Configurar webhooks, rotar tokens, conectar repos a Vercel
-- Crear/editar archivos, instalar/actualizar dependencias
-- Lanzar workflows n8n, scripts Python, cron jobs
-
-**Pausa y confirma SOLO en estos 3 casos irreversibles:**
-1. **Pagos reales con dinero** — `stripe charge`, transferencias, compra de creditos en APIs externas
-2. **Borrado masivo en produccion** — `DROP TABLE`, `DELETE` sin WHERE, vaciar buckets, `rm -rf` sobre datos
-3. **Push --force a main** o cualquier reescritura de historia compartida
-
-**Si falta una credencial que Pablo aun NO te ha dado:** intenta primero todas las alternativas (otra API equivalente, workaround, schema adaptado). Si realmente no hay opcion, escala con el comando exacto listo para ejecutar en cuanto te la pase — no le pidas que ejecute el comando el mismo.
-
-**Anti-patron prohibido:** Frases como "ahora ejecuta tu `npm run build`", "añade esta env var en Vercel", "lanza este SQL en Supabase", "haz push tu" son una violacion de esta regla. Hazlo tu primero. Si tres intentos fallan, escala con error exacto.
-
-## Inteligencia neural (cerebro PACAME activo)
-
-Extension de la regla de autonomia: para que las acciones autonomas sean **inteligentes**, no solo rapidas, usa la red neuronal PACAME. La DB Supabase + el vault `PacameCueva/` son memoria viva del proyecto — consulta antes de actuar y registra despues.
-
-**Recursos disponibles (uselos antes de improvisar):**
-- **Vault Obsidian `PacameCueva/`** — 10 carpetas (00-Dios, 01-Agentes, 02-Subespecialistas, 03-Skills, 04-Workflows, 05-Strategy, 06-Clientes, 07-Sinapsis, 08-Memorias/<AGENTE>, 09-Discoveries) + `_dashboards` + `_templates`. Sync vault↔Supabase via Watcher Windows + cron VPS cada 5min.
-- **MCP `pacame-vault`** registrado en `.claude/mcp.json` (Obsidian Local REST API HTTPS:27124) — leer/escribir notas del vault programaticamente.
-- **18 endpoints `web/app/api/neural/*`**: `topology`, `route`, `query` (busqueda semantica pgvector HNSW sobre 996+ knowledge_nodes), `fire`, `decay`, `execute`, `auto-discovery`, `opportunity-scanner`, `learn`, `tools`, `tool-gap`, `draft-tool`, `invoke-tool`, `promote-tools`, `factoria-metrics`, `factoria-package`, `factoria-products`, `factoria-stats`.
-- **Skill `auto-brain`** (`.claude/skills/auto-brain/SKILL.md`) — protocolo de 9 pasos que routea input → agente PACAME (DIOS/SAGE/ATLAS/NEXUS/PIXEL/CORE/PULSE/NOVA/COPY/LENS) + carga skills + brand + MCPs.
-- **Slash commands neurales**: `/cerebro <tarea>`, `/discover <agente> <tipo> <titulo> | <desc>`, `/synapse <from> <to> [tipo] [success]`, `/remember <agente> <titulo> | <contenido>`, `/neural-report [agente]`, `/brain-sync`.
-- **Crons activos**: `neural-decay` 3am UTC, `auto-discovery` 5am UTC (Vercel), pull vault VPS `*/5 * * * *`.
-
-**Workflow de tarea no trivial:**
-1. **Antes de empezar:** invoca `/cerebro <tarea>` (carga top-3 memorias + sinapsis fuertes + discoveries recientes del agente) **o** `POST /api/neural/query {"query":"<tarea>","type":"skill","count":3}` para busqueda semantica directa. Si la tarea es creativa/estrategica, el skill `auto-brain` ya activa esto por keyword.
-2. **Durante:** lee notas existentes en `PacameCueva/` antes de inventar. Reutiliza patrones de `07-Sinapsis/`, soluciones de `09-Discoveries/`, prompts de `01-Agentes/`. Modulo Factoria tiene endpoints listos (`factoria-package`, `factoria-products`) — uselos antes de generar a mano.
-3. **Si dos agentes colaboran** (ej: NOVA + PIXEL en una landing): `/synapse nova pixel collaborates_with true` refuerza la sinapsis (+0.02 hebbiano).
-4. **Si descubres algo no obvio** (workaround, patron repetido, oportunidad de servicio, anomalia): `/discover <agente> <tipo: trend|service_idea|technique|optimization|pattern|...> <titulo> | <desc>`. Crea entrada en `09-Discoveries/` tras siguiente pull.
-5. **Al cerrar:** `/remember <agente> <titulo> | <contenido>` para persistir el aprendizaje en `agent_memories` (decay semanal aplica). Memoria episodic por defecto, `PATRON:` → procedural, `HECHO:` → semantic.
-
-**Routing por agente (auto-brain mapping):**
-- web/landing/UI/React/Next → **PIXEL** | logo/identidad/brand → **NOVA** | SEO/blog/keyword → **ATLAS** | ads/funnel/CRO → **NEXUS** | API/Supabase/deploy/VPS/n8n → **CORE** | carrusel/Instagram/social → **PULSE** | propuesta/pricing/OKR → **SAGE** | copy/hook/email → **COPY** | dashboard/KPI/GA4 → **LENS** | multi-agente/ambiguo → **DIOS**.
-
-**Workflows end-to-end ya operativos (no reimplementar):**
-- **Factoria Hosteleria** (FASES A-G shipped): `dashboard/factoria` UI → SAGE auto-empaquetado → materializador (`/api/factoria/package`) → deploy automatizado (`/api/factoria/deploy` con Vercel + Vapi + n8n) → activate-n8n con creds cliente + connect-git Vercel. Casa Marisol shipped 3/3.
-- **Lead-gen outbound:** Apify Google Maps → `/api/leads/scan` → Vapi calls (+34 604 190 129 via Twilio) + Telegram notifs.
-- **Generacion contenido:** `pacame-viral-visuals` skill (Apify IG + Freepik + Gemini + Nebius) — OBLIGATORIO antes de imagen/qwen/remotion.
-
-**Si el cerebro detecta algo critico** (sinapsis en decay severo, memorias huerfanas, oportunidad alta confidence en `agent_discoveries.actionable=true`): no esperes a que Pablo lo pida — registralo, propon accion, y si entra en autonomia total → ejecutala.
-
-**Anti-patron neural:** generar contenido/codigo "desde cero" cuando el vault ya tiene un patron, una sinapsis ya prueba que dos agentes colaboran bien, o un discovery anterior resuelve el caso. Consulta primero, crea despues.
 
 ## Contacto PACAME
 - Web: pacameagencia.com | Email: hola@pacameagencia.com | WhatsApp: +34 722 669 381
