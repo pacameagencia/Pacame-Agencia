@@ -47,11 +47,13 @@ const SCHEDULE: ScheduledTask[] = [
   { hour: 6, minute: 0, path: "/api/agents/cron" },
   { hour: 7, minute: 0, dayOfWeek: 1, path: "/api/agents/weekly-audit" }, // lunes 07:00
   { hour: 8, minute: 0, path: "/api/neural/opportunity-scanner" },
+  { hour: 9, minute: 0, path: "/api/agents/auto-publish" },   // 11:00 ES — slot mañana IG
   { hour: 9, minute: 15, path: "/api/neural/learn" },
   { hour: 9, minute: 30, path: "/api/neural/promote-tools" },
   { hour: 11, minute: 5, path: "/api/neural/draft-tool" },
   { hour: 12, minute: 0, path: "/api/agents/cron" },
   { hour: 18, minute: 0, path: "/api/agents/cron" },
+  { hour: 19, minute: 0, path: "/api/agents/auto-publish" },  // 21:00 ES — slot tarde-noche IG
 ];
 
 const TOLERANCE_MIN = 2; // si dispatcher corre a :00, :05, :10... → match si scheduled en [now-2, now+2]

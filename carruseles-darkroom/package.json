@@ -1,0 +1,10 @@
+{
+  "name": "carruseles-darkroom",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "pg": "^8.20.0",
+    "sharp": "*"
+  }
+}
