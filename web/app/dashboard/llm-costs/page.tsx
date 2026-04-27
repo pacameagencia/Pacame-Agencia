@@ -27,8 +27,8 @@ interface BudgetRow {
 }
 
 const TIER_HEX: Record<string, string> = {
-  reasoning: "#a78bfa",
-  titan: "#D4A574",
+  reasoning: "#B54E30",
+  titan: "#E8B730",
   premium: "#22d3ee",
   standard: "#34d399",
   economy: "#9ca3af",
@@ -307,7 +307,7 @@ export default function LlmCostsPage() {
               : isWarn
               ? "from-amber-500 to-amber-400"
               : "from-accent-gold to-amber-400";
-            const tierHex = TIER_HEX[b.tier] || "#D4A574";
+            const tierHex = TIER_HEX[b.tier] || "#E8B730";
             const max7d = Math.max(...b.trend_7d_eur, b.cap_eur * 0.1);
             return (
               <div

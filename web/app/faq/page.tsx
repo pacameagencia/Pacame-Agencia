@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 const faqCategories = [
   {
     title: "Sobre PACAME",
-    color: "#7C3AED",
+    color: "#B54E30",
     items: [
       {
         question: "Que es PACAME exactamente?",
@@ -56,7 +56,7 @@ const faqCategories = [
   },
   {
     title: "Precios y pagos",
-    color: "#06B6D4",
+    color: "#283B70",
     items: [
       {
         question: "Cuanto cuesta una pagina web?",
@@ -257,8 +257,8 @@ export default function FaqPage() {
           </p>
           <MagneticButton>
             <ShinyButton
-              gradientFrom="#D4A853"
-              gradientTo="#7C3AED"
+              gradientFrom="#E8B730"
+              gradientTo="#B54E30"
               gradientOpacity={0.8}
               className="group min-w-[260px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
             >

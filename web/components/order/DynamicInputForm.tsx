@@ -220,7 +220,7 @@ export default function DynamicInputForm({ orderId, schema, defaults }: Props) {
               required={isRequired}
               placeholder={
                 prop.format === "uri" ? "https://..." :
-                prop.pattern?.includes("#") ? "#7C3AED" : ""
+                prop.pattern?.includes("#") ? "#B54E30" : ""
               }
             />
           </div>

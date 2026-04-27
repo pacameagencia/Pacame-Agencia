@@ -5,7 +5,7 @@ interface SigilProps {
 }
 
 /** Nova — Starburst/creative spark */
-export function NovaSigil({ className = "", color = "#7C3AED", size = 24 }: SigilProps) {
+export function NovaSigil({ className = "", color = "#B54E30", size = 24 }: SigilProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
       <path d="M12 2L13.5 9.5L20 8L14.5 12L20 16L13.5 14.5L12 22L10.5 14.5L4 16L9.5 12L4 8L10.5 9.5L12 2Z" stroke={color} strokeWidth="1.5" fill={`${color}15`} />
@@ -38,7 +38,7 @@ export function NexusSigil({ className = "", color = "#EA580C", size = 24 }: Sig
 }
 
 /** Pixel — Grid/layout */
-export function PixelSigil({ className = "", color = "#06B6D4", size = 24 }: SigilProps) {
+export function PixelSigil({ className = "", color = "#283B70", size = 24 }: SigilProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
       <rect x="3" y="3" width="7" height="7" rx="1.5" stroke={color} strokeWidth="1.5" fill={`${color}10`} />

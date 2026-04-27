@@ -17,8 +17,8 @@ interface Review {
 }
 
 const SERVICE_COLORS: Record<string, string> = {
-  "Web Corporativa": "#7C3AED",
-  "Landing Page": "#06B6D4",
+  "Web Corporativa": "#B54E30",
+  "Landing Page": "#283B70",
   "E-commerce": "#EA580C",
   "SEO": "#2563EB",
   "SEO Premium": "#2563EB",
@@ -26,11 +26,11 @@ const SERVICE_COLORS: Record<string, string> = {
   "Meta Ads": "#EA580C",
   "Meta Ads + Embudo": "#EA580C",
   "Google Ads": "#D97706",
-  "Branding": "#7C3AED",
-  "Branding Completo": "#7C3AED",
-  "Paquete Despega": "#06B6D4",
+  "Branding": "#B54E30",
+  "Branding Completo": "#B54E30",
+  "Paquete Despega": "#283B70",
   "Paquete Crece": "#16A34A",
-  "Paquete Domina": "#7C3AED",
+  "Paquete Domina": "#B54E30",
   "Plan Growth Social": "#D97706",
   "ChatBot WhatsApp": "#16A34A",
 };
@@ -42,7 +42,7 @@ const fallbackTestimonials: Review[] = [
     text: "En 3 dias tenia una web corporativa que ninguna agencia me habia podido hacer en 2 meses. El precio fue la mitad.",
     rating: 5,
     service: "Web Corporativa",
-    color: "#7C3AED",
+    color: "#B54E30",
     initials: "CM",
   },
   {
@@ -51,7 +51,7 @@ const fallbackTestimonials: Review[] = [
     text: "Lance mi negocio con PACAME. Web, logo, redes y Google Ads en menos de dos semanas. Ya tengo mis primeros clientes.",
     rating: 5,
     service: "Paquete Despega",
-    color: "#06B6D4",
+    color: "#283B70",
     initials: "LF",
   },
   {
@@ -108,7 +108,7 @@ function ReviewCard({ t }: { t: Review }) {
       <div
         className="absolute top-0 inset-x-0 h-[2px]"
         style={{
-          background: `linear-gradient(to right, transparent, ${t.color}60, #D4A85340, transparent)`,
+          background: `linear-gradient(to right, transparent, ${t.color}60, #E8B73040, transparent)`,
         }}
       />
 
@@ -120,7 +120,7 @@ function ReviewCard({ t }: { t: Review }) {
       </div>
 
       {/* Quote */}
-      <p className="text-[15px] text-pacame-white/60 font-body leading-relaxed mb-6">
+      <p className="text-[15px] text-ink/75 font-body leading-relaxed mb-6">
         &ldquo;{t.text}&rdquo;
       </p>
 
@@ -133,10 +133,10 @@ function ReviewCard({ t }: { t: Review }) {
           {t.initials}
         </div>
         <div className="flex-1 min-w-0">
-          <div className="text-sm font-body font-medium text-pacame-white/80">
+          <div className="text-sm font-body font-medium text-ink/85">
             {t.name}
           </div>
-          <div className="text-xs text-pacame-white/30 font-body">{t.role}</div>
+          <div className="text-xs text-ink/60 font-body">{t.role}</div>
         </div>
       </div>
     </div>
@@ -162,7 +162,7 @@ export default function TestimonialsSection() {
             text: r.text,
             rating: r.rating,
             service: r.service || "PACAME",
-            color: SERVICE_COLORS[r.service] || "#7C3AED",
+            color: SERVICE_COLORS[r.service] || "#B54E30",
             initials: getInitials(r.name),
           }));
           setReviews(mapped);
@@ -194,7 +194,7 @@ export default function TestimonialsSection() {
                 <Star key={i} className="w-5 h-5 fill-olympus-gold text-olympus-gold" />
               ))}
             </div>
-            <span className="font-heading font-bold text-2xl text-pacame-white">
+            <span className="font-heading font-bold text-2xl text-ink">
               <CountUpNumber target={4.9} duration={2} suffix="/5" />
             </span>
           </div>
@@ -202,7 +202,7 @@ export default function TestimonialsSection() {
           <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
             Resultados reales
           </p>
-          <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
+          <h2 className="font-accent font-bold text-section text-ink mb-6 text-balance">
             El trabajo habla.{" "}
             <span className="gradient-text-gold">Los clientes tambien.</span>
           </h2>
@@ -214,9 +214,9 @@ export default function TestimonialsSection() {
         <div className="text-center">
           {/* Golden quotation marks */}
           <svg width="40" height="32" viewBox="0 0 40 32" fill="none" className="mx-auto mb-6 opacity-40">
-            <path d="M0 32V20C0 8.95 7.17 2.17 17 0L18.5 4C12.17 6.17 8.67 10.83 8 16H16V32H0ZM24 32V20C24 8.95 31.17 2.17 41 0L42.5 4C36.17 6.17 32.67 10.83 32 16H40V32H24Z" fill="#D4A853" />
+            <path d="M0 32V20C0 8.95 7.17 2.17 17 0L18.5 4C12.17 6.17 8.67 10.83 8 16H16V32H0ZM24 32V20C24 8.95 31.17 2.17 41 0L42.5 4C36.17 6.17 32.67 10.83 32 16H40V32H24Z" fill="#E8B730" />
           </svg>
-          <p className="font-accent text-2xl sm:text-3xl text-pacame-white/80 leading-relaxed mb-8">
+          <p className="font-accent text-2xl sm:text-3xl text-ink/85 leading-relaxed mb-8">
             En 3 dias tenia una web corporativa que ninguna agencia me habia podido hacer en 2 meses.
           </p>
           <div className="flex items-center justify-center gap-3">
@@ -224,8 +224,8 @@ export default function TestimonialsSection() {
               CM
             </div>
             <div className="text-left">
-              <div className="text-sm font-body font-medium text-pacame-white/80">Carlos Martinez</div>
-              <div className="text-xs text-pacame-white/30 font-body">Constructor — Madrid</div>
+              <div className="text-sm font-body font-medium text-ink/85">Carlos Martinez</div>
+              <div className="text-xs text-ink/60 font-body">Constructor — Madrid</div>
             </div>
           </div>
         </div>

@@ -17,8 +17,8 @@ export const ShinyButton = React.forwardRef<HTMLDivElement, ShinyButtonProps>(
     {
       className,
       children,
-      gradientFrom = '#D4A853',
-      gradientTo = '#7C3AED',
+      gradientFrom = '#E8B730',
+      gradientTo = '#B54E30',
       gradientOpacity = 0.7,
       gradientAngle = 0,
       ...props

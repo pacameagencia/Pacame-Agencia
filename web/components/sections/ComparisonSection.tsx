@@ -35,27 +35,27 @@ const rows: ComparisonRow[] = [
 function CellContent({ value, highlight }: { value: CellValue; highlight?: boolean }) {
   if (value === "yes") {
     return (
-      <div className={`flex items-center justify-center ${highlight ? "text-olympus-gold" : "text-pacame-white/25"}`}>
+      <div className={`flex items-center justify-center ${highlight ? "text-olympus-gold" : "text-ink/55"}`}>
         <Check className="w-4 h-4" />
       </div>
     );
   }
   if (value === "no") {
     return (
-      <div className="flex items-center justify-center text-pacame-white/15">
+      <div className="flex items-center justify-center text-ink/15">
         <X className="w-4 h-4" />
       </div>
     );
   }
   if (value === "partial") {
     return (
-      <div className="flex items-center justify-center text-pacame-white/20">
+      <div className="flex items-center justify-center text-ink/55">
         <Minus className="w-4 h-4" />
       </div>
     );
   }
   return (
-    <span className={`text-xs font-body ${highlight ? "text-pacame-white font-medium" : "text-pacame-white/40"}`}>
+    <span className={`text-xs font-body ${highlight ? "text-ink font-medium" : "text-ink/65"}`}>
       {value}
     </span>
   );
@@ -66,13 +66,13 @@ const summaryCards = [
     vs: "vs Agencia",
     stat: "60-80% mas barato",
     detail: "Mismo equipo multidisciplinar, sin overhead de oficinas y reuniones.",
-    color: "#7C3AED",
+    color: "#B54E30",
   },
   {
     vs: "vs Freelancer",
     stat: "10 especialistas x1 precio",
     detail: "No dependes de una sola persona. Equipo completo con proceso estructurado.",
-    color: "#06B6D4",
+    color: "#283B70",
   },
   {
     vs: "vs DIY (Wix)",
@@ -95,7 +95,7 @@ export default function ComparisonSection() {
           <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
             Comparativa
           </p>
-          <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
+          <h2 className="font-accent font-bold text-section text-ink mb-6 text-balance">
             PACAME vs las alternativas.{" "}
             <FancyText
               className="font-accent font-bold text-section text-olympus-gold/15"
@@ -116,16 +116,16 @@ export default function ComparisonSection() {
               <table className="w-full min-w-[640px]">
                 <thead>
                   <tr className="border-b border-white/[0.06]">
-                    <th className="text-left p-4 text-xs font-body font-medium text-pacame-white/30 uppercase tracking-wider w-[200px]">
+                    <th className="text-left p-4 text-xs font-body font-medium text-ink/60 uppercase tracking-wider w-[200px]">
                       Criterio
                     </th>
-                    <th className="p-4 text-center text-xs font-body font-medium text-pacame-white/30 uppercase tracking-wider">
+                    <th className="p-4 text-center text-xs font-body font-medium text-ink/60 uppercase tracking-wider">
                       Agencia
                     </th>
-                    <th className="p-4 text-center text-xs font-body font-medium text-pacame-white/30 uppercase tracking-wider">
+                    <th className="p-4 text-center text-xs font-body font-medium text-ink/60 uppercase tracking-wider">
                       Freelancer
                     </th>
-                    <th className="p-4 text-center text-xs font-body font-medium text-pacame-white/30 uppercase tracking-wider">
+                    <th className="p-4 text-center text-xs font-body font-medium text-ink/60 uppercase tracking-wider">
                       DIY
                     </th>
                     {/* PACAME column header — golden */}
@@ -143,7 +143,7 @@ export default function ComparisonSection() {
                       className="border-b border-white/[0.03] last:border-0 group/row hover:bg-white/[0.01] transition-colors duration-300 relative"
                     >
                       {/* Golden left indicator on hover */}
-                      <td className="p-4 text-sm font-body text-pacame-white/50 relative">
+                      <td className="p-4 text-sm font-body text-ink/70 relative">
                         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 group-hover/row:h-6 bg-olympus-gold/50 transition-all duration-300 rounded-r" />
                         {row.feature}
                       </td>
@@ -194,10 +194,10 @@ export default function ComparisonSection() {
                     {/* Trophy on hover */}
                     <Trophy className="w-4 h-4 text-olympus-gold/0 group-hover:text-olympus-gold/50 transition-all duration-500" />
                   </div>
-                  <div className="font-heading font-bold text-pacame-white text-base mb-2">
+                  <div className="font-heading font-bold text-ink text-base mb-2">
                     {card.stat}
                   </div>
-                  <p className="text-sm text-pacame-white/35 font-body leading-relaxed">{card.detail}</p>
+                  <p className="text-sm text-ink/60 font-body leading-relaxed">{card.detail}</p>
                 </div>
               </motion.div>
               </CardTiltContent>

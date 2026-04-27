@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
  *
  * Devuelve un bundle vanilla JS (sin dependencias) que el cliente embebe en
  * su web con:
- *   <div data-pacame-agenda="INSTANCE_UUID" data-primary="#7C3AED"></div>
+ *   <div data-pacame-agenda="INSTANCE_UUID" data-primary="#B54E30"></div>
  *   <script src="https://pacameagencia.com/api/apps/pacame-agenda/widget.js" defer></script>
  *
  * El widget:
@@ -70,7 +70,7 @@ function buildWidgetScript(apiOrigin: string): string {
 
   function mountStyles(root, primary){
     var style = document.createElement("style");
-    var p = primary || "#7C3AED";
+    var p = primary || "#B54E30";
     style.textContent =
       ".pa-wrap{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;color:#111;background:#fff;border:1px solid #e5e5e5;border-radius:16px;padding:20px;max-width:640px;margin:0 auto;box-sizing:border-box}"+
       ".pa-wrap *{box-sizing:border-box}"+

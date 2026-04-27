@@ -1,0 +1,24 @@
+# PACAME — generated assets gitignore
+#
+# Los PNG originales de GPT Image 2 son ~180MB y exceden el límite de
+# 250MB unzipped de serverless functions de Vercel.
+#
+# Solo se commitean los WebP+AVIF optimizados (/optimized/) que son ~48MB.
+# Si necesitas regenerar:
+#   1. node web/scripts/generate-pacame-assets.mjs (crea PNG localmente)
+#   2. node web/scripts/optimize-images.mjs        (genera WebP+AVIF en /optimized/)
+#
+# Solo /optimized/ se committea + sube a Vercel.
+
+# Ignorar todos los PNG en /generated/ y subdirs (excepto /optimized/)
+*.png
+
+# Pero NO ignorar lo que está en /optimized/
+!optimized/
+!optimized/**
+
+# README sí se commitea
+!README.md
+
+# Manifest tampoco
+!.gitignore

@@ -86,8 +86,8 @@ export default function AgentsSection() {
               style={{ boxShadow: "8px 8px 0 #1A1813" }}
             >
               <Image
-                src="/redesign/agent-nova-portrait.png"
-                alt="Retrato editorial del equipo PACAME"
+                src="/generated/pablo-calleja.jpg"
+                alt="Pablo Calleja, CEO y director editorial de PACAME"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 40vw"
@@ -187,14 +187,28 @@ export default function AgentsSection() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
 
-                  {/* Símbolo de agente — estrella 8-puntas pequeña */}
-                  <svg width="28" height="28" viewBox="0 0 28 28" className="mb-5" aria-hidden="true">
-                    <circle cx="14" cy="14" r="13" fill="none" stroke={accent} strokeWidth="1" opacity="0.4" />
-                    <path
-                      d="M14 4 L15.5 12.5 L24 14 L15.5 15.5 L14 24 L12.5 15.5 L4 14 L12.5 12.5 Z"
-                      fill={accent}
-                    />
-                  </svg>
+                  {/* Retrato editorial del agente IA + símbolo decorativo */}
+                  <div className="flex items-center gap-3 mb-5">
+                    <div
+                      className="relative w-14 h-14 overflow-hidden rounded-full border-2 bg-sand-50 flex-shrink-0"
+                      style={{ borderColor: accent }}
+                    >
+                      <Image
+                        src={`/generated/optimized/agents/${agent.id}.webp`}
+                        alt={`${agent.name} — agente IA editorial PACAME (personaje generado)`}
+                        fill
+                        sizes="56px"
+                        className="object-cover"
+                      />
+                    </div>
+                    <svg width="22" height="22" viewBox="0 0 28 28" aria-hidden="true">
+                      <circle cx="14" cy="14" r="13" fill="none" stroke={accent} strokeWidth="1" opacity="0.4" />
+                      <path
+                        d="M14 4 L15.5 12.5 L24 14 L15.5 15.5 L14 24 L12.5 15.5 L4 14 L12.5 12.5 Z"
+                        fill={accent}
+                      />
+                    </svg>
+                  </div>
 
                   <span className="kicker block mb-2" style={{ color: accent }}>
                     {agent.role}
@@ -235,8 +249,26 @@ export default function AgentsSection() {
           })}
         </div>
 
+        {/* ── Disclaimer IA editorial ── */}
+        <div className="mt-16 max-w-3xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 border border-mustard-500/40 bg-mustard-500/5 rounded-sm mb-3">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-mustard-500 opacity-50 animate-ping" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-mustard-500" />
+            </span>
+            <span className="font-mono text-[10px] tracking-[0.22em] uppercase text-mustard-700">
+              Personajes editoriales · Agentes IA
+            </span>
+          </div>
+          <p className="text-[12px] font-sans text-ink/55 leading-relaxed">
+            Los siete agentes son <strong className="text-ink/75">personajes editoriales generados</strong>:
+            su retrato fotográfico, voz y personalidad están creados con IA para
+            reflejar el estilo de cada especialidad. Las decisiones, código y entregables son revisados y firmados por Pablo Calleja.
+          </p>
+        </div>
+
         {/* ── CTA inferior ── */}
-        <div className="mt-20 flex flex-col sm:flex-row items-center justify-center gap-6">
+        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6">
           <Link
             href="/equipo"
             className="group inline-flex items-center justify-center gap-3 px-7 py-4 bg-ink text-paper font-sans font-medium text-[15px] tracking-wide transition-all duration-300 hover:bg-terracotta-600 rounded-sm"

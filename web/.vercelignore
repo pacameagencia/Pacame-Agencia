@@ -1,0 +1,32 @@
+# PACAME — Vercel deployment ignore (Sprint 24 fix)
+#
+# Excluye los PNG originales pesados (180MB) de los assets generados.
+# Solo se sirven los WebP+AVIF optimizados de /public/generated/optimized/ (~48MB).
+# Los componentes ya importan desde /generated/optimized/<slug>.webp.
+#
+# Esto evita el cancel inmediato del deploy preview por exceder limites de tamaño.
+
+# Generated PNG originals (kept in git for backup, not deployed)
+public/generated/*.png
+public/generated/agents/*.png
+public/generated/services/*.png
+public/generated/sectors/*.png
+public/generated/cases/*.png
+public/generated/og/*.png
+public/generated/icons/*.png
+public/generated/pattern/*.png
+public/generated/mobile/*.png
+
+# But INCLUDE optimized variants (WebP + AVIF responsive)
+!public/generated/optimized/
+
+# Build artifacts
+.next/cache/
+node_modules/.cache/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

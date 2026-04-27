@@ -5,19 +5,94 @@
 @tailwind utilities;
 
 :root {
+  /* ═══════════════════════════════════════════════════════════════
+   * PACAME — Tech-IA Design System (Sprint 25)
+   * Dark mode default. Light mode via .light class on <html>.
+   * Override 1-line: cambia --tech-accent para retematizar todo.
+   * ═══════════════════════════════════════════════════════════════ */
+
+  /* Tech accent — Pablo iterará con sus fotos */
+  --tech-accent: #FF6B35;                      /* warm orange humano */
+  --tech-accent-soft: #FFB088;
+  --tech-accent-glow: rgba(255, 107, 53, 0.25);
+  --tech-accent-2: #7C3AED;                    /* violet glow puntual */
+  --tech-accent-2-soft: #B196FF;
+
+  /* Tech base (DARK por defecto) */
+  --tech-bg: #0A0A0B;                          /* near-black warm */
+  --tech-surface: #111114;
+  --tech-elevated: #17171B;
+  --tech-border: #26262C;
+  --tech-border-soft: #1F1F24;
+
+  --tech-text: #F4F4F5;
+  --tech-text-soft: #A1A1AA;
+  --tech-text-mute: #71717A;
+  --tech-text-faint: #52525B;
+
+  /* Tech light mode tokens (referencia para .light) */
+  --tech-bg-light: #FAFAFA;
+  --tech-surface-light: #F4F4F5;
+  --tech-elevated-light: #FFFFFF;
+  --tech-border-light: #E4E4E7;
+  --tech-text-light: #0A0A0B;
+  --tech-text-light-soft: #52525B;
+  --tech-text-light-mute: #71717A;
+
+  /* Status semantic */
+  --tech-success: #22C55E;
+  --tech-warning: #F59E0B;
+  --tech-danger: #EF4444;
+  --tech-info: #3B82F6;
+
+  /* ── Legacy Spanish Modernism (mantener para portal/dashboard/herramientas) ── */
   --font-space-grotesk: 'Space Grotesk', sans-serif;
   --font-inter: 'Inter', sans-serif;
   --font-jetbrains-mono: 'JetBrains Mono', monospace;
+  --color-bg: #F4EFE3;             /* paper */
+  --color-text: #1A1813;           /* ink */
+  --color-primary: #B54E30;
+  --color-secondary: #283B70;
+  --color-accent: #E8B730;
+  --color-slate: #6E6858;
+  --color-card: #F9F5EA;
+  --color-elevated: #FFFFFF;
+  --color-border: rgba(26, 24, 19, 0.10);
 
-  --color-bg: #0A0A0A;
-  --color-text: #F5F5F7;
-  --color-primary: #7C3AED;
-  --color-secondary: #4338CA;
-  --color-accent: #06B6D4;
-  --color-slate: #86868B;
-  --color-card: #161617;
-  --color-elevated: #1D1D1F;
-  --color-border: rgba(255, 255, 255, 0.08);
+  /* iPhone safe area insets */
+  --sai-top: env(safe-area-inset-top);
+  --sai-bottom: env(safe-area-inset-bottom);
+  --sai-left: env(safe-area-inset-left);
+  --sai-right: env(safe-area-inset-right);
+
+  /* Mobile bottom nav height (56px + safe area) */
+  --bottom-nav-h: calc(56px + env(safe-area-inset-bottom));
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ * Light mode — activado vía .light en <html> (next-themes class strategy)
+ * Override de las 5 vars críticas; resto del sistema cambia por cascade.
+ * ═══════════════════════════════════════════════════════════════ */
+.light {
+  --tech-bg: #FAFAFA;
+  --tech-surface: #F4F4F5;
+  --tech-elevated: #FFFFFF;
+  --tech-border: #E4E4E7;
+  --tech-border-soft: #F0F0F2;
+  --tech-text: #0A0A0B;
+  --tech-text-soft: #52525B;
+  --tech-text-mute: #71717A;
+  --tech-text-faint: #A1A1AA;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ * Páginas con la nueva estética tech (las 5 core marcan body class
+ * `theme-tech` para activar dark/light dinámico). Resto de páginas
+ * conservan paleta Spanish Modernism legacy (paper bg).
+ * ═══════════════════════════════════════════════════════════════ */
+body.theme-tech {
+  background-color: var(--tech-bg);
+  color: var(--tech-text);
 }
 
 * {
@@ -40,6 +115,170 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+
+  /* Mobile app-like UX */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  overscroll-behavior-y: none;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Padding bottom para no tapar contenido con BottomNavigation en móvil */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: var(--bottom-nav-h);
+  }
+}
+
+/* Mobile safe area utilities */
+.safe-top { padding-top: var(--sai-top); }
+.safe-bottom { padding-bottom: var(--sai-bottom); }
+.safe-x { padding-left: var(--sai-left); padding-right: var(--sai-right); }
+
+/* Touch feedback utility (apply to interactive elements) */
+.touch-feedback {
+  transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.touch-feedback:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+/* Disable bounce scroll on iOS for app-feel (only outside scrollable areas) */
+html {
+  /* Allow text selection in content despite the body rule */
+  -webkit-user-select: auto;
+  user-select: auto;
+  /* Smooth iOS scroll */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Status bar tinting for PWA standalone */
+@media (display-mode: standalone) {
+  body {
+    padding-top: var(--sai-top);
+  }
+}
+
+/* Skeleton shimmer for loading states */
+@keyframes pacame-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.pacame-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(26, 24, 19, 0.05) 0%,
+    rgba(26, 24, 19, 0.10) 50%,
+    rgba(26, 24, 19, 0.05) 100%
+  );
+  background-size: 200% 100%;
+  animation: pacame-shimmer 1.4s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ * Tech-IA utilities (Sprint 25)
+ * ═══════════════════════════════════════════════════════════════ */
+
+/* Cinematic char-split wrapper (pareja con animejs text.split) */
+.char-split-clip {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+.char-split-clip > span {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Cursor custom helpers — solo desktop hover-capable (Sprint 27 fix) */
+@media (min-width: 1024px) and (hover: hover) {
+  [data-cursor="hover"] { cursor: none; }
+}
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid var(--tech-accent);
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 220ms cubic-bezier(0.23, 1, 0.32, 1),
+              height 220ms cubic-bezier(0.23, 1, 0.32, 1),
+              opacity 200ms ease-out,
+              background-color 200ms ease-out;
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+.cursor-ring--hover {
+  width: 64px;
+  height: 64px;
+  background: var(--tech-accent-glow);
+}
+@media (max-width: 1023px), (hover: none), (prefers-reduced-motion: reduce) {
+  .cursor-ring { display: none !important; }
+  [data-cursor="hover"] { cursor: auto !important; }
+}
+
+/* Tech-IA scrollbar (solo en theme-tech) */
+body.theme-tech::-webkit-scrollbar {
+  width: 8px;
+  background: var(--tech-bg);
+}
+body.theme-tech::-webkit-scrollbar-thumb {
+  background: var(--tech-border);
+  border-radius: 4px;
+}
+body.theme-tech::-webkit-scrollbar-thumb:hover {
+  background: var(--tech-text-faint);
+}
+
+/* Tech-IA selection */
+body.theme-tech ::selection {
+  background: var(--tech-accent);
+  color: var(--tech-bg);
+}
+
+/* Reveal mask wipe (pareja con SectionTransition) */
+.mask-wipe-init {
+  clip-path: inset(0 0 100% 0);
+  will-change: clip-path;
+}
+
+/* Magnetic pulse para CTAs primary */
+.magnetic-pulse {
+  position: relative;
+  isolation: isolate;
+}
+.magnetic-pulse::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: var(--tech-accent-glow);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 400ms ease-out;
+  filter: blur(12px);
+}
+.magnetic-pulse:hover::before {
+  opacity: 1;
+}
+
+/* Reduce-motion respect — desactiva todo lo que se mueve */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Typography - Apple-like precision */
@@ -168,10 +407,10 @@ code, pre, .font-mono {
   background: conic-gradient(
     from var(--glow-angle, 0deg),
     transparent 0%,
-    #D4A853 10%,
-    #7C3AED 30%,
-    #06B6D4 50%,
-    #D4A853 70%,
+    #E8B730 10%,
+    #B54E30 30%,
+    #283B70 50%,
+    #E8B730 70%,
     transparent 80%
   );
   opacity: 0.5;
@@ -204,28 +443,28 @@ code, pre, .font-mono {
 /* ==================== GRADIENT TEXT ==================== */
 
 .gradient-text {
-  background: linear-gradient(135deg, #7C3AED 0%, #4338CA 40%, #06B6D4 100%);
+  background: linear-gradient(135deg, #B54E30 0%, #283B70 40%, #283B70 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-vivid {
-  background: linear-gradient(to right, #a78bfa 0%, #7C3AED 40%, #06B6D4 100%);
+  background: linear-gradient(to right, #B54E30 0%, #B54E30 40%, #283B70 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-gold {
-  background: linear-gradient(135deg, #D4A853 0%, #F0D68A 50%, #D4A853 100%);
+  background: linear-gradient(135deg, #E8B730 0%, #F0D68A 50%, #E8B730 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-aurora {
-  background: linear-gradient(135deg, #7C3AED 0%, #FF6B9D 25%, #D4A853 50%, #4ECDC4 75%, #06B6D4 100%);
+  background: linear-gradient(135deg, #B54E30 0%, #FF6B9D 25%, #E8B730 50%, #4ECDC4 75%, #283B70 100%);
   background-size: 200% 200%;
   animation: gradientMove 8s ease infinite;
   -webkit-background-clip: text;
@@ -234,7 +473,7 @@ code, pre, .font-mono {
 }
 
 .gradient-text-divine {
-  background: linear-gradient(to right, #F0D68A 0%, #D4A853 40%, #CD7F32 100%);
+  background: linear-gradient(to right, #F0D68A 0%, #E8B730 40%, #CD7F32 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -242,7 +481,7 @@ code, pre, .font-mono {
 
 /* Text shimmer hover effect */
 .text-shimmer-hover {
-  background: linear-gradient(90deg, currentColor 40%, #D4A853 50%, currentColor 60%);
+  background: linear-gradient(90deg, currentColor 40%, #E8B730 50%, currentColor 60%);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -441,7 +680,7 @@ code, pre, .font-mono {
 /* ==================== FOCUS ==================== */
 
 :focus-visible {
-  outline: 2px solid #D4A853;
+  outline: 2px solid #E8B730;
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -556,7 +795,7 @@ input[type="range"].premium-range::-webkit-slider-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #D4A853;
+  background: #E8B730;
   cursor: pointer;
   box-shadow: 0 0 10px rgba(212, 168, 83, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -569,7 +808,7 @@ input[type="range"].premium-range::-moz-range-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #D4A853;
+  background: #E8B730;
   cursor: pointer;
   border: none;
   box-shadow: 0 0 10px rgba(212, 168, 83, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);

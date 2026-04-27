@@ -1,14 +1,31 @@
 /**
  * Image generation for social media content
  *
- * Priority: Freepik Mystic (best quality) → DALL-E 3 (fallback) → Pollinations (free fallback)
+ * Priority: Atlas Cloud GPT Image 2 (highest quality, fastest) →
+ *           Freepik Mystic →
+ *           DALL-E 3 →
+ *           Pollinations (free fallback).
+ *
+ * Atlas was added in Sprint 22 (PACAME website redesign) — it's ~$0.032/img,
+ * faster polling than Freepik, and supports cascade fallback to Imagen 4 / Seedream / Flux internally.
  */
 
 import { generateMystic, waitForTask } from "@/lib/freepik";
+import { generateAtlasImage, type AtlasRatio } from "@/lib/atlas-image";
 import { getLogger } from "@/lib/observability/logger";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY?.trim();
 const FREEPIK_API_KEY = process.env.FREEPIK_API_KEY?.trim();
+const ATLAS_API_KEY = process.env.ATLAS_API_KEY?.trim();
+
+const PLATFORM_ATLAS_RATIO: Record<string, AtlasRatio> = {
+  instagram: "1024x1024",
+  facebook: "1536x1024",
+  linkedin: "1536x1024",
+  twitter: "1536x1024",
+  stories: "1080x1920",
+  reels: "1080x1920",
+};
 
 type AspectRatio = "square_1_1" | "widescreen_16_9" | "social_story_9_16" | "classic_4_3";
 
@@ -35,7 +52,21 @@ const PLATFORM_SIZES: Record<string, { width: number; height: number }> = {
 export async function generateImage(prompt: string, platform = "instagram"): Promise<string | null> {
   const enhancedPrompt = `Professional social media visual for ${platform}, modern clean design, high quality photography style: ${prompt}. No text overlay, no watermarks.`;
 
-  // 1. Try Freepik Mystic (best quality)
+  // 1. Try Atlas Cloud GPT Image 2 (highest quality, fastest)
+  if (ATLAS_API_KEY) {
+    try {
+      const ratio = PLATFORM_ATLAS_RATIO[platform] || "1024x1024";
+      const result = await generateAtlasImage(enhancedPrompt, {
+        ratio,
+        save: false,
+      });
+      if (result?.url) return result.url;
+    } catch (err) {
+      getLogger().error({ err }, "[ImageGen] Atlas GPT Image 2 failed, trying Freepik");
+    }
+  }
+
+  // 2. Try Freepik Mystic (best quality)
   if (FREEPIK_API_KEY) {
     try {
       const ratio = PLATFORM_RATIOS[platform] || "square_1_1";
@@ -53,7 +84,7 @@ export async function generateImage(prompt: string, platform = "instagram"): Pro
     }
   }
 
-  // 2. Try DALL-E 3
+  // 3. Try DALL-E 3
   if (OPENAI_API_KEY) {
     try {
       const size = platform === "instagram" ? "1024x1024" : "1792x1024";
@@ -72,7 +103,7 @@ export async function generateImage(prompt: string, platform = "instagram"): Pro
     }
   }
 
-  // 3. Pollinations (free, no key needed)
+  // 4. Pollinations (free, no key needed)
   const dim = PLATFORM_SIZES[platform] || PLATFORM_SIZES.instagram;
   const encodedPrompt = encodeURIComponent(enhancedPrompt);
   const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${dim.width}&height=${dim.height}&nologo=true`;

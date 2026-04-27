@@ -64,7 +64,7 @@ const PALETTES: Record<string, Colors> = {
     text: "#FFFFFF", textSub: "rgba(255,255,255,0.6)",
   },
   clean: {
-    primary: "#7C3AED", accent: "#0EA5E9",
+    primary: "#B54E30", accent: "#0EA5E9",
     bg: "#F8FAFC", bgGrad: "linear-gradient(160deg, #F8FAFC 0%, #EEF2FF 45%, #F8FAFC 100%)",
     cardBg: "rgba(0,0,0,0.03)", cardBorder: "rgba(0,0,0,0.06)",
     text: "#0F172A", textSub: "#64748B",
@@ -100,7 +100,7 @@ const PALETTES: Record<string, Colors> = {
     text: "#FFFFFF", textSub: "rgba(255,255,255,0.45)",
   },
   cream: {
-    primary: "#B45309", accent: "#7C3AED",
+    primary: "#B45309", accent: "#B54E30",
     bg: "#FFFBEB", bgGrad: "linear-gradient(160deg, #FFFBEB 0%, #FEF3C7 45%, #FFFBEB 100%)",
     cardBg: "rgba(0,0,0,0.04)", cardBorder: "rgba(0,0,0,0.07)",
     text: "#1C1917", textSub: "#78716C",

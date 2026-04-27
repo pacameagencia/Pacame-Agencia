@@ -16,7 +16,7 @@ export default function ProgressRing({
   percentage,
   size = 120,
   strokeWidth = 8,
-  color = "#7C3AED",
+  color = "#B54E30",
   trackColor = "rgba(255,255,255,0.06)",
   className = "",
 }: ProgressRingProps) {

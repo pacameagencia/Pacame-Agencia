@@ -93,8 +93,8 @@ export default async function NichePage({ params }: Props) {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <MagneticButton>
               <ShinyButton
-                gradientFrom="#D4A853"
-                gradientTo="#7C3AED"
+                gradientFrom="#E8B730"
+                gradientTo="#B54E30"
                 gradientOpacity={0.8}
                 className="group min-w-[240px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
               >
@@ -341,8 +341,8 @@ export default async function NichePage({ params }: Props) {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <MagneticButton>
               <ShinyButton
-                gradientFrom="#D4A853"
-                gradientTo="#7C3AED"
+                gradientFrom="#E8B730"
+                gradientTo="#B54E30"
                 gradientOpacity={0.8}
                 className="group min-w-[240px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
               >

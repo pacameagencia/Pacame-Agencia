@@ -12,10 +12,10 @@ import { Button } from "@/components/ui/button";
 const agents = [
   { id: "DIOS", name: "DIOS", role: "Orquestador", icon: Sparkles, color: "#FFFFFF" },
   { id: "SAGE", name: "Sage", role: "Estrategia", icon: Compass, color: "#D97706" },
-  { id: "NOVA", name: "Nova", role: "Branding", icon: Sparkles, color: "#7C3AED" },
+  { id: "NOVA", name: "Nova", role: "Branding", icon: Sparkles, color: "#B54E30" },
   { id: "ATLAS", name: "Atlas", role: "SEO", icon: Globe, color: "#2563EB" },
   { id: "NEXUS", name: "Nexus", role: "Growth", icon: TrendingUp, color: "#EA580C" },
-  { id: "PIXEL", name: "Pixel", role: "Frontend", icon: Layout, color: "#06B6D4" },
+  { id: "PIXEL", name: "Pixel", role: "Frontend", icon: Layout, color: "#283B70" },
   { id: "CORE", name: "Core", role: "Backend", icon: Terminal, color: "#16A34A" },
   { id: "PULSE", name: "Pulse", role: "Social Media", icon: Heart, color: "#EC4899" },
   { id: "COPY", name: "Copy", role: "Copywriting", icon: Pencil, color: "#F59E0B" },

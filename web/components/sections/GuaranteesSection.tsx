@@ -10,19 +10,19 @@ const guarantees = [
     icon: Shield,
     title: "Garantia de satisfaccion",
     description: "Si no estas satisfecho, revisamos el trabajo sin coste extra. Tu aprobacion final es lo unico que importa.",
-    accent: "#D4A853",
+    accent: "#E8B730",
   },
   {
     icon: Clock,
     title: "Entrega en plazo garantizado",
     description: "Cada proyecto tiene un deadline cerrado antes de empezar. Si nos retrasamos, te compensamos.",
-    accent: "#06B6D4",
+    accent: "#283B70",
   },
   {
     icon: RefreshCw,
     title: "Revisiones ilimitadas incluidas",
     description: "Hasta que el resultado sea exactamente lo que necesitas. Sin costes ocultos ni sorpresas.",
-    accent: "#7C3AED",
+    accent: "#B54E30",
   },
   {
     icon: Lock,
@@ -40,7 +40,7 @@ const guarantees = [
     icon: HeadphonesIcon,
     title: "Soporte en menos de 2 horas",
     description: "Respuesta garantizada en horario laboral. Un humano real, no un bot, se encarga de ti.",
-    accent: "#D4A853",
+    accent: "#E8B730",
   },
 ];
 
@@ -67,11 +67,11 @@ export default function GuaranteesSection() {
           <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
             Nuestro compromiso
           </p>
-          <h2 className="font-accent font-bold text-section text-pacame-white mb-4 text-balance">
+          <h2 className="font-accent font-bold text-section text-ink mb-4 text-balance">
             Garantias que{" "}
             <span className="gradient-text-gold">puedes tocar</span>
           </h2>
-          <p className="text-lg text-pacame-white/40 font-body max-w-2xl mx-auto">
+          <p className="text-lg text-ink/65 font-body max-w-2xl mx-auto">
             No hablamos de promesas vacias. Cada garantia esta respaldada por procesos reales y compromiso contractual.
           </p>
         </motion.div>
@@ -102,10 +102,10 @@ export default function GuaranteesSection() {
                   <Icon className="w-6 h-6" style={{ color: item.accent }} />
                 </div>
 
-                <h3 className="font-heading font-bold text-lg text-pacame-white mb-2">
+                <h3 className="font-heading font-bold text-lg text-ink mb-2">
                   {item.title}
                 </h3>
-                <p className="text-sm text-pacame-white/45 font-body leading-relaxed">
+                <p className="text-sm text-ink/65 font-body leading-relaxed">
                   {item.description}
                 </p>
               </motion.div>

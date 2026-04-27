@@ -196,8 +196,8 @@ export default function ReviewPage() {
                 ) : (
                   <MagneticButton>
                     <ShinyButton
-                      gradientFrom="#D4A853"
-                      gradientTo="#7C3AED"
+                      gradientFrom="#E8B730"
+                      gradientTo="#B54E30"
                       gradientOpacity={0.8}
                       className="group w-full h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
                     >

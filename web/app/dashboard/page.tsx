@@ -15,9 +15,9 @@ import {
 } from "recharts";
 
 const agentColors: Record<string, string> = {
-  SAGE: "#D97706", NOVA: "#7C3AED", ATLAS: "#2563EB", NEXUS: "#EA580C",
-  PIXEL: "#06B6D4", CORE: "#16A34A", PULSE: "#EC4899", COPY: "#7C3AED",
-  LENS: "#2563EB", PACAME: "#06B6D4",
+  SAGE: "#D97706", NOVA: "#B54E30", ATLAS: "#2563EB", NEXUS: "#EA580C",
+  PIXEL: "#283B70", CORE: "#16A34A", PULSE: "#EC4899", COPY: "#B54E30",
+  LENS: "#2563EB", PACAME: "#283B70",
 };
 
 function timeAgo(dateStr: string) {
@@ -264,7 +264,7 @@ export default function DashboardOverview() {
 
       {/* Row 1: Core KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <KPICard label="Clientes activos" value={kpis.activeClients} icon={Users} color="#06B6D4" />
+        <KPICard label="Clientes activos" value={kpis.activeClients} icon={Users} color="#283B70" />
         <KPICard label="MRR" value={`${kpis.mrr.toLocaleString("es-ES")} €`} icon={DollarSign} color="#16A34A" />
         <KPICard label="Leads calientes" value={kpis.hotLeads} icon={Zap} color="#EA580C" />
         <KPICard
@@ -283,10 +283,10 @@ export default function DashboardOverview() {
           label="Propuestas"
           value={kpis.proposalsSent}
           icon={FileText}
-          color="#7C3AED"
+          color="#B54E30"
           sub={kpis.proposalsAccepted > 0 ? `${kpis.proposalsAccepted} aceptada${kpis.proposalsAccepted > 1 ? "s" : ""}` : "Ninguna aceptada aun"}
         />
-        <KPICard label="Llamadas" value={kpis.callsThisMonth} icon={Phone} color="#06B6D4" sub="Vapi + manuales" />
+        <KPICard label="Llamadas" value={kpis.callsThisMonth} icon={Phone} color="#283B70" sub="Vapi + manuales" />
         <KPICard label="Coste API" value={`$${kpis.apiCostUsd.toFixed(2)}`} icon={Bot} color="#D97706" sub="Claude + Vapi + otros" />
       </div>
 
@@ -367,21 +367,21 @@ export default function DashboardOverview() {
                 <AreaChart data={monthlyData}>
                   <defs>
                     <linearGradient id="profitGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#7C3AED" stopOpacity={0.3} />
-                      <stop offset="100%" stopColor="#7C3AED" stopOpacity={0} />
+                      <stop offset="0%" stopColor="#B54E30" stopOpacity={0.3} />
+                      <stop offset="100%" stopColor="#B54E30" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
                   <XAxis dataKey="month" tick={{ fontSize: 11, fill: "rgba(255,255,255,0.4)" }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fontSize: 10, fill: "rgba(255,255,255,0.3)" }} axisLine={false} tickLine={false} width={45} tickFormatter={(v: number) => `${v}€`} />
                   <Tooltip content={<ChartTooltip />} />
-                  <Area type="monotone" dataKey="profit" name="profit" stroke="#7C3AED" fill="url(#profitGradient)" strokeWidth={2} />
+                  <Area type="monotone" dataKey="profit" name="profit" stroke="#B54E30" fill="url(#profitGradient)" strokeWidth={2} />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
             <div className="flex items-center gap-4 mt-3">
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-sm bg-[#7C3AED]" />
+                <span className="w-2.5 h-2.5 rounded-sm bg-[#B54E30]" />
                 <span className="text-[10px] text-ink/40 font-body">Beneficio neto</span>
               </div>
             </div>
@@ -477,10 +477,10 @@ export default function DashboardOverview() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {[
             { label: "Pipeline comercial", href: "/dashboard/commercial", icon: Target, color: "#EA580C" },
-            { label: "Llamar con Sage", href: "/dashboard/calls", icon: PhoneCall, color: "#06B6D4" },
-            { label: "Lead Gen", href: "/dashboard/leadgen", icon: Rocket, color: "#7C3AED" },
+            { label: "Llamar con Sage", href: "/dashboard/calls", icon: PhoneCall, color: "#283B70" },
+            { label: "Lead Gen", href: "/dashboard/leadgen", icon: Rocket, color: "#B54E30" },
             { label: "Propuestas IA", href: "/dashboard/proposals", icon: Sparkles, color: "#D97706" },
-            { label: "Chat con agentes", href: "/dashboard/chat", icon: MessageSquare, color: "#06B6D4" },
+            { label: "Chat con agentes", href: "/dashboard/chat", icon: MessageSquare, color: "#283B70" },
             { label: "Oficina PACAME", href: "/dashboard/office", icon: Building2, color: "#D97706" },
             { label: "Revisar contenido", href: "/dashboard/content", icon: FileText, color: "#16A34A" },
             { label: "Finanzas", href: "/dashboard/finances", icon: DollarSign, color: "#16A34A" },

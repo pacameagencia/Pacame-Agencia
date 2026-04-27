@@ -70,7 +70,7 @@ const cases: CaseStudy[] = [
     testimonial: "En 3 dias tenia una web que ninguna agencia me habia podido hacer en 2 meses.",
     duration: "5 dias",
     investment: "1.200 EUR",
-    color: "#7C3AED",
+    color: "#B54E30",
     icon: "Monitor",
   },
   {
@@ -136,7 +136,7 @@ const cases: CaseStudy[] = [
     testimonial: "4 meses con Pulse gestionando nuestras redes. Engagement x5 y lista de espera.",
     duration: "12 dias",
     investment: "2.200 EUR + 600 EUR/mes",
-    color: "#06B6D4",
+    color: "#283B70",
     icon: "Monitor",
   },
   {
@@ -372,8 +372,8 @@ export default function PortfolioPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <MagneticButton>
               <ShinyButton
-                gradientFrom="#D4A853"
-                gradientTo="#7C3AED"
+                gradientFrom="#E8B730"
+                gradientTo="#B54E30"
                 gradientOpacity={0.8}
                 className="group min-w-[280px] h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
               >

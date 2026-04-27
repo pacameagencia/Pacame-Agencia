@@ -90,7 +90,7 @@ function htmlSuccess(businessName: string): NextResponse {
   h1 { font-size:24px; margin:16px 0 8px; }
   p { color:rgba(255,255,255,0.6); margin:8px 0; }
   .ok { width:56px; height:56px; border-radius:50%; background:rgba(34,197,94,0.15); display:inline-flex; align-items:center; justify-content:center; font-size:28px; }
-  a { color:#D4A574; text-decoration:none; }
+  a { color:#E8B730; text-decoration:none; }
 </style></head><body>
 <div class="card">
   <div class="ok">✓</div>
@@ -115,7 +115,7 @@ function htmlError(message: string): NextResponse {
   h1 { font-size:24px; margin:16px 0 8px; }
   p { color:rgba(255,255,255,0.6); }
   .err { width:56px; height:56px; border-radius:50%; background:rgba(239,68,68,0.15); display:inline-flex; align-items:center; justify-content:center; font-size:28px; color:#f87171; }
-  a { color:#D4A574; text-decoration:none; }
+  a { color:#E8B730; text-decoration:none; }
 </style></head><body>
 <div class="card">
   <div class="err">!</div>

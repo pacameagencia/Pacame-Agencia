@@ -13,7 +13,7 @@ interface TableOfContentsProps {
  */
 export default function TableOfContents({
   headings,
-  accentColor = "#D4A574",
+  accentColor = "#E8B730",
 }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
 

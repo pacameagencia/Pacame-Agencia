@@ -117,7 +117,7 @@ function computeLayout(nodes: AgentNode[], width: number, height: number) {
 }
 
 const SYNAPSE_COLORS: Record<string, string> = {
-  orchestrates: "#a78bfa",
+  orchestrates: "#B54E30",
   reports_to: "#60a5fa",
   delegates_to: "#34d399",
   collaborates_with: "#22d3ee",

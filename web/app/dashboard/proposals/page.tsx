@@ -39,8 +39,8 @@ interface Lead {
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Clock }> = {
   generating: { label: "Generando", color: "#D97706", icon: RefreshCw },
   ready: { label: "Lista", color: "#2563EB", icon: FileCheck },
-  sent: { label: "Enviada", color: "#7C3AED", icon: Send },
-  viewed: { label: "Vista", color: "#06B6D4", icon: Eye },
+  sent: { label: "Enviada", color: "#B54E30", icon: Send },
+  viewed: { label: "Vista", color: "#283B70", icon: Eye },
   accepted: { label: "Aceptada", color: "#16A34A", icon: CheckCircle2 },
   rejected: { label: "Rechazada", color: "#EF4444", icon: XCircle },
   expired: { label: "Expirada", color: "#6B7280", icon: Clock },

@@ -12,13 +12,13 @@ interface Category {
 }
 
 const categories: Category[] = [
-  { name: "Todos", slug: "todos", color: "#7C3AED" },
-  { name: "Desarrollo Web", slug: "web", color: "#06B6D4" },
+  { name: "Todos", slug: "todos", color: "#B54E30" },
+  { name: "Desarrollo Web", slug: "web", color: "#283B70" },
   { name: "SEO", slug: "seo", color: "#2563EB" },
   { name: "Paid Media", slug: "ads", color: "#EA580C" },
   { name: "Redes Sociales", slug: "social", color: "#EC4899" },
   { name: "Estrategia", slug: "estrategia", color: "#D97706" },
-  { name: "Branding", slug: "branding", color: "#7C3AED" },
+  { name: "Branding", slug: "branding", color: "#B54E30" },
 ];
 
 const categorySlugMap: Record<string, string> = {

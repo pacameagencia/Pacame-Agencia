@@ -10,12 +10,12 @@ export function GET(request: NextRequest) {
 
   const categoryColors: Record<string, string> = {
     SEO: "#2563EB",
-    "Desarrollo Web": "#06B6D4",
+    "Desarrollo Web": "#283B70",
     Publicidad: "#EA580C",
     Estrategia: "#D97706",
-    Branding: "#7C3AED",
+    Branding: "#B54E30",
     "Redes Sociales": "#EC4899",
-    default: "#7C3AED",
+    default: "#B54E30",
   };
 
   const accentColor = categoryColors[category] || categoryColors.default;
@@ -42,7 +42,7 @@ export function GET(request: NextRequest) {
             left: 0,
             right: 0,
             height: "6px",
-            background: `linear-gradient(90deg, ${accentColor}, #06B6D4)`,
+            background: `linear-gradient(90deg, ${accentColor}, #283B70)`,
             display: "flex",
           }}
         />
@@ -116,7 +116,7 @@ export function GET(request: NextRequest) {
                 width: "48px",
                 height: "48px",
                 borderRadius: "12px",
-                background: "linear-gradient(135deg, #8B5CF6, #06B6D4)",
+                background: "linear-gradient(135deg, #8B5CF6, #283B70)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",

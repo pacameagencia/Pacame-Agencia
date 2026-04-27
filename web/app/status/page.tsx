@@ -24,7 +24,7 @@ interface DayCell {
   failures: number;
 }
 
-const GOLD = "#D4A574";
+const GOLD = "#E8B730";
 
 function colorClasses(c: LightColor) {
   if (c === "green") return { dot: "bg-emerald-500", ring: "ring-emerald-500/30", text: "text-emerald-400" };

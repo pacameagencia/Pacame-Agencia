@@ -38,8 +38,8 @@ export default function OnboardingPage() {
   // Form state
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [primaryColor, setPrimaryColor] = useState("#7C3AED");
-  const [secondaryColor, setSecondaryColor] = useState("#06B6D4");
+  const [primaryColor, setPrimaryColor] = useState("#B54E30");
+  const [secondaryColor, setSecondaryColor] = useState("#283B70");
   const [tagline, setTagline] = useState("");
   const [sector, setSector] = useState("");
 

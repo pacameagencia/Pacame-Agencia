@@ -1,54 +1,28 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/layout/Header";
+import Header from "@/components/layout/HeaderTech";
 import Footer from "@/components/layout/Footer";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SageChatWidget from "@/components/SageChatWidget";
-import CursorGlowWrapper from "@/components/effects/CursorGlowWrapper";
 import CookieConsent from "@/components/CookieConsent";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import LoadingScreen from "@/components/effects/LoadingScreen";
 import ScrollProgress from "@/components/effects/ScrollProgress";
-import NoiseOverlay from "@/components/effects/NoiseOverlay";
 import BackToTop from "@/components/effects/BackToTop";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 import ReferralCookieTracker from "@/components/referral/ReferralCookieTracker";
+import BottomNavigation from "@/components/mobile/BottomNavigation";
+import AddToHomeScreen from "@/components/mobile/AddToHomeScreen";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import CommandPalette from "@/components/command/CommandPalette";
 import ExitIntentPopup from "@/components/cro/ExitIntentPopup";
+import CursorRing from "@/components/effects/CursorRing";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-space-grotesk",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-jetbrains-mono",
-  display: "swap",
-});
-
-const playfairDisplay = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-playfair",
-  display: "swap",
-});
+// Sprint 25: solo Geist + GeistMono. Legacy fonts (Fraunces, Inter, Space Grotesk,
+// JetBrains Mono, Playfair) eliminadas. Páginas legacy caen a system fallback.
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://pacameagencia.com"),
@@ -113,16 +87,41 @@ export const metadata: Metadata = {
     canonical: "https://pacameagencia.com",
   },
   verification: {
-    google: "B2h8SzjtvgC881Mq7jebvGxsYkLM2OQ5mqUcVs6wgyo",
+    google: process.env.GOOGLE_SITE_VERIFICATION || "B2h8SzjtvgC881Mq7jebvGxsYkLM2OQ5mqUcVs6wgyo",
+    yandex: process.env.YANDEX_SITE_VERIFICATION,
     other: {
-      "facebook-domain-verification": "rehhyn7no1pavyifad76quzrb8m21x",
+      "facebook-domain-verification":
+        process.env.FACEBOOK_DOMAIN_VERIFICATION ||
+        "rehhyn7no1pavyifad76quzrb8m21x",
+      "msvalidate.01": process.env.BING_SITE_VERIFICATION || "",
+      "p:domain_verify": process.env.PINTEREST_DOMAIN_VERIFICATION || "",
     },
   },
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
     title: "PACAME",
+    startupImage: [
+      { url: "/generated/optimized/mobile/splash-light.webp", media: "(prefers-color-scheme: light)" },
+      { url: "/generated/optimized/mobile/splash-dark.webp", media: "(prefers-color-scheme: dark)" },
+    ],
+  },
+  icons: {
+    icon: [
+      { url: "/icon.png", sizes: "192x192", type: "image/png" },
+      { url: "/generated/optimized/mobile/pwa-icon-512.webp", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/generated/optimized/mobile/pwa-icon-512.webp", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      {
+        rel: "mask-icon",
+        url: "/generated/optimized/mobile/pwa-icon-monochrome.webp",
+        color: "#B54E30",
+      },
+    ],
   },
   formatDetection: {
     telephone: false,
@@ -131,13 +130,13 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" },
-    { media: "(prefers-color-scheme: light)", color: "#D4A574" },
+    { media: "(prefers-color-scheme: dark)", color: "#1A1813" },
+    { media: "(prefers-color-scheme: light)", color: "#F4EFE3" },
   ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  colorScheme: "dark",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -149,115 +148,41 @@ export default function RootLayout({
     <html
       lang="es"
       suppressHydrationWarning
-      className={`${GeistSans.variable} ${GeistMono.variable} ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable} dark`}
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
     >
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "PACAME",
-              url: "https://pacameagencia.com",
-              potentialAction: {
-                "@type": "SearchAction",
-                target: {
-                  "@type": "EntryPoint",
-                  urlTemplate: "https://pacameagencia.com/servicios?q={search_term_string}",
-                },
-                "query-input": "required name=search_term_string",
-              },
-            }),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "ProfessionalService",
-              name: "PACAME",
-              alternateName: "PACAME Agencia Digital",
-              url: "https://pacameagencia.com",
-              logo: "https://pacameagencia.com/opengraph-image",
-              description:
-                "Agencia digital con 7 agentes IA especializados. Diseno web, SEO, publicidad digital, redes sociales y branding para PYMEs en Espana.",
-              telephone: "+34722669381",
-              email: "hola@pacameagencia.com",
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "Madrid",
-                addressCountry: "ES",
-              },
-              geo: {
-                "@type": "GeoCoordinates",
-                latitude: 40.4168,
-                longitude: -3.7038,
-              },
-              areaServed: {
-                "@type": "Country",
-                name: "Espana",
-              },
-              priceRange: "300 EUR - 15.000 EUR",
-              openingHoursSpecification: {
-                "@type": "OpeningHoursSpecification",
-                dayOfWeek: [
-                  "Monday",
-                  "Tuesday",
-                  "Wednesday",
-                  "Thursday",
-                  "Friday",
-                ],
-                opens: "09:00",
-                closes: "20:00",
-              },
-              sameAs: [
-                "https://instagram.com/pacameagencia",
-                "https://linkedin.com/company/pacame",
-                "https://twitter.com/pacameagencia",
-              ],
-              founder: {
-                "@type": "Person",
-                name: "Pablo Calleja",
-                jobTitle: "CEO",
-              },
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "4.9",
-                reviewCount: "47",
-                bestRating: "5",
-              },
-            }),
-          }}
-        />
+        {/* JSON-LD Organization + WebSite (consolidado en OrganizationJsonLd, Sprint 23) */}
         <OrganizationJsonLd />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://api.atlascloud.ai" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
       </head>
-      <body className="bg-paper text-ink font-sans antialiased">
+      <body className="bg-tech-bg text-tech-text font-sans antialiased">
         <ThemeProvider>
           <SmoothScrollProvider>
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-brand-primary focus:text-white focus:rounded-lg focus:text-sm focus:font-body"
-        >
-          Saltar al contenido
-        </a>
-        <LoadingScreen />
-        <ScrollProgress />
-        <NoiseOverlay />
-        <CursorGlowWrapper />
-        <Header />
-        <Breadcrumbs />
-        <main id="main-content">{children}</main>
-        <Footer />
-        <WhatsAppButton />
-        <BackToTop />
-        <SageChatWidget />
-        <CookieConsent />
-        <GoogleAnalytics />
-        <ReferralCookieTracker />
-        <CommandPalette />
-        <ExitIntentPopup />
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-tech-accent focus:text-tech-bg focus:rounded-md focus:text-sm focus:font-medium focus-visible:ring-4 focus-visible:ring-tech-accent-glow"
+            >
+              Saltar al contenido
+            </a>
+            <ScrollProgress />
+            <CursorRing />
+            <Header />
+            <Breadcrumbs />
+            <main id="main-content">{children}</main>
+            <Footer />
+            <WhatsAppButton />
+            <BackToTop />
+            <SageChatWidget />
+            <CookieConsent />
+            <GoogleAnalytics />
+            <ReferralCookieTracker />
+            <CommandPalette />
+            <ExitIntentPopup />
+            <BottomNavigation />
+            <AddToHomeScreen />
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>

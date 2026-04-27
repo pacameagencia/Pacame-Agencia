@@ -26,8 +26,8 @@ const activityIcons: Record<string, React.ComponentType<{ className?: string }>>
 
 const activityColors: Record<string, string> = {
   task_started: "#84CC16",
-  task_completed: "#06B6D4",
-  insight: "#7C3AED",
+  task_completed: "#283B70",
+  insight: "#B54E30",
   alert: "#EF4444",
   update: "#F59E0B",
   delivery: "#16A34A",
@@ -186,8 +186,8 @@ export default function OfficePage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
           { label: "Agentes activos", value: `${workingCount}/10`, color: "#84CC16" },
-          { label: "Tareas hoy", value: String(totalTasksToday), color: "#06B6D4" },
-          { label: "Total completadas", value: String(totalCompleted), color: "#7C3AED" },
+          { label: "Tareas hoy", value: String(totalTasksToday), color: "#283B70" },
+          { label: "Total completadas", value: String(totalCompleted), color: "#B54E30" },
           { label: "Tareas pendientes", value: String(tasks.length), color: "#F59E0B" },
         ].map((stat) => (
           <div key={stat.label} className="rounded-xl bg-paper-deep border border-ink/[0.06] p-4">

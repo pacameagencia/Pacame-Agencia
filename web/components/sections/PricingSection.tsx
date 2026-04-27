@@ -32,13 +32,28 @@ export default function PricingSection() {
           <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
             Paquetes
           </p>
-          <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
+          <h2 className="font-accent font-bold text-section text-ink mb-6 text-balance">
             Precios claros.{" "}
             <span className="gradient-text-gold">Sin sorpresas.</span>
           </h2>
-          <p className="text-lg text-pacame-white/40 max-w-lg mx-auto font-body">
+          <p className="text-lg text-ink/65 max-w-lg mx-auto font-body mb-8">
             Combina servicios y ahorra. O elige solo lo que necesitas.
           </p>
+
+          {/* Anchoring competitivo — Sprint 23 CRO fix */}
+          <div className="inline-flex items-center gap-3 px-5 py-2.5 border border-ink/10 bg-sand-50 rounded-sm max-w-xl">
+            <span className="text-[11px] font-mono uppercase tracking-[0.18em] text-ink/45">
+              Mercado
+            </span>
+            <span className="h-3 w-px bg-ink/15" />
+            <span className="text-[14px] font-sans text-ink/75">
+              Agencia tradicional: <strong className="text-ink">5.000 € – 25.000 €</strong>
+            </span>
+            <span className="h-3 w-px bg-ink/15" />
+            <span className="text-[14px] font-display italic text-terracotta-600" style={{ fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 144' }}>
+              PACAME desde 1.800 €
+            </span>
+          </div>
         </ScrollReveal>
 
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12" staggerDelay={0.1}>
@@ -53,7 +68,7 @@ export default function PricingSection() {
                     : "bg-dark-card border border-white/[0.06] hover:border-olympus-gold/15 transition-colors duration-500"
                 }`}
                 style={pkg.featured ? {
-                  background: "linear-gradient(135deg, #7C3AED 0%, #D4A853 50%, #06B6D4 100%)",
+                  background: "linear-gradient(135deg, #B54E30 0%, #E8B730 50%, #283B70 100%)",
                 } : {}}
                 whileHover={{ y: -4 }}
                 transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
@@ -93,28 +108,28 @@ export default function PricingSection() {
                     </div>
                     <h3
                       className={`font-heading font-bold text-2xl mb-1 ${
-                        pkg.featured ? "text-white" : "text-pacame-white"
+                        pkg.featured ? "text-white" : "text-ink"
                       }`}
                     >
                       {pkg.name}
                     </h3>
                     <p
                       className={`text-sm font-body leading-relaxed mb-5 ${
-                        pkg.featured ? "text-white/70" : "text-pacame-white/40"
+                        pkg.featured ? "text-white/70" : "text-ink/65"
                       }`}
                     >
                       {pkg.target}
                     </p>
                     <div
                       className={`font-heading font-bold text-4xl tracking-tight ${
-                        pkg.featured ? "text-white" : "text-pacame-white"
+                        pkg.featured ? "text-white" : "text-ink"
                       }`}
                     >
                       {pkg.price}
                     </div>
                     <p
                       className={`text-xs font-body mt-1.5 ${
-                        pkg.featured ? "text-white/50" : "text-pacame-white/30"
+                        pkg.featured ? "text-white/50" : "text-ink/60"
                       }`}
                     >
                       {pkg.deadline}
@@ -132,7 +147,7 @@ export default function PricingSection() {
                         />
                         <span
                           className={`text-sm font-body ${
-                            pkg.featured ? "text-white/85" : "text-pacame-white/55"
+                            pkg.featured ? "text-white/85" : "text-ink/70"
                           }`}
                         >
                           {item}
@@ -169,7 +184,7 @@ export default function PricingSection() {
                   <Link
                     href="/contacto"
                     className={`block text-center text-xs font-body mt-3 transition-colors ${
-                      pkg.featured ? "text-white/40 hover:text-white/60" : "text-pacame-white/30 hover:text-pacame-white/50"
+                      pkg.featured ? "text-white/40 hover:text-white/60" : "text-ink/60 hover:text-ink/70"
                     }`}
                   >
                     o hablar primero sin compromiso
@@ -183,7 +198,7 @@ export default function PricingSection() {
         </StaggerContainer>
 
         <ScrollReveal>
-          <p className="text-center text-sm text-pacame-white/30 font-body">
+          <p className="text-center text-sm text-ink/60 font-body">
             Necesitas algo distinto?{" "}
             <Link href="/contacto" className="text-olympus-gold hover:text-olympus-gold-light transition-colors underline underline-offset-4 decoration-olympus-gold/30">
               Hablamos y te preparamos un presupuesto a medida

@@ -27,8 +27,8 @@ const statusConfig = {
   },
   in_progress: {
     icon: Clock,
-    dotColor: "#D4A853",
-    lineColor: "#D4A853",
+    dotColor: "#E8B730",
+    lineColor: "#E8B730",
     label: "En progreso",
   },
   pending: {
@@ -41,7 +41,7 @@ const statusConfig = {
 
 export default function ProjectTimeline({
   milestones,
-  primaryColor = "#7C3AED",
+  primaryColor = "#B54E30",
   className = "",
 }: ProjectTimelineProps) {
   if (milestones.length === 0) {

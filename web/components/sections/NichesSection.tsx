@@ -28,14 +28,14 @@ const nicheCards: NicheCard[] = [
     name: "Clinicas",
     icon: Stethoscope,
     pain: "Pocos pacientes nuevos? Haz que te encuentren cuando buscan tu especialidad.",
-    color: "#06B6D4",
+    color: "#283B70",
   },
   {
     slug: "abogados",
     name: "Abogados",
     icon: Scale,
     pain: "Harto de directorios que no funcionan? Captamos clientes directos para tu despacho.",
-    color: "#7C3AED",
+    color: "#B54E30",
   },
   {
     slug: "tiendas",
@@ -59,11 +59,11 @@ export default function NichesSection() {
           <p className="text-[13px] font-body font-medium text-olympus-gold/70 mb-4 uppercase tracking-[0.2em]">
             Soluciones por sector
           </p>
-          <h2 className="font-accent font-bold text-section text-pacame-white mb-6 text-balance">
+          <h2 className="font-accent font-bold text-section text-ink mb-6 text-balance">
             Tu sector.{" "}
             <span className="gradient-text-gold">Nuestra especialidad.</span>
           </h2>
-          <p className="text-lg text-pacame-white/40 max-w-lg mx-auto font-body">
+          <p className="text-lg text-ink/65 max-w-lg mx-auto font-body">
             Soluciones digitales diseñadas para los problemas reales de tu negocio.
           </p>
         </ScrollReveal>
@@ -90,7 +90,7 @@ export default function NichesSection() {
                       <div
                         className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                         style={{
-                          background: `linear-gradient(to right, transparent, ${niche.color}40, #D4A85340, transparent)`,
+                          background: `linear-gradient(to right, transparent, ${niche.color}40, #E8B73040, transparent)`,
                         }}
                       />
 
@@ -103,10 +103,10 @@ export default function NichesSection() {
                       </div>
 
                       {/* Content */}
-                      <h3 className="font-heading font-bold text-xl text-pacame-white mb-3">
+                      <h3 className="font-heading font-bold text-xl text-ink mb-3">
                         {niche.name}
                       </h3>
-                      <p className="text-sm text-pacame-white/45 font-body leading-relaxed mb-5">
+                      <p className="text-sm text-ink/65 font-body leading-relaxed mb-5">
                         {niche.pain}
                       </p>
 

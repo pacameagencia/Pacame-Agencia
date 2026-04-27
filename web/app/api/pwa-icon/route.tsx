@@ -18,7 +18,7 @@ export function GET(request: NextRequest) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #8B5CF6, #06B6D4)",
+          background: "linear-gradient(135deg, #8B5CF6, #283B70)",
           borderRadius: `${radius}px`,
         }}
       >

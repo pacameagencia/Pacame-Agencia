@@ -14,7 +14,7 @@ const platformIcons: Record<string, React.ComponentType<{ className?: string; st
 };
 
 const platformColors: Record<string, string> = {
-  instagram: "#EC4899", linkedin: "#2563EB", facebook: "#3B82F6", twitter: "#06B6D4", blog: "#16A34A",
+  instagram: "#EC4899", linkedin: "#2563EB", facebook: "#3B82F6", twitter: "#283B70", blog: "#16A34A",
 };
 
 interface ContentItem {
@@ -103,7 +103,7 @@ export default function ContentReviewPage() {
         <div className="space-y-4">
           {pending.map((item) => {
             const PlatformIcon = platformIcons[item.platform] || FileText;
-            const pColor = platformColors[item.platform] || "#7C3AED";
+            const pColor = platformColors[item.platform] || "#B54E30";
             const isExpanded = expandedId === item.id;
             const clientName = item.client?.business_name || item.client?.name || "Sin cliente";
 

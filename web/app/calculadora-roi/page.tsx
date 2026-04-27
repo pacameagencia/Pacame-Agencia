@@ -164,7 +164,7 @@ export default function CalculadoraROIPage() {
                 <MagneticButton>
                   <ShinyButton
                     gradientFrom="#84CC16"
-                    gradientTo="#06B6D4"
+                    gradientTo="#283B70"
                     gradientOpacity={0.8}
                     className="group w-full h-14 px-8 text-base font-medium shadow-glow-gold hover:shadow-glow-gold-lg transition-shadow duration-500"
                   >

@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0",
+  "description": "PACAME Sprint 27 — assets tech-IA cinematic (foto Pablo + AI showcase posters)",
+  "stylePreamble": "Tech-IA cinematic aesthetic, near-black background #0A0A0B with subtle warm gradient mesh, accent warm orange #FF6B35 highlights and indigo violet #7C3AED rim lights, editorial photography quality. Lusion / Anthropic / Linear-grade visual sophistication. Magazine cover quality. No text, no watermarks, no logos, no UI elements, no captions.",
+  "negativePrompt": "text, words, letters, watermarks, logos, brand marks, captions, UI elements, low quality, blurry, distorted, deformed, extra fingers, AI fingerprints, plastic skin, oversaturated, HDR overdone, beauty filter, instagram filter, fake bokeh, paper-tone background, terracotta orange paper, mediterranean warmth",
+  "assets": [
+    {
+      "slug": "pablo-portrait-tech",
+      "category": "founder-portrait",
+      "ratio": "1024x1536",
+      "model": "openai/gpt-image-2-developer/text-to-image",
+      "destDir": "public/generated",
+      "prompt": "Editorial founder portrait, cover-of-Wired magazine quality. Spanish entrepreneur, mid-30s, short dark hair, intelligent calm gaze, slight knowing smile. Wearing a charcoal black knit sweater. Clean near-black studio background with subtle warm orange accent rim light from upper-left and cool indigo rim from upper-right. Medium-format film aesthetic, sharp focus on eyes, shallow depth of field. No glasses. No props. Three-quarter body framing, centered composition with negative space above for title overlay. Skin texture natural and detailed. Modern tech founder energy, not stock-photo. Looking just past the camera, confident not aggressive."
+    },
+    {
+      "slug": "ai-showcase/sora-poster",
+      "category": "ai-showcase",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Cinematic still frame from a dreamy slow-motion video. Abstract liquid gold and silver flowing through dark space, particles of light suspended mid-air, hyperreal motion blur, octane render quality, dramatic single key light. Wide cinematic 16:9. Inspired by OpenAI Sora demos: physics-defying liquid motion, surreal beauty, no recognizable subject. Pure visual poetry."
+    },
+    {
+      "slug": "ai-showcase/veo-poster",
+      "category": "ai-showcase",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Cinematic still frame from a nature documentary style video. Aerial shot of misty mountain ridges at golden hour, volumetric fog rolling over peaks, sun rays piercing through clouds, hyperreal landscape photography. Wide cinematic 16:9. Inspired by Google Veo demos: epic landscape, perfect light, IMAX quality. Single moment frozen."
+    },
+    {
+      "slug": "ai-showcase/runway-poster",
+      "category": "ai-showcase",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Cinematic still frame from an editorial fashion video. Single model walking through a corridor of light strips in a futuristic neon-noir setting, motion blur on body, cinematic lens flare, dramatic chiaroscuro lighting. Wide cinematic 16:9. Inspired by Runway Gen-3 demos: stylized motion, fashion-grade composition, surreal but elegant."
+    },
+    {
+      "slug": "ai-showcase/midjourney-poster",
+      "category": "ai-showcase",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Hyperreal still life photograph. A perfect orange suspended mid-air over a dark obsidian table, water droplet frozen mid-fall just below it, dramatic single beam of warm light from upper left, deep shadows. Macro photography quality, every pore on the orange skin visible, surreal physics. Inspired by Midjourney v6 photorealism: impossible still life, magazine cover beauty."
+    },
+    {
+      "slug": "ai-showcase/chatgpt-image-poster",
+      "category": "ai-showcase",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Editorial illustration style. A stylized human silhouette made of geometric warm orange and indigo gradient shapes, walking through a minimalist near-black landscape with a single sun in the distance. Modern editorial poster art, Bauhaus + 2026 tech aesthetic. Inspired by ChatGPT Image / DALL-E 3 illustration outputs: clean shapes, bold composition, narrative simplicity."
+    },
+    {
+      "slug": "ai-showcase/claude-poster",
+      "category": "ai-showcase",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Abstract architectural still. Interior of a vast cathedral-like space made of flowing data ribbons, warm amber light filtering through gaps, single human figure standing tiny at center for scale, sense of intelligence and calm. Cinematic wide shot. Inspired by Anthropic / Claude conceptual art: thoughtful, vast, a bit humbling, quietly powerful."
+    },
+    {
+      "slug": "ai-showcase/kling-poster",
+      "category": "ai-showcase",
+      "ratio": "1536x1024",
+      "destDir": "public/generated",
+      "prompt": "Cinematic still frame from a martial-arts action video. Dancer mid-kick frozen in spotlight against pitch black background, cloth flowing behind in dramatic arc, dust particles caught in the beam of light, sharp athletic composition. Inspired by Kling AI demos: dynamic human motion, dramatic lighting, athletic precision."
+    }
+  ]
+}

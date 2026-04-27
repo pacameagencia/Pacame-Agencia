@@ -17,7 +17,7 @@ const AESTHETICS = {
   tech: {
     label: "Tech / SaaS",
     desc: "Sans geometrico + fondos oscuros · Linear, Stripe, Vercel",
-    colors: ["#0A0A0A", "#F5F5F7", "#7C3AED", "#06B6D4", "#00A19B"],
+    colors: ["#0A0A0A", "#F5F5F7", "#B54E30", "#283B70", "#00A19B"],
     font_display: "Space Grotesk",
     font_body: "Inter",
     vibe: ["innovador", "tecnologico", "moderno", "escalable"],

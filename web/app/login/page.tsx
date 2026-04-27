@@ -9,10 +9,6 @@ import { CardTilt, CardTiltContent } from "@/components/ui/card-tilt";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import dynamic from "next/dynamic";
 
-const ConstellationBackground = dynamic(
-  () => import("@/components/effects/ConstellationBackground"),
-  { ssr: false }
-);
 
 export default function LoginPage() {
   const router = useRouter();
@@ -47,7 +43,6 @@ export default function LoginPage() {
 
   return (
     <div className="bg-paper min-h-screen flex items-center justify-center relative overflow-hidden">
-      <ConstellationBackground />
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-brand-primary/[0.05] rounded-full blur-[200px] pointer-events-none" />
 
       <ScrollReveal className="relative z-10 w-full max-w-sm px-4">
@@ -94,8 +89,8 @@ export default function LoginPage() {
                 </Button>
               ) : (
                 <ShinyButton
-                  gradientFrom="#D4A853"
-                  gradientTo="#7C3AED"
+                  gradientFrom="#E8B730"
+                  gradientTo="#B54E30"
                   gradientOpacity={0.8}
                   className="w-full h-12"
                 >
