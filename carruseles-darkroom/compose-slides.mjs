@@ -23,7 +23,14 @@ fs.mkdirSync(OUT_DIR, { recursive: true });
 
 const W = 1080;
 const H = 1350;
-const PAD = 80;
+// IG Safe areas (ver IG-SAFE-AREAS.md)
+// Top 100px y Bottom 260px reservados para UI de IG · NO poner texto crítico ahí
+const TOP_UNSAFE = 100;
+const BOT_UNSAFE = 260;
+const MARGIN_X = 60;
+const PAD = MARGIN_X;          // alias para retrocompatibilidad
+const SAFE_Y = TOP_UNSAFE;     // y mínima para texto
+const SAFE_H_BOTTOM = H - BOT_UNSAFE;  // y máxima para texto = 1090
 
 const C = {
   bg: "#0A0A0A",

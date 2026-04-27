@@ -1,17 +1,18 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { sendInstagramDM, INSTAGRAM_VERIFY_TOKEN, isConfigured } from "@/lib/instagram";
 import { notifyHotLead } from "@/lib/telegram";
 import { llmChat } from "@/lib/llm";
+import { pabloPersonaSystem, qualifyIntent } from "@/lib/pablo-persona";
 
 const supabase = createServerSupabase();
 
 /**
  * Instagram Webhook
  *
- * GET  — Meta verification challenge
- * POST — Incoming DMs + comment mentions
+ * GET  â€” Meta verification challenge
+ * POST â€” Incoming DMs + comment mentions
  */
 
 // --- Meta webhook verification ---
@@ -59,7 +60,7 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ ok: true });
 }
 
-// ─── DM Handler ─────────────────────────────────────────────────
+// â”€â”€â”€ DM Handler â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface MessagingEvent {
   sender: { id: string };
@@ -147,13 +148,13 @@ async function handleDirectMessage(event: MessagingEvent) {
     }
   }
 
-  // Auto-respond with AI (Nebius economy → Claude fallback)
+  // Auto-respond with AI (Nebius economy â†’ Claude fallback)
   if (isConfigured() && messageText.length > 2) {
     await autoRespondDM(senderId, messageText, contactName, leadId);
   }
 }
 
-// ─── Comment Handler ────────────────────────────────────────────
+// â”€â”€â”€ Comment Handler â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface CommentValue {
   id: string;
@@ -189,7 +190,7 @@ async function handleComment(value: CommentValue) {
   });
 }
 
-// ─── AI Auto-Response ───────────────────────────────────────────
+// â”€â”€â”€ AI Auto-Response â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function autoRespondDM(
   recipientId: string,
@@ -208,21 +209,40 @@ async function autoRespondDM(
 
   const historyText = (history || [])
     .reverse()
-    .map((h) => `${h.direction === "inbound" ? contactName : "PACAME"}: ${h.message}`)
+    .map((h) => `${h.direction === "inbound" ? contactName : "Pablo"}: ${h.message}`)
     .join("\n");
 
-  const systemPrompt =
-    `Eres el asistente de Instagram DM de PACAME, agencia digital con IA en Espana.\n\n` +
-    `REGLAS:\n` +
-    `- Tutea siempre. Tono directo, cercano, sin humo.\n` +
-    `- Maximo 2-3 frases. Instagram = mensajes ultra cortos.\n` +
-    `- Si preguntan por servicios: webs, SEO, redes, ads, branding, chatbots.\n` +
-    `- Ofrece diagnostico gratuito si detectas un problema.\n` +
-    `- Precios desde 297€/mes. Ofrece propuesta personalizada.\n` +
-    `- Web: pacameagencia.com | WhatsApp: +34 722 669 381\n` +
-    `- No uses emojis excesivos. Maximo 1 por mensaje.\n` +
-    `- Nunca inventes datos.\n\n` +
-    (historyText ? `HISTORIAL:\n${historyText}\n\n` : "");
+  const qualified = qualifyIntent(incomingMessage);
+
+  // Persistir intent en lead.metadata si lo detectamos con confianza alta
+  if (leadId && qualified.confidence >= 0.8 && qualified.intent !== "unknown") {
+    await supabase
+      .from("leads")
+      .update({
+        metadata: {
+          instagram_id: recipientId,
+          intent: qualified.intent,
+          intent_signal: qualified.signal,
+          qualified_at: new Date().toISOString(),
+        },
+      })
+      .eq("id", leadId);
+
+    logAgentActivity({
+      agentId: "sage",
+      type: "update",
+      title: `Lead IG cualificado · intent=${qualified.intent}`,
+      description: `Señal: "${qualified.signal}" · mensaje: "${incomingMessage.slice(0, 80)}"`,
+      metadata: { lead_id: leadId, intent: qualified.intent, channel: "instagram" },
+    });
+  }
+
+  const systemPrompt = pabloPersonaSystem({
+    channel: "instagram",
+    qualified,
+    contactName,
+    history: historyText,
+  });
 
   try {
     const res = await llmChat(
@@ -230,7 +250,7 @@ async function autoRespondDM(
         { role: "system", content: systemPrompt },
         { role: "user", content: incomingMessage },
       ],
-      { tier: "economy", maxTokens: 200, agentId: "pulse", source: "instagram-dm" }
+      { tier: "standard", maxTokens: 220, agentId: "pulse", source: "instagram-dm-pablo" }
     );
 
     if (!res.content) return;

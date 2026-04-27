@@ -19,7 +19,14 @@ fs.mkdirSync(OUT_DIR, { recursive: true });
 
 const W = 1080;
 const H = 1920;
-const PAD = 80;
+// IG Story safe areas (ver IG-SAFE-AREAS.md)
+// Top 250px y Bottom 250px reservados para UI de IG (progress bar + responder)
+const TOP_UNSAFE = 250;
+const BOT_UNSAFE = 250;
+const MARGIN_X = 80;
+const PAD = MARGIN_X;
+const SAFE_Y = TOP_UNSAFE;
+const SAFE_H_BOTTOM = H - BOT_UNSAFE;  // y máxima para texto = 1670
 
 const C = {
   bg: "#0A0A0A",
