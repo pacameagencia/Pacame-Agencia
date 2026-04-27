@@ -1,5 +1,4 @@
 {
-  "$comment": "Vercel Hobby permite max 2 crons. Antes había 13 declarados aquí — los 12 restantes están dispatcheados desde /api/agents/master-cron (un solo cron cada 5 min UTC). Mapping de schedules en web/app/api/agents/master-cron/route.ts.",
   "crons": [
     {
       "path": "/api/agents/master-cron",
