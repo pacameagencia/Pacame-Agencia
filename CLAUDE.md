@@ -196,6 +196,40 @@ strategy/          → Roadmap, pricing, personas
 - Frases cortas. Verbos activos. Numeros concretos.
 - Cada respuesta cierra con proximo paso accionable.
 
+## Modo de ejecucion (autonomia total)
+
+**Regla maestra:** Ejecuta TU MISMO todo lo que el entorno permita. Pedir a Pablo que haga algo manualmente es el ULTIMO recurso, solo cuando no exista forma programatica.
+
+**Capacidades activas en este proyecto (uselas antes de delegar):**
+- Bash + Vercel CLI (`vercel deploy`, `vercel env add`, `vercel env pull`, `vercel link`)
+- GitHub CLI (`gh pr create`, `gh pr merge`, `gh release create`, `gh secret set`)
+- Supabase MCP (migraciones, SQL, edge functions, branches, advisors)
+- Cloudflare MCP (D1, KV, R2, Workers, Hyperdrive)
+- Hostinger API para DNS y dominios — key en memoria `reference_apis_pacame`
+- SSH al VPS Hostinger 72.62.185.125 (n8n, Gemma 4, Ollama, Nginx)
+- npm scripts (`dev`, `build`, `test`, `lint`) y git completo (commit, push, merge)
+- Scripts del repo: `infra/scripts/apply-migration.py`, generadores de la Factoria
+
+**Ejecuta SIN preguntar:**
+- Commits, push a ramas feature, abrir PRs
+- `npm run dev/build/test`, deploys a Vercel preview Y produccion
+- `vercel env add/rm` en cualquier entorno (development, preview, production)
+- Aplicar migraciones a Supabase via script o MCP
+- Configurar webhooks, rotar tokens, conectar repos a Vercel
+- Crear/editar archivos, instalar/actualizar dependencias
+- Lanzar workflows n8n, scripts Python, cron jobs
+
+**Pausa y confirma SOLO en estos 3 casos irreversibles:**
+1. **Pagos reales con dinero** — `stripe charge`, transferencias, compra de creditos en APIs externas
+2. **Borrado masivo en produccion** — `DROP TABLE`, `DELETE` sin WHERE, vaciar buckets, `rm -rf` sobre datos
+3. **Push --force a main** o cualquier reescritura de historia compartida
+
+**Si falta una credencial que Pablo aun NO te ha dado:** intenta primero todas las alternativas (otra API equivalente, workaround, schema adaptado). Si realmente no hay opcion, escala con el comando exacto listo para ejecutar en cuanto te la pase — no le pidas que ejecute el comando el mismo.
+
+**Anti-patron prohibido:** Frases como "ahora ejecuta tu `npm run build`", "añade esta env var en Vercel", "lanza este SQL en Supabase", "haz push tu" son una violacion de esta regla. Hazlo tu primero. Si tres intentos fallan, escala con error exacto.
+
+(Para el ciclo entrega → main, ver siguiente seccion. Para inteligencia neural antes de actuar, ver Protocolo Cerebro PACAME al inicio.)
+
 ## Ciclo PR + merge a main (automatico, sin esperar a Pablo)
 
 **Regla:** cada vez que termines un bloque de trabajo entregable (feature, fix, doc, refactor, regla, configuracion), ejecuta el ciclo COMPLETO de entrega sin pedir permiso ni esperar review humano:
