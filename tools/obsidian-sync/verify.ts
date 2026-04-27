@@ -199,6 +199,43 @@ async function checkCronActivity() {
 }
 
 // --------------------------------------------------------------------------
+// 10. Heartbeat alarm — avisa por Telegram si hay fallos críticos.
+//     Solo dispara si --notify (cron) o env VERIFY_NOTIFY=1.
+//     Evita spam: solo notifica fallos NUEVOS respecto al último heartbeat.
+// --------------------------------------------------------------------------
+async function notifyTelegramIfFailures(failures: Check[]): Promise<void> {
+  const notify = process.argv.includes('--notify') || process.env.VERIFY_NOTIFY === '1';
+  if (!notify || failures.length === 0) return;
+
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chatId) {
+    console.warn('[verify] --notify activo pero falta TELEGRAM_BOT_TOKEN o TELEGRAM_CHAT_ID');
+    return;
+  }
+
+  const lines = [
+    '🚨 <b>PACAME health check FAIL</b>',
+    `<i>${new Date().toISOString().slice(0, 19)} UTC</i>`,
+    '',
+    ...failures.map((f) => `❌ <b>${f.name}</b>\n   ${f.detail}`),
+  ];
+  const text = lines.join('\n');
+
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML', disable_web_page_preview: true }),
+    });
+    if (res.ok) console.log(`[verify] alerta Telegram enviada (${failures.length} fallos)`);
+    else console.warn(`[verify] Telegram alert failed: ${res.status} ${res.statusText}`);
+  } catch (e) {
+    console.warn(`[verify] Telegram error: ${(e as Error).message}`);
+  }
+}
+
+// --------------------------------------------------------------------------
 // MAIN
 // --------------------------------------------------------------------------
 async function main() {
@@ -222,7 +259,10 @@ async function main() {
   }
   console.log(`\n${okCount}/${checks.length} checks OK`);
 
-  process.exit(okCount === checks.length ? 0 : 1);
+  const failures = checks.filter((c) => !c.ok);
+  await notifyTelegramIfFailures(failures);
+
+  process.exit(failures.length === 0 ? 0 : 1);
 }
 
 main().catch(err => {

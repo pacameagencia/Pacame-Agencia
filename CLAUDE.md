@@ -98,7 +98,7 @@ workflows/         → SOPs en Markdown (WAT framework)
 tools/             → Scripts Python para automatizaciones
 infra/             → Scripts de despliegue y VPS
 strategy/          → Roadmap, pricing, personas
-.claude/skills/    → 346+ skills instalados (custom .md + carpetas descargadas)
+.claude/skills/    → 374 skills proyecto + 424 globales (798 totales)
 .claude/agents/    → Subagentes con model routing
 ```
 
