@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import HeroCinematic from "@/components/cinematic/HeroCinematic";
+import HeroFactoryAI from "@/components/cinematic/HeroFactoryAI";
 import SocialProofBar from "@/components/cinematic/SocialProofBar";
 import ManifestSection from "@/components/cinematic/ManifestSection";
 import ToolsCarousel from "@/components/cinematic/ToolsCarousel";
+import Studio from "@/components/studio/Studio";
 import ThemeBodyClass from "@/components/theme/ThemeBodyClass";
 
 // Below-the-fold: dynamic imports para mejor LCP
@@ -65,11 +66,12 @@ export default function HomePage() {
       {/* Activa la paleta tech (dark dominante) en body solo para esta página */}
       <ThemeBodyClass className="theme-tech" />
 
-      <HeroCinematic />
+      <HeroFactoryAI />
+      <Studio variant="embed" />
       <SocialProofBar />
       <ToolsCarousel />
-      <ManifestSection />
       <AIShowcase />
+      <ManifestSection />
       <AgentsSpotlight />
       <CasesShowcase />
       <PricingTier />
