@@ -17,7 +17,13 @@ export type { RefCookieValue } from "./cookie";
 export { resolveAttribution } from "./attribution";
 export type { AttributionResult, AffiliateRow } from "./attribution";
 
-export { extractIp, fingerprint, checkVisitFraud, ipConversionCapExceeded } from "./fraud";
+export {
+  extractIp,
+  fingerprint,
+  checkVisitFraud,
+  ipConversionCapExceeded,
+  isBotUserAgent,
+} from "./fraud";
 
 export {
   attachReferralToCheckoutSession,
@@ -33,8 +39,15 @@ export {
   getOrCreateAffiliate,
   getAffiliateById,
   getAffiliateByCode,
+  listBrands,
+  getBrandBySlug,
+  getBrandById,
+  listBrandProducts,
+  getBrandProductByKey,
+  resolveProductForAffiliate,
+  getAffiliateBrandIds,
 } from "./db";
-export type { Campaign, Affiliate } from "./db";
+export type { Campaign, Affiliate, Brand, BrandProduct } from "./db";
 
 export { loadAffiliateStats } from "./stats";
 export type { AffiliateStats } from "./stats";

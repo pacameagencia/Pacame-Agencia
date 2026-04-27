@@ -38,6 +38,7 @@ const files = [
   "002_rls.sql",
   "003_admin_extensions.sql",
   "004_public_signup.sql",
+  "005_brands_and_vip.sql",
 ];
 
 const combined = files

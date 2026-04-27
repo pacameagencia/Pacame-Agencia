@@ -20,7 +20,38 @@ export type Affiliate = {
   referral_code: string;
   campaign_id: string | null;
   status: "active" | "suspicious" | "disabled";
+  tier: "standard" | "vip" | "partner";
+  brand_id: string | null;
+  extra_brand_ids: string[];
+  stripe_connect_account_id: string | null;
+  stripe_payouts_enabled: boolean;
   created_at: string;
+};
+
+export type Brand = {
+  id: string;
+  tenant_id: string;
+  slug: string;
+  name: string;
+  domain: string | null;
+  description: string | null;
+  active: boolean;
+  display_order: number;
+};
+
+export type BrandProduct = {
+  id: string;
+  brand_id: string;
+  product_key: string;
+  product_name: string;
+  price_cents: number;
+  is_recurring: boolean;
+  standard_flat_commission_cents: number;
+  vip_first_flat_commission_cents: number;
+  vip_recurring_flat_cents: number;
+  vip_recurring_months: number;
+  active: boolean;
+  display_order: number;
 };
 
 export async function getDefaultCampaign(
@@ -172,4 +203,113 @@ function randomSuffix(len: number): string {
   let out = "";
   for (let i = 0; i < len; i++) out += chars[Math.floor(Math.random() * chars.length)];
   return out;
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Brands & Brand Products
+// ════════════════════════════════════════════════════════════════════
+
+export async function listBrands(
+  supabase: SupabaseClient,
+  config: ReferralConfig,
+  onlyActive = true,
+): Promise<Brand[]> {
+  let q = supabase
+    .from("aff_brands")
+    .select("*")
+    .eq("tenant_id", config.tenantId)
+    .order("display_order", { ascending: true });
+  if (onlyActive) q = q.eq("active", true);
+  const { data } = await q;
+  return data ?? [];
+}
+
+export async function getBrandBySlug(
+  supabase: SupabaseClient,
+  config: ReferralConfig,
+  slug: string,
+): Promise<Brand | null> {
+  const { data } = await supabase
+    .from("aff_brands")
+    .select("*")
+    .eq("tenant_id", config.tenantId)
+    .eq("slug", slug)
+    .maybeSingle<Brand>();
+  return data;
+}
+
+export async function getBrandById(
+  supabase: SupabaseClient,
+  id: string,
+): Promise<Brand | null> {
+  const { data } = await supabase
+    .from("aff_brands")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle<Brand>();
+  return data;
+}
+
+export async function listBrandProducts(
+  supabase: SupabaseClient,
+  brandId: string,
+  onlyActive = true,
+): Promise<BrandProduct[]> {
+  let q = supabase
+    .from("aff_brand_products")
+    .select("*")
+    .eq("brand_id", brandId)
+    .order("display_order", { ascending: true });
+  if (onlyActive) q = q.eq("active", true);
+  const { data } = await q;
+  return data ?? [];
+}
+
+export async function getBrandProductByKey(
+  supabase: SupabaseClient,
+  brandId: string,
+  productKey: string,
+): Promise<BrandProduct | null> {
+  const { data } = await supabase
+    .from("aff_brand_products")
+    .select("*")
+    .eq("brand_id", brandId)
+    .eq("product_key", productKey)
+    .maybeSingle<BrandProduct>();
+  return data;
+}
+
+/**
+ * Resolves the brand/product for an affiliate from a Stripe metadata.product
+ * value. Looks up by product_key in the affiliate's primary brand first,
+ * then in each opt-in extra brand. Returns null if no match (caller falls
+ * back to legacy campaign or skips commission).
+ */
+export async function resolveProductForAffiliate(
+  supabase: SupabaseClient,
+  affiliate: Affiliate,
+  productKey: string,
+): Promise<{ brand: Brand; product: BrandProduct } | null> {
+  const brandIds = [
+    ...(affiliate.brand_id ? [affiliate.brand_id] : []),
+    ...affiliate.extra_brand_ids,
+  ];
+  for (const bid of brandIds) {
+    const product = await getBrandProductByKey(supabase, bid, productKey);
+    if (product) {
+      const brand = await getBrandById(supabase, bid);
+      if (brand) return { brand, product };
+    }
+  }
+  return null;
+}
+
+/**
+ * For an affiliate, returns the IDs of brands they can see content from.
+ */
+export function getAffiliateBrandIds(affiliate: Affiliate): string[] {
+  return [
+    ...(affiliate.brand_id ? [affiliate.brand_id] : []),
+    ...affiliate.extra_brand_ids,
+  ];
 }

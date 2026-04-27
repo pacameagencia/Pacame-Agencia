@@ -31,6 +31,17 @@ type Overview = {
     product: string | null;
     amount_eur: number;
   }[];
+  brands?: {
+    id: string;
+    slug: string;
+    name: string;
+    domain: string | null;
+    affiliates: number;
+    vip: number;
+    conversions: number;
+    pending_cents: number;
+    paid_cents: number;
+  }[];
 };
 
 const fmtEur = (cents: number) =>
@@ -54,17 +65,91 @@ export default function ReferralsAdminOverviewPage() {
   if (!data) return <p className="text-sm text-ink/60">Cargando…</p>;
 
   const t = data.totals;
+  const cvr = t.clicks > 0 ? ((t.conversions / t.clicks) * 100).toFixed(1) : "—";
+  const alerts: { type: "warn" | "info" | "danger"; text: string; href?: string }[] = [];
+  if (t.approved_cents > 0) {
+    alerts.push({
+      type: "warn",
+      text: `${fmtEur(t.approved_cents)} aprobado pendiente de pagar a afiliados.`,
+      href: "/dashboard/referrals-admin/affiliates?has_pending=1",
+    });
+  }
+  const suspicious = (data.top_affiliates || []).filter((a) => a.status === "suspicious");
+  if (suspicious.length > 0) {
+    alerts.push({
+      type: "danger",
+      text: `${suspicious.length} afiliado(s) marcado(s) como sospechosos por antifraude.`,
+      href: "/dashboard/referrals-admin/affiliates?status=suspicious",
+    });
+  }
+  if (t.total_affiliates === 0) {
+    alerts.push({
+      type: "info",
+      text: "Aún no tienes afiliados. Comparte la URL pacameagencia.com/afiliados.",
+    });
+  } else if (t.clicks === 0 && t.total_affiliates > 0) {
+    alerts.push({
+      type: "info",
+      text: "Tienes afiliados pero ningún click este mes. Mándales un email recordatorio.",
+    });
+  }
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+      {alerts.length > 0 && (
+        <section className="space-y-2">
+          {alerts.map((a, i) => (
+            <Alert key={i} type={a.type} text={a.text} href={a.href} />
+          ))}
+        </section>
+      )}
+
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-7">
         <Kpi label="Afiliados" value={String(t.total_affiliates)} />
         <Kpi label="Clicks (30d)" value={String(t.clicks)} />
         <Kpi label="Conversiones" value={String(t.conversions)} />
+        <Kpi label="Conv. rate" value={`${cvr}${cvr === "—" ? "" : "%"}`} />
         <Kpi label="Ingreso bruto" value={`${t.gross_revenue_eur.toLocaleString("es-ES")} €`} />
         <Kpi label="Pendiente" value={fmtEur(t.pending_cents)} />
         <Kpi label="Pagado" value={fmtEur(t.paid_cents)} />
       </div>
+
+      <Section title="Por marca">
+        {(data.brands?.length ?? 0) === 0 ? (
+          <p className="text-sm text-ink/60">No hay marcas configuradas. Ve a <a href="/dashboard/referrals-admin/marcas" className="underline">Marcas</a> para crear las primeras.</p>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-3">
+            {(data.brands ?? []).map((b) => (
+              <article key={b.id} className="rounded-md border border-ink/10 bg-paper p-4">
+                <div className="flex items-baseline justify-between">
+                  <h3 className="font-heading text-lg text-ink">{b.name}</h3>
+                  <span className="text-xs uppercase tracking-wider text-ink/50">{b.slug}</span>
+                </div>
+                {b.domain && <p className="mt-1 font-mono text-xs text-ink/55">{b.domain}</p>}
+                <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <div className="text-xs text-ink/60">Afiliados</div>
+                    <div className="font-heading text-xl text-ink">{b.affiliates}</div>
+                    {b.vip > 0 && <div className="text-xs text-terracotta-500">{b.vip} VIP</div>}
+                  </div>
+                  <div>
+                    <div className="text-xs text-ink/60">Conversiones</div>
+                    <div className="font-heading text-xl text-ink">{b.conversions}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-ink/60">Pendiente</div>
+                    <div className="text-sm text-ink">{fmtEur(b.pending_cents)}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-ink/60">Pagado</div>
+                    <div className="text-sm text-emerald-700">{fmtEur(b.paid_cents)}</div>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </Section>
 
       <Section title="Actividad últimos 30 días">
         {data.timeseries.length ? (
@@ -182,5 +267,32 @@ function Section({ title, children }: { title: string; children: React.ReactNode
       <h2 className="mb-3 text-sm font-medium text-ink">{title}</h2>
       {children}
     </section>
+  );
+}
+
+function Alert({
+  type, text, href,
+}: {
+  type: "warn" | "info" | "danger"; text: string; href?: string;
+}) {
+  const styles =
+    type === "danger"
+      ? "border-rose-300 bg-rose-50 text-rose-900"
+      : type === "warn"
+        ? "border-amber-300 bg-amber-50 text-amber-900"
+        : "border-ink/10 bg-paper text-ink/80";
+  const icon = type === "danger" ? "⚠" : type === "warn" ? "⏳" : "ℹ";
+  return (
+    <div className={`flex items-start justify-between gap-3 rounded-md border p-3 text-sm ${styles}`}>
+      <div className="flex gap-2">
+        <span aria-hidden>{icon}</span>
+        <span>{text}</span>
+      </div>
+      {href && (
+        <a href={href} className="shrink-0 underline hover:no-underline">
+          Resolver →
+        </a>
+      )}
+    </div>
   );
 }

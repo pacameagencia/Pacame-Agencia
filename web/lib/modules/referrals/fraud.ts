@@ -6,6 +6,27 @@ export type FraudCheck =
   | { ok: true }
   | { ok: false; reason: "rate_limited" | "ip_capped" };
 
+/**
+ * Detecta User-Agents que claramente son bots/curl/scraping.
+ * NO bloquea browsers raros — solo headers manifiestamente no-humanos.
+ */
+export function isBotUserAgent(userAgent: string | null | undefined): boolean {
+  if (!userAgent) return true;          // sin UA: bloquear
+  const ua = userAgent.toLowerCase();
+  if (ua.length < 10) return true;       // demasiado corto para ser navegador real
+  // Lista de signatures comunes de bots/scrapers
+  const blockedPatterns = [
+    "curl/", "wget/", "python-requests", "python-urllib", "go-http-client",
+    "node-fetch", "axios/", "okhttp/", "java/", "ruby", "php-curl",
+    "headless", "phantomjs", "puppeteer", "playwright",
+    "scraper", "spider", "crawler", "bot/", "bot ",
+  ];
+  for (const sig of blockedPatterns) {
+    if (ua.includes(sig)) return true;
+  }
+  return false;
+}
+
 export function fingerprint(ip: string | null, userAgent: string | null, acceptLang: string | null): string {
   return crypto
     .createHash("sha256")

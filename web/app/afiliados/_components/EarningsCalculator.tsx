@@ -1,65 +1,106 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-const PRODUCTS = [
-  { key: "web", label: "Web Corporativa (800€ único)", price: 800, recurring: false },
-  { key: "social", label: "Plan Redes Sociales (197€/mes)", price: 197, recurring: true },
-  { key: "seo", label: "Plan SEO (297€/mes)", price: 297, recurring: true },
-  { key: "pack", label: "Pack Web + Redes (193€/mes)", price: 193, recurring: true },
-];
+type BrandProduct = {
+  brand_id: string;
+  product_key: string;
+  product_name: string;
+  price_cents: number;
+  is_recurring: boolean;
+  standard_flat_commission_cents: number;
+  vip_recurring_flat_cents: number;
+  vip_recurring_months: number;
+};
 
-const PERCENT = 0.20;
-const MONTHS = 12;
+type Brand = {
+  id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  products: BrandProduct[];
+};
 
-export function EarningsCalculator() {
-  const [product, setProduct] = useState(PRODUCTS[2].key);
-  const [perMonth, setPerMonth] = useState(3);
+const fmt = (cents: number) =>
+  new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(
+    cents / 100,
+  );
 
-  const sel = PRODUCTS.find((p) => p.key === product) ?? PRODUCTS[0];
+export function EarningsCalculator({ defaultBrandSlug }: { defaultBrandSlug?: string }) {
+  const [brands, setBrands] = useState<Brand[] | null>(null);
+  const [brandSlug, setBrandSlug] = useState(defaultBrandSlug || "pacame");
+  const [productKey, setProductKey] = useState<string | null>(null);
+  const [salesPerMonth, setSalesPerMonth] = useState(5);
 
-  const stats = useMemo(() => {
-    const perSale = sel.price * PERCENT;
-    const monthly = sel.recurring
-      ? perSale * perMonth // primer mes: solo el primer cobro de cada nueva venta
-      : perSale * perMonth;
+  useEffect(() => {
+    fetch("/api/referrals/public/brands")
+      .then((r) => r.json())
+      .then((j: { brands: Brand[] }) => {
+        setBrands(j.brands);
+        if (defaultBrandSlug && j.brands.some((b) => b.slug === defaultBrandSlug)) {
+          setBrandSlug(defaultBrandSlug);
+        }
+      })
+      .catch(() => setBrands([]));
+  }, [defaultBrandSlug]);
 
-    // Ingresos a 12 meses si mantienes el ritmo de `perMonth` ventas/mes:
-    // - Para suscripciones: cada cohort genera perSale × min(12,N) meses;
-    //   si entras 1 venta/mes durante 12 meses, suma = perSale × (12+11+…+1).
-    // - Para one-time: simplemente perSale × N × 12.
-    let annual = 0;
-    if (sel.recurring) {
-      for (let m = 1; m <= 12; m++) {
-        // ventas activas en mes m: las que entraron en mes 1..m, cada una genera perSale
-        annual += perSale * Math.min(m, MONTHS) * perMonth;
-      }
-      // simplificación: la fórmula anterior cuenta también las nuevas ventas del mes m
-      // como si pagaran ese mes; lo dejo así porque corresponde al primer pago real.
-    } else {
-      annual = perSale * perMonth * 12;
+  const brand = brands?.find((b) => b.slug === brandSlug) ?? brands?.[0];
+
+  // Cuando cambia la brand, escogemos el producto más caro como default
+  useEffect(() => {
+    if (!brand?.products?.length) {
+      setProductKey(null);
+      return;
     }
+    const top = [...brand.products].sort(
+      (a, b) => b.standard_flat_commission_cents - a.standard_flat_commission_cents,
+    )[0];
+    setProductKey(top.product_key);
+  }, [brand]);
 
-    return {
-      perSale,
-      monthlyFirst: monthly,
-      annual,
-    };
-  }, [sel, perMonth]);
+  const product = useMemo(
+    () => brand?.products?.find((p) => p.product_key === productKey) ?? null,
+    [brand, productKey],
+  );
+
+  if (brands === null) {
+    return <div className="rounded-md border border-ink/10 bg-paper p-6 text-sm text-ink/60">Cargando…</div>;
+  }
+  if (!brand || !product) {
+    return <div className="rounded-md border border-ink/10 bg-paper p-6 text-sm text-ink/60">Configura productos en el panel admin para empezar.</div>;
+  }
+
+  const monthly = product.standard_flat_commission_cents * salesPerMonth;
+  const annual = monthly * 12;
 
   return (
     <div className="grid gap-6 rounded-md border border-ink/10 bg-paper p-6 lg:grid-cols-2">
       <div className="space-y-5">
         <label className="block text-sm">
-          <span className="mb-1 block text-ink/70">Servicio que recomiendas</span>
+          <span className="mb-1 block text-ink/70">Marca</span>
           <select
-            value={product}
-            onChange={(e) => setProduct(e.target.value)}
+            value={brandSlug}
+            onChange={(e) => setBrandSlug(e.target.value)}
             className="w-full rounded-sm border border-ink/15 bg-paper px-3 py-2 text-sm"
           >
-            {PRODUCTS.map((p) => (
-              <option key={p.key} value={p.key}>
-                {p.label}
+            {brands.map((b) => (
+              <option key={b.slug} value={b.slug}>
+                {b.name}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="block text-sm">
+          <span className="mb-1 block text-ink/70">Servicio que recomiendas</span>
+          <select
+            value={productKey ?? ""}
+            onChange={(e) => setProductKey(e.target.value)}
+            className="w-full rounded-sm border border-ink/15 bg-paper px-3 py-2 text-sm"
+          >
+            {brand.products.map((p) => (
+              <option key={p.product_key} value={p.product_key}>
+                {p.product_name} — {fmt(p.standard_flat_commission_cents)} por venta
               </option>
             ))}
           </select>
@@ -68,34 +109,52 @@ export function EarningsCalculator() {
         <div>
           <div className="flex items-baseline justify-between text-sm">
             <span className="text-ink/70">Ventas que cierras al mes</span>
-            <span className="font-heading text-2xl text-terracotta-500">{perMonth}</span>
+            <span className="font-heading text-2xl text-terracotta-500">{salesPerMonth}</span>
           </div>
           <input
             type="range"
             min={1}
-            max={20}
-            value={perMonth}
-            onChange={(e) => setPerMonth(Number(e.target.value))}
+            max={30}
+            value={salesPerMonth}
+            onChange={(e) => setSalesPerMonth(Number(e.target.value))}
             className="mt-2 w-full accent-terracotta-500"
           />
           <div className="mt-1 flex justify-between text-xs text-ink/50">
             <span>1</span>
-            <span>20</span>
+            <span>15</span>
+            <span>30</span>
           </div>
         </div>
 
         <p className="rounded-sm bg-mustard-500/15 p-3 text-xs text-ink/80">
-          Cálculo conservador: {sel.recurring ? "comisión 20 % × hasta 12 meses por venta" : "comisión 20 % única por venta"}.
+          <strong>Comisión fija por venta</strong>: cobras{" "}
+          <strong>{fmt(product.standard_flat_commission_cents)}</strong>{" "}
+          una vez por cada nuevo cliente que cerraste. {product.is_recurring && (
+            <>El cliente paga {fmt(product.price_cents)}/mes pero a ti se te paga
+              {" "}<strong>solo en el primer pago</strong> (a no ser que seas afiliado VIP).</>
+          )}
         </p>
       </div>
 
       <div className="space-y-3 rounded-sm bg-ink/5 p-5">
-        <Row label="Por venta">{stats.perSale.toFixed(0)} €{sel.recurring && "/mes"}</Row>
-        <Row label="Comisión mes 1">{stats.monthlyFirst.toFixed(0)} €</Row>
-        <Row big label="Total a 12 meses">{stats.annual.toFixed(0)} €</Row>
+        <Row label="Comisión por venta">{fmt(product.standard_flat_commission_cents)}</Row>
+        <Row label="× Ventas/mes">× {salesPerMonth}</Row>
+        <Row big label="Tu mes">{fmt(monthly)}</Row>
+        <Row label="× 12 meses">{fmt(annual)} / año</Row>
         <p className="pt-2 text-xs text-ink/60">
-          Si vendes {perMonth} {sel.recurring ? "suscripciones" : "proyectos"} cada mes durante un año, esto es lo que vas a ingresar (antes de impuestos).
+          Si cada mes cierras {salesPerMonth} clientes nuevos, ingresas {fmt(monthly)} cada
+          mes. <strong>El mes 2 son {salesPerMonth} ventas nuevas — no se duplica</strong>.
+          La gracia es que tienes {fmt(monthly)} de ingresos previsibles cada mes que mantengas
+          tu ritmo.
         </p>
+        {product.is_recurring && product.vip_recurring_flat_cents > 0 && (
+          <p className="rounded-sm bg-terracotta-500/10 p-2 text-xs text-ink/80">
+            <strong>Modo VIP</strong>: si llegas a top seller, cada cliente además te paga{" "}
+            {fmt(product.vip_recurring_flat_cents)} cada mes durante {product.vip_recurring_months}{" "}
+            meses (= {fmt(product.vip_recurring_flat_cents * product.vip_recurring_months)}
+            {" "}adicionales por cliente).
+          </p>
+        )}
       </div>
     </div>
   );

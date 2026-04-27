@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { StripeConnectCard } from "./_StripeConnectCard";
 
 type Profile = {
   id: string;
@@ -99,6 +100,8 @@ export default function PerfilPage() {
 
   return (
     <div className="space-y-8">
+      <StripeConnectCard />
+
       <section className="rounded-md border border-ink/10 bg-paper p-6">
         <h3 className="font-heading text-xl">Datos personales</h3>
         <p className="mt-1 text-sm text-ink/60">

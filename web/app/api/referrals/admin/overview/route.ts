@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
       .gte("created_at", since),
     supabase
       .from("aff_affiliates")
-      .select("id, email, referral_code, status")
+      .select("id, email, referral_code, status, tier, brand_id, last_login_at")
       .eq("tenant_id", config.tenantId),
     supabase
       .from("aff_referrals")
@@ -168,6 +168,72 @@ export async function GET(request: NextRequest) {
   // Simple: approved+paid commissions converted back to gross sale
   const grossEur = (buckets.approved + buckets.paid) / (config.commissionPercent / 100) / 100;
 
+  // ─── Por marca: segmentación ───
+  const { data: brandsData } = await supabase
+    .from("aff_brands")
+    .select("id, slug, name, domain, display_order")
+    .eq("tenant_id", config.tenantId)
+    .order("display_order", { ascending: true });
+
+  const brandStats = new Map<
+    string,
+    { affiliates: number; vip: number; conversions: number; pending_cents: number; paid_cents: number }
+  >();
+  for (const b of brandsData ?? []) {
+    brandStats.set(b.id, { affiliates: 0, vip: 0, conversions: 0, pending_cents: 0, paid_cents: 0 });
+  }
+
+  // Afiliados por brand
+  for (const a of affiliatesRows.data ?? []) {
+    if (a.brand_id && brandStats.has(a.brand_id)) {
+      const s = brandStats.get(a.brand_id)!;
+      if (a.status === "active") s.affiliates += 1;
+      if (a.tier === "vip" || a.tier === "partner") s.vip += 1;
+    }
+  }
+
+  // Conversiones + commissions por brand
+  const { data: convByBrand } = await supabase
+    .from("aff_referrals")
+    .select("brand_id")
+    .eq("tenant_id", config.tenantId)
+    .eq("status", "converted")
+    .not("brand_id", "is", null);
+  for (const r of convByBrand ?? []) {
+    if (r.brand_id && brandStats.has(r.brand_id)) {
+      brandStats.get(r.brand_id)!.conversions += 1;
+    }
+  }
+
+  // Recuperar commissions con brand_id explícito (commissionsAll no incluye brand_id)
+  const { data: commsByBrand } = await supabase
+    .from("aff_commissions")
+    .select("brand_id, status, amount_cents")
+    .eq("tenant_id", config.tenantId)
+    .not("brand_id", "is", null);
+  for (const c of commsByBrand ?? []) {
+    if (c.brand_id && brandStats.has(c.brand_id)) {
+      const s = brandStats.get(c.brand_id)!;
+      if (c.status === "pending" || c.status === "approved") s.pending_cents += c.amount_cents;
+      if (c.status === "paid") s.paid_cents += c.amount_cents;
+    }
+  }
+
+  const brands = (brandsData ?? []).map((b) => {
+    const s = brandStats.get(b.id) ?? { affiliates: 0, vip: 0, conversions: 0, pending_cents: 0, paid_cents: 0 };
+    return {
+      id: b.id,
+      slug: b.slug,
+      name: b.name,
+      domain: b.domain,
+      affiliates: s.affiliates,
+      vip: s.vip,
+      conversions: s.conversions,
+      pending_cents: s.pending_cents,
+      paid_cents: s.paid_cents,
+    };
+  });
+
   return NextResponse.json({
     tenant_id: config.tenantId,
     days,
@@ -185,5 +251,6 @@ export async function GET(request: NextRequest) {
     top_affiliates: topAffiliates,
     top_products: topProducts,
     recent_conversions: recent,
+    brands,
   });
 }

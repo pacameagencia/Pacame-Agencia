@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
 
   let q = supabase
     .from("aff_affiliates")
-    .select("id, email, referral_code, status, created_at")
+    .select("id, email, referral_code, status, tier, brand_id, full_name, stripe_connect_account_id, stripe_payouts_enabled, last_login_at, created_at")
     .eq("tenant_id", config.tenantId)
     .order("created_at", { ascending: false });
 
@@ -77,14 +77,20 @@ export async function GET(request: NextRequest) {
     return {
       id: a.id,
       email: a.email,
+      full_name: a.full_name ?? null,
       code: a.referral_code,
       status: a.status,
+      tier: a.tier ?? "standard",
+      brand_id: a.brand_id ?? null,
       created_at: a.created_at,
+      last_login_at: a.last_login_at ?? null,
       conversions: conversionsByAffiliate.get(a.id) ?? 0,
       pending_cents: t.pending,
       approved_cents: t.approved,
       paid_cents: t.paid,
       voided_cents: t.voided,
+      stripe_connected: !!a.stripe_connect_account_id,
+      stripe_payouts_enabled: !!a.stripe_payouts_enabled,
     };
   });
 

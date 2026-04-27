@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
-import { loadReferralConfig, getDefaultCampaign } from "@/lib/modules/referrals";
+import {
+  loadReferralConfig,
+  getDefaultCampaign,
+  getBrandBySlug,
+} from "@/lib/modules/referrals";
 import {
   hashPassword,
   isStrongEnough,
@@ -27,6 +31,8 @@ export async function POST(request: NextRequest) {
     tax_id?: string;
     marketing_consent?: boolean;
     source?: string;
+    brand_slug?: string;
+    terms_accepted?: boolean;
   };
   try {
     body = await request.json();
@@ -47,9 +53,19 @@ export async function POST(request: NextRequest) {
   if (!fullName) {
     return NextResponse.json({ error: "name_required" }, { status: 400 });
   }
+  if (body.terms_accepted !== true) {
+    return NextResponse.json({ error: "terms_required" }, { status: 400 });
+  }
 
   const supabase = createServerSupabase();
   const config = loadReferralConfig();
+
+  // Brand: default 'pacame' si no llega
+  const brandSlug = (body.brand_slug || "pacame").toLowerCase();
+  const brand = await getBrandBySlug(supabase, config, brandSlug);
+  if (!brand || !brand.active) {
+    return NextResponse.json({ error: "invalid_brand" }, { status: 400 });
+  }
 
   // Reject if email already used (with password) — case-insensitive
   const { data: existing } = await supabase
@@ -110,6 +126,8 @@ export async function POST(request: NextRequest) {
         source: body.source || "public_signup",
         approved_at: now,
         last_login_at: now,
+        brand_id: brand.id,
+        terms_accepted_at: now,
       })
       .eq("id", legacy.id)
       .select("id, referral_code")
@@ -136,6 +154,9 @@ export async function POST(request: NextRequest) {
         source: body.source || "public_signup",
         approved_at: now,
         last_login_at: now,
+        brand_id: brand.id,
+        tier: "standard",
+        terms_accepted_at: now,
       })
       .select("id")
       .single<{ id: string }>();
@@ -145,8 +166,8 @@ export async function POST(request: NextRequest) {
 
   const response = NextResponse.json({
     ok: true,
-    affiliate: { id: affiliateId, referral_code: code, email },
-    redirect: "/afiliados/panel",
+    affiliate: { id: affiliateId, referral_code: code, email, brand_slug: brand.slug },
+    redirect: "/afiliados/panel?welcome=1",
   });
   return writeAffiliateCookie(response, { affiliate_id: affiliateId, email });
 }

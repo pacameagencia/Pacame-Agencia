@@ -6,13 +6,18 @@ import { StatusPill } from "@/lib/modules/referrals/components/StatusPill";
 type Affiliate = {
   id: string;
   email: string;
+  full_name: string | null;
   code: string;
   status: "active" | "suspicious" | "disabled";
+  tier: "standard" | "vip" | "partner";
+  brand_id: string | null;
   conversions: number;
   pending_cents: number;
   approved_cents: number;
   paid_cents: number;
   voided_cents: number;
+  stripe_connected: boolean;
+  stripe_payouts_enabled: boolean;
   created_at: string;
 };
 
@@ -69,7 +74,7 @@ export default function AffiliatesAdminPage() {
   };
 
   const markPaid = async (id: string) => {
-    if (!confirm("¿Marcar todas las comisiones aprobadas como pagadas?")) return;
+    if (!confirm("¿Marcar todas las comisiones aprobadas como pagadas (sin transferencia real)?")) return;
     setBusy(id);
     try {
       const r = await fetch("/api/referrals/payouts/mark-paid", {
@@ -77,6 +82,45 @@ export default function AffiliatesAdminPage() {
         credentials: "include",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ affiliate_id: id }),
+      });
+      if (!r.ok) throw new Error((await r.json()).error || "Error");
+      await load();
+    } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Error");
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const stripePayout = async (id: string, approvedCents: number) => {
+    if (!confirm(`¿Pagar ${(approvedCents / 100).toFixed(2)} € vía Stripe Connect ahora? Se transfiere al IBAN del afiliado.`)) return;
+    setBusy(id);
+    try {
+      const r = await fetch("/api/referrals/admin/payout", {
+        method: "POST",
+        credentials: "include",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ affiliate_id: id }),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || "Error");
+      alert(`✓ Transferido ${(j.total_cents / 100).toFixed(2)} € · transfer_id ${j.transfer_id}`);
+      await load();
+    } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Error");
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const setTier = async (id: string, tier: Affiliate["tier"]) => {
+    setBusy(id);
+    try {
+      const r = await fetch("/api/referrals/admin/affiliate-tier", {
+        method: "POST",
+        credentials: "include",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ affiliate_id: id, tier }),
       });
       if (!r.ok) throw new Error((await r.json()).error || "Error");
       await load();
@@ -122,28 +166,54 @@ export default function AffiliatesAdminPage() {
           <table className="w-full text-sm">
             <thead className="border-b border-ink/10">
               <tr className="text-left text-xs uppercase text-ink/60">
-                <th className="px-3 py-2">Email</th>
+                <th className="px-3 py-2">Afiliado</th>
                 <th className="px-3 py-2">Code</th>
                 <th className="px-3 py-2">Estado</th>
+                <th className="px-3 py-2">Tier</th>
                 <th className="px-3 py-2 text-right">Conv.</th>
                 <th className="px-3 py-2 text-right">Pendiente</th>
                 <th className="px-3 py-2 text-right">Aprobado</th>
                 <th className="px-3 py-2 text-right">Pagado</th>
+                <th className="px-3 py-2">Stripe</th>
                 <th className="px-3 py-2">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {items.map((a) => (
                 <tr key={a.id} className="border-b border-ink/5 last:border-0">
-                  <td className="px-3 py-2 text-ink/80">{a.email}</td>
+                  <td className="px-3 py-2 text-ink/80">
+                    {a.full_name && <div className="text-xs font-medium">{a.full_name}</div>}
+                    <div className="text-xs text-ink/60">{a.email}</div>
+                  </td>
                   <td className="px-3 py-2 font-mono text-xs">{a.code}</td>
                   <td className="px-3 py-2"><StatusPill status={a.status} /></td>
+                  <td className="px-3 py-2">
+                    <select
+                      value={a.tier}
+                      onChange={(e) => setTier(a.id, e.target.value as Affiliate["tier"])}
+                      disabled={busy === a.id}
+                      className="rounded-sm border border-ink/15 bg-paper px-2 py-1 text-xs"
+                    >
+                      <option value="standard">standard</option>
+                      <option value="vip">vip</option>
+                      <option value="partner">partner</option>
+                    </select>
+                  </td>
                   <td className="px-3 py-2 text-right">{a.conversions}</td>
                   <td className="px-3 py-2 text-right">{fmtEur(a.pending_cents)}</td>
                   <td className="px-3 py-2 text-right">{fmtEur(a.approved_cents)}</td>
                   <td className="px-3 py-2 text-right">{fmtEur(a.paid_cents)}</td>
                   <td className="px-3 py-2">
-                    <div className="flex gap-1">
+                    {a.stripe_payouts_enabled ? (
+                      <span className="rounded-sm bg-emerald-100 px-1.5 py-0.5 text-xs text-emerald-800">✓ activo</span>
+                    ) : a.stripe_connected ? (
+                      <span className="rounded-sm bg-amber-100 px-1.5 py-0.5 text-xs text-amber-900">⏳ verif.</span>
+                    ) : (
+                      <span className="rounded-sm bg-ink/5 px-1.5 py-0.5 text-xs text-ink/50">—</span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2">
+                    <div className="flex flex-wrap gap-1">
                       <select
                         value={a.status}
                         onChange={(e) => setStatus(a.id, e.target.value as Affiliate["status"])}
@@ -154,14 +224,26 @@ export default function AffiliatesAdminPage() {
                         <option value="suspicious">suspicious</option>
                         <option value="disabled">disabled</option>
                       </select>
-                      {a.approved_cents > 0 && (
+                      {a.approved_cents > 0 && a.stripe_payouts_enabled && (
+                        <button
+                          type="button"
+                          onClick={() => stripePayout(a.id, a.approved_cents)}
+                          disabled={busy === a.id}
+                          className="rounded-sm bg-terracotta-500 px-2 py-1 text-xs font-medium text-paper hover:bg-terracotta-600 disabled:opacity-50"
+                          title="Transferir vía Stripe Connect a su IBAN"
+                        >
+                          💸 Pagar {fmtEur(a.approved_cents)}
+                        </button>
+                      )}
+                      {a.approved_cents > 0 && !a.stripe_payouts_enabled && (
                         <button
                           type="button"
                           onClick={() => markPaid(a.id)}
                           disabled={busy === a.id}
-                          className="rounded-sm bg-terracotta-500 px-2 py-1 text-xs text-paper hover:bg-terracotta-600 disabled:opacity-50"
+                          className="rounded-sm border border-ink/15 px-2 py-1 text-xs text-ink/70 hover:bg-ink/5"
+                          title="Marcar pagado manualmente (sin transferencia Stripe)"
                         >
-                          Marcar pagado
+                          Manual ✓
                         </button>
                       )}
                     </div>

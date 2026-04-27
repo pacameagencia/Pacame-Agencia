@@ -1,11 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 
-export default function RegistroAfiliadoPage() {
+type Brand = { slug: string; name: string; description: string | null };
+
+function RegistroContent() {
   const router = useRouter();
+  const search = useSearchParams();
+  const presetBrand = search.get("brand") || "pacame";
+
+  const [brands, setBrands] = useState<Brand[] | null>(null);
   const [form, setForm] = useState({
     full_name: "",
     email: "",
@@ -13,12 +19,30 @@ export default function RegistroAfiliadoPage() {
     phone: "",
     country: "ES",
     marketing_consent: true,
+    terms_accepted: false,
+    brand_slug: presetBrand,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    fetch("/api/referrals/public/brands")
+      .then((r) => r.json())
+      .then((j: { brands: Brand[] }) => {
+        setBrands(j.brands);
+        if (presetBrand && !j.brands.some((b) => b.slug === presetBrand) && j.brands[0]) {
+          setForm((f) => ({ ...f, brand_slug: j.brands[0].slug }));
+        }
+      })
+      .catch(() => setBrands([]));
+  }, [presetBrand]);
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.terms_accepted) {
+      setError("Debes aceptar los términos del programa.");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -46,35 +70,50 @@ export default function RegistroAfiliadoPage() {
       </p>
 
       <form onSubmit={submit} className="mt-8 space-y-4">
+        <Field label="Marca que quieres vender" required>
+          {brands === null ? (
+            <p className="text-sm text-ink/60">Cargando marcas…</p>
+          ) : (
+            <select
+              value={form.brand_slug}
+              onChange={(e) => setForm({ ...form, brand_slug: e.target.value })}
+              className="input"
+            >
+              {brands.map((b) => (
+                <option key={b.slug} value={b.slug}>
+                  {b.name}
+                </option>
+              ))}
+            </select>
+          )}
+          <p className="mt-1 text-xs text-ink/55">
+            Solo verás contenido de venta de esta marca. Puedes pedir acceso a
+            otras desde tu panel después.
+          </p>
+        </Field>
+
         <Field label="Nombre completo" required>
           <input
-            type="text"
-            required
+            type="text" required
             value={form.full_name}
             onChange={(e) => setForm({ ...form, full_name: e.target.value })}
-            className="input"
-            autoComplete="name"
+            className="input" autoComplete="name"
           />
         </Field>
         <Field label="Email" required>
           <input
-            type="email"
-            required
+            type="email" required
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="input"
-            autoComplete="email"
+            className="input" autoComplete="email"
           />
         </Field>
         <Field label="Contraseña (mínimo 8 caracteres)" required>
           <input
-            type="password"
-            required
-            minLength={8}
+            type="password" required minLength={8}
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className="input"
-            autoComplete="new-password"
+            className="input" autoComplete="new-password"
           />
         </Field>
         <Field label="Teléfono / WhatsApp (opcional)">
@@ -82,8 +121,7 @@ export default function RegistroAfiliadoPage() {
             type="tel"
             value={form.phone}
             onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            className="input"
-            placeholder="+34 ..."
+            className="input" placeholder="+34 ..."
             autoComplete="tel"
           />
         </Field>
@@ -97,6 +135,20 @@ export default function RegistroAfiliadoPage() {
           />
           Acepto recibir emails con contenido nuevo, mejoras del programa y
           notificaciones de comisiones.
+        </label>
+
+        <label className="flex items-start gap-2 text-sm text-ink/70">
+          <input
+            type="checkbox" required
+            checked={form.terms_accepted}
+            onChange={(e) => setForm({ ...form, terms_accepted: e.target.checked })}
+            className="mt-0.5"
+          />
+          He leído y acepto los{" "}
+          <Link href="/afiliados/terminos" target="_blank" className="text-terracotta-500 underline hover:no-underline">
+            términos del programa
+          </Link>
+          {" "}y la política de privacidad.
         </label>
 
         {error && (
@@ -140,15 +192,15 @@ export default function RegistroAfiliadoPage() {
   );
 }
 
-function Field({
-  label,
-  required,
-  children,
-}: {
-  label: string;
-  required?: boolean;
-  children: React.ReactNode;
-}) {
+export default function RegistroPage() {
+  return (
+    <Suspense fallback={<main className="mx-auto max-w-md px-6 py-16 text-sm text-ink/60">Cargando…</main>}>
+      <RegistroContent />
+    </Suspense>
+  );
+}
+
+function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
     <label className="block text-sm">
       <span className="mb-1 block text-ink/80">
@@ -165,6 +217,8 @@ function translateError(code: string | undefined): string {
     case "weak_password": return "La contraseña debe tener al menos 8 caracteres.";
     case "name_required": return "Falta el nombre.";
     case "email_in_use": return "Este email ya está registrado. Accede en su lugar.";
+    case "invalid_brand": return "Marca no válida. Recarga la página.";
+    case "terms_required": return "Debes aceptar los términos del programa.";
     default: return "No se ha podido crear la cuenta. Inténtalo de nuevo.";
   }
 }

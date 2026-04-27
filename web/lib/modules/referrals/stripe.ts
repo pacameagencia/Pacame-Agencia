@@ -2,8 +2,15 @@ import type Stripe from "stripe";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { ReferralConfig } from "./config";
 import type { RefCookieValue } from "./cookie";
-import { getAffiliateById, getCampaignById } from "./db";
+import {
+  getAffiliateById,
+  getCampaignById,
+  resolveProductForAffiliate,
+  type BrandProduct,
+} from "./db";
 import { ipConversionCapExceeded } from "./fraud";
+
+const CHARGEBACK_HOLD_DAYS = 60;
 
 export type CheckoutSessionInput = NonNullable<Parameters<Stripe["checkout"]["sessions"]["create"]>[0]>;
 
@@ -87,6 +94,9 @@ export async function processCheckoutSession(params: {
   const subscriptionId = typeof session.subscription === "string" ? session.subscription : null;
   const customerId = typeof session.customer === "string" ? session.customer : null;
 
+  // Stamp brand context: prefer affiliate.brand_id; product info goes into metadata
+  const productKey = (extraMetadata?.product as string | undefined) || null;
+
   const { error } = await supabase.from("aff_referrals").upsert(
     {
       tenant_id: config.tenantId,
@@ -97,12 +107,65 @@ export async function processCheckoutSession(params: {
       stripe_subscription_id: subscriptionId,
       status: "converted",
       converted_at: new Date().toISOString(),
+      brand_id: affiliate.brand_id,
+      product_key: productKey,
       metadata: { session_id: session.id, ...extraMetadata },
     },
     { onConflict: "tenant_id,referred_user_id" },
   );
 
   if (error) return { created: false, reason: error.message };
+
+  // ─── Comisión inmediata para checkouts one-time (sin invoice) ───
+  // Si productKey existe Y match brand_product Y NO es recurring, generamos
+  // la comisión aquí mismo (no llegará invoice.payment_succeeded para venta única).
+  if (productKey && session.amount_total && session.amount_total > 0) {
+    const resolved = await resolveProductForAffiliate(supabase, affiliate, productKey);
+    if (resolved && !resolved.product.is_recurring) {
+      const sourceEvent =
+        (typeof session.invoice === "string" ? session.invoice : null) || `cs_${session.id}`;
+      const amountCents = pickStandardAmount(resolved.product, affiliate.tier);
+      if (amountCents > 0) {
+        const now = Date.now();
+        await supabase.from("aff_commissions").upsert(
+          {
+            tenant_id: config.tenantId,
+            referral_id: undefined,
+            affiliate_id: affiliateId,
+            source_event: sourceEvent,
+            amount_cents: amountCents,
+            currency: (session.currency || "eur").toLowerCase(),
+            month_index: 1,
+            status: "pending",
+            brand_id: resolved.brand.id,
+            product_key: resolved.product.product_key,
+            due_at: new Date(now + config.approvalDays * 86400 * 1000).toISOString(),
+            hold_until: new Date(now + CHARGEBACK_HOLD_DAYS * 86400 * 1000).toISOString(),
+            metadata: {
+              checkout_session_id: session.id,
+              flow: "checkout_one_time",
+              tier: affiliate.tier,
+            },
+          },
+          { onConflict: "tenant_id,source_event", ignoreDuplicates: true },
+        );
+        // Re-fetch the referral_id and link the commission row
+        const { data: ref } = await supabase
+          .from("aff_referrals")
+          .select("id")
+          .eq("tenant_id", config.tenantId)
+          .eq("referred_user_id", referredUserId)
+          .maybeSingle<{ id: string }>();
+        if (ref) {
+          await supabase
+            .from("aff_commissions")
+            .update({ referral_id: ref.id })
+            .eq("tenant_id", config.tenantId)
+            .eq("source_event", sourceEvent);
+        }
+      }
+    }
+  }
 
   // Fraud sweep — if too many distinct affiliates from same IP, mark suspicious
   if (visitIp) {
@@ -113,6 +176,13 @@ export async function processCheckoutSession(params: {
   }
 
   return { created: true };
+}
+
+function pickStandardAmount(product: BrandProduct, tier: string): number {
+  if (tier === "vip" || tier === "partner") {
+    return product.vip_first_flat_commission_cents || product.standard_flat_commission_cents;
+  }
+  return product.standard_flat_commission_cents;
 }
 
 /**
@@ -136,10 +206,13 @@ export async function processInvoicePaid(params: {
 
   const { data: referral } = await supabase
     .from("aff_referrals")
-    .select("id, affiliate_id, status")
+    .select("id, affiliate_id, status, brand_id, product_key")
     .eq("tenant_id", config.tenantId)
     .eq("stripe_subscription_id", subscriptionId)
-    .maybeSingle<{ id: string; affiliate_id: string; status: string }>();
+    .maybeSingle<{
+      id: string; affiliate_id: string; status: string;
+      brand_id: string | null; product_key: string | null;
+    }>();
 
   if (!referral || referral.status !== "converted") {
     return { created: false, reason: "no_referral" };
@@ -150,8 +223,7 @@ export async function processInvoicePaid(params: {
     return { created: false, reason: "affiliate_inactive" };
   }
 
-  const campaign = await getCampaignById(supabase, config, affiliate.campaign_id);
-
+  // Count existing non-voided commissions for this referral
   const { count } = await supabase
     .from("aff_commissions")
     .select("id", { head: true, count: "exact" })
@@ -160,18 +232,42 @@ export async function processInvoicePaid(params: {
     .neq("status", "voided");
   const monthIndex = (count ?? 0) + 1;
 
-  if (
-    campaign.max_commission_period_months > 0 &&
-    monthIndex > campaign.max_commission_period_months
-  ) {
-    return { created: false, reason: "cap_reached" };
+  // Try to resolve brand_product first (new flow). Fall back to legacy campaign.
+  const productKey = referral.product_key || (extraMetadata?.product as string | undefined);
+  let amountCents = 0;
+  let brandId: string | null = referral.brand_id;
+  let resolvedProductKey: string | null = referral.product_key;
+
+  if (productKey) {
+    const resolved = await resolveProductForAffiliate(supabase, affiliate, productKey);
+    if (resolved) {
+      brandId = resolved.brand.id;
+      resolvedProductKey = resolved.product.product_key;
+      amountCents = pickInvoiceCommission(resolved.product, affiliate.tier, monthIndex);
+      if (amountCents === 0) {
+        return { created: false, reason: "cap_reached_or_zero" };
+      }
+    }
   }
 
-  const amountCents = Math.floor(
-    (invoice.amount_paid ?? 0) * (campaign.commission_percent / 100),
-  );
+  // Legacy fallback: percentage of invoice using aff_campaigns
+  if (amountCents === 0) {
+    const campaign = await getCampaignById(supabase, config, affiliate.campaign_id);
+    if (
+      campaign.max_commission_period_months > 0 &&
+      monthIndex > campaign.max_commission_period_months
+    ) {
+      return { created: false, reason: "cap_reached" };
+    }
+    amountCents = Math.floor(
+      (invoice.amount_paid ?? 0) * (campaign.commission_percent / 100),
+    );
+    if (amountCents === 0) return { created: false, reason: "zero_commission" };
+  }
 
-  const dueAt = new Date(Date.now() + config.approvalDays * 86400 * 1000).toISOString();
+  const now = Date.now();
+  const dueAt = new Date(now + config.approvalDays * 86400 * 1000).toISOString();
+  const holdUntil = new Date(now + CHARGEBACK_HOLD_DAYS * 86400 * 1000).toISOString();
 
   const { error } = await supabase.from("aff_commissions").upsert(
     {
@@ -183,10 +279,14 @@ export async function processInvoicePaid(params: {
       currency: invoice.currency || "eur",
       month_index: monthIndex,
       status: "pending",
+      brand_id: brandId,
+      product_key: resolvedProductKey,
       due_at: dueAt,
+      hold_until: holdUntil,
       metadata: {
         billing_reason: invoice.billing_reason,
         invoice_number: invoice.number,
+        tier: affiliate.tier,
         ...extraMetadata,
       },
     },
@@ -195,6 +295,31 @@ export async function processInvoicePaid(params: {
 
   if (error) return { created: false, reason: error.message };
   return { created: true, amountCents };
+}
+
+/**
+ * For a recurring invoice (month N of subscription), pick the right commission
+ * amount based on tier + product config. Returns 0 if past cap.
+ */
+function pickInvoiceCommission(
+  product: BrandProduct,
+  tier: string,
+  monthIndex: number,
+): number {
+  // Standard tier: only 1 commission (first invoice).
+  if (tier !== "vip" && tier !== "partner") {
+    if (monthIndex === 1) return product.standard_flat_commission_cents;
+    return 0;
+  }
+  // VIP / partner: first invoice uses vip_first_flat, recurring uses vip_recurring_flat.
+  if (monthIndex === 1) return product.vip_first_flat_commission_cents;
+  if (
+    product.vip_recurring_months > 0 &&
+    monthIndex <= product.vip_recurring_months
+  ) {
+    return product.vip_recurring_flat_cents;
+  }
+  return 0;
 }
 
 /**
