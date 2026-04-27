@@ -194,8 +194,10 @@ html {
   will-change: transform, opacity;
 }
 
-/* Cursor custom helpers */
-[data-cursor="hover"] { cursor: none; }
+/* Cursor custom helpers — solo desktop hover-capable (Sprint 27 fix) */
+@media (min-width: 1024px) and (hover: hover) {
+  [data-cursor="hover"] { cursor: none; }
+}
 .cursor-ring {
   position: fixed;
   top: 0;

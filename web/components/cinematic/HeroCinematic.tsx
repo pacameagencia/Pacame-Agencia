@@ -143,25 +143,26 @@ export default function HeroCinematic() {
           transition={{ duration: 0.9, delay: 0.85, ease: EASE_APPLE }}
           className="mt-10 flex flex-col items-start gap-5 sm:flex-row sm:items-center"
         >
+          {/* CTA primario Sprint 27 — directo a conversion (auditoría gratis) */}
           <MagneticBox strength={0.18}>
             <Link
-              href="/servicios"
+              href="/contacto?source=hero&type=audit"
               data-cursor="hover"
-              aria-label="Ver servicios PACAME desde 300 euros"
+              aria-label="Reservar auditoría digital gratuita de 30 minutos"
               className="group relative inline-flex min-h-[56px] items-center justify-center gap-3 overflow-hidden rounded-full bg-tech-accent px-7 py-4 text-[15px] font-semibold text-tech-bg transition-all duration-300 hover:bg-tech-accent-soft hover:shadow-tech-glow focus:outline-none focus-visible:ring-4 focus-visible:ring-tech-accent-glow active:scale-[0.98]"
             >
               <Sparkles className="h-4 w-4" strokeWidth={2.2} />
-              Ver servicios desde 300&nbsp;€
+              Auditoría digital gratis · 30 min
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" />
             </Link>
           </MagneticBox>
 
           <Link
-            href="/contacto"
+            href="/servicios"
             data-cursor="hover"
             className="group inline-flex min-h-[44px] items-center gap-2 px-2 py-3 text-[15px] font-medium text-tech-text-soft underline decoration-tech-text-faint underline-offset-[6px] transition-colors hover:text-tech-text hover:decoration-tech-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-tech-accent/40 rounded-md"
           >
-            o hablar con el equipo
+            o ver servicios desde 300&nbsp;€
             <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </motion.div>

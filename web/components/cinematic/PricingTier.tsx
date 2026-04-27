@@ -16,62 +16,88 @@ import MagneticBox from "@/components/effects/MagneticBox";
 import { EASE_APPLE } from "@/lib/animations/easings";
 
 interface Tier {
+  /** Slug interno (Stripe lookup) */
+  slug: string;
+  /** Nombre comercial Sprint 27 — outcome-focused */
   name: string;
+  /** Para quién es (1 línea bajo nombre) */
+  forWho: string;
+  /** Setup price */
   price: string;
-  cadence?: string;
+  /** Mes recurring */
+  monthly?: string;
+  /** Total año 1 transparente (suma de setup + 12 meses) */
+  totalYear1: string;
+  /** Description larga */
   description: string;
   features: string[];
   cta: string;
   href: string;
   featured?: boolean;
+  /** Etiqueta de behavioral anchor */
+  badge?: string;
 }
 
 const TIERS: Tier[] = [
   {
-    name: "Despega",
+    slug: "starter",
+    name: "Starter",
+    forWho: "Freelancers y micro-PYMEs (<500k€/año)",
     price: "1.800 €",
-    cadence: "pago único",
-    description: "Para arrancar tu presencia digital de cero con calidad.",
+    monthly: "150 €/mes",
+    totalYear1: "Año 1: 3.600 €",
+    description:
+      "Arranca tu presencia digital con calidad y cero curva técnica.",
     features: [
-      "Web profesional 5–7 páginas",
-      "Identidad visual básica",
-      "SEO técnico inicial",
-      "Google Business Profile",
-      "Hosting + mantenimiento 6m",
+      "Web profesional 5–7 páginas (Next.js)",
+      "Identidad visual básica (logo + paleta)",
+      "SEO técnico on-page + Google Business",
+      "Hosting + mantenimiento 12 meses",
+      "1 campaña digital al mes",
     ],
-    cta: "Reservar plan",
-    href: "/checkout?plan=despega",
+    cta: "Empezar con Starter",
+    href: "/contacto?plan=starter&source=pricing",
   },
   {
-    name: "Escala",
+    slug: "growth",
+    name: "Growth",
+    forWho: "PYMEs en crecimiento (2–20M€/año)",
     price: "3.500 €",
-    cadence: "pago único + 250 €/mes",
-    description: "Crecimiento digital sostenido. El más elegido.",
+    monthly: "350 €/mes",
+    totalYear1: "Año 1: 7.700 €",
+    description: "Crecimiento sostenido con equipo multidisciplinar.",
     features: [
-      "Todo lo de Despega +",
-      "SEO contenido mensual",
-      "Redes sociales gestionadas",
-      "Email marketing",
-      "Reporting + reuniones mensuales",
+      "Todo lo de Starter +",
+      "SEO contenido mensual + link building",
+      "Redes sociales gestionadas (4 publicaciones/sem)",
+      "Email marketing + automation básica",
+      "Google/Meta Ads (presupuesto aparte)",
+      "Reporting + 2 reuniones estratégicas/mes",
     ],
-    cta: "Reservar plan",
-    href: "/checkout?plan=escala",
+    cta: "Empezar con Growth",
+    href: "/contacto?plan=growth&source=pricing",
     featured: true,
+    badge: "Más elegido",
   },
   {
-    name: "Domina",
+    slug: "enterprise",
+    name: "Enterprise",
+    forWho: "Empresas escalando (>20M€/año o tracción rápida)",
     price: "8.000 €",
-    cadence: "pago único + 750 €/mes",
-    description: "Transformación digital total con equipo dedicado.",
+    monthly: "800 €/mes",
+    totalYear1: "Año 1: 17.600 €",
+    description: "Transformación digital integral con equipo dedicado.",
     features: [
-      "Todo lo de Escala +",
-      "Publicidad Meta + Google Ads",
-      "Marketing automation",
+      "Todo lo de Growth +",
+      "Growth hacking + experimentos A/B",
+      "Marketing automation avanzada (HubSpot/Customer.io)",
       "Customer success dedicado",
-      "Estrategia trimestral",
+      "Analytics dashboard custom",
+      "Estrategia trimestral con CEO",
     ],
     cta: "Hablar con ventas",
-    href: "/contacto?plan=domina",
+    href: "/contacto?plan=enterprise&source=pricing",
+    badge: "Custom scope",
   },
 ];
 
@@ -147,11 +173,15 @@ export default function PricingTier() {
                   : "border-tech-border bg-tech-surface hover:border-tech-text-faint"
               }`}
             >
-              {/* Featured badge */}
-              {tier.featured && (
-                <span className="absolute right-5 top-5 inline-flex items-center gap-1 rounded-full border border-tech-accent/40 bg-tech-accent/10 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.2em] text-tech-accent">
-                  <Sparkles className="h-3 w-3" strokeWidth={2.4} />
-                  Más elegido
+              {/* Custom badge */}
+              {tier.badge && (
+                <span className={`absolute right-5 top-5 inline-flex items-center gap-1 rounded-full border px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.2em] ${
+                  tier.featured
+                    ? "border-tech-accent/40 bg-tech-accent/10 text-tech-accent"
+                    : "border-tech-text-mute/30 bg-tech-elevated text-tech-text-soft"
+                }`}>
+                  {tier.featured && <Sparkles className="h-3 w-3" strokeWidth={2.4} />}
+                  {tier.badge}
                 </span>
               )}
 
@@ -160,19 +190,41 @@ export default function PricingTier() {
                 {tier.name}
               </h3>
 
+              {/* For who */}
+              <p className="mt-1.5 text-[12px] text-tech-text-mute leading-snug">
+                {tier.forWho}
+              </p>
+
               {/* Price */}
-              <div className="mt-4">
-                <div
-                  className="font-sans text-5xl font-semibold leading-none tabular-nums tracking-tight text-tech-text md:text-6xl"
-                  style={{ letterSpacing: "-0.03em" }}
-                >
-                  {tier.price}
+              <div className="mt-5 border-t border-tech-border-soft pt-5">
+                <div className="flex items-baseline gap-2">
+                  <span
+                    className="font-sans text-5xl font-semibold leading-none tabular-nums tracking-tight text-tech-text md:text-6xl"
+                    style={{ letterSpacing: "-0.03em" }}
+                  >
+                    {tier.price}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-tech-text-mute">
+                    setup
+                  </span>
                 </div>
-                {tier.cadence && (
-                  <div className="mt-2 font-mono text-[11px] uppercase tracking-[0.18em] text-tech-text-mute">
-                    {tier.cadence}
+                {tier.monthly && (
+                  <div className="mt-3 flex items-baseline gap-2">
+                    <span className="text-tech-text-mute text-[15px]">+</span>
+                    <span className="font-sans text-2xl font-medium tabular-nums text-tech-text-soft">
+                      {tier.monthly}
+                    </span>
                   </div>
                 )}
+                {/* Total año 1 transparente — Sprint 27 trust */}
+                <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-tech-border-soft bg-tech-bg px-3 py-1">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-tech-text-mute">
+                    Total
+                  </span>
+                  <span className="font-sans text-[12px] font-semibold text-tech-text">
+                    {tier.totalYear1}
+                  </span>
+                </div>
               </div>
 
               {/* Description */}

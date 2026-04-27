@@ -210,7 +210,7 @@ export default function AgentsSpotlight() {
             </motion.li>
           ))}
 
-          {/* Card 8: Pablo el editor jefe (humano) */}
+          {/* Card 8: Pablo el editor jefe humano — Sprint 27 trust card */}
           <motion.li
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -220,26 +220,61 @@ export default function AgentsSpotlight() {
             <Link
               href="/equipo"
               data-cursor="hover"
-              className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-tech-accent/30 bg-tech-elevated p-5 transition-all duration-500 hover:border-tech-accent hover:shadow-tech-glow"
+              className="group relative block overflow-hidden rounded-2xl border border-tech-accent/40 bg-tech-elevated transition-all duration-500 hover:border-tech-accent hover:shadow-tech-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-tech-accent/40"
+              aria-label="Pablo Calleja, CEO y editor jefe humano de PACAME"
             >
-              <div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-tech-accent/40 bg-tech-accent/5 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.22em] text-tech-accent">
-                  <span className="h-1 w-1 rounded-full bg-tech-accent" />
-                  Editor jefe humano
-                </span>
-                <h3 className="mt-6 font-sans text-[28px] font-semibold leading-none tracking-tight text-tech-text" style={{ letterSpacing: "-0.02em" }}>
-                  Pablo Calleja
-                </h3>
-                <p className="mt-3 text-[14px] leading-relaxed text-tech-text-soft">
-                  CEO + Director editorial. Revisa cada línea, responde cada
-                  email. Sin piloto automático.
-                </p>
+              {/* Foto Pablo (generada con Atlas Cloud — placeholder hasta foto real) */}
+              <div className="relative aspect-[4/5] overflow-hidden bg-tech-elevated">
+                <Image
+                  src="/generated/optimized/pablo-portrait-tech.webp"
+                  alt="Pablo Calleja — CEO y editor jefe humano de PACAME"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover transition-all duration-700 group-hover:scale-[1.04]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-tech-bg/40 via-transparent to-tech-bg/95" />
+
+                {/* Top: badge HUMANO + arrow */}
+                <div className="absolute inset-x-0 top-0 flex items-start justify-between p-4">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-tech-accent/40 bg-tech-bg/60 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.22em] text-tech-accent backdrop-blur-sm">
+                    <span className="relative flex h-1 w-1">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-tech-accent opacity-60" />
+                      <span className="relative inline-flex h-1 w-1 rounded-full bg-tech-accent" />
+                    </span>
+                    Humano · Editor jefe
+                  </span>
+                  <span className="rounded-full border border-tech-text/20 bg-tech-bg/40 p-1.5 backdrop-blur-sm transition-all duration-300 group-hover:border-tech-accent group-hover:text-tech-accent">
+                    <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-45" />
+                  </span>
+                </div>
+
+                {/* Bottom: name + role */}
+                <div className="absolute inset-x-0 bottom-0 p-5">
+                  <div
+                    className="font-sans text-[28px] font-semibold leading-none tracking-tight text-tech-text"
+                    style={{ letterSpacing: "-0.02em" }}
+                  >
+                    Pablo Calleja
+                  </div>
+                  <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-tech-text-soft">
+                    CEO · Director editorial
+                  </div>
+                </div>
               </div>
-              <div className="mt-6 flex items-center justify-between">
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-tech-text-mute">
-                  Conocer
-                </span>
-                <ArrowUpRight className="h-4 w-4 text-tech-accent transition-transform duration-300 group-hover:rotate-45" />
+
+              {/* Tagline + LinkedIn */}
+              <div className="space-y-3 border-t border-tech-border-soft p-5">
+                <p className="text-[13px] leading-relaxed text-tech-text-soft">
+                  Revisa cada línea. Responde cada email. Sin piloto automático.
+                </p>
+                <div className="flex items-center gap-3 pt-2 border-t border-tech-border-soft">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-tech-text-mute">
+                    LinkedIn
+                  </span>
+                  <span className="text-[12px] text-tech-text-soft">
+                    @pablocallejaweb
+                  </span>
+                </div>
               </div>
             </Link>
           </motion.li>

@@ -235,7 +235,11 @@ async function pool(items, fn, concurrency) {
 }
 
 async function main() {
-  const manifestPath = path.join(__dirname, "asset-manifest.json");
+  // Soporta --manifest=path/relative/to/scripts/file.json
+  const manifestArg = args.find((a) => a.startsWith("--manifest="));
+  const manifestPath = manifestArg
+    ? path.join(__dirname, manifestArg.slice(11))
+    : path.join(__dirname, "asset-manifest.json");
   const manifest = JSON.parse(await fs.readFile(manifestPath, "utf8"));
 
   let assets = manifest.assets;

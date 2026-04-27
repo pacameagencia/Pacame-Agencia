@@ -42,6 +42,20 @@ interface KineticHeadingProps {
   threshold?: number;
   /** Disable la animación (renderiza estático) */
   disabled?: boolean;
+  /** A11y: texto accesible que screen readers leerán íntegro.
+   *  Si no se pasa, intenta extraer del children. */
+  ariaLabel?: string;
+}
+
+/** Extrae texto plano de ReactNode para aria-label fallback */
+function flattenText(node: ReactNode): string {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(flattenText).join(" ");
+  if (typeof node === "object" && "props" in node) {
+    return flattenText((node as { props: { children?: ReactNode } }).props.children);
+  }
+  return "";
 }
 
 export default function KineticHeading({
@@ -54,6 +68,7 @@ export default function KineticHeading({
   delay = 0,
   threshold = 0.2,
   disabled = false,
+  ariaLabel,
 }: KineticHeadingProps) {
   const ref = useRef<HTMLElement | null>(null);
   const animatedRef = useRef(false);
@@ -75,9 +90,25 @@ export default function KineticHeading({
     });
   }, [inView, disabled, duration, delay, stagger]);
 
+  // A11y: aria-label con texto entero + aria-hidden a los chars (que se
+  // generan post-mount con animejs text.split). Screen readers leen el
+  // aria-label, NO los <span> sueltos por carácter (Sprint 27 fix).
+  const accessibleText = ariaLabel || flattenText(children).trim();
+
   return createElement(
     as as ElementType,
-    { ref: setRefs, className, style },
-    children,
+    {
+      ref: setRefs,
+      className,
+      style,
+      "aria-label": accessibleText || undefined,
+    },
+    // Wrap children en span aria-hidden para que screen readers ignoren
+    // los chars individuales tras el text.split de animejs.
+    createElement(
+      "span",
+      { "aria-hidden": "true" as const, style: { display: "contents" } },
+      children,
+    ),
   );
 }

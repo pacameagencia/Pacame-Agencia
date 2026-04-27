@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import HeroCinematic from "@/components/cinematic/HeroCinematic";
+import SocialProofBar from "@/components/cinematic/SocialProofBar";
 import ManifestSection from "@/components/cinematic/ManifestSection";
 import ToolsCarousel from "@/components/cinematic/ToolsCarousel";
 import ThemeBodyClass from "@/components/theme/ThemeBodyClass";
 
 // Below-the-fold: dynamic imports para mejor LCP
+const AIShowcase = dynamic(() => import("@/components/cinematic/AIShowcase"));
 const AgentsSpotlight = dynamic(
   () => import("@/components/cinematic/AgentsSpotlight"),
 );
@@ -64,8 +66,10 @@ export default function HomePage() {
       <ThemeBodyClass className="theme-tech" />
 
       <HeroCinematic />
+      <SocialProofBar />
       <ToolsCarousel />
       <ManifestSection />
+      <AIShowcase />
       <AgentsSpotlight />
       <CasesShowcase />
       <PricingTier />

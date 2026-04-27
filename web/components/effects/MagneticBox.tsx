@@ -59,11 +59,21 @@ export default function MagneticBox({
     y.set(0);
   };
 
+  // A11y (Sprint 27): si un elemento interno recibe focus por teclado,
+  // resetea posición magnética para que el focus visible se alinee con el
+  // botón en su posición real. Sin esto, el botón "vuela" y el ring de
+  // focus queda desplazado.
+  const handleFocus = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   return (
     <motion.div
       ref={ref}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
+      onFocus={handleFocus}
       style={{ x: sx, y: sy }}
       className={className}
     >
