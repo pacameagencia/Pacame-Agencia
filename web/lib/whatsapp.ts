@@ -1,9 +1,11 @@
 import { getLogger } from "@/lib/observability/logger";
+import { getMetaToken, hasMetaToken } from "@/lib/meta-token";
 
-const WHATSAPP_PHONE_ID = process.env.WHATSAPP_PHONE_ID;
-const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
 const WHATSAPP_VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN || "pacame_wa_verify_2026";
 const GRAPH_API = "https://graph.facebook.com/v21.0";
+
+const phoneId = () => process.env.WHATSAPP_PHONE_ID;
+const token = () => getMetaToken("whatsapp");
 
 export { WHATSAPP_VERIFY_TOKEN };
 
@@ -39,7 +41,7 @@ interface WhatsAppMessageResult {
  * Check if WhatsApp Business API is configured.
  */
 export function isWhatsAppConfigured(): boolean {
-  return !!(WHATSAPP_PHONE_ID && WHATSAPP_TOKEN);
+  return !!(phoneId() && hasMetaToken("whatsapp"));
 }
 
 /**
@@ -50,8 +52,10 @@ export async function sendWhatsApp(
   to: string,
   message: string
 ): Promise<WhatsAppMessageResult> {
-  if (!WHATSAPP_PHONE_ID || !WHATSAPP_TOKEN) {
-    getLogger().warn("[WhatsApp] Not configured — WHATSAPP_PHONE_ID or WHATSAPP_TOKEN missing");
+  const pid = phoneId();
+  const tok = token();
+  if (!pid || !tok) {
+    getLogger().warn("[WhatsApp] Not configured — WHATSAPP_PHONE_ID or token missing");
     return { success: false, error: "WhatsApp not configured" };
   }
 
@@ -67,11 +71,11 @@ export async function sendWhatsApp(
   };
 
   try {
-    const res = await fetch(`${GRAPH_API}/${WHATSAPP_PHONE_ID}/messages`, {
+    const res = await fetch(`${GRAPH_API}/${pid}/messages`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${WHATSAPP_TOKEN}`,
+        Authorization: `Bearer ${tok}`,
       },
       body: JSON.stringify(payload),
     });
@@ -108,7 +112,9 @@ export async function sendWhatsAppTemplate(
   languageCode = "es",
   parameters?: string[]
 ): Promise<WhatsAppMessageResult> {
-  if (!WHATSAPP_PHONE_ID || !WHATSAPP_TOKEN) {
+  const pid = phoneId();
+  const tok = token();
+  if (!pid || !tok) {
     return { success: false, error: "WhatsApp not configured" };
   }
 
@@ -134,11 +140,11 @@ export async function sendWhatsAppTemplate(
   }
 
   try {
-    const res = await fetch(`${GRAPH_API}/${WHATSAPP_PHONE_ID}/messages`, {
+    const res = await fetch(`${GRAPH_API}/${pid}/messages`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${WHATSAPP_TOKEN}`,
+        Authorization: `Bearer ${tok}`,
       },
       body: JSON.stringify(payload),
     });
@@ -162,14 +168,16 @@ export async function sendWhatsAppTemplate(
  * Mark a message as read (blue ticks).
  */
 export async function markAsRead(messageId: string): Promise<boolean> {
-  if (!WHATSAPP_PHONE_ID || !WHATSAPP_TOKEN) return false;
+  const pid = phoneId();
+  const tok = token();
+  if (!pid || !tok) return false;
 
   try {
-    const res = await fetch(`${GRAPH_API}/${WHATSAPP_PHONE_ID}/messages`, {
+    const res = await fetch(`${GRAPH_API}/${pid}/messages`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${WHATSAPP_TOKEN}`,
+        Authorization: `Bearer ${tok}`,
       },
       body: JSON.stringify({
         messaging_product: "whatsapp",
