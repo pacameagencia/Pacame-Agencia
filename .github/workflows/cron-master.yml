@@ -1,0 +1,56 @@
+name: Cron Master (Vercel Hobby Workaround)
+
+# Vercel Hobby plan limita los cron jobs a 1/día.
+# Este workflow llama al endpoint master-cron cada 5 minutos para mantener
+# la cadencia original de los 12 crons internos despachados desde
+# /api/agents/master-cron.
+#
+# Cuando se haga upgrade a Vercel Pro → restaurar `*/5 * * * *` en
+# web/vercel.json y eliminar este workflow.
+
+on:
+  schedule:
+    # GitHub Actions cron mínimo es 5 min, alineado con la cadencia original.
+    - cron: "*/5 * * * *"
+  workflow_dispatch: # permite trigger manual
+
+jobs:
+  ping-master-cron:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call /api/agents/master-cron
+        run: |
+          STATUS=$(curl -s -o /tmp/response.json -w "%{http_code}" \
+            -X POST "https://pacameagencia.com/api/agents/master-cron" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json")
+
+          echo "HTTP $STATUS"
+          cat /tmp/response.json | head -c 800
+          echo ""
+
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::master-cron returned HTTP $STATUS"
+            exit 1
+          fi
+
+  ping-health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    # Solo cada 30 min para no saturar
+    if: ${{ github.event.schedule == '*/5 * * * *' && (github.run_attempt == 1) }}
+    steps:
+      - name: Call /api/health (every 6th run, ~30 min)
+        run: |
+          # Use date minute to throttle to every 30 min
+          MIN=$(date +%M)
+          if [ $((MIN % 30)) -ne 0 ]; then
+            echo "Skipping health check (minute=$MIN, runs only every 30min)"
+            exit 0
+          fi
+
+          STATUS=$(curl -s -o /tmp/response.json -w "%{http_code}" \
+            "https://pacameagencia.com/api/health")
+          echo "HTTP $STATUS"
+          cat /tmp/response.json | head -c 400
