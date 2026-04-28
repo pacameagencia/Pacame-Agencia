@@ -2,11 +2,12 @@
 
 Agencia digital potenciada por IA. **10 agentes especializados + 120+ subespecialistas**, supervisados por Pablo Calleja.
 
-## Arquitectura — 3 capas (datos no se cruzan)
+## Arquitectura — 4 capas (datos no se cruzan)
 
 - **Capa 1 — Factoría PACAME** (`pacameagencia.com`): la fábrica. 10 agentes IA + skills + red neuronal + workflows n8n.
 - **Capa 2 — Clientes B2B**: negocios externos servidos por la factoría (Casa Marisol, Joyería Royo, Clara Women, Bravamood, etc.). Cada uno con su infra propia.
-- **Capa 3 — Proyectos propios**: SaaS y negocios que opera Pablo (Dark Room, La Caleta, AsesorPro, PromptForge, PacameGPT). Aislados de la factoría.
+- **Capa 3 — SaaS bajo paraguas PACAME Studios**: AsesorPro, PromptForge, PacameGPT. Productos hijos del ecosistema PACAME.
+- **Capa 4 — Negocios personales de Pablo**: opera personalmente, sin asociación pública con PACAME.
 
 Doc maestro: [`strategy/arquitectura-3-capas.md`](strategy/arquitectura-3-capas.md).
 
