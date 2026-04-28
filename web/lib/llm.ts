@@ -28,6 +28,11 @@ import {
 } from "./llm/resolver";
 import { recordLlmCall, estimateCostUsd } from "./llm/observability";
 import { checkBudget, LlmBudgetExceeded } from "./llm/budget-guard";
+import {
+  withBrainContext,
+  isRegisteredAgent,
+  type BrainContextOptions,
+} from "./llm/brain-context";
 
 export type { LLMTier, LLMStrategy } from "./llm/resolver";
 
@@ -62,6 +67,15 @@ export interface LLMOptions {
   source?: string;
   /** Metadata extra para llm_calls.metadata */
   metadata?: Record<string, unknown>;
+  /**
+   * Inyectar contexto del cerebro neural (memorias + sinapsis del agente)
+   * como system message ANTES del prompt original.
+   * - `true` o ausente: auto-activado si `agentId` es un agente PACAME registrado.
+   * - `false`: opt-out explicito (util en tests, llamadas no-conversacionales o coste critico).
+   * - `BrainContextOptions`: customizar tags, limit, importance min.
+   * Es no-bloqueante: si falla el cerebro, el agente responde sin contexto.
+   */
+  brainContext?: boolean | BrainContextOptions;
 }
 
 export interface LLMResult {
@@ -157,6 +171,20 @@ export async function llmChat(
         (p) => !(p === "gemma" && (skipGemma || tier !== "economy"))
       );
 
+  // Brain context auto-injection — antes de llamar a provider chain.
+  // Solo se activa si:
+  //   - `agentId` es un agente PACAME registrado (dios/sage/nova/...)
+  //   - `brainContext` no es false explicito
+  // Es no-bloqueante: si la consulta a Supabase falla, el agente responde sin contexto.
+  let messagesForLlm: LLMMessage[] = messages;
+  if (opts.brainContext !== false && isRegisteredAgent(opts.agentId)) {
+    const ctxOpts: BrainContextOptions =
+      typeof opts.brainContext === "object" && opts.brainContext !== null
+        ? opts.brainContext
+        : {};
+    messagesForLlm = await withBrainContext(opts.agentId, messages, ctxOpts);
+  }
+
   const log = getLogger();
   let lastError: Error | null = null;
 
@@ -165,7 +193,7 @@ export async function llmChat(
     const isPrimary = i === 0;
     try {
       const result = await callProvider(provider, {
-        messages,
+        messages: messagesForLlm,
         model: resolved.models[provider] || "",
         maxTokens,
         temperature,

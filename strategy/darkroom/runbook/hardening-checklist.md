@@ -69,20 +69,32 @@
 
 ---
 
-## Prioridad 3 — Whois privacy + identidad (1 día)
+## Prioridad 3 — Whois privacy + identidad ✅ VERIFICADO 2026-04-28
 
 **Por qué**: si el dominio `darkroomcreative.cloud` está registrado a nombre de Pablo persona física, cualquier reclamación legal llega directa a su DNI.
 
-### Pasos
+### Estado verificado (2026-04-28)
 
-1. Comprobar registro actual del dominio (panel Hostinger).
-2. Activar **Whois privacy** o servicio equivalente (free en muchos registrars; en Hostinger viene activo por defecto en `.cloud`).
-3. Si sigue mostrando datos personales: cambiar el contacto a la SL nueva (cuando esté constituida) o a un buzón corporativo `legal@darkroomcreative.cloud`.
-4. Verificar con consulta whois pública.
+DIOS auditó el whois público vía `who.is/whois/darkroomcreative.cloud`. Resultado:
+
+- **Registrar**: HOSTINGER operations, UAB
+- **Privacidad**: ✅ ACTIVA por defecto. Datos del registrante REDACTED.
+- **Spanish PII**: ✅ no expuesta (sin nombre, sin DNI, sin dirección personal).
+- **Domain creado**: 2026-04-23.
+- **Domain expira**: 2027-04-23.
+- **Domain status**: `clientTransferProhibited`, `addPeriod`.
+
+⚠️ **Observación menor**: nameservers reportados como `nova.dns-parking.com` / `cosmos.dns-parking.com` (parking de Hostinger). El sitio resuelve igualmente a `76.76.21.21` (Vercel) — probablemente el whois está cacheado o el registrar muestra los NS originales pre-Vercel. **No bloquea**: el sitio funciona y el riesgo de exposición de PII es nulo. Verificar en próximos 30 días que NS reporta Vercel en consultas frescas.
+
+### Acciones residuales (a futuro)
+
+Solo aplicarlas si Hostinger desactiva privacy o se traslada el dominio a otro registrar:
+
+1. Confirmar **Whois privacy** sigue activa.
+2. Si pasa a SL nueva (constituida en el futuro), cambiar contacto registrante a buzón corporativo `legal@darkroomcreative.cloud`.
 
 ### KPI de éxito
-- ✅ `whois darkroomcreative.cloud` no muestra ni "Pablo Calleja" ni el DNI.
-- ✅ Tampoco aparece direccion personal de Pablo.
+- ✅ `whois darkroomcreative.cloud` no muestra "Pablo Calleja" ni DNI ni dirección personal.
 
 ---
 
