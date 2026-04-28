@@ -3,8 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "scripts": {
+    "setup-whisk": "npm install playwright && npx playwright install chromium",
+    "bulk-whisk": "node bulk-whisk.mjs",
+    "loop-seamless": "node loop-seamless.mjs"
+  },
   "dependencies": {
     "pg": "^8.20.0",
     "sharp": "*"
+  },
+  "optionalDependencies": {
+    "playwright": "^1.48.0"
   }
 }

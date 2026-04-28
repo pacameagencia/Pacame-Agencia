@@ -351,3 +351,45 @@ Mantener prosa SOLO cuando el modelo no tolere JSON o el output sea moodboard ex
 - **Time-lapse renovation** (Veo 3.1 start/end frame + Nano Banana Pro fases intermedias).
 - **UGC e-commerce ad** (3×3 product grid + AI actor + Kling 2.1 Pro hablando).
 - Ver §10 Roadmap del [[santo-grial-visual]] para priorización P1-P4.
+
+### Bulk gratis vía Whisk Labs (subskill nueva)
+
+`carruseles-darkroom/bulk-whisk.mjs` — mass-gen de imágenes vía Google Whisk Labs sin gastar API. **Coste: $0**, rate-limit: ~100 attempts/día en cuenta Google. Ideal para B-roll, variaciones, moodboards o piezas que no exijan el control quirúrgico de Nano Banana Pro.
+
+**Setup primera vez** (una sola vez):
+
+```bash
+# 1) Sesión Google viva (heredada del skill notebooklm — si ya autenticaste, skip)
+python C:\Users\Pacame24\.claude\skills\notebooklm\scripts\run.py auth_manager.py setup
+
+# 2) Playwright + Chromium en carruseles-darkroom
+npm run setup-whisk --prefix carruseles-darkroom
+```
+
+**Uso**:
+
+```bash
+# Lista de prompts en .txt (1 por línea, # comentarios ignorados)
+node carruseles-darkroom/bulk-whisk.mjs --prompts=prompts.txt --output=carruseles-darkroom/output/whisk-bulk
+
+# Prompt único inline con N imágenes
+node carruseles-darkroom/bulk-whisk.mjs --prompt="cinematic violet ink in black water" --count=2 --output=...
+
+# Debug visual (browser visible — útil la 1ª vez para ver UI Whisk)
+node carruseles-darkroom/bulk-whisk.mjs --prompts=p.txt --show-browser
+
+# Verificar auth sin gastar quota
+node carruseles-darkroom/bulk-whisk.mjs --dry-run
+```
+
+**Cuándo usar Whisk vs Atlas/Freepik**:
+
+| Caso | Tool |
+|---|---|
+| 50 variaciones de fondo b-roll abstracto | Whisk (gratis) |
+| Producto con texto en etiqueta legible | Nano Banana Pro (Atlas) |
+| Hero shot con rostro Pablo (consistency) | Nano Banana Pro `edit` con ref |
+| Carrusel 10 slides texto pesado | DALL-E ChatGPT Image 2.0 |
+| Moodboard exploratorio | Whisk |
+
+**Reusa la sesión del skill `notebooklm`**: cero auth duplicada. Si caduca, `auth_manager.py reauth`.
