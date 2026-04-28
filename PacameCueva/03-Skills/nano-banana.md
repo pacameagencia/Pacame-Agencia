@@ -152,3 +152,76 @@ When the user asks for changes:
 | Quota exceeded | Wait for reset or switch to flash model |
 | Image generation failed | Check prompt for policy violations, simplify request |
 | Output directory missing | Will be created automatically on first run |
+
+---
+
+## Update 2026-04-28 — Patrones canónicos (Santo Grial Visual)
+
+**Doc maestro de referencia**: [[santo-grial-visual]] (en `04-Workflows/`).
+
+Nano Banana (Pro / 2 / base) es **el motor estrella** para PACAME según el santo grial. Aplica estos patrones siempre que generes imagen producto/character/arquitectura.
+
+### Patrones de prompting recomendados
+
+**1. Edición quirúrgica** (swap parcial sin alterar el resto del sujeto):
+```
+swap the [element] for [new element]; keep the rest of the image unchanged
+```
+Ej: `swap the cat for a dalmatian; keep lighting, camera angle and background unchanged`.
+
+**2. Multi-shot grid (consistency)** — base obligatoria antes de animar a vídeo:
+```
+create a 3x3 grid of different angles of this product
+```
+Después: `place the [product] in the influencer's hand match the lighting of the product to the environment`.
+
+**3. Character ref 360°** (para UGC ads o serie con personaje):
+```
+generate a 360-degree character reference sheet of [character description]; include front, 3/4 left, profile left, back, profile right, 3/4 right; consistent lighting and outfit
+```
+
+**4. UGC selfie (TikTok/Reels)** — prefijo obligatorio:
+```
+phone front camera selfie [persona description] [setting]
+```
+
+**5. JSON Prompting (control quirúrgico):**
+```json
+{
+  "subject": "...",
+  "action": "...",
+  "environment": "...",
+  "lighting": "natural window light, warm",
+  "camera": "Canon 5D Mark IV, shallow depth of field",
+  "style": "editorial photography",
+  "color_palette": ["#hex1", "#hex2"]
+}
+```
+Cambias 1 valor → cambia 1 elemento.
+
+**6. Fórmula 6 componentes (cuando JSON no aplica):**
+```
+Subject + Action + Environment + Art Style + Lighting + Details
+```
+
+**7. Fórmula 8 componentes universal:**
+```
+Purpose + Subject + Style + Composition + Lighting + Text + Aspect Ratio + Constraints("no")
+```
+Pega los `no:` al final (excluir lo que NO quieres). El AI no falla por falta de creatividad sino por exceso de ella sin límites.
+
+### Anti-patterns críticos para Nano Banana
+
+- ❌ Wall of text vague ("Man walking on a street") → stock genérico.
+- ❌ Diálogo entre comillas en prompt visual → el modelo "graba" el texto en pantalla.
+- ❌ Estilos contradictorios ("Japanese Mediterranean Gothic") → caos visual.
+- ❌ Una sola cara AI para todo el branding → diversifica.
+- ❌ Pedir "make it more natural" sin números/ejemplos → AI loop infinito.
+
+### Workflow PACAME estándar con Nano Banana
+
+1. Multi-shot grid del producto/character (referencia).
+2. JSON prompt con la escena objetivo (lighting, camera, environment del cliente).
+3. Si necesitas variaciones masivas → bulk vía Whisk + AutoWhisk Chrome (alternativa low-cost a Freepik Spaces).
+4. Imagen final como **start frame** para Veo 3.1 / SeaDance 2.0 / Kling 2.6 (image-to-video).
+5. Siempre output 4:5 (1080×1350) para feed o 9:16 (1080×1920) para reel/story.

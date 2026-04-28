@@ -272,3 +272,69 @@ Cuando el usuario pida fotos/reels/carruseles:
 10. Test final: **"¿Esto podría estar en el Explore AHORA?"** Si no, iterar.
 
 No se declara terminado hasta que la pieza pasa ese test.
+
+---
+
+## Update 2026-04-28 — Santo Grial Visual (NotebookLM)
+
+**Doc maestro de referencia**: [[santo-grial-visual]] (en `04-Workflows/`). Lee ese doc antes de añadir/cambiar modelos en esta skill.
+
+### Modelos canónicos por capa (ampliación)
+
+**Imagen (orden de preferencia 2026)**:
+1. **Nano Banana Pro** (Gemini) — producto, arquitectura, edición quirúrgica, character refs 360°. Mantiene texto en etiquetas, swap ropa/fondo/luz sin alterar sujeto.
+2. **ChatGPT Image 2.0 (DALL-E)** — carruseles, mockups, brand assets, logos. Mejor legibilidad de texto del mercado.
+3. **Imagen FX** (Google, gratis) — fallback económico. Sin límite estricto, múltiples variaciones a la vez. Vía Whisk Labs (~100 attempts/día).
+4. **Flux 2 Pro / Flux Context / Flux Snell** — B-roll consistente, isolating clothing en capas transparentes.
+5. **Freepik Spaces** ya integrado vía `web/lib/freepik.ts` — para bulk lookbooks producto.
+6. **Z-Image Turbo** — gen ultra-rápida local 4-8 pasos en hardware modesto.
+7. **Qwen Image / Qwen Image Edit** — edición quirúrgica local + pose extraction.
+
+**Vídeo (NUEVO en stack PACAME, ahora referenciado)**:
+- **Veo 3.1 Fast / Quality** (Google Flow) — JSON prompts; ads $100k tier; audio nativo.
+- **SeaDance 2.0 / 2.5 Turbo Pro** — UGC ads, fashion, lip-sync premium, 1080p nativo.
+- **Kling 2.6 / 3.0** — start frame → end frame interpolation (clave para before/after).
+- **V-Fabric 1.0** (Viu) — talking videos hasta 1 min, 60× barato y 7× rápido vs alternativas.
+- LTX-2.3 ya soportado vía skill `ltx2`.
+
+### Modo de prompting preferido: JSON Prompting
+
+A partir de hoy, los prompts a modelos imagen/vídeo se construyen en **JSON estructurado**, no en prosa. Permite swaps quirúrgicos sin re-romper el resto.
+
+```json
+{
+  "subject": "...",
+  "action": "...",
+  "environment": "...",
+  "lighting": "...",
+  "camera": "...",
+  "style": "cinematic 35mm",
+  "color_palette": ["#hex1", "#hex2"]
+}
+```
+
+Mantener prosa SOLO cuando el modelo no tolere JSON o el output sea moodboard exploratorio.
+
+### Fórmulas estructuradas (alternativa cuando no hay JSON)
+
+- **Imagen 6 componentes**: `Subject + Action + Environment + Art Style + Lighting + Details`
+- **Imagen 8 componentes universal**: `Purpose + Subject + Style + Composition + Lighting + Text + Aspect Ratio + Constraints("no")`
+- **Vídeo cinematic 5 capas**: `Subject + Environment + Action + Camera Shot/Movement + Visual Style`
+- **UGC selfie**: prefijo `phone front camera selfie ...` obligatorio.
+- **Multi-shot grid (consistency)**: `create a 3x3 grid of different angles of this product`. Después usar el grid como ref para componer escenas.
+
+### Anti-patterns adicionales (NO HACER, según el santo grial)
+
+11. **Wall of text vague prompt** ("Man walking on a street") → resultado stock genérico. Usa fórmula o JSON.
+12. **AI Loop** — pedir "make it longer / more natural / shorter" sin métricas → loop infinito. Usa números absolutos o ejemplos.
+13. **Manual video prompts** — no escribas a mano prompts para Veo/Kling/Runway. Pasa la doc oficial del modelo a Claude/ChatGPT y deja que él formatee.
+14. **Diálogo entre comillas dentro de prompt visual** → el modelo "graba" el texto en pantalla. Pásalo por TTS.
+15. **Estilos contradictorios** ("Japanese Mediterranean Gothic") → caos.
+16. **Una sola cara AI** para todo el branding → diversifica para no estancar conversiones.
+17. **CFG > 8-9 en ComfyUI** → colores quemados, piel plástica.
+
+### Producers nuevos sugeridos para Dark Room
+
+- **Time-lapse renovation** (Veo 3.1 start/end frame + Nano Banana Pro fases intermedias).
+- **UGC e-commerce ad** (3×3 product grid + AI actor + Kling 2.1 Pro hablando).
+- Ver §10 Roadmap del [[santo-grial-visual]] para priorización P1-P4.

@@ -445,3 +445,81 @@ Esta skill es el contrato entre todos los agentes PACAME para producir contenido
 ---
 
 **Última revisión**: 2026-04-25 · **Skill version**: v1.0
+
+---
+
+## Update 2026-04-28 — Santo Grial Visual (NotebookLM)
+
+**Doc maestro de referencia**: [[santo-grial-visual]] (en `04-Workflows/`).
+
+### Estructura canónica de carrusel (10 slides)
+
+A partir de hoy, todo carrusel PACAME / Dark Room / cliente sigue esta estructura por defecto. Saltarse pasos solo con justificación explícita en el brief.
+
+| Slide | Función | Regla |
+|---|---|---|
+| 1 | **Hook** (cover) | El cover hace 80% del trabajo. Lectura < 2s. Alto contraste. Caras expresivas o tipografía dominante. |
+| 2 | Setup | Plantar el problema/contradicción. NO desvelar solución. |
+| 3 | Reframe | Cambio de óptica. Por qué lo "obvio" no aplica. |
+| 4 | Value 1 | Idea/insight 1 (1 idea por slide, regla dura). |
+| 5 | Value 2 | Idea/insight 2. |
+| 6 | Update | Mini-recap + tease del clímax. |
+| 7 | Climax | Insight más fuerte / payoff principal. |
+| 8 | Save Prompt | "Guarda este post" / "Vuelve cuando lo necesites". |
+| 9 | CTA | Acción concreta + dónde. |
+| 10 | (opcional) Bono / créditos / hashtags | Si aplica. |
+
+**Reglas técnicas asociadas**:
+
+- Aspect ratio **4:5 (1080×1350)** por defecto (no 1:1) → ocupa más pantalla en feed → +23% engagement vs 1:1.
+- Carrusel para LinkedIn: export PDF; carrusel IG: export PNG.
+- **Añadir música al carrusel IG** → entra en algoritmo Reels = reach gratis.
+- 7-10 slides es el sweet spot; menos de 7 pierde retention, más de 10 pierde finalización.
+
+### Frameworks de prompting (incorporar al brief)
+
+| Framework | Componentes | Cuándo usar |
+|---|---|---|
+| **ASPECT** | Acción + Steps + Persona + Examples + Context + Restrictions + Template | Tareas complejas, máxima precisión |
+| **TAREA** | Tarea + Acción + Rol + Ejemplo + Aclaraciones | Daily, rápido |
+| **CICLO** | Contexto + Instrucciones + Condiciones + Límites + Output | Reglas estrictas (cliente sensible) |
+| **ECO** | Expectativas + Contexto + Objetivo | Marketing 80/20 |
+| **ROSAS** | Rol + Objetivo + Situación + Acción + Secuencia | Business deliverables |
+
+Razonamiento (cuando el output requiere lógica multi-paso):
+- **COT** (Chain of Thought) — razonar paso a paso.
+- **TOT** (Tree of Thoughts) — explorar ramas y elegir golden path.
+- **ReAct** — razonar + actuar (web search, ask user).
+- **Adversarial Validation** ("Battle of the Bots") — personas que compiten + crítico → final.
+- **Metaprompting** — IA escribe el prompt para otra IA.
+
+Estructura de contenido:
+- **PAS** (Problem-Agitation-Solution) → Reels, Shorts, TikToks.
+- **4-Step Viral Script** (Promesa / Intro / Desarrollo+open loops / Final) → YouTube long.
+- **Timeline Prompting** → vídeo largo en bloques 3s × 4 = 12s.
+- **Brick by Brick** → empezar minimal y añadir capas progresivas (env → light → camera).
+
+### Reglas de viralidad incorporadas
+
+- **Hook layered**: text + visual + audio (riser SFX en frame 0). Plantear problema/contradicción, NO desvelar solución.
+- **Captions**: Poppins / Thrive, line-spacing ajustado, text-shadow + glow + fade-in 0.2s. Gradiente negro 90° tras texto si aplica.
+- **Vignette global** en reels para look cinematográfico unificado.
+- **Audio ducking -20 dB** del SFX nativo del modelo de vídeo (Veo, SeaDance, LTX-2.3) para no pisar voz/música.
+- **Loop seamless 10s** en reels → repetitive viewing → más retention.
+- **Bulk reels**: spreadsheet hooks/payoffs ChatGPT → Canva Bulk Create (low-cost).
+
+### 9 anti-patterns (NO HACER, refuerzo)
+
+1. Wall of text vague prompts.
+2. AI Loop ("hazlo más natural" sin métricas).
+3. Olvidar contexto + brand + audiencia.
+4. Escribir prompts vídeo manuales (pasar la doc del modelo a Claude/ChatGPT).
+5. Diálogo entre comillas dentro del prompt visual.
+6. Estilos contradictorios.
+7. Una sola cara AI para toda la marca.
+8. Scripts "experiencia personal" sin autoridad (escribir desde el dolor del oyente).
+9. Datos sensibles en prompts sin opt-out training.
+
+### Stack mínimo recomendado
+
+Audio antes que imagen, imagen antes que vídeo. Ver §2 del [[santo-grial-visual]] para el stack 7-pasos completo.
