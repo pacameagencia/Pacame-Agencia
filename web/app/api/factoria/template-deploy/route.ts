@@ -20,6 +20,8 @@ import path from "node:path";
 import { llmChat } from "@/lib/llm";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { verifyInternalAuth } from "@/lib/api-auth";
+import { cacheGetById } from "@/lib/factoria/intake-cache";
+import type { BrandBrief } from "@/lib/factoria/firecrawl-brand";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -36,6 +38,8 @@ interface ClientInput {
   current_state?: string;
   goals?: string[];
   language_secondary?: string;
+  /** FASE H: si presente, prefilla brand_primary_color y contact en el plan SAGE */
+  brand_brief?: BrandBrief;
 }
 
 interface DeploymentPlan {
@@ -155,17 +159,38 @@ export async function POST(request: NextRequest) {
   const unauthorized = verifyInternalAuth(request);
   if (unauthorized) return unauthorized;
 
-  let body: { template_id?: string; client?: ClientInput };
+  let body: { template_id?: string; client?: ClientInput; brief_id?: string };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "invalid JSON body" }, { status: 400 });
   }
 
-  const { template_id, client } = body;
+  const { template_id, brief_id } = body;
+  let client = body.client;
+
+  // FASE H: si llega brief_id, hidratamos campos client desde la cache.
+  // Permite que el caller pase solo {brief_id, template_id, client:{city}} y el
+  // resto se rellene del BrandBrief.
+  if (brief_id) {
+    const row = await cacheGetById(brief_id);
+    if (!row) {
+      return NextResponse.json({ error: `brief_id ${brief_id} not found in cache` }, { status: 404 });
+    }
+    const brief = row.brief_json;
+    client = {
+      business_name: client?.business_name || brief.business_name,
+      city: client?.city || "",
+      ...client,
+      email_contact: client?.email_contact ?? brief.contact?.email,
+      phone_whatsapp: client?.phone_whatsapp ?? brief.contact?.phone,
+      brand_brief: brief,
+    } as ClientInput;
+  }
+
   if (!template_id || !client?.business_name || !client?.city) {
     return NextResponse.json(
-      { error: "template_id, client.business_name and client.city required" },
+      { error: "template_id, client.business_name and client.city required (provee city aunque uses brief_id)" },
       { status: 400 }
     );
   }

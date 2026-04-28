@@ -26,6 +26,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { renderTemplate, slugify } from "./template-renderer";
 import type { RenderResult } from "./template-renderer";
+import type { BrandBrief } from "./firecrawl-brand";
 
 export interface ClientInput {
   business_name: string;
@@ -60,6 +61,12 @@ export interface ClientInput {
   language_primary?: string;
   goals?: string[];
   current_state?: string;
+  /**
+   * FASE H · BrandBrief extraído por Firecrawl en /factoria/intake.
+   * Si presente, prefilla brand_primary_color, brand_secondary_color,
+   * email_contact, phone_whatsapp y business_name (si están vacíos en client).
+   */
+  brand_brief?: BrandBrief;
 }
 
 export interface MaterializedFile {
@@ -101,9 +108,28 @@ async function readTemplateFile(dir: string, file: string): Promise<string> {
   return fs.readFile(path.join(dir, file), "utf8");
 }
 
-function buildClientVars(client: ClientInput, slug: string): Record<string, unknown> {
+/**
+ * FASE H · Si client.brand_brief está presente, rellena campos vacíos con
+ * datos extraídos por Firecrawl. NO sobreescribe campos ya provistos por el
+ * humano — el brief solo cubre huecos.
+ */
+function applyBrandBrief(client: ClientInput): ClientInput {
+  if (!client.brand_brief) return client;
+  const b = client.brand_brief;
+  return {
+    ...client,
+    business_name: client.business_name || b.business_name,
+    brand_primary_color: client.brand_primary_color ?? b.primary_color ?? undefined,
+    brand_secondary_color: client.brand_secondary_color ?? b.accent_color ?? undefined,
+    email_contact: client.email_contact ?? b.contact?.email,
+    phone_whatsapp: client.phone_whatsapp ?? b.contact?.phone,
+  };
+}
+
+function buildClientVars(rawClient: ClientInput, slug: string): Record<string, unknown> {
   // Inferencias seguras y defaults para que las plantillas no quiebren
   // con vars opcionales. Cualquier var crítica que falte queda en `missing`.
+  const client = applyBrandBrief(rawClient);
   const businessSlug = slugify(client.business_name);
 
   // Datos derivados / inferidos
