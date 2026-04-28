@@ -12,6 +12,19 @@ neural_id: a470b33a-4e53-4d49-bf9f-22c0b3ef2d42
 
 # PACAME-CONTENIDO · Manual maestro de producción
 
+> 🛑 **GATEKEEPER GASTO VIDEO — LEE ANTES DE GENERAR**
+>
+> Pablo perdió ~20€ en pruebas de prompt con Veo. Esta skill toca producers que cobran $0.05–$0.20 por segundo. Antes de cualquier producción de **video**, **reel** o **teaser**:
+>
+> 1. **Lee [[santo-grial-visual]]** (master playbook: modelos, prompts, anti-patterns, formatos).
+> 2. **Verifica que el producer importe `assertVideoApproved()`** desde `carruseles-darkroom/lib/cost-guard.mjs`. Si NO lo importa y llama a Veo/Seedance/Kling/Sora → añadirlo ANTES de ejecutar.
+> 3. **Tests de prompt SOLO con imagen barata** (Nano Banana / Imagen FX). Nunca con video top.
+> 4. **Doble SÍ humano** + estimación de coste explícita antes de aprobar token. Tabla de costes por modelo más abajo en este mismo documento (sección §Cálculos por tipo de pieza).
+> 5. Aprobar con: `node carruseles-darkroom/lib/cost-guard.mjs approve --model="..." --cap=<USD_max> --uses=1 --ttl=30 --what="..."`
+> 6. **Carruseles SÍ pueden ir al cron auto-publish** (regla `feedback_no_video_auto`). Reels/videos NO — siempre manual.
+
+---
+
 Capa superior que orquesta cualquier petición de contenido del proyecto PACAME (factoría agencia IA · capa 1) y Dark Room (proyecto propio · capa 3). NO duplica `pacame-viral-visuals` ni `pacame-web` — las invoca como subskills cuando aplica. Es el **router + manual + brand bibles + inventario de stack** unificado.
 
 Toda otra skill, agente PACAME (PULSE, NOVA, COPY, SAGE…) o el propio Pablo debe consultar este documento antes de producir cualquier contenido para evitar reinventar el flujo.

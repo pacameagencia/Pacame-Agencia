@@ -1,0 +1,19 @@
+{
+  "_comment": "Tarifas Atlas Cloud (USD). Fuente: pacame-contenido.md tabla de costes 2026-04. Actualizar cuando Atlas cambie precios. kind=premium fuerza approval token; kind=safe permite ejecución directa.",
+  "google/veo3.1/image-to-video":               { "usd_per_sec": 0.20,  "kind": "premium" },
+  "google/veo3.1-fast/image-to-video":          { "usd_per_sec": 0.10,  "kind": "premium" },
+  "google/veo3.1-lite/image-to-video":          { "usd_per_sec": 0.05,  "kind": "premium" },
+  "google/veo3/image-to-video":                 { "usd_per_sec": 0.20,  "kind": "premium" },
+  "bytedance/seedance-2.0/image-to-video":      { "usd_per_sec": 0.127, "kind": "premium" },
+  "bytedance/seedance-2.0-fast/image-to-video": { "usd_per_sec": 0.101, "kind": "premium" },
+  "kwaivgi/kling-v3.0-pro/image-to-video":      { "usd_per_sec": 0.095, "kind": "premium" },
+  "kwaivgi/kling-v2.6/image-to-video":          { "usd_per_sec": 0.10,  "kind": "premium" },
+  "kwaivgi/kling-v2.1-pro/image-to-video":      { "usd_per_sec": 0.10,  "kind": "premium" },
+  "openai/sora-2/image-to-video":               { "usd_per_sec": 0.10,  "kind": "premium" },
+
+  "alibaba/wan-2.7-pro/text-to-image":          { "usd_per_unit": 0.064, "kind": "safe" },
+  "google/nano-banana-2/text-to-image":         { "usd_per_unit": 0.039, "kind": "safe" },
+  "google/nano-banana-pro/text-to-image":       { "usd_per_unit": 0.039, "kind": "safe" },
+  "google/imagen-3/text-to-image":              { "usd_per_unit": 0.04,  "kind": "safe" },
+  "google/imagen-fx/text-to-image":             { "usd_per_unit": 0.0,   "kind": "safe" }
+}

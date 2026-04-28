@@ -12,6 +12,19 @@ neural_id: b4353d2f-f879-4049-bcc6-5418caf87369
 
 # PACAME-VIRAL-VISUALS — Fotos, Carruseles y Vídeos con nivel Instagram 2026
 
+> 🛑 **ANTES DE TOCAR ESTA SKILL — LEE [[santo-grial-visual]] Y ACTIVA EL COST-GUARD**
+>
+> Este skill puede disparar llamadas a Veo / Seedance / Kling que cobran $0.05–$0.20 por segundo de vídeo. Pablo perdió ~20€ en pruebas de prompt. **Anti-protocolo no negociable**:
+>
+> 1. **Lee [[santo-grial-visual]] primero** (modelos canónicos, prompts JSON, anti-patterns, formatos por plataforma).
+> 2. **Cada producer Dark Room en `carruseles-darkroom/`** ya importa `assertVideoApproved()` desde `lib/cost-guard.mjs` y aborta si no hay token. Si añades un producer nuevo, **debe llamarlo antes de cualquier `atlasVideo()`** (modelo Veo/Seedance/Kling/Sora).
+> 3. **Tests de shape (probar prompts) SOLO con imagen** (Nano Banana / Imagen FX gratis). Jamás con video premium.
+> 4. **Doble SÍ explícito de Pablo** antes de generar approval token. Estima el coste y muéstraselo: `<segundos_totales> × $/seg = $X.XX USD`.
+> 5. Aprobar con: `node carruseles-darkroom/lib/cost-guard.mjs approve --model="..." --cap=<USD> --uses=1 --ttl=30 --what="..."`
+> 6. Cron auto-publish solo procesa carruseles. Vídeos siempre manuales (`publish-reel.mjs`).
+
+---
+
 Output genérico se acabó. Con las APIs que PACAME tiene wiradas (Apify, Freepik Suite, Instagram Business API, Gemini, Nebius, OpenAI), el pipeline es real y verificable.
 
 ---

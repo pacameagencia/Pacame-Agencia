@@ -3,6 +3,29 @@
 ## Proyecto
 Agencia digital que resuelve problemas digitales para PYMEs en Espana. 10 agentes IA + 120 subespecialistas, supervisados por Pablo Calleja.
 
+## 🛑 PROTOCOLO ANTI-GASTO VIDEO PREMIUM (PRIMERO DE TODO)
+
+**Pablo perdió ~20€ en pruebas de prompt con Veo. NO se repite. Antes de cualquier cosa que toque "contenido", "video", "reel", "teaser", "viral", "post" o invoque skills `pacame-viral-visuals` / `pacame-contenido`:**
+
+1. **LEE primero** [PacameCueva/04-Workflows/santo-grial-visual.md](PacameCueva/04-Workflows/santo-grial-visual.md) — el master playbook con modelos canónicos, prompts, anti-patterns y costes. No improvises.
+2. **Tests de shape SOLO con imagen barata o leyendo docs.** Nunca un test de prompt en Veo/Seedance/Kling/Sora "a ver qué sale". Cada Veo 3.1 6s = $1.20. Cinco intentos = $6 quemados sin querer.
+3. **Cualquier llamada a vídeo premium pasa por el cost-guard**: `carruseles-darkroom/lib/cost-guard.mjs`.
+   - Los producers (`carruseles-darkroom/produce-teaser-pacame*.mjs`, `teaser-fix-*.mjs`) ya importan `assertVideoApproved()` y abortan con exit 2 si no hay token.
+   - **NUNCA quites el `await assertVideoApproved(...)`** de un producer. Si necesitas saltarlo (test de pipeline sin gasto), comenta la llamada a `atlasVideo()` directamente o usa un modelo `kind:safe`.
+4. **Para aprobar un run real** (1 ejecución, 30 min):
+   ```bash
+   node carruseles-darkroom/lib/cost-guard.mjs approve \
+     --model="<modelo exacto Atlas>" --cap=<USD_max> --uses=1 --ttl=30 \
+     --what="<propósito concreto>"
+   ```
+5. **Doble aprobación humana** (regla `feedback_doble_aprobacion_videos`): pide al usuario 2 SÍ explícitos antes de generar el approval token. Estima el coste usando la tabla de [`pacame-contenido.md`](PacameCueva/03-Skills/pacame-contenido.md) y mostralo en el prompt al usuario.
+6. **Si el modelo no está en `cost-guard-rates.json`** → cost-guard aborta por seguridad. Añadirlo con `kind:safe` o `kind:premium` antes de seguir.
+7. **El cron auto-publish solo procesa carruseles** (regla `feedback_no_video_auto`). Reels/videos siempre manuales con `publish-reel.mjs`. No metas video al cron jamás.
+
+**Regla dura**: si vas a llamar a un endpoint que cobra por segundo de vídeo y no estoy verificando que cost-guard esté activo en el script + token aprobado, **estoy desobedeciendo a Pablo**. Parar.
+
+---
+
 ## ⚠️ PROTOCOLO VISUAL-FIRST (OBLIGATORIO)
 
 **Antes de escribir/editar cualquier archivo .tsx, .jsx, .css, .html, .svg, .png, o generar cualquier diseño/imagen/asset visual, EJECUTAR este checklist:**
@@ -58,13 +81,23 @@ Agencia digital que resuelve problemas digitales para PYMEs en Espana. 10 agente
 
 4. **Carga brand/tone PACAME** (mandatorio si output público): tono directo, cercano, sin humo, tutear siempre, frases cortas, verbos activos, números concretos, cierre con próximo paso accionable. Contacto: `hola@pacameagencia.com` | WhatsApp `+34 722 669 381`.
 
-5. **Usa MCPs específicos cuando aplique**:
-   - Visual → `mcp__Figma__*`, `mcp__Canva__*`, `mcp__Claude_in_Chrome__*` (referencia competencia)
-   - Data → `mcp__3c7cb4c1-c1c5-4ce8-88c3-fea3adbdfcf1__execute_sql` (Supabase)
-   - Imagen → skill `imagen` (Gemini) + `mcp__e1c45596-*` (Canva)
-   - Voz → skill `elevenlabs` + MCP ElevenLabs
-   - Pagos → `mcp__78d1b60c-*` (Stripe)
-   - Leads/prospecting → `mcp__Vibe_Prospecting__*`
+5. **Usa MCPs específicos cuando aplique**. Hay dos planos distintos:
+
+   **A) MCPs nativos de Claude Code CLI** (definidos en `.mcp.json`, cargados al iniciar sesión vía `start-claude.sh` o `start-claude.cmd`):
+   - `mcp__context7__*` — docs frescos de librerías (Next.js, Supabase, Stripe, etc.) cuando trabajas con código
+   - `mcp__supabase__*` — query / schema inspect read-only sobre `kfmnllpscheodgxnutkw` (requiere `SUPABASE_ACCESS_TOKEN`)
+   - `mcp__firecrawl__*` — scraping web para auditorías y lead-gen (requiere `FIRECRAWL_API_KEY`)
+   - `mcp__playwright__*` — automatización browser, screenshots, e2e
+   - `mcp__pacame-vault__*` — leer/escribir notas en PacameCueva (Obsidian Local REST en :27124)
+   - `mcp__stripe__*` — listar productos, precios, suscripciones, customers de la cuenta Stripe live
+   - `mcp__shadcn__*` — buscar y añadir componentes de registries shadcn (lee `web/components.json`)
+
+   **B) Conectores de claude.ai web** (NO funcionan en Claude Code CLI; solo dentro de claude.ai en el navegador):
+   - `mcp__Figma__*`, `mcp__Canva__*`, `mcp__Claude_in_Chrome__*` (visual)
+   - `mcp__78d1b60c-*` (Stripe legacy via Anthropic Connector — ya cubierto por `mcp__stripe__*` aquí)
+   - `mcp__3c7cb4c1-*` (Supabase legacy via Anthropic Connector — ya cubierto por `mcp__supabase__*` aquí)
+   - `mcp__e1c45596-*` (Canva), `mcp__Vibe_Prospecting__*`
+   - Si estás en Claude Code (esta CLI) y el output es para PACAME, **no asumas** que esos `mcp__Figma__*` están disponibles — fallback al skill equivalente (`figma-to-code`, `imagen`, `canvas-design`, etc.).
 
 6. **Usa el mejor modelo disponible para la tarea**:
    - Creatividad / decisión crítica → Claude Sonnet 4.6 o Opus 4.7 (`tier: titan/premium`)

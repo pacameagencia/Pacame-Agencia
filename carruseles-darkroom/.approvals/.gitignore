@@ -1,0 +1,5 @@
+# Approval tokens del cost-guard. Son efímeros (caducan en 30 min) y específicos
+# del entorno local. Nunca se commitean — la idea es justo lo contrario, que cada
+# entorno (Pablo, CI futuro, otros devs) emita los suyos cuando autorice gasto.
+*.json
+!.gitignore
