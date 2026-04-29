@@ -1,0 +1,7 @@
+# Privacy: bios pueden contener emails personales / handles privados
+output/*.csv
+output/*.json
+output/.tmp/
+
+# Logs de runs Apify (pueden tener tokens en debug)
+*.log
