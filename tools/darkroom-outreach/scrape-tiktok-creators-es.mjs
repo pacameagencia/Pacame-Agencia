@@ -59,23 +59,31 @@ const DEFAULT_HASHTAGS = [
   "minea",
   "pipiads",
   "creadordecontenidoespañol",
+  "marketingdigital2026",
+  "afiliados",
+  "ganardineroconia",
+  "creadordigital",
+  "freelancerespañol",
 ];
 const HASHTAGS = opts.hashtags
   ? opts.hashtags.split(",").map(h => h.trim()).filter(Boolean)
   : DEFAULT_HASHTAGS;
 
 const today = new Date().toISOString().slice(0, 10);
+// Path resolución: absoluto → tal cual; relativo → relativo al CWD (no al __dirname)
+// para que `--output=tools/darkroom-outreach/output/X.csv` desde el root funcione.
 const OUTPUT = opts.output
-  ? (path.isAbsolute(opts.output) ? opts.output : path.join(__dirname, opts.output))
+  ? (path.isAbsolute(opts.output) ? opts.output : path.resolve(process.cwd(), opts.output))
   : path.join(__dirname, "output", `tiktok-candidates-${today}.csv`);
 
 // ─── filtros 4/4 (ver strategy/darkroom/outreach-comunidades.md §6) ─
 
-const ICP_REGEX = /\b(creator|freelance|dropship|marketing|ia|emprendedor|stack|ahorra|tools|herramient|chatgpt|canva|capcut|elevenlabs|midjourney|prompt)/i;
-const COMPETITOR_REGEX = /\b(groupbuy|group buy|toolzbuy|allinai|seogb|softwareshare|sharesoft|sharetool|toolsplash|grouptool)/i;
+// ICP regex ampliado: captura variantes ES + apps tools + términos creator
+const ICP_REGEX = /\b(creator|freelance|dropship|marketing|ia|ai|emprend|stack|ahorr|tools|herramient|chatgpt|canva|capcut|elevenlabs|midjourney|prompt|content|content creator|negoci|infoproduct|coach|monetiz|ecom|tienda online|automatiz|productiv|side hustle|side project|afiliado|trabajar desde casa|libertad financ|estudio|edici[oó]n)/i;
+const COMPETITOR_REGEX = /\b(groupbuy|group buy|toolzbuy|allinai|seogb|softwareshare|sharesoft|sharetool|toolsplash|grouptool|toolspedia|appsumo deals)/i;
 const FOLLOWER_MIN = 1000;
 const FOLLOWER_MAX = 50000;
-const ACTIVE_DAYS_MAX = 7;
+const ACTIVE_DAYS_MAX = 30;  // 7d era muy estricto · creators ES publican cada 2-3 semanas
 const ENGAGEMENT_MIN = 0.005;
 
 // ─── Apify call ────────────────────────────────────────────────
@@ -284,8 +292,8 @@ async function main() {
     return;
   }
 
-  // distribuir max results entre hashtags
-  const perHashtag = Math.max(20, Math.ceil(MAX_RESULTS / HASHTAGS.length));
+  // distribuir max results entre hashtags · min 50 para conseguir volumen útil
+  const perHashtag = Math.max(50, Math.ceil(MAX_RESULTS / HASHTAGS.length));
   console.log(`\nLanzando ${HASHTAGS.length} scrapes Apify (${perHashtag} items/hashtag)...\n`);
 
   const allRows = [];
