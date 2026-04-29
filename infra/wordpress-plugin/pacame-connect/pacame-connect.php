@@ -260,6 +260,65 @@ add_action('rest_api_init', function () {
             return ['ok' => true, 'received' => $request->get_json_params()];
         },
     ]);
+
+    // ----- /page/{id}/reset-to-gutenberg -----
+    // Vacía el _elementor_data y permite escribir post_content nuevo (HTML / blocks).
+    // Útil para migrar páginas de demo del tema (Elementor) a contenido real Gutenberg
+    // sin tener que diseñar dentro de Elementor.
+    register_rest_route(PACAME_NS, '/page/(?P<id>\d+)/reset-to-gutenberg', [
+        'methods'             => 'POST',
+        'permission_callback' => 'pacame_verify_hmac',
+        'args' => [
+            'content'        => ['required' => true, 'type' => 'string'],
+            'title'          => ['required' => false, 'type' => 'string'],
+            'excerpt'        => ['required' => false, 'type' => 'string'],
+            'status'         => ['required' => false, 'type' => 'string', 'default' => 'publish'],
+            'remove_elementor' => ['required' => false, 'type' => 'boolean', 'default' => true],
+        ],
+        'callback'            => function (WP_REST_Request $request) {
+            $id = intval($request['id']);
+            $post = get_post($id);
+            if (!$post || $post->post_type !== 'page') {
+                return new WP_Error('pacame_not_found', 'Page not found', ['status' => 404]);
+            }
+
+            $update = [
+                'ID'           => $id,
+                'post_content' => $request['content'],
+                'post_status'  => $request['status'],
+            ];
+            if ($request['title']) $update['post_title'] = $request['title'];
+            if ($request['excerpt']) $update['post_excerpt'] = $request['excerpt'];
+
+            $r = wp_update_post($update, true);
+            if (is_wp_error($r)) {
+                return new WP_Error('pacame_update_failed', $r->get_error_message(), ['status' => 500]);
+            }
+
+            $removed_meta = [];
+            if ($request['remove_elementor']) {
+                $keys = ['_elementor_data', '_elementor_edit_mode', '_elementor_template_type', '_elementor_version', '_elementor_pro_version', '_elementor_page_assets', '_elementor_css'];
+                foreach ($keys as $k) {
+                    if (delete_post_meta($id, $k)) {
+                        $removed_meta[] = $k;
+                    }
+                }
+            }
+
+            // Limpiar caché LiteSpeed para esta página (si está activo).
+            if (class_exists('LiteSpeed\Purge')) {
+                do_action('litespeed_purge_post', $id);
+            }
+
+            return [
+                'ok'              => true,
+                'id'              => $id,
+                'permalink'       => get_permalink($id),
+                'removed_meta'    => $removed_meta,
+                'cache_purged'    => class_exists('LiteSpeed\Purge'),
+            ];
+        },
+    ]);
 });
 
 // =============================================================================
