@@ -1,0 +1,56 @@
+# DarkRoom · Banco de prompts visuales semana 1 (v2 verde ácido)
+# Aplicar via: node carruseles-darkroom/bulk-whisk.mjs --prompts=carruseles-darkroom/prompts-darkroom-week-1.txt --output=carruseles-darkroom/output/week-1
+# Coste: $0 (Whisk Labs free, ~100 attempts/dia)
+# Brand bible: strategy/darkroom/brand-bible.md (paleta canónica: bg #0A0A0A + acid #CFFF00 + red strike #FF3B3B)
+
+# ─── Hero abstractos cuarto oscuro · neón verde ácido (10 prompts) ─
+
+ultra realistic vertical 9:16 extreme close-up of photographic paper floating in a stainless steel developer tray, single acid neon green safelight #CFFF00 from above casting hard shadows, water surface tension droplets, silver halide grain emerging in image, mist rising from chemical bath, mood clandestine craftsmanship, 35mm anamorphic, no text no logos no faces
+
+vertical 9:16 macro shot of analog photo enlarger projecting white light onto blank paper in a darkroom, deep neon green ambient illumination, dust particles visible in light beam, vintage equipment, moody chiaroscuro, 35mm film grain, no text
+
+cinematic vertical 9:16 hands wearing rubber gloves agitating a tray of developer chemicals, deep acid green neon safelight, water ripples reflecting light, paper emerging with image forming gradually, hyper detailed, 35mm grain, no text
+
+vertical 9:16 close-up of photo prints hanging on a clothesline drying in a darkroom, deep neon green backlight #CFFF00, water dripping, silver gelatin papers, atmospheric haze, premium editorial, no text no logos
+
+vertical 9:16 macro shot of vintage Leica camera body sitting on a wooden darkroom workbench, deep acid green safelight from corner, scattered negatives nearby, dust on lens, intimate craftsmanship mood, 35mm film aesthetic, no text
+
+vertical 9:16 abstract render of light passing through a strip of 35mm film negatives, deep ink black background, neon green backlight bleeding through frames, suspended in negative space, premium product photography, no text no logos
+
+vertical 9:16 extreme close-up of an analog timer ticking in a darkroom, deep neon green ambient safelight, mechanical detail, condensation, paper texture in background, mood patient craftsmanship, no text
+
+vertical 9:16 darkroom workbench top-down view, three developer trays in line, deep acid green ambient light, paper floating in middle tray with image emerging, scattered tools, premium magazine spread aesthetic, no text no logos
+
+vertical 9:16 silhouette of a hand reaching into a developer tray, deep neon green safelight illuminating water surface, paper visible underneath emerging photograph, dramatic chiaroscuro, 35mm anamorphic, no text
+
+vertical 9:16 macro of bromide paper edges curling in chemical bath, silver grain visible, deep acid green neon safelight, water tension droplets on surface, intimate atmospheric darkroom, no text no logos
+
+# ─── Comparativa stack 308€ vs 24,90€ (6 prompts) ──────────────
+
+clean editorial product photography vertical 9:16, two stacks of papers side by side on matte black surface under deep acid neon green ambient light, left stack labeled handwritten 308, right stack with handwritten 24, premium magazine spread aesthetic, no other text no logos, 90 degree top down
+
+vertical 9:16 minimalist composition of a single euro bill being torn in half, deep ink black background, neon green side light, particles flying, slow motion freeze, premium editorial, no text no logos
+
+vertical 9:16 macro shot of a calendar page being torn off revealing 308 written underneath, deep acid green neon light, paper texture grain, premium editorial aesthetic, no other text no logos
+
+vertical 9:16 split screen composition, left half stark luxury aesthetic with golden accents, right half industrial workshop aesthetic with acid green lighting, abstract metaphor about premium vs accessible, no text no logos
+
+vertical 9:16 abstract render of a vault door with a small crack of acid green light spilling out, deep ink background, premium thriller aesthetic, no text no logos
+
+vertical 9:16 macro of a price tag dangling from a string against deep acid green darkroom light, blank tag with no number, paper texture, premium editorial, no text
+
+# ─── Behind the scenes (cuando LoRA Pablo este, hoy abstracto) ──
+
+vertical 9:16 close-up of hands typing on a mechanical keyboard in a dark workspace, deep acid green ambient light from corner, screens reflecting on glasses on desk, late evening atmosphere, 35mm grain, no text
+
+vertical 9:16 wide angle of a creative workspace in low neon green light, dual monitors showing dark mode interfaces, cluttered desk with sketches and prints, atmospheric haze, 35mm film grain, no text on screens, no logos
+
+vertical 9:16 hands writing with a marker on a window covered in sticky notes, deep acid green ambient light, blurred screens in background, mood late night strategy, 35mm grain, no readable text on notes
+
+vertical 9:16 close-up of coffee steaming in a black ceramic cup on a dark workbench, deep neon green ambient backlight, condensation, intimate work-late atmosphere, 35mm film, no text
+
+# ─── Iconografia / detalles UI (2 prompts) ────────────────────
+
+vertical square 1080x1080 minimalist icon design, single linear stroke 2px, white outline on deep ink background with acid green accent #CFFF00, geometric square with circle overlay representing image editing, no text no labels, premium editorial
+
+vertical square 1080x1080 minimalist icon design, single linear stroke 2px, acid green outline #CFFF00 on ink black background, geometric diamond with vertex dots representing vector design, no text no labels, premium editorial
