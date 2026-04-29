@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
 import { dbCall } from "@/lib/dashboard-db";
-import { Users, Plus, Building2, Mail, Phone, Globe, X, Edit3, Trash2, Check, ChevronDown } from "lucide-react";
+import { Users, Plus, Building2, Mail, Phone, Globe, X, Edit3, Trash2, Check, ChevronDown, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const statusLabels: Record<string, { label: string; color: string }> = {
@@ -249,7 +250,10 @@ export default function ClientsPage() {
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-heading font-semibold text-ink">{client.business_name}</h3>
+                    <Link href={`/dashboard/clients/${client.id}`} className="font-heading font-semibold text-ink hover:text-brand-primary transition-colors flex items-center gap-1.5">
+                      {client.business_name}
+                      <ExternalLink className="w-3 h-3 opacity-40" />
+                    </Link>
 
                     {/* Status dropdown */}
                     <div className="relative">
