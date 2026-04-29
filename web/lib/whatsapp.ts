@@ -1,13 +1,32 @@
 import { getLogger } from "@/lib/observability/logger";
-import { getMetaToken, hasMetaToken } from "@/lib/meta-token";
+import { hasMetaToken } from "@/lib/meta-token";
+import {
+  resolveWhatsAppConfig,
+  isWhatsAppConfiguredFor,
+  type Brand,
+  DEFAULT_BRAND,
+} from "@/lib/messaging/config";
 
 const WHATSAPP_VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN || "pacame_wa_verify_2026";
 const GRAPH_API = "https://graph.facebook.com/v21.0";
 
-const phoneId = () => process.env.WHATSAPP_PHONE_ID;
-const token = () => getMetaToken("whatsapp");
+// Compat retro: helpers PACAME que mantienen la firma original
+const phoneId = () => resolveWhatsAppConfig("pacame").phoneId;
+const token = () => resolveWhatsAppConfig("pacame").token;
 
 export { WHATSAPP_VERIFY_TOKEN };
+
+/**
+ * Opciones comunes a las funciones del módulo. Aceptan opcionalmente
+ * un brand para enrutar a la cuenta WhatsApp correspondiente.
+ *
+ * Si no se pasa, default = "pacame" (comportamiento histórico inalterado).
+ * Pasar `brand: "darkroom"` resuelve a `DARKROOM_WHATSAPP_PHONE_ID` +
+ * `DARKROOM_META_SYSTEM_USER_TOKEN` (ver `web/lib/messaging/config.ts`).
+ */
+export interface WhatsAppCallOptions {
+  brand?: Brand;
+}
 
 interface WhatsAppTextPayload {
   messaging_product: "whatsapp";
@@ -39,24 +58,34 @@ interface WhatsAppMessageResult {
 
 /**
  * Check if WhatsApp Business API is configured.
+ * Sin parámetros = compat retro PACAME. Con `brand` consulta el otro tenant.
  */
-export function isWhatsAppConfigured(): boolean {
-  return !!(phoneId() && hasMetaToken("whatsapp"));
+export function isWhatsAppConfigured(brand: Brand = DEFAULT_BRAND): boolean {
+  if (brand === "pacame") return !!(phoneId() && hasMetaToken("whatsapp"));
+  return isWhatsAppConfiguredFor(brand);
 }
 
 /**
  * Send a text message via WhatsApp Business Cloud API.
  * Phone must be in international format without + (e.g., "34722669381").
+ *
+ * Multi-brand: por defecto envía desde la cuenta PACAME. Pasa
+ * `{ brand: "darkroom" }` para enviar desde la cuenta DarkRoom.
  */
 export async function sendWhatsApp(
   to: string,
-  message: string
+  message: string,
+  opts: WhatsAppCallOptions = {}
 ): Promise<WhatsAppMessageResult> {
-  const pid = phoneId();
-  const tok = token();
+  const cfg = resolveWhatsAppConfig(opts.brand);
+  const pid = cfg.phoneId;
+  const tok = cfg.token;
   if (!pid || !tok) {
-    getLogger().warn("[WhatsApp] Not configured — WHATSAPP_PHONE_ID or token missing");
-    return { success: false, error: "WhatsApp not configured" };
+    getLogger().warn(
+      { brand: cfg.brand },
+      "[WhatsApp] Not configured — phone ID or token missing"
+    );
+    return { success: false, error: `WhatsApp not configured for brand=${cfg.brand}` };
   }
 
   // Clean phone: remove +, spaces, dashes
@@ -105,17 +134,20 @@ export async function sendWhatsApp(
 /**
  * Send a template message (required for first contact — 24h rule).
  * Templates must be pre-approved in Meta Business Manager.
+ * Multi-brand: pasa `{ brand: "darkroom" }` para usar plantillas DarkRoom.
  */
 export async function sendWhatsAppTemplate(
   to: string,
   templateName: string,
   languageCode = "es",
-  parameters?: string[]
+  parameters?: string[],
+  opts: WhatsAppCallOptions = {}
 ): Promise<WhatsAppMessageResult> {
-  const pid = phoneId();
-  const tok = token();
+  const cfg = resolveWhatsAppConfig(opts.brand);
+  const pid = cfg.phoneId;
+  const tok = cfg.token;
   if (!pid || !tok) {
-    return { success: false, error: "WhatsApp not configured" };
+    return { success: false, error: `WhatsApp not configured for brand=${cfg.brand}` };
   }
 
   const cleanPhone = to.replace(/[+\s\-()]/g, "");
@@ -166,10 +198,15 @@ export async function sendWhatsAppTemplate(
 
 /**
  * Mark a message as read (blue ticks).
+ * Multi-brand: pasa `{ brand: "darkroom" }` para marcar en la cuenta DarkRoom.
  */
-export async function markAsRead(messageId: string): Promise<boolean> {
-  const pid = phoneId();
-  const tok = token();
+export async function markAsRead(
+  messageId: string,
+  opts: WhatsAppCallOptions = {}
+): Promise<boolean> {
+  const cfg = resolveWhatsAppConfig(opts.brand);
+  const pid = cfg.phoneId;
+  const tok = cfg.token;
   if (!pid || !tok) return false;
 
   try {
