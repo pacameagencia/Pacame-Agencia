@@ -93,7 +93,7 @@ La clave: **la factoría se reutiliza; los datos/marca/dinero NO se cruzan, y la
 |---|---|
 | 1 PACAME | Es PACAME. |
 | 2 Clientes B2B (Ecomglobalbox, Royo, Clara, Marisol…) | No, salvo casos de marketing con consentimiento del cliente (caso de éxito). |
-| 3 SaaS propios (AsesorPro, PromptForge, PacameGPT) | **Sí** — son ecosistema PACAME. Excepción Dark Room: no se menciona en público para no asociar PACAME al modelo "group buy". |
+| 3 SaaS propios — **DarkRoom (flagship único)** | **No** — DarkRoom NO se menciona en público asociado a PACAME (riesgo legal del modelo "membresía colectiva"). Tiene marca independiente. AsesorPro / PromptForge / PacameGPT fueron descartados como SaaS Capa 3 (decisión 2026-04-28, ver `capa-3-saas-decisions.md`). PromptForge se recicló como micronicho free del flywheel DarkRoom. |
 | 4 Negocios personales (La Caleta) | **Nunca**. PACAME no aparece en su web, RRSS, comunicación. Pablo lo opera como persona. |
 
 ---
@@ -102,7 +102,7 @@ La clave: **la factoría se reutiliza; los datos/marca/dinero NO se cruzan, y la
 
 | Recurso | Capa 1 PACAME | Capa 2 Clientes B2B | Capa 3 SaaS propios | Capa 4 Personal Pablo |
 |---|---|---|---|---|
-| **Supabase proyectos** | `Pacame Agencia` (kfmnllpscheodgxnutkw) | clientes con infra propia | `dark-room-prod` (kxqcyukivvfygvrxxant) aislado · AsesorPro/PromptForge/PacameGPT (dentro de factoría, decisión velocidad) | `dmivrosjaenvcpjmhsmf`, `kmrionmdazlnwocgizik`, `whuiywcnnwhpvaawrvcp` (3 propios para Caleta) |
+| **Supabase proyectos** | `Pacame Agencia` (kfmnllpscheodgxnutkw) | clientes con infra propia | `dark-room-prod` (kxqcyukivvfygvrxxant) aislado — único proyecto Capa 3 vivo | `dmivrosjaenvcpjmhsmf`, `kmrionmdazlnwocgizik`, `whuiywcnnwhpvaawrvcp` (3 propios para Caleta) |
 | **Supabase org** | `pacameagencia` | — | `Dark Room IO` (vlznxeibibkaqqfvnivz) ✓ aislada | (orgs verificación pendiente) |
 | **Vercel projects** | `web` → pacameagencia.com | `pacame-casa-marisol-cadiz` | `dark-room` (en team `Dark Room IO`) | `caleta-gestiona`, `caleta-gestiona-n1x7`, `lacaletamanchegaalbacete`, `lacaleta-gestion` |
 | **Vercel team** | `pacames-projects` | Misma que PACAME ⚠️ | `Dark Room IO` (Pro) ✓ separado | Misma que PACAME ⚠️ — riesgo bajo (sin datos cross) |

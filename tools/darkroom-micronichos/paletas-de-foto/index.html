@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0A0A0A" />
+
+  <title>Paletas desde foto · extrae 8 colores en 2 segundos</title>
+  <meta name="description" content="Sube una foto y obtén 8 colores hex listos para Figma, Tailwind o CSS. Procesado local en tu navegador. Sin enviar la imagen a ningún servidor." />
+  <meta name="keywords" content="extractor paleta colores, paleta hex desde foto, color picker imagen, paleta para figma, generar paleta tailwind" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://paletas.darkroomcreative.cloud/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Paletas desde foto · 8 colores en 2 segundos" />
+  <meta property="og:description" content="Sube una foto, obtén la paleta. Hex, CSS, Tailwind. Procesado local, privacidad total." />
+  <meta property="og:url" content="https://paletas.darkroomcreative.cloud/" />
+  <meta property="og:site_name" content="Paletas · DarkRoom" />
+  <meta property="og:image" content="https://paletas.darkroomcreative.cloud/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Paletas desde foto · 8 colores en 2 segundos" />
+  <meta name="twitter:description" content="Sube una foto, obtén la paleta. Procesado local. Privacidad total." />
+
+  <!-- Schema.org WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Paletas desde foto",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Any (browser-based)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+    "url": "https://paletas.darkroomcreative.cloud/",
+    "description": "Extractor de paletas de color desde imagen. Procesado 100% local en navegador.",
+    "publisher": { "@type": "Organization", "name": "DarkRoom", "url": "https://darkroomcreative.cloud/" }
+  }
+  </script>
+
+  <!-- Fonts (preload + display swap) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="https://darkroomcreative.cloud/" aria-label="DarkRoom">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">DarkRoom <em>· paletas</em></span>
+    </a>
+    <a class="topbar-cta" href="https://darkroomcreative.cloud/" rel="noopener">
+      ¿Stack premium completo? <strong>Empieza →</strong>
+    </a>
+  </header>
+
+  <main class="layout">
+
+    <!-- Intro -->
+    <section class="intro" aria-labelledby="hero-title">
+      <h1 id="hero-title">8 colores. 2 segundos. <span class="accent">Sin enviar tu foto a ningún servidor.</span></h1>
+      <p class="intro-sub">
+        Sube una imagen y extraemos la paleta dominante. Click en un color para copiarlo. Exportas a hex, CSS o Tailwind. Todo el procesado pasa en tu navegador, no toca infraestructura.
+      </p>
+    </section>
+
+    <!-- Tool -->
+    <section class="tool">
+      <div class="tool-grid" id="toolGrid">
+
+        <!-- Drop zone / preview -->
+        <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Subir imagen">
+          <div class="drop-empty" id="dropEmpty">
+            <div class="drop-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="6" width="24" height="20" rx="2" />
+                <path d="M4 22 L11 15 L17 21 L22 17 L28 22" />
+                <circle cx="22" cy="12" r="2" />
+              </svg>
+            </div>
+            <p class="drop-title">Arrastra una foto aquí</p>
+            <p class="drop-sub">o pulsa para elegir una · jpg, png, webp · max 10 MB</p>
+            <input type="file" id="fileInput" accept="image/*" hidden />
+          </div>
+          <div class="drop-preview" id="dropPreview" hidden>
+            <img id="previewImg" alt="Imagen subida para extraer paleta" />
+            <button type="button" class="reset-btn" id="resetBtn" aria-label="Empezar de nuevo">↺ otra foto</button>
+          </div>
+        </div>
+
+        <!-- Palette -->
+        <div class="palette" id="palette" aria-live="polite">
+          <div class="palette-empty" id="paletteEmpty">
+            <p>La paleta aparecerá aquí.</p>
+          </div>
+          <div class="palette-loading" id="paletteLoading" hidden>
+            <div class="spinner" aria-hidden="true"></div>
+            <p>Extrayendo colores…</p>
+          </div>
+          <div class="palette-result" id="paletteResult" hidden>
+            <div class="swatches" id="swatches"></div>
+            <div class="export">
+              <p class="export-title">Exportar</p>
+              <div class="export-buttons">
+                <button type="button" data-export="hex">Hex list</button>
+                <button type="button" data-export="css">CSS variables</button>
+                <button type="button" data-export="tailwind">Tailwind config</button>
+                <button type="button" data-export="json">JSON</button>
+              </div>
+              <textarea id="exportTextarea" readonly placeholder="Pulsa un formato para verlo aquí" aria-label="Salida del formato exportado"></textarea>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="toast" id="toast" role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- Honesty / what this is and isn't -->
+    <section class="honesty">
+      <h2>Qué hace y qué no</h2>
+      <div class="honesty-grid">
+        <div>
+          <p class="ok">Sí</p>
+          <ul>
+            <li>Extrae 8 colores dominantes con clustering k-means.</li>
+            <li>Procesa la imagen <strong>100% en tu navegador</strong>. No subimos nada.</li>
+            <li>Exporta a hex, CSS, Tailwind o JSON.</li>
+            <li>Funciona offline tras el primer load.</li>
+          </ul>
+        </div>
+        <div>
+          <p class="no">No</p>
+          <ul>
+            <li>No reemplaza Adobe Color para análisis tonal complejo.</li>
+            <li>No genera paletas armónicas tipo "complementaria triádica".</li>
+            <li>No guarda tu imagen ni los colores extraídos.</li>
+            <li>No hace falta cuenta. Cero registro, cero cookies de tracking.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pitch sutil -->
+    <section class="pitch">
+      <p class="pitch-eyebrow">¿Esta tool te sirvió?</p>
+      <h2>El stack creativo premium completo. Por menos de un café diario.</h2>
+      <p class="pitch-body">
+        Si pagas suscripciones de Adobe, Figma Pro, ChatGPT Plus, Midjourney y compañía, sumarás 240&nbsp;€/mes fácil. <strong>DarkRoom</strong> es membresía colectiva: el mismo stack, gestionado, por 29&nbsp;€/mes. Sin trampas, sin letra pequeña.
+      </p>
+      <a class="pitch-cta" href="https://darkroomcreative.cloud/" rel="noopener">
+        Empezar 14 días gratis →
+      </a>
+      <p class="pitch-mini">Sin tarjeta. Si no es para ti, te vas y ya.</p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      <a href="https://darkroomcreative.cloud/">DarkRoom</a> ·
+      <a href="https://darkroomcreative.cloud/legal/terminos">Términos</a> ·
+      <a href="https://darkroomcreative.cloud/legal/privacidad">Privacidad</a> ·
+      <a href="mailto:support@darkroomcreative.cloud">support@darkroomcreative.cloud</a>
+    </p>
+    <p class="footer-mini">Procesado local. Tu foto nunca sale de tu navegador.</p>
+  </footer>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
