@@ -30,7 +30,8 @@
  *     --pause-ms=N     Pausa entre llamadas (default 300ms)
  */
 
-import { fetch as undiciFetch } from "undici";
+// Node 18+ trae fetch nativo. Sin dependencias externas.
+const undiciFetch = globalThis.fetch;
 
 const WP_BASE = "https://joyeriaroyo.com";
 const USER_AGENT = "PACAME-Bot/1.0 (+https://pacameagencia.com)";
@@ -61,55 +62,101 @@ const authHeader = wpUser && wpPass
   : null;
 
 // --- Marcas y heurísticas para inferir tipo ---
+// Lista actualizada con TODAS las marcas detectadas en el catálogo Royo (audit 2026-04-29).
 const KNOWN_BRANDS = [
   "Tissot", "Longines", "Seiko", "Casio", "Hamilton", "Oris", "Citizen",
-  "Omega", "MontBlanc", "Mont Blanc", "Victorinox", "Baume", "Mercier",
-  "Franck Muller", "Genius", "Tsar Bomba", "Roberto Demeglio",
+  "Omega", "MontBlanc", "Mont Blanc", "Victorinox", "Certina",
+  "Baume & Mercier", "Baume", "Franck Muller", "Genius Watches", "Genius",
+  "Tsar Bomba", "Roberto Demeglio",
 ];
 
-const JEWELRY_TYPES = [
+const JEWELRY_CATS = ["Joyas", "Anillos", "Pendientes", "Pulseras", "Colgantes", "Gargantillas"];
+const JEWELRY_NAME_PREFIXES = [
   "Anillo", "Anillos", "Pendientes", "Pendiente", "Pulsera", "Pulseras",
   "Colgante", "Colgantes", "Gargantilla", "Gargantillas", "Solitario",
   "Cordón", "Gemelos",
 ];
 
-function inferBrand(productName) {
+function inferBrandFromName(productName) {
   for (const brand of KNOWN_BRANDS) {
     if (productName.toLowerCase().includes(brand.toLowerCase())) return brand;
   }
   return null;
 }
 
+function inferBrandFromCategories(categories) {
+  for (const c of categories || []) {
+    if (KNOWN_BRANDS.includes(c.name)) return c.name;
+  }
+  return null;
+}
+
 function inferIsJewelry(productName, categories) {
-  const catNames = (categories || []).map((c) => c.name.toLowerCase());
-  if (catNames.some((c) => ["joyas", "anillos", "pendientes", "pulseras", "colgantes", "gargantillas"].includes(c))) return true;
-  for (const t of JEWELRY_TYPES) {
+  const catNames = (categories || []).map((c) => c.name);
+  if (catNames.some((c) => JEWELRY_CATS.includes(c))) return true;
+  for (const t of JEWELRY_NAME_PREFIXES) {
     if (productName.toLowerCase().startsWith(t.toLowerCase() + " ")) return true;
   }
   return false;
 }
 
-function generateAlt(product, imageIndex = 0) {
-  const name = product.name || "";
-  const brand = inferBrand(name);
-  const isJewelry = inferIsJewelry(name, product.categories);
+// --- Smart Title Case ---
+// Convierte "CASIO MASTER OF G MUDMASTER GG-B100X-1AER" → "Casio Master of G Mudmaster GG-B100X-1AER"
+// Reglas: conserva refs técnicas (con dígitos), siglas cortas, "of/y/de/la" en minúscula salvo inicio.
+const LOWER_WORDS = new Set(["of", "y", "de", "la", "el", "los", "las", "the", "and", "or", "a", "an"]);
 
-  // Si es reloj con marca conocida → "Reloj {marca} {resto del nombre}"
+function titleCaseWord(word, isFirst) {
+  // Conserva refs técnicas (contiene dígito): SKUs, modelos, calibres
+  if (/\d/.test(word)) return word;
+  // PALABRA-PALABRA con guion → cada parte recursivo (ej. "G-SHOCK" → "G-Shock")
+  if (word.includes("-") && !/[-]\d|\d[-]/.test(word)) {
+    return word.split("-").map((p, i) => titleCaseWord(p, isFirst && i === 0)).join("-");
+  }
+  // Conector lowercase (aunque venga en mayúsculas) — antes que siglas cortas
+  const lower = word.toLowerCase();
+  if (!isFirst && LOWER_WORDS.has(lower)) return lower;
+  // Conserva siglas cortas: "DS", "GMT", "PVD" (no son conectores)
+  if (word.length <= 3 && /^[A-ZÁÉÍÓÚÑÜ]+$/.test(word)) return word;
+  // Title Case clásico
+  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+}
+
+function smartTitleCase(text) {
+  return text.split(/\s+/).map((w, i) => titleCaseWord(w, i === 0)).join(" ");
+}
+
+function generateAlt(product, imageIndex = 0) {
+  const rawName = (product.name || "").trim();
+  // Aplicar Title Case al nombre solo para uso en alt (no toca el name del producto)
+  const name = smartTitleCase(rawName);
+  // Buscar marca primero en el nombre del producto, después en categorías como fallback.
+  const brand = inferBrandFromName(rawName) || inferBrandFromCategories(product.categories);
+  const isJewelry = inferIsJewelry(rawName, product.categories);
+
+  // Reloj con marca conocida → "Reloj {marca} {resto del nombre}"
   if (brand && !isJewelry) {
-    // Si el nombre ya empieza por la marca, no duplicar
-    const cleanName = name.startsWith(brand) ? name : `${brand} ${name}`;
-    const base = `Reloj ${cleanName}`.trim();
-    if (imageIndex === 0) return base;
-    return `${base} — vista ${imageIndex + 1}`;
+    const lcName = name.toLowerCase();
+    const lcBrand = brand.toLowerCase();
+    let base;
+    // Si el nombre ya empieza por "Reloj " (cualquier orden de palabras), no duplicar prefijo
+    if (/^reloj\s/i.test(rawName)) {
+      base = name;
+    } else if (lcName.startsWith(lcBrand)) {
+      base = `Reloj ${name}`;
+    } else {
+      base = `Reloj ${brand} ${name}`;
+    }
+    if (imageIndex === 0) return base.trim();
+    return `${base.trim()} — vista ${imageIndex + 1}`;
   }
 
-  // Joya: usar el nombre tal cual (suele ser descriptivo: "Anillo Oro Amarillo 18kt...")
+  // Joya: usar el nombre con Title Case (ej. "Anillo Oro Amarillo 18kt Flor con 5+5 Esmeraldas")
   if (isJewelry) {
     if (imageIndex === 0) return name;
     return `${name} — vista ${imageIndex + 1}`;
   }
 
-  // Otros (carteras, cinturones, escritura): nombre directo
+  // Otros (carteras, cinturones, escritura): nombre con Title Case
   if (imageIndex === 0) return name;
   return `${name} — vista ${imageIndex + 1}`;
 }
