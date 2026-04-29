@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import FactoriaHero from "./FactoriaHero";
+import BriefBanner from "./BriefBanner";
 
 const FactoriaCapas = dynamic(() => import("./FactoriaCapas"));
 const FactoriaCatalogo = dynamic(() => import("./FactoriaCatalogo"));
@@ -25,6 +27,10 @@ export const metadata: Metadata = {
 export default function FactoriaPage() {
   return (
     <>
+      {/* FASE H · Si llega ?brief=<uuid>, banner con brand precargado */}
+      <Suspense fallback={null}>
+        <BriefBanner />
+      </Suspense>
       <FactoriaHero />
       <FactoriaCapas />
       <FactoriaCatalogo />
