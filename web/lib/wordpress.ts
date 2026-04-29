@@ -302,3 +302,86 @@ export async function wpUpdatePost(client: WpClient, postId: number, payload: Pa
     }),
   });
 }
+
+// =============================================================================
+//  WooCommerce helpers (REST v3)
+// =============================================================================
+
+/**
+ * Update a single WC product. Auth con la misma application password.
+ * WC acepta basic auth de admin con app password en la mayoría de instalaciones.
+ */
+export async function wcUpdateProduct(
+  client: WpClient,
+  productId: number,
+  payload: Record<string, unknown>
+): Promise<unknown> {
+  return wpRequest(client, "POST", `wc/v3/products/${productId}`, { body: payload });
+}
+
+/**
+ * Batch update / create / delete de productos en una sola llamada.
+ * Body: { update: [{id, field}, ...], create: [...], delete: [id, ...] }
+ */
+export async function wcBatchProducts(
+  client: WpClient,
+  ops: { update?: Array<{ id: number } & Record<string, unknown>>; create?: Record<string, unknown>[]; delete?: number[] }
+): Promise<unknown> {
+  return wpRequest(client, "POST", "wc/v3/products/batch", { body: ops });
+}
+
+/**
+ * List atributos globales (Marca, Movimiento, Material caja, etc.)
+ */
+export async function wcListAttributes(client: WpClient): Promise<unknown> {
+  return wpRequest(client, "GET", "wc/v3/products/attributes");
+}
+
+/**
+ * Crear atributo global (slug, name).
+ */
+export async function wcCreateAttribute(
+  client: WpClient,
+  payload: { name: string; slug: string; type?: "select" | "text"; has_archives?: boolean; order_by?: "menu_order" | "name" | "name_num" | "id" }
+): Promise<unknown> {
+  return wpRequest(client, "POST", "wc/v3/products/attributes", { body: payload });
+}
+
+// =============================================================================
+//  Elementor bridge (requires plugin MU pacame-connect.php with /reset-to-gutenberg)
+// =============================================================================
+
+/**
+ * Reescribe una página de WP que actualmente usa Elementor (`_elementor_data` post meta)
+ * borrando ese meta y poniendo `post_content` Gutenberg/HTML estándar.
+ *
+ * IMPORTANTE: requiere plugin MU `pacame-connect.php` instalado en el sitio cliente y
+ * webhook_secret configurado. El endpoint custom `/wp-json/pacame/v1/page/{id}/reset-to-gutenberg`
+ * vacía el meta de Elementor y purga la caché LiteSpeed.
+ *
+ * Esta función NO la llama directamente — se invoca desde el endpoint pasarela
+ * `/api/clients/[id]/websites/[wid]/mu` con `path = "page/{id}/reset-to-gutenberg"`.
+ * Se exporta como helper documental para uso desde scripts y tests locales.
+ */
+export type ResetToGutenbergInput = {
+  pageId: number;
+  content: string;
+  title?: string;
+  excerpt?: string;
+  status?: "publish" | "draft" | "pending";
+  removeElementor?: boolean;
+};
+
+export function buildResetToGutenbergPayload(input: ResetToGutenbergInput) {
+  return {
+    method: "POST" as const,
+    path: `page/${input.pageId}/reset-to-gutenberg`,
+    body: {
+      content: input.content,
+      title: input.title,
+      excerpt: input.excerpt,
+      status: input.status || "publish",
+      remove_elementor: input.removeElementor !== false,
+    },
+  };
+}
