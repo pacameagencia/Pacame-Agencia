@@ -4,6 +4,7 @@ import { logAgentActivity } from "@/lib/agent-logger";
 import { sendWhatsApp, markAsRead, WHATSAPP_VERIFY_TOKEN } from "@/lib/whatsapp";
 import { notifyHotLead } from "@/lib/telegram";
 import { getLogger } from "@/lib/observability/logger";
+import { pabloPersonaSystem, qualifyIntent } from "@/lib/pablo-persona";
 
 const supabase = createServerSupabase();
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
@@ -207,20 +208,21 @@ async function autoRespond(
     .map((h) => `${h.direction === "inbound" ? contactName : "PACAME"}: ${h.message}`)
     .join("\n");
 
-  const systemPrompt =
-    `Eres el asistente de WhatsApp de PACAME, una agencia digital con IA en Espana.\n` +
-    `Tu trabajo es responder mensajes de leads y clientes de forma cercana, profesional y breve.\n\n` +
-    `REGLAS:\n` +
-    `- Tutea siempre. Tono directo, cercano, sin humo.\n` +
-    `- Maximo 3-4 frases por respuesta. WhatsApp = mensajes cortos.\n` +
-    `- Si el contacto tiene un problema, ofrece un diagnostico gratuito.\n` +
-    `- Si pide precios, da rangos (desde 297€/mes) y ofrece una propuesta personalizada.\n` +
-    `- Si pregunta por servicios: webs, SEO, redes sociales, ads, branding, chatbots, automatizaciones.\n` +
-    `- Nunca inventes datos. Si no sabes, di que Pablo (el fundador) le contactara.\n` +
-    `- Web: pacameagencia.com | WhatsApp: +34 722 669 381\n` +
-    `- No uses emojis excesivos. Maximo 1-2 por mensaje.\n\n` +
-    (contactContext ? `CONTEXTO DEL CONTACTO:\n${contactContext}\n\n` : "") +
-    (historyText ? `HISTORIAL RECIENTE:\n${historyText}\n\n` : "");
+  // Pablo persona en 1a persona (igual que IG webhook) — unifica voz a traves de canales.
+  // El agente `pablo` tiene 30 memorias semantic en agent_memories importance >= 0.9
+  // (q1-q15 + 13 directivas + obsesion + vision-pacame-core) que cargan IDENTIDAD-PABLO.md.
+  const qualified = qualifyIntent(incomingMessage);
+  const contextHistory = [
+    contactContext ? `CONTEXTO DEL CONTACTO:\n${contactContext}` : "",
+    historyText ? `HISTORIAL RECIENTE:\n${historyText}` : "",
+  ].filter(Boolean).join("\n\n");
+
+  const systemPrompt = pabloPersonaSystem({
+    channel: "whatsapp",
+    qualified,
+    contactName,
+    history: contextHistory,
+  });
 
   try {
     const res = await fetch("https://api.anthropic.com/v1/messages", {
