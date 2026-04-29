@@ -360,6 +360,54 @@ export const envRegistry = {
     example: "pacame-wa-verify",
   },
 
+  // ─── DarkRoom (Capa 3, brand aislada) — multi-brand messaging ──────────────
+  // Todas opcionales. Si vacias, las funciones con brand: "darkroom" caen a 503.
+  // Plan: strategy/darkroom/canales-mensajeria-adaptacion.md
+  DARKROOM_TELEGRAM_BOT_TOKEN: {
+    category: "messaging",
+    description: "DarkRoom — token del bot @DarkRoomBot (BotFather, separado del PACAME)",
+    required_in: [],
+    provider: "Telegram BotFather",
+    generate_url: "https://t.me/BotFather",
+    example: "1234567:AAH...",
+  },
+  DARKROOM_TELEGRAM_DEFAULT_CHAT_ID: {
+    category: "messaging",
+    description: "DarkRoom — chat ID por defecto del bot (soporte humano u operaciones)",
+    required_in: [],
+    provider: "Telegram",
+    example: "123456789",
+  },
+  DARKROOM_TELEGRAM_WEBHOOK_SECRET: {
+    category: "messaging",
+    description: "DarkRoom — secret header para validar webhooks Telegram (separado del PACAME)",
+    required_in: [],
+    provider: "Telegram",
+    example: "random-darkroom-secret",
+  },
+  DARKROOM_WHATSAPP_PHONE_ID: {
+    category: "messaging",
+    description: "DarkRoom — Phone ID del número WhatsApp Business dedicado (NO compartir con PACAME)",
+    required_in: [],
+    provider: "Meta for Developers (BM Dark Room IO)",
+    generate_url: "https://developers.facebook.com/apps",
+    example: "...",
+  },
+  DARKROOM_WHATSAPP_TOKEN: {
+    category: "messaging",
+    description: "DarkRoom — long-lived WhatsApp token (legado). Prefiere DARKROOM_META_SYSTEM_USER_TOKEN.",
+    required_in: [],
+    provider: "Meta",
+    example: "EAA...",
+  },
+  DARKROOM_WHATSAPP_VERIFY_TOKEN: {
+    category: "messaging",
+    description: "DarkRoom — webhook verify token (separado del PACAME)",
+    required_in: [],
+    provider: "Meta",
+    example: "darkroom-wa-verify",
+  },
+
   // ========================================================================
   // SOCIAL — Instagram, Meta, LinkedIn, Buffer
   // ========================================================================
@@ -420,6 +468,51 @@ export const envRegistry = {
     provider: "Meta Business Manager",
     generate_url: "https://business.facebook.com/settings/system-users",
     example: "EAA...",
+  },
+  // ─── DarkRoom (Capa 3, brand aislada) — Meta token + IG cuenta separadas ──
+  DARKROOM_META_SYSTEM_USER_TOKEN: {
+    category: "social",
+    description: "DarkRoom — System User token del Business Manager 'Dark Room IO'. NO compartir con PACAME (regla aislamiento Capa 3).",
+    required_in: [],
+    provider: "Meta Business Manager (Dark Room IO)",
+    generate_url: "https://business.facebook.com/settings/system-users",
+    example: "EAA...",
+  },
+  DARKROOM_INSTAGRAM_APP_ID: {
+    category: "social",
+    description: "DarkRoom — App ID de la app Meta dedicada DarkRoom",
+    required_in: [],
+    provider: "Meta for Developers",
+    generate_url: "https://developers.facebook.com/apps",
+    example: "...",
+  },
+  DARKROOM_INSTAGRAM_APP_SECRET: {
+    category: "social",
+    description: "DarkRoom — App Secret de la app Meta DarkRoom (OAuth + HMAC webhooks)",
+    required_in: [],
+    provider: "Meta",
+    example: "...",
+  },
+  DARKROOM_INSTAGRAM_ACCESS_TOKEN: {
+    category: "social",
+    description: "DarkRoom — long-lived IG token (legado). Prefiere DARKROOM_META_SYSTEM_USER_TOKEN.",
+    required_in: [],
+    provider: "Meta",
+    example: "IGQ...",
+  },
+  DARKROOM_INSTAGRAM_ACCOUNT_ID: {
+    category: "social",
+    description: "DarkRoom — Instagram Business Account ID (cuenta @darkroomstudio o similar)",
+    required_in: [],
+    provider: "Meta",
+    example: "17...",
+  },
+  DARKROOM_INSTAGRAM_VERIFY_TOKEN: {
+    category: "social",
+    description: "DarkRoom — verify token webhook IG (separado del PACAME)",
+    required_in: [],
+    provider: "Meta",
+    example: "darkroom-ig-verify",
   },
   LINKEDIN_ACCESS_TOKEN: {
     category: "social",

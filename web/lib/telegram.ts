@@ -1,25 +1,34 @@
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN?.trim();
-const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID?.trim();
+import { resolveTelegramConfig, type Brand, DEFAULT_BRAND } from "@/lib/messaging/config";
+
 const TELEGRAM_API = "https://api.telegram.org";
 
 interface TelegramSendOptions {
   parse_mode?: "HTML" | "MarkdownV2" | "Markdown";
   disable_notification?: boolean;
+  /**
+   * Brand del bot a usar. Default: "pacame" (compat retro).
+   * Pasar "darkroom" para enviar desde @DarkRoomBot con su propio token.
+   */
+  brand?: Brand;
 }
 
 /**
  * Manda un mensaje al chat_id que se le indique. Pensado para multi-tenant
  * (cada asesor/cliente tiene su propio chat_id).
+ *
+ * Multi-brand: por defecto usa el bot PACAME. Pasa `{ brand: "darkroom" }`
+ * para enviar desde el bot DarkRoom (`DARKROOM_TELEGRAM_BOT_TOKEN`).
  */
 export async function sendTelegramMessage(
   chatId: string,
   text: string,
   options: TelegramSendOptions = {}
 ): Promise<boolean> {
-  if (!TELEGRAM_BOT_TOKEN) return false;
+  const cfg = resolveTelegramConfig(options.brand);
+  if (!cfg.botToken) return false;
   try {
     const res = await fetch(
-      `${TELEGRAM_API}/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+      `${TELEGRAM_API}/bot${cfg.botToken}/sendMessage`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -38,26 +47,32 @@ export async function sendTelegramMessage(
 }
 
 /**
- * Send a message to Pablo via Telegram bot.
+ * Send a message to the default chat ID of the brand's bot.
+ * - Default (PACAME): manda a Pablo personal (TELEGRAM_CHAT_ID).
+ * - DarkRoom: manda al chat de soporte/operaciones DarkRoom configurado.
+ *
  * Returns true on success, false if not configured or failed.
  */
 export async function sendTelegram(
   text: string,
   options: TelegramSendOptions = {}
 ): Promise<boolean> {
-  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-    console.warn("[Telegram] Bot token or chat ID not configured");
+  const cfg = resolveTelegramConfig(options.brand);
+  if (!cfg.botToken || !cfg.defaultChatId) {
+    console.warn(
+      `[Telegram:${cfg.brand}] Bot token or default chat ID not configured`
+    );
     return false;
   }
 
   try {
     const res = await fetch(
-      `${TELEGRAM_API}/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+      `${TELEGRAM_API}/bot${cfg.botToken}/sendMessage`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
+          chat_id: cfg.defaultChatId,
           text,
           parse_mode: options.parse_mode || "HTML",
           disable_notification: options.disable_notification || false,
@@ -67,15 +82,24 @@ export async function sendTelegram(
 
     if (!res.ok) {
       const err = await res.json();
-      console.error("[Telegram] Error:", err);
+      console.error(`[Telegram:${cfg.brand}] Error:`, err);
       return false;
     }
 
     return true;
   } catch (err) {
-    console.error("[Telegram] Exception:", err);
+    console.error(`[Telegram:${cfg.brand}] Exception:`, err);
     return false;
   }
+}
+
+// Re-exporta el tipo Brand para callers que ya importan de telegram.ts
+export type { Brand };
+
+// Helper específico para verificar configuración por brand sin instanciar todo el módulo
+export function isTelegramConfigured(brand: Brand = DEFAULT_BRAND): boolean {
+  const cfg = resolveTelegramConfig(brand);
+  return !!cfg.botToken;
 }
 
 /**
