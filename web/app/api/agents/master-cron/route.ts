@@ -48,6 +48,7 @@ const SCHEDULE: ScheduledTask[] = [
   { hour: 7, minute: 0, dayOfWeek: 1, path: "/api/agents/weekly-audit" }, // lunes 07:00
   { hour: 8, minute: 0, path: "/api/neural/opportunity-scanner" },
   { hour: 9, minute: 0, path: "/api/agents/auto-publish" },   // 11:00 ES — slot mañana IG
+  { hour: 9, minute: 5, path: "/api/darkroom/leads-cadence" }, // 11:05 ES — cadencia 5 emails Dark Room
   { hour: 9, minute: 15, path: "/api/neural/learn" },
   { hour: 9, minute: 30, path: "/api/neural/promote-tools" },
   { hour: 11, minute: 5, path: "/api/neural/draft-tool" },
