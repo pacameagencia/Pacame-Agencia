@@ -1,8 +1,9 @@
-# DarkRoom — Programa de afiliados v1
+# DarkRoom — Programa de afiliados (Crew) v1.1
 
-> **Estado**: v1.0 — mecánica decidida por Pablo (2026-04-29). Pendiente implementación técnica.
+> **Estado**: v1.1 — mecánica decidida por Pablo (2026-04-29) · INTEGRACIÓN con sistema existente.
 > **Owner**: Pablo + NEXUS (operaciones) + CORE (implementación técnica).
 > **Pre-requisito leído**: `positioning.md`, `brand-bible.md`.
+> **Cambio v1.0→v1.1**: detectamos que ya existe sistema afiliados PACAME multi-brand operativo (`web/lib/modules/referrals/` + `web/app/api/referrals/`). El programa Crew se IMPLEMENTA SOBRE ese sistema, no se duplica. Tablas `darkroom_affiliates` / `darkroom_referrals` que se crearon por error en migración 029 fueron eliminadas en migración 030.
 
 ---
 
@@ -58,92 +59,83 @@ Si Pablo decide más adelante atraer afiliados grandes (>100k followers), se pue
 
 ---
 
-## Implementación técnica
+## Implementación técnica · INTEGRACIÓN con sistema existente
 
-### Tabla `darkroom_affiliates`
+### Sistema PACAME afiliados ya operativo (NO duplicar)
 
-```sql
-CREATE TABLE darkroom_affiliates (
-  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id         uuid REFERENCES auth.users(id),
-  code            text UNIQUE NOT NULL,         -- ej "pablo-creator"
-  name            text NOT NULL,
-  email           text NOT NULL,
-  stripe_connect_id text,                       -- para payouts
-  status          text NOT NULL DEFAULT 'active', -- active|paused|banned
-  total_referrals int NOT NULL DEFAULT 0,       -- cache (calc desde darkroom_referrals)
-  total_paid_out_cents int NOT NULL DEFAULT 0,  -- cache acumulado pagado
-  pending_balance_cents int NOT NULL DEFAULT 0, -- a pagar en próximo cron
-  created_at      timestamptz NOT NULL DEFAULT now()
-);
-CREATE INDEX idx_aff_code ON darkroom_affiliates(code);
-CREATE INDEX idx_aff_user ON darkroom_affiliates(user_id);
-```
+PACAME tiene un sistema completo de referidos multi-brand vivo:
 
-### Tabla `darkroom_referrals`
+| Recurso | Path |
+|---|---|
+| Lib core | `web/lib/modules/referrals/` (adapters, attribution, auth, client) |
+| Componentes UI | `web/lib/modules/referrals/components/` (Dashboard, ContentLibrary, ReferralLinkCard) |
+| Endpoints público | `web/app/api/referrals/` (me, info, content, checkout-session, affiliates) |
+| Endpoints admin | `web/app/api/referrals/admin/` (overview, brands, affiliates, payout, campaign) |
+| Landing afiliados | `web/app/afiliados/` (page, registro, login, panel, terminos) |
+| Tablas DB | `aff_*` prefix (no `darkroom_*`) |
 
-```sql
-CREATE TABLE darkroom_referrals (
-  id                  uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  affiliate_code      text NOT NULL REFERENCES darkroom_affiliates(code),
-  referred_email      text NOT NULL,
-  stripe_subscription_id text,
-  stripe_customer_id  text,
-  plan                text NOT NULL,            -- pro|lifetime
-  started_at          timestamptz NOT NULL,
-  last_paid_at        timestamptz,              -- última cuota cobrada al referido
-  one_time_paid       boolean NOT NULL DEFAULT false,  -- ¿ya se pagaron los 5€ al afiliado?
-  one_time_paid_at    timestamptz,
-  recurring_months_paid int NOT NULL DEFAULT 0, -- cuántos €1 ya hemos acreditado
-  status              text NOT NULL DEFAULT 'active', -- active|churned|refunded
-  total_commission_cents int NOT NULL DEFAULT 0,
-  created_at          timestamptz NOT NULL DEFAULT now()
-);
-CREATE INDEX idx_ref_aff ON darkroom_referrals(affiliate_code);
-CREATE INDEX idx_ref_status ON darkroom_referrals(status);
-```
+El sistema soporta **múltiples brands** (PACAME, SaaS, Dark Room) en la misma infra. Cada afiliado elige una brand y obtiene su link `?ref=<code>` con cookie 30 días.
 
-### Endpoints Next.js
+### Configuración Crew para brand=darkroom
 
-- `POST /api/affiliates/track` — body `{ref}` → set cookie 30 días + redirect a checkout
-- `POST /api/affiliates/signup` — body `{name, email, stripe_connect_token?}` → crea fila en `darkroom_affiliates` con código auto-generado
-- `GET /api/affiliates/[code]/dashboard` — devuelve balance + referidos + comisiones (auth: email del afiliado)
-- `POST /api/webhooks/stripe` — extender el existente para detectar `customer.subscription.created` y matchear cookie `?ref=` → registrar referral + acreditar 5€ al pasar día 30 sin refund
+Para activar la mecánica Crew (5€ + 1€/mes) sobre el sistema existente:
 
-### Crons mensuales
+1. **Crear/actualizar brand `darkroom`** en la tabla `aff_brands` (vía endpoint admin `/api/referrals/admin/brands`):
+   - `slug`: `darkroom`
+   - `name`: `DarkRoom`
+   - `default_payout_one_time_cents`: 500 (5€)
+   - `default_payout_recurring_cents`: 100 (1€/mes)
+   - `commission_window_days`: 30 (espera para acreditar one-time)
+   - `cookie_days`: 30
 
-- `infra/crons/affiliates-recurring.ts` — el día 1 de cada mes, para cada referral activo, +1€ al `pending_balance_cents` del afiliado.
-- `infra/crons/affiliates-payout.ts` — el día 5 de cada mes, para cada afiliado con `pending_balance_cents >= 3000` (30€), payout via Stripe Connect.
+2. **Asociar productos Stripe Dark Room** a la brand `darkroom` (`/api/referrals/admin/brand-products`):
+   - Pro 24,90€/mes
+   - Lifetime 349€
 
-### Flujo end-to-end
+3. **Webhook Stripe** ya está cableado en el sistema existente. Cuando llegue `customer.subscription.created` con cookie `aff_ref=<code>`, automáticamente:
+   - Registra referral con status `pending`
+   - Tras 30 días sin refund → acredita 5€ al afiliado
+   - Mes a mes → acumula 1€ por referido activo
+
+4. **Lifetime bonus tier-upgrade** (Pro→Lifetime): aún no soportado por sistema existente. Pendiente extension cuando tengamos el primer caso real.
+
+### Flujo end-to-end (sistema existente)
 
 ```
-1. Visitante click /afiliados/signup
-   → form simple (name, email)
-   → genera código único `name-XXX`
-   → email con su link `darkroomcreative.cloud?ref=name-XXX`
+1. Pablo (admin) crea brand=darkroom en /api/referrals/admin/brands
+   con payout_one_time=500 y payout_recurring=100
 
-2. Visitante con `?ref=name-XXX` llega a darkroomcreative.cloud
-   → POST /api/affiliates/track con cookie 30 días
+2. Visitante click /afiliados/registro?brand=darkroom
+   → form (name, email) en página existente
+   → backend crea fila en aff_affiliates con brand=darkroom
+   → email con link `darkroomcreative.cloud?ref=<code>`
 
-3. Visitante completa checkout Pro 24,90€
-   → webhook Stripe customer.subscription.created
-   → matching cookie ↔ subscription
-   → INSERT en darkroom_referrals (status=active, one_time_paid=false)
+3. Visitante con ?ref=<code> llega a darkroomcreative.cloud
+   → cookie aff_ref=<code> 30 días (sistema existente)
 
-4. Día 30 cron verifica: ¿el referido sigue activo? ¿no hubo refund?
-   → SI → acredita 5€ one-time al afiliado (one_time_paid=true)
+4. Visitante checkout Pro 24,90€
+   → webhook Stripe (existente) detecta cookie + brand
+   → INSERT en aff_referrals (status=pending)
 
-5. Día 1 mes 2 (y siguientes) cron afiliados-recurring
-   → para cada darkroom_referrals.status='active' suma +1€ al afiliado
+5. Día 30 cron existente verifica refund-free
+   → acredita 5€ one-time
 
-6. Día 5 mes cron afiliados-payout
-   → para cada afiliado con balance >= 30€ → Stripe Connect transfer
+6. Mes 2+ cron recurring suma 1€/mes por referral active
 
-7. Si referido churn (subscription.deleted)
-   → darkroom_referrals.status='churned'
-   → desde mes siguiente NO se suma +1€
+7. Día 5 mes cron payout via Stripe Connect (mín 30€)
 ```
+
+### Lo que SÍ es nuevo (no en el sistema existente)
+
+- **Tabla `darkroom_leads`** (lead magnet captura email "Stack del Creator 2026"). NO tiene equivalente en `aff_*`. Migración 029_darkroom_affiliates_leads.sql crea esta tabla. Migración 030 dropea las dos tablas duplicadas innecesarias.
+- **Endpoint `POST /api/darkroom/lead`** para capturar leads del lead magnet (no es ref de afiliado, es captura email pre-conversion).
+
+### Crons mensuales (ya existen en sistema)
+
+- Recurring +1€/mes/referral activo: ya implementado en sistema referidos PACAME
+- Payout Stripe Connect mensual: ya implementado
+
+NO crear crons nuevos. Solo verificar que la brand `darkroom` esté configurada con los rates correctos (500 / 100 cents).
 
 ---
 
