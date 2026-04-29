@@ -20,6 +20,9 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { sendEmail } from "@/lib/resend";
+import { renderEmail0 } from "@/lib/darkroom/email-templates";
+import { getLogger } from "@/lib/observability/logger";
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
@@ -91,9 +94,45 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const leadId = (created as { id: string }).id;
+
+  // Enviar email_0 inmediato (welcome + Notion + PDF). Si falla, no rollback:
+  // el lead queda capturado y el cron podrá reintentar.
+  const log = getLogger();
+  try {
+    const rendered = renderEmail0({
+      firstname: body.firstname ?? null,
+      source_utm: body.source_utm ?? null,
+    });
+    const messageId = await sendEmail({
+      to: email,
+      subject: rendered.subject,
+      html: rendered.html,
+      text: rendered.text,
+      replyTo: "support@darkroomcreative.cloud",
+      tags: [
+        { name: "type", value: "darkroom_lead_magnet" },
+        { name: "step", value: "email_0" },
+      ],
+    });
+    if (messageId) {
+      await supabase
+        .from("darkroom_leads")
+        .update({
+          current_email_step: 1,
+          last_email_sent_at: new Date().toISOString(),
+        })
+        .eq("id", leadId);
+    } else {
+      log.warn({ leadId, email }, "[darkroom-lead] email_0 send returned null");
+    }
+  } catch (emailErr) {
+    log.error({ leadId, email, err: emailErr }, "[darkroom-lead] email_0 exception");
+  }
+
   return NextResponse.json({
     ok: true,
-    lead_id: (created as { id: string }).id,
+    lead_id: leadId,
     status: "captured",
   });
 }
