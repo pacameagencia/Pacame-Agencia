@@ -229,11 +229,17 @@ async function main() {
       const newTitle = generateTitle(product);
       const currentAlt = img.alt || "";
 
-      // Skip si ya está bien
-      if (currentAlt && currentAlt.length > 5 && !/^Sin\s|^IMG_|^untitled/i.test(currentAlt)) {
+      // Detectar alts duplicados ("Reloj X Reloj X...") generados por la versión vieja del script
+      const hasDuplicatedPrefix = /^Reloj\s+([A-Za-zé&]+)\s+Reloj\s+\1/i.test(currentAlt);
+
+      // Skip si ya está bien (alt poblado, sin patrones malos, sin duplicación)
+      if (currentAlt && currentAlt.length > 5 && !/^Sin\s|^IMG_|^untitled/i.test(currentAlt) && !hasDuplicatedPrefix) {
         console.log(`  [skip] media ${img.id} ya tiene alt OK: "${currentAlt.slice(0, 60)}"`);
         skipped++;
         continue;
+      }
+      if (hasDuplicatedPrefix) {
+        console.log(`  [FIX-DUP] media ${img.id} alt actual con duplicado: "${currentAlt.slice(0, 80)}"`);
       }
 
       console.log(`  [${dryRun ? "DRY" : "DO "}] media ${img.id} | producto "${product.name.slice(0, 50)}"`);
