@@ -377,3 +377,154 @@ add_action('elementor_pro/forms/new_record', function ($record) {
 add_action('wpforms_process_complete', function ($fields, $entry, $form_data) {
     pacame_post_lead('wpforms', $fields, ['form_id' => $form_data['id'] ?? null]);
 }, 10, 3);
+
+// =============================================================================
+//  TRADUCCIONES — strings residuales en inglés (WCBoost Wishlist, etc.)
+//  Aplica filtro gettext para sustituir las cadenas no traducidas a español.
+// =============================================================================
+
+const PACAME_TRANSLATIONS = [
+    'wcboost-products-wishlist' => [
+        'Add to wishlist'     => 'Añadir a favoritos',
+        'Added to wishlist'   => 'Añadido a favoritos',
+        'View wishlist'       => 'Ver favoritos',
+        'Browse wishlist'     => 'Mi lista de favoritos',
+        'Remove from wishlist' => 'Quitar de favoritos',
+        'My wishlist'         => 'Mis favoritos',
+        'Share wishlist'      => 'Compartir lista',
+    ],
+    'wcboost-products-compare' => [
+        'Add to compare'     => 'Añadir a comparar',
+        'Added to compare'   => 'Añadido a comparar',
+        'Remove from compare' => 'Quitar de comparar',
+        'Compare'            => 'Comparar',
+        'View compare'       => 'Ver comparativa',
+    ],
+];
+
+add_filter('gettext_with_context', function ($translation, $text, $context, $domain) {
+    if (!isset(PACAME_TRANSLATIONS[$domain])) return $translation;
+    return PACAME_TRANSLATIONS[$domain][$text] ?? $translation;
+}, 20, 4);
+
+add_filter('gettext', function ($translation, $text, $domain) {
+    if (!isset(PACAME_TRANSLATIONS[$domain])) return $translation;
+    return PACAME_TRANSLATIONS[$domain][$text] ?? $translation;
+}, 20, 3);
+
+// =============================================================================
+//  SCHEMA.ORG JewelryStore — inyecta JSON-LD en home + sobre nosotros
+//  Mejora ranking en Google Maps y búsquedas locales tipo "joyería en Albacete".
+// =============================================================================
+
+add_action('wp_head', function () {
+    if (!is_front_page() && !is_page(['sobre-nosotros-joyeria-albacete', 'contacto-joyeria-royo-albacete'])) {
+        return;
+    }
+
+    $schema = [
+        '@context' => 'https://schema.org',
+        '@type'    => ['LocalBusiness', 'JewelryStore'],
+        '@id'      => 'https://joyeriaroyo.com/#localbusiness',
+        'name'     => 'Joyería Royo',
+        'description' => 'Joyería familiar en Albacete con más de 50 años de tradición. Distribuidores oficiales de Tissot, Longines, Seiko, Casio, Hamilton, Oris, Citizen, Omega, MontBlanc y joyería de oro 18kt.',
+        'url'      => 'https://joyeriaroyo.com/',
+        'telephone' => '+34967217903',
+        'email'    => 'jroyo@joyeriaroyo.com',
+        'priceRange' => '€€€',
+        'image'    => 'https://joyeriaroyo.com/wp-content/uploads/2025/12/LOGO-NEGRO-SIN-FONDO.png',
+        'address' => [
+            '@type' => 'PostalAddress',
+            'streetAddress' => 'Calle Tesifonte Gallego, 2',
+            'addressLocality' => 'Albacete',
+            'addressRegion' => 'Albacete',
+            'postalCode' => '02002',
+            'addressCountry' => 'ES',
+        ],
+        'geo' => [
+            '@type' => 'GeoCoordinates',
+            'latitude' => 38.99432,
+            'longitude' => -1.85841,
+        ],
+        'areaServed' => [
+            '@type' => 'AdministrativeArea',
+            'name' => 'Albacete',
+        ],
+        'openingHoursSpecification' => [
+            [
+                '@type' => 'OpeningHoursSpecification',
+                'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                'opens' => '10:00',
+                'closes' => '13:30',
+            ],
+            [
+                '@type' => 'OpeningHoursSpecification',
+                'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                'opens' => '17:00',
+                'closes' => '20:30',
+            ],
+            [
+                '@type' => 'OpeningHoursSpecification',
+                'dayOfWeek' => 'Saturday',
+                'opens' => '10:00',
+                'closes' => '13:30',
+            ],
+        ],
+        'sameAs' => array_filter([
+            get_option('pacame_social_instagram', ''),
+            get_option('pacame_social_facebook', ''),
+            get_option('pacame_social_tiktok', ''),
+        ]),
+        'paymentAccepted' => 'Cash, Credit Card, PayPal, Visa, Mastercard, American Express',
+        'currenciesAccepted' => 'EUR',
+    ];
+
+    echo "\n<!-- PACAME · LocalBusiness/JewelryStore schema -->\n";
+    echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n";
+});
+
+// =============================================================================
+//  INYECCIÓN CSS CUSTOM PACAME — alternativa al Customizer
+//  Lee el CSS de wp_options('pacame_custom_css') y lo inyecta en wp_head.
+//  Pablo puede actualizarlo desde PACAME REST sin tocar Customizer.
+// =============================================================================
+
+add_action('wp_head', function () {
+    $css = get_option('pacame_custom_css', '');
+    if (empty($css)) return;
+    echo "\n<!-- PACAME · custom CSS -->\n";
+    echo '<style id="pacame-custom-css">' . "\n" . wp_strip_all_tags($css) . "\n" . '</style>' . "\n";
+}, 999);
+
+// Endpoint REST para actualizar el CSS desde PACAME
+add_action('rest_api_init', function () {
+    register_rest_route(PACAME_NS, '/css/set', [
+        'methods'             => 'POST',
+        'permission_callback' => 'pacame_verify_hmac',
+        'args' => ['css' => ['required' => true, 'type' => 'string']],
+        'callback'            => function (WP_REST_Request $request) {
+            $css = $request['css'];
+            // Sanitización mínima — strip <script>
+            $css = preg_replace('/<script[^>]*>.*?<\/script>/is', '', $css);
+            update_option('pacame_custom_css', $css, false);
+            // Purga LiteSpeed cache si está activo
+            if (class_exists('LiteSpeed\Purge')) {
+                do_action('litespeed_purge_all');
+            }
+            return ['ok' => true, 'length' => strlen($css)];
+        },
+    ]);
+
+    // Endpoint para borrar CSS
+    register_rest_route(PACAME_NS, '/css/clear', [
+        'methods'             => 'POST',
+        'permission_callback' => 'pacame_verify_hmac',
+        'callback'            => function () {
+            delete_option('pacame_custom_css');
+            if (class_exists('LiteSpeed\Purge')) {
+                do_action('litespeed_purge_all');
+            }
+            return ['ok' => true];
+        },
+    ]);
+});
