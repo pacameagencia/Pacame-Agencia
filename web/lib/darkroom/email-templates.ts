@@ -435,3 +435,247 @@ export const STEP_DAYS_OFFSET: Record<LeadEmailStep, number> = {
   3: 7,
   4: 14,
 };
+
+// ────────────────────────────────────────────────────────────────────
+// ─── Dark Room Crew · templates afiliados ───────────────────────────
+// ────────────────────────────────────────────────────────────────────
+
+import { TIERS, type TierKey } from "./crew-tiers";
+
+const CREW_DASHBOARD_BASE = `${SITE_URL}/crew/dashboard`;
+const CREW_LANDING = `${SITE_URL}/crew`;
+
+interface WelcomeCrewCtx {
+  name: string;
+  code: string;
+  dashboardUrl: string;
+}
+
+export function renderWelcomeCrew(ctx: WelcomeCrewCtx): RenderedEmail {
+  const subject = "Bienvenido a DarkRoom Crew · tu code está listo";
+  const preheader = `Tu link: ${SITE_URL}?ref=${ctx.code}. Trae a tu gente. Sube de rango. Cobra cada mes.`;
+  const tiersTable = TIERS.map(
+    (t) =>
+      `<tr>
+        <td style="padding:6px 8px">${t.emoji} ${t.label}</td>
+        <td style="padding:6px 8px">${t.refsMin}${t.refsMax === null ? "+" : `-${t.refsMax}`}</td>
+        <td style="padding:6px 8px">${(t.oneTimeCents / 100).toFixed(0)}€</td>
+        <td style="padding:6px 8px">${(t.recurringCents / 100).toFixed(0)}€/ref/mes</td>
+      </tr>`
+  ).join("");
+  const body = `
+<p style="margin:0 0 16px;color:#FFF;font-weight:600">Hey ${ctx.name},</p>
+
+<p style="margin:0 0 16px">
+  Estás dentro de <strong style="color:#CFFF00">DarkRoom Crew</strong>.
+  Tu code:
+</p>
+
+<div style="margin:16px 0;padding:14px;background:#0A0A0A;border:1px dashed #CFFF00;
+            border-radius:6px;text-align:center;font-family:'JetBrains Mono',monospace;
+            font-size:18px;color:#CFFF00;letter-spacing:1px">
+  ${ctx.code}
+</div>
+
+<p style="margin:0 0 16px">
+  Tu link para compartir:
+</p>
+
+<div style="margin:0 0 16px;padding:12px;background:#0A0A0A;border-radius:6px;
+            font-family:'JetBrains Mono',monospace;font-size:13px;color:#E6E6E6;
+            word-break:break-all">
+  ${SITE_URL}?ref=${ctx.code}
+</div>
+
+<p style="margin:16px 0 8px;color:#FFF;font-weight:600">Cómo funciona:</p>
+
+<table style="width:100%;border-collapse:collapse;margin:0 0 16px;font-size:13px">
+  <thead>
+    <tr style="border-bottom:1px solid rgba(207,255,0,0.2);color:#CFFF00">
+      <th style="padding:6px 8px;text-align:left">Rango</th>
+      <th style="padding:6px 8px;text-align:left">Refs</th>
+      <th style="padding:6px 8px;text-align:left">Único</th>
+      <th style="padding:6px 8px;text-align:left">Recurrente</th>
+    </tr>
+  </thead>
+  <tbody>${tiersTable}</tbody>
+</table>
+
+<p style="margin:0 0 16px;color:#888;font-size:13px">
+  Subes de rango → todos tus refs activos pasan al rate del nuevo rango (motivador máximo).
+  Pago día 5 vía PayPal/SEPA. Mínimo 50€ acumulado.
+</p>
+
+<p style="margin:0 0 16px">
+  Tu panel personal en cualquier momento:
+</p>
+
+<p style="margin:24px 0 0">— Pablo</p>
+`;
+  return {
+    subject,
+    from: FROM_EMAIL,
+    html: wrapDarkRoom({
+      preheader,
+      bodyHtml: body,
+      ctaText: "VER MI PANEL",
+      ctaUrl: ctx.dashboardUrl,
+      ctaSecondaryText: "Tabla completa de rangos",
+      ctaSecondaryUrl: CREW_LANDING,
+    }),
+    text: `Hey ${ctx.name},
+
+Estás dentro de DarkRoom Crew. Tu code: ${ctx.code}
+
+Tu link: ${SITE_URL}?ref=${ctx.code}
+
+Cómo funciona:
+- 🎬 Init (1-10 refs): 5€ único + 1€/ref/mes
+- 🎞️ Active (11-20): 6€ + 2€/ref/mes
+- 🎥 Pro (21-30): 7€ + 3€/ref/mes
+- 📽️ Director (31-40): 8€ + 4€/ref/mes
+- 🎟️ Producer (41-50): 9€ + 5€/ref/mes
+- 🌟 TOP (51+): 10€ + 5€/ref/mes (TOPE)
+
+Subes de rango → todos tus refs activos pasan al rate del nuevo rango.
+Pago día 5 PayPal/SEPA. Mín 50€ acumulado.
+
+Tu panel: ${ctx.dashboardUrl}
+
+— Pablo`,
+  };
+}
+
+interface TierUpCtx {
+  name: string;
+  oldTier: TierKey;
+  newTier: TierKey;
+  refsActive: number;
+  dashboardUrl: string;
+}
+
+export function renderTierUp(ctx: TierUpCtx): RenderedEmail {
+  const oldT = TIERS.find((t) => t.key === ctx.oldTier);
+  const newT = TIERS.find((t) => t.key === ctx.newTier);
+  if (!oldT || !newT) throw new Error("invalid tier in renderTierUp");
+  const subject = `Subiste a ${newT.emoji} ${newT.label} · todos tus refs al nuevo rate`;
+  const preheader = `Ahora ${(newT.recurringCents / 100).toFixed(0)}€/ref/mes × ${ctx.refsActive} refs activos.`;
+  const monthlyOld = ctx.refsActive * oldT.recurringCents;
+  const monthlyNew = ctx.refsActive * newT.recurringCents;
+  const body = `
+<p style="margin:0 0 16px;color:#FFF;font-weight:600">Hey ${ctx.name},</p>
+
+<p style="margin:0 0 16px">
+  ${oldT.emoji} ${oldT.label} → <strong style="color:#CFFF00">${newT.emoji} ${newT.label}</strong>.
+</p>
+
+<p style="margin:0 0 16px">
+  Tienes <strong>${ctx.refsActive} refs activos</strong>.
+  Desde el próximo cobro mensual, todos pasan al rate del nuevo rango.
+</p>
+
+<table style="width:100%;border-collapse:collapse;margin:0 0 16px;font-size:14px">
+  <tr style="border-bottom:1px solid rgba(255,255,255,0.06)">
+    <td style="padding:8px 0;color:#888">Antes</td>
+    <td style="padding:8px 0;text-align:right">
+      ${ctx.refsActive} × ${(oldT.recurringCents / 100).toFixed(0)}€ = <strong>${(monthlyOld / 100).toFixed(0)}€/mes</strong>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:8px 0;color:#CFFF00;font-weight:600">Ahora</td>
+    <td style="padding:8px 0;text-align:right;color:#CFFF00;font-weight:600">
+      ${ctx.refsActive} × ${(newT.recurringCents / 100).toFixed(0)}€ = ${(monthlyNew / 100).toFixed(0)}€/mes
+    </td>
+  </tr>
+</table>
+
+<p style="margin:0 0 16px;color:#888;font-size:13px">
+  Y tu próximo ref one-time pasa a <strong>${(newT.oneTimeCents / 100).toFixed(0)}€</strong>.
+</p>
+
+<p style="margin:24px 0 0">— Pablo</p>
+`;
+  return {
+    subject,
+    from: FROM_EMAIL,
+    html: wrapDarkRoom({
+      preheader,
+      bodyHtml: body,
+      ctaText: "VER MI PANEL",
+      ctaUrl: ctx.dashboardUrl,
+    }),
+    text: `Hey ${ctx.name},
+
+${oldT.emoji} ${oldT.label} → ${newT.emoji} ${newT.label}.
+
+Tienes ${ctx.refsActive} refs activos. Desde el próximo cobro mensual:
+
+Antes: ${ctx.refsActive} × ${(oldT.recurringCents / 100).toFixed(0)}€ = ${(monthlyOld / 100).toFixed(0)}€/mes
+Ahora: ${ctx.refsActive} × ${(newT.recurringCents / 100).toFixed(0)}€ = ${(monthlyNew / 100).toFixed(0)}€/mes
+
+Tu próximo ref one-time pasa a ${(newT.oneTimeCents / 100).toFixed(0)}€.
+
+Panel: ${ctx.dashboardUrl}
+
+— Pablo`,
+  };
+}
+
+interface PayoutReadyCtx {
+  name: string;
+  period: string;             // 'YYYY-MM'
+  amountEur: number;          // ya en euros
+  payoutMethod: string;
+  dashboardUrl: string;
+}
+
+export function renderPayoutReady(ctx: PayoutReadyCtx): RenderedEmail {
+  const subject = `Tu pago de ${ctx.amountEur.toFixed(2)}€ está aprobado`;
+  const preheader = `Período ${ctx.period}. Llega vía ${ctx.payoutMethod} en las próximas 48h.`;
+  const body = `
+<p style="margin:0 0 16px;color:#FFF;font-weight:600">Hey ${ctx.name},</p>
+
+<p style="margin:0 0 16px">
+  Tu pago del período <strong>${ctx.period}</strong> está aprobado:
+</p>
+
+<div style="margin:16px 0;padding:20px;background:#0A0A0A;border:1px solid #CFFF00;
+            border-radius:6px;text-align:center">
+  <div style="font-family:'Anton','Impact',sans-serif;font-size:36px;color:#CFFF00;line-height:1">
+    ${ctx.amountEur.toFixed(2)}€
+  </div>
+  <div style="margin-top:8px;color:#888;font-size:12px;letter-spacing:1px;text-transform:uppercase">
+    vía ${ctx.payoutMethod}
+  </div>
+</div>
+
+<p style="margin:0 0 16px;color:#888;font-size:13px">
+  Llega en las próximas 48h. Si no llega, escríbeme a support@darkroomcreative.cloud.
+</p>
+
+<p style="margin:24px 0 0">— Pablo</p>
+`;
+  return {
+    subject,
+    from: FROM_EMAIL,
+    html: wrapDarkRoom({
+      preheader,
+      bodyHtml: body,
+      ctaText: "VER PANEL",
+      ctaUrl: ctx.dashboardUrl,
+    }),
+    text: `Hey ${ctx.name},
+
+Tu pago del período ${ctx.period} está aprobado: ${ctx.amountEur.toFixed(2)}€ vía ${ctx.payoutMethod}.
+
+Llega en las próximas 48h. Si no llega, support@darkroomcreative.cloud.
+
+Panel: ${ctx.dashboardUrl}
+
+— Pablo`,
+  };
+}
+
+export function buildCrewDashboardUrl(code: string): string {
+  return `${CREW_DASHBOARD_BASE}?code=${encodeURIComponent(code)}`;
+}
