@@ -30,6 +30,8 @@ interface ScheduledTask {
   minute: number;
   /** Día de la semana (0=Dom, 1=Lun…). null = todos los días. */
   dayOfWeek?: number;
+  /** Día del mes (1-31). null = todos los días. */
+  dayOfMonth?: number;
   /** Path relativo del endpoint a disparar. */
   path: string;
   /** Método HTTP. */
@@ -49,6 +51,9 @@ const SCHEDULE: ScheduledTask[] = [
   { hour: 8, minute: 0, path: "/api/neural/opportunity-scanner" },
   { hour: 9, minute: 0, path: "/api/agents/auto-publish" },   // 11:00 ES — slot mañana IG
   { hour: 9, minute: 5, path: "/api/darkroom/leads-cadence" }, // 11:05 ES — cadencia 5 emails Dark Room
+  { hour: 9, minute: 10, path: "/api/darkroom/crew/promote-pending" }, // 11:10 ES — promueve refs pending_30d
+  { hour: 2, minute: 0, dayOfMonth: 1, path: "/api/darkroom/crew/recurring-monthly" }, // día 1 02:00 UTC — cobro recurrente
+  { hour: 9, minute: 0, dayOfMonth: 5, path: "/api/darkroom/crew/payout-batch" }, // día 5 11:00 ES — payout batch
   { hour: 9, minute: 15, path: "/api/neural/learn" },
   { hour: 9, minute: 30, path: "/api/neural/promote-tools" },
   { hour: 11, minute: 5, path: "/api/neural/draft-tool" },
@@ -61,6 +66,7 @@ const TOLERANCE_MIN = 2; // si dispatcher corre a :00, :05, :10... → match si 
 
 function shouldFire(task: ScheduledTask, now: Date): boolean {
   if (task.dayOfWeek !== undefined && now.getUTCDay() !== task.dayOfWeek) return false;
+  if (task.dayOfMonth !== undefined && now.getUTCDate() !== task.dayOfMonth) return false;
   if (now.getUTCHours() !== task.hour) return false;
   const diff = Math.abs(now.getUTCMinutes() - task.minute);
   return diff <= TOLERANCE_MIN;

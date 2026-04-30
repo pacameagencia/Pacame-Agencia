@@ -7,6 +7,11 @@ import { sendEmail, notifyPablo, wrapEmailTemplate } from "@/lib/resend";
 import { notifyPayment } from "@/lib/telegram";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import {
+  handleDarkroomCheckoutCompleted,
+  handleDarkroomSubscriptionDeleted,
+  handleDarkroomChargeRefunded,
+} from "@/lib/darkroom/crew-stripe-handler";
 
 const supabase = createServerSupabase();
 
@@ -35,6 +40,15 @@ export async function POST(request: NextRequest) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
         const metadata = session.metadata || {};
+
+        // ── DARKROOM CREW ── attribution antes que otros flows
+        // (no return: un mismo session puede ser Dark Room + payment record)
+        try {
+          await handleDarkroomCheckoutCompleted(supabase, session);
+        } catch (err) {
+          console.error("[stripe-webhook] darkroom crew handler error", err);
+        }
+
         const amount = (session.amount_total || 0) / 100;
         const isMarketplace =
           metadata.pacame_source === "marketplace" && !!metadata.service_slug;
@@ -947,6 +961,13 @@ export async function POST(request: NextRequest) {
           .update({ status: "canceled", canceled_at: now, updated_at: now })
           .eq("stripe_subscription_id", stripeSubId);
 
+        // ── DARKROOM CREW ── churn de referral si aplica
+        try {
+          await handleDarkroomSubscriptionDeleted(supabase, subscription);
+        } catch (err) {
+          console.error("[stripe-webhook] darkroom subscription deleted handler error", err);
+        }
+
         await supabase.from("notifications").insert({
           type: "subscription_cancelled",
           priority: "high",
@@ -954,6 +975,17 @@ export async function POST(request: NextRequest) {
           message: `Un cliente ha cancelado su suscripcion (${stripeSubId})`,
           data: { subscription_id: stripeSubId },
         });
+        break;
+      }
+
+      case "charge.refunded": {
+        const charge = event.data.object as Stripe.Charge;
+        // ── DARKROOM CREW ── clawback de comisiones si aplica
+        try {
+          await handleDarkroomChargeRefunded(supabase, charge);
+        } catch (err) {
+          console.error("[stripe-webhook] darkroom charge refunded handler error", err);
+        }
         break;
       }
 
