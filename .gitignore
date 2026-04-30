@@ -34,9 +34,34 @@ desktop.ini
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
+*.tmp
 
 # Vercel
 .vercel
 
-# Claude internal
-.claude/
+# Claude Code internals (sessions, settings, plugins, history) — ignorados,
+# pero versionar lo OPERATIVO (subagentes con poder de veto, commands, INDEX de skills)
+.claude/*
+!.claude/agents/
+.claude/agents/*
+!.claude/agents/visual-reviewer.md
+!.claude/commands/
+.claude/commands/*
+!.claude/commands/*.md
+!.claude/skills/
+.claude/skills/*
+.claude/skills/**
+!.claude/skills/INDEX.md
+!.claude/skills/INDEX.json
+
+# Scratchpads de herramientas (no versionar)
+.agents/
+.firecrawl/
+.playwright-mcp/
+
+# Duplicados/repos huéspedes (no versionar — destrucción pendiente de validar)
+agency-agents-repo/
+
+# Asset library temporal
+asset-library/

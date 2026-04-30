@@ -1,0 +1,472 @@
+/*
+ * Joyería Royo — CSS custom alta gama
+ * Pablo: pega TODO este bloque en wp-admin → Apariencia → Personalizar → CSS adicional → Publicar.
+ *
+ * Paleta inspirada en alta joyería:
+ *   --royo-ivory: blanco roto fondo
+ *   --royo-champagne: dorado champán acento
+ *   --royo-charcoal: gris carbón texto
+ *   --royo-ink: tinta negra titulares
+ *   --royo-line: línea fina divisores
+ *
+ * Tipografía:
+ *   serif (Playfair Display) para titulares y nombres de producto
+ *   sans (Inter) para texto y precios
+ *
+ * Cambios visibles:
+ *   1. Títulos H1/H2/H3 en serif elegante
+ *   2. Cards de producto con tamaño visual uniformizado (object-fit: contain en frame fijo)
+ *   3. Precio destacado tipo joyería premium
+ *   4. Tabla "Ficha técnica" con bordes finos, hover discreto
+ *   5. Botón "Añadir al carrito" en oro champán
+ *   6. Spacing más amplio en ficha producto
+ *   7. Hover de cards más refinado
+ *   8. Tabs de la ficha producto con underline dorado
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --royo-ivory: #FAF7F2;
+  --royo-paper: #FFFFFF;
+  --royo-champagne: #B8956A;
+  --royo-champagne-dark: #8E6F4A;
+  --royo-charcoal: #4A4744;
+  --royo-ink: #1A1816;
+  --royo-line: #E8E2D9;
+  --royo-success: #5C7A4E;
+  --royo-soft-shadow: 0 4px 24px rgba(184, 149, 106, 0.08);
+}
+
+/* ============================================================
+   1. TIPOGRAFÍA — serif elegante para títulos
+   ============================================================ */
+body,
+body p,
+body .price,
+body .woocommerce-Price-amount,
+body input,
+body select,
+body textarea,
+body button,
+body .button {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif !important;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+}
+
+h1, h2, h3, h4,
+.product_title,
+.product_title.entry-title,
+.woocommerce-loop-product__title,
+.elementor-heading-title,
+.section-heading,
+.ecomus-heading {
+  font-family: 'Playfair Display', 'Times New Roman', serif !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em;
+  color: var(--royo-ink);
+}
+
+.product_title.entry-title {
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem) !important;
+  line-height: 1.25 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* ============================================================
+   2. PRECIO DESTACADO — sello joyería premium
+   ============================================================ */
+.summary .price,
+.product .price {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.85rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  letter-spacing: -0.01em;
+  margin: 0.5rem 0 1.25rem !important;
+}
+.summary .price ins {
+  text-decoration: none;
+  color: var(--royo-champagne-dark) !important;
+}
+.summary .price del {
+  color: var(--royo-charcoal);
+  opacity: 0.5;
+  font-size: 0.7em;
+  margin-right: 0.5em;
+}
+
+/* ============================================================
+   3. CARDS DE PRODUCTO — tamaño visual uniforme
+   ============================================================ */
+.product-card-image,
+.products .product .product-image,
+.products .product img.wp-post-image,
+.products .product img.attachment-woocommerce_thumbnail,
+.woocommerce ul.products li.product img {
+  background: var(--royo-paper);
+  aspect-ratio: 1 / 1 !important;
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  padding: 8% !important;
+  box-sizing: border-box !important;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.products .product:hover img.wp-post-image,
+.products .product:hover img.attachment-woocommerce_thumbnail {
+  transform: scale(1.04);
+}
+
+/* Wrapper de la imagen con sombra suave */
+.products .product .product-image,
+.products .product a.woocommerce-LoopProduct-link {
+  background: var(--royo-paper);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(26, 24, 22, 0.04);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.products .product:hover a.woocommerce-LoopProduct-link {
+  box-shadow: var(--royo-soft-shadow);
+}
+
+/* Título del producto en card */
+.products .product .woocommerce-loop-product__title,
+.products .product h2.woocommerce-loop-product__title {
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em;
+  margin-top: 1rem !important;
+  margin-bottom: 0.4rem !important;
+  line-height: 1.35 !important;
+  text-transform: none !important;
+}
+
+.products .product .price {
+  font-size: 1rem !important;
+  color: var(--royo-charcoal) !important;
+  letter-spacing: 0.01em;
+}
+
+/* ============================================================
+   4. FICHA PRODUCTO — sección principal
+   ============================================================ */
+.single-product div.product .summary {
+  padding: 1rem 0 0 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .single-product div.product .summary { padding-left: 0; padding-top: 1.5rem; }
+}
+
+.single-product .woocommerce-product-details__short-description,
+.single-product .woocommerce-product-details__short-description p {
+  font-size: 1rem !important;
+  line-height: 1.65 !important;
+  color: var(--royo-charcoal) !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* SKU + categorías metadata */
+.single-product .product_meta {
+  border-top: 1px solid var(--royo-line);
+  padding-top: 1.25rem;
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--royo-charcoal);
+}
+.single-product .product_meta > span {
+  display: block;
+  margin-bottom: 0.4rem;
+}
+.single-product .product_meta strong { color: var(--royo-ink); font-weight: 500; }
+
+/* ============================================================
+   5. BOTÓN AÑADIR AL CARRITO — oro champán
+   ============================================================ */
+.single_add_to_cart_button,
+.button.alt,
+.woocommerce a.button.alt,
+.woocommerce button.button.alt,
+.woocommerce input.button.alt,
+.woocommerce #respond input#submit.alt {
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+  border: 1px solid var(--royo-ink) !important;
+  border-radius: 2px !important;
+  padding: 1rem 2rem !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: none !important;
+}
+.single_add_to_cart_button:hover,
+.button.alt:hover,
+.woocommerce a.button.alt:hover,
+.woocommerce button.button.alt:hover {
+  background: var(--royo-champagne) !important;
+  color: var(--royo-paper) !important;
+  border-color: var(--royo-champagne) !important;
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   6. CONTENIDO ENRIQUECIDO — lista características + tabla técnica
+   ============================================================ */
+.woocommerce-Tabs-panel--description ul,
+.woocommerce-product-details__short-description ul {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin-bottom: 2rem !important;
+}
+.woocommerce-Tabs-panel--description ul li,
+.woocommerce-product-details__short-description ul li {
+  position: relative;
+  padding-left: 1.5rem !important;
+  margin-bottom: 0.6rem !important;
+  font-size: 0.95rem !important;
+  line-height: 1.55 !important;
+  color: var(--royo-charcoal) !important;
+}
+.woocommerce-Tabs-panel--description ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 8px;
+  height: 1px;
+  background: var(--royo-champagne);
+}
+.woocommerce-Tabs-panel--description ul li strong {
+  color: var(--royo-ink);
+  font-weight: 500;
+  margin-right: 0.3em;
+}
+
+.woocommerce-Tabs-panel--description .lead {
+  font-size: 1.05rem !important;
+  line-height: 1.7 !important;
+  color: var(--royo-charcoal) !important;
+  font-weight: 400 !important;
+  margin-bottom: 2rem !important;
+  padding-bottom: 1.5rem !important;
+  border-bottom: 1px solid var(--royo-line);
+}
+
+.woocommerce-Tabs-panel--description h3 {
+  font-family: 'Playfair Display', serif !important;
+  font-weight: 500 !important;
+  font-size: 1.35rem !important;
+  color: var(--royo-ink) !important;
+  margin-top: 2.5rem !important;
+  margin-bottom: 1.25rem !important;
+  letter-spacing: -0.005em;
+}
+
+/* Tabla "Ficha técnica completa" */
+.woocommerce-Tabs-panel--description table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  font-size: 0.92rem !important;
+  margin-bottom: 2rem !important;
+  background: var(--royo-paper);
+}
+.woocommerce-Tabs-panel--description table tr {
+  border-bottom: 1px solid var(--royo-line) !important;
+}
+.woocommerce-Tabs-panel--description table tr:last-child {
+  border-bottom: none !important;
+}
+.woocommerce-Tabs-panel--description table tr:nth-child(odd) {
+  background: var(--royo-ivory);
+}
+.woocommerce-Tabs-panel--description table th {
+  text-align: left !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  padding: 0.85rem 1rem !important;
+  width: 40% !important;
+  letter-spacing: 0.01em;
+  vertical-align: top !important;
+}
+.woocommerce-Tabs-panel--description table td {
+  padding: 0.85rem 1rem !important;
+  color: var(--royo-charcoal) !important;
+  line-height: 1.5 !important;
+}
+
+/* ============================================================
+   7. TABS de la ficha producto — underline dorado
+   ============================================================ */
+.woocommerce-tabs .tabs.wc-tabs {
+  border-bottom: 1px solid var(--royo-line) !important;
+  padding-left: 0 !important;
+  margin-bottom: 2rem !important;
+}
+.woocommerce-tabs .tabs.wc-tabs li {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+.woocommerce-tabs .tabs.wc-tabs li a {
+  padding: 1rem 1.25rem !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-charcoal) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  border-bottom: 2px solid transparent !important;
+  transition: all 0.3s ease !important;
+}
+.woocommerce-tabs .tabs.wc-tabs li.active a,
+.woocommerce-tabs .tabs.wc-tabs li:hover a {
+  color: var(--royo-ink) !important;
+  border-bottom-color: var(--royo-champagne) !important;
+}
+
+/* ============================================================
+   8. INFORMACIÓN ADICIONAL — atributos Woo
+   ============================================================ */
+.woocommerce-product-attributes {
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px;
+}
+.woocommerce-product-attributes-item__label {
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  background: var(--royo-ivory) !important;
+  padding: 0.85rem 1rem !important;
+  width: 35% !important;
+}
+.woocommerce-product-attributes-item__value {
+  padding: 0.85rem 1rem !important;
+  color: var(--royo-charcoal) !important;
+}
+.woocommerce-product-attributes-item__value p { margin: 0 !important; }
+
+/* ============================================================
+   9. PRODUCTOS RELACIONADOS / RECIENTES
+   ============================================================ */
+.related.products > h2,
+.upsells.products > h2,
+.cross-sells > h2,
+.recent-viewed-products > h2 {
+  font-size: 1.6rem !important;
+  font-weight: 500 !important;
+  text-align: center;
+  margin: 4rem 0 2.5rem !important;
+  position: relative;
+  padding-bottom: 1.25rem;
+}
+.related.products > h2::after,
+.upsells.products > h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 1px;
+  background: var(--royo-champagne);
+}
+
+/* ============================================================
+   10. WISHLIST / COMPARE buttons — más sutiles
+   ============================================================ */
+.cboost-wishlist-button,
+.cboost-compare-button {
+  background: transparent !important;
+  border: 1px solid var(--royo-line) !important;
+  color: var(--royo-charcoal) !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.05em !important;
+  padding: 0.65rem 1rem !important;
+  border-radius: 2px !important;
+  transition: all 0.3s ease;
+}
+.cboost-wishlist-button:hover,
+.cboost-compare-button:hover {
+  border-color: var(--royo-champagne) !important;
+  color: var(--royo-champagne) !important;
+}
+
+/* ============================================================
+   11. BREADCRUMBS — más discretos
+   ============================================================ */
+.woocommerce-breadcrumb,
+.breadcrumb-navigation-wrapper,
+nav.woocommerce-breadcrumb {
+  font-size: 0.78rem !important;
+  letter-spacing: 0.05em !important;
+  color: var(--royo-charcoal) !important;
+  text-transform: uppercase;
+  padding: 1.5rem 0 1rem !important;
+}
+.woocommerce-breadcrumb a,
+.breadcrumb-navigation-wrapper a {
+  color: var(--royo-charcoal) !important;
+}
+.woocommerce-breadcrumb a:hover { color: var(--royo-champagne) !important; }
+
+/* ============================================================
+   12. HEADER — texto ticker más refinado
+   ============================================================ */
+.ecomus-marquee,
+.marquee-content {
+  font-size: 0.78rem !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   13. FOOTER — uniformidad
+   ============================================================ */
+.site-footer h4,
+.site-footer .widget-title,
+.footer-widget-title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.05rem !important;
+  font-weight: 500 !important;
+  margin-bottom: 1.25rem !important;
+}
+
+/* ============================================================
+   14. MEJORAS RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .product_title.entry-title { font-size: 1.5rem !important; }
+  .summary .price { font-size: 1.5rem !important; }
+  .single_add_to_cart_button { padding: 0.85rem 1.5rem !important; font-size: 0.85rem !important; }
+  .woocommerce-tabs .tabs.wc-tabs li a { padding: 0.75rem 0.5rem !important; font-size: 0.75rem !important; }
+}
+
+/* ============================================================
+   15. CALIDAD DE TEXTO — antialiasing y kerning
+   ============================================================ */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Eliminar bullets sueltos legacy de Tissot que quedaron */
+.product .ti-fs-14,
+.product .ti-pdp-attribute,
+.product .ti-pdp-details-content,
+.product [class*="ti-pdp"] {
+  all: unset !important;
+}
+.product .accordion .collapse { display: block !important; }
+.product .accordion h3.ti-fs-14 {
+  display: block !important;
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.15rem !important;
+  margin: 1.5rem 0 0.75rem !important;
+  color: var(--royo-ink) !important;
+}
