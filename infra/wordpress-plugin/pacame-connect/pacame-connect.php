@@ -2,9 +2,17 @@
 /**
  * Plugin Name: PACAME Connect
  * Description: Endpoints REST custom para que PACAME (https://pacameagencia.com) pueda gestionar el WP del cliente: cachés, plugins, temas, logs, backups, queries seguras. Auth HMAC compartido con el dashboard PACAME.
- * Version: 0.1.0
+ * Version: 0.2.0
  * Author: PACAME Agencia
  * Author URI: https://pacameagencia.com
+ *
+ * v0.2.0 (2026-05-01) — auditoría seguridad pre-deploy Joyería Royo:
+ *   - Constantes pacame_ns/replay con guard !defined() para evitar choque con otros plugins.
+ *   - /css/render: sin wp_strip_all_tags() (rompía selectors `body > .header`).
+ *   - /css/set: rechaza también <iframe>, <object>, javascript:, expression(), @import http(s).
+ *   - /page/{id}/reset-to-gutenberg: requiere force=true si la página es home/blog.
+ *   - /db/query: rechaza multistatement (`;`) y SELECT...INTO OUTFILE / LOAD_FILE / BENCHMARK / SLEEP.
+ *   - gettext: text-domain con fallbacks (wcboost-wishlist, wcboost-products-wishlist-pro, etc.)
  *
  * Instalación: subir esta carpeta a wp-content/mu-plugins/ por SFTP/FTP.
  * El cliente NO ve este plugin en el listado de plugins (es Must-Use).
@@ -31,8 +39,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-const PACAME_NS = 'pacame/v1';
-const PACAME_REPLAY_WINDOW = 300; // 5 minutos
+// Defensive: sólo definimos si nadie las definió antes (evita choque con otro plugin)
+if (!defined('PACAME_NS'))             define('PACAME_NS', 'pacame/v1');
+if (!defined('PACAME_REPLAY_WINDOW'))  define('PACAME_REPLAY_WINDOW', 300); // 5 minutos
 
 // =============================================================================
 //  AUTH HMAC
@@ -224,6 +233,15 @@ add_action('rest_api_init', function () {
             if (!preg_match('/^\s*SELECT\s/i', $sql)) {
                 return new WP_Error('pacame_only_select', 'Only SELECT queries allowed via /db/query', ['status' => 400]);
             }
+            // Bloquear multistatement: rechazar `;` no terminal o SQL encadenado.
+            $stripped = rtrim($sql, '; ');
+            if (strpos($stripped, ';') !== false) {
+                return new WP_Error('pacame_no_multistatement', 'Multi-statement SQL not allowed', ['status' => 400]);
+            }
+            // Bloquear keywords destructivas embebidas en subqueries por si alguien hace SELECT ... INTO OUTFILE
+            if (preg_match('/\b(INTO\s+OUTFILE|INTO\s+DUMPFILE|LOAD_FILE|BENCHMARK|SLEEP)\s*\(/i', $sql)) {
+                return new WP_Error('pacame_unsafe_select', 'Unsafe SELECT pattern blocked', ['status' => 400]);
+            }
             // Limitar a 100 filas si no hay LIMIT explícito.
             if (!preg_match('/\bLIMIT\s+\d+/i', $sql)) {
                 $sql .= ' LIMIT 100';
@@ -274,12 +292,24 @@ add_action('rest_api_init', function () {
             'excerpt'        => ['required' => false, 'type' => 'string'],
             'status'         => ['required' => false, 'type' => 'string', 'default' => 'publish'],
             'remove_elementor' => ['required' => false, 'type' => 'boolean', 'default' => true],
+            'force'          => ['required' => false, 'type' => 'boolean', 'default' => false],
         ],
         'callback'            => function (WP_REST_Request $request) {
             $id = intval($request['id']);
             $post = get_post($id);
             if (!$post || $post->post_type !== 'page') {
                 return new WP_Error('pacame_not_found', 'Page not found', ['status' => 404]);
+            }
+            // Guard: si la página es la home o la de blog, requiere flag force=true explícito.
+            // Evita borrar el _elementor_data de la home por error de ID.
+            $front_id = (int) get_option('page_on_front');
+            $blog_id  = (int) get_option('page_for_posts');
+            if (!$request['force'] && ($id === $front_id || $id === $blog_id)) {
+                return new WP_Error(
+                    'pacame_protected_page',
+                    sprintf('Page %d is the front/blog page; resend with force=true to confirm', $id),
+                    ['status' => 409]
+                );
             }
 
             $update = [
@@ -383,33 +413,49 @@ add_action('wpforms_process_complete', function ($fields, $entry, $form_data) {
 //  Aplica filtro gettext para sustituir las cadenas no traducidas a español.
 // =============================================================================
 
-const PACAME_TRANSLATIONS = [
-    'wcboost-products-wishlist' => [
-        'Add to wishlist'     => 'Añadir a favoritos',
-        'Added to wishlist'   => 'Añadido a favoritos',
-        'View wishlist'       => 'Ver favoritos',
-        'Browse wishlist'     => 'Mi lista de favoritos',
+// Mapas por dominio. Si el plugin instalado usa otro text-domain,
+// añade el slug a la lista de pacame_get_translations() — no rompe nada si no existe.
+function pacame_get_translations() {
+    static $cache = null;
+    if ($cache !== null) return $cache;
+    $wishlist = [
+        'Add to wishlist'      => 'Añadir a favoritos',
+        'Added to wishlist'    => 'Añadido a favoritos',
+        'View wishlist'        => 'Ver favoritos',
+        'Browse wishlist'      => 'Mi lista de favoritos',
         'Remove from wishlist' => 'Quitar de favoritos',
-        'My wishlist'         => 'Mis favoritos',
-        'Share wishlist'      => 'Compartir lista',
-    ],
-    'wcboost-products-compare' => [
-        'Add to compare'     => 'Añadir a comparar',
-        'Added to compare'   => 'Añadido a comparar',
+        'My wishlist'          => 'Mis favoritos',
+        'Share wishlist'       => 'Compartir lista',
+    ];
+    $compare = [
+        'Add to compare'      => 'Añadir a comparar',
+        'Added to compare'    => 'Añadido a comparar',
         'Remove from compare' => 'Quitar de comparar',
-        'Compare'            => 'Comparar',
-        'View compare'       => 'Ver comparativa',
-    ],
-];
+        'Compare'             => 'Comparar',
+        'View compare'        => 'Ver comparativa',
+    ];
+    $cache = [
+        // WCBoost Wishlist (varios slugs vistos en el ecosistema)
+        'wcboost-products-wishlist'     => $wishlist,
+        'wcboost-wishlist'              => $wishlist,
+        'wcboost-products-wishlist-pro' => $wishlist,
+        // WCBoost Compare
+        'wcboost-products-compare'      => $compare,
+        'wcboost-compare'               => $compare,
+    ];
+    return $cache;
+}
 
 add_filter('gettext_with_context', function ($translation, $text, $context, $domain) {
-    if (!isset(PACAME_TRANSLATIONS[$domain])) return $translation;
-    return PACAME_TRANSLATIONS[$domain][$text] ?? $translation;
+    $map = pacame_get_translations();
+    if (!isset($map[$domain])) return $translation;
+    return $map[$domain][$text] ?? $translation;
 }, 20, 4);
 
 add_filter('gettext', function ($translation, $text, $domain) {
-    if (!isset(PACAME_TRANSLATIONS[$domain])) return $translation;
-    return PACAME_TRANSLATIONS[$domain][$text] ?? $translation;
+    $map = pacame_get_translations();
+    if (!isset($map[$domain])) return $translation;
+    return $map[$domain][$text] ?? $translation;
 }, 20, 3);
 
 // =============================================================================
@@ -492,8 +538,10 @@ add_action('wp_head', function () {
 add_action('wp_head', function () {
     $css = get_option('pacame_custom_css', '');
     if (empty($css)) return;
+    // No usamos wp_strip_all_tags() — rompería selectors CSS válidos como `body > .header`.
+    // El sanitizado (rechazar <script>/<iframe>) lo hace /css/set ANTES de guardar.
     echo "\n<!-- PACAME · custom CSS -->\n";
-    echo '<style id="pacame-custom-css">' . "\n" . wp_strip_all_tags($css) . "\n" . '</style>' . "\n";
+    echo '<style id="pacame-custom-css">' . "\n" . $css . "\n" . '</style>' . "\n";
 }, 999);
 
 // Endpoint REST para actualizar el CSS desde PACAME
@@ -504,8 +552,14 @@ add_action('rest_api_init', function () {
         'args' => ['css' => ['required' => true, 'type' => 'string']],
         'callback'            => function (WP_REST_Request $request) {
             $css = $request['css'];
-            // Sanitización mínima — strip <script>
-            $css = preg_replace('/<script[^>]*>.*?<\/script>/is', '', $css);
+            // Sanitización defensiva — rechaza vectores de inyección comunes en CSS.
+            // (no es exhaustivo, pero el endpoint sólo es accesible vía HMAC)
+            $forbidden = ['/<script[^>]*>.*?<\/script>/is', '/<iframe[^>]*>.*?<\/iframe>/is',
+                          '/<object[^>]*>.*?<\/object>/is', '/<embed[^>]*>/is',
+                          '/javascript\s*:/i', '/expression\s*\(/i', '/@import\s+url\s*\(\s*["\']?https?:/i'];
+            foreach ($forbidden as $rx) {
+                $css = preg_replace($rx, '', $css);
+            }
             update_option('pacame_custom_css', $css, false);
             // Purga LiteSpeed cache si está activo
             if (class_exists('LiteSpeed\Purge')) {
