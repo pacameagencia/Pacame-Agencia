@@ -2,9 +2,17 @@
 /**
  * Plugin Name: PACAME Connect
  * Description: Endpoints REST custom para que PACAME (https://pacameagencia.com) pueda gestionar el WP del cliente: cachés, plugins, temas, logs, backups, queries seguras. Auth HMAC compartido con el dashboard PACAME.
- * Version: 0.2.0
+ * Version: 0.3.0
  * Author: PACAME Agencia
  * Author URI: https://pacameagencia.com
+ *
+ * v0.3.0 (2026-05-01) — refuerzo i18n WCBoost (priority 999 + filtros nativos + JS fallback):
+ *   - gettext/ngettext priority 999 (sobrescribe cualquier filtro previo).
+ *   - Filtros nativos `wcboost_wishlist_params` y `wcboost_products_compare_params` para
+ *     reescribir las cadenas i18n_* del JS object directamente.
+ *   - JS fallback en wp_footer (priority 9999): sustituye textos en DOM tras DOMContentLoaded
+ *     + MutationObserver para casos AJAX. Si el plugin hardcodea las cadenas (sin __()),
+ *     este JS las sustituye antes del primer paint visible.
  *
  * v0.2.0 (2026-05-01) — auditoría seguridad pre-deploy Joyería Royo:
  *   - Constantes pacame_ns/replay con guard !defined() para evitar choque con otros plugins.
@@ -446,17 +454,156 @@ function pacame_get_translations() {
     return $cache;
 }
 
+// Capa 1 — gettext / gettext_with_context / ngettext con priority 999 (sobrescribe
+// cualquier otro filtro). Cubre la mayoría de las cadenas pasadas por __() / _e() / _x().
 add_filter('gettext_with_context', function ($translation, $text, $context, $domain) {
     $map = pacame_get_translations();
     if (!isset($map[$domain])) return $translation;
     return $map[$domain][$text] ?? $translation;
-}, 20, 4);
+}, 999, 4);
 
 add_filter('gettext', function ($translation, $text, $domain) {
     $map = pacame_get_translations();
     if (!isset($map[$domain])) return $translation;
     return $map[$domain][$text] ?? $translation;
-}, 20, 3);
+}, 999, 3);
+
+add_filter('ngettext', function ($translation, $single, $plural, $number, $domain) {
+    $map = pacame_get_translations();
+    if (!isset($map[$domain])) return $translation;
+    $key = $number === 1 ? $single : $plural;
+    return $map[$domain][$key] ?? $translation;
+}, 999, 5);
+
+// Capa 2 — filtros nativos del plugin WCBoost Wishlist / Compare para los params JS.
+// Si el plugin construye el JS object con un filtro `wcboost_wishlist_params` (típico),
+// reemplazamos las cadenas i18n_* directamente en el array.
+add_filter('wcboost_wishlist_params', function ($params) {
+    if (!is_array($params)) return $params;
+    $tr = pacame_get_translations()['wcboost-wishlist'] ?? [];
+    $mapping = [
+        'i18n_add_to_wishlist'          => 'Add to wishlist',
+        'i18n_view_wishlist'            => 'View wishlist',
+        'i18n_remove_from_wishlist'     => 'Remove from wishlist',
+        'i18n_browse_wishlist'          => 'Browse wishlist',
+        'i18n_link_copied_notice'       => 'The wishlist link is copied to clipboard',
+        'i18n_close_button_text'        => 'Close',
+    ];
+    $extra = [
+        'The wishlist link is copied to clipboard' => 'Enlace copiado al portapapeles',
+        'Close'                                    => 'Cerrar',
+    ];
+    foreach ($mapping as $key => $en) {
+        if (!isset($params[$key])) continue;
+        if (isset($tr[$en]))           $params[$key] = $tr[$en];
+        elseif (isset($extra[$en]))    $params[$key] = $extra[$en];
+    }
+    return $params;
+}, 999, 1);
+
+add_filter('wcboost_products_compare_params', function ($params) {
+    if (!is_array($params)) return $params;
+    $tr = pacame_get_translations()['wcboost-products-compare'] ?? [];
+    $mapping = [
+        'i18n_button_add'    => 'Compare',
+        'i18n_button_remove' => 'Remove compare',
+        'i18n_button_view'   => 'Browse compare',
+    ];
+    foreach ($mapping as $key => $en) {
+        if (isset($params[$key]) && isset($tr[$en])) {
+            $params[$key] = $tr[$en];
+        }
+    }
+    return $params;
+}, 999, 1);
+
+// Capa 3 — fallback JS en wp_footer. Si las dos capas anteriores fallan (porque el
+// plugin hardcodea las cadenas o usa otro filtro), este JS sustituye los textos
+// directamente en el DOM antes del primer paint del usuario.
+add_action('wp_footer', function () {
+    if (is_admin()) return;
+    ?>
+<script id="pacame-i18n-fallback">
+(function() {
+  var MAP = {
+    "Add to wishlist": "Añadir a favoritos",
+    "Added to wishlist": "Añadido a favoritos",
+    "View wishlist": "Ver favoritos",
+    "Browse wishlist": "Mi lista de favoritos",
+    "Remove from wishlist": "Quitar de favoritos",
+    "My wishlist": "Mis favoritos",
+    "Share wishlist": "Compartir lista",
+    "The wishlist link is copied to clipboard": "Enlace copiado al portapapeles",
+    "Add to compare": "Añadir a comparar",
+    "Added to compare": "Añadido a comparar",
+    "Remove from compare": "Quitar de comparar",
+    "Compare": "Comparar",
+    "View compare": "Ver comparativa",
+    "Browse compare": "Ver comparativa"
+  };
+  function tr(t) { return MAP[t] || t; }
+
+  // 1) Sustituir spans con clase wcboost-wishlist-button__text / wcboost-products-compare-button__text
+  function replaceSpans() {
+    var sels = [
+      ".wcboost-wishlist-button__text",
+      ".wcboost-products-compare-button__text",
+      ".cboost-wishlist-button__text"
+    ];
+    sels.forEach(function(s) {
+      document.querySelectorAll(s).forEach(function(el) {
+        var t = el.textContent.trim();
+        if (MAP[t]) el.textContent = MAP[t];
+      });
+    });
+  }
+
+  // 2) Sustituir data-tooltip / data-tooltip_added en botones wishlist
+  function replaceTooltips() {
+    document.querySelectorAll("[data-tooltip],[data-tooltip_added]").forEach(function(el) {
+      ["data-tooltip","data-tooltip_added"].forEach(function(attr) {
+        var v = el.getAttribute(attr);
+        if (v && MAP[v]) el.setAttribute(attr, MAP[v]);
+      });
+    });
+  }
+
+  // 3) Patchear los i18n_* de los objetos params globales del plugin (por si los lee tras DOM ready)
+  function patchGlobalParams() {
+    var roots = ["wcboost_wishlist_params", "wcboost_products_compare_params"];
+    roots.forEach(function(name) {
+      if (typeof window[name] !== "object" || !window[name]) return;
+      Object.keys(window[name]).forEach(function(k) {
+        if (k.indexOf("i18n_") === 0) {
+          var v = window[name][k];
+          if (typeof v === "string" && MAP[v]) window[name][k] = MAP[v];
+        }
+      });
+    });
+  }
+
+  function run() {
+    try {
+      patchGlobalParams();
+      replaceSpans();
+      replaceTooltips();
+    } catch (e) { /* swallow — fallback no debe romper nada */ }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", run);
+  } else {
+    run();
+  }
+  // Re-aplicar en mutaciones (ajax wishlist add)
+  if (window.MutationObserver) {
+    var obs = new MutationObserver(function() { replaceSpans(); replaceTooltips(); });
+    if (document.body) obs.observe(document.body, { childList: true, subtree: true });
+  }
+})();
+</script>
+    <?php
+}, 9999);
 
 // =============================================================================
 //  SCHEMA.ORG JewelryStore — inyecta JSON-LD en home + sobre nosotros
