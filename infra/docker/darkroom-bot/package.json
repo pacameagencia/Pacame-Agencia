@@ -1,0 +1,19 @@
+{
+  "name": "darkroom-discord-bot",
+  "version": "0.1.0",
+  "description": "Bot thin de Discord DarkRoom · listener events + relay a /api/darkroom/community/discord-event",
+  "private": true,
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "lint": "node -e \"console.log('lint placeholder')\""
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "undici": "^6.21.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
