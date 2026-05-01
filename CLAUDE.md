@@ -80,3 +80,39 @@ docs/                  → Protocolos, identidad, integraciones (cargados bajo d
 | Casa Marisol | [`clients/casa-marisol/`](clients/casa-marisol/) | Test E2E Factoría completado |
 
 > Convención de carpeta cliente: ver [`clients/README.md`](clients/README.md).
+
+---
+
+## Modo de ejecucion (autonomia total)
+
+> Versión completa: [`docs/protocols/autonomia-total.md`](docs/protocols/autonomia-total.md). Lo siguiente es resumen literal — no tocar (se valida por hook `infra/scripts/verify-claude-rules.py`).
+
+**Regla maestra:** Ejecuta TÚ MISMO todo lo que el entorno permita. Pedir a Pablo que haga algo manualmente es el ÚLTIMO recurso, solo cuando no exista forma programática.
+
+**Ejecuta SIN preguntar:** commits, push a ramas feature, abrir PRs, `npm run dev/build/test`, deploys a Vercel preview Y producción, `vercel env add/rm`, migraciones a Supabase, configurar webhooks, rotar tokens, conectar repos, crear/editar archivos, instalar deps, lanzar workflows n8n y crons.
+
+**Pausa y confirma SOLO en estos 3 casos irreversibles:**
+1. **Pagos reales con dinero** — `stripe charge`, transferencias, compra de créditos en APIs externas, **crear productos/precios live en Stripe**.
+2. **Borrado masivo en producción** — `DROP TABLE`, `DELETE` sin WHERE, vaciar buckets, `rm -rf` sobre datos.
+3. **Push --force a main** o cualquier reescritura de historia compartida.
+
+**Anti-patrón prohibido:** "ahora ejecuta tú `npm run build`", "añade esta env var en Vercel", "lanza este SQL en Supabase", "haz push tú" son **violación**. Hazlo TÚ. Si tres intentos fallan, escala con error exacto.
+
+## Ciclo PR + merge a main (automatico, sin esperar a Pablo)
+
+> Versión completa: [`docs/protocols/pr-merge-automatico.md`](docs/protocols/pr-merge-automatico.md). Lo siguiente es resumen literal — no tocar (se valida por hook `infra/scripts/verify-claude-rules.py`).
+
+**Regla:** cada vez que termines un bloque entregable (feature, fix, doc, refactor, regla, configuración), ejecuta el ciclo COMPLETO sin pedir permiso ni esperar review humano:
+
+1. `git add <archivos>` — solo lo que tocaste, nunca `-A` ciego.
+2. `git commit -m "<tipo>(<scope>): <mensaje en español>"` con HEREDOC + `Co-Authored-By: Claude` al final.
+3. `git push origin <rama>` (con `-u` la primera vez).
+4. `gh pr create --title "..." --body "$(cat <<EOF ... EOF)"` con Summary + Test plan.
+5. `gh pr merge <PR> --merge --delete-branch=false` (estrategia merge commit).
+6. `gh pr view <PR>` para confirmar `state: MERGED` + reportar URL + commit a Pablo.
+
+**Pablo NO tiene que estar atento ni dar OK.** Tu juicio es el filtro: si compila, no introduce secretos, no rompe contratos públicos y no entra en los 3 casos irreversibles → merge directo.
+
+**Anti-patrón prohibido:** "PR abierto en #X, ¿lo mergeo?" → NO. Mergéalo. "¿Quieres que haga PR?" → NO. Hazlo. Dejar PR `OPEN` >5 minutos cuando está terminado → MAL.
+
+**Reportar a Pablo SOLO al final:** "PR #X mergeado a main (commit `abc1234`). Resumen: N archivos. Próximo: …".
