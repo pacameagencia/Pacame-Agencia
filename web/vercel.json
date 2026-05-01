@@ -7,6 +7,10 @@
     {
       "path": "/api/health",
       "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/darkroom/community/onboarding",
+      "schedule": "30 9 * * *"
     }
   ]
 }
