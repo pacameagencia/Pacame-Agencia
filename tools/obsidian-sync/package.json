@@ -1,0 +1,26 @@
+{
+  "name": "pacame-obsidian-sync",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Puente Obsidian (PacameCueva) <-> Supabase neural network",
+  "scripts": {
+    "bootstrap:dry": "tsx bootstrap.ts --dry-run",
+    "bootstrap": "tsx bootstrap.ts --commit",
+    "watch": "tsx watcher.ts",
+    "pull": "tsx pull.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.101.1",
+    "chokidar": "^3.6.0",
+    "dotenv": "^16.4.5",
+    "fast-glob": "^3.3.2",
+    "gray-matter": "^4.0.3",
+    "handlebars": "^4.7.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0"
+  }
+}
