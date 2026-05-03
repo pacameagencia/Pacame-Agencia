@@ -1,7 +1,7 @@
 /**
  * POST /api/darkroom/crew/admin/mark-paid
  *
- * Endpoint admin que Pablo invoca tras pagar manualmente un payout
+ * Endpoint admin que el humano invoca tras pagar manualmente un payout
  * (PayPal/SEPA/transferencia).
  *
  * Body:

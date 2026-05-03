@@ -6,7 +6,7 @@
  *
  * GET  — Meta verification challenge
  * POST — Incoming messages 1:1 (Cloud API NO recibe eventos de grupos/communities;
- *        eso lo gestiona Pablo manual)
+ *        eso lo gestiona el humano manualmente)
  *
  * Pipeline:
  *   1. Anti-spam + intent → dispatcher → IRIS/NIMBO/VECTOR

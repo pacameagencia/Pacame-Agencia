@@ -50,7 +50,7 @@ async function deliverDM(
     return await sendDiscordDM(member.discordUserId, message);
   }
   // WhatsApp template: requiere plantilla aprobada por Meta. Por ahora marcamos
-  // como recorded y delegamos al humano (Pablo) para D0 si solo hay tlf.
+  // como recorded y delegamos al humano para D0 si solo hay tlf.
   if (step.channel === "whatsapp_template" && member.whatsappPhone) {
     return false;
   }

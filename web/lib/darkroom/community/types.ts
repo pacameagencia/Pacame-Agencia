@@ -19,7 +19,7 @@ export const MEMBER_TIERS = [
   "studio",     // Plan 49€
   "crew",       // Afiliado activo (>1 referral pagando)
   "crew_vip",   // Top 5 afiliados (40% lifetime + roadmap access)
-  "founder",    // Pablo
+  "founder",    // operador (interno)
 ] as const;
 
 export type MemberTier = (typeof MEMBER_TIERS)[number];
@@ -80,7 +80,7 @@ export interface IntentDetection {
   confidence: number;        // 0..1
   keywords: string[];        // qué disparó
   suggestedAgent: AgentName; // a qué agente se rutea
-  escalateToHuman: boolean;  // bypass total a Pablo
+  escalateToHuman: boolean;  // bypass total al humano
 }
 
 // ─── Agentes ──────────────────────────────────────────────────────────────
