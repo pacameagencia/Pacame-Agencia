@@ -302,36 +302,127 @@ Honestidad: en vez de logos directos de Adobe/Figma (riesgo legal), usar **icono
 
 ---
 
-## 10. Footer
+## 10. Footer (versión v2 — minimalista por política de protección de identidad)
 
-### Columna 1 — Producto
-- Cómo funciona
-- Pricing
-- FAQ
-- Roadmap (opcional)
+> ⚠️ **Cambio importante v2** (2026-04-29): el footer fue rediseñado para minimizar exposición pública de datos legales. La obligación legal de tener T&C / privacidad / cookies / aviso legal accesibles **se cumple** mediante:
+> 1. Banner de cookies obligatorio con link a privacidad/cookies.
+> 2. Checkbox de aceptación con links durante el flujo de signup/checkout.
+> 3. Hub `/legal` con todas las páginas, accesible por URL directa.
+> 4. Un link discreto "legal" al final del footer en gris muy sutil.
+>
+> NO se muestran columnas con "Términos · Privacidad · Cookies · Aviso Legal" en el footer principal — ver `proteccion-identidad.md` regla 3.
 
-### Columna 2 — Comunidad
-- Discord (cuando exista)
-- Newsletter
-- Casos reales
-- Blog (opcional)
+### Footer v2 (final)
 
-### Columna 3 — Legal
-- Términos y condiciones
-- Política de privacidad
-- Política de cookies
-- Aviso legal
-- Modelo de membresía colectiva (link a la sección honest disclosure)
+```
+┌───────────────────────────────────────────────────────────────┐
+│                                                               │
+│  darkroomcreative.cloud                                       │
+│  soporte: support@darkroomcreative.cloud                      │
+│                                                               │
+│                                                               │
+│                                                               │
+│                                                               │
+│                                                               │
+│  ─────────────────────────────────────────────────────────    │
+│                                                       legal   │  ← gris muy sutil, esquina
+│                                                               │
+└───────────────────────────────────────────────────────────────┘
+```
 
-### Columna 4 — Soporte
-- support@darkroomcreative.cloud
-- Tiempo de respuesta: <24h (Pro) / <12h (Studio)
-- Estado del servicio
+### HTML aproximado del footer v2
 
-### Línea final
+```html
+<footer class="site-footer-min">
+  <div class="footer-main">
+    <p>
+      <a href="/">darkroomcreative.cloud</a>
+    </p>
+    <p>
+      soporte: <a href="mailto:support@darkroomcreative.cloud">support@darkroomcreative.cloud</a>
+    </p>
+  </div>
+  <div class="footer-legal-discreet">
+    <a href="/legal" rel="noopener">legal</a>
+  </div>
+</footer>
+```
 
-> DarkRoom es operado por [pendiente: razón social cuando se constituya SL] · darkroomcreative.cloud · 2026
-> Membresía colectiva de servicios digitales. No revendedor de licencias de terceros. **Aviso legal completo**.
+CSS:
+
+```css
+.site-footer-min {
+  border-top: 1px solid var(--line);
+  padding: 32px 24px 16px;
+  text-align: center;
+  color: var(--text-low);
+  font-size: 13px;
+}
+.site-footer-min .footer-legal-discreet {
+  margin-top: 24px;
+  text-align: right;
+}
+.site-footer-min .footer-legal-discreet a {
+  color: #4a4a4a;        /* casi imperceptible sobre fondo oscuro */
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+.site-footer-min .footer-legal-discreet a:hover {
+  color: var(--text-mid);
+}
+```
+
+### Hub `/legal` (acceso directo o desde el link discreto)
+
+Página simple con los 4 documentos legales sin teasers, sin marketing, sin destacar ninguno:
+
+```
+Información legal de DarkRoom
+
+· Términos y condiciones de uso
+· Política de privacidad
+· Política de cookies
+· Aviso legal
+```
+
+Cada item es un link a su sub-página correspondiente. La página `/legal` no aparece linkada en el menú de navegación principal.
+
+### Línea final del footer (NO mostrar SL públicamente hasta constitución)
+
+Mientras la SL no esté constituida, el footer **no incluye** "DarkRoom es operado por [razón social]". Solo lo de arriba.
+
+Cuando la SL exista, opcionalmente se podría añadir UNA línea muy discreta:
+
+```
+[Razón social SL] · NIF [Bxxxxxxxx]
+```
+
+Pero solo si una autoridad lo exige expresamente. Por defecto, esta info vive en `/legal/aviso-legal` y `/legal/privacidad` sec 14, NO en el footer.
+
+### Por qué este cambio
+
+Política `proteccion-identidad.md` regla 3:
+> Footer landing DarkRoom v2: `darkroomcreative.cloud · soporte: support@darkroomcreative.cloud`. Eso es TODO. Sin links a "Términos", "Privacidad", "Aviso legal" como en webs estándar.
+
+Razones:
+- DarkRoom opera en zona gris legal (membresía colectiva).
+- Cuanto menos visibles los datos legales en cada page, menos oportunidad de viralizar el DNI/SL como objetivo de ataque legal o social.
+- Cumplimos LSSI (los textos están accesibles antes del contrato vía banner cookies + checkbox signup) sin destacarlos.
+
+---
+
+## 11. Cambios v1 → v2 — resumen para PIXEL
+
+| Elemento | v1 | v2 |
+|---|---|---|
+| Footer columnas | 4 columnas (Producto / Comunidad / Legal / Soporte) | 1 columna minimalista (URL + email soporte) |
+| Links legales visibles | 4 (Términos / Privacidad / Cookies / Aviso) | 1 link discreto "legal" en gris claro |
+| Mención "operado por" | Sí, prominente | NO en footer (vive en `/legal/aviso-legal`) |
+| Línea con razón social | Sí | NO hasta que la SL exista, y aun así discreto |
+| Hero copy | sin cambios | sin cambios |
+| Resto del landing | sin cambios | sin cambios |
+
+PIXEL: aplica el footer v2 antes de hacer deploy a producción.
 
 ---
 
