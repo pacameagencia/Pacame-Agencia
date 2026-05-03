@@ -57,36 +57,57 @@ Email contacto: support@darkroomcreative.cloud
 
 **Decisión actual de Pablo**: aplazar SL hasta MRR > 1k€ (ver `plan-mensual-operativo.md`). Mientras tanto, los placeholders en políticas dicen `[PENDIENTE — completar al constituir SL DarkRoom]` y el promo público no se hace agresivamente para minimizar exposición.
 
-### Regla 3 — Cero link visible a "Aviso Legal" en footer/header
+### Regla 3 — Cero link visible a documentación legal en cualquier parte de la landing (v3)
 
-Footer landing DarkRoom v2:
+**Actualización 2026-05-03**: tras analizar a la competencia (ScaleBoost y operadores similares en zona gris) Pablo confirma que NO ponen link visible a documentación, cookies, ni aviso legal en sus landings. Las políticas existen pero ocultas. **Adoptamos el mismo método** (footer v3).
+
+Footer landing DarkRoom v3:
 
 ```
-darkroomcreative.cloud · soporte: support@darkroomcreative.cloud
+darkroomcreative.cloud
+soporte: support@darkroomcreative.cloud
 ```
 
-Eso es TODO. Sin links a "Términos", "Privacidad", "Aviso legal" como en webs estándar.
+Eso es TODO. Sin links a "Términos", "Privacidad", "Aviso legal", "Cookies". Ni siquiera el link discreto "legal" que la v2 contemplaba — eliminado.
 
-¿Cómo cumplo entonces con la obligación legal de tener esos textos accesibles?
+**¿Cómo cumplimos LSSI / RGPD entonces?**
 
-- Existen en `/legal/terminos`, `/legal/privacidad`, `/legal/cookies`, `/legal/aviso-legal`.
-- Hay UN link "legal" oculto al final del footer en gris claro casi imperceptible (visible si lo buscas, no si pasas).
-- El banner de cookies — obligatorio — incluye link a privacidad/cookies. Eso cumple.
-- El flujo de signup (cuando alguien crea trial/paid) exige aceptar T&C con checkbox + link → ahí están accesibles también.
+| Requisito | Cumplido por |
+|---|---|
+| Banner de cookies obligatorio (LSSI 22.2) con consentimiento granular | Sí — primera visita, links "más info" → privacidad/cookies. Único punto público de exposición. |
+| Acceso a Términos antes del contrato | Sí — checkbox obligatorio en signup/checkout: "Acepto los [términos] y la [política de privacidad]". |
+| Acceso a Aviso Legal LSSI 10 | Sí — URL directa `darkroomcreative.cloud/legal/aviso-legal`. NO linkado desde landing/menú/footer. |
+| Acceso a Política de Privacidad RGPD 13.1 | Sí — URL directa + checkbox + banner. |
+| Identificación del prestador | Sí — sección 14 política privacidad + aviso legal. |
 
-Esto cumple LSSI mínimo (los textos existen y son accesibles antes del contrato) sin destacarlos en cada página.
+**Hub `/legal`**: existe pero NO está linkado desde la landing. Es accesible para quien:
+- Lo escriba directamente (URL).
+- Llegue desde el banner de cookies (vía "más info").
+- Llegue desde el checkbox de signup/checkout.
 
-### Regla 4 — Bots y agentes nunca usan primera persona "Pablo"
+Quien llega **lo hace deliberadamente**. La landing no señaliza.
 
-El sales-agent DarkRoom (`web/lib/sales-agent/persona-darkroom.ts`) tiene como regla del system prompt:
+Así operan los competidores del modelo membresía colectiva. Cumplimos lo legal sin destacarlo. Quien busca la info la encuentra; quien pasa, no la ve.
 
-> *"JAMÁS menciones nombres propios de personas físicas, fundadores, ni 'yo soy X'. Si te preguntan quién está detrás, responde: 'DarkRoom es operada por una sociedad española. Los datos legales completos están en darkroomcreative.cloud/legal'."*
+**Detalle en `landing-copy-v1.md` sección 10 (footer v3)** — instrucciones HTML+CSS para PIXEL.
 
-Cuando el usuario pregunta "¿quién es el dueño?" o "¿de quién es esto?":
+### Regla 4 — Bots y agentes nunca mencionan nombres propios
 
-- ✅ Bot dice: "DarkRoom es operada por una sociedad española."
-- ❌ Bot NO dice: "Pablo Calleja", "el fundador", "Pablo, 26 años", etc.
-- Si insiste, redirección suave a la página legal sin entrar en detalle.
+**Aplicación 2026-05-03**: la regla está enforced en código en `web/lib/darkroom/community/voice.ts` (`DR_SYSTEM_PROMPT_BASE` sección "# Identidad y anonimato") con instrucciones explícitas para los 3 agentes IRIS / NIMBO / VECTOR.
+
+Cosas que los agentes NUNCA escriben:
+- Nombres propios de personas físicas (fundador, CEO, dueño, admin, soporte humano).
+- Frases tipo "llamada con [Nombre]" → dicen "llamada con el equipo".
+- Frases tipo "te paso a [Nombre]" → dicen "te paso al equipo".
+- "yo soy [Nombre]" → son "el equipo DarkRoom".
+- Menciones a PACAME u otras marcas vinculadas al operador.
+
+Si un usuario pregunta "quién está detrás", "quién es el dueño", "con quién hablo", "quién es el fundador" o similar, los agentes responden EXACTAMENTE:
+> "DarkRoom es operada por una sociedad. Para detalles legales, escríbenos a support@darkroomcreative.cloud."
+
+Si insiste, ofrecen "llamada con el equipo" sin nombres.
+
+**Auditoría 2026-05-03 (DIOS)**: barrido del código encontró 4 violaciones en NIMBO + VECTOR (`llamada 15min con Pablo`, `escalas a Pablo`, `Pablo te escribe en directo`, etc.). Todas corregidas a "el equipo" / "el equipo te escribe". `escalateToPablo` se mantiene como nombre interno de función (no se ve por usuarios) pero se renombrará en futuro refactor cuando convenga.
 
 ### Regla 5 — Whois del dominio en privacy mode
 
