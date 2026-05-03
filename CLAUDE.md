@@ -15,6 +15,7 @@
 | Para cualquier ejecución / deploy / config | [`docs/protocols/autonomia-total.md`](docs/protocols/autonomia-total.md) |
 | Al cerrar un bloque de trabajo entregable | [`docs/protocols/pr-merge-automatico.md`](docs/protocols/pr-merge-automatico.md) |
 | Para elegir qué agente/skill cargar | [`docs/protocols/routing-rules.md`](docs/protocols/routing-rules.md) |
+| Antes de tocar datos/credenciales/notas de cualquier cliente | [`docs/protocols/aislamiento-clientes.md`](docs/protocols/aislamiento-clientes.md) |
 
 > **Regla dura:** si saltas del input a generar sin cargar el protocolo aplicable, estás rompiendo el contrato PACAME. Para y vuelve aquí.
 
