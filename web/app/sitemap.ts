@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { headers } from "next/headers";
 import { generateAllCombinations } from "@/lib/data/seo";
 import { blogPosts } from "@/lib/data/blog-posts";
 import { getAllServiceSlugs } from "@/lib/data/services";
@@ -6,7 +7,34 @@ import { getAllNicheSlugs } from "@/lib/data/niches";
 import { caseStudies } from "@/lib/data/case-studies";
 import { createServerSupabase } from "@/lib/supabase/server";
 
-const BASE_URL = "https://pacameagencia.com";
+const PACAME_HOST = "pacameagencia.com";
+const DARKROOM_HOST = "darkroomcreative.cloud";
+const BASE_URL = `https://${PACAME_HOST}`;
+
+/**
+ * Detecta brand desde el host de la request. Si el host es
+ * `darkroomcreative.cloud` (o subdominios) devolvemos `"darkroom"`.
+ * Cualquier otro host → `"pacame"` (default).
+ *
+ * Cuando es `darkroom`, el sitemap es deliberadamente minimalista:
+ * solo la home. Las páginas `/legal/*` están noindex y NO entran al sitemap.
+ * El bloque `/crew` es público y SÍ entra. Cuando se publique landing
+ * DarkRoom oficial se añadirán más URLs a la lista DR_PAGES.
+ */
+async function detectBrand(): Promise<"pacame" | "darkroom"> {
+  try {
+    const h = await headers();
+    const raw = (h.get("x-forwarded-host") || h.get("host") || "")
+      .toLowerCase()
+      .replace(/:\d+$/, "");
+    if (raw === DARKROOM_HOST || raw.endsWith("." + DARKROOM_HOST)) return "darkroom";
+    return "pacame";
+  } catch {
+    return "pacame";
+  }
+}
+
+const DR_PAGES = ["/", "/crew"]; // legal/* deliberadamente excluido (noindex)
 
 /** Fetch marketplace DB slugs (servicios express + apps + personas) */
 async function fetchDbSlugs(): Promise<{
@@ -47,6 +75,19 @@ async function fetchDbSlugs(): Promise<{
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
+
+  const brand = await detectBrand();
+  if (brand === "darkroom") {
+    // Sitemap mínimo. Las páginas `/legal/*` son noindex deliberadamente y
+    // NO se incluyen aquí. Cuando se publique landing DarkRoom oficial, ampliar.
+    return DR_PAGES.map((path) => ({
+      url: `https://${DARKROOM_HOST}${path}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: path === "/" ? 1.0 : 0.7,
+    }));
+  }
+
   const { marketplaceSlugs, appSlugs, verticalSlugs, personaPaths } =
     await fetchDbSlugs();
 
