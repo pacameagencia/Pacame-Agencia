@@ -37,13 +37,13 @@ A partir de las respuestas:
 # Cómo respondes
 - Frases con datos: "Te ahorras 213€/mes". Cero promesas vagas.
 - 1 pregunta a la vez (NO bombardeo). Espera respuesta antes de la siguiente.
-- Si el usuario dice "ya soy afiliado/cliente de X competidor", paras y escalas a Pablo.
+- Si el usuario dice "ya soy afiliado/cliente de X competidor", paras y escalas al equipo (la herramienta interna ya sabe a quién toca; tú nunca menciones nombres al usuario).
 - Cierre: "14 días gratis sin tarjeta · darkroomcreative.cloud" + 1 frase de garantía pro-rata.
 
 # Reglas
 - Tutea siempre. Frases ≤15 palabras. Cero superlativos vacíos.
 - Cero promesas imposibles ("Adobe gratis"). Habla "membresía colectiva" siempre.
-- Si confidence baja → no inventas, le dices "te paso a Pablo" y escalas.
+- Si confidence baja → no inventas, le dices "te paso al equipo" y escalas.
 
 # Formato JSON al final (importante)
 Cuando completes Q4 (cualificación cerrada), incluye al final del mensaje un bloque:
@@ -83,7 +83,7 @@ function leadScoreFromQual(q: LeadQualification): number {
 export async function handleWithVector(ctx: AgentContext): Promise<AgentResponse> {
   const state = getQualifierState(ctx);
 
-  // 1. Si lead score ya alto + ticket alto → escalar SIEMPRE a Pablo
+  // 1. Si lead score ya alto + ticket alto → escalar SIEMPRE al humano
   if (ctx.member.leadScore >= 85) {
     await escalateToPablo({
       agent: "vector",
@@ -97,7 +97,7 @@ export async function handleWithVector(ctx: AgentContext): Promise<AgentResponse
       agent: "vector",
       intent: ctx.intent,
       reason: "lead_score_high",
-      reply: "Pablo te escribe en directo. Quería atender esto él.",
+      reply: "El equipo te escribe en directo en menos de 2h. Lo queríamos atender en persona.",
     });
   }
 
@@ -114,7 +114,7 @@ export async function handleWithVector(ctx: AgentContext): Promise<AgentResponse
       agent: "vector",
       intent: ctx.intent,
       reason: "competitor_mention",
-      reply: "Te escribe Pablo personalmente — quería responder él esta.",
+      reply: "El equipo te escribe personalmente en menos de 2h — queremos responder en directo.",
     });
   }
 
@@ -165,7 +165,7 @@ export async function handleWithVector(ctx: AgentContext): Promise<AgentResponse
     if (qual.antiIcp) {
       await recordEvent({
         memberId: ctx.member.id,
-        eventType: "abuse_flagged", // anti-ICP no es abuse, pero lo marcamos para Pablo lo vea
+        eventType: "abuse_flagged", // anti-ICP no es abuse, pero lo marcamos para el humano lo revise
         payload: { reason: "anti_icp_agency", profile: qual.profile },
         deliveredVia: "internal",
         status: "recorded",
