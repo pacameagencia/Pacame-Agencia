@@ -5,11 +5,11 @@
  * Para cada afiliado con pending_balance_cents >= 5000:
  *   1. Crear/actualizar row darkroom_payouts del período (current month)
  *      con status='pending'.
- *   2. Notificar Pablo (notifyPablo) con resumen de payouts pendientes.
+ *   2. Notificar al humano con resumen de payouts pendientes.
  *   3. Notificar al afiliado (`payout_ready` template) si su payout está listo
  *      para cobro manual (PayPal/SEPA).
  *
- * Pablo paga manual mes 1. Marca cada payout como 'paid' via
+ * El humano paga manual mes 1. Marca cada payout como 'paid' via
  * /api/darkroom/crew/admin/mark-paid (auth verifyInternalAuth).
  *
  * Auth: verifyInternalAuth (Bearer CRON_SECRET).
@@ -157,7 +157,7 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  // Resumen a Pablo (1 email con todos los payouts del día)
+  // Resumen al humano (1 email con todos los payouts del día)
   if (!dryRun && queued > 0) {
     try {
       await notifyPablo(

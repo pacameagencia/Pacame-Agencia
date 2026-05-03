@@ -93,7 +93,7 @@ Si insiste, ofrece "llamada con el equipo" sin nombres.
 
 /**
  * Plantilla de bienvenida WhatsApp Community.
- * Texto explícito sobre privacidad de teléfonos (decisión Pablo + plan §4).
+ * Texto explícito sobre privacidad de teléfonos (decisión del operador + plan §4).
  */
 export const DR_WHATSAPP_PRIVACY_NOTICE = `
 Hola, te uniste a la comunidad DarkRoom.

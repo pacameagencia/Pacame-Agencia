@@ -126,6 +126,54 @@ Ya en `arquitectura-3-capas.md` y reforzado en RRSS humanizadas 70/20/10. Record
 
 ---
 
+## Banner de cookies — único punto público con links a documentación legal
+
+LSSI 22.2 obliga a banner de cookies con consentimiento granular **antes** de instalar cualquier cookie no técnica. En DarkRoom es el único punto público de la web donde aparecen links a las políticas (privacidad y cookies).
+
+### Implementación
+
+- **Componente**: `web/components/darkroom/DarkRoomCookieBanner.tsx` (estilo dark + acento rojo señal, separado del banner PACAME).
+- **Utils**: `web/lib/darkroom/cookie-consent.ts` (read/write localStorage + cookie técnica + log RGPD).
+- **Endpoint**: `POST /api/darkroom/cookies/consent` (log a `darkroom_cookie_consents` Supabase para prueba RGPD art. 7.1).
+- **Schema**: `infra/migrations/042_darkroom_cookie_consents.sql` (RLS bloqueado para anon/auth, solo service_role escribe).
+
+### Comportamiento
+
+- Aparece SOLO en 1ª visita (cookie `darkroom_consent` 12 meses + localStorage).
+- 3 botones: "Aceptar todas" / "Solo necesarias" / "Personalizar".
+- Granular: el usuario activa/desactiva analytics y funcionales por separado.
+- Esenciales siempre on (no se desactivan — son técnicas exentas de consentimiento).
+- 2 links sutiles en gris dim: "cookies" y "privacidad" → `/legal/cookies` y `/legal/privacidad`.
+
+### Datos que se loguean (sin PII directa)
+
+| Campo | Valor |
+|---|---|
+| `analytics` | true/false |
+| `functional` | true/false |
+| `consent_at` | ISO timestamp |
+| `schema_version` | int (sube si cambian categorías) |
+| `user_agent` | truncado a 240 chars |
+| `referrer` | truncado a 240 chars (o null) |
+| `ip_hash` | SHA256(salt + IP) primeros 32 chars |
+| `created_at` | timestamp del insert |
+
+**No se loguea**: IP directa, email, user ID, fingerprint completo.
+
+### Limpieza periódica
+
+Cron mensual (Vercel cron o Supabase pg_cron):
+```sql
+delete from darkroom_cookie_consents where consent_at < now() - interval '5 years';
+```
+RGPD: retener solo lo necesario para demostrar consentimiento. 5 años cubre prescripción de acciones civiles típicas.
+
+### Variable de entorno requerida
+
+`DARKROOM_CONSENT_HASH_SALT` — string secreto para SHA256 de IPs. Configurar en Vercel team Dark Room IO antes de deploy.
+
+---
+
 ## Estructura del bloque legal en `/legal`
 
 URL hub: `darkroomcreative.cloud/legal` (página existente con 4 sub-páginas).

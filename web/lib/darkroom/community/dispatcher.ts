@@ -4,7 +4,7 @@
  * Flujo:
  *   1. Anti-spam (5 mismos mensajes en 60s) → silencioso, no responde.
  *   2. Detecta intent (heurística + LLM economy si hace falta).
- *   3. Si escalateToHuman → IRIS responde + escala a Pablo.
+ *   3. Si escalateToHuman → IRIS responde + escala al humano.
  *   4. Si suggestedAgent es uno de IRIS/NIMBO/VECTOR → ejecuta.
  *   5. Registra mensaje + eventos en Supabase.
  *

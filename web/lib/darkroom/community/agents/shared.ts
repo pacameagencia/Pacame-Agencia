@@ -1,6 +1,6 @@
 /**
  * Helpers compartidos por los 3 agentes DR (IRIS/NIMBO/VECTOR).
- * Centralizamos: prompt builder, fireSynapse wrappers, escalation a Pablo via Telegram.
+ * Centralizamos: prompt builder, fireSynapse wrappers, escalation a humano via Telegram.
  */
 
 import { llmChat } from "@/lib/llm";
@@ -27,7 +27,7 @@ export interface AgentRunOpts {
   persona: string;
   callSite: string;
   agent: AgentName;
-  /** Si true, fuerza escalation a Pablo SIEMPRE (ej. cancellation, abuse). */
+  /** Si true, fuerza escalation a humano SIEMPRE (ej. cancellation, abuse). */
   forceEscalate?: boolean;
   maxTokens?: number;
   temperature?: number;
@@ -71,7 +71,7 @@ export async function callLLMSafe(
   }
 }
 
-/** Escala a Pablo via Telegram bot (PACAME bot personal). */
+/** Escala a humano via Telegram bot (canal interno conocido). */
 export async function escalateToPablo(args: {
   agent: AgentName;
   member: CommunityMember;
@@ -86,11 +86,11 @@ export async function escalateToPablo(args: {
     `Channel: ${args.channel}\n` +
     `Reason: ${args.reason}\n\n` +
     `Preview: ${args.preview.slice(0, 240)}`;
-  // brand: pacame es el bot personal Pablo (mantiene canal conocido)
+  // brand: pacame es el bot personal del operador (canal interno conocido)
   try {
     await sendTelegram(text, { brand: "pacame" });
   } catch (err) {
-    getLogger().error({ err }, "[dr-agent] escalate to Pablo failed");
+    getLogger().error({ err }, "[dr-agent] escalate to human failed");
   }
 }
 
