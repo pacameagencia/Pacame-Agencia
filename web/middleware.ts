@@ -41,6 +41,15 @@ const DARKROOM_ONLY_PATHS = [
 ];
 
 /**
+ * Ruta interna a la que `darkroomcreative.cloud/` se rewriteá.
+ *
+ * El usuario ve URL `darkroomcreative.cloud/`. Internamente Next renderiza
+ * el contenido de `/darkroom-home/page.tsx`. NO se expone publicamente —
+ * acceso directo está bloqueado en el middleware (ver más abajo).
+ */
+const DARKROOM_HOME_INTERNAL = "/darkroom-home";
+
+/**
  * Rutas que deben funcionar en TODOS los hosts (utilitarias o compartidas).
  * Se permite explícitamente y no aplica filtrado.
  */
@@ -98,16 +107,25 @@ export function middleware(req: NextRequest) {
 
   const isDarkRoomHost = isDarkRoomProductionHost(host);
   const isDarkRoomPath = startsWithAny(pathname, DARKROOM_ONLY_PATHS);
+  const isDarkRoomHomeInternal = pathname === DARKROOM_HOME_INTERNAL || pathname.startsWith(DARKROOM_HOME_INTERNAL + "/");
 
-  // 3. Host DarkRoom: solo rutas DarkRoom + compartidas + raíz
+  // Bloqueo absoluto: `/darkroom-home` es ruta interna, no debe accederse directo
+  // desde NINGÚN host (ni siquiera darkroomcreative.cloud — ahí se llega por rewrite).
+  if (isDarkRoomHomeInternal) {
+    return new NextResponse("Not Found", { status: 404 });
+  }
+
+  // 3. Host DarkRoom: solo rutas DarkRoom + compartidas + raíz (rewrite)
   if (isDarkRoomHost) {
     if (isDarkRoomPath) {
       return NextResponse.next();
     }
-    // Raíz: por ahora redirigimos al hub legal (no hay landing DarkRoom oficial todavía).
-    // Cuando se construya `/` para DarkRoom, este redirect se elimina y se permite.
+    // Raíz: rewrite interno a /darkroom-home (URL externa sigue siendo /).
+    // El usuario ve `darkroomcreative.cloud/`, Next renderiza `/darkroom-home/page.tsx`.
     if (pathname === "/" || pathname === "") {
-      return NextResponse.redirect(new URL("/legal", req.url));
+      const url = req.nextUrl.clone();
+      url.pathname = DARKROOM_HOME_INTERNAL;
+      return NextResponse.rewrite(url);
     }
     // Cualquier otra ruta PACAME accedida desde host DarkRoom → 404 (sin filtrar contenido)
     return new NextResponse("Not Found", { status: 404 });
