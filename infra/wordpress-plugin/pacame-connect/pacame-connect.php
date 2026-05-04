@@ -2,9 +2,24 @@
 /**
  * Plugin Name: PACAME Connect
  * Description: Endpoints REST custom para que PACAME (https://pacameagencia.com) pueda gestionar el WP del cliente: cachés, plugins, temas, logs, backups, queries seguras. Auth HMAC compartido con el dashboard PACAME.
- * Version: 0.3.0
+ * Version: 0.4.0
  * Author: PACAME Agencia
  * Author URI: https://pacameagencia.com
+ *
+ * v0.4.0 (2026-05-01) — auditoría profunda contra fuente real WCBoost v1.3.0:
+ *   - Capa 2 ANTES inventaba `wcboost_wishlist_params` (NO existe en plugin) — eliminada.
+ *     Ahora usa los filtros REALES del plugin verificados en source code:
+ *       - wcboost_wishlist_button_{add,view,remove}_text
+ *       - wcboost_products_compare_button_{add,view,remove}_text
+ *     Estos sobrescriben el resultado FINAL después de wp_parse_args(get_option(...)),
+ *     garantizando la traducción aunque el cliente tenga strings hardcoded en options.
+ *   - Capa 1 mapa wishlist amplía con "The wishlist link is copied to clipboard" + "Close"
+ *     (las dos cadenas que SÍ pasan por __() directamente en el plugin).
+ *   - Capa 3 MutationObserver con debounce (requestIdleCallback) + filtro de mutaciones
+ *     que solo procesa nodos con clases wcboost/cboost o data-tooltip — evita 1000s
+ *     de ejecuciones por segundo en sitios con mucho JS dinámico.
+ *   - Eliminada función JS tr() muerta.
+ *   - Tests: php -l OK · node --check OK · runtime OK (mock DOM).
  *
  * v0.3.0 (2026-05-01) — refuerzo i18n WCBoost (priority 999 + filtros nativos + JS fallback):
  *   - gettext/ngettext priority 999 (sobrescribe cualquier filtro previo).
@@ -427,6 +442,10 @@ function pacame_get_translations() {
     static $cache = null;
     if ($cache !== null) return $cache;
     $wishlist = [
+        // Cadenas que el plugin pasa directamente por __() (cubiertas por capa 1):
+        'The wishlist link is copied to clipboard' => 'Enlace copiado al portapapeles',
+        'Close'                                    => 'Cerrar',
+        // Otras cadenas comunes (defensa, por si las usa en otros lugares):
         'Add to wishlist'      => 'Añadir a favoritos',
         'Added to wishlist'    => 'Añadido a favoritos',
         'View wishlist'        => 'Ver favoritos',
@@ -475,47 +494,21 @@ add_filter('ngettext', function ($translation, $single, $plural, $number, $domai
     return $map[$domain][$key] ?? $translation;
 }, 999, 5);
 
-// Capa 2 — filtros nativos del plugin WCBoost Wishlist / Compare para los params JS.
-// Si el plugin construye el JS object con un filtro `wcboost_wishlist_params` (típico),
-// reemplazamos las cadenas i18n_* directamente en el array.
-add_filter('wcboost_wishlist_params', function ($params) {
-    if (!is_array($params)) return $params;
-    $tr = pacame_get_translations()['wcboost-wishlist'] ?? [];
-    $mapping = [
-        'i18n_add_to_wishlist'          => 'Add to wishlist',
-        'i18n_view_wishlist'            => 'View wishlist',
-        'i18n_remove_from_wishlist'     => 'Remove from wishlist',
-        'i18n_browse_wishlist'          => 'Browse wishlist',
-        'i18n_link_copied_notice'       => 'The wishlist link is copied to clipboard',
-        'i18n_close_button_text'        => 'Close',
-    ];
-    $extra = [
-        'The wishlist link is copied to clipboard' => 'Enlace copiado al portapapeles',
-        'Close'                                    => 'Cerrar',
-    ];
-    foreach ($mapping as $key => $en) {
-        if (!isset($params[$key])) continue;
-        if (isset($tr[$en]))           $params[$key] = $tr[$en];
-        elseif (isset($extra[$en]))    $params[$key] = $extra[$en];
-    }
-    return $params;
-}, 999, 1);
+// Capa 2 — filtros nativos REALES del plugin WCBoost Wishlist / Compare.
+// Estos filtros se aplican al final de Helper::get_button_text() — sobrescriben
+// el resultado de wp_parse_args(get_option(...)) → 100% efectivos.
+// Verificado contra el código fuente WordPress.org de wcboost-wishlist v1.3.0
+// y wcboost-products-compare v latest.
 
-add_filter('wcboost_products_compare_params', function ($params) {
-    if (!is_array($params)) return $params;
-    $tr = pacame_get_translations()['wcboost-products-compare'] ?? [];
-    $mapping = [
-        'i18n_button_add'    => 'Compare',
-        'i18n_button_remove' => 'Remove compare',
-        'i18n_button_view'   => 'Browse compare',
-    ];
-    foreach ($mapping as $key => $en) {
-        if (isset($params[$key]) && isset($tr[$en])) {
-            $params[$key] = $tr[$en];
-        }
-    }
-    return $params;
-}, 999, 1);
+// --- Wishlist (text-domain wcboost-wishlist) ---
+add_filter('wcboost_wishlist_button_add_text',    function ($text) { return 'Añadir a favoritos'; }, 999);
+add_filter('wcboost_wishlist_button_view_text',   function ($text) { return 'Ver favoritos'; }, 999);
+add_filter('wcboost_wishlist_button_remove_text', function ($text) { return 'Quitar de favoritos'; }, 999);
+
+// --- Compare (text-domain wcboost-products-compare) ---
+add_filter('wcboost_products_compare_button_add_text',    function ($text) { return 'Comparar'; }, 999);
+add_filter('wcboost_products_compare_button_view_text',   function ($text) { return 'Ver comparativa'; }, 999);
+add_filter('wcboost_products_compare_button_remove_text', function ($text) { return 'Quitar de comparar'; }, 999);
 
 // Capa 3 — fallback JS en wp_footer. Si las dos capas anteriores fallan (porque el
 // plugin hardcodea las cadenas o usa otro filtro), este JS sustituye los textos
@@ -541,8 +534,6 @@ add_action('wp_footer', function () {
     "View compare": "Ver comparativa",
     "Browse compare": "Ver comparativa"
   };
-  function tr(t) { return MAP[t] || t; }
-
   // 1) Sustituir spans con clase wcboost-wishlist-button__text / wcboost-products-compare-button__text
   function replaceSpans() {
     var sels = [
@@ -595,9 +586,43 @@ add_action('wp_footer', function () {
   } else {
     run();
   }
-  // Re-aplicar en mutaciones (ajax wishlist add)
+  // Re-aplicar en mutaciones (ajax wishlist add) — debounced + scope filtrado
+  // para evitar impacto de performance: solo procesa si la mutación afecta a
+  // un nodo cuyo subtree contiene clases wcboost / cboost.
   if (window.MutationObserver) {
-    var obs = new MutationObserver(function() { replaceSpans(); replaceTooltips(); });
+    var pending = false;
+    function scheduleRun() {
+      if (pending) return;
+      pending = true;
+      // requestIdleCallback si existe, fallback a setTimeout 50ms
+      var defer = window.requestIdleCallback || function(cb){ return setTimeout(cb, 50); };
+      defer(function() {
+        pending = false;
+        replaceSpans();
+        replaceTooltips();
+      });
+    }
+    var obs = new MutationObserver(function(mutations) {
+      for (var i = 0; i < mutations.length; i++) {
+        var m = mutations[i];
+        // Solo nos interesan mutaciones donde se añade un nodo (childList).
+        if (m.type !== "childList" || !m.addedNodes || !m.addedNodes.length) continue;
+        for (var j = 0; j < m.addedNodes.length; j++) {
+          var n = m.addedNodes[j];
+          if (n.nodeType !== 1) continue; // solo elementos
+          // Match si el nodo o su subtree tiene wcboost / cboost
+          if (n.className && typeof n.className === "string" &&
+              (n.className.indexOf("wcboost") !== -1 || n.className.indexOf("cboost") !== -1)) {
+            scheduleRun();
+            return;
+          }
+          if (n.querySelector && n.querySelector("[class*='wcboost'],[class*='cboost'],[data-tooltip]")) {
+            scheduleRun();
+            return;
+          }
+        }
+      }
+    });
     if (document.body) obs.observe(document.body, { childList: true, subtree: true });
   }
 })();

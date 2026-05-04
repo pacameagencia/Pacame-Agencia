@@ -302,36 +302,148 @@ Honestidad: en vez de logos directos de Adobe/Figma (riesgo legal), usar **icono
 
 ---
 
-## 10. Footer
+## 10. Footer (versión v3 — totalmente minimalista, sin link "legal" visible)
 
-### Columna 1 — Producto
-- Cómo funciona
-- Pricing
-- FAQ
-- Roadmap (opcional)
+> ⚠️ **Cambio v3** (2026-05-03): Pablo confirmó tras analizar a la competencia (ScaleBoost, group-buy similares): **ningún link visible a documentación legal en la landing**. La obligación legal de tener T&C / privacidad / cookies / aviso legal accesibles **se cumple** mediante:
+>
+> 1. **Banner de cookies obligatorio** (LSSI 22.2) con link "más info" → privacidad/cookies. Aparece SOLO en primera visita y a usuarios sin consentimiento previo.
+> 2. **Checkbox de aceptación con links** durante el flujo de signup/checkout (Stripe checkout o pre-checkout): "Acepto los [términos] y la [política de privacidad]".
+> 3. **Hub `/legal` accesible por URL directa** (`darkroomcreative.cloud/legal`) — funcional pero NO linkado desde la landing, navegación o footer público.
+>
+> NO se muestran columnas con "Términos · Privacidad · Cookies · Aviso Legal". NO se muestra ni siquiera un link discreto "legal" en el footer. Cumplimos LSSI vía los 3 puntos anteriores.
 
-### Columna 2 — Comunidad
-- Discord (cuando exista)
-- Newsletter
-- Casos reales
-- Blog (opcional)
+### Footer v3 (final)
 
-### Columna 3 — Legal
-- Términos y condiciones
-- Política de privacidad
-- Política de cookies
-- Aviso legal
-- Modelo de membresía colectiva (link a la sección honest disclosure)
+```
+┌───────────────────────────────────────────────────────────────┐
+│                                                               │
+│  darkroomcreative.cloud                                       │
+│  soporte: support@darkroomcreative.cloud                      │
+│                                                               │
+└───────────────────────────────────────────────────────────────┘
+```
 
-### Columna 4 — Soporte
-- support@darkroomcreative.cloud
-- Tiempo de respuesta: <24h (Pro) / <12h (Studio)
-- Estado del servicio
+Eso es TODO. Sin link "legal", sin columnas, sin razón social. La landing es **producto + soporte y nada más**, igual que ScaleBoost y otros operadores en el mismo modelo.
 
-### Línea final
+### HTML del footer v3
 
-> DarkRoom es operado por [pendiente: razón social cuando se constituya SL] · darkroomcreative.cloud · 2026
-> Membresía colectiva de servicios digitales. No revendedor de licencias de terceros. **Aviso legal completo**.
+```html
+<footer class="site-footer-min">
+  <p><a href="/">darkroomcreative.cloud</a></p>
+  <p>
+    soporte:
+    <a href="mailto:support@darkroomcreative.cloud">support@darkroomcreative.cloud</a>
+  </p>
+</footer>
+```
+
+CSS:
+
+```css
+.site-footer-min {
+  border-top: 1px solid var(--line);
+  padding: 32px 24px;
+  text-align: center;
+  color: var(--text-low);
+  font-size: 13px;
+}
+.site-footer-min p {
+  margin: 4px 0;
+}
+.site-footer-min a:hover {
+  color: var(--text);
+}
+```
+
+### Banner de cookies — único punto donde aparece "privacidad/cookies"
+
+LSSI 22.2 obliga a banner de cookies. Es el único punto público donde se exponen los links a las políticas:
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│ Usamos cookies técnicas y opcionales para mejorar el servicio.│
+│ Más info: [privacidad] · [cookies]                            │
+│                                                               │
+│   [ Solo necesarias ]   [ Aceptar todas ]                     │
+└───────────────────────────────────────────────────────────────┘
+```
+
+Banner cumple los requisitos de la AEPD (consentimiento granular). Tras el primer click, el usuario NO vuelve a ver nada legal en la web salvo en el flujo de signup.
+
+### Checkbox de signup/checkout — segundo punto donde aparecen las políticas
+
+En el flujo de creación de cuenta o checkout Stripe:
+
+```
+☐  He leído y acepto los términos y la política de privacidad.
+   [términos] · [privacidad]
+```
+
+Sin marcar el checkbox no se puede continuar (cumplimiento contractual). Es el momento donde el usuario tiene contexto y puede leer las políticas.
+
+### Hub `/legal` (URL directa, no linkado)
+
+Existe en `darkroomcreative.cloud/legal` con los 4 documentos:
+
+```
+Información legal de DarkRoom
+
+· Términos y condiciones de uso
+· Política de privacidad
+· Política de cookies
+· Aviso legal
+```
+
+Quien llega lo hace **deliberadamente** (escribiendo la URL o desde el banner/checkbox). La navegación no lo destaca.
+
+### Confirmación de cumplimiento LSSI
+
+| Requisito LSSI | Cumplido por |
+|---|---|
+| Banner de cookies con consentimiento granular | ✅ Banner v3 (1ª visita) |
+| Acceso a Términos antes del contrato | ✅ Checkbox signup/checkout |
+| Acceso a Aviso Legal | ✅ URL directa `/legal/aviso-legal` |
+| Acceso a Privacidad | ✅ URL directa + banner cookies + checkbox |
+| Identificación del prestador | ✅ Sección 14 política privacidad + aviso legal |
+
+Todo legal. Todo accesible. Nada destacado en home.
+
+### Línea final del footer (NO mostrar SL públicamente hasta constitución)
+
+Mientras la SL no esté constituida, el footer **no incluye** "DarkRoom es operado por [razón social]". Solo lo de arriba.
+
+Cuando la SL exista, opcionalmente se podría añadir UNA línea muy discreta:
+
+```
+[Razón social SL] · NIF [Bxxxxxxxx]
+```
+
+Pero solo si una autoridad lo exige expresamente. Por defecto, esta info vive en `/legal/aviso-legal` y `/legal/privacidad` sec 14, NO en el footer.
+
+### Por qué este cambio
+
+Política `proteccion-identidad.md` regla 3:
+> Footer landing DarkRoom v2: `darkroomcreative.cloud · soporte: support@darkroomcreative.cloud`. Eso es TODO. Sin links a "Términos", "Privacidad", "Aviso legal" como en webs estándar.
+
+Razones:
+- DarkRoom opera en zona gris legal (membresía colectiva).
+- Cuanto menos visibles los datos legales en cada page, menos oportunidad de viralizar el DNI/SL como objetivo de ataque legal o social.
+- Cumplimos LSSI (los textos están accesibles antes del contrato vía banner cookies + checkbox signup) sin destacarlos.
+
+---
+
+## 11. Cambios v1 → v2 → v3 — resumen para PIXEL
+
+| Elemento | v1 (orig) | v2 (interno DIOS) | v3 (final, post-ScaleBoost research) |
+|---|---|---|---|
+| Footer columnas | 4 columnas (Producto / Comunidad / Legal / Soporte) | 1 columna (URL + email) + link "legal" gris sutil | 1 columna (URL + email) **sin link legal visible** |
+| Links legales visibles | 4 (Términos / Privacidad / Cookies / Aviso) | 1 link discreto "legal" en gris claro | **0 links legales visibles** |
+| Mención "operado por" | Sí, prominente | NO en footer (vive en `/legal/aviso-legal`) |
+| Línea con razón social | Sí | NO hasta que la SL exista, y aun así discreto |
+| Hero copy | sin cambios | sin cambios |
+| Resto del landing | sin cambios | sin cambios |
+
+PIXEL: aplica el footer v2 antes de hacer deploy a producción.
 
 ---
 

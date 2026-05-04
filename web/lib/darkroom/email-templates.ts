@@ -5,7 +5,7 @@
  *
  * Especificación: `strategy/darkroom/lead-magnet-stack-creator-2026.md` §emails.
  *
- * From: `Pablo @ DarkRoom <support@darkroomcreative.cloud>` (único buzón real
+ * From: `DarkRoom <support@darkroomcreative.cloud>` (único buzón real, sin nombre propio
  * según memoria `reference_dark_room_mailboxes`).
  */
 
@@ -13,7 +13,7 @@ const NOTION_URL = "https://darkroomcreative.cloud/stack-creator-2026";
 const SITE_URL = "https://darkroomcreative.cloud";
 const TRIAL_URL = "https://darkroomcreative.cloud/trial";
 const LIFETIME_URL = "https://darkroomcreative.cloud/lifetime";
-const FROM_EMAIL = "Pablo @ DarkRoom <support@darkroomcreative.cloud>";
+const FROM_EMAIL = "DarkRoom <support@darkroomcreative.cloud>";
 
 export interface DarkRoomEmailContext {
   firstname?: string | null;
@@ -84,7 +84,7 @@ function wrapDarkRoom(opts: {
   </div>
   <div style="text-align:center;margin-top:24px;color:#555;font-size:12px;line-height:1.6;
               font-family:'Space Grotesk','Helvetica Neue',Arial,sans-serif">
-    <p style="margin:4px 0">DarkRoom · Pablo Calleja</p>
+    <p style="margin:4px 0">DarkRoom · una sociedad española</p>
     <p style="margin:4px 0">
       <a href="${SITE_URL}" style="color:#CFFF00;text-decoration:none">darkroomcreative.cloud</a>
       &nbsp;·&nbsp;
@@ -135,7 +135,7 @@ export function renderEmail0(ctx: DarkRoomEmailContext): RenderedEmail {
   En 2 días te mando algo más. Cómo monté esto sin tirar de gurú-marketing.
 </p>
 
-<p style="margin:24px 0 0">— Pablo</p>
+<p style="margin:24px 0 0">— el equipo DarkRoom</p>
 `;
   return {
     subject,
@@ -159,7 +159,7 @@ Honesto: si te interesa montar el stack completo sin pagar 308€/mes, mi proyec
 
 En 2 días te mando algo más. Cómo monté esto sin tirar de gurú-marketing.
 
-— Pablo`,
+— el equipo DarkRoom`,
   };
 }
 
@@ -201,7 +201,7 @@ export function renderEmail2(ctx: DarkRoomEmailContext): RenderedEmail {
   Si quieres probarlo · 2 días de prueba · cancelas antes y no se cobra.
 </p>
 
-<p style="margin:24px 0 0">— Pablo</p>
+<p style="margin:24px 0 0">— el equipo DarkRoom</p>
 `;
   return {
     subject,
@@ -227,7 +227,7 @@ Hoy 100+ creators lo usan a diario. Cuesta 24,90€/mes. Es el mismo stack del N
 
 → Probar 2 días: ${TRIAL_URL}
 
-— Pablo`,
+— el equipo DarkRoom`,
   };
 }
 
@@ -270,7 +270,7 @@ export function renderEmail4(ctx: DarkRoomEmailContext): RenderedEmail {
   Ahorras 283€ al mes. 3.396€ al año.
 </p>
 
-<p style="margin:24px 0 0">— Pablo</p>
+<p style="margin:24px 0 0">— el equipo DarkRoom</p>
 `;
   return {
     subject,
@@ -295,7 +295,7 @@ Ahorras 283€/mes. 3.396€/año.
 
 → ${TRIAL_URL}
 
-— Pablo`,
+— el equipo DarkRoom`,
   };
 }
 
@@ -320,7 +320,7 @@ export function renderEmail7(ctx: DarkRoomEmailContext): RenderedEmail {
   Si no · no te molesto más con esto.
 </p>
 
-<p style="margin:24px 0 0">— Pablo</p>
+<p style="margin:24px 0 0">— el equipo DarkRoom</p>
 `;
   return {
     subject,
@@ -341,7 +341,7 @@ Si no · no te molesto más con esto.
 
 → ${TRIAL_URL}
 
-— Pablo`,
+— el equipo DarkRoom`,
   };
 }
 
@@ -376,7 +376,7 @@ export function renderEmail14(ctx: DarkRoomEmailContext): RenderedEmail {
   Si lo dejas pasar · sin drama. Volvemos a 24,90€/mes Pro normal.
 </p>
 
-<p style="margin:24px 0 0">— Pablo</p>
+<p style="margin:24px 0 0">— el equipo DarkRoom</p>
 `;
   return {
     subject,
@@ -406,7 +406,7 @@ Si lo dejas pasar · sin drama. Volvemos a 24,90€/mes Pro normal.
 → Lifetime: ${LIFETIME_URL}
 → Pro 24,90€/mes: ${TRIAL_URL}
 
-— Pablo`,
+— el equipo DarkRoom`,
   };
 }
 
@@ -510,7 +510,7 @@ export function renderWelcomeCrew(ctx: WelcomeCrewCtx): RenderedEmail {
   Tu panel personal en cualquier momento:
 </p>
 
-<p style="margin:24px 0 0">— Pablo</p>
+<p style="margin:24px 0 0">— el equipo DarkRoom</p>
 `;
   return {
     subject,
@@ -542,7 +542,7 @@ Pago día 5 PayPal/SEPA. Mín 50€ acumulado.
 
 Tu panel: ${ctx.dashboardUrl}
 
-— Pablo`,
+— el equipo DarkRoom`,
   };
 }
 
@@ -593,7 +593,7 @@ export function renderTierUp(ctx: TierUpCtx): RenderedEmail {
   Y tu próximo ref one-time pasa a <strong>${(newT.oneTimeCents / 100).toFixed(0)}€</strong>.
 </p>
 
-<p style="margin:24px 0 0">— Pablo</p>
+<p style="margin:24px 0 0">— el equipo DarkRoom</p>
 `;
   return {
     subject,
@@ -617,7 +617,7 @@ Tu próximo ref one-time pasa a ${(newT.oneTimeCents / 100).toFixed(0)}€.
 
 Panel: ${ctx.dashboardUrl}
 
-— Pablo`,
+— el equipo DarkRoom`,
   };
 }
 
@@ -653,7 +653,7 @@ export function renderPayoutReady(ctx: PayoutReadyCtx): RenderedEmail {
   Llega en las próximas 48h. Si no llega, escríbeme a support@darkroomcreative.cloud.
 </p>
 
-<p style="margin:24px 0 0">— Pablo</p>
+<p style="margin:24px 0 0">— el equipo DarkRoom</p>
 `;
   return {
     subject,
@@ -672,7 +672,7 @@ Llega en las próximas 48h. Si no llega, support@darkroomcreative.cloud.
 
 Panel: ${ctx.dashboardUrl}
 
-— Pablo`,
+— el equipo DarkRoom`,
   };
 }
 
