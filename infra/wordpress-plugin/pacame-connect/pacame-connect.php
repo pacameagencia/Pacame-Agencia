@@ -2,9 +2,25 @@
 /**
  * Plugin Name: PACAME Connect
  * Description: Endpoints REST custom para que PACAME (https://pacameagencia.com) pueda gestionar el WP del cliente: cachés, plugins, temas, logs, backups, queries seguras. Auth HMAC compartido con el dashboard PACAME.
- * Version: 0.4.0
+ * Version: 0.5.0
  * Author: PACAME Agencia
  * Author URI: https://pacameagencia.com
+ *
+ * v0.5.0 (2026-05-01) — ampliación endpoints para casos uso futuro (subir fotos, gestión Woo, ops):
+ *   Añade 27 endpoints nuevos sobre los 8 anteriores. Estructura idéntica (HMAC + WP_Error + class_exists guards).
+ *   - MEDIA: upload-from-url, upload-base64, /{id}/meta, DELETE /{id}.
+ *   - PRODUCTS: search, /{id}/featured-image, /{id}/gallery, /{id}/update.
+ *   - ORDERS: list, /{id}, /{id}/status, /{id}/notes, /stats.
+ *   - USERS: search, /{id}/reset-password, /{id}/orders.
+ *   - CRON: list, /run.
+ *   - DB: /optimize.
+ *   - POSTS: search-replace (con dry-run), revisions/cleanup.
+ *   - SEO: yoast/meta (batch para post + term).
+ *   - SYSTEM: /health.
+ *   - BACKUP: /list, /status (UpdraftPlus + WPvivid).
+ *   - FILES: list/read/write (whitelist mu-plugins/ + child theme).
+ *   - PLUGINS: install (slug WP.org).
+ *   Helpers: pacame_require_woo/yoast/backup_plugin, pacame_safe_path, pacame_log_request.
  *
  * v0.4.0 (2026-05-01) — auditoría profunda contra fuente real WCBoost v1.3.0:
  *   - Capa 2 ANTES inventaba `wcboost_wishlist_params` (NO existe en plugin) — eliminada.
@@ -106,6 +122,53 @@ function pacame_verify_hmac(WP_REST_Request $request) {
     }
 
     return true;
+}
+
+// =============================================================================
+//  HELPERS COMPARTIDOS (v0.5.0)
+// =============================================================================
+
+function pacame_require_woo() {
+    if (!class_exists('WooCommerce')) {
+        return new WP_Error('pacame_no_woo', 'WooCommerce is not active', ['status' => 501]);
+    }
+    return null;
+}
+
+function pacame_require_yoast() {
+    if (!defined('WPSEO_VERSION')) {
+        return new WP_Error('pacame_no_yoast', 'Yoast SEO is not active', ['status' => 501]);
+    }
+    return null;
+}
+
+function pacame_require_backup_plugin() {
+    if (class_exists('UpdraftPlus_Options')) return 'updraftplus';
+    if (class_exists('WPvivid_Setting'))     return 'wpvivid';
+    if (class_exists('BackWPup'))            return 'backwpup';
+    return new WP_Error('pacame_no_backup_plugin', 'No supported backup plugin active (UpdraftPlus/WPvivid/BackWPup)', ['status' => 501]);
+}
+
+function pacame_is_safe_url($url) {
+    if (!is_string($url) || empty($url)) return false;
+    $parts = wp_parse_url($url);
+    if (empty($parts['scheme']) || !in_array(strtolower($parts['scheme']), ['http','https'], true)) return false;
+    if (empty($parts['host'])) return false;
+    $host = strtolower($parts['host']);
+    if (in_array($host, ['localhost','127.0.0.1','::1','0.0.0.0'], true)) return false;
+    if (filter_var($host, FILTER_VALIDATE_IP)) {
+        if (!filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) return false;
+    }
+    return true;
+}
+
+function pacame_log_request($route, $payload = null) {
+    if (!defined('PACAME_DEBUG') || !PACAME_DEBUG) return;
+    $log = get_option('pacame_request_log', []);
+    if (!is_array($log)) $log = [];
+    $log[] = ['ts' => time(), 'route' => $route, 'payload' => is_array($payload) ? array_keys($payload) : null];
+    if (count($log) > 100) $log = array_slice($log, -100);
+    update_option('pacame_request_log', $log, false);
 }
 
 // =============================================================================
