@@ -128,7 +128,7 @@ export function renderEmail0(ctx: DarkRoomEmailContext): RenderedEmail {
 <p style="margin:16px 0">
   Honesto: si te interesa montar el stack completo sin pagar 308€/mes,
   mi proyecto se llama <strong style="color:#CFFF00">DarkRoom</strong>.
-  24,90€/mes. 14 días gratis. Sin tarjeta.
+  24,90€/mes. 2 días de prueba. Cancelas antes y no se cobra.
 </p>
 
 <p style="margin:0 0 16px;color:#888;font-size:13px">
@@ -143,7 +143,7 @@ export function renderEmail0(ctx: DarkRoomEmailContext): RenderedEmail {
     html: wrapDarkRoom({
       preheader,
       bodyHtml: body,
-      ctaText: "EMPEZAR 14 DÍAS GRATIS",
+      ctaText: "EMPEZAR PRUEBA · 2 DÍAS",
       ctaUrl: TRIAL_URL,
     }),
     text: `${greeting(ctx.firstname)}
@@ -153,7 +153,7 @@ Aquí está. 12 herramientas IA. Lo que pago al mes. Lo que ahorra.
 Stack en Notion: ${NOTION_URL}
 PDF descarga: ${NOTION_URL}/pdf
 
-Honesto: si te interesa montar el stack completo sin pagar 308€/mes, mi proyecto se llama DarkRoom. 24,90€/mes. 14 días gratis. Sin tarjeta.
+Honesto: si te interesa montar el stack completo sin pagar 308€/mes, mi proyecto se llama DarkRoom. 24,90€/mes. 2 días de prueba. Cancelas antes y no se cobra.
 
 → ${TRIAL_URL}
 
@@ -198,7 +198,7 @@ export function renderEmail2(ctx: DarkRoomEmailContext): RenderedEmail {
 </p>
 
 <p style="margin:16px 0;color:#888;font-size:13px">
-  Si quieres probarlo · 14 días gratis · sin tarjeta.
+  Si quieres probarlo · 2 días de prueba · cancelas antes y no se cobra.
 </p>
 
 <p style="margin:24px 0 0">— Pablo</p>
@@ -209,7 +209,7 @@ export function renderEmail2(ctx: DarkRoomEmailContext): RenderedEmail {
     html: wrapDarkRoom({
       preheader,
       bodyHtml: body,
-      ctaText: "PROBAR DARKROOM 14 DÍAS",
+      ctaText: "PROBAR DARKROOM · 2 DÍAS",
       ctaUrl: TRIAL_URL,
     }),
     text: `${greeting(ctx.firstname)}
@@ -225,7 +225,7 @@ Decidí hacer una versión bien hecha:
 
 Hoy 100+ creators lo usan a diario. Cuesta 24,90€/mes. Es el mismo stack del Notion.
 
-→ Probar 14 días gratis: ${TRIAL_URL}
+→ Probar 2 días: ${TRIAL_URL}
 
 — Pablo`,
   };
@@ -278,7 +278,7 @@ export function renderEmail4(ctx: DarkRoomEmailContext): RenderedEmail {
     html: wrapDarkRoom({
       preheader,
       bodyHtml: body,
-      ctaText: "VER PLANES · 14 DÍAS GRATIS",
+      ctaText: "VER PLANES · 2 DÍAS DE PRUEBA",
       ctaUrl: TRIAL_URL,
     }),
     text: `${greeting(ctx.firstname)}
@@ -302,7 +302,7 @@ Ahorras 283€/mes. 3.396€/año.
 // ─── Email 7 · día 7 · oferta directa ───────────────────────────────
 
 export function renderEmail7(ctx: DarkRoomEmailContext): RenderedEmail {
-  const subject = "Es ahora · 14 días gratis";
+  const subject = "Es ahora · 2 días de prueba";
   const preheader = "Si esto va contigo, empieza el trial. Si no, no te molesto más.";
   const body = `
 <p style="margin:0 0 16px;color:#FFF;font-weight:600">${greeting(ctx.firstname)}</p>
@@ -312,8 +312,8 @@ export function renderEmail7(ctx: DarkRoomEmailContext): RenderedEmail {
 </p>
 
 <p style="margin:0 0 16px">
-  Si esto va contigo · empieza el trial. <strong>14 días gratis</strong>.
-  Sin tarjeta. Sin compromiso. Cancelas cuando quieras.
+  Si esto va contigo · empieza el trial. <strong>2 días de prueba</strong>.
+  Cancelas antes del día 2 y no se cobra. Cancelas después · cancela cuando quieras.
 </p>
 
 <p style="margin:0 0 16px">
@@ -328,14 +328,14 @@ export function renderEmail7(ctx: DarkRoomEmailContext): RenderedEmail {
     html: wrapDarkRoom({
       preheader,
       bodyHtml: body,
-      ctaText: "EMPEZAR TRIAL · 14 DÍAS GRATIS",
+      ctaText: "EMPEZAR PRUEBA · 2 DÍAS",
       ctaUrl: TRIAL_URL,
     }),
     text: `${greeting(ctx.firstname)}
 
 Han pasado 7 días.
 
-Si esto va contigo · empieza el trial. 14 días gratis. Sin tarjeta. Sin compromiso. Cancelas cuando quieras.
+Si esto va contigo · empieza el trial. 2 días de prueba. Cancelas antes del día 2 y no se cobra.
 
 Si no · no te molesto más con esto.
 

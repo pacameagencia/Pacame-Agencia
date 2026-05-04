@@ -66,6 +66,25 @@ export const PACAME_PRODUCTS = {
       "Proyecto personalizado adaptado a las necesidades de tu negocio. Incluye analisis previo, propuesta detallada y seguimiento dedicado por el equipo de PACAME.",
     minPrice: 0,
   },
+  // ── Dark Room (Capa 3 SaaS) · creados via tools/darkroom-stripe-setup.mjs ──
+  darkroom_pro: {
+    name: "DarkRoom Pro",
+    description:
+      "Group buy legal · 12 herramientas IA premium · 24,90€/mes con 2 días de prueba.",
+    minPrice: 2490,
+    recurring: true,
+    trialDays: 2,
+    stripeProductId: "prod_UR6uQwtrIAsFm4",
+    stripePriceId: "price_1TSEgQLILWpOzDaiAVGAPm7y",
+  },
+  darkroom_lifetime: {
+    name: "DarkRoom Lifetime",
+    description:
+      "Group buy legal · 12 herramientas IA premium · acceso de por vida · pago único 349€.",
+    minPrice: 34900,
+    stripeProductId: "prod_UR6uBGdBcwjZIw",
+    stripePriceId: "price_1TSEgRLILWpOzDai7vE3pDSv",
+  },
 } as const;
 
 export type ProductKey = keyof typeof PACAME_PRODUCTS;
