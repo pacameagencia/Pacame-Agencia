@@ -2,9 +2,23 @@
 /**
  * Plugin Name: PACAME Connect
  * Description: Endpoints REST custom para que PACAME (https://pacameagencia.com) pueda gestionar el WP del cliente: cachés, plugins, temas, logs, backups, queries seguras. Auth HMAC compartido con el dashboard PACAME.
- * Version: 0.5.0
+ * Version: 0.6.0
  * Author: PACAME Agencia
  * Author URI: https://pacameagencia.com
+ *
+ * v0.6.0 (2026-05-02) — i18n masivo (tema Ecomus + Woo + WCBoost suite):
+ *   - Mapa de 80+ cadenas EN→ES centralizado en pacame_get_translation_map()
+ *     compartido por capa 1 (gettext) y capa 3 (JS DOM walker).
+ *   - 11 text-domains soportados: wcboost-{wishlist,products-wishlist,products-compare,
+ *     compare,variation-swatches}, ecomus, ecomus-toolkit, ecomus-addons,
+ *     ecomus-elementor, woocommerce.
+ *   - Capa 3 reescrita con DOM walker genérico (recorre todos los textNode no-script/style)
+ *     + replaceAttrs para data-tooltip, title, placeholder, aria-label, value.
+ *   - MutationObserver scope ampliado para AJAX popups (mini-cart, drawer, modals).
+ *   - Cubre: Add to/View/Remove wishlist, Add to/Compare/Remove compare, Search our site,
+ *     View all/cart, Quick view/shop, Recently viewed, Show more/less, Sort by, Apply,
+ *     Clear, In stock/Out of stock, Description, Additional info, Reviews, Login/Logout,
+ *     My account, Forgot password, Update, Save, Cancel, Submit, Send, Next, Previous, etc.
  *
  * v0.5.0 (2026-05-01) — ampliación endpoints para casos uso futuro (subir fotos, gestión Woo, ops):
  *   Añade 27 endpoints nuevos sobre los 8 anteriores. Estructura idéntica (HMAC + WP_Error + class_exists guards).
@@ -499,41 +513,137 @@ add_action('wpforms_process_complete', function ($fields, $entry, $form_data) {
 //  Aplica filtro gettext para sustituir las cadenas no traducidas a español.
 // =============================================================================
 
-// Mapas por dominio. Si el plugin instalado usa otro text-domain,
-// añade el slug a la lista de pacame_get_translations() — no rompe nada si no existe.
-function pacame_get_translations() {
-    static $cache = null;
-    if ($cache !== null) return $cache;
-    $wishlist = [
-        // Cadenas que el plugin pasa directamente por __() (cubiertas por capa 1):
+// Mapa centralizado de traducciones EN→ES para todos los text-domains que aparecen
+// en Royo (tema Ecomus + WCBoost suite + Woo). Compartido por capas 1 (gettext) y 3 (JS).
+function pacame_get_translation_map() {
+    static $map = null;
+    if ($map !== null) return $map;
+    $map = [
+        // === Wishlist (WCBoost) ===
+        'Add to wishlist'                          => 'Añadir a favoritos',
+        'Added to wishlist'                        => 'Añadido a favoritos',
+        'View wishlist'                            => 'Ver favoritos',
+        'Browse wishlist'                          => 'Ver favoritos',
+        'Remove from wishlist'                     => 'Quitar de favoritos',
+        'My wishlist'                              => 'Mis favoritos',
+        'Share wishlist'                           => 'Compartir lista',
+        'Wishlist'                                 => 'Favoritos',
         'The wishlist link is copied to clipboard' => 'Enlace copiado al portapapeles',
-        'Close'                                    => 'Cerrar',
-        // Otras cadenas comunes (defensa, por si las usa en otros lugares):
-        'Add to wishlist'      => 'Añadir a favoritos',
-        'Added to wishlist'    => 'Añadido a favoritos',
-        'View wishlist'        => 'Ver favoritos',
-        'Browse wishlist'      => 'Mi lista de favoritos',
-        'Remove from wishlist' => 'Quitar de favoritos',
-        'My wishlist'          => 'Mis favoritos',
-        'Share wishlist'       => 'Compartir lista',
-    ];
-    $compare = [
+
+        // === Compare (WCBoost) ===
         'Add to compare'      => 'Añadir a comparar',
         'Added to compare'    => 'Añadido a comparar',
         'Remove from compare' => 'Quitar de comparar',
         'Compare'             => 'Comparar',
+        'Compare products'    => 'Comparar productos',
         'View compare'        => 'Ver comparativa',
+        'Browse compare'      => 'Ver comparativa',
+
+        // === Tema Ecomus + Header / Search ===
+        'Search our site'           => 'Buscar en la tienda',
+        'Search'                    => 'Buscar',
+        'View all'                  => 'Ver todo',
+        'View cart'                 => 'Ver carrito',
+        'Continue shopping'         => 'Seguir comprando',
+        'Cart'                      => 'Carrito',
+        'Quick view'                => 'Vista rápida',
+        'Quick shop'                => 'Compra rápida',
+        'Recently viewed'           => 'Vistos recientemente',
+        'Recently viewed products'  => 'Productos vistos recientemente',
+        'Featured products'         => 'Productos destacados',
+        'Related products'          => 'Productos relacionados',
+        'Show more'                 => 'Ver más',
+        'Show less'                 => 'Ver menos',
+        'Load more'                 => 'Cargar más',
+        'Read more'                 => 'Leer más',
+        'Share'                     => 'Compartir',
+        'Share Via Email'           => 'Compartir por email',
+        'All'                       => 'Todo',
+        'Close'                     => 'Cerrar',
+
+        // === Filtros / sort widget ===
+        'Sort by'           => 'Ordenar por',
+        'Showing'           => 'Mostrando',
+        'Default sorting'   => 'Orden por defecto',
+        'Popularity'        => 'Popularidad',
+        'Latest'            => 'Más recientes',
+        'Price'             => 'Precio',
+        'Rating'            => 'Valoración',
+        'Filter by'         => 'Filtrar por',
+        'Apply'             => 'Aplicar',
+        'Clear'             => 'Limpiar',
+        'Clear All'         => 'Limpiar todo',
+        'Reset'             => 'Restablecer',
+        'Reset Filter'      => 'Restablecer filtros',
+        'Remove all'        => 'Quitar todo',
+        'Remove filter'     => 'Quitar filtro',
+
+        // === Estado de stock + badges ===
+        'In stock'      => 'En stock',
+        'Out of stock'  => 'Agotado',
+        'Sale'          => 'Oferta',
+        'New'           => 'Novedad',
+        'Sold'          => 'Vendido',
+        'Sold out'      => 'Agotado',
+        'Free shipping' => 'Envío gratis',
+
+        // === Pestañas single product ===
+        'Description'             => 'Descripción',
+        'Additional information'  => 'Información adicional',
+        'Reviews'                 => 'Reseñas',
+        'Specifications'          => 'Ficha técnica',
+
+        // === Auth / cuenta ===
+        'Sign up'              => 'Registrarse',
+        'Sign in'              => 'Iniciar sesión',
+        'Log in'               => 'Iniciar sesión',
+        'Log out'              => 'Cerrar sesión',
+        'Login'                => 'Iniciar sesión',
+        'Logout'               => 'Cerrar sesión',
+        'Register'             => 'Registrarse',
+        'My account'           => 'Mi cuenta',
+        'My orders'            => 'Mis pedidos',
+        'Forgot password?'     => '¿Olvidaste tu contraseña?',
+        'Lost your password?'  => '¿Perdiste tu contraseña?',
+        'Remember me'          => 'Recordarme',
+
+        // === Acciones generales ===
+        'Update'   => 'Actualizar',
+        'Save'     => 'Guardar',
+        'Cancel'   => 'Cancelar',
+        'Submit'   => 'Enviar',
+        'Send'     => 'Enviar',
+        'Next'     => 'Siguiente',
+        'Previous' => 'Anterior',
+        'Back'     => 'Atrás',
     ];
-    $cache = [
-        // WCBoost Wishlist (varios slugs vistos en el ecosistema)
-        'wcboost-products-wishlist'     => $wishlist,
-        'wcboost-wishlist'              => $wishlist,
-        'wcboost-products-wishlist-pro' => $wishlist,
-        // WCBoost Compare
-        'wcboost-products-compare'      => $compare,
-        'wcboost-compare'               => $compare,
+    return $map;
+}
+
+/**
+ * Devuelve el mapa por text-domain. Aplicamos el mismo mapa a TODOS los text-domains
+ * relevantes — no rompe nada si una cadena no aparece en ese dominio.
+ */
+function pacame_get_translations() {
+    static $by_domain = null;
+    if ($by_domain !== null) return $by_domain;
+    $map = pacame_get_translation_map();
+    $domains = [
+        'wcboost-wishlist',
+        'wcboost-products-wishlist',
+        'wcboost-products-wishlist-pro',
+        'wcboost-products-compare',
+        'wcboost-compare',
+        'wcboost-variation-swatches',
+        'ecomus',
+        'ecomus-toolkit',
+        'ecomus-addons',
+        'ecomus-elementor',
+        'woocommerce',
     ];
-    return $cache;
+    $by_domain = [];
+    foreach ($domains as $d) $by_domain[$d] = $map;
+    return $by_domain;
 }
 
 // Capa 1 — gettext / gettext_with_context / ngettext con priority 999 (sobrescribe
@@ -573,56 +683,69 @@ add_filter('wcboost_products_compare_button_add_text',    function ($text) { ret
 add_filter('wcboost_products_compare_button_view_text',   function ($text) { return 'Ver comparativa'; }, 999);
 add_filter('wcboost_products_compare_button_remove_text', function ($text) { return 'Quitar de comparar'; }, 999);
 
-// Capa 3 — fallback JS en wp_footer. Si las dos capas anteriores fallan (porque el
-// plugin hardcodea las cadenas o usa otro filtro), este JS sustituye los textos
-// directamente en el DOM antes del primer paint del usuario.
+// Capa 3 — fallback JS en wp_footer.
+// El MAP se inyecta desde PHP (pacame_get_translation_map) — fuente única de verdad
+// con capa 1 (gettext). Cubre tema Ecomus + WCBoost + Woo + filtros widget.
 add_action('wp_footer', function () {
     if (is_admin()) return;
+    $map_json = wp_json_encode(pacame_get_translation_map(), JSON_UNESCAPED_UNICODE);
     ?>
 <script id="pacame-i18n-fallback">
 (function() {
-  var MAP = {
-    "Add to wishlist": "Añadir a favoritos",
-    "Added to wishlist": "Añadido a favoritos",
-    "View wishlist": "Ver favoritos",
-    "Browse wishlist": "Mi lista de favoritos",
-    "Remove from wishlist": "Quitar de favoritos",
-    "My wishlist": "Mis favoritos",
-    "Share wishlist": "Compartir lista",
-    "The wishlist link is copied to clipboard": "Enlace copiado al portapapeles",
-    "Add to compare": "Añadir a comparar",
-    "Added to compare": "Añadido a comparar",
-    "Remove from compare": "Quitar de comparar",
-    "Compare": "Comparar",
-    "View compare": "Ver comparativa",
-    "Browse compare": "Ver comparativa"
-  };
-  // 1) Sustituir spans con clase wcboost-wishlist-button__text / wcboost-products-compare-button__text
-  function replaceSpans() {
-    var sels = [
-      ".wcboost-wishlist-button__text",
-      ".wcboost-products-compare-button__text",
-      ".cboost-wishlist-button__text"
-    ];
-    sels.forEach(function(s) {
-      document.querySelectorAll(s).forEach(function(el) {
-        var t = el.textContent.trim();
-        if (MAP[t]) el.textContent = MAP[t];
-      });
-    });
+  var MAP = <?php echo $map_json; ?>;
+
+  // Tags donde NO tocamos texto (rompería JS, CSS, formularios)
+  var SKIP_TAGS = { SCRIPT:1, STYLE:1, NOSCRIPT:1, TEXTAREA:1, INPUT:1, SELECT:1, OPTION:1, IFRAME:1, CODE:1, PRE:1 };
+
+  // 1) Walker genérico de text nodes — sustituye CUALQUIER text node cuyo texto trimeado
+  // coincida con una clave del MAP. Cubre tema Ecomus + popups + cualquier render con i18n roto.
+  function walkAndReplace(root) {
+    if (!root || !root.nodeType) return;
+    if (root.nodeType === 3) { // text node
+      var t = root.nodeValue;
+      if (!t) return;
+      var trimmed = t.trim();
+      if (trimmed && MAP[trimmed]) {
+        // Preserva whitespace original alrededor del trimmed
+        var before = t.substring(0, t.indexOf(trimmed));
+        var after = t.substring(t.indexOf(trimmed) + trimmed.length);
+        root.nodeValue = before + MAP[trimmed] + after;
+      }
+      return;
+    }
+    if (root.nodeType !== 1) return; // solo elementos y texto
+    if (SKIP_TAGS[root.tagName]) return;
+    var child = root.firstChild;
+    while (child) {
+      var next = child.nextSibling;
+      walkAndReplace(child);
+      child = next;
+    }
   }
 
-  // 2) Sustituir data-tooltip / data-tooltip_added en botones wishlist
-  function replaceTooltips() {
-    document.querySelectorAll("[data-tooltip],[data-tooltip_added]").forEach(function(el) {
-      ["data-tooltip","data-tooltip_added"].forEach(function(attr) {
-        var v = el.getAttribute(attr);
-        if (v && MAP[v]) el.setAttribute(attr, MAP[v]);
+  // 2) Sustituir atributos visibles (data-tooltip, title, placeholder, aria-label, value en inputs button)
+  function replaceAttrs(root) {
+    var selector = "[data-tooltip],[data-tooltip_added],[title],[placeholder],[aria-label]";
+    var nodes = root.querySelectorAll ? root.querySelectorAll(selector) : [];
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i];
+      ["data-tooltip","data-tooltip_added","title","placeholder","aria-label"].forEach(function(a) {
+        var v = el.getAttribute(a);
+        if (v) {
+          var trimmed = v.trim();
+          if (MAP[trimmed]) el.setAttribute(a, MAP[trimmed]);
+        }
       });
-    });
+    }
+    // Botones submit con value EN
+    var buttons = root.querySelectorAll ? root.querySelectorAll('input[type=submit],input[type=button],button') : [];
+    for (var j = 0; j < buttons.length; j++) {
+      var b = buttons[j];
+      if (b.value && MAP[b.value.trim()]) b.value = MAP[b.value.trim()];
+    }
   }
 
-  // 3) Patchear los i18n_* de los objetos params globales del plugin (por si los lee tras DOM ready)
+  // 3) Patchear i18n_* de globales del plugin WCBoost (si están)
   function patchGlobalParams() {
     var roots = ["wcboost_wishlist_params", "wcboost_products_compare_params"];
     roots.forEach(function(name) {
@@ -639,8 +762,10 @@ add_action('wp_footer', function () {
   function run() {
     try {
       patchGlobalParams();
-      replaceSpans();
-      replaceTooltips();
+      if (document.body) {
+        walkAndReplace(document.body);
+        replaceAttrs(document.body);
+      }
     } catch (e) { /* swallow — fallback no debe romper nada */ }
   }
 
@@ -649,41 +774,30 @@ add_action('wp_footer', function () {
   } else {
     run();
   }
-  // Re-aplicar en mutaciones (ajax wishlist add) — debounced + scope filtrado
-  // para evitar impacto de performance: solo procesa si la mutación afecta a
-  // un nodo cuyo subtree contiene clases wcboost / cboost.
+  // Re-aplicar en mutaciones (ajax popups, mini-cart, wishlist drawer, etc.)
+  // Debounced con requestIdleCallback (fallback setTimeout 50ms).
   if (window.MutationObserver) {
     var pending = false;
     function scheduleRun() {
       if (pending) return;
       pending = true;
-      // requestIdleCallback si existe, fallback a setTimeout 50ms
       var defer = window.requestIdleCallback || function(cb){ return setTimeout(cb, 50); };
       defer(function() {
         pending = false;
-        replaceSpans();
-        replaceTooltips();
+        if (document.body) {
+          walkAndReplace(document.body);
+          replaceAttrs(document.body);
+        }
       });
     }
     var obs = new MutationObserver(function(mutations) {
       for (var i = 0; i < mutations.length; i++) {
         var m = mutations[i];
-        // Solo nos interesan mutaciones donde se añade un nodo (childList).
         if (m.type !== "childList" || !m.addedNodes || !m.addedNodes.length) continue;
-        for (var j = 0; j < m.addedNodes.length; j++) {
-          var n = m.addedNodes[j];
-          if (n.nodeType !== 1) continue; // solo elementos
-          // Match si el nodo o su subtree tiene wcboost / cboost
-          if (n.className && typeof n.className === "string" &&
-              (n.className.indexOf("wcboost") !== -1 || n.className.indexOf("cboost") !== -1)) {
-            scheduleRun();
-            return;
-          }
-          if (n.querySelector && n.querySelector("[class*='wcboost'],[class*='cboost'],[data-tooltip]")) {
-            scheduleRun();
-            return;
-          }
-        }
+        // Disparamos siempre que se añadan nodos. El walker es eficiente y
+        // SKIP_TAGS evita tocar script/style.
+        scheduleRun();
+        return;
       }
     });
     if (document.body) obs.observe(document.body, { childList: true, subtree: true });

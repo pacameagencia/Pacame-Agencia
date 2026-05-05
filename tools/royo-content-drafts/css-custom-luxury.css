@@ -1,0 +1,298 @@
+/* =====================================================================
+   Joyería Royo — CSS custom luxury (v1.0)
+   Pegar en wp-admin → Apariencia → Personalizar → CSS adicional
+   O subir vía POST /pacame/v1/css/set con HMAC.
+
+   Paleta:
+     Crema cálida #FAF7F2  ·  Dorado champán #B8956A
+     Carbón #1A1A1A         ·  Tinta #2C2926
+
+   Tipografía:
+     Serif (display): Playfair Display (Google Fonts)
+     Sans-serif: Inter (Google Fonts)
+   ===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --royo-bg-cream: #FAF7F2;
+  --royo-gold: #B8956A;
+  --royo-gold-dark: #8E6F4E;
+  --royo-charcoal: #1A1A1A;
+  --royo-ink: #2C2926;
+  --royo-line: #E8E1D6;
+  --royo-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --royo-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* === Tipografía global === */
+body, body p, body li, body span, body a {
+  font-family: var(--royo-sans) !important;
+  color: var(--royo-ink);
+  letter-spacing: 0.005em;
+}
+
+h1, h2, h3, .product_title, .woocommerce-loop-product__title,
+.product-name a, .single-product .product .product_title,
+.elementor-heading-title {
+  font-family: var(--royo-serif) !important;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--royo-charcoal);
+}
+
+/* === Header refinado === */
+.site-header, header.header {
+  background: var(--royo-bg-cream);
+  border-bottom: 1px solid var(--royo-line);
+}
+.site-header a, header.header a {
+  color: var(--royo-charcoal) !important;
+  font-weight: 500;
+}
+.site-header a:hover, header.header a:hover {
+  color: var(--royo-gold) !important;
+}
+
+/* === Cards de producto: tamaños uniformes + hover sutil === */
+.products .product, .product-card, .wc-block-grid__product {
+  background: #FFF;
+  border: 1px solid var(--royo-line);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.products .product:hover, .product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(26, 26, 26, 0.08);
+}
+
+/* Imagen producto: contenedor cuadrado, object-fit cover, scale para uniformizar zoom */
+.products .product img,
+.product-card img,
+.woocommerce-loop-product img,
+.wp-post-image {
+  object-fit: cover !important;
+  transform: scale(1.04);
+  transition: transform 0.6s ease;
+}
+.products .product:hover img,
+.product-card:hover img {
+  transform: scale(1.10);
+}
+
+/* === Precio destacado === */
+.price, .product .price, .woocommerce-Price-amount,
+.amount, span.price {
+  font-family: var(--royo-serif) !important;
+  font-weight: 600;
+  color: var(--royo-charcoal) !important;
+  letter-spacing: 0.01em;
+}
+.price del, .price ins {
+  text-decoration: none;
+}
+.price del .amount {
+  color: #999 !important;
+  text-decoration: line-through;
+  font-weight: 400;
+}
+.price ins .amount {
+  color: var(--royo-gold-dark) !important;
+}
+
+/* === Single product: nombre grande, layout aireado === */
+.single-product .product_title {
+  font-size: 2.4rem !important;
+  line-height: 1.2 !important;
+  margin-bottom: 0.8rem !important;
+}
+.single-product .price {
+  font-size: 2rem !important;
+  margin-bottom: 1.5rem;
+}
+.single-product .summary {
+  padding: 0 0 0 2rem;
+}
+
+/* === Tabla "Información adicional" / Ficha técnica === */
+.woocommerce-product-attributes,
+table.shop_attributes,
+.woocommerce-Tabs-panel--additional_information table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-family: var(--royo-sans);
+}
+.woocommerce-product-attributes th,
+table.shop_attributes th {
+  font-family: var(--royo-serif);
+  font-weight: 500;
+  text-align: left;
+  padding: 0.85rem 1rem;
+  background: var(--royo-bg-cream);
+  border-bottom: 1px solid var(--royo-line);
+  width: 35%;
+  color: var(--royo-charcoal);
+}
+.woocommerce-product-attributes td,
+table.shop_attributes td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--royo-line);
+  color: var(--royo-ink);
+}
+.woocommerce-product-attributes tr:nth-child(even) th,
+.woocommerce-product-attributes tr:nth-child(even) td {
+  background: #FCFAF7;
+}
+
+/* === Botón Añadir al carrito gold luxury === */
+button.single_add_to_cart_button,
+.button.add_to_cart_button,
+button.button.alt,
+.woocommerce a.button,
+.woocommerce button.button.alt {
+  background: var(--royo-charcoal) !important;
+  color: #FFF !important;
+  border: none !important;
+  border-radius: 2px !important;
+  padding: 1rem 2.5rem !important;
+  font-family: var(--royo-sans) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  font-size: 0.85rem !important;
+  transition: all 0.3s ease !important;
+  position: relative;
+}
+button.single_add_to_cart_button:hover,
+.button.add_to_cart_button:hover,
+button.button.alt:hover,
+.woocommerce a.button:hover {
+  background: var(--royo-gold) !important;
+  color: #FFF !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(184, 149, 106, 0.3);
+}
+
+/* === Tabs single-product === */
+.woocommerce-tabs ul.tabs li {
+  border: none !important;
+  background: transparent !important;
+  margin-right: 2rem;
+}
+.woocommerce-tabs ul.tabs li a {
+  color: #999 !important;
+  font-family: var(--royo-sans) !important;
+  font-size: 0.9rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  padding: 1rem 0 !important;
+  border-bottom: 2px solid transparent !important;
+}
+.woocommerce-tabs ul.tabs li.active a,
+.woocommerce-tabs ul.tabs li a:hover {
+  color: var(--royo-charcoal) !important;
+  border-bottom: 2px solid var(--royo-gold) !important;
+}
+
+/* === Galería single-product: bordes finos === */
+.woocommerce-product-gallery__image,
+.product-images img,
+.flex-control-thumbs img {
+  border: 1px solid var(--royo-line);
+  background: #FFF;
+}
+
+/* === Badges (sale, new, etc.) === */
+.onsale, .badge-sale, .product-badge {
+  background: var(--royo-gold) !important;
+  color: #FFF !important;
+  font-family: var(--royo-sans) !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  border-radius: 0 !important;
+  padding: 0.3rem 0.7rem !important;
+  font-weight: 500 !important;
+}
+
+/* === Wishlist + Compare buttons (estilo sutil) === */
+.wcboost-wishlist-button,
+.wcboost-products-compare-button {
+  background: #FFF !important;
+  border: 1px solid var(--royo-line) !important;
+  color: var(--royo-ink) !important;
+  font-family: var(--royo-sans) !important;
+  font-size: 0.85rem !important;
+  transition: all 0.3s ease !important;
+}
+.wcboost-wishlist-button:hover,
+.wcboost-products-compare-button:hover {
+  border-color: var(--royo-gold) !important;
+  color: var(--royo-gold) !important;
+}
+
+/* === Footer refinado === */
+.site-footer, footer.footer {
+  background: var(--royo-charcoal) !important;
+  color: #B8B0A4 !important;
+  padding-top: 4rem !important;
+}
+.site-footer a, footer.footer a {
+  color: #DDD3C2 !important;
+  font-family: var(--royo-sans) !important;
+}
+.site-footer a:hover, footer.footer a:hover {
+  color: var(--royo-gold) !important;
+}
+.site-footer h2, .site-footer h3, .site-footer h4,
+footer.footer h2, footer.footer h3, footer.footer h4 {
+  color: #FFF !important;
+  font-family: var(--royo-serif) !important;
+  font-weight: 500 !important;
+}
+
+/* === Breadcrumbs === */
+.woocommerce-breadcrumb,
+.breadcrumbs {
+  font-family: var(--royo-sans) !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.04em !important;
+  color: #999 !important;
+  text-transform: uppercase;
+}
+
+/* === Tipografía body texto (descripciones producto) === */
+.woocommerce-Tabs-panel p,
+.woocommerce-product-details__short-description p {
+  font-size: 1rem !important;
+  line-height: 1.75 !important;
+  color: var(--royo-ink) !important;
+}
+
+/* === Inputs forms refinados === */
+input[type="text"], input[type="email"], input[type="password"], input[type="search"],
+input[type="tel"], input[type="number"], textarea, select {
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  padding: 0.75rem 1rem !important;
+  font-family: var(--royo-sans) !important;
+  background: #FFF !important;
+  transition: border-color 0.3s ease !important;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--royo-gold) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(184, 149, 106, 0.1) !important;
+}
+
+/* === Mobile refinements === */
+@media (max-width: 768px) {
+  .single-product .product_title { font-size: 1.6rem !important; }
+  .single-product .price { font-size: 1.5rem !important; }
+  .single-product .summary { padding: 1rem 0 0 0 !important; }
+  button.single_add_to_cart_button,
+  .button.add_to_cart_button { padding: 0.9rem 2rem !important; font-size: 0.8rem !important; }
+}
+
+/* === Removes radios extras del tema demo === */
+.demo-banner, .ecomus-demo-bar { display: none !important; }
