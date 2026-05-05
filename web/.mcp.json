@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "higgsfield": {
+      "type": "http",
+      "url": "https://mcp.higgsfield.ai/mcp",
+      "headers": {
+        "X-API-Key": "${HIGGSFIELD_API_KEY}",
+        "X-API-Secret": "${HIGGSFIELD_API_SECRET}"
+      }
+    }
+  }
+}

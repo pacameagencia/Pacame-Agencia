@@ -91,18 +91,41 @@ function isDevOrPreviewHost(host: string): boolean {
   );
 }
 
+/**
+ * Captura de tracking foros · utm_content=<thread_id> → cookie dr_thread_id 30d.
+ * Usado por motor foros Dark Room para atribuir conversion thread→trial→paid.
+ * Idempotente: si el utm_content ya está seteado en cookie, no re-aplica.
+ */
+function applyForosTracking(req: NextRequest, res: NextResponse): NextResponse {
+  const utmSource = req.nextUrl.searchParams.get("utm_source");
+  const utmContent = req.nextUrl.searchParams.get("utm_content");
+  if (utmSource === "foros" && utmContent && /^[a-z0-9-]{6,40}$/i.test(utmContent)) {
+    const existing = req.cookies.get("dr_thread_id")?.value;
+    if (existing !== utmContent) {
+      res.cookies.set("dr_thread_id", utmContent, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 30 * 24 * 60 * 60,
+      });
+    }
+  }
+  return res;
+}
+
 export function middleware(req: NextRequest) {
   const host = req.headers.get("host") || "";
   const pathname = req.nextUrl.pathname;
 
   // 1. Compartidas siempre pasan (health, sitemap, og, etc.)
   if (startsWithAny(pathname, SHARED_PATHS)) {
-    return NextResponse.next();
+    return applyForosTracking(req, NextResponse.next());
   }
 
   // 2. Dev / preview: cero restricciones (todo accesible para testing)
   if (isDevOrPreviewHost(host)) {
-    return NextResponse.next();
+    return applyForosTracking(req, NextResponse.next());
   }
 
   const isDarkRoomHost = isDarkRoomProductionHost(host);
@@ -118,14 +141,14 @@ export function middleware(req: NextRequest) {
   // 3. Host DarkRoom: solo rutas DarkRoom + compartidas + raíz (rewrite)
   if (isDarkRoomHost) {
     if (isDarkRoomPath) {
-      return NextResponse.next();
+      return applyForosTracking(req, NextResponse.next());
     }
     // Raíz: rewrite interno a /darkroom-home (URL externa sigue siendo /).
     // El usuario ve `darkroomcreative.cloud/`, Next renderiza `/darkroom-home/page.tsx`.
     if (pathname === "/" || pathname === "") {
       const url = req.nextUrl.clone();
       url.pathname = DARKROOM_HOME_INTERNAL;
-      return NextResponse.rewrite(url);
+      return applyForosTracking(req, NextResponse.rewrite(url));
     }
     // Cualquier otra ruta PACAME accedida desde host DarkRoom → 404 (sin filtrar contenido)
     return new NextResponse("Not Found", { status: 404 });
@@ -136,7 +159,7 @@ export function middleware(req: NextRequest) {
     return new NextResponse("Not Found", { status: 404 });
   }
 
-  return NextResponse.next();
+  return applyForosTracking(req, NextResponse.next());
 }
 
 export const config = {
