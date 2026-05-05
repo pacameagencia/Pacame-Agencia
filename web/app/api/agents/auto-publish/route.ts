@@ -20,7 +20,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { createServerSupabase } from "@/lib/supabase/server";
-import { publishCarousel, publishPost } from "@/lib/instagram";
+import { publishCarousel, publishPost, publishStory } from "@/lib/instagram";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -86,6 +86,9 @@ export async function GET(request: NextRequest) {
           caption: row.caption,
           hashtags: row.hashtags || undefined,
         });
+      } else if (row.format === "story") {
+        // Stories: 1 sola imagen 9:16, sin caption ni hashtags (IG los ignora).
+        res = await publishStory(row.image_urls[0]);
       } else {
         res = { success: false, error: `format ${row.format} no soportado todavía` };
       }

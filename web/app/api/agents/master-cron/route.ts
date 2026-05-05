@@ -49,7 +49,11 @@ const SCHEDULE: ScheduledTask[] = [
   { hour: 6, minute: 0, path: "/api/agents/cron" },
   { hour: 7, minute: 0, dayOfWeek: 1, path: "/api/agents/weekly-audit" }, // lunes 07:00
   { hour: 8, minute: 0, path: "/api/neural/opportunity-scanner" },
-  { hour: 9, minute: 0, path: "/api/agents/auto-publish" },   // 11:00 ES — slot mañana IG
+  { hour: 7, minute: 0, path: "/api/agents/auto-publish" },   // 09:00 ES — slot story matutina
+  { hour: 9, minute: 0, path: "/api/agents/auto-publish" },   // 11:00 ES — slot carrusel mañana
+  { hour: 11, minute: 0, path: "/api/agents/auto-publish" },  // 13:00 ES — slot story medio día
+  { hour: 16, minute: 0, path: "/api/agents/auto-publish" },  // 18:00 ES — slot story tarde
+  { hour: 20, minute: 30, path: "/api/agents/auto-publish" }, // 22:30 ES — slot story noche
   { hour: 9, minute: 5, path: "/api/darkroom/leads-cadence" }, // 11:05 ES — cadencia 5 emails Dark Room
   { hour: 9, minute: 10, path: "/api/darkroom/crew/promote-pending" }, // 11:10 ES — promueve refs pending_30d
   { hour: 2, minute: 0, dayOfMonth: 1, path: "/api/darkroom/crew/recurring-monthly" }, // día 1 02:00 UTC — cobro recurrente
