@@ -60,6 +60,13 @@ const SCHEDULE: ScheduledTask[] = [
   { hour: 12, minute: 0, path: "/api/agents/cron" },
   { hour: 18, minute: 0, path: "/api/agents/cron" },
   { hour: 19, minute: 0, path: "/api/agents/auto-publish" },  // 21:00 ES — slot tarde-noche IG
+  // ── Motor Foros Dark Room · 5 fuentes · scrape 3x/día + cerebro +30min ──
+  { hour: 1, minute: 0, path: "/api/foros/scrape" },                // 03:00 ES
+  { hour: 1, minute: 30, path: "/api/foros/score-and-generate" },
+  { hour: 13, minute: 0, path: "/api/foros/scrape" },               // 15:00 ES
+  { hour: 13, minute: 30, path: "/api/foros/score-and-generate" },
+  { hour: 20, minute: 0, path: "/api/foros/scrape" },               // 22:00 ES
+  { hour: 20, minute: 30, path: "/api/foros/score-and-generate" },
 ];
 
 const TOLERANCE_MIN = 2; // si dispatcher corre a :00, :05, :10... → match si scheduled en [now-2, now+2]
