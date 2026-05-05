@@ -240,6 +240,55 @@ export async function publishPost(
 }
 
 /**
+ * Publish a Story (single image · 9:16 1080×1920).
+ * Stories ignoran caption + hashtags (los descarta la API IG).
+ */
+export async function publishStory(
+  imageUrl: string
+): Promise<{ success: boolean; postId?: string; error?: string }> {
+  try {
+    const containerRes = await fetch(`${GRAPH_FB_API}/${igAccountId}/media`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        image_url: imageUrl,
+        media_type: "STORIES",
+        access_token: resolveToken(),
+      }),
+    });
+
+    if (!containerRes.ok) {
+      const err = await containerRes.json();
+      return { success: false, error: err.error?.message || "Story container failed" };
+    }
+
+    const container = (await containerRes.json()) as { id: string };
+
+    // IG necesita un margen para procesar el container antes de publicar.
+    await new Promise((r) => setTimeout(r, 5000));
+
+    const pubRes = await fetch(`${GRAPH_FB_API}/${igAccountId}/media_publish`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        creation_id: container.id,
+        access_token: resolveToken(),
+      }),
+    });
+
+    if (!pubRes.ok) {
+      const err = await pubRes.json();
+      return { success: false, error: err.error?.message || "Story publish failed" };
+    }
+
+    const published = (await pubRes.json()) as { id: string };
+    return { success: true, postId: published.id };
+  } catch (err) {
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
+  }
+}
+
+/**
  * Publish a carousel (2-10 images).
  */
 export async function publishCarousel(
