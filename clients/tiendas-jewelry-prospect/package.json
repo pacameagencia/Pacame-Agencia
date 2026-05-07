@@ -1,0 +1,14 @@
+{
+  "name": "tiendas-jewelry-prospect",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "worker": "node scripts/worker-jewelry.mjs",
+    "worker:dry": "node scripts/worker-jewelry.mjs --dry --max=1",
+    "generate": "node scripts/generate-jewelry-demo.mjs"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}

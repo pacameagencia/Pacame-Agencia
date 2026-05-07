@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "test-atelier-luna",
+    "name": "Atelier Luna",
+    "email": "ecomglobalbox@pm.me",
+    "city": "Madrid",
+    "instagram_url": "https://instagram.com/atelierluna",
+    "web_url": "https://atelierluna.es",
+    "style": "gold",
+    "founded_year": 2018,
+    "products": [
+      {
+        "name": "Anillo Sol y Luna",
+        "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&h=600&fit=crop",
+        "price_cents": 8900,
+        "material": "Oro 18k · Hecho a mano"
+      },
+      {
+        "name": "Pulsera Hilo de Oro",
+        "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&h=600&fit=crop",
+        "price_cents": 6500,
+        "material": "Oro 18k trenzado"
+      },
+      {
+        "name": "Pendientes Eclipse",
+        "image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&h=600&fit=crop",
+        "price_cents": 5400,
+        "material": "Oro rosa 14k"
+      },
+      {
+        "name": "Collar Estrella Polar",
+        "image": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&h=600&fit=crop",
+        "price_cents": 7900,
+        "material": "Oro 18k con diamante"
+      },
+      {
+        "name": "Anillo Constelación",
+        "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&h=600&fit=crop&sat=-20",
+        "price_cents": 9800,
+        "material": "Oro 18k con piedras"
+      },
+      {
+        "name": "Brazalete Geométrico",
+        "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&h=600&fit=crop&sat=-20",
+        "price_cents": 7200,
+        "material": "Oro 14k cepillado"
+      },
+      {
+        "name": "Pendientes Cascada",
+        "image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&h=600&fit=crop&sat=-30",
+        "price_cents": 6800,
+        "material": "Oro 18k con perlas"
+      },
+      {
+        "name": "Anillo Solitario Vintage",
+        "image": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&h=600&fit=crop&sat=-30",
+        "price_cents": 12500,
+        "material": "Oro 18k con zafiro"
+      }
+    ]
+  }
+]
