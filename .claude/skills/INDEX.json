@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-05-07T19:10:10.439Z",
-  "scanned": 133,
-  "total": 131,
+  "generatedAt": "2026-05-07T20:02:00.867Z",
+  "scanned": 134,
+  "total": 132,
   "duplicatesSkipped": 1,
   "invalidFrontmatter": 1,
   "categories": [
@@ -35,7 +35,7 @@
     },
     {
       "name": "PACAME Custom",
-      "count": 25
+      "count": 26
     },
     {
       "name": "Research / Content",
@@ -577,6 +577,13 @@
       "name": "pacame-contenido",
       "description": "Skill maestra PACAME para producción de contenido para Dark Room (capa 3) y PACAME (capa 1) — carruseles, stories, reels, posts, WhatsApp memes, stickers, voiceovers, teasers, calendarios editoriales. Router que decide q",
       "path": ".claude/skills/pacame-contenido/SKILL.md",
+      "category": "PACAME Custom",
+      "model": null
+    },
+    {
+      "name": "pacame-storybook-3d",
+      "description": "Skill local del rediseño pacameagencia.com → Storybook 3D enfocado a captar leads cualificados. Mapa 3D isométrico con 5 islas (servicios PACAME), navegación scroll-driven, CTA único auditoría 15 min. Stack R3F + GSAP + ",
+      "path": ".claude/skills/pacame-storybook-3d/SKILL.md",
       "category": "PACAME Custom",
       "model": null
     },

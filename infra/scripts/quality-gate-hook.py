@@ -97,6 +97,22 @@ DOMAIN_TRIGGERS: dict[str, list[str]] = {
         r"\b(database|base de datos|tabla)\b",
         r"\b(rls|row level security)\b",
     ],
+    "storybook-3d": [
+        r"\b(storybook[\s-]?3d|storybook 3D)\b",
+        r"\b(isla|islas|islands)\b",
+        r"\b(scene|escena|scenes|escenas)\s+(3d|3D)\b",
+        r"\b(r3f|react[\s-]?three[\s-]?fiber)\b",
+        r"\b(@react-three/(fiber|drei|postprocessing))\b",
+        r"\b(three\.?js|threejs)\b",
+        r"\b(webgl2?|web ?gl)\b",
+        r"\b(camera (controller|path|orbit))\b",
+        r"\b(scroll-?driven|scroll[\s-]?triggered)\s+(3d|escena|camera)\b",
+        r"\b(pacameagencia\.com|pacame[\s-]?web)\s+(3d|storybook)\b",
+        r"\b(hero 3d|hero 3D)\b",
+        r"\b(map(a)? 3d|map(a)? 3D)\b",
+        r"\b(audit[óo]ria 3d|audit[óo]ria-3d)\b",
+        r"\b(islands?-(web|seo|redes|ads|branding))\b",
+    ],
 }
 
 
@@ -239,6 +255,50 @@ CAPA 3 — Antes de cerrar:
   → Verificar contra OWASP top 10 si toca auth/input público.
 
 Protocolo completo: docs/protocols/quality-gate.md
+""",
+    "storybook-3d": """
+PROTOCOLO QUALITY GATE ACTIVADO — DOMINIO: STORYBOOK 3D (pacameagencia.com)
+
+Antes de tocar CUALQUIER archivo del rediseño Storybook 3D (web/app/(storybook)/,
+web/components/storybook-3d/, web/lib/3d/, public/3d/):
+
+CAPA 1 — Invoca skill curada PRIMERO:
+  • pacame-storybook-3d — skill local del proyecto (la fuente de verdad).
+  • 3d-scroll-website — patrón canónico R3F + scroll math + frame-sequence.
+  • pacame-web — meta-skill de webs PACAME (stack + branding).
+  • frontend-design — para HUD overlay, CTA, form auditoría.
+  • imagen — texturas/matcaps/poster fallback paleta-aware.
+  • theme-factory — paleta brand traducida a materials 3D.
+
+CAPA 2 — Checklist pre-entrega (Storybook 3D):
+  □ Brand pack EXACTO: paleta #F4EFE3 / #B54E30 / #283B70 / #E8B730 / #6B7535.
+    NUNCA colores random, NUNCA gradientes Tailwind genéricos.
+  □ Materiales: MeshStandardMaterial mate (roughness 0.6-0.8), sin metallic.
+    Sin HDRI pesado en mobile (usar <Environment preset="park"> mid/high).
+  □ Mobile real: WebGL2 obligatorio, LOD agresivo, pixelRatio dinámico,
+    KTX2 textures, frameloop="demand".
+  □ SSR shell con <NoScriptContent> que renderiza los 5 servicios como
+    <section> semántica (SEO intacto).
+  □ Lighthouse target: ≥85 mobile / ≥90 desktop. LCP <2.5s, CLS <0.1.
+  □ A11y: navegación teclado funcional, atajos 1..5, toggle reduced-motion,
+    focus visible, contraste WCAG AA en HUD.
+  □ Bundle: Scene importado con next/dynamic { ssr:false }, three tree-shaken.
+  □ Performance budget: 3D bundle <800kB gzipped, hero usable <3s en 4G.
+  □ Copy: NUNCA palabras IA prohibidas (desbloquea, embárcate, viaje,
+    transformador). CTA único: "Pide tu auditoría 15 min".
+
+CAPA 3 — Antes de cerrar:
+  → visual-reviewer sobre escena renderizada (screenshot Playwright).
+  → quality-reviewer dom=copy sobre hooklines/oneLineValue de cada isla.
+  → code-reviewer sobre archivos .ts/.tsx 3D (LOD, memoización, dispose).
+  → Test mobile real BrowserStack (iPhone 13, Pixel 7) cuando aplique.
+
+REGLA DURA: assets 3D los crea Pablo (yo) sin coste externo. Capa A primitives
+R3F → Capa B texturas con imagen → Capa C .glb si imprescindible (Blender CLI
+o APIs gratuitas). NUNCA Fiverr/marketplace pagado sin aprobación explícita.
+
+Protocolo completo: docs/protocols/quality-gate.md
+Plan del proyecto: docs/projects/storybook-3d/README.md
 """,
 }
 
