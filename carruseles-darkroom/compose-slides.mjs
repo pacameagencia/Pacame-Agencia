@@ -45,12 +45,17 @@ const C = {
 
 // ───────────── Font loading (sync at startup) ─────────────
 
+// opentype.loadSync() está deprecated en v2+ y devuelve undefined. Usar parse(arrayBuffer).
+const loadFont = (name) => {
+  const buf = fs.readFileSync(path.join(FONTS_DIR, name));
+  return opentype.parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength));
+};
 const FONTS = {
-  anton: opentype.loadSync(path.join(FONTS_DIR, "Anton-Regular.ttf")),
-  sgB: opentype.loadSync(path.join(FONTS_DIR, "SpaceGrotesk-Bold.ttf")),
-  sgM: opentype.loadSync(path.join(FONTS_DIR, "SpaceGrotesk-Medium.ttf")),
-  jbmR: opentype.loadSync(path.join(FONTS_DIR, "JetBrainsMono-Regular.ttf")),
-  jbmB: opentype.loadSync(path.join(FONTS_DIR, "JetBrainsMono-Bold.ttf")),
+  anton: loadFont("Anton-Regular.ttf"),
+  sgB: loadFont("SpaceGrotesk-Bold.ttf"),
+  sgM: loadFont("SpaceGrotesk-Medium.ttf"),
+  jbmR: loadFont("JetBrainsMono-Regular.ttf"),
+  jbmB: loadFont("JetBrainsMono-Bold.ttf"),
 };
 
 // ───────────── Text → SVG path helpers ─────────────
@@ -61,11 +66,30 @@ function getAdvance(font, text, fontSize) {
 }
 
 /**
- * textPath: returns <path d="..."> (and optionally a decoration line)
- * options: { text, font, size, x, y, fill, anchor ('start'|'middle'|'end'), strike, letterSpacing }
+ * fitSize: reduce font size hasta que el texto encaje en maxWidth.
+ * Útil cuando una fuente sustituta es más ancha que la original.
  */
-function textPath({ text, font, size, x, y, fill = "#fff", anchor = "start", strike = false, letterSpacing = 0 }) {
+function fitSize(font, text, maxWidth, startSize, minSize = 14, step = 2, letterSpacing = 0) {
+  if (!text || !maxWidth) return startSize;
+  let s = startSize;
+  const measure = (size) => {
+    if (letterSpacing === 0) return font.getAdvanceWidth(text, size);
+    let w = 0;
+    for (const ch of text) w += font.getAdvanceWidth(ch, size);
+    return w + letterSpacing * Math.max(0, text.length - 1);
+  };
+  while (measure(s) > maxWidth && s > minSize) s -= step;
+  return s;
+}
+
+/**
+ * textPath: returns <path d="..."> (and optionally a decoration line)
+ * options: { text, font, size, x, y, fill, anchor ('start'|'middle'|'end'), strike, letterSpacing, maxWidth }
+ * maxWidth: si se pasa, se reduce automáticamente el tamaño hasta que el texto entre.
+ */
+function textPath({ text, font, size, x, y, fill = "#fff", anchor = "start", strike = false, letterSpacing = 0, maxWidth = 0 }) {
   if (!text) return "";
+  if (maxWidth > 0) size = fitSize(font, text, maxWidth, size, 14, 2, letterSpacing);
   let drawX = x;
   let paths = "";
   let totalW = 0;
@@ -105,7 +129,18 @@ function textPath({ text, font, size, x, y, fill = "#fff", anchor = "start", str
   return paths;
 }
 
-function multilinePath({ lines, font, size, x, y, fill = "#fff", anchor = "start", lineHeight = 1.02, letterSpacing = 0 }) {
+function multilinePath({ lines, font, size, x, y, fill = "#fff", anchor = "start", lineHeight = 1.02, letterSpacing = 0, maxWidth = 0 }) {
+  // Auto-fit: si maxWidth, reducir size hasta que TODAS las líneas quepan.
+  if (maxWidth > 0) {
+    let s = size;
+    while (s > 14 && lines.some((l) => {
+      if (letterSpacing === 0) return font.getAdvanceWidth(l, s) > maxWidth;
+      let w = 0;
+      for (const ch of l) w += font.getAdvanceWidth(ch, s);
+      return w + letterSpacing * Math.max(0, l.length - 1) > maxWidth;
+    })) s -= 2;
+    size = s;
+  }
   return lines
     .map((line, i) => textPath({
       text: line, font, size,
@@ -226,6 +261,7 @@ function heroTitleSVG({ title, sub, counter, titleSize = 130, titleFill = C.whit
       x: PAD,
       y: subY,
       fill: subColor,
+      maxWidth: W - 2 * PAD,
     })}
     ${counter || ""}
   `);
@@ -290,9 +326,13 @@ function ticketListSVG({ kicker, items, totalLabel, totalValue, counter, footnot
   const rows = items
     .map((it, i) => {
       const y = startY + 140 + i * rowH;
+      // Auto-fit del nombre izquierdo: si excede 60% del ancho disponible, reducir size.
+      const maxNameW = (rightX - leftX) * 0.62; // deja sitio al precio
+      let nameSize = 26;
+      while (FONTS.jbmR.getAdvanceWidth(it[0], nameSize) > maxNameW && nameSize > 16) nameSize -= 2;
       return `
-      ${textPath({ text: it[0], font: FONTS.jbmR, size: 28, x: leftX, y, fill: C.white })}
-      ${textPath({ text: it[1], font: FONTS.jbmB, size: 28, x: rightX, y, fill: C.red, anchor: "end", strike: true })}
+      ${textPath({ text: it[0], font: FONTS.jbmR, size: nameSize, x: leftX, y, fill: C.white })}
+      ${textPath({ text: it[1], font: FONTS.jbmB, size: 26, x: rightX, y, fill: C.red, anchor: "end", strike: true })}
     `;
     })
     .join("\n");
@@ -382,6 +422,7 @@ function gridToolsSVG({ title, tools, counter, footnote }) {
         y: y + cellH / 2 + 8,
         fill: C.acid,
         anchor: "middle",
+        maxWidth: cellW - 32,
       })}
     `;
     })
@@ -410,8 +451,8 @@ function priceRevealSVG({ kicker, oldPrice, newPrice, sub, counter }) {
     ${overlayGradient(0.75, "bottom")}
     ${brandMark()}
     ${textPath({ text: kicker, font: FONTS.sgB, size: 32, x: PAD, y: 320, fill: C.acid, letterSpacing: 4 })}
-    ${textPath({ text: oldPrice, font: FONTS.jbmB, size: 80, x: PAD, y: 500, fill: C.red, strike: true })}
-    ${textPath({ text: newPrice, font: FONTS.anton, size: 240, x: PAD, y: 850, fill: C.acid })}
+    ${textPath({ text: oldPrice, font: FONTS.jbmB, size: 80, x: PAD, y: 500, fill: C.red, strike: true, maxWidth: W - 2 * PAD })}
+    ${textPath({ text: newPrice, font: FONTS.anton, size: 240, x: PAD, y: 850, fill: C.acid, maxWidth: W - 2 * PAD })}
     ${multilinePath({
       lines: (sub || "").split("\n"),
       font: FONTS.sgM,
@@ -420,6 +461,7 @@ function priceRevealSVG({ kicker, oldPrice, newPrice, sub, counter }) {
       y: 940,
       fill: C.white,
       lineHeight: 1.2,
+      maxWidth: W - 2 * PAD,
     })}
     ${counter || ""}
   `);
@@ -432,7 +474,7 @@ function faqSVG({ question, answer, counter, accent = "?" }) {
     <g opacity="0.18">
       ${textPath({ text: accent, font: FONTS.anton, size: 420, x: W - PAD + 40, y: 480, fill: C.acid, anchor: "end" })}
     </g>
-    ${textPath({ text: question, font: FONTS.anton, size: 112, x: PAD, y: 550, fill: C.white })}
+    ${textPath({ text: question, font: FONTS.anton, size: 112, x: PAD, y: 550, fill: C.white, maxWidth: W - 2 * PAD })}
     <rect x="${PAD}" y="610" width="120" height="6" fill="${C.acid}"/>
     ${multilinePath({
       lines: answer.split("\n"),
@@ -442,6 +484,7 @@ function faqSVG({ question, answer, counter, accent = "?" }) {
       y: 730,
       fill: C.white,
       lineHeight: 1.3,
+      maxWidth: W - 2 * PAD,
     })}
     ${counter || ""}
   `);
@@ -461,8 +504,8 @@ function ctaSVG({ title, sub, url, counter }) {
       lineHeight: 1.02,
     })}
     <rect x="${PAD}" y="990" width="180" height="8" fill="${C.acid}"/>
-    ${textPath({ text: url, font: FONTS.jbmB, size: 38, x: PAD, y: 1070, fill: C.acid })}
-    ${textPath({ text: sub || "", font: FONTS.sgM, size: 30, x: PAD, y: 1130, fill: C.white })}
+    ${textPath({ text: url, font: FONTS.jbmB, size: 38, x: PAD, y: 1070, fill: C.acid, maxWidth: W - 2 * PAD - 60 })}
+    ${textPath({ text: sub || "", font: FONTS.sgM, size: 30, x: PAD, y: 1130, fill: C.white, maxWidth: W - 2 * PAD })}
     <g transform="translate(${PAD + 280}, 1107)">
       <path d="M 0 15 L 40 15 M 28 3 L 40 15 L 28 27" stroke="${C.acid}" stroke-width="4" fill="none" stroke-linecap="square"/>
     </g>

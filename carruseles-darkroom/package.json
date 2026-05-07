@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@supabase/supabase-js": "^2.105.3",
+    "opentype.js": "^2.0.0",
     "pg": "^8.20.0",
-    "sharp": "*"
+    "sharp": "^0.34.5"
   }
 }

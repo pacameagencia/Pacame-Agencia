@@ -1,8 +1,11 @@
 node_modules/
-output/avatar-test/
-output/carrusel-*/slide-*.jpg
+output/
+backgrounds/*.png
+backgrounds/*.jpg
+backgrounds/*.webp
 lora-training/dataset/
 lora-training/*.zip
 lora-training/lora-output.json
 *.log
 .env.local
+package-lock.json
