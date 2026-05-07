@@ -36,6 +36,15 @@ function pacame_royo_replace_hardcoded($html) {
     '>Reviews<'                     => '>Valoraciones<',
     '>Description<'                 => '>Descripción<',
     'Sale!'                         => '¡Oferta!',
+    // Mini-cart drawer (Elementor menu cart widget)
+    '>Shopping Cart<'               => '>Tu carrito<',
+    'Shopping Cart'                 => 'Tu carrito',
+    '>Subtotal:<'                   => '>Subtotal:<',
+    '>Cart<'                        => '>Carrito<',
+    '>View Cart<'                   => '>Ver carrito<',
+    '>Checkout<'                    => '>Finalizar compra<',
+    '>No products in the cart.<'    => '>No hay productos en el carrito.<',
+    'No products in the cart'       => 'No hay productos en el carrito',
   );
   return strtr($html, $replacements);
 }
