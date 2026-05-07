@@ -1363,3 +1363,426 @@ body.woocommerce-cart h1.page-title {
   h2 { font-size: 1.3rem !important; }
   h3 { font-size: 1.1rem !important; }
 }
+
+/* ============================================================
+   21. MINI-CART DRAWER — desplegable lateral alta gama tipo Tissot
+   ============================================================ */
+
+/* 21.1 Panel principal (offscreen-panel cart-panel).
+   z-index 99999 para superar el header sticky (z-index 9990 en sec 17). */
+#cart-panel.cart-panel,
+.offscreen-panel.cart-panel {
+  background: rgba(26, 24, 22, 0.4) !important; /* overlay sutil */
+  z-index: 99999 !important;
+}
+/* Bajar el header sticky cuando el drawer está abierto */
+body.cart-panel-open .site-header,
+body.offcanvas-open .site-header {
+  z-index: 100 !important;
+}
+
+/* 21.2 Container drawer (475px desktop, full-width mobile) */
+#cart-panel .panel__container,
+.offscreen-panel.cart-panel .panel__container {
+  width: 475px !important;
+  max-width: 100% !important;
+  background: var(--royo-paper) !important;
+  box-shadow: -12px 0 40px rgba(26, 24, 22, 0.12) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+}
+
+/* 21.3 Header del drawer (Shopping Cart + close button) */
+#cart-panel .panel__header,
+.offscreen-panel.cart-panel .panel__header {
+  background: var(--royo-paper) !important;
+  border-bottom: 1px solid var(--royo-line) !important;
+  padding: 1.25rem 1.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-shrink: 0 !important;
+}
+#cart-panel .panel__header h2,
+#cart-panel .panel__header .panel__title,
+.offscreen-panel.cart-panel .panel__header h2,
+.offscreen-panel.cart-panel .panel__title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.25rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  margin: 0 !important;
+  letter-spacing: -0.005em !important;
+}
+#cart-panel .panel__close,
+#cart-panel .em-button-close,
+.offscreen-panel.cart-panel .panel__close {
+  background: transparent !important;
+  border: none !important;
+  color: var(--royo-ink) !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: background 0.2s ease !important;
+}
+#cart-panel .panel__close:hover,
+.offscreen-panel.cart-panel .panel__close:hover {
+  background: var(--royo-ivory) !important;
+}
+
+/* 21.4 Content (lista de productos + scroll) */
+#cart-panel .panel__content,
+.offscreen-panel.cart-panel .panel__content {
+  padding: 0 1.5rem !important;
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* 21.5 Items individuales del mini-cart (Elementor menu cart widget).
+   La estructura real es .elementor-menu-cart__product (NO .mini_cart_item). */
+#cart-panel .elementor-menu-cart__product,
+#cart-panel .woocommerce-cart-form__cart-item,
+.offscreen-panel.cart-panel .elementor-menu-cart__product {
+  display: grid !important;
+  grid-template-columns: 80px 1fr !important;
+  grid-template-rows: auto auto auto !important;
+  grid-template-areas:
+    "image name"
+    "image price"
+    "image quantity" !important;
+  column-gap: 1rem !important;
+  row-gap: 0.4rem !important;
+  align-items: start !important;
+  padding: 1.25rem 0 !important;
+  border-bottom: 1px solid var(--royo-line) !important;
+  list-style: none !important;
+  position: relative !important;
+}
+#cart-panel .elementor-menu-cart__product:last-child,
+#cart-panel .woocommerce-cart-form__cart-item:last-child {
+  border-bottom: none !important;
+}
+
+/* 21.6 Imagen 80x80 con padding crema */
+#cart-panel .elementor-menu-cart__product-image,
+.offscreen-panel.cart-panel .elementor-menu-cart__product-image {
+  grid-area: image !important;
+  width: 80px !important;
+  height: 80px !important;
+}
+#cart-panel .elementor-menu-cart__product-image a,
+.offscreen-panel.cart-panel .elementor-menu-cart__product-image a {
+  display: block !important;
+  width: 80px !important;
+  height: 80px !important;
+}
+#cart-panel .elementor-menu-cart__product-image img,
+.offscreen-panel.cart-panel .elementor-menu-cart__product-image img {
+  width: 80px !important;
+  height: 80px !important;
+  max-width: 80px !important;
+  max-height: 80px !important;
+  object-fit: contain !important;
+  background: var(--royo-ivory) !important;
+  padding: 6px !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  margin: 0 !important;
+  display: block !important;
+  float: none !important;
+}
+
+/* 21.7 Nombre del producto */
+#cart-panel .elementor-menu-cart__product-name,
+.offscreen-panel.cart-panel .elementor-menu-cart__product-name {
+  grid-area: name !important;
+  margin: 0 !important;
+}
+#cart-panel .elementor-menu-cart__product-name::before,
+.offscreen-panel.cart-panel .elementor-menu-cart__product-name::before {
+  content: none !important;
+  display: none !important;
+}
+#cart-panel .elementor-menu-cart__product-name a {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  text-decoration: none !important;
+  line-height: 1.3 !important;
+  display: block !important;
+  word-break: break-word !important;
+}
+#cart-panel .elementor-menu-cart__product-name a:hover {
+  color: var(--royo-champagne-dark) !important;
+}
+
+/* 21.8 Precio + cantidad (debajo del nombre) */
+#cart-panel .elementor-menu-cart__product-price,
+.offscreen-panel.cart-panel .elementor-menu-cart__product-price {
+  grid-area: price !important;
+  margin: 0 !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.85rem !important;
+  color: var(--royo-charcoal) !important;
+}
+#cart-panel .elementor-menu-cart__product-price::before,
+.offscreen-panel.cart-panel .elementor-menu-cart__product-price::before {
+  content: none !important;
+  display: none !important;
+}
+#cart-panel .elementor-menu-cart__product-price .woocommerce-Price-amount,
+.offscreen-panel.cart-panel .elementor-menu-cart__product-price .woocommerce-Price-amount {
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+}
+
+/* 21.9 Selector cantidad +/- pulido */
+#cart-panel .elementor-menu-cart__product-price .quantity,
+.offscreen-panel.cart-panel .elementor-menu-cart__product-price .quantity {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+  margin-top: 0.4rem !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  background: var(--royo-paper) !important;
+  padding: 0.15rem !important;
+  width: fit-content !important;
+}
+#cart-panel .ecomus-qty-button,
+.offscreen-panel.cart-panel .ecomus-qty-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  cursor: pointer !important;
+  color: var(--royo-charcoal) !important;
+  background: transparent !important;
+  border: none !important;
+  transition: color 0.2s ease !important;
+}
+#cart-panel .ecomus-qty-button:hover,
+.offscreen-panel.cart-panel .ecomus-qty-button:hover {
+  color: var(--royo-ink) !important;
+}
+#cart-panel .elementor-menu-cart__product-price .quantity input.qty,
+.offscreen-panel.cart-panel .elementor-menu-cart__product-price .quantity input.qty {
+  width: 36px !important;
+  border: none !important;
+  padding: 0 !important;
+  text-align: center !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  background: transparent !important;
+  -moz-appearance: textfield !important;
+}
+#cart-panel .elementor-menu-cart__product-price .quantity input.qty::-webkit-outer-spin-button,
+#cart-panel .elementor-menu-cart__product-price .quantity input.qty::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+/* 21.10 Botón eliminar (×) sutil — Elementor menu cart usa
+   .elementor-menu-cart__product-remove o un <a class="remove"> */
+#cart-panel .elementor-menu-cart__product-remove,
+#cart-panel .elementor-menu-cart__product .remove,
+#cart-panel .elementor-menu-cart__product a.remove {
+  position: absolute !important;
+  top: 1rem !important;
+  right: 0 !important;
+  font-size: 1.2rem !important;
+  line-height: 1 !important;
+  color: var(--royo-charcoal) !important;
+  background: transparent !important;
+  border: none !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  text-decoration: none !important;
+  transition: background 0.2s ease, color 0.2s ease !important;
+}
+#cart-panel .elementor-menu-cart__product-remove:hover,
+#cart-panel .elementor-menu-cart__product a.remove:hover {
+  background: var(--royo-ivory) !important;
+  color: var(--royo-ink) !important;
+}
+
+/* 21.10 Footer del drawer Elementor menu cart.
+   IMPORTANTE: el widget Elementor menu cart NO usa .woocommerce-mini-cart__total
+   ni .woocommerce-mini-cart__buttons (selectores clásicos WC). Usa:
+   - .elementor-menu-cart__subtotal
+   - .elementor-menu-cart__footer-buttons
+   con clases de botón a.elementor-button--view-cart y a.elementor-button--checkout */
+
+/* Subtotal */
+#cart-panel .elementor-menu-cart__subtotal,
+.offscreen-panel.cart-panel .elementor-menu-cart__subtotal {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: baseline !important;
+  background: var(--royo-ivory) !important;
+  border-top: 1px solid var(--royo-line) !important;
+  padding: 1.25rem 1.5rem !important;
+  margin: 0 !important;
+  font-size: 1rem !important;
+  flex-shrink: 0 !important;
+}
+#cart-panel .elementor-menu-cart__subtotal strong,
+.offscreen-panel.cart-panel .elementor-menu-cart__subtotal strong {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-charcoal) !important;
+}
+#cart-panel .elementor-menu-cart__subtotal .woocommerce-Price-amount,
+.offscreen-panel.cart-panel .elementor-menu-cart__subtotal .woocommerce-Price-amount {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+}
+
+/* 21.11 Wrapper de botones del footer (apila Ver carrito + Finalizar compra) */
+#cart-panel .elementor-menu-cart__footer-buttons,
+.offscreen-panel.cart-panel .elementor-menu-cart__footer-buttons {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.6rem !important;
+  margin: 0 !important;
+  padding: 0 1.5rem 1.5rem !important;
+  background: var(--royo-ivory) !important;
+  flex-shrink: 0 !important;
+}
+
+/* 21.12 Botones genéricos del drawer */
+#cart-panel a.elementor-button.elementor-button--view-cart,
+#cart-panel a.elementor-button.elementor-button--checkout,
+.offscreen-panel.cart-panel a.elementor-button--view-cart,
+.offscreen-panel.cart-panel a.elementor-button--checkout {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  border-radius: 2px !important;
+  padding: 0.95rem 1.5rem !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  position: static !important;
+}
+
+/* Ver carrito = secundario (outline negro) */
+#cart-panel a.elementor-button.elementor-button--view-cart,
+.offscreen-panel.cart-panel a.elementor-button--view-cart {
+  background: var(--royo-paper) !important;
+  color: var(--royo-ink) !important;
+  border: 1px solid var(--royo-ink) !important;
+}
+#cart-panel a.elementor-button.elementor-button--view-cart:hover,
+.offscreen-panel.cart-panel a.elementor-button--view-cart:hover {
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+}
+
+/* Finalizar compra = primario (negro tinta + borde dorado champán) */
+#cart-panel a.elementor-button.elementor-button--checkout,
+.offscreen-panel.cart-panel a.elementor-button--checkout {
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+  border: 1px solid var(--royo-champagne) !important;
+}
+#cart-panel a.elementor-button.elementor-button--checkout:hover,
+.offscreen-panel.cart-panel a.elementor-button--checkout:hover {
+  background: var(--royo-champagne) !important;
+  border-color: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 21.12 Carrito vacío en el drawer */
+#cart-panel .woocommerce-mini-cart__empty-message,
+#cart-panel .cart_list.empty,
+.offscreen-panel.cart-panel .empty {
+  text-align: center !important;
+  padding: 3rem 1.5rem !important;
+  color: var(--royo-charcoal) !important;
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.1rem !important;
+}
+
+/* 21.13 Mobile drawer: full-width + grid item con imagen 64px */
+@media (max-width: 575px) {
+  #cart-panel .panel__container,
+  .offscreen-panel.cart-panel .panel__container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  #cart-panel .panel__header,
+  .offscreen-panel.cart-panel .panel__header {
+    padding: 1rem 1.25rem !important;
+  }
+  #cart-panel .panel__content,
+  .offscreen-panel.cart-panel .panel__content {
+    padding: 0 1.25rem !important;
+  }
+  /* Item con imagen 64px en mobile */
+  #cart-panel .elementor-menu-cart__product,
+  #cart-panel .woocommerce-cart-form__cart-item,
+  .offscreen-panel.cart-panel .elementor-menu-cart__product {
+    grid-template-columns: 64px 1fr !important;
+    column-gap: 0.85rem !important;
+  }
+  #cart-panel .elementor-menu-cart__product-image,
+  #cart-panel .elementor-menu-cart__product-image a,
+  #cart-panel .elementor-menu-cart__product-image img,
+  .offscreen-panel.cart-panel .elementor-menu-cart__product-image,
+  .offscreen-panel.cart-panel .elementor-menu-cart__product-image a,
+  .offscreen-panel.cart-panel .elementor-menu-cart__product-image img {
+    width: 64px !important;
+    height: 64px !important;
+    max-width: 64px !important;
+    max-height: 64px !important;
+  }
+  /* Nombre del producto: visible y con tamaño claro */
+  #cart-panel .elementor-menu-cart__product-name a,
+  .offscreen-panel.cart-panel .elementor-menu-cart__product-name a {
+    font-size: 0.9rem !important;
+    line-height: 1.35 !important;
+  }
+  /* Botón × más pequeño en mobile */
+  #cart-panel .elementor-menu-cart__product-remove,
+  .offscreen-panel.cart-panel .elementor-menu-cart__product-remove {
+    top: 0.5rem !important;
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 1rem !important;
+  }
+  /* Footer compacto en mobile */
+  #cart-panel .elementor-menu-cart__subtotal,
+  .offscreen-panel.cart-panel .elementor-menu-cart__subtotal {
+    padding: 1rem 1.25rem !important;
+  }
+  #cart-panel .elementor-menu-cart__footer-buttons,
+  .offscreen-panel.cart-panel .elementor-menu-cart__footer-buttons {
+    padding: 0 1.25rem 1.25rem !important;
+  }
+}
