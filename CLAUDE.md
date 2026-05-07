@@ -10,6 +10,7 @@
 
 | Cuándo aplica | Protocolo |
 |---------------|-----------|
+| Antes de entregar CUALQUIER output a Pablo o cliente (frontend, copy, video, branding, backend) | [`docs/protocols/quality-gate.md`](docs/protocols/quality-gate.md) |
 | Antes de tocar cualquier `.tsx/.jsx/.css/.html/.svg/.png` o asset visual | [`docs/protocols/visual-first.md`](docs/protocols/visual-first.md) |
 | Antes de responder a CUALQUIER petición creativa/estratégica | [`docs/protocols/cerebro-pacame.md`](docs/protocols/cerebro-pacame.md) |
 | Para cualquier ejecución / deploy / config | [`docs/protocols/autonomia-total.md`](docs/protocols/autonomia-total.md) |
@@ -22,31 +23,36 @@
 
 ---
 
-## 🎨 Frontend — NUNCA / SIEMPRE (regla dura)
+## 🔒 Quality Gate Global (regla maestra de calidad)
 
-Pablo ha detectado que los frontends que produzco salen **básicos** (Tailwind random, gradientes genéricos, "AI generic look"). Causa: voy directo a HTML+Tailwind sin invocar las skills curadas. Esto se acaba.
+> Versión completa: [`docs/protocols/quality-gate.md`](docs/protocols/quality-gate.md). Lo siguiente es resumen literal — no tocar (se valida por hook `infra/scripts/verify-claude-rules.py`).
 
-**❌ NUNCA**:
-- Empezar a escribir `.tsx/.jsx/.css/.html` sin haber **invocado primero** una skill del catálogo visual-first.
-- Usar `<svg>` inline genérico como placeholder de imagen.
-- Usar gradientes Tailwind random sin paleta de marca (`from-blue-500 to-purple-600` y similares).
-- Recurrir a `via.placeholder.com` / `dummyimage.com` en producción.
-- Decir "al estilo de Apple/Linear/Stripe" sin captura de referencia o sin invocar `imagen` para mockup.
-- Usar `system-ui` en proyecto branded.
-- Mezclar paleta de cliente con paleta PACAME.
+Pablo prefiere esperar 30 minutos por algo bueno a recibir en 30 segundos algo regular. **Calidad > velocidad. Carácter > genérico. Iteración > primera versión.**
 
-**✅ SIEMPRE**, en este orden:
-1. **Pacame-web** si es web/landing/SaaS/dashboard/marketplace nuevo (meta-skill, hace todo).
-2. **frontend-design** si es componente/sección con carácter visual.
-3. **imagen** (Google Gemini) si necesito imagen real (hero, mockup, ilustración, fondo branded).
-4. **theme-factory** si es sistema visual nuevo (paleta, tipografía, tokens).
-5. **brand-guidelines** si proyecto tiene branding existente.
-6. **react-view-transitions** si requiere animaciones modernas.
-7. **canvas-design** si es poster/arte estático.
-8. **algorithmic-art** si es arte generativo (p5.js).
-9. **visual-reviewer** subagente al cerrar — bloquea si hay anti-patrón.
+Cada output entregable (frontend, copy, video, branding, backend) pasa por **3 capas obligatorias**:
 
-El hook `infra/scripts/frontend-trigger-hook.py` (UserPromptSubmit) detecta intención frontend en cada turno y me inyecta este recordatorio. Si lo veo, lo ejecuto. No es opcional.
+1. **Capa 1 — Skill curada antes de generar.** Cada dominio tiene su skill maestra:
+   - Frontend → `pacame-web` o `frontend-design` (+ `imagen`, `theme-factory`).
+   - Copy → `copywriting` (+ `copy-editing`, `content-humanizer`).
+   - Video → research-first OBLIGATORIO + `video-content-strategist` + `remotion`/`elevenlabs`.
+   - Branding → `brand-guidelines` o `theme-factory` + sistema completo (no solo logo).
+   - Backend → `architecture-patterns` o `senior-backend` + `database-schema-designer`.
+
+2. **Capa 2 — Checklist pre-entrega.** Anti-patrones que NUNCA salen:
+   - Frontend: gradientes Tailwind random, SVG genérico, via.placeholder, system-ui en branded.
+   - Copy: palabras IA (desbloquea, embárcate, viaje, transformador, en última instancia), fórmulas trilladas ("X no es solo Y, es Z"), adjetivos vacíos.
+   - Video: "cinematic vibe" sin lente/LUT/director referencia, sin research-first.
+   - Branding: solo logo sin sistema, sin justificación racional, sin variantes claro/oscuro.
+   - Backend: `any`, sin validación de input, secrets hardcoded, RLS off en tabla sensible.
+
+3. **Capa 3 — Revisor crítico antes de entregar.** Subagente bloquea si hay anti-patrón:
+   - Visual → `visual-reviewer`.
+   - Copy/video/branding → `quality-reviewer`.
+   - Backend código → `Code_Reviewer`.
+
+**Hook de aplicación**: `infra/scripts/quality-gate-hook.py` (UserPromptSubmit) detecta intent en cada turno y emite system-reminder con la skill obligatoria + checklist + revisor del dominio. **Es invocación automática, no opcional.**
+
+**Anti-patrón prohibido:** entregar output "porque el modelo lo generó así". Si el revisor bloquea, iterar. Si la skill no se invocó, parar y volver a Capa 1.
 
 ---
 
