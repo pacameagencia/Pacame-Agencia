@@ -129,6 +129,48 @@ function dateAtSlotES(yyyymmdd, hourES, minuteES) {
 const dayMs = 24 * 3600 * 1000;
 const totalDays = Math.floor((PERIOD_END - PERIOD_START) / dayMs) + 1;
 
+// ─── content_type rotation por día de la semana + slot ─────────────
+// Alineado con strategy/calendario-7may-31may-2026.md sección "Calendario semanal patrón (10 tipos rotando)"
+// dow: 0=Dom 1=Lun 2=Mar 3=Mié 4=Jue 5=Vie 6=Sáb
+// slots: morning (09:00 AM), evening_mid (14:30 MID), evening_pm (19:30 PM)
+const CONTENT_TYPE_BY_DOW_SLOT = {
+  // Lun: idea negocio + lista top + comparativa
+  1: { am: "idea_negocio", mid: "lista_top", pm: "comparativa" },
+  // Mar: caso real + IA cotidiana + DARK_FRAMES (reel)
+  2: { am: "caso_real", mid: "ia_cotidiana", pm: "dark_frames_storytime" },
+  // Mié: prompt/workflow + humor/meme + idea negocio #2
+  3: { am: "prompt_workflow", mid: "humor_meme", pm: "idea_negocio" },
+  // Jue: lista TOP X (ancla) + tendencia hot + HERO DARK_FRAMES
+  4: { am: "lista_top", mid: "tendencia_hot", pm: "dark_frames_storytime" },
+  // Vie: storytime BTS reel + IA cotidiana + DARK_FRAMES (reel)
+  5: { am: "dark_frames_storytime", mid: "ia_cotidiana", pm: "dark_frames_storytime" },
+  // Sáb: comparativa + humor/meme + prompt/workflow
+  6: { am: "comparativa", mid: "humor_meme", pm: "prompt_workflow" },
+  // Dom: tutorial 60s reel + recap semana + storytime emocional (1×mes)
+  0: { am: "tutorial_60s", mid: "recap_semana", pm: "storytime_emocional" },
+};
+
+function contentTypeForSlot(dow, slotName, slotHourES, isReel) {
+  // Stories siempre type general
+  if (slotName.startsWith("story_")) return "story_general";
+  // Recap story → técnicamente story pero con CTA · ya capturado arriba
+  // Adhocs
+  if (slotName === "adhoc") return "tendencia_hot";
+
+  // Carruseles / reels: mapear según slot horario
+  const map = CONTENT_TYPE_BY_DOW_SLOT[dow];
+  if (!map) return null;
+
+  if (slotName === "morning") return map.am;
+  if (slotName === "evening" && slotHourES === 14) return map.mid;
+  if (slotName === "evening" && slotHourES === 19) {
+    // PM puede ser carrusel o reel · si es reel forzamos dark_frames_storytime
+    if (isReel) return "dark_frames_storytime";
+    return map.pm;
+  }
+  return null;
+}
+
 for (let offset = 0; offset < totalDays; offset++) {
   const date = new Date(PERIOD_START.getTime() + offset * dayMs);
   const dateStr = date.toISOString().slice(0, 10);
@@ -163,6 +205,9 @@ for (let offset = 0; offset < totalDays; offset++) {
       pilar = slot.slot.includes("recap") ? 4 : null; // recap final del día siempre CTA Dark Room
     }
 
+    const isReel = format === "reel";
+    const contentType = contentTypeForSlot(dow, slot.slot, slot.hour_es, isReel);
+
     rows.push({
       scheduled_at: dateAtSlotES(dateStr, slot.hour_es, slot.minute_es).toISOString(),
       brand: "darkroom",
@@ -174,13 +219,14 @@ for (let offset = 0; offset < totalDays; offset++) {
       video_url: null,
       status: "draft",
       attempts: 0,
-      source: "calendar-skeleton-v1",
+      source: "calendar-skeleton-v2",
       notes,
       pilar,
       phase,
       concept_id_planned: conceptIdPlanned,
       day_of_week: dow,
       day_offset: offset,
+      content_type: contentType,
     });
   }
 }
@@ -203,13 +249,14 @@ for (const adhocDate of adhocDates) {
     video_url: null,
     status: "draft",
     attempts: 0,
-    source: "calendar-skeleton-v1-adhoc",
+    source: "calendar-skeleton-v2-adhoc",
     notes: "slot=adhoc role='tendencia hot reactiva · llenar día de'",
     pilar: 1,
     phase,
     concept_id_planned: null,
     day_of_week: dow,
     day_offset: offset,
+    content_type: "tendencia_hot",
   });
 }
 
@@ -221,10 +268,16 @@ const byPhase = rows.reduce((acc, r) => ((acc[r.phase] = (acc[r.phase] || 0) + 1
 const byPilar = rows.reduce((acc, r) => ((acc[`pilar_${r.pilar || "null"}`] = (acc[`pilar_${r.pilar || "null"}`] || 0) + 1), acc), {});
 const reels = rows.filter((r) => r.format === "reel");
 
+const byContentType = rows.reduce((acc, r) => ((acc[r.content_type || "null"] = (acc[r.content_type || "null"] || 0) + 1), acc), {});
+
 console.log("\n📊 Distribución:");
 console.log("  por format:", byFormat);
 console.log("  por phase: ", byPhase);
 console.log("  por pilar: ", byPilar);
+console.log("  por content_type:");
+for (const [k, v] of Object.entries(byContentType).sort((a, b) => b[1] - a[1])) {
+  console.log(`    ${k.padEnd(25)} ${v}`);
+}
 console.log(`  reels DARK_FRAMES: ${reels.length}`);
 const dowLabels = ["DOM", "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB"];
 for (const r of reels) {

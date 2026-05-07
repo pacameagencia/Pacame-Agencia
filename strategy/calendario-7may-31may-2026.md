@@ -1,26 +1,50 @@
-# Calendario maestro @pacamespain · 7-may → 31-may 2026 (24 días)
+# Calendario maestro @darkroomcreative.cloud · 7-may → 31-may 2026 (24 días)
 
-> **Estado**: doc maestro vivo · sustituye `calendario-30-dias-v2.md` para este periodo.
-> **Cuenta**: `@pacamespain` (52.292 followers · pivot observatorio IA + Dark Room ya activo).
+> **Estado**: doc maestro vivo · v2 con 10 tipos de contenido rotando (iteración Pablo 2026-05-07).
+> **Cuenta IG real**: `@darkroomcreative.cloud` (52.205 followers reales según Meta Graph API).
+>   ⚠️ Antes referida coloquialmente como `@pacamespain`. La cuenta correcta y conectada al pipeline es darkroomcreative.cloud.
+> **Audiencia REAL** (Meta Graph): 80% LATAM (MX 7.337 + AR 5.648 + COL 4.800 + CL 3.677 · ES solo 5.597 = 11%) · 78% hombres · 61% entre 35-54 años · top ciudades Santiago/Lima/CDMX/Bogotá/Caracas.
+> **Audiencia OBJETIVO** (decisión Pablo 2026-05-07): creators IA + emprendedores digitales hispanohablantes. Aceptamos que la audiencia heredada actual reduzca engagement mientras construimos audiencia nueva alineada con producto Dark Room.
 > **Periodo**: 24 días · 7-may a 31-may 2026.
-> **Volumen total**: ~232 piezas.
-> **Filosofía**: research-first escalado por tier · cero contenido inventado al azar · auto-publish con quality gate.
-> **Maintainer**: Claude Code (auto-pipeline) + Pablo (aprobación bloque semanal).
-> **Aprobado por Pablo**: 2026-05-07 · 3 fases lanzamiento confirmadas · quality gate research-first global.
+> **Volumen total**: 231 filas en BD producción (status=draft) + 10 cost-guard tokens emitidos para reels DARK_FRAMES.
+> **Filosofía**: research-first escalado por tier + auto-publish con quality gate de 11 checks.
+> **Maintainer**: Claude Code (auto-pipeline) + Pablo (aprobación bloque semanal lunes 09:00 ES).
+> **Aprobado por Pablo**: 2026-05-07 (v1) + iteración 10 tipos rotando (v2 mismo día).
 
 ---
 
 ## 0 · TL;DR (lo que hay que saber en 60 segundos)
 
-- **3 fases lanzamiento Dark Room**: educar (7-15 may) → introducir (16-23 may) → drop Lifetime (24-31 may).
-- **232 piezas** distribuidas: 72 carruseles · 144 stories · 7 reels DARK_FRAMES · 3 piezas hero jueves · 6 adhocs tendencia.
-- **Quality gate research-first** aplicado a TODO contenido (regla `feedback_research_first_escalado_por_tier.md`):
+- **3 fases lanzamiento Dark Room**: educar (7-15 may, 0% pitch) → introducir (16-23 may, 15% pitch) → drop Lifetime (24-31 may, 25% pitch + 100 plazas 349€).
+- **10 tipos de contenido rotando** (3 carruseles/día con tipo distinto + 6 stories diarias + reels DARK_FRAMES martes/jueves-HERO/viernes):
+  1. 💡 Idea negocio IA · 2. 💰 Caso real cifras · 3. ⚡ Prompt/workflow · 4. 🎯 Lista top X · 5. 🎬 DARK_FRAMES + storytime BTS · 6. 📊 Comparativa honesta · 7. 📺 Tutorial 60s reel · 8. 💔 Storytime emocional (1×mes) · 9. 🏠 IA cotidiana (vida real) · 10. 😂 Humor/meme IA.
+- **Soul Character Pablo (`PACAME`)** disponible para reels DARK_FRAMES desde dark-frames-002 en adelante.
+- **Quality gate research-first escalado por tier** (regla `feedback_research_first_escalado_por_tier.md`):
   - Tier `cine` (DARK_FRAMES, hero) → bloque research completo (DP+lentes+LUT+audio+fuentes)
   - Tier `noticia` (carruseles) → bloque source con `source_url` verificable + cita verbatim
   - Tier `trend` (stories) → bloque trend con Apify scrape ID + hashtag + engagement real
 - **Auto-publish** activo en cron `/api/agents/auto-publish` para los 3 tiers tras pasar quality gate.
 - **Pricing canónico**: 24,90€/mes Pro · **349€ Lifetime** (drop 100 plazas en fase 3) · trial 14 días sin tarjeta.
 - **KPIs target periodo**: +12k followers · ≥36 conversiones DR · ≥10 lifetime deals · engagement ≥5% · coste <400 cr · <$70 USD infra.
+
+---
+
+## 0bis · Calendario semanal patrón (10 tipos rotando)
+
+| Día | AM 09:00 | MID 14:30 | PM 19:30 |
+|---|---|---|---|
+| **Lun** | 💡 Idea negocio IA | 🎯 Lista top X | 📊 Comparativa honesta |
+| **Mar** | 💰 Caso real cifras | 🏠 IA cotidiana | 🎬 Reel DARK_FRAMES |
+| **Mié** | ⚡ Prompt/workflow | 😂 Humor/meme IA | 💡 Idea negocio IA #2 |
+| **Jue** | 🎯 Lista TOP X (ancla) | 📰 Tendencia hot IA | 🎬 Reel HERO DARK_FRAMES |
+| **Vie** | 🎬 Storytime BTS reel | 🏠 IA cotidiana | 🎬 Reel DARK_FRAMES |
+| **Sáb** | 📊 Comparativa honesta | 😂 Humor/meme IA | ⚡ Prompt/workflow |
+| **Dom** | 📺 Tutorial 60s reel | 📅 Recap semana IA | 💔 Storytime emocional (1×mes) |
+
+Distribución real verificada en BD (231 filas con `content_type` asignado):
+- story_general: 150 · dark_frames_storytime: 15 · tendencia_hot: 10
+- prompt_workflow: 7 · lista_top: 7 · ia_cotidiana: 7 · comparativa: 7 · humor_meme: 7
+- idea_negocio: 6 · tutorial_60s: 4 · recap_semana: 4 · storytime_emocional: 4 · caso_real: 3
 
 ---
 
