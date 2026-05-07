@@ -40,7 +40,7 @@ strategy/              → Roadmap, pricing, personas, visual-toolkit
 infra/                 → Scripts de despliegue y VPS
 tools/                 → Scripts internos PACAME (incluye scripts/ con build-skills-index.mjs)
 docs/                  → Protocolos, identidad, integraciones (cargados bajo demanda)
-.claude/skills/        → 959 skills indexadas en INDEX.md (autogenerado)
+.claude/skills/        → 963 skills indexadas en INDEX.md (autogenerado, 12 categorías; PDF en tools/output/)
 .claude/agents/        → Subagentes con model routing (incluye visual-reviewer)
 ```
 
@@ -69,6 +69,7 @@ docs/                  → Protocolos, identidad, integraciones (cargados bajo d
 ## Inventarios autogenerados
 
 - **Skills disponibles:** [`.claude/skills/INDEX.md`](.claude/skills/INDEX.md) (regenerar con `node tools/scripts/build-skills-index.mjs`).
+- **Catálogo PDF de skills:** `tools/output/skills-catalog-pacame.pdf` (regenerar con `node tools/scripts/build-skills-pdf.mjs`).
 - **Visual toolkit completo:** [`strategy/visual-toolkit.md`](strategy/visual-toolkit.md).
 
 ## Clientes activos (Capa 2)

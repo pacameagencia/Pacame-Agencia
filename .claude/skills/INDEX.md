@@ -1,8 +1,8 @@
 # .claude/skills/INDEX — autogenerado
 
-> Generado: `2026-04-30T13:51:21.285Z`
+> Generado: `2026-05-07T15:27:24.754Z`
 >
-> **Total skills únicos:** 959 | Archivos escaneados: 960 | Duplicados saltados: 1 | Sin frontmatter: 0
+> **Total skills únicos:** 963 | Archivos escaneados: 965 | Duplicados saltados: 1 | Sin frontmatter: 1
 >
 > **Regenerar:** `node tools/scripts/build-skills-index.mjs`
 
@@ -10,16 +10,18 @@
 
 ## Tabla de contenidos
 
-- [Audio / Voice](#audio-voice) — 2 skills
-- [C-Level / Strategy](#c-level-strategy) — 1 skills
-- [Marketing](#marketing) — 2 skills
-- [Meta / Tooling](#meta-tooling) — 2 skills
-- [Other](#other) — 911 skills
-- [PACAME Custom](#pacame-custom) — 3 skills
-- [SEO](#seo) — 3 skills
-- [Social / Content](#social-content) — 7 skills
-- [Testing / QA](#testing-qa) — 5 skills
-- [Visual / Design](#visual-design) — 23 skills
+- [Audio / Voice](#audio-voice) — 3 skills
+- [CMS / Ecommerce](#cms-ecommerce) — 6 skills
+- [DevOps / Infra](#devops-infra) — 9 skills
+- [Engineering](#engineering) — 13 skills
+- [Git / Release](#git-release) — 1 skills
+- [Integraciones](#integraciones) — 870 skills
+- [Meta / Tooling](#meta-tooling) — 1 skills
+- [PACAME Custom](#pacame-custom) — 25 skills
+- [Research / Content](#research-content) — 1 skills
+- [Social / Content](#social-content) — 9 skills
+- [Testing / QA](#testing-qa) — 1 skills
+- [Visual / Design](#visual-design) — 24 skills
 
 ---
 
@@ -27,30 +29,60 @@
 
 | Skill | Descripción | Path |
 |-------|-------------|------|
+| `elevenlabs` | Generate AI voiceovers, sound effects, and music using ElevenLabs APIs. Use when creating audio content for videos, podcasts, or games. Trig | `.claude/skills/video-toolkit/.claude/skills/elevenlabs/SKILL.md` |
 | `ElevenLabs Automation` | Automate ElevenLabs text-to-speech workflows -- generate speech from text, browse and inspect voices, check subscription limits, list models | `.claude/skills/composio-skills/composio-skills/elevenlabs-automation/SKILL.md` |
 | `elevenlabs-agents` | > Build conversational AI voice agents with ElevenLabs Platform. Workflow: configure agent, add tools and knowledge base, integrate SDK, tes | `.claude/skills/jezweb-skills/plugins/integrations/skills/elevenlabs-agents/SKILL.md` |
 
-## C-Level / Strategy
+## CMS / Ecommerce
 
 | Skill | Descripción | Path |
 |-------|-------------|------|
-| `tripadvisor-content-api-automation` | Automate TripAdvisor tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/tripadvisor-content-api-automation/SKILL.md` |
+| `shopify-content` | > Create and manage Shopify pages, blog posts, navigation, and SEO metadata. Workflow: determine content type, generate content, create via  | `.claude/skills/jezweb-skills/plugins/shopify/skills/shopify-content/SKILL.md` |
+| `shopify-products` | > Create and manage Shopify products via the Admin API. Workflow: gather product data, choose method (API or CSV), execute, verify. Use when | `.claude/skills/jezweb-skills/plugins/shopify/skills/shopify-products/SKILL.md` |
+| `shopify-setup` | > Set up Shopify CLI auth and Admin API access for a store. Workflow: install CLI, authenticate, create custom app, store access token, veri | `.claude/skills/jezweb-skills/plugins/shopify/skills/shopify-setup/SKILL.md` |
+| `wordpress-content` | > Create and manage WordPress posts, pages, media, categories, and menus. Workflow: determine content type, choose method (WP-CLI or REST AP | `.claude/skills/jezweb-skills/plugins/wordpress/skills/wordpress-content/SKILL.md` |
+| `wordpress-elementor` | > Edit Elementor pages and manage templates on WordPress sites. Workflow: identify page, choose editing method (browser or WP-CLI), execute, | `.claude/skills/jezweb-skills/plugins/wordpress/skills/wordpress-elementor/SKILL.md` |
+| `wordpress-setup` | > Connect to a WordPress site via WP-CLI over SSH or REST API. Workflow: check CLI, test SSH connection, set up auth, verify access, save co | `.claude/skills/jezweb-skills/plugins/wordpress/skills/wordpress-setup/SKILL.md` |
 
-## Marketing
-
-| Skill | Descripción | Path |
-|-------|-------------|------|
-| `doppler-marketing-automation-automation` | Automate Doppler Marketing Automation tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/doppler-marketing-automation-automation/SKILL.md` |
-| `salesforce-marketing-cloud-automation` | Automate Salesforce Marketing Cloud tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/salesforce-marketing-cloud-automation/SKILL.md` |
-
-## Meta / Tooling
+## DevOps / Infra
 
 | Skill | Descripción | Path |
 |-------|-------------|------|
-| `mcp-builder` | Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-design | `.claude/skills/composio-skills/mcp-builder/SKILL.md` |
-| `skill-creator` | Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that exte | `.claude/skills/composio-skills/skill-creator/SKILL.md` |
+| `cloudflare-api` | Hit the Cloudflare REST API directly for operations that wrangler and MCP can't handle well. Bulk DNS, custom hostnames, email routing, cach | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/cloudflare-api/SKILL.md` |
+| `cloudflare-worker-builder` | > Scaffold and deploy Cloudflare Workers with Hono routing, Vite plugin, and Static Assets. Workflow: describe project, scaffold structure,  | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/cloudflare-worker-builder/SKILL.md` |
+| `d1-drizzle-schema` | Generate Drizzle ORM schemas for Cloudflare D1 databases with correct D1-specific patterns. Produces schema files, migration commands, type  | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/d1-drizzle-schema/SKILL.md` |
+| `d1-migration` | Cloudflare D1 migration workflow: generate with Drizzle, inspect SQL for gotchas, apply to local and remote, fix stuck migrations, handle pa | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/d1-migration/SKILL.md` |
+| `db-seed` | Generate database seed scripts with realistic sample data. Reads Drizzle schemas or SQL migrations, respects foreign key ordering, produces  | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/db-seed/SKILL.md` |
+| `hono-api-scaffolder` | Scaffold Hono API routes for Cloudflare Workers. Produces route files, middleware, typed bindings, Zod validation, error handling, and API_E | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/hono-api-scaffolder/SKILL.md` |
+| `runpod` | Cloud GPU processing via RunPod serverless. Use when setting up RunPod endpoints, deploying Docker images, managing GPU resources, troublesh | `.claude/skills/video-toolkit/.claude/skills/runpod/SKILL.md` |
+| `tanstack-start` | Build a full-stack TanStack Start app on Cloudflare Workers from scratch — SSR, file-based routing, server functions, D1+Drizzle, better-aut | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/tanstack-start/SKILL.md` |
+| `vite-flare-starter` | Scaffold a full-stack Cloudflare app from vite-flare-starter — React 19, Hono, D1+Drizzle, better-auth, Tailwind v4+shadcn/ui, TanStack Quer | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/vite-flare-starter/SKILL.md` |
 
-## Other
+## Engineering
+
+| Skill | Descripción | Path |
+|-------|-------------|------|
+| `app-docs` | Generate complete user documentation for a web app with screenshots. Browses the app via browser automation, screenshots every screen, and p | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/app-docs/SKILL.md` |
+| `brains-trust` | > Get a second opinion from leading AI models on code, architecture, strategy, prompting, or anything. Queries models via OpenRouter, Gemini | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/brains-trust/SKILL.md` |
+| `fork-discipline` | Audit and enforce the core/client boundary in multi-client projects. Detects where shared platform code is tangled with client-specific code | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/fork-discipline/SKILL.md` |
+| `git-workflow` | Guided git workflows: prepare PRs, clean up branches, resolve merge conflicts, handle monorepo tags, squash-and-merge patterns. Use when ask | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/git-workflow/SKILL.md` |
+| `onboarding-ux` | Audit and generate in-app user guidance — onboarding flows, empty states, tooltips, feature tours, contextual help, defaults, and inline hin | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/onboarding-ux/SKILL.md` |
+| `project-docs` | Generate project documentation from codebase analysis — ARCHITECTURE.md, API_ENDPOINTS.md, DATABASE_SCHEMA.md. Reads source code, schema fil | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/project-docs/SKILL.md` |
+| `project-health` | All-in-one project configuration and health management. Sets up new projects (settings.local.json, CLAUDE.md, .gitignore), audits existing p | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/project-health/SKILL.md` |
+| `react-native` | React Native and Expo patterns for building performant mobile apps. Covers list performance, animations with Reanimated, navigation, UI patt | `.claude/skills/jezweb-skills/plugins/frontend/skills/react-native/SKILL.md` |
+| `react-patterns` | React 19 performance patterns and composition architecture for Vite + Cloudflare projects. 50+ rules ranked by impact — eliminating waterfal | `.claude/skills/jezweb-skills/plugins/frontend/skills/react-patterns/SKILL.md` |
+| `responsiveness-check` | Test website responsiveness across viewport widths using browser automation. Resizes a single session through breakpoints, screenshots each  | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/responsiveness-check/SKILL.md` |
+| `roadmap` | Plan and execute entire application builds. Generates phased delivery roadmaps, then executes them autonomously — phase by phase, committing | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/roadmap/SKILL.md` |
+| `team-update` | Post project updates to team chat, gather feedback, triage responses, and plan next steps. Adapts to available tools (chat, git, issues, tas | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/team-update/SKILL.md` |
+| `ux-audit` | Dogfood web apps — browse as a real user, notice friction, document findings. Adopts a user persona, tracks emotional friction (trust, anxie | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/ux-audit/SKILL.md` |
+
+## Git / Release
+
+| Skill | Descripción | Path |
+|-------|-------------|------|
+| `github-release` | Prepare and publish GitHub releases. Sanitizes code for public release (secrets scan, personal artifacts, LICENSE/README validation), create | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/github-release/SKILL.md` |
+
+## Integraciones
 
 | Skill | Descripción | Path |
 |-------|-------------|------|
@@ -67,7 +99,6 @@
 | `addresszen-automation` | Automate Addresszen tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/addresszen-automation/SKILL.md` |
 | `adobe-automation` | Automate Adobe tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/adobe-automation/SKILL.md` |
 | `adrapid-automation` | Automate Adrapid tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/adrapid-automation/SKILL.md` |
-| `Ads_Campaign_Manager` | Use when creating, analyzing, or optimizing paid advertising campaigns on Meta (Facebook/Instagram), Google Ads, or TikTok. | `.claude/skills/ads-campaign.md` |
 | `adyntel-automation` | Automate Adyntel tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/adyntel-automation/SKILL.md` |
 | `aero-workflow-automation` | Automate Aero Workflow tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/aero-workflow-automation/SKILL.md` |
 | `aeroleads-automation` | Automate Aeroleads tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/aeroleads-automation/SKILL.md` |
@@ -85,6 +116,7 @@
 | `alchemy-automation` | Automate Alchemy tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/alchemy-automation/SKILL.md` |
 | `algodocs-automation` | Automate Algodocs tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/algodocs-automation/SKILL.md` |
 | `algolia-automation` | Automate Algolia tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/algolia-automation/SKILL.md` |
+| `all-images-ai-automation` | Automate All Images AI tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/all-images-ai-automation/SKILL.md` |
 | `alpha-vantage-automation` | Automate Alpha Vantage tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/alpha-vantage-automation/SKILL.md` |
 | `altoviz-automation` | Automate Altoviz tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/altoviz-automation/SKILL.md` |
 | `alttext-ai-automation` | Automate Alttext AI tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/alttext-ai-automation/SKILL.md` |
@@ -93,7 +125,6 @@
 | `ambee-automation` | Automate Ambee tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ambee-automation/SKILL.md` |
 | `ambient-weather-automation` | Automate Ambient Weather tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ambient-weather-automation/SKILL.md` |
 | `amcards-automation` | Automate Amcards tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/amcards-automation/SKILL.md` |
-| `Analytics_Report_Generator` | Use when creating analytics reports, setting up tracking, analyzing metrics, or building dashboards for PACAME or clients. | `.claude/skills/analytics-report.md` |
 | `anchor-browser-automation` | Automate Anchor Browser tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/anchor-browser-automation/SKILL.md` |
 | `anonyflow-automation` | Automate Anonyflow tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/anonyflow-automation/SKILL.md` |
 | `anthropic_administrator-automation` | Automate Anthropic Admin tasks via Rube MCP (Composio): API keys, usage, workspaces, and organization management. Always search tools first  | `.claude/skills/composio-skills/composio-skills/anthropic_administrator-automation/SKILL.md` |
@@ -112,7 +143,6 @@
 | `apitemplate-io-automation` | Automate Apitemplate IO tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/apitemplate-io-automation/SKILL.md` |
 | `apiverve-automation` | Automate Apiverve tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/apiverve-automation/SKILL.md` |
 | `Apollo Automation` | Automate Apollo.io lead generation -- search organizations, discover contacts, enrich prospect data, manage contact stages, and build target | `.claude/skills/composio-skills/composio-skills/apollo-automation/SKILL.md` |
-| `app-docs` | Generate complete user documentation for a web app with screenshots. Browses the app via browser automation, screenshots every screen, and p | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/app-docs/SKILL.md` |
 | `appcircle-automation` | Automate Appcircle tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/appcircle-automation/SKILL.md` |
 | `appdrag-automation` | Automate Appdrag tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/appdrag-automation/SKILL.md` |
 | `appointo-automation` | Automate Appointo tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/appointo-automation/SKILL.md` |
@@ -127,13 +157,9 @@
 | `async-interview-automation` | Automate Async Interview tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/async-interview-automation/SKILL.md` |
 | `atlassian-automation` | Automate Atlassian tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/atlassian-automation/SKILL.md` |
 | `Attio Automation` | Automate Attio CRM operations -- search records, query contacts and companies with advanced filters, manage notes, list attributes, and navi | `.claude/skills/composio-skills/composio-skills/attio-automation/SKILL.md` |
-| `aussie-business-english` | > Australian business English writing style for professional communications. Warm, direct, EN-AU spelling. Use when writing emails, chat mes | `.claude/skills/jezweb-skills/plugins/writing/skills/aussie-business-english/SKILL.md` |
 | `auth0-automation` | Automate Auth0 tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/auth0-automation/SKILL.md` |
-| `auto-aprende` | Sistema de aprendizaje autónomo PACAME. Investiga conocimiento de oro (técnicas, herramientas, tendencias) para uno de los 10 agentes, lo pe | `.claude/skills/auto-aprende.md` |
-| `auto-brain` | Activa el cerebro PACAME automáticamente ANTES de responder. Se dispara para cualquier petición creativa o estratégica: 'crea una web', 'haz | `.claude/skills/auto-brain/SKILL.md` |
 | `autobound-automation` | Automate Autobound tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/autobound-automation/SKILL.md` |
 | `autom-automation` | Automate Autom tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/autom-automation/SKILL.md` |
-| `award-application` | > Write compelling award submissions, grant applications, and competition entries. Maps achievements to selection criteria using evidence-ba | `.claude/skills/jezweb-skills/plugins/writing/skills/award-application/SKILL.md` |
 | `axonaut-automation` | Automate Axonaut tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/axonaut-automation/SKILL.md` |
 | `ayrshare-automation` | Automate Ayrshare tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ayrshare-automation/SKILL.md` |
 | `backendless-automation` | Automate Backendless tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/backendless-automation/SKILL.md` |
@@ -169,6 +195,7 @@
 | `bolt-iot-automation` | Automate Bolt Iot tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/bolt-iot-automation/SKILL.md` |
 | `bonsai-automation` | Automate Bonsai tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/bonsai-automation/SKILL.md` |
 | `bookingmood-automation` | Automate Bookingmood tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/bookingmood-automation/SKILL.md` |
+| `booqable-automation` | Automate Booqable tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/booqable-automation/SKILL.md` |
 | `borneo-automation` | Automate Borneo tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/borneo-automation/SKILL.md` |
 | `botbaba-automation` | Automate Botbaba tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/botbaba-automation/SKILL.md` |
 | `botpress-automation` | Automate Botpress tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/botpress-automation/SKILL.md` |
@@ -176,9 +203,7 @@
 | `botstar-automation` | Automate Botstar tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/botstar-automation/SKILL.md` |
 | `bouncer-automation` | Automate Bouncer tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/bouncer-automation/SKILL.md` |
 | `boxhero-automation` | Automate Boxhero tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/boxhero-automation/SKILL.md` |
-| `brains-trust` | > Get a second opinion from leading AI models on code, architecture, strategy, prompting, or anything. Queries models via OpenRouter, Gemini | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/brains-trust/SKILL.md` |
 | `Braintree Automation` | Braintree Automation: manage payment processing via Stripe-compatible tools for customers, subscriptions, payment methods, and transactions | `.claude/skills/composio-skills/composio-skills/braintree-automation/SKILL.md` |
-| `Brand_Identity_Builder` | Use when creating brand identity, visual systems, logos, color palettes, typography, or brand guidelines for clients. | `.claude/skills/branding.md` |
 | `brand-guidelines` | Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use | `.claude/skills/composio-skills/brand-guidelines/SKILL.md` |
 | `brandfetch-automation` | Automate Brandfetch tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/brandfetch-automation/SKILL.md` |
 | `breeze-automation` | Automate Breeze tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/breeze-automation/SKILL.md` |
@@ -211,11 +236,12 @@
 | `campaign-cleaner-automation` | Automate Campaign Cleaner tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/campaign-cleaner-automation/SKILL.md` |
 | `campayn-automation` | Automate Campayn tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/campayn-automation/SKILL.md` |
 | `canny-automation` | Automate Canny tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/canny-automation/SKILL.md` |
+| `canvas-automation` | Automate Canvas tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/canvas-automation/SKILL.md` |
+| `canvas-design` | Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a pos | `.claude/skills/composio-skills/canvas-design/SKILL.md` |
 | `Capsule CRM Automation` | Automate Capsule CRM operations -- manage contacts (parties), run structured filter queries, track tasks and projects, log entries, and hand | `.claude/skills/composio-skills/composio-skills/capsule-crm-automation/SKILL.md` |
 | `capsule_crm-automation` | Automate Capsule CRM tasks via Rube MCP (Composio): contacts, opportunities, cases, tasks, and pipeline management. Always search tools firs | `.claude/skills/composio-skills/composio-skills/capsule_crm-automation/SKILL.md` |
 | `carbone-automation` | Automate Carbone tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/carbone-automation/SKILL.md` |
 | `cardly-automation` | Automate Cardly tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/cardly-automation/SKILL.md` |
-| `career-ops` | AI job search command center -- evaluate offers, generate CVs, scan portals, track applications | `.claude/skills/career-ops/.claude/skills/career-ops/SKILL.md` |
 | `castingwords-automation` | Automate Castingwords tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/castingwords-automation/SKILL.md` |
 | `cats-automation` | Automate Cats tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/cats-automation/SKILL.md` |
 | `cdr-platform-automation` | Automate Cdr Platform tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/cdr-platform-automation/SKILL.md` |
@@ -233,15 +259,12 @@
 | `classmarker-automation` | Automate Classmarker tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/classmarker-automation/SKILL.md` |
 | `clearout-automation` | Automate Clearout tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/clearout-automation/SKILL.md` |
 | `clickmeeting-automation` | Automate Clickmeeting tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/clickmeeting-automation/SKILL.md` |
-| `Client_Proposal_Generator` | Use when creating a client proposal, pricing a project, qualifying a lead, or preparing a sales pitch for PACAME services. | `.claude/skills/client-proposal.md` |
 | `Clockify Automation` | Automate time tracking workflows in Clockify -- create and manage time entries, workspaces, and users through natural language commands. | `.claude/skills/composio-skills/composio-skills/clockify-automation/SKILL.md` |
 | `cloudcart-automation` | Automate Cloudcart tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/cloudcart-automation/SKILL.md` |
 | `cloudconvert-automation` | Automate Cloudconvert tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/cloudconvert-automation/SKILL.md` |
-| `cloudflare-api` | Hit the Cloudflare REST API directly for operations that wrangler and MCP can't handle well. Bulk DNS, custom hostnames, email routing, cach | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/cloudflare-api/SKILL.md` |
 | `cloudflare-api-key-automation` | Automate Cloudflare API tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/cloudflare-api-key-automation/SKILL.md` |
 | `cloudflare-automation` | Automate Cloudflare tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/cloudflare-automation/SKILL.md` |
 | `cloudflare-browser-rendering-automation` | Automate Cloudflare Browser Rendering tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/cloudflare-browser-rendering-automation/SKILL.md` |
-| `cloudflare-worker-builder` | > Scaffold and deploy Cloudflare Workers with Hono routing, Vite plugin, and Static Assets. Workflow: describe project, scaffold structure,  | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/cloudflare-worker-builder/SKILL.md` |
 | `Cloudinary Automation` | Automate Cloudinary media management including folder organization, upload presets, asset lookup, transformations, and usage monitoring thro | `.claude/skills/composio-skills/composio-skills/cloudinary-automation/SKILL.md` |
 | `cloudlayer-automation` | Automate Cloudlayer tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/cloudlayer-automation/SKILL.md` |
 | `cloudpress-automation` | Automate Cloudpress tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/cloudpress-automation/SKILL.md` |
@@ -254,19 +277,20 @@
 | `coinmarketcap-automation` | Automate Coinmarketcap tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/coinmarketcap-automation/SKILL.md` |
 | `coinranking-automation` | Automate Coinranking tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/coinranking-automation/SKILL.md` |
 | `college-football-data-automation` | Automate College Football Data tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/college-football-data-automation/SKILL.md` |
-| `color-palette` | > Generate complete, accessible colour palettes from a single brand hex. Produces 11-shade scale (50-950), semantic tokens, dark mode varian | `.claude/skills/jezweb-skills/plugins/design-assets/skills/color-palette/SKILL.md` |
 | `competitive-ads-extractor` | Extracts and analyzes competitors' ads from ad libraries (Facebook, LinkedIn, etc.) to understand what messaging, problems, and creative app | `.claude/skills/composio-skills/competitive-ads-extractor/SKILL.md` |
 | `composio-automation` | Automate Composio tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/composio-automation/SKILL.md` |
 | `composio-search-automation` | Automate Composio Search tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/composio-search-automation/SKILL.md` |
 | `connect` | Connect Claude to any app. Send emails, create issues, post messages, update databases - take real actions across Gmail, Slack, GitHub, Noti | `.claude/skills/composio-skills/connect/SKILL.md` |
 | `connect-apps` | Connect Claude to external apps like Gmail, Slack, GitHub. Use this skill when the user wants to send emails, create issues, post messages,  | `.claude/skills/composio-skills/connect-apps/SKILL.md` |
 | `connecteam-automation` | Automate Connecteam tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/connecteam-automation/SKILL.md` |
+| `content-research-writer` | Assists in writing high-quality content by conducting research, adding citations, improving hooks, iterating on outlines, and providing real | `.claude/skills/composio-skills/content-research-writer/SKILL.md` |
+| `Contentful Automation` | Automate headless CMS operations in Contentful -- list spaces, retrieve space metadata, and update space configurations through the Composio | `.claude/skills/composio-skills/composio-skills/contentful-automation/SKILL.md` |
+| `contentful-graphql-automation` | Automate Contentful Graphql tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/contentful-graphql-automation/SKILL.md` |
 | `control-d-automation` | Automate Control D tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/control-d-automation/SKILL.md` |
 | `conversion-tools-automation` | Automate Conversion Tools tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/conversion-tools-automation/SKILL.md` |
 | `convertapi-automation` | Automate Convertapi tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/convertapi-automation/SKILL.md` |
 | `conveyor-automation` | Automate Conveyor tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/conveyor-automation/SKILL.md` |
 | `convolo-ai-automation` | Automate Convolo AI tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/convolo-ai-automation/SKILL.md` |
-| `Copywriting_Engine` | Use when writing sales copy, landing page text, email sequences, ad copy, social media captions, or brand messaging. | `.claude/skills/copywriting.md` |
 | `corrently-automation` | Automate Corrently tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/corrently-automation/SKILL.md` |
 | `countdown-api-automation` | Automate Countdown API tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/countdown-api-automation/SKILL.md` |
 | `coupa-automation` | Automate Coupa tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/coupa-automation/SKILL.md` |
@@ -280,25 +304,16 @@
 | `customgpt-automation` | Automate Customgpt tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/customgpt-automation/SKILL.md` |
 | `customjs-automation` | Automate Customjs tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/customjs-automation/SKILL.md` |
 | `cutt-ly-automation` | Automate Cutt Ly tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/cutt-ly-automation/SKILL.md` |
-| `d1-drizzle-schema` | Generate Drizzle ORM schemas for Cloudflare D1 databases with correct D1-specific patterns. Produces schema files, migration commands, type  | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/d1-drizzle-schema/SKILL.md` |
-| `d1-migration` | Cloudflare D1 migration workflow: generate with Drizzle, inspect SQL for gotchas, apply to local and remote, fix stuck migrations, handle pa | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/d1-migration/SKILL.md` |
 | `d2lbrightspace-automation` | Automate D2lbrightspace tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/d2lbrightspace-automation/SKILL.md` |
 | `dadata-ru-automation` | Automate Dadata Ru tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/dadata-ru-automation/SKILL.md` |
 | `daffy-automation` | Automate Daffy tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/daffy-automation/SKILL.md` |
 | `dailybot-automation` | Automate Dailybot tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/dailybot-automation/SKILL.md` |
 | `datagma-automation` | Automate Datagma tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/datagma-automation/SKILL.md` |
 | `datarobot-automation` | Automate Datarobot tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/datarobot-automation/SKILL.md` |
-| `db-seed` | Generate database seed scripts with realistic sample data. Reads Drizzle schemas or SQL migrations, respects foreign key ordering, produces  | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/db-seed/SKILL.md` |
 | `deadline-funnel-automation` | Automate Deadline Funnel tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/deadline-funnel-automation/SKILL.md` |
 | `deel-automation` | Automate Deel tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/deel-automation/SKILL.md` |
-| `deep-research` | Deep research and discovery before building something new. Explores local projects for reusable code, researches competitors, reads forums a | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/deep-research/SKILL.md` |
 | `deepgram-automation` | Automate Deepgram tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/deepgram-automation/SKILL.md` |
 | `demio-automation` | Automate Demio tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/demio-automation/SKILL.md` |
-| `Deploy_Workflow` | Use when deploying client projects to production. Covers GitHub setup, Vercel deployment, custom domains, environment variables, and Supabas | `.claude/skills/deploy-workflow.md` |
-| `Design_System` | Use when creating or maintaining design systems for clients. Covers token definition, component libraries, Storybook, and consistency rules. | `.claude/skills/design-system.md` |
-| `design-loop` | Autonomous multi-page site builder using a baton-passing loop pattern. Each iteration reads a task from .design/next-prompt.md, generates a  | `.claude/skills/jezweb-skills/plugins/frontend/skills/design-loop/SKILL.md` |
-| `design-review` | Review a web app or page for visual design quality — layout, typography, spacing, colour, hierarchy, consistency, interaction patterns, and  | `.claude/skills/jezweb-skills/plugins/frontend/skills/design-review/SKILL.md` |
-| `design-system` | Extract a complete design system from an existing website or screenshot into a DESIGN.md file. Analyses colours, typography, component style | `.claude/skills/jezweb-skills/plugins/frontend/skills/design-system/SKILL.md` |
 | `desktime-automation` | Automate Desktime tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/desktime-automation/SKILL.md` |
 | `detrack-automation` | Automate Detrack tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/detrack-automation/SKILL.md` |
 | `developer-growth-analysis` | Analyzes your recent Claude Code chat history to identify coding patterns, development gaps, and areas for improvement, curates relevant lea | `.claude/skills/composio-skills/developer-growth-analysis/SKILL.md` |
@@ -325,6 +340,7 @@
 | `docuseal-automation` | Automate Docuseal tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/docuseal-automation/SKILL.md` |
 | `docx` | Comprehensive document creation, editing, and analysis with support for tracked changes, comments, formatting preservation, and text extract | `.claude/skills/composio-skills/document-skills/docx/SKILL.md` |
 | `domain-name-brainstormer` | Generates creative domain name ideas for your project and checks availability across multiple TLDs (.com, .io, .dev, .ai, etc.). Saves hours | `.claude/skills/composio-skills/domain-name-brainstormer/SKILL.md` |
+| `doppler-marketing-automation-automation` | Automate Doppler Marketing Automation tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/doppler-marketing-automation-automation/SKILL.md` |
 | `doppler-secretops-automation` | Automate Doppler Secretops tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/doppler-secretops-automation/SKILL.md` |
 | `dotsimple-automation` | Automate Dotsimple tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/dotsimple-automation/SKILL.md` |
 | `dovetail-automation` | Automate Dovetail tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/dovetail-automation/SKILL.md` |
@@ -369,12 +385,10 @@
 | `Facebook Automation` | Automate Facebook Page management including post creation, scheduling, video uploads, Messenger conversations, and audience engagement via C | `.claude/skills/composio-skills/composio-skills/facebook-automation/SKILL.md` |
 | `faceup-automation` | Automate Faceup tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/faceup-automation/SKILL.md` |
 | `factorial-automation` | Automate Factorial tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/factorial-automation/SKILL.md` |
-| `favicon-gen` | > Generate custom favicons from logos, text, or brand colours. Produces all required formats: favicon.svg, favicon.ico, apple-touch-icon.png | `.claude/skills/jezweb-skills/plugins/design-assets/skills/favicon-gen/SKILL.md` |
 | `feathery-automation` | Automate Feathery tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/feathery-automation/SKILL.md` |
 | `felt-automation` | Automate Felt tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/felt-automation/SKILL.md` |
 | `fibery-automation` | Automate Fibery tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/fibery-automation/SKILL.md` |
 | `fidel-api-automation` | Automate Fidel API tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/fidel-api-automation/SKILL.md` |
-| `Figma_To_Code` | Use when converting Figma designs into production code. Covers Figma MCP integration, design token extraction, and pixel-perfect implementat | `.claude/skills/figma-to-code.md` |
 | `file-organizer` | Intelligently organizes your files and folders across your computer by understanding context, finding duplicates, suggesting better structur | `.claude/skills/composio-skills/file-organizer/SKILL.md` |
 | `files-com-automation` | Automate Files Com tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/files-com-automation/SKILL.md` |
 | `fillout_forms-automation` | Automate Fillout tasks via Rube MCP (Composio): forms, submissions, workflows, and form builder. Always search tools first for current schem | `.claude/skills/composio-skills/composio-skills/fillout_forms-automation/SKILL.md` |
@@ -398,7 +412,6 @@
 | `folk-automation` | Automate Folk tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/folk-automation/SKILL.md` |
 | `fomo-automation` | Automate Fomo tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/fomo-automation/SKILL.md` |
 | `forcemanager-automation` | Automate Forcemanager tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/forcemanager-automation/SKILL.md` |
-| `fork-discipline` | Audit and enforce the core/client boundary in multi-client projects. Detects where shared platform code is tangled with client-specific code | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/fork-discipline/SKILL.md` |
 | `formbricks-automation` | Automate Formbricks tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/formbricks-automation/SKILL.md` |
 | `formcarry-automation` | Automate Formcarry tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/formcarry-automation/SKILL.md` |
 | `formdesk-automation` | Automate Formdesk tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/formdesk-automation/SKILL.md` |
@@ -424,8 +437,6 @@
 | `gigasheet-automation` | Automate Gigasheet tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/gigasheet-automation/SKILL.md` |
 | `giphy-automation` | Automate Giphy tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/giphy-automation/SKILL.md` |
 | `gist-automation` | Automate Gist tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/gist-automation/SKILL.md` |
-| `git-workflow` | Guided git workflows: prepare PRs, clean up branches, resolve merge conflicts, handle monorepo tags, squash-and-merge patterns. Use when ask | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/git-workflow/SKILL.md` |
-| `github-release` | Prepare and publish GitHub releases. Sanitizes code for public release (secrets scan, personal artifacts, LICENSE/README validation), create | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/github-release/SKILL.md` |
 | `givebutter-automation` | Automate Givebutter tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/givebutter-automation/SKILL.md` |
 | `gladia-automation` | Automate Gladia tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/gladia-automation/SKILL.md` |
 | `gleap-automation` | Automate Gleap tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/gleap-automation/SKILL.md` |
@@ -483,9 +494,9 @@
 | `highlevel-automation` | Automate Highlevel tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/highlevel-automation/SKILL.md` |
 | `honeybadger-automation` | Automate Honeybadger tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/honeybadger-automation/SKILL.md` |
 | `honeyhive-automation` | Automate Honeyhive tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/honeyhive-automation/SKILL.md` |
-| `hono-api-scaffolder` | Scaffold Hono API routes for Cloudflare Workers. Produces route files, middleware, typed bindings, Zod validation, error handling, and API_E | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/hono-api-scaffolder/SKILL.md` |
 | `hookdeck-automation` | Automate Hookdeck tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/hookdeck-automation/SKILL.md` |
 | `hotspotsystem-automation` | Automate Hotspotsystem tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/hotspotsystem-automation/SKILL.md` |
+| `html-to-image-automation` | Automate Html To Image tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/html-to-image-automation/SKILL.md` |
 | `humanitix-automation` | Automate Humanitix tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/humanitix-automation/SKILL.md` |
 | `humanloop-automation` | Automate Humanloop tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/humanloop-automation/SKILL.md` |
 | `Hunter Automation` | Automate Hunter.io email intelligence -- search domains for email addresses, find specific contacts, verify email deliverability, manage lea | `.claude/skills/composio-skills/composio-skills/hunter-automation/SKILL.md` |
@@ -494,11 +505,12 @@
 | `hyperise-automation` | Automate Hyperise tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/hyperise-automation/SKILL.md` |
 | `hystruct-automation` | Automate Hystruct tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/hystruct-automation/SKILL.md` |
 | `icims-talent-cloud-automation` | Automate Icims Talent Cloud tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/icims-talent-cloud-automation/SKILL.md` |
-| `icon-set-generator` | > Generate cohesive, project-specific SVG icon sets for websites and applications. Use this skill whenever the user needs custom icons, an i | `.claude/skills/jezweb-skills/plugins/design-assets/skills/icon-set-generator/SKILL.md` |
 | `icypeas-automation` | Automate Icypeas tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/icypeas-automation/SKILL.md` |
 | `idea-scale-automation` | Automate Idea Scale tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/idea-scale-automation/SKILL.md` |
 | `identitycheck-automation` | Automate Identitycheck tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/identitycheck-automation/SKILL.md` |
 | `ignisign-automation` | Automate Ignisign tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ignisign-automation/SKILL.md` |
+| `image-enhancer` | Improves the quality of images, especially screenshots, by enhancing resolution, sharpness, and clarity. Perfect for preparing images for pr | `.claude/skills/composio-skills/image-enhancer/SKILL.md` |
+| `imagekit-io-automation` | Automate Imagekit IO tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/imagekit-io-automation/SKILL.md` |
 | `imgbb-automation` | Automate Imgbb tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/imgbb-automation/SKILL.md` |
 | `imgix-automation` | Automate Imgix tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/imgix-automation/SKILL.md` |
 | `influxdb-cloud-automation` | Automate Influxdb Cloud tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/influxdb-cloud-automation/SKILL.md` |
@@ -506,7 +518,6 @@
 | `instacart-automation` | Automate Instacart tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/instacart-automation/SKILL.md` |
 | `Instantly Automation` | Automate Instantly cold email outreach -- manage campaigns, sending accounts, lead lists, bulk lead imports, and campaign analytics -- using | `.claude/skills/composio-skills/composio-skills/instantly-automation/SKILL.md` |
 | `intelliprint-automation` | Automate Intelliprint tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/intelliprint-automation/SKILL.md` |
-| `Interactive_Prototyping` | Use when building interactive prototypes with real data, sound, animations, and API connections for client presentations or user testing. | `.claude/skills/interactive-prototyping.md` |
 | `internal-comms` | A set of resources to help me write all kinds of internal communications, using the formats that my company likes to use. Claude should use  | `.claude/skills/composio-skills/internal-comms/SKILL.md` |
 | `interzoid-automation` | Automate Interzoid tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/interzoid-automation/SKILL.md` |
 | `invoice-organizer` | Automatically organizes invoices and receipts for tax preparation by reading messy files, extracting key information, renaming them consiste | `.claude/skills/composio-skills/invoice-organizer/SKILL.md` |
@@ -516,6 +527,7 @@
 | `ip2whois-automation` | Automate Ip2whois tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ip2whois-automation/SKILL.md` |
 | `ipdata-co-automation` | Automate Ipdata co tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ipdata-co-automation/SKILL.md` |
 | `ipinfo-io-automation` | Automate Ipinfo IO tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ipinfo-io-automation/SKILL.md` |
+| `iqair-airvisual-automation` | Automate Iqair Airvisual tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/iqair-airvisual-automation/SKILL.md` |
 | `jigsawstack-automation` | Automate Jigsawstack tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/jigsawstack-automation/SKILL.md` |
 | `jobnimbus-automation` | Automate Jobnimbus tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/jobnimbus-automation/SKILL.md` |
 | `Jotform Automation` | Automate Jotform form listing, user management, activity history, folder organization, and plan inspection through natural language commands | `.claude/skills/composio-skills/composio-skills/jotform-automation/SKILL.md` |
@@ -536,13 +548,11 @@
 | `l2s-automation` | Automate L2s tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/l2s-automation/SKILL.md` |
 | `labs64-netlicensing-automation` | Automate Labs64 Netlicensing tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/labs64-netlicensing-automation/SKILL.md` |
 | `landbot-automation` | Automate Landbot tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/landbot-automation/SKILL.md` |
-| `landing-page` | Generate a complete, deployable landing page from a brief. Produces a single self-contained HTML file with Tailwind CSS (via CDN), responsiv | `.claude/skills/jezweb-skills/plugins/frontend/skills/landing-page/SKILL.md` |
 | `langbase-automation` | Automate Langbase tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/langbase-automation/SKILL.md` |
 | `langsmith-fetch` | Debug LangChain and LangGraph agents by fetching execution traces from LangSmith Studio. Use when debugging agent behavior, investigating er | `.claude/skills/composio-skills/langsmith-fetch/SKILL.md` |
 | `lastpass-automation` | Automate Lastpass tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/lastpass-automation/SKILL.md` |
 | `launch_darkly-automation` | Automate LaunchDarkly tasks via Rube MCP (Composio): feature flags, environments, segments, and rollout management. Always search tools firs | `.claude/skills/composio-skills/composio-skills/launch_darkly-automation/SKILL.md` |
 | `LaunchDarkly Automation` | Automate LaunchDarkly feature flag management -- list projects and environments, create and delete trigger workflows, and track code referen | `.claude/skills/composio-skills/composio-skills/launch-darkly-automation/SKILL.md` |
-| `Lead_Qualification_Scorer` | Use when a new lead comes in to score, qualify, and determine next steps. Analyzes the lead's website, business, and fit with PACAME service | `.claude/skills/lead-qualification.md` |
 | `lead-research-assistant` | Identifies high-quality leads for your product or service by analyzing your business, searching for target companies, and providing actionab | `.claude/skills/composio-skills/lead-research-assistant/SKILL.md` |
 | `leadfeeder-automation` | Automate Leadfeeder tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/leadfeeder-automation/SKILL.md` |
 | `leadoku-automation` | Automate Leadoku tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/leadoku-automation/SKILL.md` |
@@ -581,6 +591,7 @@
 | `mapbox-automation` | Automate Mapbox tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/mapbox-automation/SKILL.md` |
 | `mapulus-automation` | Automate Mapulus tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/mapulus-automation/SKILL.md` |
 | `mboum-automation` | Automate Mboum tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/mboum-automation/SKILL.md` |
+| `mcp-builder` | Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-design | `.claude/skills/composio-skills/mcp-builder/SKILL.md` |
 | `meeting-insights-analyzer` | Analyzes meeting transcripts and recordings to uncover behavioral patterns, communication insights, and actionable feedback. Identifies when | `.claude/skills/composio-skills/meeting-insights-analyzer/SKILL.md` |
 | `melo-automation` | Automate Melo tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/melo-automation/SKILL.md` |
 | `mem-automation` | Automate Mem tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/mem-automation/SKILL.md` |
@@ -613,7 +624,6 @@
 | `mx-technologies-automation` | Automate MX Technologies tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/mx-technologies-automation/SKILL.md` |
 | `mx-toolbox-automation` | Automate Mx Toolbox tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/mx-toolbox-automation/SKILL.md` |
 | `nango-automation` | Automate Nango tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/nango-automation/SKILL.md` |
-| `nano-banana` | REQUIRED for all image generation requests. Generate and edit images using Nano Banana (Gemini CLI). Handles blog featured images, YouTube t | `.claude/skills/nano-banana/SKILL.md` |
 | `nano-nets-automation` | Automate Nano Nets tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/nano-nets-automation/SKILL.md` |
 | `nasa-automation` | Automate Nasa tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/nasa-automation/SKILL.md` |
 | `nasdaq-automation` | Automate Nasdaq tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/nasdaq-automation/SKILL.md` |
@@ -633,11 +643,9 @@
 | `ninox-automation` | Automate Ninox tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ninox-automation/SKILL.md` |
 | `nocrm-io-automation` | Automate Nocrm IO tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/nocrm-io-automation/SKILL.md` |
 | `npm-automation` | Automate NPM tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/npm-automation/SKILL.md` |
-| `nz-business-english` | > New Zealand business English writing style for professional communications. Warm, inclusive, EN-NZ spelling. Use when writing emails, chat | `.claude/skills/jezweb-skills/plugins/writing/skills/nz-business-english/SKILL.md` |
 | `ocr-web-service-automation` | Automate OCR Web Service tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ocr-web-service-automation/SKILL.md` |
 | `ocrspace-automation` | Automate Ocrspace tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ocrspace-automation/SKILL.md` |
 | `Omnisend Automation` | Automate ecommerce marketing workflows including contact management, bulk operations, and subscriber segmentation through Omnisend via Compo | `.claude/skills/composio-skills/composio-skills/omnisend-automation/SKILL.md` |
-| `onboarding-ux` | Audit and generate in-app user guidance — onboarding flows, empty states, tooltips, feature tours, contextual help, defaults, and inline hin | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/onboarding-ux/SKILL.md` |
 | `oncehub-automation` | Automate Oncehub tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/oncehub-automation/SKILL.md` |
 | `onedesk-automation` | Automate Onedesk tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/onedesk-automation/SKILL.md` |
 | `onepage-automation` | Automate Onepage tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/onepage-automation/SKILL.md` |
@@ -701,14 +709,10 @@
 | `Prismic Automation` | Automate headless CMS operations in Prismic -- query documents, search content, retrieve custom types, and manage repository refs through th | `.claude/skills/composio-skills/composio-skills/prismic-automation/SKILL.md` |
 | `process-street-automation` | Automate Process Street tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/process-street-automation/SKILL.md` |
 | `procfu-automation` | Automate Procfu tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/procfu-automation/SKILL.md` |
-| `product-showcase` | Generate a comprehensive marketing website for a web app — multi-page with real screenshots, animated GIF walkthroughs, feature deep-dives,  | `.claude/skills/jezweb-skills/plugins/frontend/skills/product-showcase/SKILL.md` |
 | `Productboard Automation` | Automate product management workflows in Productboard -- manage features, notes, objectives, components, and releases through natural langua | `.claude/skills/composio-skills/composio-skills/productboard-automation/SKILL.md` |
 | `productlane-automation` | Automate Productlane tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/productlane-automation/SKILL.md` |
 | `project-bubble-automation` | Automate Project Bubble tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/project-bubble-automation/SKILL.md` |
-| `project-docs` | Generate project documentation from codebase analysis — ARCHITECTURE.md, API_ENDPOINTS.md, DATABASE_SCHEMA.md. Reads source code, schema fil | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/project-docs/SKILL.md` |
-| `project-health` | All-in-one project configuration and health management. Sets up new projects (settings.local.json, CLAUDE.md, .gitignore), audits existing p | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/project-health/SKILL.md` |
 | `proofly-automation` | Automate Proofly tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/proofly-automation/SKILL.md` |
-| `proposal-writer` | > Write a client proposal or quote for a service business. Covers project understanding, scope, timeline, pricing presentation, and terms. W | `.claude/skills/jezweb-skills/plugins/writing/skills/proposal-writer/SKILL.md` |
 | `proxiedmail-automation` | Automate Proxiedmail tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/proxiedmail-automation/SKILL.md` |
 | `pushbullet-automation` | Automate Pushbullet tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/pushbullet-automation/SKILL.md` |
 | `pushover-automation` | Automate Pushover tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/pushover-automation/SKILL.md` |
@@ -721,9 +725,8 @@
 | `ragic-automation` | Automate Ragic tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ragic-automation/SKILL.md` |
 | `raisely-automation` | Automate Raisely tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/raisely-automation/SKILL.md` |
 | `Ramp Automation` | Ramp Automation: manage corporate card transactions, reimbursements, users, and expense tracking via the Ramp platform | `.claude/skills/composio-skills/composio-skills/ramp-automation/SKILL.md` |
+| `ravenseotools-automation` | Automate Ravenseotools tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ravenseotools-automation/SKILL.md` |
 | `re-amaze-automation` | Automate Re Amaze tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/re-amaze-automation/SKILL.md` |
-| `react-native` | React Native and Expo patterns for building performant mobile apps. Covers list performance, animations with Reanimated, navigation, UI patt | `.claude/skills/jezweb-skills/plugins/frontend/skills/react-native/SKILL.md` |
-| `react-patterns` | React 19 performance patterns and composition architecture for Vite + Cloudflare projects. 50+ rules ranked by impact — eliminating waterfal | `.claude/skills/jezweb-skills/plugins/frontend/skills/react-patterns/SKILL.md` |
 | `realphonevalidation-automation` | Automate Realphonevalidation tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/realphonevalidation-automation/SKILL.md` |
 | `recallai-automation` | Automate Recallai tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/recallai-automation/SKILL.md` |
 | `recruitee-automation` | Automate Recruitee tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/recruitee-automation/SKILL.md` |
@@ -738,8 +741,6 @@
 | `reply-io-automation` | Automate Reply IO tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/reply-io-automation/SKILL.md` |
 | `resend-automation` | Automate Resend tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/resend-automation/SKILL.md` |
 | `respond-io-automation` | Automate Respond IO tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/respond-io-automation/SKILL.md` |
-| `responsiveness-check` | Test website responsiveness across viewport widths using browser automation. Resizes a single session through breakpoints, screenshots each  | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/responsiveness-check/SKILL.md` |
-| `resume-cover-letter` | > Write a resume/CV or cover letter tailored to a specific role. Handles regional format differences (AU/NZ, US, UK), ATS-friendly formattin | `.claude/skills/jezweb-skills/plugins/writing/skills/resume-cover-letter/SKILL.md` |
 | `retailed-automation` | Automate Retailed tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/retailed-automation/SKILL.md` |
 | `retellai-automation` | Automate Retellai tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/retellai-automation/SKILL.md` |
 | `retently-automation` | Automate Retently tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/retently-automation/SKILL.md` |
@@ -750,13 +751,13 @@
 | `rippling-automation` | Automate Rippling tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/rippling-automation/SKILL.md` |
 | `ritekit-automation` | Automate Ritekit tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ritekit-automation/SKILL.md` |
 | `rkvst-automation` | Automate Rkvst tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/rkvst-automation/SKILL.md` |
-| `roadmap` | Plan and execute entire application builds. Generates phased delivery roadmaps, then executes them autonomously — phase by phase, committing | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/roadmap/SKILL.md` |
 | `rocketlane-automation` | Automate Rocketlane tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/rocketlane-automation/SKILL.md` |
 | `rootly-automation` | Automate Rootly tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/rootly-automation/SKILL.md` |
 | `rosette-text-analytics-automation` | Automate Rosette Text Analytics tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/rosette-text-analytics-automation/SKILL.md` |
 | `route4me-automation` | Automate Route4me tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/route4me-automation/SKILL.md` |
 | `safetyculture-automation` | Automate Safetyculture tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/safetyculture-automation/SKILL.md` |
 | `sage-automation` | Automate Sage tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/sage-automation/SKILL.md` |
+| `salesforce-marketing-cloud-automation` | Automate Salesforce Marketing Cloud tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/salesforce-marketing-cloud-automation/SKILL.md` |
 | `salesforce-service-cloud-automation` | Automate Salesforce Service Cloud tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/salesforce-service-cloud-automation/SKILL.md` |
 | `salesmate-automation` | Automate Salesmate tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/salesmate-automation/SKILL.md` |
 | `sap-successfactors-automation` | Automate SAP SuccessFactors tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/sap-successfactors-automation/SKILL.md` |
@@ -787,12 +788,9 @@
 | `serply-automation` | Automate Serply tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/serply-automation/SKILL.md` |
 | `servicem8-automation` | Automate Servicem8 tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/servicem8-automation/SKILL.md` |
 | `sevdesk-automation` | Automate Sevdesk tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/sevdesk-automation/SKILL.md` |
-| `shadcn-ui` | Install and configure shadcn/ui components for React projects. Guides component selection, installation order, dependency management, custom | `.claude/skills/jezweb-skills/plugins/frontend/skills/shadcn-ui/SKILL.md` |
 | `share_point-automation` | Automate SharePoint tasks via Rube MCP (Composio): document libraries, sites, lists, and content management. Always search tools first for c | `.claude/skills/composio-skills/composio-skills/share_point-automation/SKILL.md` |
 | `SharePoint Automation` | SharePoint Automation: manage sites, lists, documents, folders, pages, and search content across SharePoint and OneDrive | `.claude/skills/composio-skills/composio-skills/share-point-automation/SKILL.md` |
 | `shipengine-automation` | Automate Shipengine tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/shipengine-automation/SKILL.md` |
-| `shopify-products` | > Create and manage Shopify products via the Admin API. Workflow: gather product data, choose method (API or CSV), execute, verify. Use when | `.claude/skills/jezweb-skills/plugins/shopify/skills/shopify-products/SKILL.md` |
-| `shopify-setup` | > Set up Shopify CLI auth and Admin API access for a store. Workflow: install CLI, authenticate, create custom app, store access token, veri | `.claude/skills/jezweb-skills/plugins/shopify/skills/shopify-setup/SKILL.md` |
 | `short-io-automation` | Automate Short IO tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/short-io-automation/SKILL.md` |
 | `short-menu-automation` | Automate Short Menu tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/short-menu-automation/SKILL.md` |
 | `Shortcut Automation` | Automate project management workflows in Shortcut -- create stories, manage tasks, track epics, and organize workflows through natural langu | `.claude/skills/composio-skills/composio-skills/shortcut-automation/SKILL.md` |
@@ -809,6 +807,7 @@
 | `simple-analytics-automation` | Automate Simple Analytics tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/simple-analytics-automation/SKILL.md` |
 | `simplesat-automation` | Automate Simplesat tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/simplesat-automation/SKILL.md` |
 | `sitespeakai-automation` | Automate Sitespeakai tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/sitespeakai-automation/SKILL.md` |
+| `skill-creator` | Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that exte | `.claude/skills/composio-skills/skill-creator/SKILL.md` |
 | `skill-share` | A skill that creates new Claude skills and automatically shares them on Slack using Rube for seamless team collaboration and skill discovery | `.claude/skills/composio-skills/skill-share/SKILL.md` |
 | `skyfire-automation` | Automate Skyfire tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/skyfire-automation/SKILL.md` |
 | `slack-gif-creator` | Toolkit for creating animated GIFs optimized for Slack, with validators for size constraints and composable animation primitives. This skill | `.claude/skills/composio-skills/slack-gif-creator/SKILL.md` |
@@ -833,7 +832,6 @@
 | `storeganise-automation` | Automate Storeganise tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/storeganise-automation/SKILL.md` |
 | `storerocket-automation` | Automate Storerocket tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/storerocket-automation/SKILL.md` |
 | `stormglass-io-automation` | Automate Stormglass IO tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/stormglass-io-automation/SKILL.md` |
-| `strategy-document` | > Write structured strategic documents for small and medium businesses. Produces SWOT analyses, lean business plans, OKRs, and competitive a | `.claude/skills/jezweb-skills/plugins/writing/skills/strategy-document/SKILL.md` |
 | `strava-automation` | Automate Strava tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/strava-automation/SKILL.md` |
 | `streamtime-automation` | Automate Streamtime tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/streamtime-automation/SKILL.md` |
 | `stripe-payments` | Add Stripe payments to a web app — Checkout Sessions, Payment Intents, subscriptions, webhooks, customer portal, and pricing pages. Covers t | `.claude/skills/jezweb-skills/plugins/integrations/skills/stripe-payments/SKILL.md` |
@@ -848,26 +846,25 @@
 | `synthflow-ai-automation` | Automate Synthflow AI tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/synthflow-ai-automation/SKILL.md` |
 | `taggun-automation` | Automate Taggun tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/taggun-automation/SKILL.md` |
 | `tailored-resume-generator` | Analyzes job descriptions and generates tailored resumes that highlight relevant experience, skills, and achievements to maximize interview  | `.claude/skills/composio-skills/tailored-resume-generator/SKILL.md` |
-| `tailwind-theme-builder` | > Set up Tailwind v4 with shadcn/ui themed UI. Workflow: install dependencies, configure CSS variables with @theme inline, set up dark mode, | `.claude/skills/jezweb-skills/plugins/frontend/skills/tailwind-theme-builder/SKILL.md` |
 | `talenthr-automation` | Automate Talenthr tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/talenthr-automation/SKILL.md` |
 | `tally-automation` | Automate Tally tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/tally-automation/SKILL.md` |
-| `tanstack-start` | Build a full-stack TanStack Start app on Cloudflare Workers from scratch — SSR, file-based routing, server functions, D1+Drizzle, better-aut | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/tanstack-start/SKILL.md` |
 | `tapfiliate-automation` | Automate Tapfiliate tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/tapfiliate-automation/SKILL.md` |
 | `tapform-automation` | Automate Tapform tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/tapform-automation/SKILL.md` |
 | `tavily-automation` | Automate Tavily tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/tavily-automation/SKILL.md` |
 | `taxjar-automation` | Automate Taxjar tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/taxjar-automation/SKILL.md` |
-| `team-update` | Post project updates to team chat, gather feedback, triage responses, and plan next steps. Adapts to available tools (chat, git, issues, tas | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/team-update/SKILL.md` |
 | `teamcamp-automation` | Automate Teamcamp tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/teamcamp-automation/SKILL.md` |
 | `telnyx-automation` | Automate Telnyx tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/telnyx-automation/SKILL.md` |
 | `teltel-automation` | Automate Teltel tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/teltel-automation/SKILL.md` |
 | `template-skill` | Replace with description of the skill and when Claude should use it. | `.claude/skills/composio-skills/template-skill/SKILL.md` |
 | `templated-automation` | Automate Templated tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/templated-automation/SKILL.md` |
+| `test-app-automation` | Automate Test App tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/test-app-automation/SKILL.md` |
 | `text-to-pdf-automation` | Automate Text To PDF tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/text-to-pdf-automation/SKILL.md` |
 | `textcortex-automation` | Automate Textcortex tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/textcortex-automation/SKILL.md` |
 | `textit-automation` | Automate Textit tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/textit-automation/SKILL.md` |
 | `textrazor-automation` | Automate Textrazor tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/textrazor-automation/SKILL.md` |
 | `thanks-io-automation` | Automate Thanks IO tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/thanks-io-automation/SKILL.md` |
 | `the-odds-api-automation` | Automate The Odds API tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/the-odds-api-automation/SKILL.md` |
+| `theme-factory` | Toolkit for styling artifacts with a theme. These artifacts can be slides, docs, reportings, HTML landing pages, etc. There are 10 pre-set t | `.claude/skills/composio-skills/theme-factory/SKILL.md` |
 | `ticketmaster-automation` | Automate Ticketmaster tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ticketmaster-automation/SKILL.md` |
 | `ticktick-automation` | Automate Ticktick tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ticktick-automation/SKILL.md` |
 | `timecamp-automation` | Automate Timecamp tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/timecamp-automation/SKILL.md` |
@@ -884,6 +881,7 @@
 | `toneden-automation` | Automate Toneden tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/toneden-automation/SKILL.md` |
 | `tpscheck-automation` | Automate Tpscheck tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/tpscheck-automation/SKILL.md` |
 | `triggercmd-automation` | Automate Triggercmd tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/triggercmd-automation/SKILL.md` |
+| `tripadvisor-content-api-automation` | Automate TripAdvisor tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/tripadvisor-content-api-automation/SKILL.md` |
 | `turbot-pipes-automation` | Automate Turbot Pipes tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/turbot-pipes-automation/SKILL.md` |
 | `turso-automation` | Automate Turso tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/turso-automation/SKILL.md` |
 | `twelve-data-automation` | Automate Twelve Data tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/twelve-data-automation/SKILL.md` |
@@ -893,14 +891,11 @@
 | `typefully-automation` | Automate Typefully tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/typefully-automation/SKILL.md` |
 | `typless-automation` | Automate Typless tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/typless-automation/SKILL.md` |
 | `u301-automation` | Automate U301 tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/u301-automation/SKILL.md` |
-| `uk-business-english` | > British business English writing style for professional communications. Polished, understated, EN-GB spelling. Use when writing emails, ch | `.claude/skills/jezweb-skills/plugins/writing/skills/uk-business-english/SKILL.md` |
 | `unione-automation` | Automate Unione tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/unione-automation/SKILL.md` |
 | `updown-io-automation` | Automate Updown IO tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/updown-io-automation/SKILL.md` |
 | `Uploadcare Automation` | Automate Uploadcare file management including listing, storing, inspecting, downloading, and organizing file groups through natural language | `.claude/skills/composio-skills/composio-skills/uploadcare-automation/SKILL.md` |
 | `uptimerobot-automation` | Automate Uptimerobot tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/uptimerobot-automation/SKILL.md` |
-| `us-business-english` | > American business English writing style for professional communications. Direct, action-oriented, EN-US spelling. Use when writing emails, | `.claude/skills/jezweb-skills/plugins/writing/skills/us-business-english/SKILL.md` |
 | `userlist-automation` | Automate Userlist tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/userlist-automation/SKILL.md` |
-| `ux-audit` | Dogfood web apps — browse as a real user, notice friction, document findings. Adopts a user persona, tracks emotional friction (trust, anxie | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/ux-audit/SKILL.md` |
 | `v0-automation` | Automate V0 tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/v0-automation/SKILL.md` |
 | `venly-automation` | Automate Venly tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/venly-automation/SKILL.md` |
 | `veo-automation` | Automate Veo tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/veo-automation/SKILL.md` |
@@ -908,11 +903,8 @@
 | `veriphone-automation` | Automate Veriphone tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/veriphone-automation/SKILL.md` |
 | `vero-automation` | Automate Vero tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/vero-automation/SKILL.md` |
 | `vestaboard-automation` | Automate Vestaboard tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/vestaboard-automation/SKILL.md` |
-| `Vibe_Coding` | Use when building rapid prototypes or MVPs for clients by describing features in natural language. Covers the full vibe-coding workflow from | `.claude/skills/vibe-coding.md` |
 | `virustotal-automation` | Automate Virustotal tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/virustotal-automation/SKILL.md` |
 | `visme-automation` | Automate Visme tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/visme-automation/SKILL.md` |
-| `Visual_Design_Exploration` | Use when exploring multiple visual design directions rapidly for a client. Covers aesthetic exploration, style comparisons, and design itera | `.claude/skills/visual-design-exploration.md` |
-| `vite-flare-starter` | Scaffold a full-stack Cloudflare app from vite-flare-starter — React 19, Hono, D1+Drizzle, better-auth, Tailwind v4+shadcn/ui, TanStack Quer | `.claude/skills/jezweb-skills/plugins/cloudflare/skills/vite-flare-starter/SKILL.md` |
 | `waboxapp-automation` | Automate Waboxapp tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/waboxapp-automation/SKILL.md` |
 | `wachete-automation` | Automate Wachete tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/wachete-automation/SKILL.md` |
 | `waiverfile-automation` | Automate Waiverfile tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/waiverfile-automation/SKILL.md` |
@@ -921,7 +913,7 @@
 | `Wave Accounting Automation` | Wave Accounting toolkit is not currently available as a native integration. No Wave-specific tools were found in the Composio platform. This | `.claude/skills/composio-skills/composio-skills/wave-accounting-automation/SKILL.md` |
 | `wave_accounting-automation` | Automate Wave Accounting tasks via Rube MCP (Composio): invoices, customers, payments, and small business accounting. Always search tools fi | `.claude/skills/composio-skills/composio-skills/wave_accounting-automation/SKILL.md` |
 | `weathermap-automation` | Automate Weathermap tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/weathermap-automation/SKILL.md` |
-| `Web_Development` | Use when building websites, landing pages, or web applications for PACAME clients. Covers Next.js, React, Tailwind, Supabase integration. | `.claude/skills/web-development.md` |
+| `webapp-testing` | Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI be | `.claude/skills/composio-skills/webapp-testing/SKILL.md` |
 | `Webex Automation` | Automate Cisco Webex messaging, rooms, teams, webhooks, and people management through natural language commands | `.claude/skills/composio-skills/composio-skills/webex-automation/SKILL.md` |
 | `webscraping-ai-automation` | Automate Webscraping AI tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/webscraping-ai-automation/SKILL.md` |
 | `webvizio-automation` | Automate Webvizio tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/webvizio-automation/SKILL.md` |
@@ -931,8 +923,6 @@
 | `wiz-automation` | Automate Wiz tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/wiz-automation/SKILL.md` |
 | `wolfram-alpha-api-automation` | Automate Wolfram Alpha API tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/wolfram-alpha-api-automation/SKILL.md` |
 | `woodpecker-co-automation` | Automate Woodpecker co tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/woodpecker-co-automation/SKILL.md` |
-| `wordpress-elementor` | > Edit Elementor pages and manage templates on WordPress sites. Workflow: identify page, choose editing method (browser or WP-CLI), execute, | `.claude/skills/jezweb-skills/plugins/wordpress/skills/wordpress-elementor/SKILL.md` |
-| `wordpress-setup` | > Connect to a WordPress site via WP-CLI over SSH or REST API. Workflow: check CLI, test SSH connection, set up auth, verify access, save co | `.claude/skills/jezweb-skills/plugins/wordpress/skills/wordpress-setup/SKILL.md` |
 | `workable-automation` | Automate Workable tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/workable-automation/SKILL.md` |
 | `Workday Automation` | Automate HR operations in Workday -- manage workers, time off requests, absence balances, and employee data through natural language command | `.claude/skills/composio-skills/composio-skills/workday-automation/SKILL.md` |
 | `workiom-automation` | Automate Workiom tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/workiom-automation/SKILL.md` |
@@ -945,6 +935,7 @@
 | `yelp-automation` | Automate Yelp tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/yelp-automation/SKILL.md` |
 | `ynab-automation` | Automate Ynab tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ynab-automation/SKILL.md` |
 | `yousearch-automation` | Automate Yousearch tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/yousearch-automation/SKILL.md` |
+| `youtube-downloader` | Download YouTube videos with customizable quality and format options. Use this skill when the user asks to download, save, or grab YouTube v | `.claude/skills/composio-skills/video-downloader/SKILL.md` |
 | `zenrows-automation` | Automate Zenrows tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/zenrows-automation/SKILL.md` |
 | `zenserp-automation` | Automate Zenserp tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/zenserp-automation/SKILL.md` |
 | `zeplin-automation` | Automate Zeplin tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/zeplin-automation/SKILL.md` |
@@ -966,43 +957,67 @@
 | `zylvie-automation` | Automate Zylvie tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/zylvie-automation/SKILL.md` |
 | `zyte-api-automation` | Automate Zyte API tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/zyte-api-automation/SKILL.md` |
 
+## Meta / Tooling
+
+| Skill | Descripción | Path |
+|-------|-------------|------|
+| `career-ops` | AI job search command center -- evaluate offers, generate CVs, scan portals, track applications | `.claude/skills/career-ops/.claude/skills/career-ops/SKILL.md` |
+
 ## PACAME Custom
 
 | Skill | Descripción | Path |
 |-------|-------------|------|
+| `Ads_Campaign_Manager` | Use when creating, analyzing, or optimizing paid advertising campaigns on Meta (Facebook/Instagram), Google Ads, or TikTok. | `.claude/skills/ads-campaign.md` |
+| `Analytics_Report_Generator` | Use when creating analytics reports, setting up tracking, analyzing metrics, or building dashboards for PACAME or clients. | `.claude/skills/analytics-report.md` |
+| `auto-aprende` | Sistema de aprendizaje autónomo PACAME. Investiga conocimiento de oro (técnicas, herramientas, tendencias) para uno de los 10 agentes, lo pe | `.claude/skills/auto-aprende.md` |
+| `auto-brain` | Activa el cerebro PACAME automáticamente ANTES de responder. Se dispara para cualquier petición creativa o estratégica: 'crea una web', 'haz | `.claude/skills/auto-brain/SKILL.md` |
+| `Brand_Identity_Builder` | Use when creating brand identity, visual systems, logos, color palettes, typography, or brand guidelines for clients. | `.claude/skills/branding.md` |
+| `Client_Proposal_Generator` | Use when creating a client proposal, pricing a project, qualifying a lead, or preparing a sales pitch for PACAME services. | `.claude/skills/client-proposal.md` |
+| `Copywriting_Engine` | Use when writing sales copy, landing page text, email sequences, ad copy, social media captions, or brand messaging. | `.claude/skills/copywriting.md` |
+| `Deploy_Workflow` | Use when deploying client projects to production. Covers GitHub setup, Vercel deployment, custom domains, environment variables, and Supabas | `.claude/skills/deploy-workflow.md` |
+| `Design_System` | Use when creating or maintaining design systems for clients. Covers token definition, component libraries, Storybook, and consistency rules. | `.claude/skills/design-system.md` |
+| `Figma_To_Code` | Use when converting Figma designs into production code. Covers Figma MCP integration, design token extraction, and pixel-perfect implementat | `.claude/skills/figma-to-code.md` |
+| `higgsfield-generate` | \| Generate images and videos via Higgsfield AI through 30+ models including Nano Banana 2, Soul V2, Veo 3.1, Kling 3.0, Seedance 2.0, Flux  | `.claude/skills/higgsfield-generate/SKILL.md` |
+| `higgsfield-marketplace-cards` | \| Generate marketplace product image cards through Higgsfield: compliant main image, secondary product images, and A+ style content modules | `.claude/skills/higgsfield-marketplace-cards/SKILL.md` |
+| `higgsfield-product-photoshoot` | \| Generate brand-quality product images via mode-specific prompt enhancement on Higgsfield's gpt_image_2 model. The single entry point for  | `.claude/skills/higgsfield-product-photoshoot/SKILL.md` |
+| `higgsfield-soul-id` | \| Train a Soul Character — a personalized model on a person's face that Higgsfield uses for identity-faithful image and video generation. U | `.claude/skills/higgsfield-soul-id/SKILL.md` |
+| `Interactive_Prototyping` | Use when building interactive prototypes with real data, sound, animations, and API connections for client presentations or user testing. | `.claude/skills/interactive-prototyping.md` |
+| `Lead_Qualification_Scorer` | Use when a new lead comes in to score, qualify, and determine next steps. Analyzes the lead's website, business, and fit with PACAME service | `.claude/skills/lead-qualification.md` |
+| `nano-banana` | REQUIRED for all image generation requests. Generate and edit images using Nano Banana (Gemini CLI). Handles blog featured images, YouTube t | `.claude/skills/nano-banana/SKILL.md` |
 | `pacame-contenido` | Skill maestra PACAME para producción de contenido para Dark Room (capa 3) y PACAME (capa 1) — carruseles, stories, reels, posts, WhatsApp me | `.claude/skills/pacame-contenido/SKILL.md` |
 | `pacame-viral-visuals` | Skill PACAME para generar fotos, carruseles y vídeos virales inspirados en lo que está rompiendo en Instagram AHORA MISMO. Antes de generar  | `.claude/skills/pacame-viral-visuals/SKILL.md` |
 | `pacame-web` | Meta-orquestador PACAME para construir CUALQUIER tipo de web, desde una landing de conversión de una sola página hasta un SaaS complejo con  | `.claude/skills/pacame-web/SKILL.md` |
+| `SEO_Audit_Generator` | Use when asked to audit SEO, generate content clusters, analyze keywords, or create SEO strategy for a client website. | `.claude/skills/seo-audit.md` |
+| `Social_Media_Strategy` | Use when creating social media calendars, content plans, Instagram/LinkedIn/TikTok strategy, or community management plans. | `.claude/skills/social-media.md` |
+| `Vibe_Coding` | Use when building rapid prototypes or MVPs for clients by describing features in natural language. Covers the full vibe-coding workflow from | `.claude/skills/vibe-coding.md` |
+| `Visual_Design_Exploration` | Use when exploring multiple visual design directions rapidly for a client. Covers aesthetic exploration, style comparisons, and design itera | `.claude/skills/visual-design-exploration.md` |
+| `Web_Development` | Use when building websites, landing pages, or web applications for PACAME clients. Covers Next.js, React, Tailwind, Supabase integration. | `.claude/skills/web-development.md` |
 
-## SEO
+## Research / Content
 
 | Skill | Descripción | Path |
 |-------|-------------|------|
-| `ravenseotools-automation` | Automate Ravenseotools tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/ravenseotools-automation/SKILL.md` |
-| `SEO_Audit_Generator` | Use when asked to audit SEO, generate content clusters, analyze keywords, or create SEO strategy for a client website. | `.claude/skills/seo-audit.md` |
-| `seo-local-business` | Generate complete SEO setup for local business websites — HTML head tags, JSON-LD LocalBusiness schema, robots.txt, sitemap.xml. Australian- | `.claude/skills/jezweb-skills/plugins/web-design/skills/seo-local-business/SKILL.md` |
+| `deep-research` | Deep research and discovery before building something new. Explores local projects for reusable code, researches competitors, reads forums a | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/deep-research/SKILL.md` |
 
 ## Social / Content
 
 | Skill | Descripción | Path |
 |-------|-------------|------|
-| `content-research-writer` | Assists in writing high-quality content by conducting research, adding citations, improving hooks, iterating on outlines, and providing real | `.claude/skills/composio-skills/content-research-writer/SKILL.md` |
-| `Contentful Automation` | Automate headless CMS operations in Contentful -- list spaces, retrieve space metadata, and update space configurations through the Composio | `.claude/skills/composio-skills/composio-skills/contentful-automation/SKILL.md` |
-| `contentful-graphql-automation` | Automate Contentful Graphql tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/contentful-graphql-automation/SKILL.md` |
-| `shopify-content` | > Create and manage Shopify pages, blog posts, navigation, and SEO metadata. Workflow: determine content type, generate content, create via  | `.claude/skills/jezweb-skills/plugins/shopify/skills/shopify-content/SKILL.md` |
-| `Social_Media_Strategy` | Use when creating social media calendars, content plans, Instagram/LinkedIn/TikTok strategy, or community management plans. | `.claude/skills/social-media.md` |
+| `aussie-business-english` | > Australian business English writing style for professional communications. Warm, direct, EN-AU spelling. Use when writing emails, chat mes | `.claude/skills/jezweb-skills/plugins/writing/skills/aussie-business-english/SKILL.md` |
+| `award-application` | > Write compelling award submissions, grant applications, and competition entries. Maps achievements to selection criteria using evidence-ba | `.claude/skills/jezweb-skills/plugins/writing/skills/award-application/SKILL.md` |
+| `nz-business-english` | > New Zealand business English writing style for professional communications. Warm, inclusive, EN-NZ spelling. Use when writing emails, chat | `.claude/skills/jezweb-skills/plugins/writing/skills/nz-business-english/SKILL.md` |
+| `proposal-writer` | > Write a client proposal or quote for a service business. Covers project understanding, scope, timeline, pricing presentation, and terms. W | `.claude/skills/jezweb-skills/plugins/writing/skills/proposal-writer/SKILL.md` |
+| `resume-cover-letter` | > Write a resume/CV or cover letter tailored to a specific role. Handles regional format differences (AU/NZ, US, UK), ATS-friendly formattin | `.claude/skills/jezweb-skills/plugins/writing/skills/resume-cover-letter/SKILL.md` |
 | `social-media-posts` | Create platform-specific social media posts for LinkedIn, Facebook, Instagram, and Reddit. Handles character limits, hashtag strategies, hoo | `.claude/skills/jezweb-skills/plugins/social-media/skills/social-media-posts/SKILL.md` |
-| `wordpress-content` | > Create and manage WordPress posts, pages, media, categories, and menus. Workflow: determine content type, choose method (WP-CLI or REST AP | `.claude/skills/jezweb-skills/plugins/wordpress/skills/wordpress-content/SKILL.md` |
+| `strategy-document` | > Write structured strategic documents for small and medium businesses. Produces SWOT analyses, lean business plans, OKRs, and competitive a | `.claude/skills/jezweb-skills/plugins/writing/skills/strategy-document/SKILL.md` |
+| `uk-business-english` | > British business English writing style for professional communications. Polished, understated, EN-GB spelling. Use when writing emails, ch | `.claude/skills/jezweb-skills/plugins/writing/skills/uk-business-english/SKILL.md` |
+| `us-business-english` | > American business English writing style for professional communications. Direct, action-oriented, EN-US spelling. Use when writing emails, | `.claude/skills/jezweb-skills/plugins/writing/skills/us-business-english/SKILL.md` |
 
 ## Testing / QA
 
 | Skill | Descripción | Path |
 |-------|-------------|------|
-| `booqable-automation` | Automate Booqable tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/booqable-automation/SKILL.md` |
-| `iqair-airvisual-automation` | Automate Iqair Airvisual tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/iqair-airvisual-automation/SKILL.md` |
-| `test-app-automation` | Automate Test App tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/test-app-automation/SKILL.md` |
 | `vitest` | Set up Vitest testing in any project — detects project type (Cloudflare Workers, React, Node), generates vitest.config.ts, test setup, utili | `.claude/skills/jezweb-skills/plugins/dev-tools/skills/vitest/SKILL.md` |
-| `webapp-testing` | Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI be | `.claude/skills/composio-skills/webapp-testing/SKILL.md` |
 
 ## Visual / Design
 
@@ -1010,25 +1025,26 @@
 |-------|-------------|------|
 | `acestep` | AI music generation with ACE-Step 1.5 — background music, vocal tracks, covers, stem extraction, audio repainting, and continuation for vide | `.claude/skills/video-toolkit/.claude/skills/acestep/SKILL.md` |
 | `ai-image-generator` | Generate AI images using Gemini or GPT APIs directly. Covers model selection (Gemini for scenes, GPT for transparent icons), the 5-part prom | `.claude/skills/jezweb-skills/plugins/design-assets/skills/ai-image-generator/SKILL.md` |
-| `all-images-ai-automation` | Automate All Images AI tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/all-images-ai-automation/SKILL.md` |
-| `canvas-automation` | Automate Canvas tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/canvas-automation/SKILL.md` |
-| `canvas-design` | Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a pos | `.claude/skills/composio-skills/canvas-design/SKILL.md` |
-| `elevenlabs` | Generate AI voiceovers, sound effects, and music using ElevenLabs APIs. Use when creating audio content for videos, podcasts, or games. Trig | `.claude/skills/video-toolkit/.claude/skills/elevenlabs/SKILL.md` |
+| `color-palette` | > Generate complete, accessible colour palettes from a single brand hex. Produces 11-shade scale (50-950), semantic tokens, dark mode varian | `.claude/skills/jezweb-skills/plugins/design-assets/skills/color-palette/SKILL.md` |
+| `design-loop` | Autonomous multi-page site builder using a baton-passing loop pattern. Each iteration reads a task from .design/next-prompt.md, generates a  | `.claude/skills/jezweb-skills/plugins/frontend/skills/design-loop/SKILL.md` |
+| `design-review` | Review a web app or page for visual design quality — layout, typography, spacing, colour, hierarchy, consistency, interaction patterns, and  | `.claude/skills/jezweb-skills/plugins/frontend/skills/design-review/SKILL.md` |
+| `design-system` | Extract a complete design system from an existing website or screenshot into a DESIGN.md file. Analyses colours, typography, component style | `.claude/skills/jezweb-skills/plugins/frontend/skills/design-system/SKILL.md` |
+| `favicon-gen` | > Generate custom favicons from logos, text, or brand colours. Produces all required formats: favicon.svg, favicon.ico, apple-touch-icon.png | `.claude/skills/jezweb-skills/plugins/design-assets/skills/favicon-gen/SKILL.md` |
 | `ffmpeg` | Video and audio processing with FFmpeg. Use for format conversion, resizing, compression, audio extraction, and preparing assets for Remotio | `.claude/skills/video-toolkit/.claude/skills/ffmpeg/SKILL.md` |
 | `frontend-design` | Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components | `.claude/skills/video-toolkit/.claude/skills/frontend-design/SKILL.md` |
-| `html-to-image-automation` | Automate Html To Image tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/html-to-image-automation/SKILL.md` |
-| `image-enhancer` | Improves the quality of images, especially screenshots, by enhancing resolution, sharpness, and clarity. Perfect for preparing images for pr | `.claude/skills/composio-skills/image-enhancer/SKILL.md` |
+| `icon-set-generator` | > Generate cohesive, project-specific SVG icon sets for websites and applications. Use this skill whenever the user needs custom icons, an i | `.claude/skills/jezweb-skills/plugins/design-assets/skills/icon-set-generator/SKILL.md` |
 | `image-processing` | Process images for web development — resize, crop, trim whitespace, convert formats (PNG/WebP/JPG), optimise file size, generate thumbnails, | `.claude/skills/jezweb-skills/plugins/design-assets/skills/image-processing/SKILL.md` |
-| `imagekit-io-automation` | Automate Imagekit IO tasks via Rube MCP (Composio). Always search tools first for current schemas. | `.claude/skills/composio-skills/composio-skills/imagekit-io-automation/SKILL.md` |
+| `landing-page` | Generate a complete, deployable landing page from a brief. Produces a single self-contained HTML file with Tailwind CSS (via CDN), responsiv | `.claude/skills/jezweb-skills/plugins/frontend/skills/landing-page/SKILL.md` |
 | `ltx2` | AI video generation with LTX-2.3 22B — text-to-video, image-to-video clips for video production. Use when generating video clips, animating  | `.claude/skills/video-toolkit/.claude/skills/ltx2/SKILL.md` |
 | `moviepy` | Python video composition with moviepy 2.x — overlaying deterministic text on AI-generated video (LTX-2, SadTalker), compositing clips, singl | `.claude/skills/video-toolkit/.claude/skills/moviepy/SKILL.md` |
 | `playwright-recording` | Record browser interactions as video using Playwright. Use for capturing demo videos, app walkthroughs, and UI flows for Remotion videos. Tr | `.claude/skills/video-toolkit/.claude/skills/playwright-recording/SKILL.md` |
+| `product-showcase` | Generate a comprehensive marketing website for a web app — multi-page with real screenshots, animated GIF walkthroughs, feature deep-dives,  | `.claude/skills/jezweb-skills/plugins/frontend/skills/product-showcase/SKILL.md` |
 | `qwen-edit` | AI image editing prompting patterns for Qwen-Image-Edit. Use when editing photos while preserving identity, reframing cropped images, changi | `.claude/skills/video-toolkit/.claude/skills/qwen-edit/SKILL.md` |
 | `remotion` | Toolkit-specific Remotion patterns — custom transitions, shared components, and project conventions. For core Remotion framework knowledge ( | `.claude/skills/video-toolkit/.claude/skills/remotion/SKILL.md` |
 | `remotion-best-practices` | Best practices for Remotion - Video creation in React | `.claude/skills/video-toolkit/.claude/skills/remotion-official/SKILL.md` |
-| `runpod` | Cloud GPU processing via RunPod serverless. Use when setting up RunPod endpoints, deploying Docker images, managing GPU resources, troublesh | `.claude/skills/video-toolkit/.claude/skills/runpod/SKILL.md` |
-| `theme-factory` | Toolkit for styling artifacts with a theme. These artifacts can be slides, docs, reportings, HTML landing pages, etc. There are 10 pre-set t | `.claude/skills/composio-skills/theme-factory/SKILL.md` |
+| `seo-local-business` | Generate complete SEO setup for local business websites — HTML head tags, JSON-LD LocalBusiness schema, robots.txt, sitemap.xml. Australian- | `.claude/skills/jezweb-skills/plugins/web-design/skills/seo-local-business/SKILL.md` |
+| `shadcn-ui` | Install and configure shadcn/ui components for React projects. Guides component selection, installation order, dependency management, custom | `.claude/skills/jezweb-skills/plugins/frontend/skills/shadcn-ui/SKILL.md` |
+| `tailwind-theme-builder` | > Set up Tailwind v4 with shadcn/ui themed UI. Workflow: install dependencies, configure CSS variables with @theme inline, set up dark mode, | `.claude/skills/jezweb-skills/plugins/frontend/skills/tailwind-theme-builder/SKILL.md` |
 | `video_toolkit` | Create professional videos autonomously using claude-code-video-toolkit — AI voiceovers, image generation, music, talking heads, and Remotio | `.claude/skills/video-toolkit/skills/openclaw-video-toolkit/SKILL.md` |
 | `walkthrough-video` | Generate professional walkthrough videos from app screenshots or live sites using Remotion. Smooth transitions, zoom effects, text overlays, | `.claude/skills/jezweb-skills/plugins/frontend/skills/walkthrough-video/SKILL.md` |
-| `youtube-downloader` | Download YouTube videos with customizable quality and format options. Use this skill when the user asks to download, save, or grab YouTube v | `.claude/skills/composio-skills/video-downloader/SKILL.md` |
 
