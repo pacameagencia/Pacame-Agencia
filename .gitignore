@@ -65,3 +65,6 @@ agency-agents-repo/
 
 # Asset library temporal
 asset-library/
+
+# Outputs autogenerados (PDFs, HTML intermedios)
+tools/output/
