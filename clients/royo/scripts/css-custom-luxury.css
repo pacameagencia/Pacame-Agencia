@@ -1182,3 +1182,175 @@ body.woocommerce-cart h1.page-title {
   text-align: center !important;
   margin: 2.5rem 0 2rem !important;
 }
+
+/* ============================================================
+   20. MOBILE — carrito + checkout + single product (2026-05-07 noche)
+   ============================================================ */
+
+/* 20.1 Header mobile compacto */
+@media (max-width: 991px) {
+  .site-header { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+  .topbar, .ecomus-topbar, .site-header__topbar, .header-topbar {
+    font-size: 0.65rem !important; padding: 0.4rem 0 !important;
+  }
+}
+
+/* 20.2 Carrito 1-col en mobile */
+@media (max-width: 991px) {
+  body.woocommerce-cart .woocommrece-cart-content,
+  body.woocommerce-cart .woocommerce-cart-content {
+    display: block !important; grid-template-columns: none !important; gap: 0 !important;
+  }
+  body.woocommerce-cart .woocommerce-cart-form,
+  body.woocommerce-cart .cart-collaterals {
+    grid-column: auto !important; width: 100% !important; max-width: 100% !important;
+    position: static !important; top: auto !important; margin-bottom: 1.5rem !important;
+  }
+}
+
+/* 20.3 Tabla cart mobile: cada fila es card vertical */
+@media (max-width: 767px) {
+  body.woocommerce-cart .woocommerce-cart-form table.cart thead { display: none !important; }
+  body.woocommerce-cart .woocommerce-cart-form table.cart,
+  body.woocommerce-cart .woocommerce-cart-form table.cart tbody,
+  body.woocommerce-cart .woocommerce-cart-form table.cart tr,
+  body.woocommerce-cart .woocommerce-cart-form table.cart td {
+    display: block !important; width: 100% !important;
+  }
+  body.woocommerce-cart .woocommerce-cart-form table.cart tr {
+    border: 1px solid var(--royo-line) !important; border-radius: 4px !important;
+    padding: 1rem !important; margin-bottom: 1rem !important;
+    position: relative !important; background: var(--royo-paper) !important;
+    height: auto !important;
+  }
+  body.woocommerce-cart .woocommerce-cart-form table.cart td {
+    padding: 0.5rem 0 !important; border: none !important;
+    border-bottom: 1px solid var(--royo-line) !important;
+    text-align: left !important; height: auto !important;
+  }
+  body.woocommerce-cart .woocommerce-cart-form table.cart td:last-child { border-bottom: none !important; }
+  body.woocommerce-cart .woocommerce-cart-form table.cart td::before {
+    content: attr(data-title);
+    font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--royo-charcoal); display: block; margin-bottom: 0.25rem;
+    font-family: 'Inter', sans-serif;
+  }
+  /* Ocultar ::before en thumbnail/name/remove (alta especificidad) */
+  body.woocommerce-cart .woocommerce-cart-form table.cart td.product-thumbnail::before,
+  body.woocommerce-cart .woocommerce-cart-form table.cart td.product-name::before,
+  body.woocommerce-cart .woocommerce-cart-form table.cart td.product-remove::before {
+    content: none !important; display: none !important;
+  }
+  /* Thumbnail: imagen centrada 96x96 */
+  body.woocommerce-cart .woocommerce-cart-form table.cart td.product-thumbnail {
+    text-align: center !important; border-bottom: none !important;
+    padding-bottom: 0.75rem !important; height: auto !important; min-height: 0 !important;
+  }
+  body.woocommerce-cart .woocommerce-cart-form table.cart td.product-thumbnail a {
+    display: inline-block !important;
+  }
+  body.woocommerce-cart .woocommerce-cart-form table.cart td.product-thumbnail img {
+    width: 96px !important; height: 96px !important;
+    max-width: 96px !important; max-height: 96px !important;
+    margin: 0 auto !important; display: block !important;
+  }
+  /* Nombre: centrado debajo de imagen, full width */
+  body.woocommerce-cart .woocommerce-cart-form table.cart td.product-name {
+    text-align: center !important;
+    border-bottom: 1px solid var(--royo-line) !important;
+    margin-bottom: 0.75rem !important; padding: 0.5rem 0 0.75rem !important;
+  }
+  body.woocommerce-cart .woocommerce-cart-form table.cart td.product-name a {
+    display: block !important; width: 100% !important;
+    word-break: break-word !important; line-height: 1.4 !important;
+  }
+  /* Remove flota arriba derecha */
+  body.woocommerce-cart .woocommerce-cart-form table.cart td.product-remove {
+    position: absolute !important; top: 0.5rem !important; right: 0.5rem !important;
+    border: none !important; padding: 0 !important; width: auto !important;
+  }
+}
+
+/* 20.4 Sidebar resumen mobile sin botón duplicado */
+@media (max-width: 991px) {
+  body.woocommerce-cart .cart_totals { margin-top: 0 !important; }
+  body.woocommerce-cart .cart_totals h2 { font-size: 1.2rem !important; }
+  body.woocommerce-cart .cart_totals .order-total th,
+  body.woocommerce-cart .cart_totals .order-total td { font-size: 1.05rem !important; }
+}
+
+/* 20.5 CTA sticky bottom mobile (position: fixed, sin margin negativo) */
+@media (max-width: 991px) {
+  body.woocommerce-cart .wc-proceed-to-checkout {
+    position: fixed !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+    margin: 0 !important; background: var(--royo-paper) !important;
+    border-top: 1px solid var(--royo-line) !important;
+    box-shadow: 0 -8px 24px rgba(26, 24, 22, 0.08) !important;
+    padding: 0.75rem 1rem !important; z-index: 200 !important;
+  }
+  body.woocommerce-cart::after { content: ''; display: block; height: 80px; }
+}
+
+/* 20.6 Single product mobile */
+@media (max-width: 767px) {
+  body.single-product div.product .summary { padding: 1rem 0 0 0 !important; }
+  body.single-product .product_title.entry-title { font-size: 1.4rem !important; text-align: center !important; }
+  body.single-product .summary .price, body.single-product .product .price {
+    font-size: 1.5rem !important; text-align: center !important;
+  }
+  body.single-product .single_add_to_cart_button {
+    width: 100% !important; padding: 1rem !important; font-size: 0.85rem !important;
+  }
+  body.single-product .woocommerce-tabs .tabs.wc-tabs {
+    overflow-x: auto !important; flex-wrap: nowrap !important; -webkit-overflow-scrolling: touch !important;
+  }
+  body.single-product .woocommerce-tabs .tabs.wc-tabs li { flex-shrink: 0 !important; }
+  body.single-product .woocommerce-Tabs-panel--description table { font-size: 0.85rem !important; }
+  body.single-product .woocommerce-Tabs-panel--description table th { width: 45% !important; padding: 0.6rem 0.5rem !important; }
+  body.single-product .woocommerce-Tabs-panel--description table td { padding: 0.6rem 0.5rem !important; }
+}
+
+/* 20.7 Checkout mobile */
+@media (max-width: 991px) {
+  body.woocommerce-checkout .woocommerce form.checkout { display: block !important; }
+  body.woocommerce-checkout #customer_details,
+  body.woocommerce-checkout #order_review_heading,
+  body.woocommerce-checkout #order_review {
+    width: 100% !important; float: none !important; margin-bottom: 1.5rem !important;
+  }
+  body.woocommerce-checkout .form-row input,
+  body.woocommerce-checkout .form-row select,
+  body.woocommerce-checkout .form-row textarea {
+    width: 100% !important; border: 1px solid var(--royo-line) !important;
+    border-radius: 2px !important; padding: 0.85rem 1rem !important;
+    font-size: 1rem !important; background: var(--royo-paper) !important;
+  }
+  body.woocommerce-checkout::after { content: ''; display: block; height: 80px; }
+  body.woocommerce-checkout #place_order,
+  body.woocommerce-checkout button[name="woocommerce_checkout_place_order"] {
+    position: fixed !important; left: 1rem !important; right: 1rem !important; bottom: 1rem !important;
+    width: calc(100% - 2rem) !important; z-index: 200 !important;
+    box-shadow: 0 -8px 24px rgba(26, 24, 22, 0.08) !important;
+  }
+}
+
+/* 20.8 Trust badges mobile compactos */
+@media (max-width: 575px) {
+  .cart_totals::after { font-size: 0.65rem !important; letter-spacing: 0.03em !important; line-height: 1.5 !important; }
+}
+
+/* 20.9 Footer mobile respiración */
+@media (max-width: 767px) {
+  .site-footer .widget-title, .site-footer h4, .footer-widget-title {
+    font-size: 0.95rem !important; margin-bottom: 0.75rem !important;
+  }
+  .site-footer .widget { margin-bottom: 1.5rem !important; }
+}
+
+/* 20.10 Tipografía mobile global */
+@media (max-width: 767px) {
+  body { font-size: 0.95rem !important; line-height: 1.6 !important; }
+  h1 { font-size: 1.6rem !important; }
+  h2 { font-size: 1.3rem !important; }
+  h3 { font-size: 1.1rem !important; }
+}
