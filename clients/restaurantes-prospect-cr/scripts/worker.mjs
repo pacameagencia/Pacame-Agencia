@@ -13,7 +13,7 @@
  * Stop:
  *   Ctrl+C (limpia heartbeat) o kill el proceso.
  */
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync, spawnSync } from 'node:child_process';
@@ -25,8 +25,16 @@ import { buildEmail, rotateMenu } from './copy-variants.mjs';
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');
 const repoRoot = resolve(root, '../..');
-const require = createRequire(resolve(repoRoot, 'web/package.json'));
-const { Client } = require('pg');
+// pg se resuelve primero desde la carpeta del worker (caso VPS standalone),
+// si no, desde web/ (caso dev local en repo).
+let Client;
+try {
+  const localRequire = createRequire(resolve(root, 'package.json'));
+  ({ Client } = localRequire('pg'));
+} catch {
+  const webRequire = createRequire(resolve(repoRoot, 'web/package.json'));
+  ({ Client } = webRequire('pg'));
+}
 
 // === Args ===
 const args = process.argv.slice(2);
@@ -47,15 +55,27 @@ console.log(`Worker started · rate=${RATE}/h · hours=${HOURS[0]}-${HOURS[1]} �
 console.log(`  Sleep entre leads: ${Math.round(SLEEP_MS / 60000)} min`);
 
 // === Env ===
-const env = readFileSync(resolve(repoRoot, 'web/.env.local'), 'utf8');
-const RESEND_KEY = env.match(/RESEND_API_KEY=["']?([^"'\n]+)/)?.[1];
-const DATABASE_URL = env.match(/DATABASE_URL=["']?([^"'\n]+)/)?.[1];
+// Prioriza variables del entorno (caso VPS+pm2). Si no, intenta web/.env.local (caso dev).
+function loadEnvFile(path) {
+  if (!existsSync(path)) return;
+  const raw = readFileSync(path, 'utf8');
+  for (const line of raw.split('\n')) {
+    const m = line.match(/^([A-Z0-9_]+)=["']?([^"'\n]*)["']?$/);
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2];
+  }
+}
+loadEnvFile(resolve(root, '.env'));
+loadEnvFile(resolve(repoRoot, 'web/.env.local'));
+const RESEND_KEY = process.env.RESEND_API_KEY;
+const DATABASE_URL = process.env.DATABASE_URL;
 if (!RESEND_KEY && !DRY) { console.error('No RESEND_API_KEY'); process.exit(1); }
 if (!DATABASE_URL) { console.error('No DATABASE_URL'); process.exit(1); }
 
 const FROM = 'PACAME <hola@pacameagencia.com>';
 const REPLY_TO = 'hola@pacameagencia.com';
 const PABLO_WA = 'https://wa.me/34722669381';
+const PUBLIC_BASE_URL = process.env.PUBLIC_BASE_URL || 'https://demos.pacameagencia.com';
+const PUBLIC_HTML_ROOT = process.env.PUBLIC_HTML_ROOT || '/var/www/demos';
 const WORKER_ID = `${hostname()}-${process.pid}`;
 
 // === Supabase pg client (single, long-lived) ===
@@ -241,16 +261,24 @@ PACAME · pacameagencia.com
 ${v.postscript}`;
 
   const escape = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  // Placeholders únicos para preservar URLs durante el linkify (evita doble-anchor)
+  const URL_PH = '@@@DEMO_URL@@@';
+  const WA_PH = '@@@WA_URL@@@';
   const linkifiedUrl = `<a href="${url}" style="color:#c9181f;font-weight:600;text-decoration:underline;">${url}</a>`;
   const linkifiedWa = `<a href="${PABLO_WA}" style="color:#25d366;font-weight:600;">${PABLO_WA}</a>`;
-  const escapedText = escape(text);
+  // 1. Sustituye URLs por placeholders en el texto antes de escapar
+  const tokenized = text.split(url).join(URL_PH).split(PABLO_WA).join(WA_PH);
+  const escapedText = escape(tokenized);
+  // 2. Construye párrafos
   const html = escapedText
     .split(/\n\n/g)
     .map((p) => p.trim() ? `<p style="margin:0 0 16px 0;">${p.replace(/\n/g, '<br>')}</p>` : '')
     .join('')
-    .replace(escape(url), linkifiedUrl)
-    .replace(escape(PABLO_WA), linkifiedWa)
-    .replace(/\bpacameagencia\.com\b/g, '<a href="https://pacameagencia.com" style="color:#666;">pacameagencia.com</a>');
+    // 3. Linkify pacameagencia.com (footer texto plano), antes de meter URLs reales
+    .replace(/\bpacameagencia\.com\b/g, '<a href="https://pacameagencia.com" style="color:#666;">pacameagencia.com</a>')
+    // 4. Restaura las URLs ya como anchor completo (no las toca el step anterior)
+    .split(URL_PH).join(linkifiedUrl)
+    .split(WA_PH).join(linkifiedWa);
   return {
     subject: v.subject, text,
     html: `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="color-scheme" content="light"></head><body style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.65;color:#222;background:#f7f5f0;margin:0;padding:0;"><div style="max-width:600px;margin:0 auto;padding:24px 20px;background:#fff;font-size:15px;">${html}</div></body></html>`,
@@ -275,23 +303,26 @@ async function processLead(lead) {
     execSync(`node "${resolve(root, 'scripts/generate-demo.mjs')}" "${resolve(root, `data/${lead.slug}.json`)}"`, { stdio: 'pipe' });
     await pg.query(`update pipeline_runs set generate_completed_at=now() where id=$1`, [runId]);
 
-    // 2. Deploy
+    // 2. Deploy → Plan B: NO Vercel. Guardamos HTML al disco del VPS (servido
+    //    por nginx desde demos.pacameagencia.com) Y a Supabase como respaldo.
     let url;
     if (DRY) {
-      url = `https://${lead.slug}.vercel.app`;
+      url = `${PUBLIC_BASE_URL}/${lead.slug}`;
     } else {
       await pg.query(`update pipeline_runs set step='deploying', deploy_started_at=now() where id=$1`, [runId]);
-      const dir = resolve(root, `demos/${lead.slug}`);
-      if (!existsSync(resolve(dir, 'vercel.json'))) {
-        writeFileSync(resolve(dir, 'vercel.json'), JSON.stringify({ cleanUrls: true }, null, 2));
-      }
-      const result = spawnSync('vercel', ['deploy', '--prod', '--yes', '--name', lead.slug.slice(0, 52)], {
-        cwd: dir, encoding: 'utf8', shell: true, timeout: 120000,
-      });
-      const out = (result.stdout || '') + (result.stderr || '');
-      const aliased = out.match(/Aliased:\s+(https:\/\/[a-z0-9-]+\.vercel\.app)/);
-      const productionMatches = out.match(/https:\/\/[a-z0-9-]+\.vercel\.app/g) || [];
-      url = aliased ? aliased[1] : (productionMatches[productionMatches.length - 1] || `https://${lead.slug}.vercel.app`);
+      const htmlSrc = resolve(root, `demos/${lead.slug}/index.html`);
+      if (!existsSync(htmlSrc)) throw new Error(`HTML no encontrado: ${htmlSrc}`);
+      const html = readFileSync(htmlSrc, 'utf8');
+      // Inyecta tracking pixel + beacon page.view antes de </body>
+      const trackingSnippet = `<script>(function(){try{const slug=${JSON.stringify(lead.slug)};const url='${process.env.NEXT_PUBLIC_SUPABASE_URL || ''}/rest/v1/email_events';const key='${process.env.SUPABASE_ANON_KEY || ''}';if(!url||!key)return;fetch(url,{method:'POST',keepalive:true,headers:{'apikey':key,'Authorization':'Bearer '+key,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({resend_message_id:new URLSearchParams(location.search).get('mid')||slug,event_type:'page.view',user_agent:navigator.userAgent,raw:{slug,referrer:document.referrer}})}).catch(()=>{});}catch(e){}})();</script>`;
+      const htmlWithTracking = html.replace(/<\/body>/i, trackingSnippet + '</body>');
+      // Escribir al disco público (servido por nginx)
+      const outDir = resolve(PUBLIC_HTML_ROOT, lead.slug);
+      mkdirSync(outDir, { recursive: true });
+      writeFileSync(resolve(outDir, 'index.html'), htmlWithTracking);
+      lead._renderedHtml = htmlWithTracking;
+      lead._renderedConfig = cfg;
+      url = `${PUBLIC_BASE_URL}/${lead.slug}`;
       await pg.query(`update pipeline_runs set deploy_completed_at=now(), vercel_url=$2 where id=$1`, [runId, url]);
     }
 
@@ -326,18 +357,24 @@ async function processLead(lead) {
       await pg.query(`update pipeline_runs set send_completed_at=now(), resend_message_id=$2 where id=$1`, [runId, messageId]);
     }
 
-    // 4. Sync prospect_leads
+    // 4. Sync prospect_leads (incluye config jsonb con HTML pre-renderizado)
     await pg.query(`update pipeline_runs set step='syncing' where id=$1`, [runId]);
+    const configPayload = JSON.stringify({
+      html: lead._renderedHtml || null,
+      cfg: lead._renderedConfig || null,
+      generated_at: new Date().toISOString(),
+    });
     await pg.query(`
-      insert into prospect_leads (slug, name, email, city, type, cuisine, phone, postal, vercel_url, resend_message_id, sent_at, status, raw)
-      values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,now(),'sent',$11)
+      insert into prospect_leads (slug, name, email, city, type, cuisine, phone, postal, vercel_url, resend_message_id, sent_at, status, raw, config)
+      values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,now(),'sent',$11,$12)
       on conflict (slug) do update set
         vercel_url = excluded.vercel_url,
         resend_message_id = coalesce(prospect_leads.resend_message_id, excluded.resend_message_id),
         sent_at = coalesce(prospect_leads.sent_at, excluded.sent_at),
         status = case when prospect_leads.status = 'pending' then 'sent' else prospect_leads.status end,
+        config = excluded.config,
         updated_at = now()
-    `, [lead.slug, lead.name, lead.email.toLowerCase(), lead.city || null, lead.type || null, lead.cuisine || null, lead.phone || null, lead.postal || null, url, messageId, JSON.stringify(lead)]);
+    `, [lead.slug, lead.name, lead.email.toLowerCase(), lead.city || null, lead.type || null, lead.cuisine || null, lead.phone || null, lead.postal || null, url, messageId, JSON.stringify(lead), configPayload]);
 
     await pg.query(`update pipeline_runs set step='completed', completed_at=now() where id=$1`, [runId]);
     return { ok: true, url, messageId };
