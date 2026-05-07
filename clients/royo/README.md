@@ -23,11 +23,11 @@
 - Optimización catálogo (alts, descripciones, enrichment).
 - Soporte ad-hoc por petición.
 
-## Estado (a 2026-04-30)
+## Estado (a 2026-05-07)
 - **Estado:** activo.
-- **Última intervención:** 2026-04-29 (Sprint 1C — bulk fix 974 alts vacíos, 98.7% → 0%).
-- **Sprint actual:** 1A/B/D pendiente + Sprint 2-4 roadmap.
-- **Producción confirmada:** 39/100 productos Tissot enriquecidos en PROD (commit 1a61992).
+- **Última intervención:** 2026-05-07 (Sprint 2A + 2B + Estética + Sprint 2C parcial Tissot).
+- **Sprint actual:** Sprint 1A/B/D bloqueado (necesita aprobación pages Elementor), Sprint 2C continúa con Longines + Casio + Tissot legacy en próxima sesión, Sprint 3-4 sin empezar.
+- **Producción confirmada:** 974 alts arreglados + 589 productos enriquecidos (atributos+SEO) + 287 nombres limpiados + 50 Tissot con foto packshot oficial.
 
 ## Stack del cliente
 - WordPress 6.x
@@ -49,6 +49,10 @@
 |--------|-------|---------|--------|
 | 1C | 2026-04-29 | Bulk fix 974 alts vacíos (98.7% → 0%) | (en `history/`) |
 | Tissot enrich | 2026-04-30 | 39/100 productos enriquecidos prod | `1a61992` |
+| 2A global | 2026-05-07 | Enrichment determinista 589/602 productos (atributos Woo + Yoast SEO + HTML Tissot reescrito en 7) · 0€ | (esta PR) |
+| 2B nombres | 2026-05-07 | 287 relojes con SKU recortado del nombre (joyería intacta, match exacto SKU oficial) · 0€ | (esta PR) |
+| Estética v2 | 2026-05-07 | CSS luxury cargado vía MU + sección 16 (precio duplicado, cards demo, galería, sticky ATC) | (esta PR) |
+| 2C Tissot parcial | 2026-05-07 | 50/107 packshots oficiales Tissot (47% cobertura) · scraper tissotwatches.com → upload-from-url → featured-image | (esta PR) |
 
 Ver `history/` para detalle.
 
@@ -56,12 +60,19 @@ Ver `history/` para detalle.
 
 ```
 clients/royo/scripts/
-├── enrich-all-products.mjs       # batch enrichment WooCommerce
-├── enrich-tissot-products.mjs    # enrichment específico marca Tissot
-└── fix-image-alts.mjs            # bulk fix alts vacíos
+├── enrich-all-products.mjs       # Sprint 2A: batch enrichment determinista (atributos+SEO+HTML)
+├── enrich-tissot-products.mjs    # Enrichment específico marca Tissot (Sprint Tissot 2026-04-30)
+├── fix-image-alts.mjs            # Sprint 1C: bulk fix alts vacíos
+├── clean-product-names.mjs       # Sprint 2B: recortar SKU del nombre (match exacto)
+├── replace-tissot-images.mjs     # Sprint 2C: scraping packshots oficiales Tissot
+└── css-custom-luxury.css         # Estética v2: paleta + tipografía + fixes single product
 ```
 
-Todos leen credenciales de `.env.local` raíz PACAME. Ver `runbook.md` para uso.
+Todos leen credenciales de env vars o `.env.local` raíz PACAME. Ver `runbook.md` para uso.
+
+### Plugin MU PACAME — endpoints usados
+- `/pacame/v1/css/set` · `/cache/clear` · `/media/upload-from-url` · `/products/{id}/featured-image`.
+- Auth: Basic (`ROYO_WP_USER` + `ROYO_WP_APP_PASS`) + HMAC `X-PACAME-Signature` (`ROYO_PACAME_SECRET`, definido en `wp-config.php` como `PACAME_WEBHOOK_SECRET`).
 
 ## Drafts de contenido
 
