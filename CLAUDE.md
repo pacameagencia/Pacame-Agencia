@@ -16,6 +16,7 @@
 | Al cerrar un bloque de trabajo entregable | [`docs/protocols/pr-merge-automatico.md`](docs/protocols/pr-merge-automatico.md) |
 | Para elegir qué agente/skill cargar | [`docs/protocols/routing-rules.md`](docs/protocols/routing-rules.md) |
 | Antes de tocar datos/credenciales/notas de cualquier cliente | [`docs/protocols/aislamiento-clientes.md`](docs/protocols/aislamiento-clientes.md) |
+| Si la conversación menciona DARK_FRAMES, cinemáticas IA, reels @pacamespain, Cinema Studio Video 3.0, Seedance, o continuación trabajo creativo mayo 2026 | [`strategy/darkroom/RETOMAR-AQUI.md`](strategy/darkroom/RETOMAR-AQUI.md) |
 
 > **Regla dura:** si saltas del input a generar sin cargar el protocolo aplicable, estás rompiendo el contrato PACAME. Para y vuelve aquí.
 
