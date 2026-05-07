@@ -12,9 +12,10 @@
  * Reels (DARK_FRAMES) NO se procesan aquí · van por render-piece.mjs manual con
  * doble OK Pablo + cost-guard (regla feedback_doble_aprobacion_videos.md).
  *
- * MVP: render minimal pero on-brand · fondo bg #0A0A0A + texto Anton+SpaceGrotesk
- *      mediante Sharp+SVG. compose-slides.mjs custom queda para piezas hero futuras.
- *      Cumple safe areas IG (TOP 100px · BOT 260px · MARGIN 60px).
+ * v2: usa opentype.js para convertir texto a SVG paths · idéntico patrón a
+ *     compose-slides.mjs local. Garantiza fonts on-brand (Anton + SpaceGrotesk
+ *     + JetBrainsMono) en runtime Vercel sin depender de fonts del sistema.
+ *     TTFs leídas desde public/fonts/ que Next bundlea como assets estáticos.
  *
  * Reglas memoria respetadas:
  *   - feedback_calidad_top_no_pilotos.md → si brief inválido o slides fallan →
@@ -28,6 +29,9 @@ import { verifyInternalAuth } from "@/lib/api-auth";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { createServerSupabase } from "@/lib/supabase/server";
 import sharp from "sharp";
+import * as opentype from "opentype.js";
+import fs from "node:fs";
+import path from "node:path";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -37,13 +41,308 @@ const H_CAROUSEL = 1350;
 const W_STORY = 1080;
 const H_STORY = 1920;
 
+// IG safe areas (compose-slides.mjs)
+const TOP_UNSAFE = 100;
+const BOT_UNSAFE = 260;
+const MARGIN_X = 60;
+
+// Brand colors
+const C = {
+  bg: "#0A0A0A",
+  acid: "#CFFF00",
+  white: "#F2F2F2",
+  ghost: "#8E8E8E",
+};
+
+// ─── Font loading (sync at module init · runtime Vercel) ──────────
+
+function loadFont(filename: string): opentype.Font {
+  const fontPath = path.join(process.cwd(), "public", "fonts", filename);
+  const buffer = fs.readFileSync(fontPath);
+  const arrayBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
+  const font = opentype.parse(arrayBuffer);
+  if (!font) throw new Error(`Failed to parse font: ${filename}`);
+  return font;
+}
+
+let FONTS: { anton: opentype.Font; sgB: opentype.Font; jbm: opentype.Font } | null = null;
+
+function getFonts() {
+  if (!FONTS) {
+    FONTS = {
+      anton: loadFont("Anton-Regular.ttf"),
+      sgB: loadFont("SpaceGrotesk-Bold.ttf"),
+      jbm: loadFont("JetBrainsMono-Regular.ttf"),
+    };
+  }
+  return FONTS;
+}
+
+// ─── Text → SVG path helpers ──────────────────────────────────────
+
+function textPath(opts: {
+  text: string;
+  font: opentype.Font;
+  size: number;
+  x: number;
+  y: number;
+  fill?: string;
+  anchor?: "start" | "middle" | "end";
+  letterSpacing?: number;
+}): string {
+  const { text, font, size, x, y, fill = "#fff", anchor = "start", letterSpacing = 0 } = opts;
+  if (!text) return "";
+
+  let drawX = x;
+  let totalW = 0;
+  let paths = "";
+
+  if (letterSpacing === 0) {
+    totalW = font.getAdvanceWidth(text, size);
+    if (anchor === "end") drawX = x - totalW;
+    else if (anchor === "middle") drawX = x - totalW / 2;
+    paths = font
+      .getPath(text, drawX, y, size)
+      .toSVG(2)
+      .replace(/<path /, `<path fill="${fill}" `);
+  } else {
+    const widths = [...text].map((ch) => font.getAdvanceWidth(ch, size));
+    totalW = widths.reduce((a, b) => a + b, 0) + letterSpacing * Math.max(0, text.length - 1);
+    if (anchor === "end") drawX = x - totalW;
+    else if (anchor === "middle") drawX = x - totalW / 2;
+    let cur = drawX;
+    [...text].forEach((ch, i) => {
+      paths += font
+        .getPath(ch, cur, y, size)
+        .toSVG(2)
+        .replace(/<path /, `<path fill="${fill}" `);
+      cur += widths[i] + letterSpacing;
+    });
+  }
+  return paths;
+}
+
+// Word-wrap: divide en líneas que no excedan maxWidth en pixeles
+function wrapText(text: string, font: opentype.Font, size: number, maxWidth: number): string[] {
+  const words = text.split(" ");
+  const lines: string[] = [];
+  let current = "";
+  for (const w of words) {
+    const testLine = current ? `${current} ${w}` : w;
+    const width = font.getAdvanceWidth(testLine, size);
+    if (width > maxWidth && current) {
+      lines.push(current);
+      current = w;
+    } else {
+      current = testLine;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
+}
+
+// ─── SVG slide builder (carrusel 1080×1350) ───────────────────────
+
 interface SlideSpec {
-  n: number;
+  n?: number;
   type?: string;
   headline?: string;
   subline?: string;
   visual_hint?: string;
 }
+
+function buildCarouselSlideSvg(slide: SlideSpec, slideIdx: number, totalSlides: number): string {
+  const fonts = getFonts();
+  const headline = (slide.headline || "").slice(0, 120).toUpperCase();
+  const subline = (slide.subline || "").slice(0, 200);
+  const isCover = slide.type === "cover" || slideIdx === 0;
+  const isCta = slide.type === "cta" || slideIdx === totalSlides - 1;
+
+  const headlineFontSize = isCover ? 90 : 64;
+  const sublineFontSize = isCover ? 36 : 30;
+  const maxTextWidth = W_CAROUSEL - 2 * MARGIN_X;
+
+  const headlineLines = wrapText(headline, fonts.anton, headlineFontSize, maxTextWidth);
+  const sublineLines = wrapText(subline, fonts.sgB, sublineFontSize, maxTextWidth);
+
+  // Vertical centering inside safe area
+  const totalHeight =
+    headlineLines.length * (headlineFontSize + 10) + 40 + sublineLines.length * (sublineFontSize + 6);
+  const safeHeight = H_CAROUSEL - TOP_UNSAFE - BOT_UNSAFE;
+  let y = TOP_UNSAFE + Math.max(80, (safeHeight - totalHeight) / 2);
+
+  let headlineSvg = "";
+  for (const line of headlineLines) {
+    y += headlineFontSize;
+    headlineSvg += textPath({
+      text: line,
+      font: fonts.anton,
+      size: headlineFontSize,
+      x: W_CAROUSEL / 2,
+      y,
+      fill: C.acid,
+      anchor: "middle",
+      letterSpacing: -2,
+    });
+    y += 10;
+  }
+
+  y += 30;
+  let sublineSvg = "";
+  for (const line of sublineLines) {
+    y += sublineFontSize;
+    sublineSvg += textPath({
+      text: line,
+      font: fonts.sgB,
+      size: sublineFontSize,
+      x: W_CAROUSEL / 2,
+      y,
+      fill: C.white,
+      anchor: "middle",
+    });
+    y += 6;
+  }
+
+  // Counter "n/total" mono · esquina inf der dentro safe area
+  const counterSvg = textPath({
+    text: `${slideIdx + 1}/${totalSlides}`,
+    font: fonts.jbm,
+    size: 22,
+    x: W_CAROUSEL - MARGIN_X,
+    y: H_CAROUSEL - 90,
+    fill: C.ghost,
+    anchor: "end",
+  });
+
+  // Brand mark esquina inf izq
+  const brandSvg = textPath({
+    text: "DARKROOMCREATIVE.CLOUD",
+    font: fonts.jbm,
+    size: 22,
+    x: MARGIN_X,
+    y: H_CAROUSEL - 90,
+    fill: C.ghost,
+  });
+
+  // CTA pill al último slide
+  let ctaSvg = "";
+  if (isCta) {
+    const pillX = (W_CAROUSEL - 600) / 2;
+    const pillY = H_CAROUSEL - 220;
+    ctaSvg = `
+      <rect x="${pillX}" y="${pillY}" width="600" height="80" fill="${C.acid}" rx="40"/>
+      ${textPath({
+        text: "14 DIAS GRATIS · BIO",
+        font: fonts.anton,
+        size: 36,
+        x: W_CAROUSEL / 2,
+        y: pillY + 56,
+        fill: C.bg,
+        anchor: "middle",
+        letterSpacing: -1,
+      })}
+    `;
+  }
+
+  return `<svg width="${W_CAROUSEL}" height="${H_CAROUSEL}" xmlns="http://www.w3.org/2000/svg">
+    <rect width="${W_CAROUSEL}" height="${H_CAROUSEL}" fill="${C.bg}"/>
+    ${headlineSvg}
+    ${sublineSvg}
+    ${ctaSvg}
+    ${counterSvg}
+    ${brandSvg}
+  </svg>`;
+}
+
+function buildStorySvg(headline: string, subline: string): string {
+  const fonts = getFonts();
+  const story_TOP_UNSAFE = 250;
+  const story_BOT_UNSAFE = 250;
+  const maxTextWidth = W_STORY - 2 * MARGIN_X;
+
+  const headlineUpper = headline.slice(0, 100).toUpperCase();
+  const headlineLines = wrapText(headlineUpper, fonts.anton, 100, maxTextWidth);
+  const sublineLines = wrapText(subline.slice(0, 120), fonts.sgB, 40, maxTextWidth);
+
+  const totalHeight = headlineLines.length * 110 + 60 + sublineLines.length * 50;
+  const safeHeight = H_STORY - story_TOP_UNSAFE - story_BOT_UNSAFE;
+  let y = story_TOP_UNSAFE + Math.max(80, (safeHeight - totalHeight) / 2);
+
+  let headlineSvg = "";
+  for (const line of headlineLines) {
+    y += 100;
+    headlineSvg += textPath({
+      text: line,
+      font: fonts.anton,
+      size: 100,
+      x: W_STORY / 2,
+      y,
+      fill: C.acid,
+      anchor: "middle",
+      letterSpacing: -3,
+    });
+    y += 10;
+  }
+
+  y += 50;
+  let sublineSvg = "";
+  for (const line of sublineLines) {
+    y += 40;
+    sublineSvg += textPath({
+      text: line,
+      font: fonts.sgB,
+      size: 40,
+      x: W_STORY / 2,
+      y,
+      fill: C.white,
+      anchor: "middle",
+    });
+    y += 10;
+  }
+
+  const brandSvg = textPath({
+    text: "DARKROOMCREATIVE.CLOUD",
+    font: fonts.jbm,
+    size: 26,
+    x: W_STORY / 2,
+    y: H_STORY - story_BOT_UNSAFE - 40,
+    fill: C.ghost,
+    anchor: "middle",
+  });
+
+  return `<svg width="${W_STORY}" height="${H_STORY}" xmlns="http://www.w3.org/2000/svg">
+    <rect width="${W_STORY}" height="${H_STORY}" fill="${C.bg}"/>
+    ${headlineSvg}
+    ${sublineSvg}
+    ${brandSvg}
+  </svg>`;
+}
+
+// ─── Catbox upload ────────────────────────────────────────────────
+
+async function uploadCatbox(buffer: Buffer, filename: string): Promise<string> {
+  const fd = new FormData();
+  fd.append("reqtype", "fileupload");
+  const uint8 = new Uint8Array(buffer);
+  fd.append("fileToUpload", new Blob([uint8], { type: "image/jpeg" }), filename);
+  const r = await fetch("https://catbox.moe/user/api.php", {
+    method: "POST",
+    body: fd,
+    signal: AbortSignal.timeout(60_000),
+  });
+  if (!r.ok) throw new Error(`catbox HTTP ${r.status}`);
+  const url = (await r.text()).trim();
+  if (!url.startsWith("https://")) throw new Error(`catbox bad: ${url.slice(0, 100)}`);
+  return url;
+}
+
+async function renderSlide(svg: string): Promise<Buffer> {
+  return await sharp(Buffer.from(svg))
+    .jpeg({ quality: 90, progressive: false, chromaSubsampling: "4:2:0" })
+    .toBuffer();
+}
+
+// ─── Endpoint ─────────────────────────────────────────────────────
 
 interface BriefData {
   title?: string;
@@ -52,8 +351,6 @@ interface BriefData {
   caption?: string;
   hashtags?: string;
   research_tier?: string;
-  source?: { source_url?: string; source_quote?: string; source_date?: string };
-  cited_data?: Array<{ value: string; source: string }>;
   skip_reason?: string;
 }
 
@@ -71,163 +368,6 @@ interface DraftRow {
   scheduled_at: string;
 }
 
-// ─── SVG slide generator (carrusel 1080×1350) ─────────────────────
-
-function buildCarouselSlideSvg(slide: SlideSpec, slideIdx: number, totalSlides: number): string {
-  const headline = (slide.headline || "").slice(0, 120);
-  const subline = (slide.subline || "").slice(0, 200);
-  const isCover = slide.type === "cover" || slideIdx === 0;
-  const isCta = slide.type === "cta" || slideIdx === totalSlides - 1;
-
-  const headlineFontSize = isCover ? 90 : 60;
-  const sublineFontSize = isCover ? 36 : 30;
-
-  // Word-wrap simple: divide en líneas de máx N chars
-  function wrap(text: string, maxChars: number): string[] {
-    const words = text.split(" ");
-    const lines: string[] = [];
-    let current = "";
-    for (const w of words) {
-      if ((current + " " + w).trim().length > maxChars && current) {
-        lines.push(current.trim());
-        current = w;
-      } else {
-        current += " " + w;
-      }
-    }
-    if (current.trim()) lines.push(current.trim());
-    return lines;
-  }
-
-  const headlineLines = wrap(headline, isCover ? 18 : 22);
-  const sublineLines = wrap(subline, 35);
-
-  const headlineSvg = headlineLines
-    .map((line, i) => {
-      const y = 400 + i * (headlineFontSize + 10);
-      return `<text x="540" y="${y}" font-family="'Anton', Impact, sans-serif" font-size="${headlineFontSize}" fill="#CFFF00" text-anchor="middle" font-weight="900" letter-spacing="-2">${escapeXml(line.toUpperCase())}</text>`;
-    })
-    .join("");
-
-  const sublineY = 400 + headlineLines.length * (headlineFontSize + 10) + 40;
-  const sublineSvg = sublineLines
-    .map((line, i) => {
-      const y = sublineY + i * (sublineFontSize + 6);
-      return `<text x="540" y="${y}" font-family="'Space Grotesk', sans-serif" font-size="${sublineFontSize}" fill="#F2F2F2" text-anchor="middle" font-weight="500">${escapeXml(line)}</text>`;
-    })
-    .join("");
-
-  // Counter "n/total" en mono · esquina inferior derecha (dentro safe area · y < 1090)
-  const counterSvg = `<text x="${W_CAROUSEL - 60}" y="1070" font-family="'JetBrains Mono', monospace" font-size="22" fill="#8E8E8E" text-anchor="end">${slideIdx + 1}/${totalSlides}</text>`;
-
-  // Brand mark esquina inferior izquierda
-  const brandSvg = `<text x="60" y="1070" font-family="'JetBrains Mono', monospace" font-size="22" fill="#8E8E8E">DARKROOMCREATIVE.CLOUD</text>`;
-
-  // CTA específico para último slide
-  let ctaSvg = "";
-  if (isCta) {
-    ctaSvg = `
-      <rect x="240" y="950" width="600" height="80" fill="#CFFF00" rx="40"/>
-      <text x="540" y="1003" font-family="'Anton', Impact, sans-serif" font-size="36" fill="#0A0A0A" text-anchor="middle" font-weight="900">14 DIAS GRATIS · BIO</text>
-    `;
-  }
-
-  return `<svg width="${W_CAROUSEL}" height="${H_CAROUSEL}" xmlns="http://www.w3.org/2000/svg">
-  <rect width="${W_CAROUSEL}" height="${H_CAROUSEL}" fill="#0A0A0A"/>
-  ${headlineSvg}
-  ${sublineSvg}
-  ${ctaSvg}
-  ${counterSvg}
-  ${brandSvg}
-</svg>`;
-}
-
-function buildStorySvg(headline: string, subline: string): string {
-  const TOP_UNSAFE = 250;
-  const BOT_UNSAFE = 250;
-
-  const headlineLines = wrapText(headline.slice(0, 100), 16);
-  const sublineLines = wrapText(subline.slice(0, 120), 30);
-
-  const headlineSvg = headlineLines
-    .map((line, i) => {
-      const y = 600 + i * 110;
-      return `<text x="540" y="${y}" font-family="'Anton', Impact, sans-serif" font-size="100" fill="#CFFF00" text-anchor="middle" font-weight="900" letter-spacing="-3">${escapeXml(line.toUpperCase())}</text>`;
-    })
-    .join("");
-
-  const sublineY = 600 + headlineLines.length * 110 + 60;
-  const sublineSvg = sublineLines
-    .map((line, i) => {
-      const y = sublineY + i * 50;
-      return `<text x="540" y="${y}" font-family="'Space Grotesk', sans-serif" font-size="40" fill="#F2F2F2" text-anchor="middle" font-weight="500">${escapeXml(line)}</text>`;
-    })
-    .join("");
-
-  const brandSvg = `<text x="540" y="${H_STORY - BOT_UNSAFE - 40}" font-family="'JetBrains Mono', monospace" font-size="26" fill="#8E8E8E" text-anchor="middle">DARKROOMCREATIVE.CLOUD</text>`;
-
-  return `<svg width="${W_STORY}" height="${H_STORY}" xmlns="http://www.w3.org/2000/svg">
-  <rect width="${W_STORY}" height="${H_STORY}" fill="#0A0A0A"/>
-  ${headlineSvg}
-  ${sublineSvg}
-  ${brandSvg}
-</svg>`;
-}
-
-function wrapText(text: string, maxChars: number): string[] {
-  const words = text.split(" ");
-  const lines: string[] = [];
-  let current = "";
-  for (const w of words) {
-    if ((current + " " + w).trim().length > maxChars && current) {
-      lines.push(current.trim());
-      current = w;
-    } else {
-      current += " " + w;
-    }
-  }
-  if (current.trim()) lines.push(current.trim());
-  return lines;
-}
-
-function escapeXml(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-}
-
-// ─── Catbox upload ────────────────────────────────────────────────
-
-async function uploadCatbox(buffer: Buffer, filename: string): Promise<string> {
-  const fd = new FormData();
-  fd.append("reqtype", "fileupload");
-  // Convertir Buffer → Uint8Array para BlobPart compatibility (TS strict)
-  const uint8 = new Uint8Array(buffer);
-  fd.append("fileToUpload", new Blob([uint8], { type: "image/jpeg" }), filename);
-  const r = await fetch("https://catbox.moe/user/api.php", {
-    method: "POST",
-    body: fd,
-    signal: AbortSignal.timeout(60_000),
-  });
-  if (!r.ok) throw new Error(`catbox HTTP ${r.status}`);
-  const url = (await r.text()).trim();
-  if (!url.startsWith("https://")) throw new Error(`catbox bad: ${url.slice(0, 100)}`);
-  return url;
-}
-
-// ─── Render slide → PNG buffer → JPEG upload ──────────────────────
-
-async function renderSlide(svg: string): Promise<Buffer> {
-  return await sharp(Buffer.from(svg))
-    .jpeg({ quality: 90, progressive: false, chromaSubsampling: "4:2:0" })
-    .toBuffer();
-}
-
-// ─── Endpoint principal ───────────────────────────────────────────
-
 export async function GET(request: NextRequest) {
   const unauthorized = verifyInternalAuth(request);
   if (unauthorized) return unauthorized;
@@ -235,7 +375,16 @@ export async function GET(request: NextRequest) {
   const supabase = createServerSupabase();
   const startedAt = Date.now();
 
-  // Lee briefs de HOY con status=generated
+  // Pre-load fonts (sanity check)
+  try {
+    getFonts();
+  } catch (e) {
+    return NextResponse.json(
+      { ok: false, error: `font load failed: ${e instanceof Error ? e.message : "unknown"}` },
+      { status: 500 },
+    );
+  }
+
   const today = new Date().toISOString().slice(0, 10);
   const { data: briefRows, error: bErr } = await supabase
     .from("daily_briefs")
@@ -249,7 +398,6 @@ export async function GET(request: NextRequest) {
   }
 
   const briefs = (briefRows as BriefRow[]) || [];
-
   if (briefs.length === 0) {
     return NextResponse.json({ ok: true, message: "no briefs to render", date: today });
   }
@@ -264,7 +412,6 @@ export async function GET(request: NextRequest) {
 
   for (const brief of briefs) {
     try {
-      // Cargar el draft asociado
       const { data: draftData, error: dErr } = await supabase
         .from("content_queue")
         .select("id, format, scheduled_at")
@@ -278,18 +425,15 @@ export async function GET(request: NextRequest) {
 
       const draft = draftData as DraftRow;
 
-      // Skip reels (van por render-piece manual)
       if (draft.format === "reel") {
         results.push({ briefId: brief.id, draftId: draft.id, status: "skipped_reel_manual" });
         continue;
       }
 
-      // Marcar brief rendering
       await supabase.from("daily_briefs").update({ status: "rendering" }).eq("id", brief.id);
 
       const briefData = brief.brief as BriefData;
 
-      // Si Claude marcó skip_reason en el brief, marcamos draft skipped
       if (briefData.skip_reason) {
         await supabase
           .from("content_queue")
@@ -303,45 +447,33 @@ export async function GET(request: NextRequest) {
       const slides = briefData.slides || [];
       const caption = briefData.caption || "";
       const hashtags = briefData.hashtags || "";
-
       const imageUrls: string[] = [];
 
       if (draft.format === "carousel") {
-        // Render slides (cap 10 max IG)
         const useSlides = slides.slice(0, 10);
         if (useSlides.length === 0) {
           await supabase.from("daily_briefs").update({ status: "failed", error: "no slides in brief" }).eq("id", brief.id);
           results.push({ briefId: brief.id, draftId: draft.id, status: "failed", error: "no slides" });
           continue;
         }
-
         for (let i = 0; i < useSlides.length; i++) {
           const svg = buildCarouselSlideSvg(useSlides[i], i, useSlides.length);
           const buf = await renderSlide(svg);
           const url = await uploadCatbox(buf, `slide-${draft.id.slice(0, 8)}-${i + 1}.jpg`);
           imageUrls.push(url);
         }
-      } else if (draft.format === "story") {
-        // Render 1 PNG story
+      } else if (draft.format === "story" || draft.format === "post") {
         const headline = briefData.title || briefData.hook || "Dark Room";
         const subline = (briefData.caption || "").split("\n")[0].slice(0, 150);
         const svg = buildStorySvg(headline, subline);
         const buf = await renderSlide(svg);
-        const url = await uploadCatbox(buf, `story-${draft.id.slice(0, 8)}.jpg`);
-        imageUrls.push(url);
-      } else if (draft.format === "post") {
-        const headline = briefData.title || briefData.hook || "Dark Room";
-        const subline = (briefData.caption || "").split("\n")[0].slice(0, 150);
-        const svg = buildStorySvg(headline, subline); // post usa 1080×1920 también para simplificar MVP
-        const buf = await renderSlide(svg);
-        const url = await uploadCatbox(buf, `post-${draft.id.slice(0, 8)}.jpg`);
+        const url = await uploadCatbox(buf, `${draft.format}-${draft.id.slice(0, 8)}.jpg`);
         imageUrls.push(url);
       } else {
         results.push({ briefId: brief.id, draftId: draft.id, status: "skipped_unknown_format" });
         continue;
       }
 
-      // Update content_queue draft → pending
       const { error: uErr } = await supabase
         .from("content_queue")
         .update({
@@ -359,13 +491,7 @@ export async function GET(request: NextRequest) {
       }
 
       await supabase.from("daily_briefs").update({ status: "enqueued" }).eq("id", brief.id);
-
-      results.push({
-        briefId: brief.id,
-        draftId: draft.id,
-        status: "enqueued",
-        image_count: imageUrls.length,
-      });
+      results.push({ briefId: brief.id, draftId: draft.id, status: "enqueued", image_count: imageUrls.length });
     } catch (e) {
       const msg = e instanceof Error ? e.message : "unknown";
       await supabase.from("daily_briefs").update({ status: "failed", error: msg.slice(0, 500) }).eq("id", brief.id);
