@@ -75,7 +75,7 @@ CTA: discreto, conversación abierta. Hashtags: 3 máx.
 >
 > No es revender licencias. No es Adobe gratis. Es algo en medio. Está en zona gris dentro de los términos. Lo asumo yo.
 >
-> 5/ Hoy abro 100 plazas lifetime a 499€ (vs 348€/año recurrente). Para los primeros 100 que aceptan probar.
+> 5/ Hoy abro 100 plazas lifetime a 349€ (vs 298€/año recurrente). Para los primeros 100 que aceptan probar.
 >
 > Si llevas 200€/mes en suscripciones, estás regalando 2400€ al año.
 >
@@ -723,7 +723,7 @@ CTA fuerte (LANZAMIENTO, justifica pitch directo). Hashtags 0 (no encaja con voz
 > 📊 MRR: 1.587€ (objetivo era 440€)
 > 👥 Paid totales: 54 (objetivo: 15)
 > 📩 Emails capturados: 720 (objetivo: 200)
-> 💸 Lifetime deals vendidos: 14 × 499€ = 6.986€
+> 💸 Lifetime deals vendidos: 14 × 349€ = 4.886€
 > 🌐 Visitas a landing: 6.300 (objetivo: 1.500)
 >
 > Aprendizajes:
@@ -746,7 +746,7 @@ CTA fuerte (LANZAMIENTO, justifica pitch directo). Hashtags 0 (no encaja con voz
 > · 1.587€ MRR
 > · 54 paid
 > · 720 emails
-> · 6.986€ lifetime deals
+> · 4.886€ lifetime deals
 > · 0 demandas
 > · 18kg café
 >
