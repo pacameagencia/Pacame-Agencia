@@ -280,8 +280,8 @@ ${v.postscript}`;
     .split(URL_PH).join(linkifiedUrl)
     .split(WA_PH).join(linkifiedWa);
   return {
-    subject: v.subject, text,
-    html: `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="color-scheme" content="light"></head><body style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.65;color:#222;background:#f7f5f0;margin:0;padding:0;"><div style="max-width:600px;margin:0 auto;padding:24px 20px;background:#fff;font-size:15px;">${html}</div></body></html>`,
+    subject: v.subject, preheader: v.preheader, subjectIdx: v.subjectIdx, preheaderIdx: v.preheaderIdx, text,
+    html: `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="color-scheme" content="light"></head><body style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.65;color:#222;background:#f7f5f0;margin:0;padding:0;"><div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#fff;">${v.preheader}</div><div style="max-width:600px;margin:0 auto;padding:24px 20px;background:#fff;font-size:15px;">${html}</div></body></html>`,
   };
 }
 
@@ -328,9 +328,10 @@ async function processLead(lead) {
 
     // 3. Send
     let messageId = null;
+    let payload = null;
     if (!DRY) {
       await pg.query(`update pipeline_runs set step='sending', send_started_at=now() where id=$1`, [runId]);
-      const payload = emailFor(lead, url);
+      payload = emailFor(lead, url);
       const unsubMailto = `mailto:${REPLY_TO}?subject=Unsubscribe%20${encodeURIComponent(lead.email)}`;
       const r = await fetch('https://api.resend.com/emails', {
         method: 'POST',
@@ -365,16 +366,21 @@ async function processLead(lead) {
       generated_at: new Date().toISOString(),
     });
     await pg.query(`
-      insert into prospect_leads (slug, name, email, city, type, cuisine, phone, postal, vercel_url, resend_message_id, sent_at, status, raw, config)
-      values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,now(),'sent',$11,$12)
+      insert into prospect_leads (slug, name, email, city, type, cuisine, phone, postal, vercel_url, resend_message_id, sent_at, status, raw, config, subject_variant, preheader_variant, subject_text, preheader_text)
+      values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,now(),'sent',$11,$12,$13,$14,$15,$16)
       on conflict (slug) do update set
         vercel_url = excluded.vercel_url,
         resend_message_id = coalesce(prospect_leads.resend_message_id, excluded.resend_message_id),
         sent_at = coalesce(prospect_leads.sent_at, excluded.sent_at),
         status = case when prospect_leads.status = 'pending' then 'sent' else prospect_leads.status end,
         config = excluded.config,
+        subject_variant = coalesce(prospect_leads.subject_variant, excluded.subject_variant),
+        preheader_variant = coalesce(prospect_leads.preheader_variant, excluded.preheader_variant),
+        subject_text = coalesce(prospect_leads.subject_text, excluded.subject_text),
+        preheader_text = coalesce(prospect_leads.preheader_text, excluded.preheader_text),
         updated_at = now()
-    `, [lead.slug, lead.name, lead.email.toLowerCase(), lead.city || null, lead.type || null, lead.cuisine || null, lead.phone || null, lead.postal || null, url, messageId, JSON.stringify(lead), configPayload]);
+    `, [lead.slug, lead.name, lead.email.toLowerCase(), lead.city || null, lead.type || null, lead.cuisine || null, lead.phone || null, lead.postal || null, url, messageId, JSON.stringify(lead), configPayload,
+        payload?.subjectIdx ?? null, payload?.preheaderIdx ?? null, payload?.subject ?? null, payload?.preheader ?? null]);
 
     await pg.query(`update pipeline_runs set step='completed', completed_at=now() where id=$1`, [runId]);
     return { ok: true, url, messageId };
