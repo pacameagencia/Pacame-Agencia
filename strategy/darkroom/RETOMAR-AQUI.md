@@ -1,8 +1,8 @@
 # RETOMAR-AQUI · Punto de entrada DARK_FRAMES
 
-> **Si abres un nuevo chat de Claude Code y la conversación menciona DARK_FRAMES, cinemáticas IA, reels @pacamespain, o continuación del trabajo creativo de mayo 2026 → LEE ESTE ARCHIVO PRIMERO.**
+> **Si abres un nuevo chat de Claude Code y la conversación menciona DARK_FRAMES, cinemáticas IA, reels @pacamespain, calendario mayo 2026, lanzamiento Dark Room, o continuación del trabajo creativo → LEE ESTE ARCHIVO PRIMERO.**
 
-> **Última actualización**: 2026-05-07 · commit `ed6b74c` (PR #122 merged a main).
+> **Última actualización**: 2026-05-07 (segunda iteración) · PR #122 (pipeline DARK_FRAMES) + PR #124 (continuidad) + nuevo doc maestro calendario 24 días [`strategy/calendario-7may-31may-2026.md`](../calendario-7may-31may-2026.md).
 
 ---
 
@@ -22,7 +22,10 @@ Objetivo de Pablo declarado textual el 7-may: *"crear contenido TOP TOP de últi
 
 ## Mapa de archivos críticos (lee en este orden)
 
-### 1. Brand bible serie
+### 0. ⭐ Calendario maestro 24 días (7-may → 31-may 2026)
+[`strategy/calendario-7may-31may-2026.md`](../calendario-7may-31may-2026.md) — **plan completo** · 232 piezas · 3 fases lanzamiento (educar/introducir/drop Lifetime) · quality gate research-first escalado por tier (cine/noticia/trend) · 24 cards día por día · pricing canónico 349€ Lifetime · KPIs target periodo. **El doc maestro vivo del periodo**.
+
+### 1. Brand bible serie DARK_FRAMES
 [`strategy/darkroom/serie-dark-frames.md`](./serie-dark-frames.md) — visión + 16 conceptos + 13 reglas duras + tier system + pipeline técnico.
 
 ### 2. Pipeline técnico
@@ -49,28 +52,33 @@ Objetivo de Pablo declarado textual el 7-may: *"crear contenido TOP TOP de últi
 
 ## Reglas de memoria activas (cargadas auto en cada chat)
 
-Las 5 reglas que rigen el trabajo cinemático están en `C:\Users\Pacame24\.claude\projects\c--Users-Pacame24-Downloads-PACAME-AGENCIA\memory\` y se cargan solas:
+Las 6 reglas que rigen el trabajo creativo @pacamespain están en `C:\Users\Pacame24\.claude\projects\c--Users-Pacame24-Downloads-PACAME-AGENCIA\memory\` y se cargan solas:
 
-1. **`feedback_cine_real_research_first.md`** — antes de cualquier prompt: investigar referente real (DP, lentes, LUT, ritmo, audio). Render-piece BLOQUEA si research vacío.
-2. **`feedback_calidad_top_aprovecha_unlimited.md`** — Cinema Studio Video 3.0 / Seedance 2.0 default cinemático. NO Veo. Ahorrar solo en piezas funcionales.
-3. **`feedback_calidad_top_no_pilotos.md`** — calidad TOP siempre. Prohibido tests/pilotos en feed real.
-4. **`feedback_no_video_auto.md`** REVISADA 2026-05-07 — auto-publish OK con quality gate (la regla anterior "nunca auto" fue revisada).
-5. **`feedback_doble_aprobacion_videos.md`** — modelos premium requieren 2 SÍ Pablo + cost-guard token (≥16 chars).
+1. **`feedback_cine_real_research_first.md`** — antes de cualquier prompt cine: investigar referente real (DP, lentes, LUT, ritmo, audio). Render-piece BLOQUEA si research vacío.
+2. **`feedback_research_first_escalado_por_tier.md`** ⭐ NUEVA — research-first se aplica a TODO contenido @pacamespain (no solo DARK_FRAMES) escalado por tier: `cine` (hero) · `noticia` (carruseles con source_url verificable) · `trend` (stories con Apify scrape ID). Tier 0 = bloquea si no cumple.
+3. **`feedback_calidad_top_aprovecha_unlimited.md`** — Cinema Studio Video 3.0 / Seedance 2.0 default cinemático. NO Veo. Ahorrar solo en piezas funcionales con unlimited del plan Plus.
+4. **`feedback_calidad_top_no_pilotos.md`** — calidad TOP siempre. Prohibido tests/pilotos en feed real.
+5. **`feedback_no_video_auto.md`** REVISADA 2026-05-07 — auto-publish OK con quality gate.
+6. **`feedback_doble_aprobacion_videos.md`** — modelos premium requieren 2 SÍ Pablo + cost-guard token (≥16 chars).
 
 ---
 
-## Estado actual (snapshot 7-may-2026)
+## Estado actual (snapshot 7-may-2026 · segunda iteración)
 
 | Item | Estado |
 |---|---|
-| Backend (migration + publishReel + auto-publish) | ✅ Producción |
+| Backend DARK_FRAMES (migration + publishReel + auto-publish) | ✅ Producción |
 | Pipeline tools/dark-frames/ | ✅ Listo |
 | Outro Dark Room 2s | ✅ Generado y verificado (`tools/dark-frames/assets/outro-darkroom-2s.mp4`) |
 | 4 conceptos schema v2 + moodboards research-first | ✅ Listos para renderizar |
+| ⭐ Doc maestro calendario 24 días (7-may → 31-may) | ✅ Creado · `strategy/calendario-7may-31may-2026.md` |
+| ⭐ Regla research-first escalado por tier (cine/noticia/trend) | ✅ Memoria persistente activa |
+| ⭐ Pricing canónico 349€ Lifetime alineado en banco-contenido | ✅ |
 | Render real concept 001 | ⚠️ Pendiente · requiere doble OK Pablo + cost-guard |
 | Visual-reviewer subagent sobre primer corte | ⏸ Pendiente tras render real |
-| Enqueue + auto-publish primer reel | ⏸ Pendiente tras visual approval |
-| Calendario mayo actualizado | ✅ Sección 4+5 reflejan DARK_FRAMES |
+| Enqueue + auto-publish primer reel + carrusel C1 Factura IA | ⏸ Pendiente · arranque mañana 8-may |
+| Pipeline auto generate-brief con tier `noticia` source_url | ⚠️ Stub · pendiente implementar bloqueo en `/api/agents/generate-brief` |
+| Composer stories con tier `trend` apify_scrape_id | ⚠️ Stub · pendiente implementar bloqueo en `compose-stories.mjs` |
 
 ---
 
