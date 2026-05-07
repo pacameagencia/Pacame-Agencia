@@ -1,0 +1,11 @@
+{
+  "name": "dark-frames",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Pipeline cinemáticas IA DARK_FRAMES para @pacamespain — auto-publish con quality gate de 8 checks.",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.105.3",
+    "sharp": "^0.34.5"
+  }
+}

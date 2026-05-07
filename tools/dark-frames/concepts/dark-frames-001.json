@@ -1,0 +1,148 @@
+{
+  "concept_id": "dark-frames-001",
+  "title": "Sci-fi · pasillo Wallace Corp neón",
+  "series_hashtag": "#DarkFrames",
+  "version": 2,
+  "schema_version": 2,
+  "created_at": "2026-05-07",
+
+  "tier": "top",
+  "duration_target_s": 8,
+  "aspect_ratio": "9:16",
+  "resolution": "1080x1920",
+  "structure_template": "vignette_atmospheric",
+
+  "moodboard": "moodboards/dark-frames-001.md",
+
+  "logline": "Vignette atmosférica 8s sin diálogo. Agente camina por pasillo corporativo distópico tipo Wallace Corp. Composición Villeneuve centered symmetry, ritmo Deakins (3-5 tomas/min → solo 1-2 tomas en 8s, slow dolly <0.3 ft/s). Outro Dark Room 2s = total 10s.",
+
+  "research": {
+    "references": [
+      "Blade Runner 2049 (2017) · dir. Denis Villeneuve",
+      "Wallace Corp scene (Adam's bunker amber+green)",
+      "K en Los Angeles aerial sequence opening (cool teal)"
+    ],
+    "dp_references": [
+      "Roger Deakins ASC (DP)",
+      "single key source philosophy",
+      "wall of light technique"
+    ],
+    "lens_specs": [
+      "ARRI Alexa 65 sensor format",
+      "Zeiss Master Anamorphic 50mm T2.8 (anamorphic 1.3x ratio, no 2x)",
+      "shallow-to-moderate DOF (T2.8-T4 range)"
+    ],
+    "lut_reference": "DaVinci Resolve custom grade · cool teal base 4500K · shadows verde-gris · highlights cream · saturation -15% vs digital native · curve S extrema en blacks · ref Wallace Corp sequence amber+green neon hybrid",
+    "pacing_template": "vignette atmospheric · 2 tomas en 8s (4s establishing + 4s detail close) · ritmo 15 takes/min (Villeneuve) NO ritmo Hollywood standard 30 takes/min",
+    "audio_references": [
+      "Hans Zimmer · 'Mesa' BR2049 OST · drone subgrave 40-60Hz baseline",
+      "Benjamin Wallfisch · '2049' minimalist piano single sustained note",
+      "sound design: silencio >2s entre eventos · subgrave constante interiores (stress psicoacústica)",
+      "no music swell · ambient hum + foot reverb · single UI beep al final scan"
+    ],
+    "research_sources": [
+      "American Cinematographer Magazine Feb 2017 · Deakins exclusive interview",
+      "Roger Deakins official forum 2017 (rogerdeakins.com)",
+      "Hans Zimmer masterclass Scoring Notes 2017",
+      "Villeneuve interview Cahiers du Cinéma 2017"
+    ]
+  },
+
+  "shots": [
+    {
+      "shot": 1,
+      "duration_s": 4,
+      "kind": "video",
+      "tier": "top",
+      "model_override": null,
+      "structure_role": "establishing wide · centered symmetry · agent silhouetted approaching",
+      "prompt": "ultra cinematic vertical 9:16 reel, lone silhouetted agent in long black trench coat walking slowly toward camera through a vast Wallace Corp futuristic corporate hallway, walls lined with vertical acid green neon strips #CFFF00, single key tungsten light source from above-front motivated by ceiling fixture (Roger Deakins single source philosophy), atmospheric haze and volumetric light shafts, wet polished concrete floor doubling neon strips in reflection, anamorphic 1.3x lens characteristics with horizontal flare on neon strips, shallow depth of field T2.8 isolating agent against vast space (Villeneuve centered symmetry composition with 70% environment 30% subject), slow dolly forward 0.2 ft/s tracking the agent, color grade cool teal 4500K base with green-amber hybrid highlights inspired by BR2049 Wallace Corp grade, saturation -15% vs default, photorealistic 8K detail, no text, no logos, no faces visible",
+      "negative_prompt": "smiling person, generic stock, watermark, low quality, deformed hands, text overlay, faces visible, oversaturated, shaky camera, handheld, fast cut",
+      "validation_must_have": [
+        "vertical neon strips clearly visible on walls",
+        "single dominant light source (no multi-fill flat lighting)",
+        "wet floor reflection multiplying neon",
+        "agent silhouette centered in frame · NOT off-center",
+        "anamorphic horizontal lens flare on neon"
+      ]
+    },
+    {
+      "shot": 2,
+      "duration_s": 4,
+      "kind": "video",
+      "tier": "top",
+      "model_override": null,
+      "structure_role": "detail close-up · push-in · biometric scan moment · single UI beep cue audio",
+      "prompt": "vertical 9:16 cinematic continuation, extreme close-up of the agent's gloved hand pressing against an acid green biometric door panel #CFFF00, fingerprint scan beam acid green sweeping vertically across hand, single floating holographic UI element (no readable text, just abstract geometric shapes) in mid-air beside the panel, deep blacks in shadow areas, fine 35mm grain texture, single key tungsten light from upper-right (Roger Deakins ASC signature), Zeiss Master Anamorphic 50mm characteristics with shallow DOF T2.8, very slow push-in dolly 0.1 ft/s, color grade Wallace Corp BR2049 amber+green hybrid (DaVinci Resolve custom curve), photorealistic 8K, no text, no faces, no logos",
+      "negative_prompt": "readable text in holographic UI, watermark, smiling, generic UI, faces, multi-source flat lighting, oversaturated, fast camera move",
+      "validation_must_have": [
+        "single key light direction (upper-right)",
+        "no readable text in holographic UI",
+        "biometric scan beam acid green clearly visible",
+        "depth of field blur in background",
+        "slight grain texture (no plastic-clean look)"
+      ]
+    }
+  ],
+
+  "audio": {
+    "voice_over": null,
+    "music": {
+      "style": "Hans Zimmer · BR2049 'Mesa' style drone subgrave 40-60Hz baseline + single sustained piano note (Wallfisch)",
+      "duration_s": 8,
+      "lufs_target": -16,
+      "suno_keywords": "Hans Zimmer Vangelis Blade Runner 2049 atmospheric drone subgrave dark cinematic minimalist single piano note sustained",
+      "key": "A minor",
+      "tempo_bpm": "no perceptible · sustained drone"
+    },
+    "sfx": [
+      { "at_s": 0, "name": "atmospheric_hum_continuous", "description": "subgrave 40Hz constant interior hum (stress psicoacústica BR2049)" },
+      { "at_s": 0.5, "name": "footstep_reverb_distant", "description": "single footstep with long reverb tail · ref Sapper Morton opening sound design" },
+      { "at_s": 4.0, "name": "ui_scan_beep_acid", "description": "single high-frequency UI beep when biometric scan triggers · NO comp swell" },
+      { "at_s": 6.5, "name": "silence_2s_breath", "description": "silencio estratégico >2s · ref Villeneuve breathing room" },
+      { "at_s": 7.5, "name": "fade_to_outro", "description": "fade out hum into outro Dark Room" }
+    ]
+  },
+
+  "captions_burned": [
+    {
+      "at_s": 0,
+      "duration_s": 2,
+      "text": "2087 · WALLACE CORP",
+      "font": "JetBrains Mono",
+      "size_px": 38,
+      "color": "#F2F2F2",
+      "position": "top-left-safe",
+      "animation": "fade_in_0.4s_letter_by_letter",
+      "tracking_pct": 5
+    }
+  ],
+
+  "outro": {
+    "use_template": "tools/dark-frames/assets/outro-darkroom-2s.mp4",
+    "duration_s": 2,
+    "concat_at_end": true
+  },
+
+  "caption_text": "Esto no existe. Lo generé en 12 minutos.\n\nReferente real: Blade Runner 2049 · DP Roger Deakins · ARRI Alexa 65 · Zeiss Master Anamorphic 50mm · grading Wallace Corp\nStack: Cinema Studio Video 3.0 + Suno (drone Zimmer-style)\nCoste real: ~$0.40\nTiempo total: 12 min (research + render + edit)\n\nAcceso a este stack en bio · Dark Room · 24,90€/mes",
+  "caption_hashtags": "#DarkFrames #IA #SciFi #BladeRunner2049 #RogerDeakins #cinematicAI #darkroomcreative",
+
+  "estimated_cost_credits": 0,
+  "estimated_cost_usd": 0.40,
+  "estimated_render_time_min": 12,
+
+  "approval_required": {
+    "pablo_double_yes": true,
+    "cost_guard_token": true,
+    "reason": "tier=top usa Cinema Studio Video 3.0 (premium · documentado en feedback_doble_aprobacion_videos.md y feedback_calidad_top_aprovecha_unlimited.md)"
+  },
+
+  "validation_checklist_extra": [
+    "técnica Deakins citada en prompts (single key, anamorphic, centered symmetry)",
+    "audio Zimmer/Wallfisch style con drone subgrave y silencio estratégico >2s",
+    "ritmo Villeneuve (2 tomas en 8s, NO 4-5 tomas como Hollywood standard)",
+    "rostro NUNCA legible (silueta + close hand only)",
+    "outro Dark Room a partir del segundo 8 (durante 2s)",
+    "verificar grading cool teal + green-amber hybrid (NO verde Matrix puro NI cyan oversaturated)"
+  ]
+}

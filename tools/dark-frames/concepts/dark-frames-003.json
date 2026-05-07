@@ -1,0 +1,188 @@
+{
+  "concept_id": "dark-frames-003",
+  "title": "GTA 7 leak supuesto · Tokio nocturno POV",
+  "series_hashtag": "#DarkFrames",
+  "version": 2,
+  "schema_version": 2,
+  "created_at": "2026-05-07",
+
+  "tier": "top",
+  "duration_target_s": 10,
+  "aspect_ratio": "9:16",
+  "resolution": "1080x1920",
+  "structure_template": "pov_immersive",
+
+  "moodboard": "moodboards/dark-frames-003.md",
+
+  "logline": "POV first-person inmersivo 10s sin diálogo. Caminar por Shibuya Crossing nocturno hiperreal lluvia neón, cámara virtual estilo Rockstar GTA cinematics + estética fotográfica Lance Acord (Lost in Translation 2003). HUD minimal acid #CFFF00 bottom-right minimap. Shot 2 cámara gira hacia arriba revelando koi/dragón holográfico magenta/cyan entre rascacielos = momento wow. La duda '¿es real, juego o IA?' es el motor viral.",
+
+  "research": {
+    "references": [
+      "Lost in Translation (2003) · dir. Sofia Coppola · DP Lance Acord (Tokyo Shibuya documentary feel)",
+      "Drive (2011) · dir. Refn · DP Newton Thomas Sigel (neon rain Sony F35)",
+      "John Wick: Chapter 4 (2023) · DP Dan Laustsen (urban neon-rain reference)",
+      "Cyberpunk 2077 + Edgerunners (CD Projekt Red · REDengine 4 ray tracing post patch 1.5)",
+      "GTA V Los Santos cinematics + GTA VI Vice City trailer 2023 (Rockstar RAGE engine)"
+    ],
+    "dp_references": [
+      "Lance Acord (Lost in Translation Tokyo · Zeiss Master Anamorphic 40mm T2.1 documented American Cinematographer 2003)",
+      "Newton Thomas Sigel (Drive 2011 neon rain Sony F35 · Panavision C Series 40mm anamorphic)",
+      "Dan Laustsen (John Wick 4 urban neon · Cooke S4/i Prime 32mm 50mm anamorphic)"
+    ],
+    "lens_specs": [
+      "POV first-person walking equivalente: Cooke S4/i 32mm prime spherical (NO anamorphic POV would feel wrong)",
+      "Aperture: f/2.8 ISO equivalent 3200 (low-light night documented Sigel/Acord)",
+      "Long exposure NIGHT effect: motion blur per-object 12ms equivalent (GTA V cinematics technical wiki)",
+      "FOV POV: 45-50° (GTA V cinematics modding community reference, NO oficial Rockstar)",
+      "Subtle head bobbing +2° vertical lerp · walking pace 1.4 m/s natural human gait"
+    ],
+    "lut_reference": "Cyberpunk 2077 Night City Westbrook district reference · saturation +18% magenta and cyan channels selectively · highlights pushed neon (volumetric halo on signs) · blacks lifted +12 IRE (street wet asphalt detail) · subsurface scattering on neon signage glow · anime-influenced post-production saturation shift Edgerunners · long exposure trail capture on car headlights (1/4-1/8s equivalent ISO 800-3200 documented Drive Sigel + Lost in Translation Acord)",
+    "pacing_template": "POV immersive · 10s total (sin outro) · 2 shots largos (5s + 5s) · NO cuts agresivos · solo head turn lerp suave entre shots · cero match cuts · sensación gameplay continuo · contemplativo no kinetic",
+    "audio_references": [
+      "Cyberpunk 2077 score · P. T. Adamczyk + Marcin Przybyłowicz · synthwave + drum'n'bass 120-130 BPM",
+      "Akira (1987) Otomo soundtrack · taiko atmospheric tracks · cyberpunk Tokyo ambient",
+      "Diegetic dominant: rain heavy continuous · Tokyo Shibuya crowd murmur low · neon sign electric buzz pan stereo · steam manhole hiss · distant traffic bass",
+      "Music ambient/atmospheric · NO percussive · pad-driven cinematic · ethereal whoosh on holographic koi reveal shot 2",
+      "LUFS target -16 cinema · subgrave 40Hz constant under crowd ambient (subliminal psychological pressure)"
+    ],
+    "research_sources": [
+      "American Cinematographer 2003 · Lance Acord Lost in Translation interview",
+      "American Cinematographer 2012 · Newton Thomas Sigel Drive feature",
+      "CD Projekt Red GDC 2020 lighting architecture presentation",
+      "GTA modding technical wikis (gtalib.com · NO oficial Rockstar)",
+      "Variety + IndieWire John Wick 4 cinematography analysis 2023"
+    ]
+  },
+
+  "shots": [
+    {
+      "shot": 1,
+      "duration_s": 5,
+      "kind": "video",
+      "tier": "top",
+      "model_override": null,
+      "structure_role": "POV walking Shibuya Crossing immersive · 5s continuous no cuts · GTA V cinematic foundation",
+      "prompt": "POV first person walking pace 1.4 m/s at child-adult eye-level 170cm through Shibuya Crossing Tokyo at night during heavy rain, dense crowd of pedestrians crossing in parallel and oncoming, neon billboards verticales magenta and cyan reflecting in wet asphalt with long exposure trail capture style Drive Newton Thomas Sigel reference, subtle head bobbing +2 degrees vertical natural gait cycle, motion blur per-object 12ms GTA V cinematics technical foundation, FOV 45-50 degrees POV first-person, hyper-realistic video game cinematic style PS6 Cyberpunk 2077 REDengine 4 ray tracing quality (post patch 1.5 documented), Lance Acord Lost in Translation Tokyo Shibuya documentary feel reference, anime billboards in Japanese with NO readable kanji or letters (IA fallaría), Cooke S4/i 32mm spherical lens equivalent f/2.8 ISO 3200 low-light night, vertical 9:16 native framing (NOT letterboxed for gameplay sensation), photorealistic 8K, no faces clearly visible, no logos, no text overlay yet (HUD applied in post)",
+      "negative_prompt": "low quality, generic stock, watermark, readable kanji or japanese text, smiling faces, daytime, cleaned up plastic look, oversaturated cyberpunk anime 2D explicit, anamorphic letterbox black bars, wide shot 3rd person",
+      "validation_must_have": [
+        "vertical 9:16 nativo NO letterboxed (gameplay feel)",
+        "POV first-person eye-level walking pace",
+        "subtle head bobbing visible",
+        "rain heavy continuous on wet asphalt with neon reflections",
+        "neon billboards magenta/cyan dominant",
+        "kanji/letters NUNCA legibles",
+        "rostros NUNCA legibles",
+        "long exposure trail capture en luces (Drive style)"
+      ]
+    },
+    {
+      "shot": 2,
+      "duration_s": 5,
+      "kind": "video",
+      "tier": "top",
+      "model_override": null,
+      "structure_role": "POV head-turn-up reveal · holographic koi/dragon between skyscrapers · WOW moment · transition to outro",
+      "prompt": "POV first person continuation, camera turns slowly upward 0-60 degrees over 3 seconds revealing massive holographic koi fish swimming through the air between Tokyo skyscrapers, neon magenta and acid green glow #FF00FF #CFFF00 emanating from the holographic koi, hyper-realistic game cinematic Cyberpunk 2077 Night City Westbrook district reference, vertical 9:16 native gameplay framing, rain falling diagonally cutting through neon light shafts volumetric, motion blur subtle on rain particles, anamorphic-style lens flare on neon billboards (post effect, lens itself spherical 32mm equivalent), Lance Acord Lost in Translation melancólico Tokyo aesthetic mixed with Cyberpunk Edgerunners saturation +18% magenta/cyan channels, photorealistic PS6 quality with REDengine 4 ray tracing on neon volumetric halo subsurface scattering, no readable text on signs, no readable kanji, no faces visible, no logos",
+      "negative_prompt": "watermark, low quality, generic stock, daytime, smiling faces, readable kanji, anime 2D explicit Akira style, fast camera turn, abrupt cut, cleaned up plastic CGI look",
+      "validation_must_have": [
+        "head-turn-up motion 0-60deg smooth over 3s",
+        "holographic koi visible mid-frame between skyscrapers",
+        "magenta/cyan/acid glow from koi",
+        "rain particles volumetric in light shafts",
+        "vertical 9:16 nativo gameplay feel",
+        "no kanji/text legible",
+        "smooth NOT abrupt camera move"
+      ]
+    }
+  ],
+
+  "audio": {
+    "voice_over": null,
+    "music": {
+      "style": "Cyberpunk 2077 atmospheric P. T. Adamczyk style synthwave pad + Akira taiko distant atmospheric",
+      "duration_s": 10,
+      "lufs_target": -16,
+      "suno_keywords": "Cyberpunk 2077 P. T. Adamczyk Marcin Przybylowicz synthwave atmospheric Tokyo cyberpunk ambient pad-driven Akira taiko distant rain night ethereal",
+      "key": "F minor",
+      "tempo_bpm": "slow drone 70bpm · pad-driven · no perceptible beat · ethereal swell on koi reveal"
+    },
+    "sfx": [
+      { "at_s": 0, "name": "rain_heavy_loop", "description": "rain heavy continuous on wet asphalt + occasional drops on metal/umbrella · loop" },
+      { "at_s": 0, "name": "tokyo_crowd_murmur", "description": "Shibuya crowd murmur low + occasional snippets Japanese conversation (no specific words audible) · pan stereo" },
+      { "at_s": 0, "name": "subgrave_40hz_psych", "description": "subliminal subgrave 40Hz constant under everything (psychological pressure)" },
+      { "at_s": 2, "name": "neon_buzz", "description": "neon sign electric buzz · pan right stereo · subtle" },
+      { "at_s": 4, "name": "car_horns_distant", "description": "muffled car horns distant traffic" },
+      { "at_s": 5, "name": "transition_breath", "description": "slight pause/breath as POV begins to look up" },
+      { "at_s": 6, "name": "koi_holo_whoosh", "description": "ethereal whoosh as holographic koi swims through frame · pan stereo center to right" },
+      { "at_s": 8, "name": "music_swell_subtle", "description": "music ambient swell underscoring koi reveal · NO bombast" },
+      { "at_s": 10, "name": "fade_to_outro", "description": "fade out into Dark Room outro 2s" }
+    ]
+  },
+
+  "captions_burned": [
+    {
+      "at_s": 0,
+      "duration_s": 1.5,
+      "text": "GTA 7 · TOKYO DLC · LEAK",
+      "font": "Anton",
+      "size_px": 56,
+      "color": "#CFFF00",
+      "position": "top-center-safe",
+      "animation": "glitch_in_0.4s_chromatic_aberration",
+      "tracking_pct": 0
+    },
+    {
+      "at_s": 8.5,
+      "duration_s": 1.5,
+      "text": "¿LO COMPRARÍAS?",
+      "font": "Anton",
+      "size_px": 72,
+      "color": "#F2F2F2",
+      "position": "center-safe",
+      "animation": "punch_in_0.2s_with_neon_glow"
+    }
+  ],
+
+  "hud_overlay": {
+    "minimap_corner": "bottom-right",
+    "minimap_style": "circular acid green wireframe #CFFF00 60% opacity radius 70px · 80px from edge safe",
+    "minimap_content": "1 dot pulsando 2Hz (player) + 4 dots distantes static (NPCs) · NO labels NO compass NO stamina bar NO ammo",
+    "compass_top": false,
+    "stamina_bar": false,
+    "ammo_indicator": false,
+    "design_intent": "HUD MUY sutil · vendemos la duda no afirmamos juego · si parece demasiado HUD = MAL"
+  },
+
+  "outro": {
+    "use_template": "tools/dark-frames/assets/outro-darkroom-2s.mp4",
+    "duration_s": 2,
+    "concat_at_end": true
+  },
+
+  "caption_text": "Esto se filtró ayer. Spoiler: no es real.\n\nReferentes reales: Lost in Translation · DP Lance Acord (Tokyo Shibuya) · Drive · DP Newton Thomas Sigel · Cyberpunk 2077 REDengine 4 · GTA V cinematics (Rockstar)\nStack: Cinema Studio Video 3.0 + Suno + ffmpeg HUD overlay post\nCoste real: ~$1.00\nTiempo total: 22 min\n\nLa duda es el motor. Acceso a este stack en bio · Dark Room · 24,90€/mes",
+  "caption_hashtags": "#DarkFrames #IA #GTA7 #Tokio #cyberpunk #fakeleak #Cyberpunk2077 #darkroomcreative",
+
+  "estimated_cost_credits": 0,
+  "estimated_cost_usd": 1.00,
+  "estimated_render_time_min": 22,
+
+  "approval_required": {
+    "pablo_double_yes": true,
+    "cost_guard_token": true,
+    "reason": "tier=top × 2 shots video premium · suma ~$1.00 · POV con multitud requiere SOTA"
+  },
+
+  "validation_checklist_extra": [
+    "técnica Lance Acord citada (Tokyo Shibuya documentary feel · Zeiss Master Anamorphic 40mm reference adaptado a spherical 32mm POV)",
+    "técnica Newton Thomas Sigel citada (long exposure neon rain Drive style)",
+    "GTA V cinematics technical (FOV 45-50 · head bobbing · motion blur per-object) · disclaimer: NO oficial Rockstar",
+    "Cyberpunk 2077 REDengine 4 ray tracing referencia (post patch 1.5)",
+    "vertical 9:16 NATIVO ambos shots (NO letterbox, queremos gameplay sensation)",
+    "kanji/text NUNCA legibles ningún shot",
+    "rostros NUNCA legibles",
+    "HUD minimap MUY sutil (60% opacity · sin labels)",
+    "head-turn-up suave en shot 2 (3s para 60deg)",
+    "outro Dark Room a partir del segundo 10",
+    "audio: subgrave 40Hz constante + diegetic dominant (rain/crowd/neon)"
+  ]
+}

@@ -20,7 +20,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyInternalAuth } from "@/lib/api-auth";
 import { logAgentActivity } from "@/lib/agent-logger";
 import { createServerSupabase } from "@/lib/supabase/server";
-import { publishCarousel, publishPost, publishStory } from "@/lib/instagram";
+import { publishCarousel, publishPost, publishStory, publishReel } from "@/lib/instagram";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -30,8 +30,9 @@ interface QueueRow {
   scheduled_at: string;
   brand: "darkroom" | "pacame";
   slot: string | null;
-  format: "carousel" | "post" | "story";
-  image_urls: string[];
+  format: "carousel" | "post" | "story" | "reel";
+  image_urls: string[] | null;
+  video_url: string | null;
   caption: string;
   hashtags: string | null;
   attempts: number;
@@ -49,7 +50,7 @@ export async function GET(request: NextRequest) {
 
   const { data: rows, error: qErr } = await supabase
     .from("content_queue")
-    .select("id, scheduled_at, brand, slot, format, image_urls, caption, hashtags, attempts")
+    .select("id, scheduled_at, brand, slot, format, image_urls, video_url, caption, hashtags, attempts")
     .eq("status", "pending")
     .lte("scheduled_at", now)
     .lt("attempts", MAX_ATTEMPTS)
@@ -78,19 +79,39 @@ export async function GET(request: NextRequest) {
       let res: { success: boolean; postId?: string; error?: string };
 
       if (row.format === "carousel") {
-        const items = row.image_urls.map((url) => ({ imageUrl: url }));
-        res = await publishCarousel(items, row.caption, row.hashtags || undefined);
+        if (!row.image_urls || row.image_urls.length === 0) {
+          res = { success: false, error: "carousel sin image_urls" };
+        } else {
+          const items = row.image_urls.map((url) => ({ imageUrl: url }));
+          res = await publishCarousel(items, row.caption, row.hashtags || undefined);
+        }
       } else if (row.format === "post") {
-        res = await publishPost({
-          imageUrl: row.image_urls[0],
-          caption: row.caption,
-          hashtags: row.hashtags || undefined,
-        });
+        if (!row.image_urls || !row.image_urls[0]) {
+          res = { success: false, error: "post sin image_urls[0]" };
+        } else {
+          res = await publishPost({
+            imageUrl: row.image_urls[0],
+            caption: row.caption,
+            hashtags: row.hashtags || undefined,
+          });
+        }
       } else if (row.format === "story") {
-        // Stories: 1 sola imagen 9:16, sin caption ni hashtags (IG los ignora).
-        res = await publishStory(row.image_urls[0]);
+        if (!row.image_urls || !row.image_urls[0]) {
+          res = { success: false, error: "story sin image_urls[0]" };
+        } else {
+          // Stories: 1 sola imagen 9:16, sin caption ni hashtags (IG los ignora).
+          res = await publishStory(row.image_urls[0]);
+        }
+      } else if (row.format === "reel") {
+        // Reels: video_url MP4 9:16 5-90s. Quality gate ya validó antes de enqueue
+        // (regla feedback_no_video_auto.md revisada 2026-05-07).
+        if (!row.video_url) {
+          res = { success: false, error: "reel sin video_url" };
+        } else {
+          res = await publishReel(row.video_url, row.caption, row.hashtags || undefined);
+        }
       } else {
-        res = { success: false, error: `format ${row.format} no soportado todavía` };
+        res = { success: false, error: `format ${row.format} no soportado` };
       }
 
       if (res.success && res.postId) {

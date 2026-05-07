@@ -2,6 +2,10 @@
 web/node_modules/
 node_modules/
 
+# Tools outputs (binarios renderizados · no versionar)
+tools/dark-frames/output/
+tools/dark-frames/assets/.tmp-outro/
+
 # Next.js
 web/.next/
 web/out/
