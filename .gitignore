@@ -59,6 +59,8 @@ yarn-error.log*
 .claude/skills/**
 !.claude/skills/INDEX.md
 !.claude/skills/INDEX.json
+!.claude/skills/pacame-storybook-3d/
+!.claude/skills/pacame-storybook-3d/**
 
 # Scratchpads de herramientas (no versionar)
 .agents/

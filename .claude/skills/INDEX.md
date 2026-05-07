@@ -1,8 +1,8 @@
 # .claude/skills/INDEX — autogenerado
 
-> Generado: `2026-05-07T19:10:10.449Z`
+> Generado: `2026-05-07T20:02:00.874Z`
 >
-> **Total skills únicos:** 131 | Archivos escaneados: 133 | Duplicados saltados: 1 | Sin frontmatter: 1
+> **Total skills únicos:** 132 | Archivos escaneados: 134 | Duplicados saltados: 1 | Sin frontmatter: 1
 >
 > **Regenerar:** `node tools/scripts/build-skills-index.mjs`
 
@@ -17,7 +17,7 @@
 - [Git / Release](#git-release) — 1 skills
 - [Integraciones](#integraciones) — 39 skills
 - [Meta / Tooling](#meta-tooling) — 1 skills
-- [PACAME Custom](#pacame-custom) — 25 skills
+- [PACAME Custom](#pacame-custom) — 26 skills
 - [Research / Content](#research-content) — 1 skills
 - [Social / Content](#social-content) — 9 skills
 - [Testing / QA](#testing-qa) — 1 skills
@@ -153,6 +153,7 @@
 | `Lead_Qualification_Scorer` | Use when a new lead comes in to score, qualify, and determine next steps. Analyzes the lead's website, business, and fit with PACAME service | `.claude/skills/lead-qualification.md` |
 | `nano-banana` | REQUIRED for all image generation requests. Generate and edit images using Nano Banana (Gemini CLI). Handles blog featured images, YouTube t | `.claude/skills/nano-banana/SKILL.md` |
 | `pacame-contenido` | Skill maestra PACAME para producción de contenido para Dark Room (capa 3) y PACAME (capa 1) — carruseles, stories, reels, posts, WhatsApp me | `.claude/skills/pacame-contenido/SKILL.md` |
+| `pacame-storybook-3d` | Skill local del rediseño pacameagencia.com → Storybook 3D enfocado a captar leads cualificados. Mapa 3D isométrico con 5 islas (servicios PA | `.claude/skills/pacame-storybook-3d/SKILL.md` |
 | `pacame-viral-visuals` | Skill PACAME para generar fotos, carruseles y vídeos virales inspirados en lo que está rompiendo en Instagram AHORA MISMO. Antes de generar  | `.claude/skills/pacame-viral-visuals/SKILL.md` |
 | `pacame-web` | Meta-orquestador PACAME para construir CUALQUIER tipo de web, desde una landing de conversión de una sola página hasta un SaaS complejo con  | `.claude/skills/pacame-web/SKILL.md` |
 | `SEO_Audit_Generator` | Use when asked to audit SEO, generate content clusters, analyze keywords, or create SEO strategy for a client website. | `.claude/skills/seo-audit.md` |
