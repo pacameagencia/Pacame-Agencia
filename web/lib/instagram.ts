@@ -362,6 +362,85 @@ export async function publishCarousel(
   }
 }
 
+/**
+ * Publish a Reel (video 9:16 1080×1920, 5-90s).
+ * Usa media_type=REELS (Graph API v21+). El video debe estar en una URL pública
+ * accesible por IG (catbox.moe sirve). IG tarda ~30-60s en procesar el container
+ * antes de poder publicarlo, por eso esperamos + reintentamos status hasta READY.
+ */
+export async function publishReel(
+  videoUrl: string,
+  caption: string,
+  hashtags?: string,
+): Promise<{ success: boolean; postId?: string; error?: string }> {
+  const fullCaption = [caption, hashtags].filter(Boolean).join("\n\n");
+
+  try {
+    // Step 1: Create REELS container
+    const containerRes = await fetch(`${GRAPH_FB_API}/${igAccountId}/media`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        media_type: "REELS",
+        video_url: videoUrl,
+        caption: fullCaption,
+        share_to_feed: true,
+        access_token: resolveToken(),
+      }),
+    });
+
+    if (!containerRes.ok) {
+      const err = await containerRes.json();
+      return { success: false, error: err.error?.message || "Reel container failed" };
+    }
+
+    const container = (await containerRes.json()) as { id: string };
+
+    // Step 2: Wait until status_code = FINISHED (poll, IG tarda 30-90s normalmente)
+    const containerId = container.id;
+    let ready = false;
+    for (let i = 0; i < 20; i++) {
+      await new Promise((r) => setTimeout(r, 6000));
+      const statusRes = await fetch(
+        `${GRAPH_FB_API}/${containerId}?fields=status_code&access_token=${resolveToken()}`,
+      );
+      if (!statusRes.ok) continue;
+      const status = (await statusRes.json()) as { status_code?: string };
+      if (status.status_code === "FINISHED") {
+        ready = true;
+        break;
+      }
+      if (status.status_code === "ERROR" || status.status_code === "EXPIRED") {
+        return { success: false, error: `Reel container ${status.status_code}` };
+      }
+    }
+
+    if (!ready) {
+      return { success: false, error: "Reel container timeout (>2min sin FINISHED)" };
+    }
+
+    // Step 3: Publish
+    const pubRes = await fetch(`${GRAPH_FB_API}/${igAccountId}/media_publish`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        creation_id: containerId,
+        access_token: resolveToken(),
+      }),
+    });
+
+    if (!pubRes.ok) {
+      const err = await pubRes.json();
+      return { success: false, error: err.error?.message || "Reel publish failed" };
+    }
+
+    const published = (await pubRes.json()) as { id: string };
+    return { success: true, postId: published.id };
+  } catch (err) {
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
+  }
+}
+
 // ─── Insights ───────────────────────────────────────────────────
 
 interface InsightsData {

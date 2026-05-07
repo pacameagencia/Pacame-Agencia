@@ -1,0 +1,200 @@
+{
+  "concept_id": "dark-frames-002",
+  "title": "Si Tarantino dirigiera Stranger Things",
+  "series_hashtag": "#DarkFrames",
+  "version": 2,
+  "schema_version": 2,
+  "created_at": "2026-05-07",
+
+  "tier": "top",
+  "duration_target_s": 12,
+  "aspect_ratio": "9:16",
+  "resolution": "1080x1920",
+  "structure_template": "trailer_3_act",
+
+  "moodboard": "moodboards/dark-frames-002.md",
+
+  "logline": "Mash-up cinematográfico 12s sin diálogo (excepto VO Mia Wallace-style off). Setup (4s · niños BMX Hawkins golden hour Stranger Things visual + Pulp Fiction warm grade) → conflict (4s · bosque noche círculo niños underlit faces Tarantino style) → payoff (4s · close-up caja abriendo emanando luz acid green = referencia Pulp Fiction maletín). VO ElevenLabs Brian español filosófico noir entra en payoff. Estructura trailer 3-act compactada.",
+
+  "research": {
+    "references": [
+      "Pulp Fiction (1994) · dir. Tarantino · DP Andrzej Sekuła",
+      "Reservoir Dogs (1992) · dir. Tarantino",
+      "Stranger Things S1-S2 (2016-2017) · DPs Tim Ives ASC + Caleb Heymann · Duffer Brothers"
+    ],
+    "dp_references": [
+      "Andrzej Sekuła (Pulp Fiction · single hard key from below = underlit faces)",
+      "Tim Ives ASC (Stranger Things S1-S2 · practical-first motivated tungsten + cool teal)",
+      "Robert Richardson (Tarantino later · low-key extremos · single motivated source)"
+    ],
+    "lens_specs": [
+      "Pulp Fiction: 35mm spherical (NO anamorphic) · Panavision cameras · 2.39:1 release",
+      "Stranger Things: 35mm anamorphic 2.39:1 · Arricam LT · Cooke Anamorphic primes (vintage flare characteristic)",
+      "Focal mash-up: 40mm establisher · 50mm-85mm close-ups · T2.8-T4 range",
+      "Stocks emulation: Kodak Vision2 250D/500T grain"
+    ],
+    "lut_reference": "Hybrid grade · warm yellow/golden sepia (Pulp Fiction) en shots 1+3 · Tim Ives Stranger Things split-grade warm/teal en shot 2 · DCP standard 1.2 gamma P3 colorspace · crushed blacks 0-15 IRE · highlights warm 240-255 Rec709 · desaturación azules · boost ámbar/naranja 50-70 units · UN punto acid #CFFF00 solo en payoff caja (no en setup ni conflict)",
+    "pacing_template": "trailer 3-act · 12s total (sin outro) · 4s setup + 4s conflict + 4s payoff · cada acto 1-2 tomas SLOW (no Tarantino kinetic, queremos contemplative para que la IA respire) · ritmo Villeneuve-style 15 takes/min NO Hollywood standard 30 takes/min",
+    "audio_references": [
+      "Score híbrido 80s synthwave + spaghetti western (Kavinsky × Ennio Morricone fusion)",
+      "Kyle Dixon + Michael Stein (Survive band) · Stranger Things OST · Carpenter-inspired synth drone 40-100Hz · Moog/Prophet-5 emulation",
+      "Diegetic sound prioritized (Tarantino school) · BMX chain wind shot 1 · foggy forest ambient shot 2 · wooden box creak shot 3",
+      "VO ElevenLabs Brian español · low slow philosophical noir · entry at second 9 · 'En 1985, los niños buscaban tesoros en bicicleta. Ahora buscan algo distinto. Y a veces... lo encuentran.'",
+      "Silence + ambience entre eventos (room tone reverb 80s tape) · Tarantino diegetic discipline",
+      "LUFS target -16 cinema standard"
+    ],
+    "research_sources": [
+      "American Cinematographer interviews Andrzej Sekuła (Pulp Fiction 1994)",
+      "ASC database · Tim Ives credentials Stranger Things S1-S2",
+      "BFI Stranger Things production documentation",
+      "IndieWire Robert Richardson + Tarantino cinematography analysis",
+      "Variety Kyle Dixon + Michael Stein Survive interview"
+    ]
+  },
+
+  "shots": [
+    {
+      "shot": 1,
+      "duration_s": 4,
+      "kind": "video",
+      "tier": "top",
+      "model_override": null,
+      "structure_role": "act 1 SETUP · niños BMX Hawkins golden hour · Stranger Things composition + Pulp Fiction warm grade",
+      "prompt": "vertical 9:16 cinematic mash-up reel act 1 setup, three children on BMX bikes pedaling fast through a small American suburban street at dusk golden hour, late 1980s style streetlights tungsten warm 3200K motivated practicals, Tim Ives ASC Stranger Things S1 symmetric centered composition kids on bikes signature shot, low-angle tracking dolly lateral 0.5 m/s shooting at child eye-level (Duffer Brothers style), Cooke Anamorphic 2.39:1 letterbox embedded in 9:16 with horizontal lens flare, Pulp Fiction warm yellow golden sepia color grade Andrzej Sekuła style highlights warm 240-255 Rec709 saturation +50 amber channel desaturation azules, crushed blacks 0-15 IRE, 35mm Kodak Vision2 250D film grain emulation, deep focus background nítido, photorealistic 8K, no readable text on bikes or signs, no faces clearly visible (silhouette or back-shot), no logos",
+      "negative_prompt": "modern bikes, smartphones, modern cars, smiling faces visible, watermark, text overlay, plastic-clean digital look, oversaturated cyan, multi-fill flat lighting",
+      "validation_must_have": [
+        "BMX bikes 80s style claramente visibles",
+        "tungsten warm streetlight motivated source",
+        "low tracking shot at child eye-level",
+        "anamorphic 2.39:1 letterbox horizontal flare",
+        "warm yellow Pulp Fiction grade dominante (NO cool teal aún)",
+        "rostros NUNCA legibles (silhouette/back/dusk shadow)"
+      ]
+    },
+    {
+      "shot": 2,
+      "duration_s": 4,
+      "kind": "video",
+      "tier": "top",
+      "model_override": null,
+      "structure_role": "act 2 CONFLICT · bosque noche círculo niños underlit Tarantino · Stranger Things Upside Down split-grade",
+      "prompt": "vertical 9:16 cinematic continuation act 2 conflict, three children standing in a circle in a foggy forest clearing at night Hawkins woods, single overhead practical light source motivated (hanging tungsten lamp or fixture above) creating Tarantino-style underlit faces from below shadows on cheeks and forehead (Andrzej Sekuła Pulp Fiction key-from-below technique applied to Stranger Things atmosphere), warm tungsten 3200K key light on faces hybrid with cool teal 5600K cyan/magenta cast in fog and background (Tim Ives Stranger Things Upside Down split-grade), low-angle shot looking up at faces from ground level Tarantino reservoir dogs reference, Cooke Anamorphic 2.39:1 letterbox vintage flare horizontal, fog catching light volumetric, Kodak Vision2 500T film grain emulation, lifted shadows +5-8 units, photorealistic 8K, no logos, no Demogorgon, no readable text, faces shadowed not legible",
+      "negative_prompt": "smiling, clear face features, multi-source flat lighting, watermark, modern logos, Demogorgon-like creature, daytime, oversaturated, fast camera movement, beauty lighting soft fill",
+      "validation_must_have": [
+        "single overhead practical light source clear",
+        "underlit faces from below (Tarantino signature)",
+        "split-grade warm key + cool fog teal/magenta",
+        "anamorphic 2.39:1 letterbox horizontal flare visible",
+        "fog volumetric catching the light",
+        "low-angle looking up composition",
+        "rostros sombreados NUNCA legibles"
+      ]
+    },
+    {
+      "shot": 3,
+      "duration_s": 4,
+      "kind": "video",
+      "tier": "top",
+      "model_override": null,
+      "structure_role": "act 3 PAYOFF · close-up caja abriendo · luz acid green emanando · referencia directa Pulp Fiction maletín · VO entry",
+      "prompt": "vertical 9:16 cinematic act 3 payoff extreme close-up Tarantino Pulp Fiction briefcase reference shot, single hand opening a small wooden vintage box revealing acid green light #CFFF00 spilling out vertically lighting the chin and lower face of an actor (NO upper face visible) in classic Pulp Fiction Mia Wallace briefcase reveal homage, slow push-in zoom 25mm to 50mm equivalent over 4 seconds (Tarantino slow push-in signature), warm yellow Pulp Fiction Andrzej Sekuła grade with single ACID GREEN punch in the box light (color contrast deliberate), 35mm spherical Panavision aesthetic NO anamorphic this shot (Tarantino preference), shallow DOF T2.8 isolating hand and box, dust particles floating in the green light beam volumetric, deep crushed blacks 0-10 IRE, photorealistic 8K, no readable text inside box, no logos, no Demogorgon",
+      "negative_prompt": "readable text inside box, watermark, full face visible, generic anime light, anamorphic flare this shot (must be spherical), oversaturated, fast cut, Pulp Fiction copyright character recognizable",
+      "validation_must_have": [
+        "single hand + box close-up",
+        "acid green #CFFF00 light emanating from box",
+        "warm yellow Tarantino grade dominante FUERA del beam",
+        "chin/lower-face only (NO upper face)",
+        "dust particles in green beam",
+        "slow push-in zoom imperceptible",
+        "deep crushed blacks (0-10 IRE)",
+        "spherical NO anamorphic this shot"
+      ]
+    }
+  ],
+
+  "audio": {
+    "voice_over": {
+      "provider": "elevenlabs",
+      "voice_id": "Brian",
+      "model": "eleven_multilingual_v2",
+      "language": "es",
+      "text": "En 1985, los niños buscaban tesoros en bicicleta. Ahora buscan algo distinto. Y a veces... lo encuentran.",
+      "estimated_chars": 116,
+      "delivery": "low slow philosophical noir narrator · Mia Wallace-style cool detached · pauses dramatic between sentences",
+      "timing": "entry at second 9 · spans 9-12s overlapping with payoff shot 3"
+    },
+    "music": {
+      "style": "synthwave 80s Kyle Dixon Survive Stranger Things × spaghetti western Morricone harmonica fusion",
+      "duration_s": 12,
+      "lufs_target": -16,
+      "suno_keywords": "Kyle Dixon Survive Stranger Things synthwave drone 80s Carpenter Halloween synth Moog Prophet-5 spaghetti western Morricone harmonica hybrid retro pulp",
+      "key": "D minor",
+      "tempo_bpm": "slow drone 60bpm · no perceptible beat · pad-driven"
+    },
+    "sfx": [
+      { "at_s": 0, "name": "bmx_chain_wind", "description": "BMX bicycle chain rattle + wind whoosh (Tarantino diegetic discipline)" },
+      { "at_s": 4.0, "name": "fog_atmosphere_transition", "description": "low foggy forest ambient hum + fade in cricket distant" },
+      { "at_s": 4.5, "name": "ground_step_creak", "description": "single footstep dry leaf crunch (Sapper Morton sound design ref)" },
+      { "at_s": 8.0, "name": "music_box_creak", "description": "wooden box opening creak + acid hum reveal" },
+      { "at_s": 8.5, "name": "acid_glow_subtle", "description": "subtle ethereal hum as acid green light emerges" },
+      { "at_s": 9.0, "name": "vo_brian_entry", "description": "ElevenLabs VO Brian español entra · music ducks -6dB" },
+      { "at_s": 12.0, "name": "fade_to_outro", "description": "fade out into Dark Room outro 2s" }
+    ]
+  },
+
+  "captions_burned": [
+    {
+      "at_s": 0,
+      "duration_s": 2.5,
+      "text": "HAWKINS, INDIANA · 1985",
+      "font": "JetBrains Mono",
+      "size_px": 38,
+      "color": "#F2F2F2",
+      "position": "top-center-safe",
+      "animation": "fade_in_0.4s_typewriter",
+      "tracking_pct": 5
+    },
+    {
+      "at_s": 11,
+      "duration_s": 1,
+      "text": "DIRIGIDA POR... NADIE",
+      "font": "Anton",
+      "size_px": 64,
+      "color": "#CFFF00",
+      "position": "center-safe",
+      "animation": "punch_in_0.2s_with_thud"
+    }
+  ],
+
+  "outro": {
+    "use_template": "tools/dark-frames/assets/outro-darkroom-2s.mp4",
+    "duration_s": 2,
+    "concat_at_end": true
+  },
+
+  "caption_text": "Si Tarantino hubiera dirigido Stranger Things.\n\nReferentes reales: Pulp Fiction · DP Andrzej Sekuła · Stranger Things · DP Tim Ives ASC · score Kyle Dixon (Survive) × Morricone\nStack: Cinema Studio Video 3.0 + ElevenLabs (voz Brian español) + Suno\nCoste real: ~$1.20\nTiempo total: 18 min (research + render + edit)\n\nAcceso a este stack en bio · Dark Room · 24,90€/mes",
+  "caption_hashtags": "#DarkFrames #IA #Tarantino #StrangerThings #cinematicAI #PulpFiction #darkroomcreative",
+
+  "estimated_cost_credits": 0,
+  "estimated_cost_usd": 1.20,
+  "estimated_render_time_min": 18,
+
+  "approval_required": {
+    "pablo_double_yes": true,
+    "cost_guard_token": true,
+    "reason": "tier=top × 3 shots video premium · suma ~$1.20"
+  },
+
+  "validation_checklist_extra": [
+    "técnica Sekuła citada en shots 1+3 (warm yellow grade, single key, slow push-in)",
+    "técnica Tim Ives citada en shot 2 (split-grade warm/cool, anamorphic Cooke, low tracking)",
+    "técnica Tarantino key-from-below en shot 2 únicamente (underlit faces)",
+    "VO Brian español entra solo en shot 3 (segundo 9), NO antes",
+    "rostros NUNCA legibles ningún shot (silueta, back, sombra, chin-only)",
+    "acid green #CFFF00 SOLO en shot 3 box reveal · NO en shots 1-2",
+    "outro Dark Room a partir del segundo 12",
+    "estructura 3-act respetada (4+4+4s)",
+    "anamorphic 2.39:1 letterbox shots 1-2 · spherical shot 3 (Tarantino preference documented)",
+    "score híbrido Survive × Morricone audible (no synth genérico)"
+  ]
+}

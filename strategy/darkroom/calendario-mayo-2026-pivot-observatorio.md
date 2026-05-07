@@ -68,38 +68,52 @@ Templates rotativos:
 
 ---
 
-## 4 · Reels semanales (8/mes · 2/sem)
+## 4 · Reels semanales (8/mes · 2/sem) — ahora serie DARK_FRAMES
 
-| Día | Tipo | Modelo Higgsfield | Coste cr |
-|---|---|---|---|
-| Mar 19:30 | Reel temático (educativo IA) | **Kling 3.0** (UNLIMITED) | **0** |
-| Vie 19:30 | Reel temático (Stack/Dark Room) | **Kling 3.0** (UNLIMITED) | **0** |
+> **Cambio 2026-05-07**: los 8 reels martes/viernes pasan a ser piezas de la serie cinemática **DARK_FRAMES** (`strategy/darkroom/serie-dark-frames.md`), no reels educativos genéricos. Auto-publicadas tras pasar quality gate de 8 checks (regla revisada `feedback_no_video_auto.md`).
 
-Total 8 reels × 0 créditos = **0 créditos consumidos**. Los reels temáticos son 5-10s con prompt único, sin multi-shot. Cumple regla doble aprobación + cost-guard token igualmente.
+| Día | Tipo | Modelo Higgsfield | Coste cr | Hashtag |
+|---|---|---|---|---|
+| Mar 19:30 | DARK_FRAMES (cinemática IA) | **Kling 3.0** (UNLIMITED) | **0** | `#DarkFrames` |
+| Vie 19:30 | DARK_FRAMES (cinemática IA) | **Kling 3.0** (UNLIMITED) | **0** | `#DarkFrames` |
+
+Total 8 reels × 0 créditos = **0 créditos consumidos**. Los reels DARK_FRAMES son 5-15s, multi-shot, con outro Dark Room 2s obligatorio. Cumplen regla doble aprobación + cost-guard token si suben a Veo/Seedance puntualmente.
+
+**Pipeline**: `tools/dark-frames/render-piece.mjs` → visual-reviewer → `enqueue-reel.mjs` (quality gate 8 checks) → `content_queue` format=`reel` → cron `auto-publish` → `publishReel()` IG Graph v21.
 
 ---
 
-## 5 · Piezas virales hero (4/mes · 1/jueves "experimentos IA")
+## 5 · Piezas virales hero (4/mes · 1/jueves) — ahora DARK_FRAMES AAA
 
-Concepto: standalone, novedoso, sin Pablo en pantalla, sin recurrentes. CTA implícito final 2s "todo hecho con Dark Room · 24,90€/mes".
+> **Cambio 2026-05-07**: los 4 conceptos absurdos originales (objetos que hablan, modelos restaurantes, videoclub, modelo invade servidor) se archivan a **backlog mes 2** — no encajan con la dirección cinemática que Pablo ha pedido. Los jueves pasan a piezas DARK_FRAMES AAA con Veo 3.1 lite + Soul Cinema. Hashtag `#DarkFrames`.
 
-| Jueves | Concepto | Modelo principal | Coste estimado cr |
-|---|---|---|---|
-| 8 may (HOY) | "Las cosas que hablan" — 5 objetos cotidianos cuentan su día como si fueran trabajadores de oficina noir | Soul Cinema Studio Video 3.0 + character consistency | ~70 cr |
-| 15 may | "Si los modelos IA fueran restaurantes" — 7 modelos IA chefs en cocina caótica | Marketing Studio Video modo wild_card | ~75 cr |
-| 22 may | "Videoclub modelos extintos" — tour por videoclub 90s con VHS de modelos IA descontinuados | Seedance 2.0 multi-shot | ~70 cr |
-| 29 may | "Cuando un modelo nuevo entra al stack" — pseudo-noticia animada sobre modelo nuevo invadiendo servidor | Marketing Studio Video modo tv_spot | ~75 cr |
+| Jueves | Concepto DARK_FRAMES | concept_id | Modelo principal | Coste estimado |
+|---|---|---|---|---|
+| 8 may (HOY) | (calendario actual reel temático mantiene C1 Factura IA carrusel · primer DARK_FRAMES tras aprobación bloque) | — | — | — |
+| 15 may | "Trailer Mad Max en Tokio" 18s | `dark-frames-004` | Veo 3.1 lite + Kling 3.0 | $0.90 + 0 cr |
+| 22 may | (placeholder backlog: Cyberpunk Tokyo bike chase) | `dark-frames-005` | Kling 3.0 | 0 cr |
+| 29 may | (placeholder backlog: Trailer The Witcher 4 falso) | `dark-frames-010` | Veo 3.1 lite | $0.75 |
 
-**Total hero piezas: ~290 créditos.**
+**Total hero piezas: ~$1.65 USD + 0 cr (versus ~290 cr presupuestado con conceptos absurdos).**
 
-Cada una incluye:
-- Brief Claude + storyboard santo grial (frameworks ASPECT/CICLO/4-Step Viral)
-- 5-7 anchors hero Higgsfield Nano Banana Pro (~10 cr)
-- 3-5 video clips con modelo elegido
-- Voz ElevenLabs multilingual_v2 (free 10k chars)
-- Música Suno (free 50 canciones/mes)
-- Edición ffmpeg: LUT cinematográfico + captions burned-in + vignette + loop seamless 10s
-- Cost-guard token + 2 SÍ Pablo antes de generar video
+**Reglas operativas hero DARK_FRAMES**:
+- Brief Claude + moodboard concreto (`tools/dark-frames/moodboards/<id>.md`)
+- 3-5 shots multi-modelo (Kling base + Veo puntual para shots establecedores)
+- Voz ElevenLabs multilingual_v2 voz Brian (free 10k chars/mes)
+- Música Suno cinematográfica épica (free 50 canciones/mes)
+- Outro Dark Room 2s obligatorio (`tools/dark-frames/assets/outro-darkroom-2s.mp4`)
+- Captions Anton/JetBrains Mono burned-in
+- Cost-guard token + 2 SÍ Pablo antes de generar Veo/Seedance/Soul Cinema
+- Quality gate 8 checks antes de auto-publish
+
+### Backlog conceptos absurdos (archivados, recuperables mes 2 si se valida formato)
+
+- "Las cosas que hablan" (5 objetos noir oficina)
+- "Si los modelos IA fueran restaurantes" (7 modelos chefs cocina)
+- "Videoclub modelos extintos" (tour videoclub 90s)
+- "Cuando un modelo nuevo entra al stack" (pseudo-noticia)
+
+Estos no se pierden — viven en backlog para mes 2 si Pablo decide volver a ese registro.
 
 ---
 

@@ -1,0 +1,235 @@
+{
+  "concept_id": "dark-frames-004",
+  "title": "Trailer Mad Max en Tokio (HERO jueves)",
+  "series_hashtag": "#DarkFrames",
+  "version": 2,
+  "schema_version": 2,
+  "created_at": "2026-05-07",
+
+  "tier": "top",
+  "duration_target_s": 18,
+  "aspect_ratio": "9:16",
+  "resolution": "1080x1920",
+  "structure_template": "trailer_3_act",
+
+  "moodboard": "moodboards/dark-frames-004.md",
+
+  "logline": "Trailer falso AAA HERO 18s · 3-act formula George Miller. Setup atmospheric (5s · Tokio post-apocalíptico sandstorm Citadel-style establishing) → escalate motion (5s · custom war motorcycle alley persecución low-tracking) → climax payoff (4s · lone armored figure rooftop hero shot · llamas acid green tinted) → end card (2s · pull-back silhouette + title MAD MAX: TOKYO FURY Anton acid). VO ElevenLabs Brian español épica entrar segundo 14. Outro Dark Room concat.",
+
+  "research": {
+    "references": [
+      "Mad Max: Fury Road (2015) · dir. George Miller · DP John Seale ASC ACS",
+      "Citadel opening sequence (warm tungsteno · color contrast extreme) · Fury Road desert chase (orange-teal extreme) · night sequences (teal-blue crushed)",
+      "Junkie XL (Tom Holkenborg) score · taiko war drums + electric guitar",
+      "Akira (1988) Otomo · Neo-Tokyo en ruinas referencia post-apocalipsis japonés",
+      "Dune (2021) Villeneuve · wide cinemascope desierto Arrakis (ambición visual establishing)"
+    ],
+    "dp_references": [
+      "John Seale ASC ACS · BAFTA cinematography winner 2016 Fury Road · ARRI Alexa M + Phantom Flex high-speed",
+      "Panavision Primo lenses 40-50mm focal preference · NO anamorphic (4:3 sensor crop a 2.39:1 post)",
+      "Bounce silver plates 20×20 ft · negative fill black flags · zero diffusion masiva day exterior · high contrast",
+      "Day-for-night HMI 18K + tungsten mix 4500K magic hour artificial"
+    ],
+    "lens_specs": [
+      "ARRI Alexa M (sistema principal) · 4:3 sensor nativo · cropped to 2.39:1 post (DCP standard)",
+      "Phantom Flex high-speed para inserts (explosiones, vehículos voladores)",
+      "Panavision Primo 40mm primary establishing · Primo 50mm tracking · NO anamorphic ratio",
+      "Apertura John Seale: T2.8-T4 day exterior (cerrada para legibilidad acción · NO shallow DOF)",
+      "Diffusion media tioulene 1/2 o 1/4 para suavizar luz directa desert"
+    ],
+    "lut_reference": "Orange-teal extreme aggressive (Fury Road documented BFI BAFTA analysis 2016) · highlights pushed amber/orange saturation +25% · shadows crushed teal/cyan desaturación selectiva · método curve-lift shadows blue-cyan + pull highlights rojo-naranja · DCP cinema standard 2.39:1 · denaturalización color coherente narrativa post-apocalipsis · supervisión DI Madman Films Melbourne (colorista específico NO documentado en créditos · evita citar 'Eric Whipp Imageworks' = no verificable)",
+    "pacing_template": "trailer 3-act George Miller formula · 18s total (sin outro) · setup 5s atmospheric (1-2 tomas slow) → escalate 5s motion (2 tomas dolly + tracking) → climax 4s payoff (1 toma hero shot) → end card 2s title reveal (1 toma pull-back) · ritmo 2.5-3s/shot avg vs Hollywood 4-6s · trailer official 1.5-2s cuts no aplica aquí (queremos contemplative para que IA mantenga coherencia · 4-5 shots total)",
+    "audio_references": [
+      "Junkie XL (Tom Holkenborg) Mad Max Fury Road OST · 'Brothers in Arms' war drums + electric guitar treated",
+      "Taiko frame drums dominante percusión · electric guitar reverb-distorted · 'Doof Warrior' cello/guitar diegético en escena",
+      "Sound design: engines as instruments + sandstorm whoosh Foley as melodic · no muzak background",
+      "Mix dynamics: peaks normalized cinema TL-3 -6dB ref · dynamic range 20dB (cinema vs streaming flat)",
+      "VO ElevenLabs Brian español · epic deep slow trailer voice with dramatic pauses · entry segundo 14 · 'Cuando el mundo se acabó... el último guerrero llegó a la ciudad equivocada.' (76 chars)",
+      "Music drops a SILENCIO segundo 13-14 (Villeneuve breathing) · percussive HIT segundo 14 cuando entra VO · swell hasta climax segundo 17 · title thud segundo 18",
+      "LUFS target -14 (cine cargado · más alto que -16 standard porque trailer es agresivo)"
+    ],
+    "research_sources": [
+      "American Cinematographer Magazine May 2015 · Mad Max: Fury Road feature John Seale interview",
+      "BAFTA Awards 2016 Cinematography winner Fury Road analysis",
+      "BFI technical database Fury Road production",
+      "Variety editing rhythm analysis Fury Road 2015",
+      "IndieWire John Seale interview lighting technique",
+      "Variety Tom Holkenborg (Junkie XL) soundtrack feature 2015"
+    ]
+  },
+
+  "shots": [
+    {
+      "shot": 1,
+      "duration_s": 5,
+      "kind": "video",
+      "tier": "top",
+      "model_override": "cinema_studio_video_3_0",
+      "structure_role": "act 1 SETUP atmospheric · Tokio post-apocalíptico sandstorm establishing · George Miller centered intent · slow zoom in",
+      "prompt": "vertical 9:16 cinematic trailer act 1 establishing shot, post-apocalyptic Tokyo Shibuya intersection during massive horizontal sandstorm, abandoned skyscrapers half-collapsed with vines and rust, Tokyo Tower visible silhouetted against the storm in the background (icon recognizable but tattered), orange dust storm dominante 5600K vs deep teal sky 4500K (Mad Max Fury Road John Seale orange-teal extreme grade · BAFTA cinematography 2016 winner), wide establishing shot ARRI Alexa M aesthetic 4:3 sensor with 2.39:1 letterbox embedded in 9:16 (cinematic trailer feel), Panavision Primo 40mm focal · T2.8 daylight + diffusion media tioulene 1/4, slow zoom in 5 seconds (slow imperceptible from wide to slightly tighter), George Miller centered protagonist intent composition (no protagonist visible in this shot but framing suggests anticipation), saturation aggressive +25% orange channel · shadows crushed teal-cyan curve-lift method, dust particles backlit volumetric in late afternoon hour, photorealistic 8K, no text, no readable signs, no faces, no logos, anamorphic-style horizontal lens flare on backlight (post effect, lens itself spherical Panavision Primo)",
+      "negative_prompt": "modern Tokyo intact buildings, daytime clear sky, watermark, smiling faces visible, readable text/signs, oversaturated cyberpunk, anamorphic letterbox proper black bars too wide (we want subtle 2.39 in 9:16), shaky camera, fast cut, daylight clean",
+      "validation_must_have": [
+        "Tokio recognizable (Tokyo Tower silueta tattered) post-apocalíptico",
+        "sandstorm horizontal dominante",
+        "orange-teal extreme grade (Fury Road Seale signature)",
+        "wide establishing slow zoom in",
+        "2.39:1 letterbox embedded in 9:16 (NO black bars muy gruesas)",
+        "no faces, no readable text",
+        "dust particles backlit volumetric"
+      ]
+    },
+    {
+      "shot": 2,
+      "duration_s": 5,
+      "kind": "video",
+      "tier": "top",
+      "model_override": "seedance_2_0",
+      "structure_role": "act 2 ESCALATE motion · custom war motorcycle alley persecution · low-tracking lateral · Edge Arm rig style · cuts cada 2.5s = 1 shot 5s = 2 micro-beats",
+      "prompt": "vertical 9:16 cinematic trailer act 2 motion shot, custom war motorcycle (Kawasaki Ninja base with welded armor plates · exhaust pipes scraping the walls · sparks flying · Mad Max Fury Road Doof Wagon vehicle aesthetic) speeding down a Tokyo narrow alley at high speed motion blur, low angle tracking shot Edge Arm rig style following the bike laterally at 60 km/h equivalent, dust trails behind exhaust + occasional sparks scraping walls, orange-teal Mad Max Fury Road grade John Seale style (highlights amber sat +25% · shadows teal crushed), Panavision Primo 50mm spherical lens equivalent T2.8, NO anamorphic letterbox this shot (queremos motion sensation not letterboxed), photorealistic ARRI Alexa M aesthetic with 4K detail, helmet covers face completely (NO face visible), late afternoon harsh sun + bounce silver plates 20x20 ft style fill, photorealistic 8K, no readable text on bike, no logos brand recognizable on bike, dust + sparks volumetric",
+      "negative_prompt": "clean motorcycle modern bike, watermark, smiling rider face visible, daytime clean, oversaturated cyberpunk, anamorphic letterbox proper this shot, slow motion (queremos real-time speed), shaky cam handheld",
+      "validation_must_have": [
+        "custom war motorcycle aesthetic Mad Max",
+        "low-angle lateral tracking shot Edge Arm style",
+        "motion blur visible (real-time NOT slow-mo)",
+        "dust trails + sparks scraping",
+        "helmet covers face completely",
+        "orange-teal grade dominante",
+        "Tokio alley (narrow streets recognizable)",
+        "no logos, no readable text"
+      ]
+    },
+    {
+      "shot": 3,
+      "duration_s": 4,
+      "kind": "video",
+      "tier": "top",
+      "model_override": "cinema_studio_video_3_0",
+      "structure_role": "act 3 CLIMAX hero shot · lone armored figure rooftop · George Miller centered intent · acid green flames accent",
+      "prompt": "vertical 9:16 cinematic trailer act 3 climax hero shot, lone armored figure standing centered on top of a half-collapsed Tokyo skyscraper rooftop looking down at the burning city below, helmet covers face entirely (NO face visible), tattered Japanese flag flapping in the wind beside the figure (no logos/symbols), backlit by setting sun creating silhouette against orange dust storm sky, flames in city below acid green #CFFF00 tinted mixed with natural orange (color contrast deliberate · acid is Dark Room signature visible only in flames), George Miller centered protagonist intent composition (figure 30% frame · environment 70%), low angle hero shot from below looking up · slight push-in 0.2 m/s, ARRI Alexa M aesthetic Panavision Primo 50mm T2.8 spherical, anamorphic-style horizontal lens flare from backlight (post effect), 2.39:1 letterbox embedded in 9:16, orange-teal extreme John Seale grade BAFTA Fury Road · saturation orange channel +25% · shadows crushed · acid green +30 selective only on flames, photorealistic 8K, no logos, no readable text",
+      "negative_prompt": "smiling face visible, modern intact buildings, watermark, oversaturated cyberpunk, daylight clean, fast camera move, full face revealed, recognizable Mad Max logo, recognizable Mel Gibson or Tom Hardy face",
+      "validation_must_have": [
+        "lone armored figure centered low-angle hero shot",
+        "helmet covers face (NO face visible)",
+        "tattered Japanese flag (no logos)",
+        "flames acid green tinted in city below",
+        "orange-teal Fury Road grade dominante",
+        "backlit silhouette against sandstorm",
+        "George Miller centered intent (30/70 character/environment)",
+        "2.39:1 letterbox embedded"
+      ]
+    },
+    {
+      "shot": 4,
+      "duration_s": 2,
+      "kind": "video",
+      "tier": "top",
+      "model_override": "cinema_studio_video_3_0",
+      "structure_role": "act 4 END CARD pre-title · slow camera pull back from war motorcycle silhouette against skyline · vacío visual para que título aterrice · sync con music drop silencio",
+      "prompt": "vertical 9:16 cinematic trailer end card shot, slow camera pull back over 2 seconds from the custom war motorcycle parked silhouetted against orange-teal Mad Max apocalyptic Tokyo skyline at dusk, dust particles backlit catching sunset, anamorphic-style horizontal lens flare from low sun (post effect, lens itself spherical Panavision Primo), photorealistic ARRI Alexa M aesthetic, 2.39:1 letterbox embedded in 9:16, John Seale orange-teal extreme grade BAFTA Fury Road · highlights pushed amber +25% · shadows crushed teal · saturation aggressive, vacío central composition lower third for title to land in post · 8K detail, no text overlay yet (text added in ffmpeg post), no faces, no logos, no readable signs",
+      "negative_prompt": "text overlay this shot (added post), watermark, smiling, faces, modern Tokyo, daylight clean, fast pull back (queremos slow 2s), shaky cam",
+      "validation_must_have": [
+        "war motorcycle silhouette parked",
+        "Tokyo skyline backdrop tattered",
+        "slow pull back 2s smooth",
+        "vacío central lower third (para título)",
+        "orange-teal Fury Road grade",
+        "lens flare from low sun",
+        "no text overlay (post will add)"
+      ]
+    }
+  ],
+
+  "audio": {
+    "voice_over": {
+      "provider": "elevenlabs",
+      "voice_id": "Brian",
+      "model": "eleven_multilingual_v2",
+      "language": "es",
+      "text": "Cuando el mundo se acabó... el último guerrero llegó a la ciudad equivocada.",
+      "estimated_chars": 76,
+      "delivery": "epic deep slow trailer voice español · pauses dramatic between phrases · low frequency push +3dB at fundamental · classic movie trailer narrator gravitas",
+      "timing": "entry at second 14 (overlapping shot 3 climax → shot 4 end card) · spans 14-17s · ducks music to -6dB"
+    },
+    "music": {
+      "style": "épica trailer cinematográfico Junkie XL Tom Holkenborg Mad Max Fury Road · taiko war drums + electric guitar treated · 'Brothers in Arms' style",
+      "duration_s": 18,
+      "lufs_target": -14,
+      "suno_keywords": "Junkie XL Tom Holkenborg Mad Max Fury Road epic trailer cinematic taiko war drums electric guitar reverb distorted post apocalyptic intense brothers in arms hybrid",
+      "key": "D minor",
+      "tempo_bpm": "build 80bpm to 120bpm climax · accelerate gradually",
+      "structure": "0-13s build tension percussive + sandstorm whoosh as instrument · 13-14s drop to silence (Villeneuve breathing) · 14s percussive HIT thud · 14-17s swell with VO · 17s second percussive thud title reveal · 17-18s sustain"
+    },
+    "sfx": [
+      { "at_s": 0, "name": "wind_storm_loop", "description": "sandstorm horizontal continuous loop · stereo wide pan" },
+      { "at_s": 0.5, "name": "subgrave_60hz_cinema", "description": "subgrave 60Hz cinema constant under storm (chest-thumping)" },
+      { "at_s": 5, "name": "motorcycle_roar_entry", "description": "deep custom motorcycle engine roar entering · pan left to center · Doof Wagon style heavy diesel" },
+      { "at_s": 5.5, "name": "spark_scrape_metal", "description": "metal scrape spark sounds as bike scrapes alley walls" },
+      { "at_s": 7, "name": "exhaust_pop_pop", "description": "exhaust backfire intermittent" },
+      { "at_s": 10, "name": "explosion_distant", "description": "distant explosion + glass shatter cascade as cuts to climax" },
+      { "at_s": 13, "name": "music_drop_silence", "description": "music drops abruptly to silence · only wind + flame crackle audible · 1 second breath (Villeneuve breathing)" },
+      { "at_s": 14, "name": "percussive_hit_taiko", "description": "single percussive taiko hit synced with VO entry · -3dB peak normalized" },
+      { "at_s": 14, "name": "vo_brian_entry", "description": "ElevenLabs VO Brian español entra · music ducks -6dB" },
+      { "at_s": 17, "name": "title_thud_deep_subgrave", "description": "deep subgrave thud sync con título punch in · -2dB peak normalized · sustain reverb tail 1s" },
+      { "at_s": 18, "name": "fade_to_outro", "description": "fade out percussive into Dark Room outro 2s · room tone bridge" }
+    ]
+  },
+
+  "captions_burned": [
+    {
+      "at_s": 0.5,
+      "duration_s": 2,
+      "text": "TOKIO · AÑO XX",
+      "font": "JetBrains Mono",
+      "size_px": 36,
+      "color": "#F2F2F2",
+      "position": "top-center-safe",
+      "animation": "fade_in_0.5s_typewriter",
+      "tracking_pct": 8
+    },
+    {
+      "at_s": 17,
+      "duration_s": 1,
+      "text": "MAD MAX:\nTOKYO FURY",
+      "font": "Anton",
+      "size_px": 96,
+      "color": "#CFFF00",
+      "position": "center-safe",
+      "animation": "punch_in_0.2s_with_thud_sync"
+    }
+  ],
+
+  "outro": {
+    "use_template": "tools/dark-frames/assets/outro-darkroom-2s.mp4",
+    "duration_s": 2,
+    "concat_at_end": true
+  },
+
+  "caption_text": "Mad Max nunca llegó a Tokio. Hasta hoy.\n\nReferentes reales: Mad Max: Fury Road · DP John Seale ASC ACS (BAFTA 2016) · ARRI Alexa M · Panavision Primo · score Junkie XL · LUT orange-teal extreme\nStack: Cinema Studio Video 3.0 + Seedance 2.0 + ElevenLabs (voz Brian español) + Suno\nCoste real: ~$2.50\nTiempo total: 38 min (research + render + edit)\n\nUna pieza así te costaría 600€+ en una agencia tradicional. En Dark Room: 24,90€/mes. Acceso al stack en bio.",
+  "caption_hashtags": "#DarkFrames #IA #MadMax #Tokio #cinematicAI #fakeTrailer #JohnSeale #JunkieXL #darkroomcreative",
+
+  "estimated_cost_credits": 0,
+  "estimated_cost_usd": 2.50,
+  "estimated_render_time_min": 38,
+
+  "approval_required": {
+    "pablo_double_yes": true,
+    "cost_guard_token": true,
+    "reason": "tier=top × 4 shots video premium · pieza HERO jueves más cara de la serie · suma ~$2.50 · justifica por ser la flagship semanal del calendario y el video más complejo (3-act con VO + 4 shots + sync audio drops)"
+  },
+
+  "validation_checklist_extra": [
+    "técnica John Seale citada en TODOS los shots (orange-teal extreme · ARRI Alexa M · Panavision Primo · T2.8 day exterior · diffusion media)",
+    "George Miller centered intent en shots 1+3 (protagonist 30% frame · environment 70%)",
+    "ritmo 4-5 shots total en 18s (Villeneuve-style 2.5-3s avg) NO Fury Road kinetic 1.5s cuts (queremos contemplative para IA mantenga coherencia)",
+    "rostros NUNCA visibles ningún shot (helmet shot 2-3 · backlit silhouette shots 1-4)",
+    "ningún logo Mad Max copyright · ningún Mel Gibson/Tom Hardy reconocible",
+    "ningún kanji o texto japonés legible en escena",
+    "acid green #CFFF00 SOLO en flames shot 3 (color contrast deliberate)",
+    "music drop a silencio segundo 13 (Villeneuve breathing)",
+    "VO Brian español entra segundo 14 sync con percussive hit + ducks music -6dB",
+    "title 'MAD MAX: TOKYO FURY' sync con thud audio segundo 17",
+    "outro Dark Room a partir del segundo 18",
+    "shots 1+3+4 Cinema Studio Video 3.0 (ambición visual establishing/hero/end-card)",
+    "shot 2 Seedance 2.0 (motion-heavy persecución requiere SOTA motion)"
+  ]
+}
