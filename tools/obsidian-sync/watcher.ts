@@ -20,6 +20,31 @@ import { supabase, upsertKnowledgeNode, linkKnowledge } from './lib/supabase.ts'
 
 const VAULT = PATHS.vault;
 const DEBOUNCE_MS = 2000;
+const SYNC_STATE_PATH = path.join(VAULT, '.sync-state.json');
+
+const SYNC_STATE_KEY: Partial<Record<NodeType, string>> = {
+  memory: 'last_memories',
+  synapse: 'last_synapses',
+  discovery: 'last_discoveries',
+  skill: 'last_skills',
+  workflow: 'last_workflows',
+  agent: 'last_agents',
+};
+
+async function bumpSyncState(type: NodeType): Promise<void> {
+  const key = SYNC_STATE_KEY[type];
+  if (!key) return;
+  let state: Record<string, string> = {};
+  try {
+    const raw = await fs.readFile(SYNC_STATE_PATH, 'utf8');
+    state = JSON.parse(raw) as Record<string, string>;
+  } catch {
+    // archivo nuevo o corrupto: empezamos desde cero
+  }
+  state[key] = new Date().toISOString();
+  state.last_any = state[key];
+  await fs.writeFile(SYNC_STATE_PATH, JSON.stringify(state, null, 2) + '\n', 'utf8');
+}
 
 const VAULT_TYPE_TO_DB: Record<NodeType, string> = {
   agent: 'tool',
@@ -133,6 +158,8 @@ async function handleFile(abs: string): Promise<void> {
     } else {
       console.log(`[watcher] ${rel} → upsert (content updated)`);
     }
+
+    await bumpSyncState(type);
 
     const wikilinks = extractWikilinks(content);
     let edges = 0;
