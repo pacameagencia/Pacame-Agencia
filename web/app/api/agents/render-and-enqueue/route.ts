@@ -5,7 +5,7 @@
  *
  * Lee briefs generated de hoy en `daily_briefs` · para cada uno:
  *   1. Genera N slides PNG via Sharp+SVG (carrusel) o 1 PNG (story/post)
- *   2. Upload a catbox.moe
+ *   2. Upload a Supabase Storage bucket `social-public` (público · accesible IG Graph)
  *   3. Update content_queue draft → pending con caption + image_urls + hashtags
  *   4. Update daily_brief status=enqueued
  *
@@ -318,22 +318,35 @@ function buildStorySvg(headline: string, subline: string): string {
   </svg>`;
 }
 
-// ─── Catbox upload ────────────────────────────────────────────────
+// ─── Supabase Storage upload ──────────────────────────────────────
+// Sustituye catbox.moe (HTTP 412 desde Vercel runtime · server uploads bloqueados).
+// Usamos bucket `social-public` (público · ya creado · accesible por IG Graph API).
 
-async function uploadCatbox(buffer: Buffer, filename: string): Promise<string> {
-  const fd = new FormData();
-  fd.append("reqtype", "fileupload");
-  const uint8 = new Uint8Array(buffer);
-  fd.append("fileToUpload", new Blob([uint8], { type: "image/jpeg" }), filename);
-  const r = await fetch("https://catbox.moe/user/api.php", {
-    method: "POST",
-    body: fd,
-    signal: AbortSignal.timeout(60_000),
-  });
-  if (!r.ok) throw new Error(`catbox HTTP ${r.status}`);
-  const url = (await r.text()).trim();
-  if (!url.startsWith("https://")) throw new Error(`catbox bad: ${url.slice(0, 100)}`);
-  return url;
+async function uploadSupabaseStorage(
+  supabase: ReturnType<typeof createServerSupabase>,
+  buffer: Buffer,
+  filename: string,
+): Promise<string> {
+  const today = new Date().toISOString().slice(0, 10);
+  const objectPath = `${today}/${filename}`;
+
+  const { error } = await supabase.storage
+    .from("social-public")
+    .upload(objectPath, new Uint8Array(buffer), {
+      contentType: "image/jpeg",
+      cacheControl: "3600",
+      upsert: true,
+    });
+
+  if (error) {
+    throw new Error(`supabase storage upload fail: ${error.message.slice(0, 200)}`);
+  }
+
+  const { data } = supabase.storage.from("social-public").getPublicUrl(objectPath);
+  if (!data?.publicUrl) {
+    throw new Error("supabase storage getPublicUrl returned empty");
+  }
+  return data.publicUrl;
 }
 
 async function renderSlide(svg: string): Promise<Buffer> {
@@ -459,7 +472,7 @@ export async function GET(request: NextRequest) {
         for (let i = 0; i < useSlides.length; i++) {
           const svg = buildCarouselSlideSvg(useSlides[i], i, useSlides.length);
           const buf = await renderSlide(svg);
-          const url = await uploadCatbox(buf, `slide-${draft.id.slice(0, 8)}-${i + 1}.jpg`);
+          const url = await uploadSupabaseStorage(supabase, buf, `slide-${draft.id.slice(0, 8)}-${i + 1}.jpg`);
           imageUrls.push(url);
         }
       } else if (draft.format === "story" || draft.format === "post") {
@@ -467,7 +480,7 @@ export async function GET(request: NextRequest) {
         const subline = (briefData.caption || "").split("\n")[0].slice(0, 150);
         const svg = buildStorySvg(headline, subline);
         const buf = await renderSlide(svg);
-        const url = await uploadCatbox(buf, `${draft.format}-${draft.id.slice(0, 8)}.jpg`);
+        const url = await uploadSupabaseStorage(supabase, buf, `${draft.format}-${draft.id.slice(0, 8)}.jpg`);
         imageUrls.push(url);
       } else {
         results.push({ briefId: brief.id, draftId: draft.id, status: "skipped_unknown_format" });
