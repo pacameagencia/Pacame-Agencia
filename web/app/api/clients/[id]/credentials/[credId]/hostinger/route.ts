@@ -38,12 +38,12 @@ const bodySchema = z.object({
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string; crid: string }> }
+  { params }: { params: Promise<{ id: string; credId: string }> }
 ) {
   const unauth = verifyInternalAuth(request);
   if (unauth) return unauth;
 
-  const { id, crid } = await params;
+  const { id, credId: crid } = await params;
   const supabase = createServerSupabase();
 
   const raw = await request.json().catch(() => null);
