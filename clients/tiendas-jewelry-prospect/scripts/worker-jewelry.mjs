@@ -387,7 +387,40 @@ async function getNextPending() {
   const inFlightRes = await pg.query(`select lead_slug from pipeline_runs where step in ('queued','generating','deploying','sending','syncing') and started_at > now() - interval '15 minutes'`);
   const inFlightSet = new Set(inFlightRes.rows.map((r) => r.lead_slug));
 
-  const candidates = leads.filter((l) => !sentSet.has(l.email.toLowerCase()) && !inFlightSet.has(l.slug));
+  // SAFEGUARD: cargar lista negra absoluta de protected_contacts
+  const protectedRes = await pg.query('select lower(email) as email from protected_contacts');
+  const protectedSet = new Set(protectedRes.rows.map((r) => r.email));
+
+  // SAFEGUARD: detector Albacete (ningun lead de Albacete jamas)
+  const isAlbacete = (l) => {
+    const t = ((l.city || '') + ' ' + (l.address || '') + ' ' + (l.province || '')).toLowerCase();
+    return /\balbacete\b/.test(t) || /\b02[0-9]{3}\b/.test(l.postal || '');
+  };
+
+  // SAFEGUARD: detector emails genericos (info@, contacto@, no-reply@) - skip por baja calidad
+  const isGenericEmail = (email) => {
+    const local = (email || '').toLowerCase().split('@')[0];
+    return ['info', 'contacto', 'no-reply', 'noreply', 'admin', 'webmaster', 'support', 'soporte', 'sales', 'ventas', 'marketing', 'hello', 'hola', 'contact'].includes(local);
+  };
+
+  const candidates = leads.filter((l) => {
+    const email = (l.email || '').toLowerCase();
+    if (sentSet.has(email)) return false;
+    if (inFlightSet.has(l.slug)) return false;
+    if (protectedSet.has(email)) {
+      console.log('  [BLOCKED-PROTECTED] ' + l.slug + ' (' + email + ') - en protected_contacts');
+      return false;
+    }
+    if (isAlbacete(l)) {
+      console.log('  [BLOCKED-ALBACETE] ' + l.slug + ' (' + l.city + ')');
+      return false;
+    }
+    if (isGenericEmail(email)) {
+      console.log('  [BLOCKED-GENERIC] ' + l.slug + ' (' + email + ') - email generico');
+      return false;
+    }
+    return true;
+  });
   for (const lead of candidates) {
     const ok = await isEmailValid(lead.email);
     if (ok) return lead;
