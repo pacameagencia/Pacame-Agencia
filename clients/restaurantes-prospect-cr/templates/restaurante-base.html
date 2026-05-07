@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="{{PALETTE_DEEP}}">
+  <title>{{NAME}} — {{TAGLINE}} · {{ADDRESS_SHORT}}, {{CITY}}</title>
+  <meta name="description" content="{{NAME}} — {{META_DESC}}. Reservas: {{PHONE}}">
+  <meta property="og:title" content="{{NAME}} · {{ADDRESS_SHORT}}, {{CITY}}">
+  <meta property="og:description" content="{{TAGLINE}}. Reservas: {{PHONE}}">
+  <meta property="og:type" content="restaurant.menu">
+  <meta property="og:image" content="{{HERO_IMAGE}}">
+  <meta property="og:image:width" content="2400">
+  <meta property="og:image:height" content="1600">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="{{NAME}}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{NAME}} · {{CITY}}">
+  <meta name="twitter:description" content="{{TAGLINE}}. Reservas: {{PHONE}}">
+  <meta name="twitter:image" content="{{HERO_IMAGE}}">
+  <link rel="canonical" href="https://{{SLUG}}.vercel.app/">
+  <script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "{{NAME}}",
+    "description": "{{META_DESC}}",
+    "image": "{{HERO_IMAGE}}",
+    "telephone": "{{PHONE}}",
+    "priceRange": "€€",
+    "servesCuisine": "{{CUISINE_LABEL}}",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ADDRESS_FULL}}",
+      "addressLocality": "{{CITY}}",
+      "postalCode": "{{POSTAL}}",
+      "addressCountry": "ES"
+    },
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "{{RATING_NUM}}", "reviewCount": "{{REVIEW_COUNT}}" },
+    "openingHours": "Tu-Su 13:00-16:00,20:30-23:30",
+    "url": "https://{{SLUG}}.vercel.app/"
+  }</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{FONT_DISPLAY_URL}}:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Caveat:wght@400;700&display=swap">
+  <style>
+    :root {
+      --vino: {{PALETTE_PRIMARY}};
+      --vino-dark: {{PALETTE_DARK}};
+      --vino-deep: {{PALETTE_DEEP}};
+      --crema: {{PALETTE_CREAM}};
+      --crema-warm: {{PALETTE_CREAM_WARM}};
+      --ocre: {{PALETTE_ACCENT}};
+      --ocre-bright: {{PALETTE_ACCENT_BRIGHT}};
+      --ocre-deep: {{PALETTE_ACCENT_DEEP}};
+      --tierra: {{PALETTE_EARTH}};
+      --hueso: #fafaf7;
+      --texto: {{PALETTE_EARTH}};
+      --texto-muted: {{PALETTE_TEXT_MUTED}};
+      --shadow-warm: 0 20px 60px -20px {{PALETTE_PRIMARY_RGBA40}};
+      --shadow-deep: 0 25px 80px -25px rgba(0, 0, 0, 0.6);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { font-family: 'Inter', -apple-system, system-ui, sans-serif; color: var(--texto); background: var(--crema); line-height: 1.6; overflow-x: hidden; }
+    h1, h2, h3 { font-family: '{{FONT_DISPLAY}}', Georgia, serif; line-height: 1.1; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    .header { position: fixed; top: 0; left: 0; right: 0; padding: 1rem 1.5rem; background: {{PALETTE_DEEP_RGBA85}}; backdrop-filter: blur(20px); z-index: 50; border-bottom: 1px solid {{PALETTE_ACCENT_RGBA15}}; }
+    .header__inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .logo { display: flex; align-items: center; gap: 0.7rem; }
+    .logo__mark { width: 42px; height: 42px; background: linear-gradient(135deg, var(--ocre) 0%, var(--ocre-deep) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--vino-deep); font-weight: 900; font-size: 1.2rem; box-shadow: 0 0 24px {{PALETTE_ACCENT_RGBA40}}; font-family: '{{FONT_DISPLAY}}', serif; }
+    .logo__text { color: var(--hueso); font-family: '{{FONT_DISPLAY}}', serif; font-size: 1.4rem; font-weight: 700; }
+    .logo__text span { color: var(--ocre-bright); }
+    .nav { display: none; gap: 2rem; }
+    .nav a { color: rgba(250,250,247,0.75); font-size: 0.92rem; font-weight: 500; transition: color 0.2s; }
+    .nav a:hover { color: var(--ocre-bright); }
+    @media (min-width: 768px) { .nav { display: flex; } }
+    .header__cta { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.4rem; background: var(--ocre); color: var(--vino-deep); border-radius: 50px; font-weight: 700; font-size: 0.85rem; transition: all 0.3s; box-shadow: 0 4px 20px {{PALETTE_ACCENT_RGBA30}}; }
+    .header__cta:hover { background: var(--ocre-bright); transform: translateY(-1px); }
+
+    .hero { position: relative; min-height: 100svh; display: flex; align-items: center; justify-content: center; color: var(--hueso); overflow: hidden; padding: 6rem 1.5rem 3rem; }
+    .hero__bg { position: absolute; inset: 0; background: url('{{HERO_IMAGE}}') center/cover no-repeat; filter: brightness(0.45) saturate(1.15); transform: scale(1.05); }
+    .hero__overlay { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 40%, {{PALETTE_ACCENT_RGBA25}}, transparent 60%), linear-gradient(180deg, {{PALETTE_DEEP_RGBA40}} 0%, {{PALETTE_DEEP_RGBA85}} 100%); }
+    .hero__inner { position: relative; max-width: 920px; text-align: center; z-index: 2; }
+    .hero__eyebrow { display: inline-flex; align-items: center; gap: 0.7rem; padding: 0.5rem 1.2rem; background: {{PALETTE_ACCENT_RGBA10}}; border: 1px solid {{PALETTE_ACCENT_RGBA40}}; border-radius: 50px; font-size: 0.78rem; font-weight: 600; color: var(--ocre-bright); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 2rem; backdrop-filter: blur(8px); }
+    .hero__eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--ocre-bright); border-radius: 50%; box-shadow: 0 0 12px var(--ocre-bright); animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: 0.5; transform: scale(0.8); } }
+    .hero__title { font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; line-height: 0.95; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+    .hero__title .accent { color: var(--ocre-bright); font-style: italic; font-weight: 400; }
+    .hero__subtitle { font-size: clamp(1rem, 2.5vw, 1.3rem); color: rgba(250, 250, 247, 0.85); max-width: 600px; margin: 0 auto 2.5rem; font-weight: 300; line-height: 1.7; }
+    .hero__cta-row { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; margin-bottom: 2.5rem; }
+    .btn { display: inline-flex; align-items: center; gap: 0.6rem; padding: 1.1rem 2rem; border-radius: 50px; font-weight: 700; font-size: 0.95rem; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); border: 2px solid transparent; cursor: pointer; min-height: 52px; }
+    .btn-primary { background: var(--ocre); color: var(--vino-deep); box-shadow: 0 8px 30px {{PALETTE_ACCENT_RGBA40}}; }
+    .btn-primary:hover { background: var(--ocre-bright); transform: translateY(-2px); }
+    .btn-ghost { background: rgba(250, 250, 247, 0.06); color: var(--hueso); border-color: rgba(250, 250, 247, 0.3); backdrop-filter: blur(12px); }
+    .btn-ghost:hover { background: rgba(250, 250, 247, 0.12); border-color: var(--ocre-bright); color: var(--ocre-bright); }
+    .hero__rating { display: inline-flex; align-items: center; gap: 0.7rem; font-size: 0.9rem; color: rgba(250, 250, 247, 0.8); }
+    .stars { color: var(--ocre-bright); letter-spacing: 0.1em; }
+
+    .pillars { padding: 5rem 1.5rem; background: linear-gradient(180deg, var(--crema) 0%, var(--crema-warm) 100%); }
+    .pillars__inner { max-width: 1200px; margin: 0 auto; }
+    .section-title { text-align: center; margin-bottom: 4rem; }
+    .section-title .eyebrow { display: inline-block; font-family: 'Caveat', cursive; color: var(--ocre-deep); font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .section-title h2 { font-size: clamp(2rem, 4vw, 3.2rem); color: var(--vino-deep); max-width: 700px; margin: 0 auto; }
+    .pillars__grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+    @media (min-width: 768px) { .pillars__grid { grid-template-columns: repeat(3, 1fr); } }
+    .pillar { text-align: center; padding: 2.5rem 1.5rem; background: var(--hueso); border-radius: 16px; box-shadow: 0 8px 30px -10px rgba(45, 24, 16, 0.1); transition: transform 0.4s, box-shadow 0.4s; border-top: 3px solid var(--ocre); }
+    .pillar:hover { transform: translateY(-6px); box-shadow: var(--shadow-warm); }
+    .pillar__icon { width: 64px; height: 64px; margin: 0 auto 1.2rem; background: linear-gradient(135deg, var(--vino) 0%, var(--vino-dark) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--ocre-bright); font-size: 1.7rem; }
+    .pillar h3 { font-size: 1.4rem; color: var(--vino-deep); margin-bottom: 0.5rem; }
+    .pillar p { color: var(--texto-muted); font-size: 0.95rem; line-height: 1.6; }
+
+    .menu { padding: 6rem 1.5rem; background: var(--vino-deep); color: var(--crema); position: relative; overflow: hidden; }
+    .menu::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 40% at 80% 20%, {{PALETTE_ACCENT_RGBA15}}, transparent 70%), radial-gradient(ellipse 50% 30% at 20% 80%, {{PALETTE_PRIMARY_RGBA50}}, transparent 70%); pointer-events: none; }
+    .menu__inner { max-width: 1100px; margin: 0 auto; position: relative; }
+    .menu .section-title h2 { color: var(--crema); }
+    .menu .section-title .eyebrow { color: var(--ocre-bright); }
+    .menu__tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 3rem; }
+    .tab-btn { padding: 0.7rem 1.4rem; background: transparent; border: 1px solid {{PALETTE_ACCENT_RGBA30}}; color: rgba(245, 237, 224, 0.6); border-radius: 50px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+    .tab-btn:hover, .tab-btn.is-active { background: var(--ocre); border-color: var(--ocre); color: var(--vino-deep); }
+    .menu__group { display: none; }
+    .menu__group.is-active { display: block; animation: fadeUp 0.5s ease-out; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } }
+    .menu__grid { display: grid; grid-template-columns: 1fr; gap: 1.2rem; }
+    @media (min-width: 768px) { .menu__grid { grid-template-columns: repeat(2, 1fr); } }
+    .dish { display: flex; gap: 1rem; align-items: flex-start; padding: 1.3rem; background: rgba(245, 237, 224, 0.04); border: 1px solid {{PALETTE_ACCENT_RGBA12}}; border-radius: 12px; transition: all 0.3s; }
+    .dish:hover { background: rgba(245, 237, 224, 0.08); border-color: {{PALETTE_ACCENT_RGBA30}}; transform: translateX(4px); }
+    .dish__image { width: 90px; height: 90px; border-radius: 10px; flex-shrink: 0; background-position: center; background-size: cover; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); }
+    .dish__image--placeholder { background: linear-gradient(135deg, var(--vino) 0%, var(--vino-dark) 50%, var(--ocre-deep) 100%); display: flex; align-items: center; justify-content: center; color: {{PALETTE_ACCENT_RGBA40}}; }
+    .dish__image--placeholder svg { width: 38px; height: 38px; opacity: 0.85; }
+    .dish__body { flex: 1; min-width: 0; }
+    .dish__head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.7rem; margin-bottom: 0.3rem; }
+    .dish__name { font-family: '{{FONT_DISPLAY}}', serif; font-size: 1.15rem; font-weight: 700; color: var(--crema); flex: 1; }
+    .dish__price { font-family: '{{FONT_DISPLAY}}', serif; font-size: 1.1rem; font-weight: 700; color: var(--ocre-bright); white-space: nowrap; }
+    .dish__desc { font-size: 0.86rem; color: rgba(245, 237, 224, 0.65); line-height: 1.5; }
+    .dish__tags { display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap; }
+    .dish__tag { font-size: 0.68rem; padding: 0.2rem 0.6rem; background: {{PALETTE_ACCENT_RGBA15}}; color: var(--ocre-bright); border-radius: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .reviews { padding: 6rem 1.5rem; background: var(--crema); }
+    .reviews__inner { max-width: 1200px; margin: 0 auto; }
+    .reviews__rating-card { max-width: 420px; margin: 0 auto 3rem; padding: 2.5rem 2rem; text-align: center; background: var(--hueso); border-radius: 20px; box-shadow: var(--shadow-warm); border: 1px solid {{PALETTE_ACCENT_RGBA20}}; }
+    .reviews__big-rating { font-size: 4rem; font-weight: 900; color: var(--vino-deep); font-family: '{{FONT_DISPLAY}}', serif; line-height: 1; }
+    .reviews__big-stars { color: var(--ocre); font-size: 1.5rem; letter-spacing: 0.08em; margin: 0.5rem 0; }
+    .reviews__count { color: var(--texto-muted); font-size: 0.9rem; }
+    .reviews__google { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--texto-muted); margin-top: 1rem; }
+    .reviews__grid { display: grid; grid-template-columns: 1fr; gap: 1.3rem; }
+    @media (min-width: 768px) { .reviews__grid { grid-template-columns: repeat(3, 1fr); } }
+    .review { padding: 1.8rem; background: var(--hueso); border-radius: 14px; border-left: 4px solid var(--ocre); box-shadow: 0 6px 24px -8px rgba(45, 24, 16, 0.1); }
+    .review__stars { color: var(--ocre); margin-bottom: 0.8rem; letter-spacing: 0.1em; }
+    .review__text { font-size: 0.95rem; line-height: 1.7; color: var(--texto); margin-bottom: 1.2rem; font-style: italic; }
+    .review__author { display: flex; align-items: center; gap: 0.7rem; }
+    .review__avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--ocre) 0%, var(--ocre-deep) 100%); color: var(--vino-deep); font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; }
+    .review__name { font-weight: 700; font-size: 0.92rem; color: var(--vino-deep); }
+    .review__date { font-size: 0.78rem; color: var(--texto-muted); }
+
+    .booking { padding: 6rem 1.5rem; background: linear-gradient(135deg, var(--vino-deep) 0%, var(--tierra) 100%); color: var(--crema); position: relative; overflow: hidden; }
+    .booking::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 30% 20%, {{PALETTE_ACCENT_RGBA12}}, transparent 50%), radial-gradient(circle at 70% 80%, {{PALETTE_PRIMARY_RGBA40}}, transparent 50%); pointer-events: none; }
+    .booking__inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 3rem; position: relative; align-items: center; }
+    @media (min-width: 900px) { .booking__inner { grid-template-columns: 1.2fr 1fr; } }
+    .booking__content .eyebrow { font-family: 'Caveat', cursive; color: var(--ocre-bright); font-size: 1.5rem; }
+    .booking__content h2 { font-size: clamp(1.8rem, 4vw, 3rem); color: var(--crema); margin-bottom: 1rem; }
+    .booking__content p { color: rgba(245, 237, 224, 0.75); font-size: 1.05rem; margin-bottom: 2rem; line-height: 1.7; }
+    .booking__row { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 2.5rem; }
+    .info-card { padding: 1.5rem; background: rgba(245, 237, 224, 0.06); border: 1px solid {{PALETTE_ACCENT_RGBA20}}; border-radius: 14px; backdrop-filter: blur(12px); }
+    .info-card h4 { font-family: '{{FONT_DISPLAY}}', serif; color: var(--ocre-bright); margin-bottom: 0.5rem; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; }
+    .info-card .value { font-size: 1rem; line-height: 1.5; color: var(--crema); }
+    .info-card .value strong { color: var(--hueso); font-weight: 700; }
+    .booking__map { aspect-ratio: 4 / 5; background: var(--vino-dark); border-radius: 20px; overflow: hidden; border: 1px solid {{PALETTE_ACCENT_RGBA20}}; box-shadow: var(--shadow-deep); }
+    .booking__map iframe { width: 100%; height: 100%; border: 0; }
+
+    .footer { background: var(--vino-deep); color: rgba(245, 237, 224, 0.7); padding: 3rem 1.5rem 2rem; text-align: center; font-size: 0.9rem; border-top: 1px solid {{PALETTE_ACCENT_RGBA15}}; }
+    .footer__brand { color: var(--ocre-bright); font-weight: 700; font-family: '{{FONT_DISPLAY}}', serif; font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .footer__divider { width: 60px; height: 2px; background: var(--ocre); margin: 1.5rem auto; opacity: 0.5; }
+    .footer__pacame { color: rgba(245, 237, 224, 0.5); font-size: 0.78rem; margin-top: 1.5rem; }
+    .footer__pacame a { color: var(--ocre-bright); }
+
+    .fab { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 40; width: 60px; height: 60px; border-radius: 50%; background: #25d366; color: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5); transition: transform 0.3s; }
+    .fab:hover { transform: scale(1.08); }
+    .fab svg { width: 28px; height: 28px; }
+    .fab::after { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(37, 211, 102, 0.5); animation: pulse-ring 2s ease-out infinite; }
+    @keyframes pulse-ring { 0% { transform: scale(1); opacity: 0.7; } 100% { transform: scale(1.4); opacity: 0; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header__inner">
+      <a href="#" class="logo">
+        <span class="logo__mark">{{INITIALS}}</span>
+        <span class="logo__text">{{NAME_PART1}} <span>{{NAME_PART2}}</span></span>
+      </a>
+      <nav class="nav"><a href="#carta">Carta</a><a href="#resenas">Reseñas</a><a href="#contacto">Reservar</a></nav>
+      <a href="tel:{{PHONE_TEL}}" class="header__cta"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Reservar</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__overlay"></div>
+    <div class="hero__inner">
+      <span class="hero__eyebrow">{{EYEBROW}}</span>
+      <h1 class="hero__title">{{HERO_TITLE_LINE1}}<br><span class="accent">{{HERO_TITLE_LINE2}}</span></h1>
+      <p class="hero__subtitle">{{HERO_SUBTITLE}}</p>
+      <div class="hero__cta-row">
+        <a href="tel:{{PHONE_TEL}}" class="btn btn-primary"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Llamar para reservar</a>
+        <a href="#carta" class="btn btn-ghost">Ver la carta</a>
+      </div>
+      <div class="hero__rating"><span class="stars">★★★★★</span><span>{{RATING}} / 5 · {{REVIEW_COUNT}} reseñas Google</span></div>
+    </div>
+  </section>
+
+  <section class="pillars">
+    <div class="pillars__inner">
+      <div class="section-title"><span class="eyebrow">{{PILLAR_EYEBROW}}</span><h2>{{PILLAR_HEADING}}</h2></div>
+      <div class="pillars__grid">{{PILLAR_BLOCKS}}</div>
+    </div>
+  </section>
+
+  <section class="menu" id="carta">
+    <div class="menu__inner">
+      <div class="section-title"><span class="eyebrow" style="color: var(--ocre-bright);">Carta digital</span><h2>{{MENU_HEADING}}</h2></div>
+      <div class="menu__tabs">
+        <button class="tab-btn is-active" data-tab="entrantes">{{TAB1_LABEL}}</button>
+        <button class="tab-btn" data-tab="principales">{{TAB2_LABEL}}</button>
+        <button class="tab-btn" data-tab="postres">{{TAB3_LABEL}}</button>
+      </div>
+      <div class="menu__group is-active" id="grp-entrantes"><div class="menu__grid">{{TAB1_DISHES}}</div></div>
+      <div class="menu__group" id="grp-principales"><div class="menu__grid">{{TAB2_DISHES}}</div></div>
+      <div class="menu__group" id="grp-postres"><div class="menu__grid">{{TAB3_DISHES}}</div></div>
+    </div>
+  </section>
+
+  <section class="reviews" id="resenas">
+    <div class="reviews__inner">
+      <div class="section-title"><span class="eyebrow">Lo que dicen los clientes</span><h2>{{REVIEWS_HEADING}}</h2></div>
+      <div class="reviews__rating-card">
+        <div class="reviews__big-rating">{{RATING}}</div>
+        <div class="reviews__big-stars">★★★★★</div>
+        <div class="reviews__count">{{REVIEW_COUNT}} reseñas verificadas</div>
+        <div class="reviews__google"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A10.99 10.99 0 0 0 12 23z"/><path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.99 10.99 0 0 0 1 12c0 1.77.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A10.99 10.99 0 0 0 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Google</div>
+      </div>
+      <div class="reviews__grid">{{REVIEW_BLOCKS}}</div>
+    </div>
+  </section>
+
+  <section class="booking" id="contacto">
+    <div class="booking__inner">
+      <div class="booking__content">
+        <span class="eyebrow">Te esperamos</span>
+        <h2>{{BOOKING_HEADING}}</h2>
+        <p>{{BOOKING_DESC}}</p>
+        <div class="booking__row">
+          <a href="tel:{{PHONE_TEL}}" class="btn btn-primary"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>{{PHONE_DISPLAY}}</a>
+          <a href="https://www.google.com/maps/search/?api=1&query={{MAPS_QUERY}}" target="_blank" rel="noopener" class="btn btn-ghost">Cómo llegar →</a>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="info-card"><h4>Horario</h4><div class="value">{{HOURS_DAYS}}<br><strong>{{HOURS_MIDDAY}}</strong> y <strong>{{HOURS_DINNER}}</strong></div></div>
+          <div class="info-card"><h4>Dirección</h4><div class="value">{{ADDRESS_FULL}}<br><strong>{{POSTAL_CITY}}</strong></div></div>
+        </div>
+      </div>
+      <div class="booking__map"><iframe loading="lazy" allowfullscreen src="https://www.google.com/maps?q={{MAPS_QUERY}}&output=embed" title="Mapa {{NAME}}"></iframe></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__brand">{{NAME}}</div>
+    <p>{{ADDRESS_FULL}} · {{POSTAL_CITY}} · {{PHONE_DISPLAY}}</p>
+    <div class="footer__divider"></div>
+    <p>© <span id="year">2026</span> {{NAME}} · {{TAGLINE}}</p>
+    <p class="footer__pacame">Diseño web por <a href="https://pacameagencia.com" target="_blank" rel="noopener">PACAME</a></p>
+  </footer>
+
+  <a href="https://wa.me/{{PHONE_WA}}?text={{WA_MSG}}" target="_blank" rel="noopener" class="fab" aria-label="Reservar por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></a>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('is-active'));
+      document.querySelectorAll('.menu__group').forEach(x => x.classList.remove('is-active'));
+      b.classList.add('is-active');
+      document.getElementById('grp-' + b.dataset.tab).classList.add('is-active');
+    }));
+  </script>
+</body>
+</html>
