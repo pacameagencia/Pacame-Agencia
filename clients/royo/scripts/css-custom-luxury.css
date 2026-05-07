@@ -24,9 +24,15 @@
  *   8. Tabs de la ficha producto con underline dorado
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+/* NOTA: @import url(fonts.googleapis.com) eliminado intencionalmente.
+   En estilos inline de WP el @import puede ignorarse silenciosamente y
+   abortar el parsing de :root. Las fuentes Playfair Display/Inter las
+   carga el tema o se inyectan vía wp_enqueue_style en functions.php
+   si fuera necesario. Fallback system-ui está activo. */
 
-:root {
+:root,
+html,
+body {
   --royo-ivory: #FAF7F2;
   --royo-paper: #FFFFFF;
   --royo-champagne: #B8956A;
@@ -193,7 +199,7 @@ h1, h2, h3, h4,
 .woocommerce #respond input#submit.alt {
   background: var(--royo-ink) !important;
   color: var(--royo-paper) !important;
-  border: 1px solid var(--royo-ink) !important;
+  border: 1px solid var(--royo-champagne) !important;
   border-radius: 2px !important;
   padding: 1rem 2rem !important;
   font-size: 0.9rem !important;
@@ -209,7 +215,7 @@ h1, h2, h3, h4,
 .woocommerce button.button.alt:hover {
   background: var(--royo-champagne) !important;
   color: var(--royo-paper) !important;
-  border-color: var(--royo-champagne) !important;
+  border-color: var(--royo-ink) !important;
   transform: translateY(-1px);
 }
 
@@ -478,21 +484,23 @@ body {
 /* 16.1 — Bug del tema: el botón "Añadir al carrito" duplica el precio
    con un guion <span class="divide">-</span>. Ocultamos el precio +
    divisor del botón; el precio del summary y el de la sticky ATC se
-   mantienen. */
-.single_add_to_cart_button .divide,
-.single_add_to_cart_button .price,
-.single_add_to_cart_button [data-price] {
+   mantienen. SOLO en single-product (no en cart/checkout que tambien
+   usan .single_add_to_cart_button via mini-cart o ajax). */
+body.single-product .single_add_to_cart_button .divide,
+body.single-product .single_add_to_cart_button .price,
+body.single-product .single_add_to_cart_button [data-price] {
   display: none !important;
 }
-.single_add_to_cart_button {
+body.single-product .single_add_to_cart_button {
   justify-content: center !important;
   text-align: center !important;
   width: 100% !important;
 }
-.single_add_to_cart_button .text {
+body.single-product .single_add_to_cart_button .text {
   margin: 0 !important;
   letter-spacing: 0.12em !important;
 }
+
 
 /* 16.2 — Ocultar las cards demo del tema Ecomus
    ("10-20 días Europa", "Consultar Disponibilidad") hasta que tengamos
@@ -806,7 +814,371 @@ body {
   border-radius: 2px !important;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
+.elementor-button {
+  border: 1px solid var(--royo-champagne) !important;
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+}
 .elementor-button:hover {
+  background: var(--royo-champagne) !important;
+  border-color: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(184, 149, 106, 0.15);
+}
+
+/* ============================================================
+   19. CARRITO ALTA GAMA — layout tipo Tissot oficial
+   ============================================================ */
+
+/* 19.1 Layout 2-col en desktop (productos a la izda + sidebar resumen 412px).
+   IMPORTANTE: el padre real de cart-form y cart-collaterals en este tema
+   Ecomus es `.woocommrece-cart-content` (con typo intencional), NO el wrapper
+   `.woocommerce` directo. */
+@media (min-width: 992px) {
+  body.woocommerce-cart .woocommrece-cart-content,
+  body.woocommerce-cart .woocommerce-cart-content {
+    display: grid !important;
+    grid-template-columns: 1fr 412px !important;
+    gap: 3rem !important;
+    align-items: start !important;
+  }
+  body.woocommerce-cart .woocommerce-cart-form {
+    grid-column: 1 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  body.woocommerce-cart .woocommerce-cart-form table.cart,
+  body.woocommerce-cart .woocommerce-cart-form table.shop_table {
+    width: 100% !important;
+    table-layout: auto !important;
+  }
+  body.woocommerce-cart .woocommerce-cart-form .form-row.notes {
+    width: 100% !important;
+  }
+  body.woocommerce-cart .woocommerce-cart-form #order_comments,
+  body.woocommerce-cart .woocommerce-cart-form textarea[name="order_comments"] {
+    width: 100% !important;
+    min-height: 100px !important;
+    border: 1px solid var(--royo-line) !important;
+    border-radius: 2px !important;
+    padding: 0.75rem 1rem !important;
+    font-family: inherit !important;
+    font-size: 0.9rem !important;
+    background: var(--royo-paper) !important;
+    color: var(--royo-ink) !important;
+  }
+  body.woocommerce-cart .cart-collaterals {
+    grid-column: 2 !important;
+    position: sticky !important;
+    top: 100px !important;
+    width: 100% !important;
+    max-width: 412px !important;
+    float: none !important;
+  }
+}
+
+/* 19.1.1 Ocultar mensaje demo Ecomus en inglés "Your cart is empty" */
+.em-cart-text-empty {
+  display: none !important;
+}
+
+/* 19.1.2 Si hay productos en sesión, ocultar tambien el mensaje "Tu carrito está vacío" duplicado */
+body.woocommerce-cart .woocommerce-cart-form ~ .wc-empty-cart-message,
+body.woocommerce-cart:has(.woocommerce-cart-form) .wc-empty-cart-message {
+  display: none !important;
+}
+
+/* 19.1.3 Solo mostrar UN mensaje de "producto añadido" cuando hay duplicados */
+body.woocommerce-cart .woocommerce-message + .woocommerce-message {
+  display: none !important;
+}
+
+/* 19.2 Tabla productos: miniatura 96x96 con padding crema */
+.woocommerce-cart-form table.cart .product-thumbnail img,
+.woocommerce-cart-form .product-thumbnail img,
+.woocommerce-cart .product-thumbnail img {
+  max-width: 96px !important;
+  width: 96px !important;
+  height: 96px !important;
+  object-fit: contain !important;
+  background: var(--royo-ivory) !important;
+  padding: 8px !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+}
+
+/* 19.3 Filas con divisor fino + tipografía */
+.woocommerce-cart-form table.cart {
+  border-collapse: collapse !important;
+}
+.woocommerce-cart-form table.cart tr {
+  border-bottom: 1px solid var(--royo-line) !important;
+}
+.woocommerce-cart-form table.cart th,
+.woocommerce-cart-form table.cart td {
+  border: none !important;
+  padding: 1.25rem 0.75rem !important;
+  vertical-align: middle !important;
+}
+.woocommerce-cart-form .product-name a {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.05rem !important;
+  color: var(--royo-ink) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+.woocommerce-cart-form .product-name a:hover {
+  color: var(--royo-champagne-dark) !important;
+}
+.woocommerce-cart-form .product-price,
+.woocommerce-cart-form .product-subtotal {
+  font-size: 1rem !important;
+  color: var(--royo-ink) !important;
+}
+.woocommerce-cart-form .product-quantity input.qty {
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  width: 64px !important;
+  padding: 0.5rem !important;
+  text-align: center !important;
+  font-size: 0.95rem !important;
+  background: var(--royo-paper) !important;
+  color: var(--royo-ink) !important;
+}
+
+/* 19.4 Botón "Eliminar" como link sutil */
+.woocommerce-cart-form .product-remove a {
+  color: var(--royo-charcoal) !important;
+  font-size: 1.25rem !important;
+  text-decoration: none !important;
+  background: none !important;
+  border: none !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  transition: background 0.2s ease, color 0.2s ease !important;
+}
+.woocommerce-cart-form .product-remove a:hover {
+  color: var(--royo-ink) !important;
+  background: var(--royo-ivory) !important;
+}
+
+/* 19.5 Sidebar resumen */
+.cart_totals {
+  background: var(--royo-ivory) !important;
+  border: 1px solid var(--royo-line) !important;
+  padding: 2rem !important;
+  border-radius: 2px !important;
+}
+.cart_totals h2 {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.35rem !important;
+  margin: 0 0 1.5rem !important;
+  color: var(--royo-ink) !important;
+  font-weight: 500 !important;
+}
+.cart_totals table.shop_table {
+  border: none !important;
+  background: transparent !important;
+}
+.cart_totals table.shop_table th,
+.cart_totals table.shop_table td {
+  border: none !important;
+  border-bottom: 1px solid var(--royo-line) !important;
+  padding: 0.85rem 0 !important;
+  background: transparent !important;
+}
+.cart_totals .order-total th,
+.cart_totals .order-total td {
+  border-bottom: none !important;
+  font-size: 1.15rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  padding-top: 1.25rem !important;
+}
+
+/* 19.6 Botón "Finalizar compra" del sidebar resumen.
+   Alta especificidad porque .button.alt es genérico y plugins/tema
+   lo sobrescriben con sus propias reglas !important. */
+body.woocommerce-cart .wc-proceed-to-checkout {
+  margin-top: 1.5rem !important;
+  padding: 0 !important;
+}
+body.woocommerce-cart .wc-proceed-to-checkout a.checkout-button.button.alt,
+body.woocommerce-cart .wc-proceed-to-checkout .checkout-button.button.alt,
+body.woocommerce-cart a.checkout-button.button.alt.wc-forward,
+body.woocommerce-cart a.wc-forward.checkout-button {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  background-color: var(--royo-ink) !important;
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+  border: 1px solid var(--royo-champagne) !important;
+  border-radius: 2px !important;
+  padding: 1.1rem 2rem !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  font-weight: 500 !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+}
+body.woocommerce-cart .wc-proceed-to-checkout a.checkout-button.button.alt:hover,
+body.woocommerce-cart .wc-proceed-to-checkout .checkout-button.button.alt:hover,
+body.woocommerce-cart a.checkout-button.button.alt.wc-forward:hover,
+body.woocommerce-cart a.wc-forward.checkout-button:hover {
+  background-color: var(--royo-champagne) !important;
+  background: var(--royo-champagne) !important;
+  border-color: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+  transform: translateY(-1px);
+}
+
+/* 19.7 Trust badges debajo del checkout button */
+.cart_totals::after {
+  content: 'Pago seguro · Atención personalizada · Garantía oficial de marca';
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: var(--royo-charcoal);
+  text-align: center;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--royo-line);
+  line-height: 1.6;
+}
+
+/* 19.8 Coupon form más limpio */
+.woocommerce-cart-form .coupon {
+  display: flex !important;
+  gap: 0.5rem !important;
+  align-items: stretch !important;
+  margin-top: 0 !important;
+}
+.woocommerce-cart-form .coupon label {
+  display: none !important;
+}
+.woocommerce-cart-form .coupon input.input-text {
+  flex: 1 !important;
+  border: 1px solid var(--royo-line) !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 2px !important;
+  font-size: 0.85rem !important;
+  background: var(--royo-paper) !important;
+  color: var(--royo-ink) !important;
+}
+.woocommerce-cart-form .coupon button.button {
+  background: var(--royo-paper) !important;
+  color: var(--royo-ink) !important;
+  border: 1px solid var(--royo-ink) !important;
+  border-radius: 2px !important;
+  font-size: 0.78rem !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  padding: 0.75rem 1.25rem !important;
+  transition: all 0.25s ease !important;
+}
+.woocommerce-cart-form .coupon button.button:hover {
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+}
+
+/* 19.9 Botón "Actualizar carrito" más sutil (no es CTA principal) */
+.woocommerce-cart-form button[name="update_cart"] {
+  background: transparent !important;
+  color: var(--royo-charcoal) !important;
+  border: 1px solid var(--royo-line) !important;
+  font-size: 0.78rem !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  padding: 0.75rem 1.25rem !important;
+  border-radius: 2px !important;
+}
+.woocommerce-cart-form button[name="update_cart"]:hover {
+  background: var(--royo-ivory) !important;
+  border-color: var(--royo-ink) !important;
+  color: var(--royo-ink) !important;
+}
+
+/* 19.10 Mensaje "Producto añadido al carrito" más sutil */
+.woocommerce-message,
+.woocommerce-info {
+  background: var(--royo-ivory) !important;
+  border: 1px solid var(--royo-line) !important;
+  border-left: 3px solid var(--royo-champagne) !important;
+  border-radius: 2px !important;
+  padding: 1rem 1.25rem !important;
+  font-size: 0.88rem !important;
+  color: var(--royo-ink) !important;
+}
+.woocommerce-message a,
+.woocommerce-info a {
+  color: var(--royo-champagne-dark) !important;
+}
+
+/* 19.11 Mobile: botón sticky abajo */
+@media (max-width: 991px) {
+  body.woocommerce-cart .woocommerce-cart-form .product-thumbnail img {
+    max-width: 80px !important;
+    width: 80px !important;
+    height: 80px !important;
+  }
+  body.woocommerce-cart .wc-proceed-to-checkout {
+    position: sticky !important;
+    bottom: 0 !important;
+    background: var(--royo-paper) !important;
+    padding: 1rem !important;
+    margin: 0 -1rem !important;
+    border-top: 1px solid var(--royo-line) !important;
+    box-shadow: 0 -4px 16px rgba(26, 24, 22, 0.06) !important;
+    z-index: 100 !important;
+  }
+}
+
+/* 19.12 Carrito vacío */
+.cart-empty,
+.woocommerce-cart .cart-empty {
+  text-align: center !important;
+  padding: 4rem 1rem !important;
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.4rem !important;
+  color: var(--royo-charcoal) !important;
+}
+.return-to-shop {
+  text-align: center !important;
+}
+.return-to-shop a.button {
+  display: inline-block !important;
+  margin-top: 1.5rem !important;
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+  border: 1px solid var(--royo-champagne) !important;
+  padding: 1rem 2.5rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  font-size: 0.85rem !important;
+  border-radius: 2px !important;
+  text-decoration: none !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.return-to-shop a.button:hover {
+  background: var(--royo-champagne) !important;
+  border-color: var(--royo-ink) !important;
+}
+
+/* 19.13 Hero "Carrito de compra" — alinear con paleta luxury */
+body.woocommerce-cart .entry-title,
+body.woocommerce-cart h1.page-title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(1.8rem, 3vw, 2.4rem) !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  text-align: center !important;
+  margin: 2.5rem 0 2rem !important;
 }
