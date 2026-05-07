@@ -75,3 +75,7 @@ node clients/royo/scripts/fix-image-alts.mjs --apply
 ## Log de cambios estructurales
 - 2026-04-29: instalación plugin MU PACAME, fix bulk alts.
 - 2026-04-30: enrichment Tissot 39/100 productos.
+- 2026-05-07: Sprint 2A global, enrichment determinista 589 productos (atributos + Yoast SEO + HTML Tissot reescrito en los que aplican). Coste 0€.
+- 2026-05-07: Sprint 2B, limpieza de nombres con SKU pegado al final. 287 relojes renombrados (joyería intacta). Match exacto contra `sku` oficial = 0 falsos positivos. Coste 0€.
+- 2026-05-07: Estética CSS luxury cargado vía `/pacame/v1/css/set` (no estaba en producción antes). Sección 16 añadida: fix precio duplicado en botón add-to-cart, ocultar cards demo `ecomus-icon-box-widget`, refinos galería y sticky ATC.
+- 2026-05-07: Sprint 2C parcial, imágenes oficiales Tissot (~50 de 107, cobertura 47%). Pipeline: scraper tissotwatches.com/es-es/{SKU}.html → variantSku → packshot principal → upload-from-url → featured-image. Imágenes antiguas no se borran (rollback con UpdraftPlus o reasignación destacada manual). Resto Tissot legacy + Longines + Casio pendiente otra sesión.

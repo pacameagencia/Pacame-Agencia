@@ -470,3 +470,123 @@ body {
   margin: 1.5rem 0 0.75rem !important;
   color: var(--royo-ink) !important;
 }
+
+/* ============================================================
+   16. SINGLE PRODUCT — fixes de Ecomus + cards reales (2026-05-07)
+   ============================================================ */
+
+/* 16.1 — Bug del tema: el botón "Añadir al carrito" duplica el precio
+   con un guion <span class="divide">-</span>. Ocultamos el precio +
+   divisor del botón; el precio del summary y el de la sticky ATC se
+   mantienen. */
+.single_add_to_cart_button .divide,
+.single_add_to_cart_button .price,
+.single_add_to_cart_button [data-price] {
+  display: none !important;
+}
+.single_add_to_cart_button {
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100% !important;
+}
+.single_add_to_cart_button .text {
+  margin: 0 !important;
+  letter-spacing: 0.12em !important;
+}
+
+/* 16.2 — Ocultar las cards demo del tema Ecomus
+   ("10-20 días Europa", "Consultar Disponibilidad") hasta que tengamos
+   textos reales del cliente. La clase Ecomus real es
+   `ecomus-icon-box-widget`. */
+.single-product .ecomus-icon-box-widget,
+.single-product .elementor-widget-ecomus-icon-box,
+.single-product .elementor-widget-ecomus-icon-box-widget {
+  display: none !important;
+}
+
+/* 16.3 — Caja de "Información del cliente" real (sustituye a las cards
+   demo). Reglas para cuando se inserte el bloque vía Elementor o como
+   shortcode. Clase aplicable: .royo-trust-card. */
+.royo-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--royo-line);
+}
+.royo-trust-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1rem 1.1rem;
+  background: var(--royo-ivory);
+  border: 1px solid var(--royo-line);
+  border-radius: 3px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.royo-trust-card:hover {
+  border-color: var(--royo-champagne);
+  box-shadow: var(--royo-soft-shadow);
+}
+.royo-trust-card__icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  color: var(--royo-champagne-dark);
+}
+.royo-trust-card__icon svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.royo-trust-card__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--royo-ink);
+  margin: 0 0 0.2rem;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
+.royo-trust-card__text {
+  font-size: 0.82rem;
+  color: var(--royo-charcoal);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* 16.4 — Galería: respiro arriba y zoom hover discreto */
+.single-product .woocommerce-product-gallery {
+  padding-top: 0.5rem;
+}
+.single-product .woocommerce-product-gallery__image img {
+  background: var(--royo-paper) !important;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.single-product .woocommerce-product-gallery__image:hover img {
+  transform: scale(1.02);
+}
+
+/* 16.5 — Espaciado extra del summary respecto a la galería en desktop */
+@media (min-width: 992px) {
+  .single-product div.product .summary {
+    padding-left: 2.5rem !important;
+  }
+}
+
+/* 16.6 — Sticky ATC bar más sutil */
+.ecomus-sticky-atc {
+  background: var(--royo-paper) !important;
+  border-top: 1px solid var(--royo-line) !important;
+  box-shadow: 0 -4px 16px rgba(26, 24, 22, 0.04) !important;
+}
+.ecomus-sticky-atc__title {
+  font-family: 'Playfair Display', serif !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+}
