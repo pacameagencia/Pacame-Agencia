@@ -1,22 +1,49 @@
-# RETOMAR-AQUI · Punto de entrada DARK_FRAMES
+# RETOMAR-AQUI · Punto de entrada DARK_FRAMES + Calendario @darkroomcreative.cloud
 
-> **Si abres un nuevo chat de Claude Code y la conversación menciona DARK_FRAMES, cinemáticas IA, reels @pacamespain, calendario mayo 2026, lanzamiento Dark Room, o continuación del trabajo creativo → LEE ESTE ARCHIVO PRIMERO.**
+> **Si abres un nuevo chat de Claude Code y la conversación menciona DARK_FRAMES, cinemáticas IA, reels darkroomcreative.cloud, calendario mayo 2026, lanzamiento Dark Room, o continuación del trabajo creativo → LEE ESTE ARCHIVO PRIMERO.**
 
-> **Última actualización**: 2026-05-07 (segunda iteración) · PR #122 (pipeline DARK_FRAMES) + PR #124 (continuidad) + nuevo doc maestro calendario 24 días [`strategy/calendario-7may-31may-2026.md`](../calendario-7may-31may-2026.md).
+> **Última actualización**: 2026-05-07 (tercera iteración) · PR #122 + #124 + #126 + #131 + #133 + (próximo PR · v2 con 10 tipos contenido).
+
+## ⚠️ Datos clave que cambian todo
+
+- **Cuenta IG real**: `@darkroomcreative.cloud` (52.205 followers · NO @pacamespain como decíamos coloquialmente · token Meta correctamente conectado).
+- **Audiencia REAL** (Meta Graph API verificado 2026-05-07): 80% LATAM (MX > US > AR > ES = solo 11%) · 78% hombres · 61% entre 35-54 años · top ciudades Santiago/Lima/CDMX/Bogotá/Caracas.
+- **Audiencia OBJETIVO** (decisión Pablo): creators IA + emprendedores digitales hispanohablantes. Aceptamos perder engagement de la audiencia heredada para construir audiencia nueva alineada con producto Dark Room.
+- **Soul Character Pablo**: reference_id = `PACAME` (entrenado Higgsfield · disponible en `web/.env.local` como `PACAME_SOUL_CHARACTER_ID`).
+- **Pricing canónico**: 24,90€/mes Pro · 349€ Lifetime (drop 100 plazas fase 3) · trial 14 días sin tarjeta.
 
 ---
 
 ## ¿Qué es DARK_FRAMES?
 
-Serie cinemática IA para `@pacamespain` (52k followers · pivot observatorio IA + Dark Room ya activo desde 7-may-2026). Cada pieza:
+Serie cinemática IA para `@darkroomcreative.cloud` (52k followers heredados). Cada pieza:
 
 - 100% generada con IA (Cinema Studio Video 3.0 / Seedance 2.0).
 - Replica técnica REAL de Hollywood (DPs concretos, lentes, LUTs, ritmo, audio).
 - Outro Dark Room 2s obligatorio (única conexión con la marca).
-- Auto-publicada via cron tras pasar quality gate de 10 checks.
-- Aprovecha plan Higgsfield Plus de Pablo + Atlas Cloud para coste mínimo.
+- Auto-publicada via cron tras pasar quality gate de 11 checks.
+- Soul Character Pablo `PACAME` disponible desde dark-frames-002 en adelante.
 
-Objetivo de Pablo declarado textual el 7-may: *"crear contenido TOP TOP de última calidad para generar visitas a Instagram y crear comunidad. Dark Room es la herramienta que uso para generar este contenido"*.
+Objetivo declarado por Pablo: *"crear contenido TOP TOP de última calidad para generar visitas a Instagram y crear comunidad. Dark Room es la herramienta que uso para generar este contenido"*.
+
+---
+
+## 📅 Calendario @darkroomcreative.cloud · 10 tipos de contenido rotando
+
+| Día | AM 09:00 | MID 14:30 | PM 19:30 |
+|---|---|---|---|
+| **Lun** | 💡 Idea negocio IA | 🎯 Lista top X | 📊 Comparativa honesta |
+| **Mar** | 💰 Caso real cifras | 🏠 IA cotidiana | 🎬 Reel DARK_FRAMES |
+| **Mié** | ⚡ Prompt/workflow | 😂 Humor/meme IA | 💡 Idea negocio IA #2 |
+| **Jue** | 🎯 Lista TOP X (ancla) | 📰 Tendencia hot IA | 🎬 Reel HERO DARK_FRAMES |
+| **Vie** | 🎬 Storytime BTS reel | 🏠 IA cotidiana | 🎬 Reel DARK_FRAMES |
+| **Sáb** | 📊 Comparativa honesta | 😂 Humor/meme IA | ⚡ Prompt/workflow |
+| **Dom** | 📺 Tutorial 60s reel | 📅 Recap semana IA | 💔 Storytime emocional (1×mes) |
+
++ 6 stories diarias rotativas (tendencia / repromo / tip / BTS / repromo / recap CTA Dark Room).
+
+**Distribución 231 filas BD prod** · `select content_type, count(*) from content_queue where source like 'calendar-skeleton%' group by content_type`:
+story_general 150 · dark_frames_storytime 15 · tendencia_hot 10 · prompt_workflow 7 · lista_top 7 · ia_cotidiana 7 · comparativa 7 · humor_meme 7 · idea_negocio 6 · tutorial_60s 4 · recap_semana 4 · storytime_emocional 4 · caso_real 3.
 
 ---
 
