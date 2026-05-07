@@ -36,6 +36,12 @@ REQUIRED_SECTIONS = [
         "memory_file": "feedback_pr_merge_automatico.md",
         "supabase_id": "b3b5e61c-dc9f-48ff-9683-bb79e58f1eb7",
     },
+    {
+        "title": "## 🔒 Quality Gate Global (regla maestra de calidad)",
+        "anchor": "Capa 1 — Skill curada antes de generar",
+        "memory_file": "feedback_quality_gate_global.md",
+        "supabase_id": "pending-creation",
+    },
 ]
 
 

@@ -10,6 +10,7 @@
 
 | Cuándo aplica | Protocolo |
 |---------------|-----------|
+| Antes de entregar CUALQUIER output a Pablo o cliente (frontend, copy, video, branding, backend) | [`docs/protocols/quality-gate.md`](docs/protocols/quality-gate.md) |
 | Antes de tocar cualquier `.tsx/.jsx/.css/.html/.svg/.png` o asset visual | [`docs/protocols/visual-first.md`](docs/protocols/visual-first.md) |
 | Antes de responder a CUALQUIER petición creativa/estratégica | [`docs/protocols/cerebro-pacame.md`](docs/protocols/cerebro-pacame.md) |
 | Para cualquier ejecución / deploy / config | [`docs/protocols/autonomia-total.md`](docs/protocols/autonomia-total.md) |
@@ -19,6 +20,39 @@
 | Si la conversación menciona DARK_FRAMES, cinemáticas IA, reels @pacamespain, Cinema Studio Video 3.0, Seedance, o continuación trabajo creativo mayo 2026 | [`strategy/darkroom/RETOMAR-AQUI.md`](strategy/darkroom/RETOMAR-AQUI.md) |
 
 > **Regla dura:** si saltas del input a generar sin cargar el protocolo aplicable, estás rompiendo el contrato PACAME. Para y vuelve aquí.
+
+---
+
+## 🔒 Quality Gate Global (regla maestra de calidad)
+
+> Versión completa: [`docs/protocols/quality-gate.md`](docs/protocols/quality-gate.md). Lo siguiente es resumen literal — no tocar (se valida por hook `infra/scripts/verify-claude-rules.py`).
+
+Pablo prefiere esperar 30 minutos por algo bueno a recibir en 30 segundos algo regular. **Calidad > velocidad. Carácter > genérico. Iteración > primera versión.**
+
+Cada output entregable (frontend, copy, video, branding, backend) pasa por **3 capas obligatorias**:
+
+1. **Capa 1 — Skill curada antes de generar.** Cada dominio tiene su skill maestra:
+   - Frontend → `pacame-web` o `frontend-design` (+ `imagen`, `theme-factory`).
+   - Copy → `copywriting` (+ `copy-editing`, `content-humanizer`).
+   - Video → research-first OBLIGATORIO + `video-content-strategist` + `remotion`/`elevenlabs`.
+   - Branding → `brand-guidelines` o `theme-factory` + sistema completo (no solo logo).
+   - Backend → `architecture-patterns` o `senior-backend` + `database-schema-designer`.
+
+2. **Capa 2 — Checklist pre-entrega.** Anti-patrones que NUNCA salen:
+   - Frontend: gradientes Tailwind random, SVG genérico, via.placeholder, system-ui en branded.
+   - Copy: palabras IA (desbloquea, embárcate, viaje, transformador, en última instancia), fórmulas trilladas ("X no es solo Y, es Z"), adjetivos vacíos.
+   - Video: "cinematic vibe" sin lente/LUT/director referencia, sin research-first.
+   - Branding: solo logo sin sistema, sin justificación racional, sin variantes claro/oscuro.
+   - Backend: `any`, sin validación de input, secrets hardcoded, RLS off en tabla sensible.
+
+3. **Capa 3 — Revisor crítico antes de entregar.** Subagente bloquea si hay anti-patrón:
+   - Visual → `visual-reviewer`.
+   - Copy/video/branding → `quality-reviewer`.
+   - Backend código → `Code_Reviewer`.
+
+**Hook de aplicación**: `infra/scripts/quality-gate-hook.py` (UserPromptSubmit) detecta intent en cada turno y emite system-reminder con la skill obligatoria + checklist + revisor del dominio. **Es invocación automática, no opcional.**
+
+**Anti-patrón prohibido:** entregar output "porque el modelo lo generó así". Si el revisor bloquea, iterar. Si la skill no se invocó, parar y volver a Capa 1.
 
 ---
 
