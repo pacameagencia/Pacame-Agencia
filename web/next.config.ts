@@ -1,5 +1,11 @@
 import type { NextConfig } from "next";
-import { withSentryConfig } from "@sentry/nextjs";
+
+// Sentry v10 + Next 16 + proxy.ts incompatibilidad: withSentryConfig
+// inyecta automáticamente un middleware.ts fantasma que choca con
+// nuestro proxy.ts (Next 16 obliga a usar uno solo). Hasta que Sentry
+// libere parche oficial para Next 16, lo desactivamos. Reactivar cuando
+// @sentry/nextjs >= 10.x soporte el flag autoInstrumentMiddleware: false
+// o cuando migremos a la API de proxy.ts nativa.
 
 const nextConfig: NextConfig = {
   images: {
@@ -42,11 +48,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
-  silent: true,
-  org: process.env.SENTRY_ORG,
-  project: "pacame-web",
-  widenClientFileUpload: true,
-  tunnelRoute: "/monitoring",
-  disableLogger: true,
-});
+export default nextConfig;
