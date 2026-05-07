@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Hero from "@/components/sections/Hero";
 import ServicesSection from "@/components/sections/ServicesSection";
+import { STORYBOOK_HOME } from "@/lib/env/flags";
+import StorybookHome from "@/app/(storybook)/page";
 
 // SM core sections (deferred for FCP)
 const NichesSection = dynamic(() => import("@/components/sections/NichesSection"));
@@ -34,6 +36,12 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
+  // Gating Storybook 3D: si flag activo, mostrar nueva home (Fase 1+).
+  // Default (flag off): home clásica con 12 secciones.
+  if (STORYBOOK_HOME) {
+    return <StorybookHome />;
+  }
+
   return (
     <>
       {/* CRO: scarcity slots top banner (client-only) */}
