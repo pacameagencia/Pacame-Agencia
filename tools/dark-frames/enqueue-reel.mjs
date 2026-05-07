@@ -31,8 +31,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { execSync } from "node:child_process";
+import crypto from "node:crypto";
 import sharp from "sharp";
 import { createClient } from "@supabase/supabase-js";
+import { runSemanticGate } from "./lib/semantic-gate.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..", "..");
@@ -129,27 +131,107 @@ if (!failedCheck) {
   }
 }
 
-// CHECK 3: cost-guard token válido (si modelo es Veo o Seedance)
+// CHECK 3: cost-guard token VERIFICADO contra Supabase (si modelo premium)
+// (fix CRITICAL #2 · 2026-05-07 · migration 045_cost_guard_tokens.sql)
+// Antes: solo verificábamos length ≥16. Cualquiera podía generar uno sin autorización.
+// Ahora: el token debe haber sido emitido vía emit-cost-guard.mjs por persona autorizada,
+// estar vinculado a este concept_id, no usado, no expirado.
+// Se consume atómicamente vía función Postgres consume_cost_guard_token() — single-use.
+const supabaseEarly = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, {
+  auth: { persistSession: false, autoRefreshToken: false },
+});
+
 if (!failedCheck && meta) {
-  const expensiveModels = ["veo3", "veo3lite", "veo3.1", "seedance", "soul_cinema"];
-  const usedExpensive = (meta.models_used || []).some((m) => expensiveModels.some((e) => m.toLowerCase().includes(e)));
+  const expensiveModels = ["veo3", "veo3lite", "veo3.1", "seedance", "soul_cinema", "cinema_studio_video"];
+  const usedExpensive = (meta.models_used || []).some((m) =>
+    expensiveModels.some((e) => m.toLowerCase().replace(/[._]/g, "").includes(e.replace(/[._]/g, ""))),
+  );
   if (usedExpensive) {
-    if (!meta.cost_guard_token || typeof meta.cost_guard_token !== "string" || meta.cost_guard_token.length < 16) {
-      fail("cost_guard_token", "modelo premium usado pero sin cost_guard_token válido (min 16 chars)");
+    if (!meta.cost_guard_token || typeof meta.cost_guard_token !== "string") {
+      fail("cost_guard_token_present", "modelo premium usado pero sin cost_guard_token en meta.json");
     } else {
-      pass("cost_guard_token", { token_prefix: meta.cost_guard_token.slice(0, 8) + "…" });
+      // Verificar + consumir atomically vía función Postgres
+      const { data: rpcResult, error: rpcErr } = await supabaseEarly.rpc("consume_cost_guard_token", {
+        p_token: meta.cost_guard_token,
+        p_concept_id: meta.concept_id,
+        p_render_id: path.basename(folderPath),
+      });
+
+      if (rpcErr) {
+        fail("cost_guard_token_verify", `Supabase RPC error: ${rpcErr.message}`);
+      } else if (!rpcResult || rpcResult.length === 0) {
+        fail("cost_guard_token_verify", "RPC devolvió respuesta vacía");
+      } else {
+        const { success, error_message } = rpcResult[0];
+        if (!success) {
+          fail("cost_guard_token_valid", error_message || "token rejected sin razón específica");
+        } else {
+          pass("cost_guard_token", {
+            token_prefix: meta.cost_guard_token.slice(0, 8) + "…",
+            consumed_for: path.basename(folderPath),
+          });
+        }
+      }
     }
   } else {
-    pass("cost_guard_token", { skipped: "no expensive model used" });
+    pass("cost_guard_token", { skipped: "no premium model used" });
   }
 }
 
-// CHECK 4: visual-reviewer aprobó
+// CHECK 4: visual-reviewer aprobó CON FIRMA CRIPTOGRÁFICA Ed25519 válida
+// (fix CRITICAL #1 · 2026-05-07 · regla feedback_signed_approvals.md)
+// El campo visual_reviewer_status='approved' ya NO basta — debe ir firmado
+// con clave privada Ed25519 (PACAME_VISUAL_REVIEWER_PRIVATE_KEY) y verificado
+// contra la pública en tools/dark-frames/keys/visual-reviewer.pub.pem.
 if (!failedCheck && meta) {
   if (meta.visual_reviewer_status !== "approved") {
     fail("visual_reviewer_approved", `visual_reviewer_status='${meta.visual_reviewer_status}', se esperaba 'approved'`);
+  } else if (!meta.visual_reviewer_signature || !meta.visual_reviewer_mp4_sha256) {
+    fail(
+      "visual_reviewer_signed",
+      "approval sin firma criptográfica · ejecuta sign-approval.mjs <folder> --reason='...'",
+    );
   } else {
-    pass("visual_reviewer_approved", { reviewed_at: meta.visual_reviewer_at });
+    // Verificar firma:
+    // 1. Recalcular SHA-256 del MP4 actual
+    // 2. Comparar con meta.visual_reviewer_mp4_sha256 (detecta tampering del MP4 post-aprobación)
+    // 3. Verificar firma Ed25519 sobre el hash con clave pública
+    try {
+      const reelBufferNow = fs.readFileSync(reelPath);
+      const sha256Now = crypto.createHash("sha256").update(reelBufferNow).digest("hex");
+
+      if (sha256Now !== meta.visual_reviewer_mp4_sha256) {
+        fail(
+          "visual_reviewer_mp4_unmodified",
+          `MP4 modificado tras aprobación · sha256 actual ${sha256Now.slice(0, 16)}… ≠ aprobado ${meta.visual_reviewer_mp4_sha256.slice(0, 16)}…`,
+        );
+      } else {
+        const pubKeyPath = path.resolve(__dirname, "keys", "visual-reviewer.pub.pem");
+        if (!fs.existsSync(pubKeyPath)) {
+          fail("visual_reviewer_pubkey", `clave pública no existe en ${pubKeyPath}`);
+        } else {
+          const pubKeyPem = fs.readFileSync(pubKeyPath, "utf8");
+          const publicKey = crypto.createPublicKey({ key: pubKeyPem, format: "pem", type: "spki" });
+          const signatureBuf = Buffer.from(meta.visual_reviewer_signature, "base64");
+          const valid = crypto.verify(null, Buffer.from(sha256Now, "hex"), publicKey, signatureBuf);
+          if (!valid) {
+            fail(
+              "visual_reviewer_signature_valid",
+              "firma Ed25519 inválida · meta.json fue editado a mano sin pasar por sign-approval.mjs",
+            );
+          } else {
+            pass("visual_reviewer_approved", {
+              reviewed_at: meta.visual_reviewer_at,
+              signed_by: meta.visual_reviewer_signed_by,
+              reason: (meta.visual_reviewer_reason || "").slice(0, 60),
+              signature_prefix: meta.visual_reviewer_signature.slice(0, 16) + "…",
+            });
+          }
+        }
+      }
+    } catch (e) {
+      fail("visual_reviewer_signature_verify", `error verificando firma: ${e.message}`);
+    }
   }
 }
 
@@ -251,11 +333,59 @@ if (!failedCheck) {
   }
 }
 
+// CHECK 9: gate semántico Claude Vision (FIX CRITICAL #3 · 2026-05-07)
+// Antes: los 8 checks técnicos NO detectaban contenido problemático.
+// Ahora: extrae 4 frames del MP4 y los pasa a Claude Vision para análisis de:
+// NSFW, hate symbols, recognizable faces, copyright leak, legible text, brand logos.
+// Si CUALQUIER dimensión >70/100 → bloquea con razón específica.
+// Coste ~$0.01-0.03 por análisis. Para 4 reels/mes ≈ $0.10. Despreciable.
+if (!failedCheck && !SKIP_GATE) {
+  const claudeKey = env.CLAUDE_API_KEY || env.ANTHROPIC_API_KEY;
+  if (!claudeKey) {
+    console.warn("  ⚠️  CLAUDE_API_KEY/ANTHROPIC_API_KEY ausente · gate semántico SKIPPED");
+    pass("semantic_content_safe", { skipped: "no Claude API key" });
+  } else {
+    try {
+      // Cargar concept JSON original (necesario para context del análisis)
+      const conceptFilePath = path.resolve(__dirname, "concepts", `${conceptId}.json`);
+      const conceptData = JSON.parse(fs.readFileSync(conceptFilePath, "utf8"));
+
+      console.log(`  🔍 ejecutando gate semántico Claude Vision (~5-10s)…`);
+      const result = await runSemanticGate({
+        mp4Path: reelPath,
+        concept: conceptData,
+        apiKey: claudeKey,
+      });
+
+      if (!result.passed) {
+        fail("semantic_content_safe", result.blocking_reason);
+      } else {
+        pass("semantic_content_safe", {
+          scores: {
+            nsfw: result.scores.nsfw_risk,
+            hate: result.scores.hate_symbols,
+            faces: result.scores.recognizable_faces,
+            copyright: result.scores.copyright_leak,
+            text: result.scores.legible_text,
+            logos: result.scores.brand_logos,
+          },
+          assessment: (result.scores.overall_assessment || "").slice(0, 100),
+        });
+      }
+    } catch (e) {
+      // Si gate semántico falla técnicamente, NO bloqueamos automáticamente
+      // (puede ser timeout API, rate limit). Loggeamos warning y continuamos.
+      // Pero si era una violación real detectada, sí bloqueamos arriba.
+      console.warn(`  ⚠️  gate semántico error técnico: ${e.message.slice(0, 200)}`);
+      fail("semantic_content_safe_run", `Claude Vision falló: ${e.message.slice(0, 200)} · revisa manualmente o reintenta`);
+    }
+  }
+}
+
 // ─── Resultado del gate ───────────────────────────────────────────
 
-const supabase = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, {
-  auth: { persistSession: false, autoRefreshToken: false },
-});
+// Reusamos el cliente Supabase ya creado en CHECK 3 (supabaseEarly)
+const supabase = supabaseEarly;
 
 const passed = !failedCheck;
 
