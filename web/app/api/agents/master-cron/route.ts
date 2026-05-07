@@ -46,6 +46,10 @@ const SCHEDULE: ScheduledTask[] = [
   { hour: 4, minute: 0, path: "/api/neural/factoria-package" },
   { hour: 4, minute: 0, dayOfWeek: 1, path: "/api/agents/maintenance" }, // lunes 04:00
   { hour: 5, minute: 0, path: "/api/neural/auto-discovery" },
+  // ── Pipeline auto-content @darkroomcreative.cloud (3 fases secuenciales) ──
+  { hour: 5, minute: 0, path: "/api/agents/research-trends" },     // 07:00 ES · Apify scrape 8 hashtags IA
+  { hour: 5, minute: 30, path: "/api/agents/generate-brief" },     // 07:30 ES · Claude genera briefs por draft
+  { hour: 6, minute: 0, path: "/api/agents/render-and-enqueue" },  // 08:00 ES · Sharp+SVG slides + catbox + enqueue
   { hour: 6, minute: 0, path: "/api/agents/cron" },
   { hour: 7, minute: 0, dayOfWeek: 1, path: "/api/agents/weekly-audit" }, // lunes 07:00
   { hour: 8, minute: 0, path: "/api/neural/opportunity-scanner" },
