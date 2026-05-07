@@ -40,12 +40,17 @@ const C = {
   emptyDash: "#3A3A3A",
 };
 
+// opentype.loadSync() está deprecated en v2+ y devuelve undefined. Usar parse(arrayBuffer).
+const loadFont = (name) => {
+  const buf = fs.readFileSync(path.join(FONTS_DIR, name));
+  return opentype.parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength));
+};
 const FONTS = {
-  anton: opentype.loadSync(path.join(FONTS_DIR, "Anton-Regular.ttf")),
-  sgB: opentype.loadSync(path.join(FONTS_DIR, "SpaceGrotesk-Bold.ttf")),
-  sgM: opentype.loadSync(path.join(FONTS_DIR, "SpaceGrotesk-Medium.ttf")),
-  jbmR: opentype.loadSync(path.join(FONTS_DIR, "JetBrainsMono-Regular.ttf")),
-  jbmB: opentype.loadSync(path.join(FONTS_DIR, "JetBrainsMono-Bold.ttf")),
+  anton: loadFont("Anton-Regular.ttf"),
+  sgB: loadFont("SpaceGrotesk-Bold.ttf"),
+  sgM: loadFont("SpaceGrotesk-Medium.ttf"),
+  jbmR: loadFont("JetBrainsMono-Regular.ttf"),
+  jbmB: loadFont("JetBrainsMono-Bold.ttf"),
 };
 
 // ── Text → SVG path helpers (idénticos al composer principal) ──
@@ -95,7 +100,10 @@ function svgWrap(inner, defs = "") {
 </svg>`;
 }
 
-function brandMark(y = 90) {
+// IG Story safe area: y entre 250 (TOP_UNSAFE) y 1670 (H - BOT_UNSAFE).
+// brandMark default y=320: dentro safe area, no detrás de progress bar IG.
+// handle default y=1660: dentro safe area, no tapado por input "responder".
+function brandMark(y = 320) {
   return textPath({
     text: "DARK ROOM",
     font: FONTS.anton,
@@ -108,7 +116,7 @@ function brandMark(y = 90) {
   });
 }
 
-function handle(y = H - 60) {
+function handle(y = 1660) {
   return textPath({
     text: "darkroomcreative.cloud",
     font: FONTS.jbmR,
@@ -165,8 +173,8 @@ function tpl01({ filled = false }) {
     ${textPath({ text: "= 24,90 €/mes", font: FONTS.anton, size: 130, x: PAD, y: 540, fill: C.acid })}
     ${textPath({ text: "Las 12 herramientas que uso TODOS los días.", font: FONTS.sgM, size: 32, x: PAD, y: 640, fill: C.white })}
     ${gridTools12({ y: 760, h: 600 })}
-    ${textPath({ text: filled ? "@tu_handle" : "@tu_handle aquí", font: FONTS.jbmR, size: 28, x: PAD, y: H - 240, fill: C.ghost })}
-    ${textPath({ text: "Link en bio", font: FONTS.sgB, size: 32, x: PAD, y: H - 180, fill: C.acid, letterSpacing: 4 })}
+    ${textPath({ text: filled ? "@tu_handle" : "@tu_handle aquí", font: FONTS.jbmR, size: 28, x: PAD, y: 1560, fill: C.ghost })}
+    ${textPath({ text: "Link en bio", font: FONTS.sgB, size: 32, x: PAD, y: 1620, fill: C.acid, letterSpacing: 4 })}
     ${handle()}
   `);
 }
@@ -185,7 +193,7 @@ function tpl02({ filled = false }) {
     ${textPath({ text: "AL MES", font: FONTS.sgB, size: 36, x: PAD, y: 1310, fill: C.white, letterSpacing: 3 })}
     ${textPath({ text: "Mismo acceso. 12 herramientas. Dark Room.", font: FONTS.sgM, size: 30, x: PAD, y: 1480, fill: C.white })}
     ${textPath({ text: filled ? "Llevo 3 meses." : "[escribe tu testimonio]", font: FONTS.sgM, size: 28, x: PAD, y: 1540, fill: C.ghost })}
-    ${textPath({ text: "Link en bio →", font: FONTS.sgB, size: 32, x: PAD, y: H - 200, fill: C.acid, letterSpacing: 3 })}
+    ${textPath({ text: "Link en bio →", font: FONTS.sgB, size: 32, x: PAD, y: 1600, fill: C.acid, letterSpacing: 3 })}
     ${handle()}
   `);
 }
@@ -211,7 +219,7 @@ function tpl03({ filled = false }) {
       lineHeight: 1.4,
     })}
     ${textPath({ text: filled ? "Y todavía no he probado ni la mitad." : "[añade tu reacción]", font: FONTS.sgM, size: 30, x: PAD, y: 1500, fill: C.ghost })}
-    ${textPath({ text: "Link en bio", font: FONTS.sgB, size: 32, x: PAD, y: H - 180, fill: C.acid, letterSpacing: 4 })}
+    ${textPath({ text: "Link en bio", font: FONTS.sgB, size: 32, x: PAD, y: 1620, fill: C.acid, letterSpacing: 4 })}
     ${handle()}
   `);
 }
@@ -245,7 +253,7 @@ function tpl04({ filled = false }) {
       label: filled ? "PREGÚNTAME EN DM" : "[añade un sticker de pregunta IG aquí]",
       labelSize: filled ? 56 : 30,
     })}
-    ${textPath({ text: "Te respondo todas.", font: FONTS.sgB, size: 32, x: PAD, y: H - 200, fill: C.acid })}
+    ${textPath({ text: "Te respondo todas.", font: FONTS.sgB, size: 32, x: PAD, y: 1600, fill: C.acid })}
     ${handle()}
   `);
 }
@@ -284,7 +292,7 @@ function tpl05({ filled = false }) {
     ${textPath({ text: filled ? "ahorro" : "tu ahorro", font: FONTS.sgB, size: 26, x: PAD + colW + 40 + colW / 2, y: 1300, fill: C.ghost, anchor: "middle", letterSpacing: 4 })}
     ${textPath({ text: filled ? "−283 €/mes" : "−___ €/mes", font: FONTS.anton, size: 78, x: PAD + colW + 40 + colW / 2, y: 1400, fill: C.acid, anchor: "middle" })}
     ${textPath({ text: filled ? "(3.396 € al año)" : "(_____ € al año)", font: FONTS.sgM, size: 28, x: PAD + colW + 40 + colW / 2, y: 1450, fill: C.white, anchor: "middle" })}
-    ${textPath({ text: "Link en bio", font: FONTS.sgB, size: 32, x: PAD, y: H - 180, fill: C.acid, letterSpacing: 4 })}
+    ${textPath({ text: "Link en bio", font: FONTS.sgB, size: 32, x: PAD, y: 1620, fill: C.acid, letterSpacing: 4 })}
     ${handle()}
   `);
 }
@@ -305,7 +313,7 @@ function tpl06({ filled = false }) {
       labelSize: filled ? 30 : 36,
     })}
     ${textPath({ text: "12 herramientas. 24,90 €/mes.", font: FONTS.sgB, size: 34, x: PAD, y: 1740, fill: C.acid })}
-    ${textPath({ text: "Link en bio", font: FONTS.jbmB, size: 28, x: PAD, y: H - 200, fill: C.acid })}
+    ${textPath({ text: "Link en bio", font: FONTS.jbmB, size: 28, x: PAD, y: 1600, fill: C.acid })}
     ${handle()}
   `);
 }
@@ -319,8 +327,8 @@ function tpl07({ filled = false }) {
     <rect x="${PAD}" y="570" width="200" height="8" fill="${C.acid}"/>
     ${textPath({ text: "12 herramientas. Un solo sitio.", font: FONTS.sgM, size: 32, x: PAD, y: 660, fill: C.white })}
     ${gridTools12({ y: 760, h: 720 })}
-    ${textPath({ text: filled ? "0,83 €/día." : "Pago menos al día que un café.", font: FONTS.anton, size: 56, x: PAD, y: H - 280, fill: C.acid })}
-    ${textPath({ text: "Link en bio", font: FONTS.sgB, size: 32, x: PAD, y: H - 180, fill: C.white, letterSpacing: 4 })}
+    ${textPath({ text: filled ? "0,83 €/día." : "Pago menos al día que un café.", font: FONTS.anton, size: 56, x: PAD, y: 1540, fill: C.acid })}
+    ${textPath({ text: "Link en bio", font: FONTS.sgB, size: 32, x: PAD, y: 1620, fill: C.white, letterSpacing: 4 })}
     ${handle()}
   `);
 }
@@ -354,7 +362,7 @@ function tpl08({ filled = false }) {
       "Lifetime: 349 € una vez",
     ].map((t, i) => textPath({ text: `· ${t}`, font: FONTS.sgM, size: 36, x: PAD, y: 1180 + i * 70, fill: C.white })).join("\n")}
     ${textPath({ text: filled ? "Llevo 6 meses. No vuelvo atrás." : "[escribe tu experiencia]", font: FONTS.sgB, size: 30, x: PAD, y: 1540, fill: C.acid })}
-    ${textPath({ text: "Link en bio", font: FONTS.sgB, size: 32, x: PAD, y: H - 180, fill: C.acid, letterSpacing: 4 })}
+    ${textPath({ text: "Link en bio", font: FONTS.sgB, size: 32, x: PAD, y: 1620, fill: C.acid, letterSpacing: 4 })}
     ${handle()}
   `);
 }
