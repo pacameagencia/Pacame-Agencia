@@ -590,3 +590,223 @@ body {
   font-weight: 500 !important;
   color: var(--royo-ink) !important;
 }
+
+/* ============================================================
+   17. HEADER STICKY PREMIUM — refinos al header del tema Ecomus
+   ============================================================ */
+
+/* 17.1 — Header sticky CSS-only (posición fija al hacer scroll) */
+.site-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 9990 !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: saturate(160%) blur(12px) !important;
+  -webkit-backdrop-filter: saturate(160%) blur(12px) !important;
+  border-bottom: 1px solid var(--royo-line) !important;
+  box-shadow: 0 1px 24px rgba(26, 24, 22, 0.04) !important;
+  transition: box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* 17.2 — Cuando está sticky tras scroll (clase que añade el JS del tema, mantengo por compat) */
+.site-header.is-sticky,
+.site-header.is-sticked,
+.site-header.scrolled {
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: saturate(160%) blur(12px) !important;
+  -webkit-backdrop-filter: saturate(160%) blur(12px) !important;
+  box-shadow: 0 1px 24px rgba(26, 24, 22, 0.06) !important;
+  border-bottom-color: rgba(232, 226, 217, 0.6) !important;
+}
+
+/* 17.3 — Logo serif del header */
+.site-header .site-header__logo img,
+.site-header .custom-logo {
+  transition: opacity 0.3s ease !important;
+}
+.site-header.is-sticky .site-header__logo img,
+.site-header.is-sticky .custom-logo,
+.site-header.is-sticked .site-header__logo img,
+.site-header.is-sticked .custom-logo {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+/* 17.4 — Nav menu items más refinados */
+.site-header .nav-menu > li > a,
+.site-header .menu > li > a {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-ink) !important;
+  padding: 1rem 1.1rem !important;
+  position: relative;
+  transition: color 0.25s ease !important;
+}
+.site-header .nav-menu > li > a::after,
+.site-header .menu > li > a::after {
+  content: '';
+  position: absolute;
+  bottom: 0.4rem;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  width: 60%;
+  height: 1px;
+  background: var(--royo-champagne);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.site-header .nav-menu > li:hover > a::after,
+.site-header .menu > li:hover > a::after,
+.site-header .nav-menu > li.current-menu-item > a::after,
+.site-header .menu > li.current-menu-item > a::after {
+  transform: translateX(-50%) scaleX(1);
+}
+.site-header .nav-menu > li:hover > a,
+.site-header .menu > li:hover > a {
+  color: var(--royo-champagne-dark) !important;
+}
+
+/* 17.5 — Submenús más elegantes */
+.site-header .sub-menu {
+  background: var(--royo-paper) !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  box-shadow: 0 8px 32px rgba(26, 24, 22, 0.08) !important;
+  padding: 0.6rem 0 !important;
+  min-width: 220px !important;
+}
+.site-header .sub-menu li a {
+  font-size: 0.85rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  padding: 0.5rem 1.25rem !important;
+  color: var(--royo-charcoal) !important;
+  transition: color 0.2s ease, background 0.2s ease !important;
+}
+.site-header .sub-menu li a:hover {
+  background: var(--royo-ivory) !important;
+  color: var(--royo-champagne-dark) !important;
+}
+
+/* 17.6 — Iconos del header (search, account, wishlist, cart) */
+.site-header .header-icons a,
+.site-header .em-icon-link,
+.site-header [class*="header-cart"] a,
+.site-header [class*="header-search"] a,
+.site-header [class*="header-account"] a,
+.site-header [class*="header-wishlist"] a {
+  color: var(--royo-ink) !important;
+  transition: color 0.25s ease, transform 0.25s ease !important;
+}
+.site-header .header-icons a:hover,
+.site-header .em-icon-link:hover {
+  color: var(--royo-champagne-dark) !important;
+}
+.site-header .header-icons svg,
+.site-header .em-icon-link svg {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+/* 17.7 — Badge contador del carrito en oro champán */
+.site-header .em-cart-count,
+.site-header .header-cart-count,
+.site-header .ecomus-cart-count,
+.site-header [class*="cart-count"] {
+  background: var(--royo-champagne) !important;
+  color: var(--royo-paper) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.65rem !important;
+  font-weight: 600 !important;
+  border: 2px solid var(--royo-paper) !important;
+}
+
+/* 17.8 — Topbar (ticker promo) más sutil */
+.topbar,
+.ecomus-topbar,
+.site-header__topbar,
+.header-topbar {
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+}
+
+/* 17.9 — Reducir altura del header al hacer sticky (compactación) */
+.site-header.is-sticky .header-main,
+.site-header.is-sticked .header-main {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+/* 17.10 — Mobile: header más limpio */
+@media (max-width: 991px) {
+  .site-header {
+    padding: 0.5rem 0 !important;
+  }
+  .site-header .nav-menu > li > a,
+  .site-header .menu > li > a {
+    font-size: 0.95rem !important;
+    padding: 0.85rem 1rem !important;
+  }
+}
+
+/* ============================================================
+   18. REFINOS HOMEPAGE
+   ============================================================ */
+
+/* 18.1 — Secciones título centrado tipo joyería alta gama */
+.elementor-heading-title {
+  letter-spacing: 0.005em !important;
+}
+
+/* 18.2 — Cards categoría 2-col (RELOJES / ANILLOS / etc.) */
+.ecomus-image-link,
+.ecomus-category-card {
+  border-radius: 2px !important;
+  overflow: hidden;
+  position: relative;
+}
+.ecomus-image-link::after,
+.ecomus-category-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(26, 24, 22, 0.25) 100%);
+  pointer-events: none;
+  transition: background 0.4s ease;
+}
+.ecomus-image-link:hover::after,
+.ecomus-category-card:hover::after {
+  background: linear-gradient(180deg, transparent 30%, rgba(26, 24, 22, 0.45) 100%);
+}
+
+/* 18.3 — Banner JOYERIA ROYO marquee/text-large más sutil */
+.elementor-widget-tf-text-marquee .marquee-content,
+.ecomus-text-marquee .marquee-content {
+  font-family: 'Playfair Display', serif !important;
+  letter-spacing: -0.01em !important;
+  color: var(--royo-ivory) !important;
+  -webkit-text-stroke: 1px var(--royo-line);
+}
+
+/* 18.4 — Botones SEGURO JOYAS / WHATSAPP coherentes */
+.elementor-button {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  border-radius: 2px !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.elementor-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(184, 149, 106, 0.15);
+}
