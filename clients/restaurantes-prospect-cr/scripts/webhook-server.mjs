@@ -144,6 +144,40 @@ async function processEvent(event) {
 
 // === HTTP server ===
 const server = createServer((req, res) => {
+  // GET /contact-pacame?slug=X&type=wa|email — registra consent + redirige
+  if (req.method === 'GET' && req.url.startsWith('/contact-pacame')) {
+    const u = new URL(req.url, 'http://localhost');
+    const slug = u.searchParams.get('slug');
+    const type = u.searchParams.get('type') || 'wa';
+    const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || '';
+    const ua = req.headers['user-agent'] || '';
+    (async () => {
+      if (slug) {
+        try {
+          const r = await pg.query('select id, name, phone from prospect_leads where slug=$1 limit 1', [slug]);
+          if (r.rows[0]) {
+            const lead = r.rows[0];
+            await pg.query(
+              "update prospect_leads set wa_consent=true, wa_consent_at=now(), wa_consent_source=$2, status=case when status in ('replied','won') then status else 'clicked' end where id=$1",
+              [lead.id, 'demo_click_' + type]
+            );
+            await pg.query(
+              "insert into email_events (lead_id, event_type, occurred_at, raw, user_agent, ip) values ($1, $2, now(), $3, $4, $5)",
+              [lead.id, 'demo.cta_click', JSON.stringify({ slug, type, lead_name: lead.name }), ua, ip]
+            );
+            console.log(`[contact] ${slug} <- ${type} click`);
+          }
+        } catch (e) { console.error('[contact] error:', e.message); }
+      }
+      const dest = type === 'wa'
+        ? `https://wa.me/34722669381?text=${encodeURIComponent('Hola Pablo, vengo de la demo de ' + (slug || 'PACAME') + '. Me interesa.')}`
+        : `mailto:hola@pacameagencia.com?subject=${encodeURIComponent('Interesado en demo PACAME — ' + (slug || ''))}&body=${encodeURIComponent('Hola Pablo, he visto la demo y me interesa. ')}`;
+      res.writeHead(302, { Location: dest });
+      res.end();
+    })();
+    return;
+  }
+
   if (req.method === 'GET' && req.url === '/webhooks/health') {
     res.writeHead(200, { 'content-type': 'application/json' });
     res.end(JSON.stringify({ ok: true, secrets: SECRETS.length, ts: new Date().toISOString() }));

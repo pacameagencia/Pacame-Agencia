@@ -18,6 +18,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync, spawnSync } from 'node:child_process';
 import { hostname } from 'node:os';
+import { resolveMx } from 'node:dns/promises';
 import { createRequire } from 'node:module';
 import { MENUS, pickMenu, pickHero, pickPalette } from './menus.mjs';
 import { buildEmail, rotateMenu } from './copy-variants.mjs';
@@ -72,7 +73,7 @@ if (!RESEND_KEY && !DRY) { console.error('No RESEND_API_KEY'); process.exit(1); 
 if (!DATABASE_URL) { console.error('No DATABASE_URL'); process.exit(1); }
 
 const FROM = 'PACAME <hola@pacameagencia.com>';
-const REPLY_TO = 'hola@pacameagencia.com';
+const REPLY_TO = 'responder@replies.pacameagencia.com';
 const PABLO_WA = 'https://wa.me/34722669381';
 const PUBLIC_BASE_URL = process.env.PUBLIC_BASE_URL || 'https://demos.pacameagencia.com';
 const PUBLIC_HTML_ROOT = process.env.PUBLIC_HTML_ROOT || '/var/www/demos';
@@ -390,11 +391,37 @@ async function processLead(lead) {
   }
 }
 
+
+// === Email validation: regex + MX cache ===
+const MX_CACHE_PATH = resolve(root, 'data/mx-cache.json');
+let mxCache = {};
+try { mxCache = JSON.parse(readFileSync(MX_CACHE_PATH, 'utf8')); } catch {}
+function saveMxCache() {
+  try { writeFileSync(MX_CACHE_PATH, JSON.stringify(mxCache, null, 2)); } catch {}
+}
+const EMAIL_REGEX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+async function isEmailValid(email) {
+  if (!email || !EMAIL_REGEX.test(email)) return false;
+  const domain = email.split('@')[1].toLowerCase();
+  if (mxCache[domain] !== undefined) return mxCache[domain];
+  try {
+    const records = await resolveMx(domain);
+    const ok = Array.isArray(records) && records.length > 0;
+    mxCache[domain] = ok;
+    saveMxCache();
+    return ok;
+  } catch {
+    mxCache[domain] = false;
+    saveMxCache();
+    return false;
+  }
+}
+
 // === Get next pending lead ===
 async function getNextPending() {
   const leads = JSON.parse(readFileSync(resolve(root, 'data/leads-spain-email.json'), 'utf8'));
   // Excluir los ya enviados según DB
-  const sentRes = await pg.query(`select lower(email) as email from prospect_leads where sent_at is not null`);
+  const sentRes = await pg.query(`select lower(email) as email from prospect_leads where sent_at is not null or do_not_contact = true`);
   const sentSet = new Set(sentRes.rows.map((row) => row.email));
   // Excluir los enviados según log local (cubre runs en progreso del pipeline.mjs antiguo
   // que aún no han sincronizado a DB)
@@ -407,7 +434,15 @@ async function getNextPending() {
   // Excluir los actualmente in-flight por otro worker (ventana 15 min)
   const inFlightRes = await pg.query(`select lead_slug from pipeline_runs where step in ('queued','generating','deploying','sending','syncing') and started_at > now() - interval '15 minutes'`);
   const inFlightSet = new Set(inFlightRes.rows.map((r) => r.lead_slug));
-  return leads.find((l) => !sentSet.has(l.email.toLowerCase()) && !inFlightSet.has(l.slug)) || null;
+  const candidates = leads.filter((l) => !sentSet.has(l.email.toLowerCase()) && !inFlightSet.has(l.slug));
+  for (const lead of candidates) {
+    const ok = await isEmailValid(lead.email);
+    if (ok) return lead;
+    // Email inválido: marcar en DB como bounced para no reintentar
+    console.log('  [skip] ' + lead.slug + ' (' + lead.email + ') - dominio sin MX');
+    await pg.query("insert into prospect_leads (slug, name, email, status, bounced_at, bounce_reason, do_not_contact, do_not_contact_reason) values ($1, $2, $3, 'bounced', now(), 'pre-send: dominio sin MX records', true, 'no MX') on conflict (slug) do update set status='bounced', bounce_reason='pre-send: dominio sin MX records', do_not_contact=true, do_not_contact_reason='no MX'", [lead.slug, lead.name, lead.email.toLowerCase()]);
+  }
+  return null;
 }
 
 // === Within active hours? ===

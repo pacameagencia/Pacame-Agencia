@@ -108,6 +108,8 @@ const r = await pg.query(`
   where sent_at < now() - interval '48 hours'
     and sent_at > now() - interval '7 days'
     and first_opened_at is null
+    and (do_not_contact is null or do_not_contact = false)
+    and reply_received_at is null
     and bounced_at is null
     and complained_at is null
     and unsubscribed_at is null
