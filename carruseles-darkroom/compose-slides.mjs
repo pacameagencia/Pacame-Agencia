@@ -24,13 +24,24 @@ fs.mkdirSync(OUT_DIR, { recursive: true });
 const W = 1080;
 const H = 1350;
 // IG Safe areas (ver IG-SAFE-AREAS.md)
-// Top 100px y Bottom 260px reservados para UI de IG · NO poner texto crítico ahí
+// TOP_UNSAFE = 100px (cubre nombre cuenta + ⋯ + sticker)
+// BOT_UNSAFE = 260px (cubre ❤ comment paper-plane save + caption preview 2 líneas)
 const TOP_UNSAFE = 100;
 const BOT_UNSAFE = 260;
 const MARGIN_X = 60;
 const PAD = MARGIN_X;          // alias para retrocompatibilidad
-const SAFE_Y = TOP_UNSAFE;     // y mínima para texto
-const SAFE_H_BOTTOM = H - BOT_UNSAFE;  // y máxima para texto = 1090
+const SAFE_Y = TOP_UNSAFE;     // y mínima para texto/subject crítico
+const SAFE_Y_MAX = H - BOT_UNSAFE;  // y máxima permitida = 1090 (NO cruzar)
+const SAFE_H_BOTTOM = SAFE_Y_MAX;   // alias retrocompat
+const SAFE_W = W - 2 * MARGIN_X;    // 960px ancho útil
+
+// Validación dev: warna cuando un asset coloca texto fuera de safe area.
+const SAFE_AUDIT = process.env.AUDIT_SAFE_AREAS === "1";
+function auditY(label, yTop, yBottom) {
+  if (!SAFE_AUDIT) return;
+  if (yTop < SAFE_Y) console.warn(`⚠️ SAFE-AREA [${label}] yTop=${yTop} < SAFE_Y=${SAFE_Y}`);
+  if (yBottom > SAFE_Y_MAX) console.warn(`⚠️ SAFE-AREA [${label}] yBottom=${yBottom} > SAFE_Y_MAX=${SAFE_Y_MAX}`);
+}
 
 const C = {
   bg: "#0A0A0A",
@@ -200,7 +211,9 @@ function vignette() {
   <rect x="0" y="0" width="${W}" height="${H}" fill="url(#vg)"/>`;
 }
 
-function brandMark(y = 90) {
+function brandMark(y = 140) {
+  // y=140 dentro de safe area (>SAFE_Y=100). El "DARK ROOM" pequeño quedará
+  // siempre visible en la zona de typography y no detrás del nombre cuenta IG.
   return textPath({
     text: "DARK ROOM",
     font: FONTS.anton,
@@ -214,12 +227,14 @@ function brandMark(y = 90) {
 }
 
 function pageDot(idx, total, cLabel) {
+  // y=1060 dentro de safe area (<SAFE_Y_MAX=1090). Counter no queda tapado por
+  // los iconos like/comment/save de IG.
   return textPath({
     text: `${cLabel} · ${String(idx).padStart(2, "0")}/${String(total).padStart(2, "0")}`,
     font: FONTS.jbmR,
     size: 22,
     x: PAD,
-    y: H - 60,
+    y: 1060,
     fill: C.ghost,
   });
 }
@@ -237,9 +252,11 @@ function heroTitleSVG({ title, sub, counter, titleSize = 130, titleFill = C.whit
   }
   const LH = 1.12;
   const totalTitleH = titleLines.length * actualSize * LH;
-  // center the title block vertically around y=820
-  const titleY = Math.max(480, 820 - totalTitleH + actualSize);
-  const subY = titleY + totalTitleH + 40;
+  // Centro del título alrededor de y=720 (no 820) para asegurar que el sub
+  // quede dentro de safe area (max y=1090).
+  const titleY = Math.max(SAFE_Y + 200, 720 - totalTitleH + actualSize);
+  const subY = Math.min(titleY + totalTitleH + 40, SAFE_Y_MAX - 50);
+  auditY("heroTitle", titleY - actualSize, subY + 34);
 
   return svgWrap(`
     ${overlayGradient(0.75, "bottom")}
@@ -267,19 +284,26 @@ function heroTitleSVG({ title, sub, counter, titleSize = 130, titleFill = C.whit
   `);
 }
 
-function numberHeroSVG({ number, over, under, counter, invert = false, numSize = 380 }) {
+function numberHeroSVG({ number, over, under, counter, invert = false, numSize = 320 }) {
   const bg = invert ? `<rect x="0" y="0" width="${W}" height="${H}" fill="${C.acid}"/>` : overlayGradient(0.5, "bottom");
   const numFill = invert ? C.bg : C.acid;
   const textFill = invert ? C.bg : C.white;
   const brand = invert ? "" : brandMark();
 
-  // Auto-fit: reduce numSize until number fits safely in width
-  const maxW = W - 2 * PAD;
-  let actualSize = numSize;
+  // Auto-fit: reduce numSize hasta que el número entre en SAFE_W.
+  // Cap altura en 380px máx para que no rebase BOT_UNSAFE.
+  const maxW = SAFE_W;
+  let actualSize = Math.min(numSize, 380);
   while (FONTS.anton.getAdvanceWidth(number, actualSize) > maxW && actualSize > 100) {
     actualSize -= 10;
   }
-  const numY = 900;
+  // Posicionamiento safe: número centrado verticalmente en zona segura.
+  // numY es el baseline; el número se extiende hacia ARRIBA desde y.
+  // Bottom del número = numY (Anton no extiende mucho descent).
+  // Para que el "under" debajo entre, dejamos numY <= SAFE_Y_MAX - 130 = 960.
+  const numY = 880;
+  const underY = Math.min(numY + 80, SAFE_Y_MAX - 30);
+  auditY("numberHero", 320, underY + 36);
 
   return svgWrap(`
     ${bg}
@@ -306,22 +330,26 @@ function numberHeroSVG({ number, over, under, counter, invert = false, numSize =
       font: FONTS.sgB,
       size: 36,
       x: PAD,
-      y: 1020,
+      y: underY,
       fill: textFill,
       letterSpacing: 2,
+      maxWidth: SAFE_W,
     })}
     ${counter || ""}
   `);
 }
 
 function ticketListSVG({ kicker, items, totalLabel, totalValue, counter, footnote }) {
-  const startY = 260;
-  const rowH = 56;
+  // Caja DENTRO de safe area: empieza tras brandMark + holgura, termina antes BOT_UNSAFE
+  const startY = 200;
+  const rowH = 48;
   const leftX = PAD + 40;
   const rightX = W - PAD - 40;
   const boxX = PAD;
   const boxW = W - 2 * PAD;
-  const boxH = items.length * rowH + 220;
+  const boxH = items.length * rowH + 200;
+  // Verificar boxBottom <= SAFE_Y_MAX
+  auditY("ticketList", startY, startY + boxH + 60);
 
   const rows = items
     .map((it, i) => {
@@ -357,21 +385,25 @@ function ticketListSVG({ kicker, items, totalLabel, totalValue, counter, footnot
     ${footnote ? textPath({
       text: footnote,
       font: FONTS.sgM,
-      size: 28,
+      size: 26,
       x: W / 2,
-      y: H - 150,
+      y: Math.min(startY + boxH + 50, SAFE_Y_MAX - 30),
       fill: C.ghost,
       anchor: "middle",
+      maxWidth: SAFE_W,
     }) : ""}
     ${counter || ""}
   `);
 }
 
 function sectionListSVG({ num, title, items, counter, subTitle }) {
-  const kickerY = 260;
-  const titleY = 430;
-  const itemsY = 700;
-  const itemH = 140;
+  const kickerY = 240;
+  const titleY = 410;
+  const itemsY = 620;
+  const itemH = 130;
+  // Verificar último ítem entra en safe area
+  const lastItemBottom = itemsY + items.length * itemH;
+  auditY("sectionList", kickerY, lastItemBottom);
 
   const rows = items
     .map((it, i) => {
@@ -401,10 +433,12 @@ function sectionListSVG({ num, title, items, counter, subTitle }) {
 function gridToolsSVG({ title, tools, counter, footnote }) {
   const cols = 3;
   const rows = 4;
-  const gridTop = 380;
-  const gridBottom = 1150;
+  // Grid termina en 1010 (con 50px holgura sobre SAFE_Y_MAX=1090) para que footnote a 1050 entre safe.
+  const gridTop = 340;
+  const gridBottom = 1010;
   const cellW = (W - 2 * PAD) / cols;
   const cellH = (gridBottom - gridTop) / rows;
+  auditY("gridTools", 250, 1050);
 
   const cells = tools
     .map((t, i) => {
@@ -438,75 +472,85 @@ function gridToolsSVG({ title, tools, counter, footnote }) {
       font: FONTS.sgM,
       size: 26,
       x: W / 2,
-      y: H - 120,
+      y: 1050,
       fill: C.ghost,
       anchor: "middle",
+      maxWidth: SAFE_W,
     }) : ""}
     ${counter || ""}
   `);
 }
 
 function priceRevealSVG({ kicker, oldPrice, newPrice, sub, counter }) {
+  // Reposicionado: kicker y=300, oldPrice y=440, newPrice y=720 (Anton 200), sub y=850.
+  // Todo en safe area (max bottom newPrice ≈ 720; sub ends ≈ 924).
+  auditY("priceReveal", 270, 940);
   return svgWrap(`
     ${overlayGradient(0.75, "bottom")}
     ${brandMark()}
-    ${textPath({ text: kicker, font: FONTS.sgB, size: 32, x: PAD, y: 320, fill: C.acid, letterSpacing: 4 })}
-    ${textPath({ text: oldPrice, font: FONTS.jbmB, size: 80, x: PAD, y: 500, fill: C.red, strike: true, maxWidth: W - 2 * PAD })}
-    ${textPath({ text: newPrice, font: FONTS.anton, size: 240, x: PAD, y: 850, fill: C.acid, maxWidth: W - 2 * PAD })}
+    ${textPath({ text: kicker, font: FONTS.sgB, size: 32, x: PAD, y: 300, fill: C.acid, letterSpacing: 4 })}
+    ${textPath({ text: oldPrice, font: FONTS.jbmB, size: 70, x: PAD, y: 440, fill: C.red, strike: true, maxWidth: SAFE_W })}
+    ${textPath({ text: newPrice, font: FONTS.anton, size: 200, x: PAD, y: 720, fill: C.acid, maxWidth: SAFE_W })}
     ${multilinePath({
       lines: (sub || "").split("\n"),
       font: FONTS.sgM,
-      size: 32,
+      size: 30,
       x: PAD,
-      y: 940,
+      y: 820,
       fill: C.white,
-      lineHeight: 1.2,
-      maxWidth: W - 2 * PAD,
+      lineHeight: 1.25,
+      maxWidth: SAFE_W,
     })}
     ${counter || ""}
   `);
 }
 
 function faqSVG({ question, answer, counter, accent = "?" }) {
+  // Reposicionado: question y=480, answer y=620. 4 líneas × 44 = 176 → bottom 796. OK.
+  auditY("faq", 450, 800);
   return svgWrap(`
     ${fullOverlay(0.7)}
     ${brandMark()}
     <g opacity="0.18">
-      ${textPath({ text: accent, font: FONTS.anton, size: 420, x: W - PAD + 40, y: 480, fill: C.acid, anchor: "end" })}
+      ${textPath({ text: accent, font: FONTS.anton, size: 380, x: W - PAD + 40, y: 420, fill: C.acid, anchor: "end" })}
     </g>
-    ${textPath({ text: question, font: FONTS.anton, size: 112, x: PAD, y: 550, fill: C.white, maxWidth: W - 2 * PAD })}
-    <rect x="${PAD}" y="610" width="120" height="6" fill="${C.acid}"/>
+    ${textPath({ text: question, font: FONTS.anton, size: 100, x: PAD, y: 480, fill: C.white, maxWidth: SAFE_W })}
+    <rect x="${PAD}" y="540" width="120" height="6" fill="${C.acid}"/>
     ${multilinePath({
       lines: answer.split("\n"),
       font: FONTS.sgM,
-      size: 34,
+      size: 32,
       x: PAD,
-      y: 730,
+      y: 620,
       fill: C.white,
       lineHeight: 1.3,
-      maxWidth: W - 2 * PAD,
+      maxWidth: SAFE_W,
     })}
     ${counter || ""}
   `);
 }
 
 function ctaSVG({ title, sub, url, counter }) {
+  // Reposicionado: title y=560 (Anton 130 × 2 = 260 → bottom 820), accent y=860,
+  // url y=940, sub y=1000, arrow y=977. Todo dentro safe area (max=1090).
+  auditY("cta", 530, 1030);
   return svgWrap(`
     ${overlayGradient(0.55, "bottom")}
     ${brandMark()}
     ${multilinePath({
       lines: title.split("\n"),
       font: FONTS.anton,
-      size: 150,
+      size: 130,
       x: PAD,
-      y: 700,
+      y: 560,
       fill: C.white,
       lineHeight: 1.02,
+      maxWidth: SAFE_W,
     })}
-    <rect x="${PAD}" y="990" width="180" height="8" fill="${C.acid}"/>
-    ${textPath({ text: url, font: FONTS.jbmB, size: 38, x: PAD, y: 1070, fill: C.acid, maxWidth: W - 2 * PAD - 60 })}
-    ${textPath({ text: sub || "", font: FONTS.sgM, size: 30, x: PAD, y: 1130, fill: C.white, maxWidth: W - 2 * PAD })}
-    <g transform="translate(${PAD + 280}, 1107)">
+    <rect x="${PAD}" y="860" width="180" height="8" fill="${C.acid}"/>
+    ${textPath({ text: url, font: FONTS.jbmB, size: 36, x: PAD, y: 940, fill: C.acid, maxWidth: SAFE_W - 80 })}
+    ${textPath({ text: sub || "", font: FONTS.sgM, size: 28, x: PAD, y: 1000, fill: C.white, maxWidth: SAFE_W })}
+    <g transform="translate(${PAD + 260}, 920)">
       <path d="M 0 15 L 40 15 M 28 3 L 40 15 L 28 27" stroke="${C.acid}" stroke-width="4" fill="none" stroke-linecap="square"/>
     </g>
     ${counter || ""}
