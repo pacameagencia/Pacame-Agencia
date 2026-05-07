@@ -79,3 +79,12 @@ node clients/royo/scripts/fix-image-alts.mjs --apply
 - 2026-05-07: Sprint 2B, limpieza de nombres con SKU pegado al final. 287 relojes renombrados (joyería intacta). Match exacto contra `sku` oficial = 0 falsos positivos. Coste 0€.
 - 2026-05-07: Estética CSS luxury cargado vía `/pacame/v1/css/set` (no estaba en producción antes). Sección 16 añadida: fix precio duplicado en botón add-to-cart, ocultar cards demo `ecomus-icon-box-widget`, refinos galería y sticky ATC.
 - 2026-05-07: Sprint 2C parcial, imágenes oficiales Tissot (~50 de 107, cobertura 47%). Pipeline: scraper tissotwatches.com/es-es/{SKU}.html → variantSku → packshot principal → upload-from-url → featured-image. Imágenes antiguas no se borran (rollback con UpdraftPlus o reasignación destacada manual). Resto Tissot legacy + Longines + Casio pendiente otra sesión.
+- 2026-05-07 (tarde): **Bug crítico carrito + checkout solucionado.** El tema Ecomus tenía 4 `ecomus_builder` (post_type custom) en estado `publish` que secuestraban el render del cart/checkout/archive/single product. Despublicados (status=draft) los 4 IDs: 10399 (Cart Page), 10400 (Checkout Page), 11096 (PRODUCT ARCHIVE), 11237 (SINGLE PRODUCT). Tres opciones globales `ecomus_*_builder_enable` puestas a "0". Página /carrito/ regenerada en Gutenberg con shortcode puro + trust grid 3 cards reales. Filtro de traducciones gettext + output buffer instalado como mu-plugin (`pacame-royo-translate.php`) — debe permanecer activo. Hallazgo seguridad: `PACAME_WEBHOOK_SECRET` añadido a wp-config.php (rotación recomendada).
+
+## Bug Ecomus builder secuestra render — diagnóstico
+
+Si carrito/checkout/single product/archive vuelve a mostrarse vacío o con "Cart Page Builder / It seems like you've turned on...":
+
+1. Verificar `wp_posts` post_type='ecomus_builder' status='publish'. Ponerlos a draft.
+2. Verificar `wp_options` `ecomus_*_builder_enable` valores. Deben ser "0" o vacíos.
+3. Verificar `wp_options` `woocommerce_cart_page_id` apunta a la página correcta (10822 = `/carrito-compra-joyeria-royo/`).

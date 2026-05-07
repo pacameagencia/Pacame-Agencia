@@ -53,6 +53,7 @@
 | 2B nombres | 2026-05-07 | 287 relojes con SKU recortado del nombre (joyería intacta, match exacto SKU oficial) · 0€ | (esta PR) |
 | Estética v2 | 2026-05-07 | CSS luxury cargado vía MU + sección 16 (precio duplicado, cards demo, galería, sticky ATC) | (esta PR) |
 | 2C Tissot parcial | 2026-05-07 | 50/107 packshots oficiales Tissot (47% cobertura) · scraper tissotwatches.com → upload-from-url → featured-image | (esta PR) |
+| **Fix carrito + traducciones** | 2026-05-07 (tarde) | Despublicado ecomus_builder que secuestraba render + cart regenerado en Gutenberg + filtro gettext+ob | (esta PR) |
 
 Ver `history/` para detalle.
 
@@ -65,7 +66,12 @@ clients/royo/scripts/
 ├── fix-image-alts.mjs            # Sprint 1C: bulk fix alts vacíos
 ├── clean-product-names.mjs       # Sprint 2B: recortar SKU del nombre (match exacto)
 ├── replace-tissot-images.mjs     # Sprint 2C: scraping packshots oficiales Tissot
+├── rebuild-cart-page.mjs         # Reset /carrito/ a Gutenberg + trust grid
+├── fix-cart-and-translate.mjs    # Bootstrap fix integral 2026-05-07 tarde
 └── css-custom-luxury.css         # Estética v2: paleta + tipografía + fixes single product
+
+clients/royo/mu-plugins/
+└── pacame-royo-translate.php     # Filtro gettext + output buffer ES (debe permanecer activo)
 ```
 
 Todos leen credenciales de env vars o `.env.local` raíz PACAME. Ver `runbook.md` para uso.
