@@ -22,6 +22,34 @@
 
 ---
 
+## 🎨 Frontend — NUNCA / SIEMPRE (regla dura)
+
+Pablo ha detectado que los frontends que produzco salen **básicos** (Tailwind random, gradientes genéricos, "AI generic look"). Causa: voy directo a HTML+Tailwind sin invocar las skills curadas. Esto se acaba.
+
+**❌ NUNCA**:
+- Empezar a escribir `.tsx/.jsx/.css/.html` sin haber **invocado primero** una skill del catálogo visual-first.
+- Usar `<svg>` inline genérico como placeholder de imagen.
+- Usar gradientes Tailwind random sin paleta de marca (`from-blue-500 to-purple-600` y similares).
+- Recurrir a `via.placeholder.com` / `dummyimage.com` en producción.
+- Decir "al estilo de Apple/Linear/Stripe" sin captura de referencia o sin invocar `imagen` para mockup.
+- Usar `system-ui` en proyecto branded.
+- Mezclar paleta de cliente con paleta PACAME.
+
+**✅ SIEMPRE**, en este orden:
+1. **Pacame-web** si es web/landing/SaaS/dashboard/marketplace nuevo (meta-skill, hace todo).
+2. **frontend-design** si es componente/sección con carácter visual.
+3. **imagen** (Google Gemini) si necesito imagen real (hero, mockup, ilustración, fondo branded).
+4. **theme-factory** si es sistema visual nuevo (paleta, tipografía, tokens).
+5. **brand-guidelines** si proyecto tiene branding existente.
+6. **react-view-transitions** si requiere animaciones modernas.
+7. **canvas-design** si es poster/arte estático.
+8. **algorithmic-art** si es arte generativo (p5.js).
+9. **visual-reviewer** subagente al cerrar — bloquea si hay anti-patrón.
+
+El hook `infra/scripts/frontend-trigger-hook.py` (UserPromptSubmit) detecta intención frontend en cada turno y me inyecta este recordatorio. Si lo veo, lo ejecuto. No es opcional.
+
+---
+
 ## Tech Stack
 
 - **Frontend:** Next.js 15, React 19, TypeScript, TailwindCSS, Radix UI, Framer Motion.
