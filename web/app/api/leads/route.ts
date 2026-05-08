@@ -17,6 +17,9 @@ const leadSchema = z.object({
   budget: z.string().max(50).optional(),
   message: z.string().max(2000).optional(),
   referral_code: z.string().max(50).optional(),
+  // Storybook 3D — campos adicionales que se mergean en sage_analysis (sin migración).
+  // Acepta cualquier objeto serializable. Se valida shape solo a nivel jsonb.
+  sage_analysis_extra: z.record(z.string(), z.unknown()).optional(),
 });
 
 const supabase = createServerSupabase();
@@ -52,7 +55,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: firstError }, { status: 400 });
     }
 
-    const { name, email, phone, company, services, budget, message, referral_code } = parsed.data;
+    const { name, email, phone, company, services, budget, message, referral_code, sage_analysis_extra } = parsed.data;
 
     // Auto-score based on budget + services + referral
     let score = 2;
@@ -64,6 +67,13 @@ export async function POST(request: NextRequest) {
     if (referral_code) score = Math.min(5, score + 1);
     if ((services || []).length >= 3) score = Math.min(5, score + 1);
 
+    // Storybook 3D: si llega audit_source en sage_analysis_extra, usarlo como source primario
+    const auditSource =
+      typeof sage_analysis_extra?.audit_source === "string"
+        ? sage_analysis_extra.audit_source
+        : null;
+    const sourceLabel = auditSource ?? (referral_code ? "referral" : "web");
+
     // 1. SIEMPRE guardar en Supabase primero (nunca perder un lead)
     const { data: lead, error: dbError } = await supabase.from("leads").insert({
       name,
@@ -73,12 +83,15 @@ export async function POST(request: NextRequest) {
       problem: message || null,
       budget: budget || null,
       score,
-      source: referral_code ? "referral" : "web",
+      source: sourceLabel,
       status: "new",
       sage_analysis: {
         services_requested: services || [],
         referral_code: referral_code || null,
         submitted_at: new Date().toISOString(),
+        // Merge campos extra del Storybook 3D (audit_source, sector, problem,
+        // timing, current_url, case_slug, islands_visited, seconds_on_site, etc).
+        ...(sage_analysis_extra || {}),
       },
     }).select().single();
 

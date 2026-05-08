@@ -1,14 +1,16 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 import { useIslandState, progressForIsland } from "@/lib/storybook/island-state";
 import type { IslandSlug } from "@/lib/storybook/content";
+import { markIslandVisited } from "@/lib/storybook/lead-tracker";
 
 import PersistentCTA from "./PersistentCTA";
 import ProgressIndicator from "./ProgressIndicator";
 import ActiveIslandLabel from "./ActiveIslandLabel";
 import AccessibleNav from "./AccessibleNav";
+import EmailPrompt from "./EmailPrompt";
 
 /**
  * HUD overlay del Storybook 3D — agrupa todos los componentes UI que
@@ -30,7 +32,14 @@ import AccessibleNav from "./AccessibleNav";
  */
 
 export default function HUD() {
-  const { setActiveIslandManually, clearOverride } = useIslandState();
+  const { setActiveIslandManually, clearOverride, activeIsland } = useIslandState();
+
+  // Track islas visitadas en localStorage (para EmailPrompt y enriquecer leads)
+  useEffect(() => {
+    if (activeIsland) {
+      markIslandVisited(activeIsland);
+    }
+  }, [activeIsland]);
 
   const scrollToIsland = useCallback((slug: IslandSlug) => {
     const targetProgress = setActiveIslandManually(slug);
@@ -61,6 +70,7 @@ export default function HUD() {
       <ActiveIslandLabel />
       <ProgressIndicator onIslandClick={scrollToIsland} />
       <PersistentCTA />
+      <EmailPrompt />
     </>
   );
 }
