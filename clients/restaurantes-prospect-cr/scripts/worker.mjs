@@ -19,6 +19,7 @@ import { fileURLToPath } from 'node:url';
 import { execSync, spawnSync } from 'node:child_process';
 import { hostname } from 'node:os';
 import { resolveMx } from 'node:dns/promises';
+import { createConnection } from 'node:net';
 import { createRequire } from 'node:module';
 import { MENUS, pickMenu, pickHero, pickPalette } from './menus.mjs';
 import { buildEmail, rotateMenu } from './copy-variants.mjs';
@@ -400,21 +401,117 @@ function saveMxCache() {
   try { writeFileSync(MX_CACHE_PATH, JSON.stringify(mxCache, null, 2)); } catch {}
 }
 const EMAIL_REGEX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+
+// SMTP_CHECK_CACHE: pre-flight RCPT TO results por email
+const SMTP_CACHE_PATH = resolve(root, 'data/smtp-cache.json');
+let smtpCache = {};
+try { smtpCache = JSON.parse(readFileSync(SMTP_CACHE_PATH, 'utf8')); } catch {}
+function saveSmtpCache() {
+  try { writeFileSync(SMTP_CACHE_PATH, JSON.stringify(smtpCache, null, 2)); } catch {}
+}
+
+// Pre-flight SMTP RCPT check: conecta al servidor del receptor y pregunta si existe el buzon
+// SIN enviar email. Reduce bounces masivamente.
+async function smtpRcptCheck(email, mxRecords, timeoutMs = 8000) {
+  const cached = smtpCache[email.toLowerCase()];
+  if (cached !== undefined) return cached;
+  if (!mxRecords || mxRecords.length === 0) return false;
+
+  // Probar el MX de menor priority (mas usado primero)
+  const sorted = [...mxRecords].sort((a, b) => (a.priority || 10) - (b.priority || 10));
+  const mxHost = sorted[0].exchange;
+
+  return new Promise((resolve) => {
+    const sock = createConnection({ host: mxHost, port: 25, family: 4 });
+    let stage = 0; // 0=banner 1=helo 2=mailfrom 3=rcptto 4=quit
+    let result = null;
+    const finish = (ok) => {
+      if (result !== null) return;
+      result = ok;
+      smtpCache[email.toLowerCase()] = ok;
+      saveSmtpCache();
+      try { sock.write('QUIT\r\n'); } catch {}
+      try { sock.end(); } catch {}
+      try { sock.destroy(); } catch {}
+      resolve(ok);
+    };
+    const timer = setTimeout(() => finish(null), timeoutMs);
+
+    sock.setEncoding('utf8');
+    let buffer = '';
+    sock.on('data', (chunk) => {
+      buffer += chunk;
+      // Esperar response completo (linea termina con codigo + space)
+      const lines = buffer.split(/\r?\n/);
+      const lastFull = lines.findLast?.((l) => /^\d{3} /.test(l));
+      if (!lastFull) return;
+      const code = parseInt(lastFull.slice(0, 3), 10);
+      buffer = '';
+      try {
+        if (stage === 0) {
+          if (code !== 220) return finish(null);
+          sock.write('HELO pacameagencia.com\r\n');
+          stage = 1;
+        } else if (stage === 1) {
+          if (code !== 250) return finish(null);
+          sock.write('MAIL FROM:<verify@pacameagencia.com>\r\n');
+          stage = 2;
+        } else if (stage === 2) {
+          if (code !== 250) return finish(null);
+          sock.write('RCPT TO:<' + email + '>\r\n');
+          stage = 3;
+        } else if (stage === 3) {
+          // 250 = ok, 251 = forwarded ok
+          // 550, 551, 553 = mailbox no existe
+          // 450, 452 = temp failure (asumimos OK, mejor no descartar)
+          // 421 = greylisting, asumir OK
+          clearTimeout(timer);
+          if (code === 250 || code === 251) return finish(true);
+          if (code === 450 || code === 452 || code === 421) return finish(true); // temp = optimista
+          if (code >= 500 && code < 600) return finish(false);
+          return finish(null);
+        }
+      } catch (e) {
+        return finish(null);
+      }
+    });
+    sock.on('error', () => finish(null));
+    sock.on('close', () => { if (result === null) finish(null); });
+  });
+}
+
 async function isEmailValid(email) {
   if (!email || !EMAIL_REGEX.test(email)) return false;
   const domain = email.split('@')[1].toLowerCase();
-  if (mxCache[domain] !== undefined) return mxCache[domain];
-  try {
-    const records = await resolveMx(domain);
-    const ok = Array.isArray(records) && records.length > 0;
-    mxCache[domain] = ok;
-    saveMxCache();
-    return ok;
-  } catch {
-    mxCache[domain] = false;
-    saveMxCache();
+
+  // 1. MX check (cached)
+  let records;
+  if (mxCache[domain]) {
+    // dominio en cache como ok pero no tenemos los records, los re-resuelvemos para SMTP check
+    try { records = await resolveMx(domain); } catch { records = null; }
+  } else if (mxCache[domain] === false) {
     return false;
+  } else {
+    try {
+      records = await resolveMx(domain);
+      const ok = Array.isArray(records) && records.length > 0;
+      mxCache[domain] = ok;
+      saveMxCache();
+      if (!ok) return false;
+    } catch {
+      mxCache[domain] = false;
+      saveMxCache();
+      return false;
+    }
   }
+
+  // 2. SMTP RCPT TO check (cached por email)
+  // Si null = no concluyente, asumimos OK (mejor enviar a quizas-vivo que descartar todos los lentos)
+  // Si false explicito = mailbox no existe, descartar.
+  // Si true = mailbox existe, enviar.
+  const smtpResult = await smtpRcptCheck(email, records);
+  if (smtpResult === false) return false;
+  return true;
 }
 
 // === Get next pending lead ===
@@ -472,8 +569,8 @@ async function getNextPending() {
     const ok = await isEmailValid(lead.email);
     if (ok) return lead;
     // Email inválido: marcar en DB como bounced para no reintentar
-    console.log('  [skip] ' + lead.slug + ' (' + lead.email + ') - dominio sin MX');
-    await pg.query("insert into prospect_leads (slug, name, email, status, bounced_at, bounce_reason, do_not_contact, do_not_contact_reason) values ($1, $2, $3, 'bounced', now(), 'pre-send: dominio sin MX records', true, 'no MX') on conflict (slug) do update set status='bounced', bounce_reason='pre-send: dominio sin MX records', do_not_contact=true, do_not_contact_reason='no MX'", [lead.slug, lead.name, lead.email.toLowerCase()]);
+    console.log('  [skip] ' + lead.slug + ' (' + lead.email + ') - email no valido (MX/SMTP check)');
+    await pg.query("insert into prospect_leads (slug, name, email, status, bounced_at, bounce_reason, do_not_contact, do_not_contact_reason) values ($1, $2, $3, 'bounced', now(), 'pre-send: email validation failed (MX/SMTP)', true, 'pre-flight check failed') on conflict (slug) do update set status='bounced', bounce_reason='pre-send: email validation failed (MX/SMTP)', do_not_contact=true, do_not_contact_reason='pre-flight check failed'", [lead.slug, lead.name, lead.email.toLowerCase()]);
   }
   return null;
 }
