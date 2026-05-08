@@ -41,37 +41,87 @@ function buildJsonLd(): JsonLdItem[] {
       "@context": "https://schema.org",
       "@type": "Organization",
       name: "PACAME",
+      legalName: "PACAME Agencia",
       url: "https://pacameagencia.com",
       logo: "https://pacameagencia.com/logo.png",
+      description:
+        "Agencia digital de IA para PYMEs en España. Web, SEO, redes, ads y branding orquestados por agentes IA supervisados por humanos.",
+      foundingDate: "2024",
+      areaServed: { "@type": "Country", name: "España" },
       sameAs: [
         "https://www.instagram.com/pacamespain",
         "https://www.linkedin.com/company/pacame",
       ],
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        availableLanguage: ["es-ES"],
+        url: "https://pacameagencia.com/auditoria-3d",
+      },
     },
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       name: "PACAME",
       url: "https://pacameagencia.com",
+      inLanguage: "es-ES",
       potentialAction: {
         "@type": "SearchAction",
         target: "https://pacameagencia.com/search?q={search_term_string}",
         "query-input": "required name=search_term_string",
       },
     },
-    ...services.slice(0, 5).map((service) => ({
+    {
       "@context": "https://schema.org",
-      "@type": "Service",
-      name: service.name,
-      description: service.description,
-      provider: {
-        "@type": "Organization",
-        name: "PACAME",
-        url: "https://pacameagencia.com",
-      },
-      areaServed: { "@type": "Country", name: "España" },
-      category: service.category,
-    })),
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Inicio",
+          item: "https://pacameagencia.com/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Servicios",
+          item: "https://pacameagencia.com/servicios",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "Casos de éxito",
+          item: "https://pacameagencia.com/casos-3d",
+        },
+      ],
+    },
+    ...services.slice(0, 5).map((service) => {
+      // Resolver precio orientativo (primer item con startingPrice)
+      const priceItem = service.items.find((i) => i.startingPrice);
+      return {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        name: service.name,
+        description: service.description,
+        serviceType: service.category,
+        provider: {
+          "@type": "Organization",
+          name: "PACAME",
+          url: "https://pacameagencia.com",
+        },
+        areaServed: { "@type": "Country", name: "España" },
+        category: service.category,
+        ...(priceItem?.startingPrice && {
+          offers: {
+            "@type": "Offer",
+            priceCurrency: "EUR",
+            price: priceItem.startingPrice,
+            availability: "https://schema.org/InStock",
+            url: "https://pacameagencia.com/auditoria-3d",
+          },
+        }),
+      };
+    }),
   ];
 }
 
