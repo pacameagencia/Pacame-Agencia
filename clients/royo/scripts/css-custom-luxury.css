@@ -1,3 +1,4 @@
+
 /*
  * Joyería Royo — CSS custom alta gama
  * Pablo: pega TODO este bloque en wp-admin → Apariencia → Personalizar → CSS adicional → Publicar.
@@ -1393,7 +1394,7 @@ body.offcanvas-open .site-header {
   height: 100% !important;
 }
 
-/* 21.3 Header del drawer (Shopping Cart + close button) */
+/* 21.3 Header del drawer (Tu carrito + close button) */
 #cart-panel .panel__header,
 .offscreen-panel.cart-panel .panel__header {
   background: var(--royo-paper) !important;
@@ -2152,3 +2153,288 @@ body.single-product .woocommerce-tabs .woocommerce-Tabs-panel > h2:first-child {
   color: var(--royo-ink) !important;
   letter-spacing: -0.005em !important;
 }
+
+/* ============================================================
+   24. PÁGINAS INSTITUCIONALES — Sobre Nosotros / Contacto / Marcas
+   ============================================================ */
+
+/* 24.1 H1 hero institucional */
+.royo-page-title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(1.8rem, 4vw, 2.6rem) !important;
+  font-weight: 300 !important;
+  letter-spacing: -0.015em !important;
+  color: var(--royo-ink) !important;
+  text-align: center !important;
+  margin: 2rem 0 1rem !important;
+  line-height: 1.15 !important;
+}
+
+/* 24.2 Lead paragraph */
+.royo-lead {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.05rem !important;
+  font-weight: 400 !important;
+  color: var(--royo-charcoal) !important;
+  line-height: 1.7 !important;
+  text-align: center !important;
+  max-width: 720px !important;
+  margin: 0 auto 3rem !important;
+}
+
+/* 24.3 H2 sección institucional */
+body.page .entry-content > h2,
+body.page .page-content > h2,
+body.page .elementor-widget-theme-post-content h2 {
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem) !important;
+  font-weight: 400 !important;
+  color: var(--royo-ink) !important;
+  text-align: center !important;
+  margin: 3rem 0 1.5rem !important;
+  letter-spacing: -0.005em !important;
+}
+
+/* 24.4 Brand list (Sobre Nosotros) */
+.royo-brand-list {
+  list-style: none !important;
+  padding: 1.5rem 2rem !important;
+  margin: 1.5rem auto !important;
+  max-width: 720px !important;
+  background: var(--royo-ivory) !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+}
+.royo-brand-list li {
+  padding: 0.5rem 0 !important;
+  border-bottom: 1px solid var(--royo-line) !important;
+  font-size: 0.95rem !important;
+  color: var(--royo-charcoal) !important;
+  line-height: 1.6 !important;
+}
+.royo-brand-list li:last-child {
+  border-bottom: none !important;
+}
+.royo-brand-list li strong {
+  color: var(--royo-ink) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* 24.5 Services grid (Sobre Nosotros) */
+.royo-services-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1.5rem !important;
+  margin: 2rem auto 3rem !important;
+  max-width: 1100px !important;
+}
+.royo-service-card {
+  background: var(--royo-paper) !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  padding: 1.75rem 1.5rem !important;
+  transition: border-color 0.3s ease, transform 0.3s ease !important;
+}
+.royo-service-card:hover {
+  border-color: var(--royo-champagne) !important;
+  transform: translateY(-2px) !important;
+}
+.royo-service-card h3 {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.05rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  margin: 0 0 0.6rem !important;
+  letter-spacing: -0.005em !important;
+}
+.royo-service-card p {
+  font-size: 0.9rem !important;
+  color: var(--royo-charcoal) !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+}
+
+/* 24.6 Contacto grid 2-col */
+.royo-contact-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 2.5rem !important;
+  margin: 2rem auto 3rem !important;
+  max-width: 1100px !important;
+}
+.royo-contact-info,
+.royo-contact-form {
+  background: var(--royo-paper) !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  padding: 2rem 1.75rem !important;
+}
+.royo-contact-info h2,
+.royo-contact-form h2 {
+  text-align: left !important;
+  margin-top: 0 !important;
+  font-size: 1.4rem !important;
+}
+.royo-contact-info h3 {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-charcoal) !important;
+  margin: 1.75rem 0 0.6rem !important;
+}
+.royo-contact-info p,
+.royo-contact-form p {
+  font-size: 0.95rem !important;
+  color: var(--royo-charcoal) !important;
+  line-height: 1.7 !important;
+  margin: 0 0 1rem !important;
+}
+.royo-contact-info p strong,
+.royo-contact-form p strong {
+  color: var(--royo-ink) !important;
+  font-weight: 600 !important;
+}
+.royo-contact-info p a,
+.royo-contact-form p a {
+  color: var(--royo-champagne-dark) !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid transparent !important;
+  transition: border-color 0.2s ease !important;
+}
+.royo-contact-info p a:hover,
+.royo-contact-form p a:hover {
+  border-bottom-color: var(--royo-champagne-dark) !important;
+}
+
+/* 24.7 Mapa container */
+.royo-map-container {
+  margin: 2rem auto 3rem !important;
+  max-width: 1100px !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  overflow: hidden !important;
+}
+.royo-map-container iframe {
+  display: block !important;
+  width: 100% !important;
+  border: 0 !important;
+}
+
+/* 24.8 Brand card (Marcas) */
+.royo-brand-card {
+  background: var(--royo-paper) !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  padding: 1.75rem 1.5rem !important;
+  margin: 1.25rem auto !important;
+  max-width: 880px !important;
+  transition: border-color 0.3s ease !important;
+}
+.royo-brand-card:hover {
+  border-color: var(--royo-champagne) !important;
+}
+.royo-brand-card h3 {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.25rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  margin: 0 0 0.75rem !important;
+  letter-spacing: -0.01em !important;
+}
+.royo-brand-card p {
+  font-size: 0.95rem !important;
+  color: var(--royo-charcoal) !important;
+  line-height: 1.7 !important;
+  margin: 0 0 1rem !important;
+}
+.royo-brand-card p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* 24.9 Botones institucionales */
+.royo-btn-primary,
+.royo-btn-secondary,
+.royo-btn-whatsapp {
+  display: inline-block !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  padding: 0.85rem 1.75rem !important;
+  border-radius: 2px !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+  border: 1px solid var(--royo-ink) !important;
+}
+.royo-btn-primary {
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+  border-color: var(--royo-champagne) !important;
+}
+.royo-btn-primary:hover {
+  background: var(--royo-paper) !important;
+  color: var(--royo-ink) !important;
+  border-color: var(--royo-ink) !important;
+}
+.royo-btn-secondary {
+  background: var(--royo-paper) !important;
+  color: var(--royo-ink) !important;
+}
+.royo-btn-secondary:hover {
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+}
+.royo-btn-whatsapp {
+  background: #25D366 !important;
+  color: #fff !important;
+  border-color: #25D366 !important;
+}
+.royo-btn-whatsapp:hover {
+  background: #1ebe5d !important;
+  border-color: #1ebe5d !important;
+}
+
+/* 24.10 CTA wrapper páginas institucionales */
+.royo-page-cta {
+  text-align: center !important;
+  margin: 2.5rem auto !important;
+  max-width: 720px !important;
+  display: flex !important;
+  justify-content: center !important;
+  gap: 1rem !important;
+  flex-wrap: wrap !important;
+}
+
+/* 24.11 Mobile institucional */
+@media (max-width: 767px) {
+  .royo-services-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .royo-contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+  .royo-brand-list {
+    padding: 1rem 1.25rem !important;
+  }
+  .royo-brand-card {
+    padding: 1.25rem !important;
+  }
+  .royo-page-cta {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .royo-btn-primary,
+  .royo-btn-secondary,
+  .royo-btn-whatsapp {
+    width: 100% !important;
+    text-align: center !important;
+  }
+}
+
