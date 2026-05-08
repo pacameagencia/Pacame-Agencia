@@ -1786,3 +1786,369 @@ body.offcanvas-open .site-header {
     padding: 0 1.25rem 1.25rem !important;
   }
 }
+
+/* ============================================================
+   22. SINGLE PRODUCT ALTA GAMA — estilo Joyería Suárez (Sprint 2E)
+   ============================================================ */
+
+/* 22.1 Layout summary refinado */
+@media (min-width: 992px) {
+  body.single-product div.product .summary {
+    padding: 1.5rem 0 0 3rem !important;
+  }
+}
+body.single-product .product_title {
+  font-family: 'Playfair Display', serif !important;
+  font-weight: 300 !important;
+  font-size: 2rem !important;
+  letter-spacing: -0.01em !important;
+  color: var(--royo-ink) !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* 22.2 Subtítulo descriptivo (insertado por mu-plugin) */
+body.single-product .royo-product-subtitle {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.85rem !important;
+  font-weight: 400 !important;
+  color: var(--royo-charcoal) !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  margin: 0 0 1.25rem !important;
+  padding-bottom: 1rem !important;
+  border-bottom: 1px solid var(--royo-line) !important;
+}
+
+/* 22.3 Precio destacado tipo Suárez (light weight, generoso) */
+body.single-product .summary .price,
+body.single-product .product .price {
+  font-size: 2.2rem !important;
+  font-weight: 300 !important;
+  letter-spacing: -0.02em !important;
+  margin: 1rem 0 1.5rem !important;
+  color: var(--royo-ink) !important;
+}
+
+/* 22.4 Trust Bar Premium (4 iconos en grid) */
+.royo-trust-bar {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 0.75rem !important;
+  padding: 1.25rem 0 !important;
+  margin: 1.5rem 0 !important;
+  border-top: 1px solid var(--royo-line) !important;
+  border-bottom: 1px solid var(--royo-line) !important;
+}
+.royo-trust-bar__item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  gap: 0.5rem !important;
+}
+.royo-trust-bar__icon {
+  display: inline-flex !important;
+  width: 30px !important;
+  height: 30px !important;
+  color: var(--royo-champagne-dark) !important;
+}
+.royo-trust-bar__icon svg {
+  width: 100%;
+  height: 100%;
+}
+.royo-trust-bar__label {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-charcoal) !important;
+  line-height: 1.4 !important;
+}
+
+/* 22.5 CTA group: contiene el .single_add_to_cart_button + WhatsApp button */
+.royo-cta-group {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 0.75rem !important;
+  align-items: stretch !important;
+  margin: 1.5rem 0 !important;
+}
+.royo-cta-group form.cart {
+  display: contents !important;
+}
+.royo-cta-group .single_add_to_cart_button {
+  width: 100% !important;
+  margin: 0 !important;
+}
+.royo-cta-group .quantity {
+  display: none !important;
+}
+.royo-cta-whatsapp {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  background: var(--royo-paper) !important;
+  color: var(--royo-ink) !important;
+  border: 1px solid var(--royo-ink) !important;
+  border-radius: 2px !important;
+  padding: 1rem 1.25rem !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-sizing: border-box !important;
+}
+.royo-cta-whatsapp:hover {
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+  text-decoration: none !important;
+}
+.royo-cta-whatsapp svg {
+  width: 18px !important;
+  height: 18px !important;
+  flex-shrink: 0 !important;
+}
+
+/* 22.6 Bloque atención personalizada (card crema) */
+.royo-personal-service {
+  background: var(--royo-ivory) !important;
+  border: 1px solid var(--royo-line) !important;
+  border-left: 3px solid var(--royo-champagne) !important;
+  border-radius: 2px !important;
+  padding: 1.25rem 1.5rem !important;
+  margin: 1.5rem 0 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 1rem !important;
+}
+.royo-personal-service__icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  color: var(--royo-champagne-dark);
+}
+.royo-personal-service__icon svg {
+  width: 100%;
+  height: 100%;
+}
+.royo-personal-service__title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  margin: 0 0 0.4rem !important;
+}
+.royo-personal-service__text {
+  font-size: 0.85rem !important;
+  color: var(--royo-charcoal) !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+}
+.royo-personal-service__text a {
+  color: var(--royo-champagne-dark) !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid transparent !important;
+  transition: border-color 0.2s ease !important;
+}
+.royo-personal-service__text a:hover {
+  border-bottom-color: var(--royo-champagne-dark) !important;
+}
+
+/* 22.7 Bloque distribuidor oficial (después del summary, antes de tabs) */
+.royo-official-dealer {
+  text-align: center !important;
+  padding: 3rem 1.5rem !important;
+  margin: 3rem 0 !important;
+  border-top: 1px solid var(--royo-line) !important;
+  border-bottom: 1px solid var(--royo-line) !important;
+  background: var(--royo-paper) !important;
+}
+.royo-official-dealer__brand {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.78rem !important;
+  letter-spacing: 0.3em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-champagne-dark) !important;
+  margin-bottom: 0.75rem !important;
+}
+.royo-official-dealer__title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.6rem !important;
+  font-weight: 400 !important;
+  color: var(--royo-ink) !important;
+  margin: 0.5rem 0 1.25rem !important;
+  letter-spacing: -0.005em !important;
+}
+.royo-official-dealer__text {
+  max-width: 580px !important;
+  margin: 0 auto !important;
+  font-size: 0.95rem !important;
+  color: var(--royo-charcoal) !important;
+  line-height: 1.7 !important;
+}
+
+/* 22.8 Galería refinada: thumbnails verticales en desktop */
+@media (min-width: 992px) {
+  body.single-product .woocommerce-product-gallery {
+    position: relative !important;
+  }
+  body.single-product .flex-control-thumbs {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+    position: absolute !important;
+    left: -90px !important;
+    top: 0 !important;
+    width: 80px !important;
+  }
+  body.single-product .flex-control-thumbs li {
+    width: 100% !important;
+    margin: 0 !important;
+    float: none !important;
+  }
+  body.single-product .flex-control-thumbs img {
+    width: 100% !important;
+    height: 80px !important;
+    object-fit: contain !important;
+    background: var(--royo-ivory) !important;
+    border: 1px solid var(--royo-line) !important;
+    border-radius: 2px !important;
+    cursor: pointer !important;
+    opacity: 0.6 !important;
+    transition: opacity 0.25s ease, border-color 0.25s ease !important;
+  }
+  body.single-product .flex-control-thumbs img:hover,
+  body.single-product .flex-control-thumbs img.flex-active {
+    opacity: 1 !important;
+    border-color: var(--royo-champagne) !important;
+  }
+}
+
+/* 22.9 Banner brand lifestyle (después del producto) */
+.royo-brand-banner {
+  position: relative !important;
+  padding: 5rem 2rem !important;
+  margin: 4rem 0 0 !important;
+  background: linear-gradient(135deg, var(--royo-ivory) 0%, var(--royo-paper) 100%) !important;
+  border-top: 1px solid var(--royo-line) !important;
+  border-bottom: 1px solid var(--royo-line) !important;
+  text-align: center !important;
+  overflow: hidden !important;
+}
+.royo-brand-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 20% 30%, rgba(184, 149, 106, 0.1), transparent 60%),
+                    radial-gradient(circle at 80% 70%, rgba(184, 149, 106, 0.06), transparent 50%);
+  pointer-events: none;
+}
+.royo-brand-banner > * {
+  position: relative;
+  z-index: 1;
+}
+.royo-brand-banner__overline {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.3em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-champagne-dark) !important;
+  margin-bottom: 1rem !important;
+}
+.royo-brand-banner__title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(1.6rem, 3vw, 2.4rem) !important;
+  font-weight: 300 !important;
+  color: var(--royo-ink) !important;
+  margin: 0 0 1rem !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.2 !important;
+}
+.royo-brand-banner__text {
+  max-width: 640px !important;
+  margin: 0 auto !important;
+  font-size: 0.95rem !important;
+  color: var(--royo-charcoal) !important;
+  line-height: 1.7 !important;
+}
+
+/* 22.10 Mobile single product (ajustes vs sec 20.6) */
+@media (max-width: 767px) {
+  body.single-product .product_title {
+    font-size: 1.5rem !important;
+    text-align: center !important;
+  }
+  body.single-product .royo-product-subtitle {
+    text-align: center !important;
+  }
+  body.single-product .summary .price {
+    font-size: 1.8rem !important;
+    text-align: center !important;
+  }
+  .royo-trust-bar {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem !important;
+  }
+  .royo-cta-group {
+    grid-template-columns: 1fr !important;
+  }
+  .royo-personal-service {
+    flex-direction: column !important;
+    text-align: center !important;
+    align-items: center !important;
+  }
+  .royo-personal-service__icon {
+    align-self: center !important;
+  }
+  .royo-official-dealer {
+    padding: 2rem 1rem !important;
+    margin: 2rem 0 !important;
+  }
+  .royo-official-dealer__title {
+    font-size: 1.3rem !important;
+  }
+  .royo-brand-banner {
+    padding: 3rem 1.5rem !important;
+    margin-top: 2.5rem !important;
+  }
+}
+
+/* ============================================================
+   23. TABS → ACCORDION estilo Suárez (todos los paneles abiertos)
+   ============================================================ */
+
+/* Ocultar la nav de tabs (Descripción / Información adicional / Valoraciones) */
+body.single-product .woocommerce-tabs .tabs.wc-tabs {
+  display: none !important;
+}
+
+/* Mostrar todos los paneles apilados verticalmente */
+body.single-product .woocommerce-tabs .panel,
+body.single-product .woocommerce-tabs .woocommerce-Tabs-panel {
+  display: block !important;
+  border-top: 1px solid var(--royo-line) !important;
+  padding: 2rem 0 !important;
+  position: relative !important;
+}
+body.single-product .woocommerce-tabs .panel:last-child,
+body.single-product .woocommerce-tabs .woocommerce-Tabs-panel:last-child {
+  border-bottom: 1px solid var(--royo-line) !important;
+}
+
+/* Cabecera del panel: tipografía Playfair luxury */
+body.single-product .woocommerce-tabs .panel > h2:first-child,
+body.single-product .woocommerce-tabs .woocommerce-Tabs-panel > h2:first-child {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 500 !important;
+  margin: 0 0 1.25rem !important;
+  color: var(--royo-ink) !important;
+  letter-spacing: -0.005em !important;
+}
