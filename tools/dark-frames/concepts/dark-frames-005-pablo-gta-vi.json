@@ -1,0 +1,223 @@
+{
+  "concept_id": "dark-frames-005-pablo-gta-vi",
+  "title": "Pablo en GTA VI · Vice City sunset · trailer falso 18s",
+  "series_hashtag": "#DarkFrames",
+  "version": 2,
+  "schema_version": 2,
+  "created_at": "2026-05-08",
+
+  "tier": "top",
+  "duration_target_s": 18,
+  "aspect_ratio": "9:16",
+  "resolution": "1080x1920",
+  "structure_template": "trailer_3_act_with_protagonist",
+
+  "moodboard": "moodboards/dark-frames-005-pablo-gta-vi.md",
+
+  "logline": "Trailer falso 18s estilo Rockstar Games GTA VI con Pablo Soul Character como protagonista en Vice City sunset. Acto 1 (0-5s) descubrimiento Pablo arriving beach con Lambo rosa humeante. Acto 2 (5-12s) acción · drift motorbike + persecución policial. Acto 3 (12-16s) climax cool · Pablo en yate sunset. Outro (16-18s) 'TODO CREADO CON DARKROOMCREATIVE.CLOUD'. La duda '¿es leak GTA VI o IA?' es el motor viral. Funnel: comments piden 'cómo lo hiciste' → DM auto envía ebook 'Cómo creé este video con IA' (info parcial) → CTA Dark Room 24,90€/mes.",
+
+  "research": {
+    "references": [
+      "Miami Vice 2006 (dir. Michael Mann · DP Dion Beebe · Sony F950 4K HD · pioneered digital Miami beach aesthetic · documented American Cinematographer Aug 2006)",
+      "Trailer GTA VI dic 2023 oficial (Rockstar Games · 91M views 24h · Tom Petty 'Love Is a Long Road' soundtrack · Vice City revival Florida-weird)",
+      "Scarface 1983 (dir. Brian De Palma · DP John A. Alonzo · Miami sunset pastels)",
+      "Inherent Vice 2014 (dir. Paul Thomas Anderson · DP Robert Elswit · 70s Florida-warm haze)",
+      "Drive 2011 (dir. Refn · DP Newton Thomas Sigel · neon synthwave drive references)",
+      "Tenet 2020 (dir. Nolan · DP Hoyte van Hoytema · IMAX 65mm sunset Miami-style sequences)"
+    ],
+    "dp_references": [
+      "Dion Beebe (Miami Vice 2006 · Sony F950 4K HD digital · Sony HDC-F950 + Cooke S4 Mini lens · documented American Cinematographer Aug 2006 · pioneered digital Miami beach cinema)",
+      "Robert Elswit (Inherent Vice 2014 · Panavision Primo 35mm anamorphic 2x squeeze · warm Florida 70s grain · documented ASC magazine 2015)",
+      "Hoyte van Hoytema (Tenet 2020 · IMAX 65mm Panavision Sphero anamorphic · sunset golden hour signature · ASC documented)"
+    ],
+    "lens_specs": [
+      "Hero shots Pablo: Panavision Primo 35mm anamorphic 2x squeeze (Beebe Miami Vice signature · oval bokeh · slight horizontal lens flares)",
+      "Aperture: f/2.0-f/2.8 sunset golden hour ISO equivalent 200-400 (low ISO clean digital · Beebe documented)",
+      "Wide shot Lambo arrival: 24mm anamorphic Hawk V-Lite (Tenet sunset Miami sequences reference)",
+      "Action shots motorbike: 50mm Cooke S4/i prime spherical (NOT anamorphic for action handheld feel)",
+      "Sunset chase shots: 85mm Panavision Primo with practical lens flares (deliberate · Mann signature)",
+      "Subtle film grain emulation 35mm Kodak Portra 400 push +1 (digital + grain hybrid · Elswit method)"
+    ],
+    "lut_reference": "Vice City sunset pastel · saturation +18% on pink and teal channels selectively (Miami Vice 2006 Beebe LUT recipe documented) · highlights blown soft warm (sunlight at golden hour 5pm Miami latitude 25°) · blacks lifted +8 IRE (preserve shadow detail beach palm trees) · subsurface scattering on neon pastel signs · warm-cool split between sun-side (pink/orange) and shadow-side (teal/cyan) · GTA VI trailer 2023 LUT analysis (Rockstar publishing · grain analyzer · DP YouTube reverse-engineer) · NO oversaturated MTV-80s · subtle photographic Miami Vice 2006 film-grain preservation",
+    "pacing_template": "Trailer 3-act 18s · Act 1 hook 0-5s (Pablo arrival 1 shot continuous wide-medium) · Act 2 build 5-12s (3 quick action cuts 2-3s each) · Act 3 climax 12-16s (1 cool hero shot Pablo + Lambo or yate) · Outro 16-18s Dark Room brand · pacing = Rockstar GTA VI trailer 2023 reference (3-act build 91M views 24h benchmark)",
+    "audio_references": [
+      "Synthwave 80s pastel · Phil Collins 'In the Air Tonight' (1981) tonal reference for Miami Vice nostalgic pull",
+      "Tom Petty 'Love Is a Long Road' (1989) · GTA VI trailer 2023 song · NOT licensed but tonal reference Suno",
+      "Jan Hammer 'Crockett's Theme' (1984) · Miami Vice TV series · synthwave pastel signature",
+      "Diegetic dominant: ocean waves continuous · palm leaves rustling sea breeze · distant Lambo V12 idling rumble · seagulls",
+      "LUFS target -16 cinema · subwoofer engine purr 60Hz under everything (Lambo V12 idle) · NO heavy sub-grave 40Hz of dark cyberpunk · más warm cálido"
+    ],
+    "research_sources": [
+      "American Cinematographer Aug 2006 · Dion Beebe Miami Vice digital pioneer feature",
+      "American Cinematographer 2015 · Robert Elswit Inherent Vice anamorphic 70s aesthetic",
+      "ASC Magazine 2020 · Hoyte van Hoytema Tenet IMAX feature",
+      "Rockstar Games official YouTube · GTA VI trailer 1 December 2023 (91M views 24h record)",
+      "Cinematography Mailbag YouTube · GTA VI trailer DP analysis 2024",
+      "GTAFanatic + GTABase technical wikis (NO oficial Rockstar) · Vice City world building references"
+    ]
+  },
+
+  "shots": [
+    {
+      "shot": 1,
+      "duration_s": 5,
+      "kind": "video",
+      "tier": "top",
+      "model_override": "soul_cinema_studio_3_0",
+      "structure_role": "ACT 1 hook · Pablo arrival Vice City beach · Lambo rosa humeante · sunset golden hour · 5s continuous medium-wide · MAX wow factor",
+      "prompt": "Cinematic film still vertical 9:16 native gameplay framing GTA VI trailer style, the trained subject Soul Character PACAME standing on a Vice City Florida beach boulevard at sunset golden hour 5pm Miami latitude, palm trees swaying with sea breeze, a pastel pink Lamborghini Aventador parked next to him with engine smoking heat shimmer, pink and teal art deco hotel facades in soft background bokeh, neon arcade signs in pastel pink and teal glowing softly in approaching dusk, retro 80s Miami Vice synthwave aesthetic mixed with hyperreal Rockstar RAGE engine GTA VI 2026 visual fidelity, the subject wears an open Hawaiian shirt over white tank top sunglasses on his head casual beach vibe matching GTA Vice City protagonist character archetype, golden hour rim light from camera-right warm 5000K key + cool 7500K teal fill from approaching dusk left side, soft ambient bounce from white sand and pastel surfaces, anamorphic 2x squeeze oval bokeh circles signature Beebe Miami Vice 2006, Panavision Primo 35mm anamorphic lens equivalent f/2.8 ISO 200, low-angle three-quarter shot subject framed left two thirds Lambo midground lower right hotel skyline upper right negative space, deep depth of field with sharp foreground subject and slight gauss falloff to hotels background, slight horizontal lens flare from sun hitting Lambo chrome (deliberate Beebe signature), warm-cool split Mann signature sun-side pink-orange shadow-side teal-cyan, hyperrealistic but slightly stylized Rockstar promotional screenshot aesthetic, 4K cinematic grading subtle film grain emulation 35mm Kodak Portra 400 push +1 hybrid digital, photorealistic 8K, vertical 9:16 native gameplay framing NOT letterboxed, no other people in frame, no visible competitor brand logos, no UI overlay, no glamour photography, no studio lighting, mood late afternoon Vice City vibes swagger summer 1986 nostalgia the moment before chaos starts",
+      "negative_prompt": "low quality, generic stock photo, watermark, anime 2D, daytime overcast, cleaned plastic CGI look, anamorphic letterbox black bars, wide shot 3rd person omniscient, smiling, glamour pose, multiple people, readable text on signs, readable hotel logos, blue sky midday, modern non-Vice-City context, oversaturated MTV-80s neon",
+      "validation_must_have": [
+        "vertical 9:16 nativo NO letterboxed (gameplay feel)",
+        "Soul Character PACAME identidad Pablo reconocible",
+        "Lambo pastel pink (NO red NO yellow)",
+        "sunset golden hour warm-cool split visible",
+        "anamorphic oval bokeh visible en hotel background",
+        "Hawaiian shirt + tank top blanco + sunglasses on head",
+        "no faces visible besides Pablo",
+        "no readable text/logos en hoteles ni señales"
+      ]
+    },
+    {
+      "shot": 2,
+      "duration_s": 4,
+      "kind": "video",
+      "tier": "top",
+      "model_override": "seedance_2_0",
+      "structure_role": "ACT 2 build · Pablo riding motorbike at speed Vice City boulevard · drift sunset shots · 4s kinetic action",
+      "prompt": "Cinematic action shot vertical 9:16 native gameplay framing GTA VI trailer style, the trained subject Soul Character PACAME riding a sport motorbike Ducati Panigale style at speed along Vice City beach boulevard at sunset golden hour, motion blur on palm trees rushing past peripheral vision left and right, the bike leans into a drift turn rear wheel spinning smoke pastel teal and pink, distant pursuit lights blue and red flickering far behind in motion blur, Hawaiian shirt billowing in wind sunglasses dropped over eyes intense focused expression looking forward not at camera, pastel pink and teal art deco hotels and palm trees rushing past, Cooke S4/i 50mm prime spherical lens kinetic action handheld feel f/2.0, sunset golden hour 5000K warm key from camera-right + cool 7500K teal fill from cooler shadow side, slight motion blur per-object 8ms gameplay-style, hyperrealistic Rockstar RAGE engine GTA VI 2026 cinematic quality post-procesa Kodak Portra 400 grain hybrid digital, vertical 9:16 native gameplay framing NOT letterboxed, no other people clearly visible only blurred peripherals, no visible brand logos on bike or buildings, no readable text on hotels, mood high-octane chase action Florida sunset escape",
+      "negative_prompt": "low quality, watermark, daytime overcast, slow motion, anime 2D, cleaned plastic CGI, letterbox black bars, smiling, glamour pose, frontal direct-to-camera, looking at camera, multiple riders visible, readable text, readable logos on bike, sunny midday, modern non-Vice-City context",
+      "validation_must_have": [
+        "vertical 9:16 nativo gameplay feel",
+        "Soul Character PACAME identidad reconocible",
+        "motion blur kinetic visible en palmeras y hoteles",
+        "drift turn smoke pastel pink/teal visible",
+        "sunglasses puestas (no en cabeza)",
+        "Hawaiian shirt billowing wind",
+        "distant pursuit lights blue/red flickering",
+        "no faces clearly visible (motion blur peripheral)"
+      ]
+    },
+    {
+      "shot": 3,
+      "duration_s": 5,
+      "kind": "video",
+      "tier": "top",
+      "model_override": "soul_cinema_studio_3_0",
+      "structure_role": "ACT 3 climax cool · Pablo standing on luxury yate at Vice City marina sunset · hero shot · 5s contemplative",
+      "prompt": "Cinematic hero shot vertical 9:16 native gameplay framing GTA VI trailer style, the trained subject Soul Character PACAME standing on the bow of a luxury white motor yacht at Vice City marina at peak sunset golden hour 6pm Miami sky burning orange-pink-purple gradient, the yacht hull gleaming pastel pink reflections on the water, distant pastel city skyline art deco hotels in soft bokeh, the subject wears the same Hawaiian shirt now slightly unbuttoned over white tank top sunglasses removed in hand looking out at horizon contemplative not at camera, ocean waves gentle lapping the hull subtle reflective light dancing on his face warm rim light, palm trees on far shore in silhouette, Hoyte van Hoytema Tenet IMAX sunset Miami signature reference, Panavision Primo 85mm anamorphic 2x squeeze long lens compressed perspective f/2.0 deliberate horizontal lens flare from setting sun hitting water on camera-right, warm 4500K key from sun + cool 7500K shadow side fill, soft ambient bounce from water and white yacht hull, anamorphic oval bokeh on city skyline background, slight gimbal-stabilized handheld micro-movement 0.5° drift not static, low-angle medium framing subject right two thirds horizon and city skyline left third negative space sky upper third, hyperrealistic Rockstar RAGE engine GTA VI 2026 cinematic quality with subtle 35mm Kodak Portra 400 push +1 grain emulation hybrid digital, vertical 9:16 native gameplay framing NOT letterboxed, no other people visible, no visible brand logos on yacht or city, no readable text, mood contemplative cool swagger summer 1986 nostalgia the moment of arrival the king of Vice City",
+      "negative_prompt": "low quality, watermark, daytime cloudy, generic stock, anime 2D, cleaned plastic CGI, letterbox black bars, frontal smile glamour pose, looking at camera, multiple people on yacht, readable text on yacht, readable city logos, midday sun overhead, modern non-Vice-City context, party scene, alcohol visible",
+      "validation_must_have": [
+        "vertical 9:16 nativo gameplay feel",
+        "Soul Character PACAME identidad reconocible",
+        "yate pastel pink reflections on water",
+        "sunset orange-pink-purple gradient sky",
+        "anamorphic oval bokeh on city background",
+        "Hawaiian shirt slightly unbuttoned tank top visible",
+        "sunglasses en mano NOT cabeza ni puestos",
+        "looking at horizon NOT camera",
+        "distant city skyline visible bokeh",
+        "no faces visible besides Pablo"
+      ]
+    }
+  ],
+
+  "audio": {
+    "voice_over": null,
+    "music": {
+      "style": "Synthwave 80s Miami Vice pastel · Jan Hammer Crockett's Theme tonal reference + Phil Collins In the Air Tonight (1981) atmospheric pull · NOT licensed Tom Petty Love Is a Long Road tonal reference only · Suno cinematic synthwave",
+      "duration_s": 18,
+      "lufs_target": -16,
+      "suno_keywords": "Miami Vice synthwave 80s pastel Jan Hammer Crockett Theme cinematic Phil Collins In the Air Tonight atmospheric Florida sunset Lamborghini hero theme nostalgic warm not aggressive build-to-climax 70bpm-80bpm pad-driven NO heavy sub-grave",
+      "key": "F# minor",
+      "tempo_bpm": "build 70bpm Act 1 → 80bpm Act 2 kinetic → 60bpm Act 3 contemplative · climax swell at 12s yacht reveal"
+    },
+    "sfx": [
+      { "at_s": 0, "name": "ocean_waves_loop", "description": "ocean waves gentle continuous beach · loop · pan stereo subtle" },
+      { "at_s": 0, "name": "palm_leaves_breeze", "description": "palm leaves rustling sea breeze · pan left/right alternating subtle" },
+      { "at_s": 0, "name": "lambo_v12_idle", "description": "Lamborghini V12 engine purr 60Hz subtle under everything · pan center" },
+      { "at_s": 1, "name": "seagull_distant", "description": "seagull cry distant single · pan right · subtle" },
+      { "at_s": 5, "name": "motorbike_acceleration", "description": "Ducati Panigale style sport bike acceleration roar · pan center to left as bike enters frame · doppler drift" },
+      { "at_s": 6, "name": "tire_drift_smoke", "description": "tire screech rear wheel drift on asphalt · pan right" },
+      { "at_s": 7, "name": "wind_rushing", "description": "wind rushing high-speed cinematic action sound · continuous Act 2" },
+      { "at_s": 9, "name": "police_sirens_distant_wail", "description": "police sirens distant wail muffled doppler · pan right back · subtle pursuit feel" },
+      { "at_s": 12, "name": "wave_lap_yacht", "description": "wave gentle lap yacht hull · pan center · subtle" },
+      { "at_s": 12, "name": "music_swell_climax", "description": "synthwave music swell climax pad ethereal warm · NO percussion bombast" },
+      { "at_s": 15, "name": "ambient_marina_fade", "description": "marina ambient fade · distant boat horn · pan left subtle" },
+      { "at_s": 16, "name": "fade_to_outro", "description": "fade out into Dark Room outro 2s 'TODO CREADO CON DARKROOMCREATIVE.CLOUD'" }
+    ]
+  },
+
+  "captions_burned": [
+    {
+      "at_s": 1,
+      "duration_s": 1.5,
+      "text": "GTA VI · LEAK ESCENA SECUNDARIA",
+      "font": "Anton",
+      "size_px": 52,
+      "color": "#CFFF00",
+      "position": "top-center-safe",
+      "animation": "glitch_in_0.4s_chromatic_aberration",
+      "tracking_pct": 0
+    },
+    {
+      "at_s": 14,
+      "duration_s": 2,
+      "text": "¿LO COMPRARÍAS?",
+      "font": "Anton",
+      "size_px": 72,
+      "color": "#F2F2F2",
+      "position": "center-safe",
+      "animation": "punch_in_0.2s_with_acid_neon_glow"
+    }
+  ],
+
+  "hud_overlay": {
+    "minimap_corner": "bottom-right",
+    "minimap_style": "circular acid green wireframe #CFFF00 60% opacity radius 70px · 80px from edge safe",
+    "minimap_content": "1 dot pulsando 2Hz (player) + 4 dots distantes static (vehicles/NPCs) · NO labels NO compass NO stamina bar NO ammo",
+    "compass_top": false,
+    "stamina_bar": false,
+    "ammo_indicator": false,
+    "design_intent": "HUD MUY sutil · vendemos la duda no afirmamos juego · si parece demasiado HUD = MAL"
+  },
+
+  "outro": {
+    "use_template": "tools/dark-frames/assets/outro-darkroom-2s-v2.mp4",
+    "outro_text_override": "TODO CREADO CON DARKROOMCREATIVE.CLOUD",
+    "duration_s": 2,
+    "concat_at_end": true,
+    "note": "Outro NUEVO específico Pablo en GTA VI · texto cambia de outro template original a 'TODO CREADO CON DARKROOMCREATIVE.CLOUD' (decisión Pablo 2026-05-08 para generar hype + funnel ebook lead magnet)"
+  },
+
+  "caption_text": "Esto se filtró ayer.\nPero no es real. Lo hice yo.\n\nMe pasé 3 horas haciendo que pareciera GTA VI.\n¿Cuánto te tardó pensar que lo era?\n\nStack usado:\n· Cinema Studio Video 3.0 + Seedance 2.0\n· Soul Character entrenado (yo)\n· Suno (música)\n· ffmpeg (edición)\n\nCoste real: ~$3.70\n\n📩 Comenta \"GTA\" en este post y te mando el ebook con el proceso completo (gratis).\n\nA Rockstar le toma 8 años hacer un juego.\nA mí 3 horas hacer que parezca uno.\n(Sí, faltan los gameplay loops. Y todo lo demás. Pero la VIBE está.)\n\nLink en bio para acceder a las herramientas que uso.",
+  "caption_hashtags": "#DarkFrames #GTAVI #ViceCity #IA #darkroomcreative #leak #cinematic",
+  "soul_character_id": "PACAME",
+
+  "estimated_cost_credits": 75,
+  "estimated_cost_usd": 3.68,
+  "estimated_render_time_min": 28,
+
+  "approval_required": {
+    "pablo_double_yes": true,
+    "cost_guard_token": true,
+    "reason": "tier=top × 3 shots video premium · suma ~$3.68 (75 cr de 953 disponibles) · Soul Character PACAME en 3 shots requiere consistency cross-shot SOTA"
+  },
+
+  "validation_checklist_extra": [
+    "técnica Dion Beebe Miami Vice 2006 citada (Sony F950 4K + anamorphic 2x squeeze)",
+    "técnica Hoyte van Hoytema Tenet sunset Miami citada (IMAX 65mm)",
+    "técnica Robert Elswit Inherent Vice citada (Panavision Primo anamorphic 35mm warm Florida)",
+    "GTA VI trailer 2023 Rockstar referenciado con disclaimer (NO oficial · 91M views 24h benchmark)",
+    "vertical 9:16 NATIVO los 3 shots (NO letterbox · gameplay sensation)",
+    "Soul Character PACAME en los 3 shots (consistency cross-shot)",
+    "rostros NUNCA visibles excepto Pablo",
+    "Lambo PASTEL PINK (no red no yellow)",
+    "Hawaiian shirt + tank top blanco consistencia los 3 shots",
+    "sunset golden hour warm-cool split los 3 shots",
+    "HUD minimap MUY sutil (60% opacity · sin labels · solo 1+4 dots)",
+    "outro NUEVO 'TODO CREADO CON DARKROOMCREATIVE.CLOUD' aplicado segundo 16",
+    "audio: synthwave 80s Miami Vice pastel · NO Tom Petty literal · NO heavy sub-grave (warm cálido no oscuro)",
+    "caption: 'Comenta GTA y te mando el ebook' = funnel lead magnet activado"
+  ]
+}
