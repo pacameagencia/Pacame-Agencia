@@ -1,6 +1,7 @@
 import HUD from "@/components/storybook-3d/HUD";
 import NoScriptContent from "@/components/storybook-3d/legacy-shell/NoScriptContent";
 import ReducedMotionFallback from "@/components/storybook-3d/ReducedMotionFallback";
+import ReducedMotionToggle from "@/components/storybook-3d/ReducedMotionToggle";
 import SceneClient from "@/components/storybook-3d/SceneClient";
 import { IslandStateProvider } from "@/lib/storybook/island-state";
 
@@ -42,6 +43,9 @@ export default function StorybookHome() {
 
         {/* Reduced-motion fallback (auto) */}
         <ReducedMotionFallback />
+
+        {/* Toggle persistente "3D on/off" en esquina inferior izquierda */}
+        <ReducedMotionToggle />
 
         {/* Espaciador scroll: 6 viewports para los 6 keyframes */}
         <div aria-hidden="true" className="h-[600vh] pointer-events-none" />
