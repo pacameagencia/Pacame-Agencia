@@ -1,0 +1,282 @@
+{
+  "concept_id": "dark-frames-007-pablo-gta-vi-day",
+  "title": "Un día en GTA VI con Pablo PACAME",
+  "series_hashtag": "#DarkFrames",
+  "version": 1,
+  "schema_version": 3,
+  "created_at": "2026-05-08",
+  "framework_applied": [
+    "MEGA-PROMPT-v2.md",
+    "STYLE-ANCHOR-v2.md (variant: vice_city_sunset_v2 + GTA RAGE engine cutscene)",
+    "CONSISTENCY-CHECKLIST-v1.md",
+    "NARRATIVE-ARC-protocol-v1.md",
+    "KNOWLEDGE-INTEGRATION-v2.md (21 reglas duras)"
+  ],
+
+  "tier": "HYBRID",
+  "tier_imagen": "Higgsfield Soul V2 (text2image_soul_v2 · 0.12 cr/gen)",
+  "tier_video": "Seedance 2.0 (seedance_2_0 · 22.5 cr/5s 9:16)",
+  "look_visual": "Rockstar RAGE engine 2026 in-game cutscene · NOT iPhone real · NOT photoreal documentary",
+
+  "duration_target_s": 16.2,
+  "duration_content_s": 14.5,
+  "duration_outro_s": 1.7,
+  "aspect_ratio": "9:16",
+  "resolution": "1080x1920",
+  "structure_template": "trailer_4_act_with_protagonist",
+
+  "logline": "Reel 16.2s · Un día completo de Pablo PACAME en Vice Beach 2026 estilo GTA VI cutscene cinematic · 4 actos Hollywood-grade (arrival valet · femme fatale toss llaves · chase moto · yacht IDENTITY REVEAL). Hipótesis viral: scroll-stop por ambigüedad '¿es leak GTA VI o IA?'. Funnel: comments piden 'cómo lo hiciste' → DM ebook 21 prompts → CTA Dark Room Lifetime 349€.",
+
+  "character_anchor": {
+    "soul_character_id": "PACAME",
+    "soul_id_higgsfield": "55ac4b3b-51f7-497a-8150-87563a969915",
+    "consistency_sheet": "tools/dark-frames/character-bibles/pablo/pablo-360-sheet-v1.png",
+    "body_descriptor_hardcoded": "athletic LEAN SLIM build, V-shape torso (broad shoulders narrow waist), defined cheekbones, lean sharp jawline, prominent collarbones, flat stomach, NOT bulky NOT chubby NOT muscular bodybuilder, NOT round face. Match the slim athletic build of the hero-S3-yacht-soul reference.",
+    "wardrobe_single": "pastel cream Hawaiian floral print shirt unbuttoned over white tank top · light beige loose linen pants · white leather sneakers · gold cuban-link chain · premium aviators on forehead/eyes (único elemento dinámico)"
+  },
+
+  "npcs": [
+    {
+      "id": "valet",
+      "act": 1,
+      "shot": "S1",
+      "role": "refuerzo lifestyle",
+      "description": "Hombre LATAM joven 22-26 · 1.75m · esbelto · piel olivácea oscura · uniforme valet crema con piping dorado",
+      "face_visible": false,
+      "camera_angle": "desde detrás · solo silueta",
+      "intercambio": "entrega llaves del Testarossa-style",
+      "lens_reference": "Newton Thomas Sigel — Drive 2011"
+    },
+    {
+      "id": "blonde_balcony",
+      "act": 2,
+      "shot": "S2",
+      "role": "femme fatale · INCITING INCIDENT",
+      "description": "Mujer LATAM 28-32 · melena platino larga ondulada · piel bronceada · labios rojo Ferrari · bikini blanco micro + camisa chiffon pastel pink + Cazal cuadradas oversize espejadas",
+      "face_visible": false,
+      "camera_angle": "balcón backlit · CARA TAPADA por gafas + mechón",
+      "intercambio": "lanza llaves moto desde balcón · mano izquierda manicura roja + pulsera oro grueso",
+      "lens_reference": "Dion Beebe — Miami Vice 2006 femme fatale wind-blown"
+    },
+    {
+      "id": "yacht_contact",
+      "act": 4,
+      "shot": "S4",
+      "role": "power figure validation",
+      "description": "Hombre 50-60s · traje lino blanco · luxury gold sport watch (NO logo) · signet ring pinky · solo brazo + mano + cuff visible",
+      "face_visible": false,
+      "camera_angle": "OFF-FRAME completamente",
+      "intercambio": "extiende copa champagne crystal hacia Pablo",
+      "lens_reference": "Hoyte van Hoytema — Tenet 2020 power figure como sinécdoque"
+    }
+  ],
+
+  "sequence": {
+    "narrative_arc": "Single-day Vice City lifestyle 4-act arc · ACT 1 OPEN arrival valet (3.5s) → ACT 2 INCITING toss llaves (4s) → ACT 3 CLIMAX ride drift (4s) → ACT 4 RESOLUTION + IDENTITY REVEAL toast yacht (3s) · all sunset golden hour progression morning→late morning→peak sunset · single wardrobe entire piece",
+    "wardrobe_continuity": {
+      "single_wardrobe": true,
+      "description": "pastel cream Hawaiian floral print shirt + white tank top + light beige linen pants + white leather sneakers + cuban gold chain + premium aviators (sube/baja como anchor visual)",
+      "applied_in_all_4_shots": true,
+      "wardrobe_change_justification": null
+    },
+    "lighting_continuity": {
+      "key_temperature_kelvin_morning": 4500,
+      "key_temperature_kelvin_late_morning": 5500,
+      "key_temperature_kelvin_sunset": 4200,
+      "fill_temperature_kelvin": 7500,
+      "warm_cool_split": true,
+      "time_of_day_progression": "morning 9 AM → late morning ~11 AM → peak sunset 7 PM"
+    },
+    "shots": [
+      {
+        "shot_id": "S1_arrival",
+        "title": "THE ARRIVAL",
+        "duration_seconds": 3.5,
+        "act": 1,
+        "image_anchor_start_winner_recommended": "tools/dark-frames/output/dark-frames-007-pablo-gta-vi-day/start/S1_arrival_start_v1.png",
+        "image_anchor_end_winner_recommended": "tools/dark-frames/output/dark-frames-007-pablo-gta-vi-day/end/S1_arrival_end_v1.png",
+        "structure_role": "ACT 1 OPEN · protagonista aparece · día empezando · establece mundo y poder · valet refuerza lifestyle",
+        "subject_motion": "Pablo's left foot exits sport car onto pavement (0-0.6s) · right hand pushes aviators up from eyes to forehead (0.6-1.4s) · body weight rotates 15° toward camera (1.4-2.5s) · slight smirk emerging (last 1s) · NPC valet enters frame-right from behind soft-focus extending hand for keys at 2.0s",
+        "camera_motion": "Steadicam stable wide low-angle three-quarter · subtle 8% push-in over 3.5s · ground 1.2m · NO shake",
+        "motion_priority": "subject",
+        "audio_sync": [
+          {"at_s": 0, "name": "ocean_distant_loop", "loudness": "-32 LUFS bg"},
+          {"at_s": 0, "name": "palm_leaves_rustle", "loudness": "-34 LUFS bg"},
+          {"at_s": 0.7, "name": "car_door_soft_thud", "loudness": "-22 LUFS"},
+          {"at_s": 1.4, "name": "aviator_frame_tap", "loudness": "-26 LUFS"},
+          {"at_s": 2.0, "name": "synthwave_bass_drone_enter", "loudness": "build"},
+          {"at_s": 3.0, "name": "engine_rev_far_jcut_prep", "loudness": "-22 LUFS"}
+        ],
+        "lens_reference_hollywood": "Dion Beebe — Miami Vice 2006 anamorphic horizontal cyan flare",
+        "transition_to_next": {
+          "type": "j_cut_audio + match_action",
+          "ending": "engine rev arranca al final · mano derecha aviadores enlaza con S2 mano agarrando manillar"
+        }
+      },
+      {
+        "shot_id": "S2_toss",
+        "title": "THE TOSS",
+        "duration_seconds": 4.0,
+        "act": 2,
+        "image_anchor_start_winner_recommended": "tools/dark-frames/output/dark-frames-007-pablo-gta-vi-day/start/S2_toss_start_v1.png",
+        "image_anchor_end_winner_recommended": "tools/dark-frames/output/dark-frames-007-pablo-gta-vi-day/end/S2_toss_end_v1.png",
+        "structure_role": "ACT 2 INCITING INCIDENT · protagonista es elegido · activación silenciosa · femme fatale entrega llaves",
+        "subject_motion": "Pablo head tilts up looking at off-frame upper-right balcony (0-1s) · keys fall slow-motion arc (1-2.5s) · Pablo right hand rises (2.0-2.8s) · catches keys mid-air at 2.8s · aviators slide DOWN from forehead to bridge of nose (2.8-3.6s) · slight smirk (last 0.4s)",
+        "camera_motion": "low-angle medium-wide handheld kinetic · subtle natural sway · 8° orbit frame-left · 35mm · whip-tilt-up at 1.5s · returns to Pablo at 2.5s",
+        "motion_priority": "both",
+        "audio_sync": [
+          {"at_s": 0, "name": "synthwave_bass_continues", "loudness": "carryover S1"},
+          {"at_s": 0.3, "name": "high_heel_click_distant", "loudness": "-22 LUFS · sugiere rubia"},
+          {"at_s": 1.0, "name": "keys_jingle_throw", "loudness": "-14 LUFS frame-perfect"},
+          {"at_s": 2.5, "name": "key_air_whoosh_low", "loudness": "-18 LUFS travel"},
+          {"at_s": 2.8, "name": "metal_keys_catch_palm", "loudness": "-12 LUFS impact"},
+          {"at_s": 3.0, "name": "synth_arp_tension_build", "loudness": "build"},
+          {"at_s": 3.6, "name": "engine_prime_click", "loudness": "-20 LUFS · anticipa S3"}
+        ],
+        "lens_reference_hollywood": "Newton Thomas Sigel — Drive 2011 magenta-cyan + motion blur on key 24fps",
+        "captions": [
+          {"at_s_local": 1.5, "at_s_total": 5.0, "text": "UN DÍA EN VICE BEACH", "color": "#F4F1EA", "font": "Anton ALL CAPS", "position": "upper-third centered", "animation": "glitch_in 0.2s · hold 1.8s · glitch_out 0.2s"}
+        ],
+        "transition_to_next": {
+          "type": "whip_pan_continuation + match_action",
+          "ending": "whip pan corto izq · mano que atrapa llaves enlaza con mano agarrando puño moto"
+        }
+      },
+      {
+        "shot_id": "S3_ride",
+        "title": "THE RIDE",
+        "duration_seconds": 4.0,
+        "act": 3,
+        "image_anchor_start_winner_recommended": "tools/dark-frames/output/dark-frames-007-pablo-gta-vi-day/start/S3_ride_start_v2.png",
+        "image_anchor_end_winner_recommended": "tools/dark-frames/output/dark-frames-007-pablo-gta-vi-day/end/S3_ride_end_v1.png",
+        "structure_role": "ACT 3 CLIMAX · protagonista en su mejor momento · acción explota · MOMENTO MÁS VIRAL clipeable",
+        "subject_motion": "Pablo right wrist twists throttle hard (0-0.8s) · body leans forward 10° · bike accelerates frame-distance to mid-frame (0-2s) · body leans 30° controlled drift entering left curve (2-2.8s) · Hawaiian shirt billows back violently · cyan smoke trails rear wheel · bike straightens accelerates past frame-right (2.8-4s)",
+        "camera_motion": "low chase angle 0.4m ground · dolly forward 6m/s parallel bike · 24mm wide · stable rig · 20° arc around bike at 2.5s during drift · holds final 0.8s",
+        "motion_priority": "subject",
+        "audio_sync": [
+          {"at_s": 0, "name": "music_DROP_synthwave_Linn_drum", "loudness": "DROP coordinated frame-perfect"},
+          {"at_s": 0, "name": "engine_rev_burnout", "loudness": "-10 LUFS peak"},
+          {"at_s": 1.5, "name": "tire_squeal_controlled", "loudness": "-14 LUFS"},
+          {"at_s": 1.5, "name": "cyan_smoke_hiss", "loudness": "-16 LUFS"},
+          {"at_s": 3.0, "name": "engine_doppler_bypass", "loudness": "-12 LUFS"}
+        ],
+        "lens_reference_hollywood": "John Seale — Mad Max Fury Road 2015 wide-angle chase + Beebe Miami Vice anamorphic horizontal cyan flare hybrid",
+        "captions": [
+          {"at_s_local": 2.0, "at_s_total": 9.5, "text": "NO ES GTA VI", "color": "#CFFF00", "font": "Anton ALL CAPS", "position": "lower-third centered", "animation": "punch_in 0.15s · hold 1.5s · glitch_out 0.15s"}
+        ],
+        "transition_to_next": {
+          "type": "color_match + push_in",
+          "ending": "cyan smoke trail final fade-cross con sunset-magenta marina S4"
+        }
+      },
+      {
+        "shot_id": "S4_toast",
+        "title": "THE TOAST · IDENTITY REVEAL",
+        "duration_seconds": 3.0,
+        "act": 4,
+        "image_anchor_start_winner_recommended": "tools/dark-frames/output/dark-frames-007-pablo-gta-vi-day/start/S4_toast_start_v1.png",
+        "image_anchor_end_winner_recommended": "tools/dark-frames/output/dark-frames-007-pablo-gta-vi-day/end/S4_toast_end_v1.png",
+        "structure_role": "ACT 4 RESOLUTION + IDENTITY REVEAL · protagonista es socio · día completo cerrado · fourth-wall break · BRAND CTA",
+        "subject_motion": "Pablo three-quarter profile toward camera 0-0.5s · NPC#3 hand frame-right extends crystal champagne flute · Pablo right hand receives flute 0.5-1.0s · soft tink off-screen · Pablo turns head profile-to-camera over 1.2s (1.0-2.2s) · eyes lock on viewer warm confident · subtle smile grows · slight head tilt right 5° (last 0.8s)",
+        "camera_motion": "drone medium pull-back 2.5m revealing yacht silhouette + sunset (0-1.0s) · slow push-in to tight close-up (1.0-3.0s) · anamorphic 50mm · stable · completes on tight close-up shoulder-up · DOF razor-thin on eyes",
+        "motion_priority": "camera",
+        "audio_sync": [
+          {"at_s": 0, "name": "music_breakdown_warm_pads", "loudness": "carryover"},
+          {"at_s": 0, "name": "marina_water_lap", "loudness": "-30 LUFS bg"},
+          {"at_s": 0, "name": "seagulls_distant", "loudness": "-32 LUFS bg"},
+          {"at_s": 1.0, "name": "crystal_flute_clink", "loudness": "-16 LUFS frame-perfect"},
+          {"at_s": 2.5, "name": "synthwave_anchor_F_sharp_resolution", "loudness": "sustain"}
+        ],
+        "lens_reference_hollywood": "Hoyte van Hoytema — Tenet 2020 close-up DOF razor-sharp + Newton Thomas Sigel Drive 2011 magenta-cyan grading",
+        "skin_realism_R8_obligatorio": ["pores visible cheek+nose", "slight oily highlight forehead+nose bridge", "tiny baby hairs temples", "subtle facial asymmetry", "well-groomed beard subtle gray hints", "micro laugh-line right eye corner"],
+        "captions": [
+          {"at_s_local": 0.5, "at_s_total": 12.0, "text": "VICE BEACH · 7 PM", "color": "#F4F1EA", "font": "Anton ALL CAPS small", "position": "lower-left", "animation": "typewriter 0.4s · hold 1.5s · fade_out 0.3s"},
+          {"at_s_local": 2.0, "at_s_total": 13.5, "text": "PABLO PACAME · DARK ROOM", "color": "#CFFF00", "font": "Anton ALL CAPS", "position": "lower-third centered", "animation": "glitch_in 0.2s · hold 1.0s · fade to outro"}
+        ],
+        "transition_to_next": {
+          "type": "fade_to_outro",
+          "ending": "fade-from-S4-final-frame to outro-darkroom-2s-v2.mp4 over 0.3s"
+        }
+      }
+    ],
+    "outro": {
+      "duration_seconds": 1.7,
+      "asset": "tools/dark-frames/assets/outro-darkroom-2s-v2.mp4",
+      "text_overlay": "TODO HECHO CON · darkroomcreative.cloud"
+    }
+  },
+
+  "audio": {
+    "music_suno_prompt": "Synthwave 1980s Florida coastline pastel cinematic instrumental. F# minor key, BPM 78. Structure: 0-3.5s warm bass drone build with soft pad, 3.5-7.5s arpeggiated synth tension build with sub-bass kick entering, 7.5-11.5s DROP with classic Linn drum kick + snare + lead saw synth melody Vice-City boulevard energy, 11.5-14.5s breakdown warm pads + soft anchor note F# resolution. End on sustain. No vocals. Cinematic mix -16 LUFS. Reference: Outrun, Nightcrawler 2014, Tangerine Dream Risky Business, Kavinsky Drive 2011, GTA Vice City radio Wave 103.",
+    "music_key": "F# minor",
+    "music_bpm": 78,
+    "lufs_target": -16,
+    "voice_over": null,
+    "sfx_library_count": 10
+  },
+
+  "phase_a_b_completed": {
+    "completed_at": "2026-05-08T16:39:00Z",
+    "frames_generated": 24,
+    "credits_consumed": 2.88,
+    "credits_balance_after": 690.82,
+    "directories": {
+      "start": "tools/dark-frames/output/dark-frames-007-pablo-gta-vi-day/start/ (12 PNG · S{1,2,3,4}_{name}_start_v{1,2,3}.png)",
+      "end": "tools/dark-frames/output/dark-frames-007-pablo-gta-vi-day/end/ (12 PNG · S{1,2,3,4}_{name}_end_v{1,2,3}.png)"
+    },
+    "winners_recommended_by_claude": {
+      "S1_start": "v1 - valet de espaldas + Vice City Art Deco + identity match BRUTAL",
+      "S1_end": "v1 - aviadores resting + smirk fully formed + continuity match",
+      "S2_start": "v1 - rubia silueta backlit + sun flare epic + Pablo identity strong",
+      "S2_end": "v1 - keys caught + aviadores down + ready to mount",
+      "S3_start": "v2 - cinematic side-angle + anamorphic CYAN flare prominent + Pablo lean en moto BRUTAL",
+      "S3_end": "v1 - exit drift + accelerating frame-right + cyan smoke trail",
+      "S4_start": "v1 - yacht bow profile + NPC#3 hand frame-right + sunset golden",
+      "S4_end": "v1 - IDENTITY REVEAL · skin realism MAX · smile autentico · BRUTAL"
+    }
+  },
+
+  "estimated_cost_phase_d_video": {
+    "model": "seedance_2_0",
+    "cost_per_5s_2k_action": 22.5,
+    "shots_to_render": 4,
+    "total_credits_base": 90,
+    "total_usd_base": 4.41,
+    "buffer_retry_S3_credits": 22.5,
+    "buffer_retry_S3_usd": 1.10,
+    "total_realistic_with_buffer": 112.5,
+    "total_usd_realistic": 5.51
+  },
+
+  "approval_required": {
+    "pablo_double_yes": true,
+    "cost_guard_token": true,
+    "reason": "Tier=HYBRID Seedance 2.0 video premium · 4 shots × 22.5 cr = 90 cr base ($4.41) + 22.5 cr buffer S3 retry = 112.5 cr realistic ($5.51) · Soul Character PACAME en 4 shots requiere consistency cross-shot SOTA seedance",
+    "approval_format_required": "Pablo dice exactamente: 'SI aprueba video premium concept 007 · 4 shots · seedance_2_0 · 90 cr ($4.41) base + buffer 22.5 cr S3 retry'"
+  },
+
+  "captions_burned_summary": [
+    {"at_s_total": 5.0, "text": "UN DÍA EN VICE BEACH", "shot": "S2 @1.5s"},
+    {"at_s_total": 9.5, "text": "NO ES GTA VI", "shot": "S3 @2.0s"},
+    {"at_s_total": 12.0, "text": "VICE BEACH · 7 PM", "shot": "S4 @0.5s"},
+    {"at_s_total": 13.5, "text": "PABLO PACAME · DARK ROOM", "shot": "S4 @2.0s"}
+  ],
+
+  "caption_text_ig": "Esto NO es GTA VI.\n\nEs Pablo PACAME en Vice Beach 2026, todo hecho con IA en menos de 4 horas y por menos de 5 dólares.\n\nNi una sola toma real. Ni un solo vehículo alquilado. Ni un solo viaje a Miami. Solo prompt engineering serio, Higgsfield Soul V2, Seedance 2.0 y el stack creativo que hemos montado dentro de Dark Room.\n\n¿Qué viste primero? ¿La moto? ¿La rubia del balcón? ¿La sonrisa final?\n\nSi quieres el ebook gratis con los 21 prompts exactos de este reel + el roadmap paso a paso para hacerlo tú mismo → comenta \"GTA\" y te lo mando por DM.\n\nDark Room · Pro 24,90€/mes · Lifetime 349€ · darkroomcreative.cloud",
+  "caption_hashtags": "#GTA6 #ViceCity #IAGenerativa #PromptEngineering #Higgsfield #Seedance #DarkRoom #CreatorsLATAM #AIVisualDirector #PacameAgencia",
+  "soul_character_id": "PACAME",
+
+  "validation_checklist_extra": [
+    "Wardrobe coherencia los 4 shots (Hawaiian + tank + linen + aviators)",
+    "Body descriptor LEAN SLIM aplicado todos prompts",
+    "Identity Pablo PACAME match cross-shot 360 sheet",
+    "Lighting continuity (morning → late morning → sunset progression justified)",
+    "Motion arcs declarados S1-S4 (subject + camera + priority)",
+    "Transitions handoff S1→S2 J-cut audio · S2→S3 whip pan · S3→S4 color match",
+    "Audio sync points cada shot mín 1",
+    "NPCs face NOT visible (valet desde detrás · rubia gafas+pelo · contacto off-frame)",
+    "GTA VI in-game cutscene aesthetic (NOT iPhone NOT documentary)",
+    "IP-safe substitutions aplicadas (NO GTA literal · NO Lamborghini · NO Ducati en prompts)",
+    "Caption: 'Comenta GTA y te mando el ebook' = funnel lead magnet activado"
+  ]
+}
