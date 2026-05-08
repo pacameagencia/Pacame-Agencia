@@ -251,6 +251,42 @@ BASE DNA: Photorealistic [AGE] [GENDER] with [HAIR DETAILS], [EYES], wearing [DE
 
 ---
 
+## SECTION J · Knowledge Integration v1 (NUEVO v2.2 · lectura completa CONOCIMIENTO PROMPT IA 6907 lines)
+
+> Doc completo en [`KNOWLEDGE-INTEGRATION-v1.md`](./KNOWLEDGE-INTEGRATION-v1.md) · 50+ hallazgos extraídos línea por línea · 15 reglas duras NUEVAS.
+
+### Reglas duras 1-15 (resumen · ver doc completo para detalle)
+
+1. **R1** — Generate 3 images mínimo per prompt (60-80% success vs 30-40%)
+2. **R2** — Evaluate 4 criteria binario: Prompt Adherence + Technical Quality + Emotional Impact + Usability
+3. **R3** — Higgsfield Soul para AUTHENTIC tier · Nano Banana Pro para CINEMATIC tier (no mezclar)
+4. **R4** — Workflow split: Soul base → Pro substitution → Soul-quality animation
+5. **R5** — Last frame = motion fluidity garantizada · generar last frame para CADA shot video premium
+6. **R6** — Video prompt formula simple: `[Subject] + [Action] + [Tone] + [Dialogue]` + "with subtle human mannerisms and natural timing"
+7. **R7** — Texture stack obligatorio paste al final de cada prompt CINEMATIC
+8. **R8** — Skin Realism 6-step prompt para close-ups Pablo
+9. **R9** — Object Texture 4-step prompt para products/vehicles prominent
+10. **R10** — Object Consistency Sheet OBLIGATORIO si vehículo/producto cross-shot (sport car, motorbike, yacht)
+11. **R11** — DoP Mindset structure: What MUST be correct → What → How → Where
+12. **R12** — "While keeping everything else identical" phrase MAGIC para edits surgical
+13. **R13** — Image numbering "first/second uploaded picture" para Level 3 substitutions
+14. **R14** — UGC outperforms 3-5x · stories diarias + reels tendencia = AUTHENTIC tier siempre
+15. **R15** — Don't over-refine: 5+ edits → regenerate from scratch
+
+### Hallazgos críticos NUEVOS para concept 005 v3 (Phase 3.5 + 4)
+
+**Phase 3.5 NUEVA (last frames + object sheets · 14 cr)**:
+- Generar 4 last frames Nano Banana Pro 2K (descripción end state cada shot · 8 cr)
+- Generar 3 Object Sheets (sport car + bike + yacht · 6 cr) para garantizar idéntico cross-shot
+- TOTAL: 14 cr (1.5% del balance)
+
+**Phase 4 ACTUALIZADA**:
+- `--medias start_image` (hero frame) + `--end-image` (last frame de Phase 3.5)
+- Esto fuerza al video model a interpolar smoothly entre los 2 estados → motion fluidity GARANTIZADA
+- Sigue siendo 4 × cinematic_studio_3_0 25 cr = 100 cr · pero con calidad SOTA
+
+---
+
 ## SECTION I · Frame-to-Frame Continuity (NUEVO v2.1 · feedback Pablo 2026-05-08)
 
 > **Pillar 4 NUEVO** del SOP · garantiza sentido narrativo + movimientos fluidos cross-shot · doc completo en [`NARRATIVE-ARC-protocol-v1.md`](./NARRATIVE-ARC-protocol-v1.md).
