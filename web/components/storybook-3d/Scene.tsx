@@ -7,35 +7,51 @@ import * as THREE from "three";
 import { useDeviceTier } from "@/lib/3d/use-device-tier";
 import { useReducedMotion } from "@/lib/3d/use-reduced-motion";
 import { useScrollProgress } from "@/lib/3d/use-scroll-progress";
-import { matCeramic, matPaperGround, BRAND, disposeAllBrandMaterials } from "@/lib/3d/materials";
+import {
+  matPaperGround,
+  BRAND,
+  disposeAllBrandMaterials,
+} from "@/lib/3d/materials";
 import {
   CAMERA_KEYFRAMES,
   interpolateCamera,
   progressToKeyframes,
 } from "@/lib/3d/camera-paths";
+import { useIslandState } from "@/lib/storybook/island-state";
+import { ISLAND_ORDER, type IslandSlug } from "@/lib/storybook/content";
+
+import IslandWeb from "./Islands/IslandWeb";
+import IslandSEO from "./Islands/IslandSEO";
+import IslandRedes from "./Islands/IslandRedes";
+import IslandAds from "./Islands/IslandAds";
+import IslandBranding from "./Islands/IslandBranding";
 
 /**
- * Scene Storybook 3D — Fase 1.
+ * Scene Storybook 3D — Fase 2.
  *
- * Esta primera versión es el "hello world" del paisaje:
- *   - Canvas R3F con frameloop="demand" (no quema batería en idle).
- *   - Cubo terracota orbital en el centro (placeholder de las 5 islas que vendrán en Fase 2).
- *   - Ground paper plano.
- *   - Iluminación canónica: ambient cálida 0.4 + directional 35° SE.
- *   - LOD por device tier (pixelRatio dinámico, sombras condicionales).
- *   - Cámara scroll-driven entre 6 keyframes (Lenis fuente única).
+ * Diferencias vs Fase 1:
+ *  - Las 5 islas reales sustituyen al cubo placeholder.
+ *  - Conectado a IslandStateProvider (emite progress, recibe override).
+ *  - Click en isla → setActiveIslandManually + scroll programático.
+ *  - Hover state → IslandBase aplica scale 1.04 + lift Y.
+ *  - Cámara respeta override hasta que el usuario hace scroll real.
  *
- * En Fase 2 se reemplaza el cubo por las 5 islas + HUD overlay + CTA.
+ * Sigue cumpliendo:
+ *  - frameloop="demand" (no quema batería en idle).
+ *  - LOD por device tier (pixelRatio dinámico, sombras condicionales).
+ *  - Lenis fuente única de progress.
  */
 
 interface SceneProps {
-  /** Si `true`, oculta el Canvas y deja al fallback HTML. Para reduced-motion. */
+  /** Si `true`, oculta el Canvas y deja al fallback HTML. */
   hidden?: boolean;
 }
 
 export default function Scene({ hidden = false }: SceneProps) {
   const tier = useDeviceTier();
   const reducedMotion = useReducedMotion();
+  const scrollProgress = useScrollProgress();
+  const islandState = useIslandState();
 
   // Cleanup global de materiales al unmount
   useEffect(() => {
@@ -44,17 +60,21 @@ export default function Scene({ hidden = false }: SceneProps) {
     };
   }, []);
 
-  if (hidden || reducedMotion) return null;
-
   const dpr: [number, number] = useMemo(() => {
     if (tier === "low") return [1, 1];
     if (tier === "mid") return [1, 1.5];
     return [1, 2];
   }, [tier]);
 
+  // Sync scroll progress → provider (throttled internamente)
+  useEffect(() => {
+    islandState.setProgress(scrollProgress);
+  }, [scrollProgress, islandState]);
+
+  if (hidden || reducedMotion) return null;
+
   return (
     <Canvas
-      // Demand: solo redibuja cuando hay scroll/hover, ahorra batería
       frameloop="demand"
       dpr={dpr}
       camera={{
@@ -67,48 +87,89 @@ export default function Scene({ hidden = false }: SceneProps) {
         antialias: tier !== "low",
         powerPreference: tier === "high" ? "high-performance" : "default",
       }}
+      shadows={tier !== "low"}
       style={{ width: "100%", height: "100%", display: "block" }}
-      // Color de fondo paper para evitar flash
       onCreated={({ gl }) => {
         gl.setClearColor(new THREE.Color(BRAND.paper));
       }}
     >
-      <SceneContent tier={tier} />
+      <SceneContent
+        tier={tier}
+        scrollProgress={scrollProgress}
+        activeIsland={islandState.activeIsland}
+        overrideIsland={islandState.overrideIsland}
+        onIslandClick={(slug) => {
+          const targetProgress = islandState.setActiveIslandManually(slug);
+          if (typeof window !== "undefined") {
+            const max =
+              document.documentElement.scrollHeight - window.innerHeight;
+            window.scrollTo({
+              top: max * targetProgress,
+              behavior: "smooth",
+            });
+          }
+        }}
+      />
     </Canvas>
   );
 }
 
 interface SceneContentProps {
   tier: "low" | "mid" | "high";
+  scrollProgress: number;
+  activeIsland: IslandSlug | null;
+  overrideIsland: IslandSlug | null;
+  onIslandClick: (slug: IslandSlug) => void;
 }
 
-function SceneContent({ tier }: SceneContentProps) {
-  const progress = useScrollProgress();
+function SceneContent({
+  tier,
+  scrollProgress,
+  activeIsland,
+  overrideIsland,
+  onIslandClick,
+}: SceneContentProps) {
   const lookAtRef = useRef(new THREE.Vector3(0, 0, 0));
+  const overrideProgressRef = useRef<number | null>(null);
+  const overrideTransitionRef = useRef(0);
 
-  // Cubo orbital placeholder — en Fase 2 esto se reemplaza por las 5 islas
-  const cubeRef = useRef<THREE.Mesh>(null);
+  // Track override changes (click/keyboard activate)
+  useEffect(() => {
+    if (overrideIsland) {
+      const idx = ISLAND_ORDER.indexOf(overrideIsland);
+      const targetProgress = (idx + 1) / ISLAND_ORDER.length;
+      overrideProgressRef.current = targetProgress;
+      overrideTransitionRef.current = 0;
+    } else {
+      overrideProgressRef.current = null;
+    }
+  }, [overrideIsland]);
 
   useFrame((state, delta) => {
-    // Rotación lenta del cubo
-    if (cubeRef.current) {
-      cubeRef.current.rotation.y += delta * 0.4;
-      cubeRef.current.rotation.x += delta * 0.15;
+    let effectiveProgress: number;
+    if (overrideProgressRef.current !== null) {
+      overrideTransitionRef.current = Math.min(
+        1,
+        overrideTransitionRef.current + delta * 1.2,
+      );
+      const t = overrideTransitionRef.current;
+      const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      effectiveProgress =
+        scrollProgress + (overrideProgressRef.current - scrollProgress) * ease;
+    } else {
+      effectiveProgress = scrollProgress;
     }
 
-    // Cámara scroll-driven
-    const { from, to, localT } = progressToKeyframes(progress);
+    const { from, to, localT } = progressToKeyframes(effectiveProgress);
     if (state.camera instanceof THREE.PerspectiveCamera) {
       interpolateCamera(state.camera, from, to, localT, lookAtRef.current);
     }
 
-    // Demand mode: forzar re-render cada frame mientras hay scroll
     state.invalidate();
   });
 
   return (
     <>
-      {/* Iluminación canónica — ambient cálida + directional 35° SE */}
       <ambientLight color={0xffe8c8} intensity={0.4} />
       <directionalLight
         color={0xffffff}
@@ -117,9 +178,13 @@ function SceneContent({ tier }: SceneContentProps) {
         castShadow={tier !== "low"}
         shadow-mapSize-width={tier === "high" ? 1024 : 512}
         shadow-mapSize-height={tier === "high" ? 1024 : 512}
+        shadow-camera-far={20}
+        shadow-camera-left={-10}
+        shadow-camera-right={10}
+        shadow-camera-top={10}
+        shadow-camera-bottom={-10}
       />
 
-      {/* Ground paper plano 30×30 */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, -0.5, 0]}
@@ -129,16 +194,31 @@ function SceneContent({ tier }: SceneContentProps) {
         <planeGeometry args={[30, 30, 1, 1]} />
       </mesh>
 
-      {/* Cubo terracota orbital — placeholder Fase 1 */}
-      <mesh
-        ref={cubeRef}
-        position={[0, 0.5, 0]}
-        castShadow={tier !== "low"}
-        receiveShadow={tier !== "low"}
-        material={matCeramic.terracotta}
-      >
-        <boxGeometry args={[1.2, 1.2, 1.2]} />
-      </mesh>
+      <IslandWeb
+        active={activeIsland === "web"}
+        tier={tier}
+        onClick={() => onIslandClick("web")}
+      />
+      <IslandSEO
+        active={activeIsland === "seo"}
+        tier={tier}
+        onClick={() => onIslandClick("seo")}
+      />
+      <IslandRedes
+        active={activeIsland === "redes"}
+        tier={tier}
+        onClick={() => onIslandClick("redes")}
+      />
+      <IslandAds
+        active={activeIsland === "ads"}
+        tier={tier}
+        onClick={() => onIslandClick("ads")}
+      />
+      <IslandBranding
+        active={activeIsland === "branding"}
+        tier={tier}
+        onClick={() => onIslandClick("branding")}
+      />
     </>
   );
 }
