@@ -251,6 +251,45 @@ BASE DNA: Photorealistic [AGE] [GENDER] with [HAIR DETAILS], [EYES], wearing [DE
 
 ---
 
+## SECTION I · Frame-to-Frame Continuity (NUEVO v2.1 · feedback Pablo 2026-05-08)
+
+> **Pillar 4 NUEVO** del SOP · garantiza sentido narrativo + movimientos fluidos cross-shot · doc completo en [`NARRATIVE-ARC-protocol-v1.md`](./NARRATIVE-ARC-protocol-v1.md).
+
+### Reglas duras
+
+1. **Wardrobe continuity** — el personaje LLEVA EL MISMO WARDROBE en TODOS los shots de la pieza, salvo que el concept declare wardrobe-progression con justificación temporal explícita.
+2. **Motion arcs declarados** — cada shot del concept JSON declara `subject_motion` + `camera_motion` + `motion_priority` (`subject` / `camera` / `both`) con verbos concretos + duración + dirección.
+3. **Transitions handoff** — cada cut entre shots declara `type` + `ending_frame` + `opening_frame` + `audio_handoff`. Tipos válidos: `match_cut`, `j_cut_audio`, `whip_pan_continuation`, `push_in_to_closeup`, `match_action`, `color_match`, `symbolic_match`.
+4. **Audio sync points** — cada shot declara mínimo 1 punto de sincronía (engine rev / tire screech / music drop / ambient).
+5. **Lighting continuity** — misma key light direction + color temperature cross-shot, salvo justificación temporal (mañana → atardecer).
+
+### Anti-patrones bloqueantes
+
+- ❌ Cambio wardrobe shot-a-shot sin justificación → look "stitched stock photo collage"
+- ❌ "Pablo poses confidently" sin verbo concreto → motion drift
+- ❌ "Cinematic camera angle" sin nombrar el move + speed → ambigüedad
+- ❌ Hard cut sin handoff (a menos que el género lo justifique como jump-scare)
+- ❌ Identity wobbles cross-cut (different face) → break inmersión
+
+### Validación visual-reviewer (checks 27-33 NUEVOS)
+
+- Check 27: Wardrobe continuity coherente en todos los shots
+- Check 28: Subject identity cross-shot match 360 sheet
+- Check 29: Lighting continuity (key + temperature)
+- Check 30: Motion arcs declarados cada shot
+- Check 31: Transitions handoff declaradas cada cut
+- Check 32: Audio sync points mínimo 1 por shot
+- Check 33: Narrative arc coherente (hook → build → climax → reveal)
+
+### Workflow operativo aplicado (extiende §E Workflow 4-fase)
+
+- **Antes de Fase 2** (base scenes): redactar `sequence` field del concept JSON con narrative arc + 4 pilares (10 min planning)
+- **En Fase 3** (substitution): inyectar prompt `WARDROBE COHERENCIA con S[N-1]: SAME [wardrobe descriptors]` en cada substitution
+- **Antes de Fase 4** (video premium): validar motion arcs + transitions + audio sync listos · si gap → completar antes de quemar créditos video
+- **Three-Pass Review**: añade los 7 checks NUEVOS (27-33) a Pass 2 Style
+
+---
+
 ## SECTION H · Maintenance
 
 (igual que v1)
@@ -260,4 +299,4 @@ BASE DNA: Photorealistic [AGE] [GENDER] with [HAIR DETAILS], [EYES], wearing [DE
 
 ---
 
-**Inyección obligatoria**: Este Mega Prompt v2 + `STYLE-ANCHOR-v2.md` + `CONSISTENCY-CHECKLIST-v1.md` deben cargarse al inicio de cada conversación creativa via `studio-config/session-initializer.mjs`. Sin los tres = NO render premium.
+**Inyección obligatoria**: Este Mega Prompt v2 + `STYLE-ANCHOR-v2.md` + `CONSISTENCY-CHECKLIST-v1.md` + `NARRATIVE-ARC-protocol-v1.md` deben cargarse al inicio de cada conversación creativa via `studio-config/session-initializer.mjs`. Sin los cuatro = NO render premium multi-shot.
