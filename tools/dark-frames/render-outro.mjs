@@ -23,16 +23,31 @@ import { execSync } from "node:child_process";
 import sharp from "sharp";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const FORCE = process.argv.includes("--force");
+const args = process.argv.slice(2);
+const FORCE = args.includes("--force");
 
-const outroPath = path.join(__dirname, "assets", "outro-darkroom-2s.mp4");
-const tmpDir = path.join(__dirname, "assets", ".tmp-outro");
+// Variant override: --variant=v2 produces outro-darkroom-2s-v2.mp4
+// Title text override: --title="..." (default "DARK ROOM")
+// Subline override: --subline="..." (default "darkroomcreative.cloud · 24,90€/mes")
+const VARIANT = (args.find((a) => a.startsWith("--variant=")) || "").split("=")[1] || "";
+const TITLE_OVERRIDE = (args.find((a) => a.startsWith("--title=")) || "").split("=")[1] || "DARK ROOM";
+const SUBLINE_OVERRIDE =
+  (args.find((a) => a.startsWith("--subline=")) || "").split("=")[1] ||
+  "darkroomcreative.cloud  ·  24,90€/mes";
+
+const outroFilename = VARIANT ? `outro-darkroom-2s-${VARIANT}.mp4` : "outro-darkroom-2s.mp4";
+const outroPath = path.join(__dirname, "assets", outroFilename);
+const tmpDir = path.join(__dirname, "assets", `.tmp-outro${VARIANT ? "-" + VARIANT : ""}`);
 
 if (fs.existsSync(outroPath) && !FORCE) {
   console.log(`✅ outro ya existe en ${outroPath}`);
   console.log("   Para regenerar: añade --force");
   process.exit(0);
 }
+
+console.log(`  → variant: ${VARIANT || "default"}`);
+console.log(`  → title:   "${TITLE_OVERRIDE}"`);
+console.log(`  → subline: "${SUBLINE_OVERRIDE}"`);
 
 fs.mkdirSync(tmpDir, { recursive: true });
 fs.mkdirSync(path.dirname(outroPath), { recursive: true });
@@ -53,6 +68,17 @@ if (!fs.existsSync(fontAnton)) {
   process.exit(1);
 }
 
+// Auto-fit title font size: si el texto override es largo, reducir size hasta caber.
+// SAFE_W del outro = W - 160 (80px margen cada lado).
+const titleSafeW = W - 160;
+let titleFontSize = 200;
+// Heurística simple: cada char Anton condensed all-caps ≈ 0.55 × fontSize. Bajar size hasta caber.
+const charWidthFactor = 0.55;
+const titleApproxWidth = (text, size) => text.length * size * charWidthFactor;
+while (titleApproxWidth(TITLE_OVERRIDE, titleFontSize) > titleSafeW && titleFontSize > 60) {
+  titleFontSize -= 8;
+}
+
 const svgFrame = `
 <svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -62,12 +88,12 @@ const svgFrame = `
     </style>
   </defs>
   <rect x="0" y="0" width="${W}" height="${H}" fill="#0A0A0A"/>
-  <text x="${W / 2}" y="${H / 2 - 20}" font-family="Anton" font-size="200" font-weight="400"
+  <text x="${W / 2}" y="${H / 2 - 20}" font-family="Anton" font-size="${titleFontSize}" font-weight="400"
         fill="#CFFF00" text-anchor="middle" dominant-baseline="middle"
-        letter-spacing="-6">DARK ROOM</text>
+        letter-spacing="-6">${TITLE_OVERRIDE}</text>
   <text x="${W / 2}" y="${H / 2 + 100}" font-family="JetBrains Mono" font-size="32"
         fill="#F2F2F2" text-anchor="middle" dominant-baseline="middle"
-        letter-spacing="3">darkroomcreative.cloud  ·  24,90€/mes</text>
+        letter-spacing="3">${SUBLINE_OVERRIDE}</text>
 </svg>
 `;
 
