@@ -1,12 +1,19 @@
 {
   "concept_id": "dark-frames-005-pablo-gta-vi",
-  "title": "Pablo en GTA VI · Vice City sunset · trailer falso 18s",
+  "title": "Pablo Vice City sunset · trailer falso 18s",
   "series_hashtag": "#DarkFrames",
-  "version": 2,
-  "schema_version": 2,
+  "version": 3,
+  "schema_version": 3,
   "created_at": "2026-05-08",
+  "framework_applied": [
+    "MEGA-PROMPT-v2.md",
+    "STYLE-ANCHOR-v2.md (variant: vice_city_sunset_v2)",
+    "CONSISTENCY-CHECKLIST-v1.md (Pass 1 + 2 + 3 + NEW 27-33)",
+    "NARRATIVE-ARC-protocol-v1.md (4 pilares · wardrobe + motion + transitions + audio)"
+  ],
 
-  "tier": "top",
+  "tier": "CINEMATIC",
+  "style_anchor_variant": "vice_city_sunset_v2",
   "duration_target_s": 18,
   "aspect_ratio": "9:16",
   "resolution": "1080x1920",
@@ -14,138 +21,191 @@
 
   "moodboard": "moodboards/dark-frames-005-pablo-gta-vi.md",
 
-  "logline": "Trailer falso 18s estilo Rockstar Games GTA VI con Pablo Soul Character como protagonista en Vice City sunset. Acto 1 (0-5s) descubrimiento Pablo arriving beach con Lambo rosa humeante. Acto 2 (5-12s) acción · drift motorbike + persecución policial. Acto 3 (12-16s) climax cool · Pablo en yate sunset. Outro (16-18s) 'TODO CREADO CON DARKROOMCREATIVE.CLOUD'. La duda '¿es leak GTA VI o IA?' es el motor viral. Funnel: comments piden 'cómo lo hiciste' → DM auto envía ebook 'Cómo creé este video con IA' (info parcial) → CTA Dark Room 24,90€/mes.",
+  "logline": "Trailer falso 18s estilo Rockstar Games trailer reveal con Pablo Soul Character como protagonista en Vice City sunset. Acto 1 (0-5s) descubrimiento Pablo arriving beach con pastel pink Italian sport car hood open. Acto 2 (5-9s) acción · drift sport bike rolling burnout cyan smoke. Acto 3 (9-14s) climax cool · Pablo en yate sunset bow contemplating. Final beat (14-16s) close-up identity reveal con smile. Outro (16-18s) 'TODO HECHO CON · darkroomcreative.cloud'. La duda '¿es leak GTA VI o IA?' es el motor viral. Funnel: comments piden 'cómo lo hiciste' → DM auto envía ebook 'Cómo creé este video con IA' → CTA Dark Room 24,90€/mes.",
 
   "research": {
     "references": [
-      "Miami Vice 2006 (dir. Michael Mann · DP Dion Beebe · Sony F950 4K HD · pioneered digital Miami beach aesthetic · documented American Cinematographer Aug 2006)",
-      "Trailer GTA VI dic 2023 oficial (Rockstar Games · 91M views 24h · Tom Petty 'Love Is a Long Road' soundtrack · Vice City revival Florida-weird)",
-      "Scarface 1983 (dir. Brian De Palma · DP John A. Alonzo · Miami sunset pastels)",
+      "Miami Vice 2006 (dir. Michael Mann · DP Dion Beebe · Sony F950 4K HD)",
+      "Trailer GTA VI dic 2023 oficial (Rockstar Games · 91M views 24h · benchmark engagement)",
       "Inherent Vice 2014 (dir. Paul Thomas Anderson · DP Robert Elswit · 70s Florida-warm haze)",
-      "Drive 2011 (dir. Refn · DP Newton Thomas Sigel · neon synthwave drive references)",
-      "Tenet 2020 (dir. Nolan · DP Hoyte van Hoytema · IMAX 65mm sunset Miami-style sequences)"
+      "Drive 2011 (dir. Refn · DP Newton Thomas Sigel · neon synthwave)",
+      "Tenet 2020 (dir. Nolan · DP Hoyte van Hoytema · IMAX 65mm sunset Miami sequences)"
     ],
     "dp_references": [
-      "Dion Beebe (Miami Vice 2006 · Sony F950 4K HD digital · Sony HDC-F950 + Cooke S4 Mini lens · documented American Cinematographer Aug 2006 · pioneered digital Miami beach cinema)",
-      "Robert Elswit (Inherent Vice 2014 · Panavision Primo 35mm anamorphic 2x squeeze · warm Florida 70s grain · documented ASC magazine 2015)",
-      "Hoyte van Hoytema (Tenet 2020 · IMAX 65mm Panavision Sphero anamorphic · sunset golden hour signature · ASC documented)"
+      "Dion Beebe (Miami Vice 2006) — frames 1+2 lighting reference",
+      "Newton Thomas Sigel (Drive 2011) — frame 2 neon synthwave hybrid reference",
+      "Hoyte van Hoytema (Tenet 2020) — frame 3 yacht magic hour reference",
+      "Robert Elswit (Inherent Vice 2014) — frame 4 close-up warm Florida reference"
     ],
     "lens_specs": [
-      "Hero shots Pablo: Panavision Primo 35mm anamorphic 2x squeeze (Beebe Miami Vice signature · oval bokeh · slight horizontal lens flares)",
-      "Aperture: f/2.0-f/2.8 sunset golden hour ISO equivalent 200-400 (low ISO clean digital · Beebe documented)",
-      "Wide shot Lambo arrival: 24mm anamorphic Hawk V-Lite (Tenet sunset Miami sequences reference)",
-      "Action shots motorbike: 50mm Cooke S4/i prime spherical (NOT anamorphic for action handheld feel)",
-      "Sunset chase shots: 85mm Panavision Primo with practical lens flares (deliberate · Mann signature)",
-      "Subtle film grain emulation 35mm Kodak Portra 400 push +1 (digital + grain hybrid · Elswit method)"
+      "Hero shots Pablo: Panavision Primo 35mm anamorphic 2x squeeze (Beebe Miami Vice signature · oval bokeh · horizontal lens flares)",
+      "Aperture: f/2.0-f/2.8 sunset golden hour ISO equivalent 200-400",
+      "Subtle film grain emulation 35mm Kodak Portra 400 push +1 hybrid digital"
     ],
-    "lut_reference": "Vice City sunset pastel · saturation +18% on pink and teal channels selectively (Miami Vice 2006 Beebe LUT recipe documented) · highlights blown soft warm (sunlight at golden hour 5pm Miami latitude 25°) · blacks lifted +8 IRE (preserve shadow detail beach palm trees) · subsurface scattering on neon pastel signs · warm-cool split between sun-side (pink/orange) and shadow-side (teal/cyan) · GTA VI trailer 2023 LUT analysis (Rockstar publishing · grain analyzer · DP YouTube reverse-engineer) · NO oversaturated MTV-80s · subtle photographic Miami Vice 2006 film-grain preservation",
-    "pacing_template": "Trailer 3-act 18s · Act 1 hook 0-5s (Pablo arrival 1 shot continuous wide-medium) · Act 2 build 5-12s (3 quick action cuts 2-3s each) · Act 3 climax 12-16s (1 cool hero shot Pablo + Lambo or yate) · Outro 16-18s Dark Room brand · pacing = Rockstar GTA VI trailer 2023 reference (3-act build 91M views 24h benchmark)",
-    "audio_references": [
-      "Synthwave 80s pastel · Phil Collins 'In the Air Tonight' (1981) tonal reference for Miami Vice nostalgic pull",
-      "Tom Petty 'Love Is a Long Road' (1989) · GTA VI trailer 2023 song · NOT licensed but tonal reference Suno",
-      "Jan Hammer 'Crockett's Theme' (1984) · Miami Vice TV series · synthwave pastel signature",
-      "Diegetic dominant: ocean waves continuous · palm leaves rustling sea breeze · distant Lambo V12 idling rumble · seagulls",
-      "LUFS target -16 cinema · subwoofer engine purr 60Hz under everything (Lambo V12 idle) · NO heavy sub-grave 40Hz of dark cyberpunk · más warm cálido"
-    ],
+    "lut_reference": "Vice City sunset pastel · saturation +18% on pink and teal channels selectively · highlights blown soft warm · blacks lifted +8 IRE · subsurface scattering on neon pastel signs · warm-cool split sun-side pink-orange / shadow-side teal-cyan · NO oversaturated MTV-80s",
     "research_sources": [
-      "American Cinematographer Aug 2006 · Dion Beebe Miami Vice digital pioneer feature",
-      "American Cinematographer 2015 · Robert Elswit Inherent Vice anamorphic 70s aesthetic",
+      "American Cinematographer Aug 2006 · Beebe Miami Vice digital pioneer feature",
+      "American Cinematographer 2015 · Elswit Inherent Vice anamorphic feature",
       "ASC Magazine 2020 · Hoyte van Hoytema Tenet IMAX feature",
-      "Rockstar Games official YouTube · GTA VI trailer 1 December 2023 (91M views 24h record)",
-      "Cinematography Mailbag YouTube · GTA VI trailer DP analysis 2024",
-      "GTAFanatic + GTABase technical wikis (NO oficial Rockstar) · Vice City world building references"
+      "CONOCIMIENTO PROMPT IA.txt 2026 (Pablo personal · 6908 lines · 21 hallazgos including 360 Consistency Sheet master prompt)"
     ]
   },
 
-  "shots": [
-    {
-      "shot": 1,
-      "duration_s": 5,
-      "kind": "video",
-      "tier": "top",
-      "model_override": "soul_cinema_studio_3_0",
-      "structure_role": "ACT 1 hook · Pablo arrival Vice City beach · Lambo rosa humeante · sunset golden hour · 5s continuous medium-wide · MAX wow factor",
-      "prompt": "Cinematic film still vertical 9:16 native gameplay framing GTA VI trailer style, the trained subject Soul Character PACAME standing on a Vice City Florida beach boulevard at sunset golden hour 5pm Miami latitude, palm trees swaying with sea breeze, a pastel pink Lamborghini Aventador parked next to him with engine smoking heat shimmer, pink and teal art deco hotel facades in soft background bokeh, neon arcade signs in pastel pink and teal glowing softly in approaching dusk, retro 80s Miami Vice synthwave aesthetic mixed with hyperreal Rockstar RAGE engine GTA VI 2026 visual fidelity, the subject wears an open Hawaiian shirt over white tank top sunglasses on his head casual beach vibe matching GTA Vice City protagonist character archetype, golden hour rim light from camera-right warm 5000K key + cool 7500K teal fill from approaching dusk left side, soft ambient bounce from white sand and pastel surfaces, anamorphic 2x squeeze oval bokeh circles signature Beebe Miami Vice 2006, Panavision Primo 35mm anamorphic lens equivalent f/2.8 ISO 200, low-angle three-quarter shot subject framed left two thirds Lambo midground lower right hotel skyline upper right negative space, deep depth of field with sharp foreground subject and slight gauss falloff to hotels background, slight horizontal lens flare from sun hitting Lambo chrome (deliberate Beebe signature), warm-cool split Mann signature sun-side pink-orange shadow-side teal-cyan, hyperrealistic but slightly stylized Rockstar promotional screenshot aesthetic, 4K cinematic grading subtle film grain emulation 35mm Kodak Portra 400 push +1 hybrid digital, photorealistic 8K, vertical 9:16 native gameplay framing NOT letterboxed, no other people in frame, no visible competitor brand logos, no UI overlay, no glamour photography, no studio lighting, mood late afternoon Vice City vibes swagger summer 1986 nostalgia the moment before chaos starts",
-      "negative_prompt": "low quality, generic stock photo, watermark, anime 2D, daytime overcast, cleaned plastic CGI look, anamorphic letterbox black bars, wide shot 3rd person omniscient, smiling, glamour pose, multiple people, readable text on signs, readable hotel logos, blue sky midday, modern non-Vice-City context, oversaturated MTV-80s neon",
-      "validation_must_have": [
-        "vertical 9:16 nativo NO letterboxed (gameplay feel)",
-        "Soul Character PACAME identidad Pablo reconocible",
-        "Lambo pastel pink (NO red NO yellow)",
-        "sunset golden hour warm-cool split visible",
-        "anamorphic oval bokeh visible en hotel background",
-        "Hawaiian shirt + tank top blanco + sunglasses on head",
-        "no faces visible besides Pablo",
-        "no readable text/logos en hoteles ni señales"
-      ]
-    },
-    {
-      "shot": 2,
-      "duration_s": 4,
-      "kind": "video",
-      "tier": "top",
-      "model_override": "seedance_2_0",
-      "structure_role": "ACT 2 build · Pablo riding motorbike at speed Vice City boulevard · drift sunset shots · 4s kinetic action",
-      "prompt": "Cinematic action shot vertical 9:16 native gameplay framing GTA VI trailer style, the trained subject Soul Character PACAME riding a sport motorbike Ducati Panigale style at speed along Vice City beach boulevard at sunset golden hour, motion blur on palm trees rushing past peripheral vision left and right, the bike leans into a drift turn rear wheel spinning smoke pastel teal and pink, distant pursuit lights blue and red flickering far behind in motion blur, Hawaiian shirt billowing in wind sunglasses dropped over eyes intense focused expression looking forward not at camera, pastel pink and teal art deco hotels and palm trees rushing past, Cooke S4/i 50mm prime spherical lens kinetic action handheld feel f/2.0, sunset golden hour 5000K warm key from camera-right + cool 7500K teal fill from cooler shadow side, slight motion blur per-object 8ms gameplay-style, hyperrealistic Rockstar RAGE engine GTA VI 2026 cinematic quality post-procesa Kodak Portra 400 grain hybrid digital, vertical 9:16 native gameplay framing NOT letterboxed, no other people clearly visible only blurred peripherals, no visible brand logos on bike or buildings, no readable text on hotels, mood high-octane chase action Florida sunset escape",
-      "negative_prompt": "low quality, watermark, daytime overcast, slow motion, anime 2D, cleaned plastic CGI, letterbox black bars, smiling, glamour pose, frontal direct-to-camera, looking at camera, multiple riders visible, readable text, readable logos on bike, sunny midday, modern non-Vice-City context",
-      "validation_must_have": [
-        "vertical 9:16 nativo gameplay feel",
-        "Soul Character PACAME identidad reconocible",
-        "motion blur kinetic visible en palmeras y hoteles",
-        "drift turn smoke pastel pink/teal visible",
-        "sunglasses puestas (no en cabeza)",
-        "Hawaiian shirt billowing wind",
-        "distant pursuit lights blue/red flickering",
-        "no faces clearly visible (motion blur peripheral)"
-      ]
-    },
-    {
-      "shot": 3,
-      "duration_s": 5,
-      "kind": "video",
-      "tier": "top",
-      "model_override": "soul_cinema_studio_3_0",
-      "structure_role": "ACT 3 climax cool · Pablo standing on luxury yate at Vice City marina sunset · hero shot · 5s contemplative",
-      "prompt": "Cinematic hero shot vertical 9:16 native gameplay framing GTA VI trailer style, the trained subject Soul Character PACAME standing on the bow of a luxury white motor yacht at Vice City marina at peak sunset golden hour 6pm Miami sky burning orange-pink-purple gradient, the yacht hull gleaming pastel pink reflections on the water, distant pastel city skyline art deco hotels in soft bokeh, the subject wears the same Hawaiian shirt now slightly unbuttoned over white tank top sunglasses removed in hand looking out at horizon contemplative not at camera, ocean waves gentle lapping the hull subtle reflective light dancing on his face warm rim light, palm trees on far shore in silhouette, Hoyte van Hoytema Tenet IMAX sunset Miami signature reference, Panavision Primo 85mm anamorphic 2x squeeze long lens compressed perspective f/2.0 deliberate horizontal lens flare from setting sun hitting water on camera-right, warm 4500K key from sun + cool 7500K shadow side fill, soft ambient bounce from water and white yacht hull, anamorphic oval bokeh on city skyline background, slight gimbal-stabilized handheld micro-movement 0.5° drift not static, low-angle medium framing subject right two thirds horizon and city skyline left third negative space sky upper third, hyperrealistic Rockstar RAGE engine GTA VI 2026 cinematic quality with subtle 35mm Kodak Portra 400 push +1 grain emulation hybrid digital, vertical 9:16 native gameplay framing NOT letterboxed, no other people visible, no visible brand logos on yacht or city, no readable text, mood contemplative cool swagger summer 1986 nostalgia the moment of arrival the king of Vice City",
-      "negative_prompt": "low quality, watermark, daytime cloudy, generic stock, anime 2D, cleaned plastic CGI, letterbox black bars, frontal smile glamour pose, looking at camera, multiple people on yacht, readable text on yacht, readable city logos, midday sun overhead, modern non-Vice-City context, party scene, alcohol visible",
-      "validation_must_have": [
-        "vertical 9:16 nativo gameplay feel",
-        "Soul Character PACAME identidad reconocible",
-        "yate pastel pink reflections on water",
-        "sunset orange-pink-purple gradient sky",
-        "anamorphic oval bokeh on city background",
-        "Hawaiian shirt slightly unbuttoned tank top visible",
-        "sunglasses en mano NOT cabeza ni puestos",
-        "looking at horizon NOT camera",
-        "distant city skyline visible bokeh",
-        "no faces visible besides Pablo"
-      ]
-    }
-  ],
+  "character_anchor": {
+    "soul_character_id": "PACAME",
+    "soul_id_higgsfield": "55ac4b3b-51f7-497a-8150-87563a969915",
+    "consistency_sheet": "tools/dark-frames/character-bibles/pablo/pablo-360-sheet-v1.png",
+    "media_id_360_sheet_uploaded": "6b6fed6a-c2ae-40c5-ac66-e027736f5f79"
+  },
 
-  "audio": {
-    "voice_over": null,
-    "music": {
-      "style": "Synthwave 80s Miami Vice pastel · Jan Hammer Crockett's Theme tonal reference + Phil Collins In the Air Tonight (1981) atmospheric pull · NOT licensed Tom Petty Love Is a Long Road tonal reference only · Suno cinematic synthwave",
-      "duration_s": 18,
-      "lufs_target": -16,
-      "suno_keywords": "Miami Vice synthwave 80s pastel Jan Hammer Crockett Theme cinematic Phil Collins In the Air Tonight atmospheric Florida sunset Lamborghini hero theme nostalgic warm not aggressive build-to-climax 70bpm-80bpm pad-driven NO heavy sub-grave",
-      "key": "F# minor",
-      "tempo_bpm": "build 70bpm Act 1 → 80bpm Act 2 kinetic → 60bpm Act 3 contemplative · climax swell at 12s yacht reveal"
+  "sequence": {
+    "narrative_arc": "Single-day Vice City lifestyle arc · Pablo arrives in pastel pink sport car at sunset → starts moto for sunset ride drift → contemplates from luxury yacht bow → close-up identity reveal with subtle smile · all shot during same magic hour 5-6pm Miami latitude · single wardrobe entire piece",
+    "wardrobe_continuity": {
+      "single_wardrobe": true,
+      "description": "Pastel cream linen Hawaiian shirt unbuttoned over white tank top, light beige loose linen pants (rolled or fitted ankle), white leather sneakers, gold cuban-link chain visible on neck, premium aviator sunglasses worn pushed up on the forehead",
+      "applied_in_all_4_shots": true,
+      "wardrobe_change_justification": null
     },
-    "sfx": [
-      { "at_s": 0, "name": "ocean_waves_loop", "description": "ocean waves gentle continuous beach · loop · pan stereo subtle" },
-      { "at_s": 0, "name": "palm_leaves_breeze", "description": "palm leaves rustling sea breeze · pan left/right alternating subtle" },
-      { "at_s": 0, "name": "lambo_v12_idle", "description": "Lamborghini V12 engine purr 60Hz subtle under everything · pan center" },
-      { "at_s": 1, "name": "seagull_distant", "description": "seagull cry distant single · pan right · subtle" },
-      { "at_s": 5, "name": "motorbike_acceleration", "description": "Ducati Panigale style sport bike acceleration roar · pan center to left as bike enters frame · doppler drift" },
-      { "at_s": 6, "name": "tire_drift_smoke", "description": "tire screech rear wheel drift on asphalt · pan right" },
-      { "at_s": 7, "name": "wind_rushing", "description": "wind rushing high-speed cinematic action sound · continuous Act 2" },
-      { "at_s": 9, "name": "police_sirens_distant_wail", "description": "police sirens distant wail muffled doppler · pan right back · subtle pursuit feel" },
-      { "at_s": 12, "name": "wave_lap_yacht", "description": "wave gentle lap yacht hull · pan center · subtle" },
-      { "at_s": 12, "name": "music_swell_climax", "description": "synthwave music swell climax pad ethereal warm · NO percussion bombast" },
-      { "at_s": 15, "name": "ambient_marina_fade", "description": "marina ambient fade · distant boat horn · pan left subtle" },
-      { "at_s": 16, "name": "fade_to_outro", "description": "fade out into Dark Room outro 2s 'TODO CREADO CON DARKROOMCREATIVE.CLOUD'" }
-    ]
+    "lighting_continuity": {
+      "key_temperature_kelvin": 4500,
+      "fill_temperature_kelvin": 7500,
+      "warm_cool_split": true,
+      "time_of_day": "sunset golden hour 5pm Miami latitude consistent throughout",
+      "single_sun_position": "frame-right (sun-side casts pink-orange · shadow-side casts teal-cyan)"
+    },
+    "shots": [
+      {
+        "shot_id": "S1_beach_lambo",
+        "duration_seconds": 4,
+        "image_anchor": "tools/dark-frames/output/dark-frames-005-pablo-gta-vi-v3/hero-01-beach-lambo.png",
+        "structure_role": "ACT 1 hook · Pablo arrival · pastel pink Italian sport car hood open · sunset golden hour · MAX wow factor",
+        "subject_motion": "Pablo's gaze shifts from looking at the open hood toward the camera over 1.2s · slight smirk emerges at the corner of mouth at 1.5s · right hand stays on hood static · weight shifts onto right leg at 2.5s confident posture · final 1.5s holds calm dominant gaze locked on viewer",
+        "camera_motion": "Steadicam stable wide three-quarter low-angle · very subtle 5% push-in over 4s from 4m distance to 3.8m · no shake · maintains rule-of-thirds framing (subject left two-thirds · sport car midground · Art Deco hotels upper-right bokeh)",
+        "motion_priority": "subject",
+        "audio_sync": [
+          { "at_s": 0, "name": "ambient_beach_waves_loop", "pan": "stereo subtle" },
+          { "at_s": 0, "name": "palm_leaves_breeze", "pan": "left/right alternating" },
+          { "at_s": 0, "name": "sport_car_v12_idle_purr", "pan": "center 60Hz under everything" },
+          { "at_s": 3.0, "name": "distant_sport_bike_rev_pre_cue", "pan": "center fade-in", "purpose": "J-cut audio handoff to S2" }
+        ],
+        "validation_must_have": [
+          "vertical 9:16 nativo NO letterboxed",
+          "Soul Character PACAME identidad reconocible (matches 360 sheet)",
+          "Pastel pink Italian sport car hood OPEN visible",
+          "Sunset golden hour warm-cool split visible",
+          "Anamorphic oval bokeh visible en hotel background",
+          "WARDROBE COHERENCIA: Hawaiian shirt cream + tank top blanco + linen pants beige + sneakers blancos + gold chain + aviators on forehead",
+          "No faces visible besides Pablo",
+          "No readable text/logos en hoteles ni señales"
+        ]
+      },
+      {
+        "shot_id": "S2_motorbike_burnout",
+        "duration_seconds": 4,
+        "image_anchor": "tools/dark-frames/output/dark-frames-005-pablo-gta-vi-v3/hero-02-motorbike-v2.png",
+        "structure_role": "ACT 2 build · Pablo on red sport bike rolling burnout drift · cyan smoke around rear wheel · kinetic action",
+        "subject_motion": "Pablo's right wrist twists throttle hard at 0.5s · body leans forward 10° at 1.0s · controlled rolling burnout begins at 1.5s with cyan smoke increasing · head tilts slightly toward camera at 2.5s with focused smirk holding through 4s",
+        "camera_motion": "Low-angle handheld kinetic with subtle natural sway · slight orbit around bike from frame-left toward frame-right over 4s (15° arc) · revealing more of the Vice City Art Deco neon backdrop progressively",
+        "motion_priority": "both",
+        "audio_sync": [
+          { "at_s": 0, "name": "engine_rev_burnout", "pan": "center peak", "purpose": "J-cut handoff from S1" },
+          { "at_s": 1.5, "name": "tire_screech_smoke_hiss", "pan": "right rear" },
+          { "at_s": 2.0, "name": "cyan_smoke_loop", "pan": "rear pan" },
+          { "at_s": 3.5, "name": "engine_fade_pre_cue_S3", "pan": "fade-out", "purpose": "crossfade handoff to S3" }
+        ],
+        "validation_must_have": [
+          "Vertical 9:16 nativo gameplay feel",
+          "Soul Character PACAME identidad reconocible (matches 360 sheet)",
+          "Cyan smoke around rear wheel pronounced",
+          "WARDROBE COHERENCIA con S1: SAME Hawaiian + tank + linen pants + aviators (NO leather jacket)",
+          "Vice City Art Deco hotels neon backdrop visible",
+          "Sunset sky pink-magenta",
+          "Anamorphic horizontal lens flares signature",
+          "No competitor brand on bike (red generic sport bike)"
+        ]
+      },
+      {
+        "shot_id": "S3_yacht_bow",
+        "duration_seconds": 5,
+        "image_anchor": "tools/dark-frames/output/dark-frames-005-pablo-gta-vi-v3/hero-03-yacht.png",
+        "structure_role": "ACT 3 climax cool · Pablo standing yacht bow · marina sunset · contemplative",
+        "subject_motion": "Pablo at yacht bow looking out at sunset · 0-2.5s holds three-quarter back-to-camera with breeze fluttering open linen shirt · 2.5-4s slowly turns head toward camera revealing profile · 4-5s holds profile calm gaze",
+        "camera_motion": "Drone aerial pull-back over 5s · starts medium framing subject + bow at 2.5m altitude · ends wide framing entire yacht + marina + sunset at 8m altitude · smooth gimbal-stabilized · subject right two-thirds → recentering toward right-third as drone pulls",
+        "motion_priority": "camera",
+        "audio_sync": [
+          { "at_s": 0, "name": "ambient_marina_water_lap", "pan": "stereo" },
+          { "at_s": 1.0, "name": "soft_pad_synthwave_build", "pan": "stereo build" },
+          { "at_s": 4.0, "name": "music_swell_climax", "pan": "stereo full", "purpose": "climax build for S4 close-up reveal" }
+        ],
+        "validation_must_have": [
+          "Vertical 9:16 nativo gameplay feel",
+          "Soul Character PACAME identidad reconocible profile turn",
+          "Yacht bow with railing visible",
+          "Sunset orange-pink-magenta gradient sky",
+          "Marina + distant superyachts bokeh visible",
+          "WARDROBE COHERENCIA con S1+S2: open white linen shirt fluttering · beige shorts (variant of linen pants rolled) · barefoot · aviators on head",
+          "Hoyte van Hoytema Tenet IMAX magic hour signature",
+          "No faces visible besides Pablo"
+        ]
+      },
+      {
+        "shot_id": "S4_closeup_smile_reveal",
+        "duration_seconds": 3,
+        "image_anchor": "tools/dark-frames/output/dark-frames-005-pablo-gta-vi-v3/hero-04-closeup.png",
+        "structure_role": "Final beat · close-up identity reveal · subtle smile · CTA implícito final",
+        "subject_motion": "Pablo locked on camera entire shot · 0-1.5s holds neutral confident expression · 1.5-2.5s smirk grows into a subtle warm smile · 2.5-3s slight head tilt right with smile holding · eyes warm",
+        "camera_motion": "Slow push-in from medium close-up (chest up) to tight close-up (shoulders up) over 3s · stable Steadicam · no shake · maintains eye-line center frame",
+        "motion_priority": "camera",
+        "audio_sync": [
+          { "at_s": 0, "name": "synthwave_music_drop", "pan": "stereo full", "purpose": "drop coordinated with S4 open" },
+          { "at_s": 1.0, "name": "text_overlay_glitch_in", "pan": "center", "purpose": "GTA VI · LEAK ESCENA SECUNDARIA caption appears" },
+          { "at_s": 2.5, "name": "ambient_marina_fade_under", "pan": "fade-out" }
+        ],
+        "validation_must_have": [
+          "Vertical 9:16 nativo gameplay feel",
+          "Soul Character PACAME identidad reconocible (matches 360 sheet)",
+          "Tight close-up framed chest up",
+          "Eyes locked on camera",
+          "Subtle smile (NOT glamour stock smile · authentic warm)",
+          "WARDROBE COHERENCIA con S1+S2+S3: Hawaiian shirt + tank top visible + aviators on forehead",
+          "Sunset golden backlight (Elswit Inherent Vice signature)",
+          "Anamorphic horizontal lens flare upper third",
+          "Forensic skin detail (real pores, beard texture, asymmetric expression)"
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from_shot": "S1_beach_lambo",
+        "to_shot": "S2_motorbike_burnout",
+        "type": "j_cut_audio + match_action",
+        "ending_S1_frame": "Pablo's hand starts lifting off sport car hood, head tilts off-camera left",
+        "opening_S2_frame": "Match action: Pablo's same hand now grips motorbike handlebar, throttle wrist about to twist",
+        "audio_handoff": "Distant sport bike rev starts at 3.0s of S1 (pre-cue) · dominates frame on S2 open with full burnout roar"
+      },
+      {
+        "from_shot": "S2_motorbike_burnout",
+        "to_shot": "S3_yacht_bow",
+        "type": "whip_pan_continuation + color_match",
+        "ending_S2_frame": "Cyan smoke fills frame in motion blur · whip pan motion continues",
+        "opening_S3_frame": "Whip pan resolves into yacht bow medium · cyan-magenta sunset palette matches the smoke-magenta from S2",
+        "audio_handoff": "Engine fade-out crossfaded with marina ambient water-lap over 0.4s · synthwave pad enters under"
+      },
+      {
+        "from_shot": "S3_yacht_bow",
+        "to_shot": "S4_closeup_smile_reveal",
+        "type": "push_in_to_closeup + symbolic_match",
+        "ending_S3_frame": "Drone wide on yacht silhouette against sunset · subject turned profile to three-quarter facing right",
+        "opening_S4_frame": "Match cut to close-up Pablo face · sunset bokeh background matches yacht's sunset · same eye-line",
+        "audio_handoff": "Synthwave music drop coordinated with S4 open · last 0.3s of S3 builds anticipation with swell"
+      }
+    ],
+    "outro": {
+      "duration_seconds": 2,
+      "asset": "tools/dark-frames/assets/outro-darkroom-2s-v2.mp4",
+      "text_overlay": "TODO HECHO CON · darkroomcreative.cloud",
+      "transition_into": "Fade-from-S4-final-frame to outro-darkroom over 0.3s"
+    }
   },
 
   "captions_burned": [
@@ -175,49 +235,63 @@
   "hud_overlay": {
     "minimap_corner": "bottom-right",
     "minimap_style": "circular acid green wireframe #CFFF00 60% opacity radius 70px · 80px from edge safe",
-    "minimap_content": "1 dot pulsando 2Hz (player) + 4 dots distantes static (vehicles/NPCs) · NO labels NO compass NO stamina bar NO ammo",
-    "compass_top": false,
-    "stamina_bar": false,
-    "ammo_indicator": false,
+    "minimap_content": "1 dot pulsando 2Hz (player) + 4 dots distantes static · NO labels NO compass NO stamina bar NO ammo",
     "design_intent": "HUD MUY sutil · vendemos la duda no afirmamos juego · si parece demasiado HUD = MAL"
   },
 
   "outro": {
     "use_template": "tools/dark-frames/assets/outro-darkroom-2s-v2.mp4",
-    "outro_text_override": "TODO CREADO CON DARKROOMCREATIVE.CLOUD",
+    "outro_text": "TODO HECHO CON",
+    "outro_subline": "darkroomcreative.cloud",
     "duration_s": 2,
-    "concat_at_end": true,
-    "note": "Outro NUEVO específico Pablo en GTA VI · texto cambia de outro template original a 'TODO CREADO CON DARKROOMCREATIVE.CLOUD' (decisión Pablo 2026-05-08 para generar hype + funnel ebook lead magnet)"
+    "concat_at_end": true
   },
 
   "caption_text": "Esto se filtró ayer.\nPero no es real. Lo hice yo.\n\nMe pasé 3 horas haciendo que pareciera GTA VI.\n¿Cuánto te tardó pensar que lo era?\n\nStack usado:\n· Cinema Studio Video 3.0 + Seedance 2.0\n· Soul Character entrenado (yo)\n· Suno (música)\n· ffmpeg (edición)\n\nCoste real: ~$3.70\n\n📩 Comenta \"GTA\" en este post y te mando el ebook con el proceso completo (gratis).\n\nA Rockstar le toma 8 años hacer un juego.\nA mí 3 horas hacer que parezca uno.\n(Sí, faltan los gameplay loops. Y todo lo demás. Pero la VIBE está.)\n\nLink en bio para acceder a las herramientas que uso.",
-  "caption_hashtags": "#DarkFrames #GTAVI #ViceCity #IA #darkroomcreative #leak #cinematic",
-  "soul_character_id": "PACAME",
+  "caption_hashtags": "#DarkFrames #darkroomcreative #cinematic",
 
-  "estimated_cost_credits": 75,
-  "estimated_cost_usd": 3.68,
-  "estimated_render_time_min": 28,
+  "phase_3_completed": {
+    "completed_at": "2026-05-08T14:05:00Z",
+    "frames_generated": 4,
+    "credits_consumed": 8,
+    "three_pass_review": "tools/dark-frames/output/dark-frames-005-pablo-gta-vi-v3/three-pass-review.json",
+    "overall": "APPROVED_PHASE_3",
+    "frame_2_refine_v2": {
+      "reason": "Wardrobe leather jacket negra rompía coherencia narrative · refined to Hawaiian + linen + aviators matching S1/S3/S4",
+      "credits_consumed_refine": 2,
+      "result_file": "hero-02-motorbike-v2.png"
+    }
+  },
+
+  "estimated_cost_phase_4_video": {
+    "model_recommended": "cinematic_studio_3_0",
+    "cost_per_5s_2k_action": 25,
+    "shots_to_render": 4,
+    "total_credits_estimate": 100,
+    "total_usd_estimate": 4.90,
+    "alternative_safer": "cinematic_studio_video_v2 (7.5 cr × 4 = 30 cr · $1.47)",
+    "fallback_unlimited_plus_plan": "kling_3_0 (UNLIMITED en plan plus · calidad menor pero ahorro)"
+  },
 
   "approval_required": {
     "pablo_double_yes": true,
     "cost_guard_token": true,
-    "reason": "tier=top × 3 shots video premium · suma ~$3.68 (75 cr de 953 disponibles) · Soul Character PACAME en 3 shots requiere consistency cross-shot SOTA"
+    "reason": "Tier=CINEMATIC × 4 shots video premium · suma ~$4.90 (100 cr de 803 disponibles) · Soul Character PACAME en 4 shots requiere consistency cross-shot SOTA cinematic_studio_3_0",
+    "approval_format_required": "Pablo dice exactamente: 'SÍ aprueba video premium concept 005 v3 · 4 shots · cinematic_studio_3_0 · 100 cr ($4.90)' (formato exacto regla feedback_doble_aprobacion_videos.md)"
   },
 
   "validation_checklist_extra": [
-    "técnica Dion Beebe Miami Vice 2006 citada (Sony F950 4K + anamorphic 2x squeeze)",
-    "técnica Hoyte van Hoytema Tenet sunset Miami citada (IMAX 65mm)",
-    "técnica Robert Elswit Inherent Vice citada (Panavision Primo anamorphic 35mm warm Florida)",
-    "GTA VI trailer 2023 Rockstar referenciado con disclaimer (NO oficial · 91M views 24h benchmark)",
-    "vertical 9:16 NATIVO los 3 shots (NO letterbox · gameplay sensation)",
-    "Soul Character PACAME en los 3 shots (consistency cross-shot)",
-    "rostros NUNCA visibles excepto Pablo",
-    "Lambo PASTEL PINK (no red no yellow)",
-    "Hawaiian shirt + tank top blanco consistencia los 3 shots",
-    "sunset golden hour warm-cool split los 3 shots",
+    "Wardrobe coherencia los 4 shots (Hawaiian + tank + linen + aviators) — refine S2 hecho",
+    "Identity Pablo PACAME match cross-shot 360 sheet",
+    "Lighting continuity sunset golden hour 4500K key + 7500K fill",
+    "Motion arcs declarados S1-S4 (subject + camera + priority)",
+    "Transitions handoff S1→S2 J-cut audio + match action",
+    "Transitions handoff S2→S3 whip pan + color match",
+    "Transitions handoff S3→S4 push-in + symbolic match",
+    "Audio sync points cada shot mínimo 1",
+    "Outro NUEVO 'TODO HECHO CON · darkroomcreative.cloud' aplicado segundo 16",
     "HUD minimap MUY sutil (60% opacity · sin labels · solo 1+4 dots)",
-    "outro NUEVO 'TODO CREADO CON DARKROOMCREATIVE.CLOUD' aplicado segundo 16",
-    "audio: synthwave 80s Miami Vice pastel · NO Tom Petty literal · NO heavy sub-grave (warm cálido no oscuro)",
-    "caption: 'Comenta GTA y te mando el ebook' = funnel lead magnet activado"
+    "IP-safe: no GTA literal · no Lamborghini · no Ducati · no Rockstar (caption sí menciona como referencia editorial)",
+    "Caption: 'Comenta GTA y te mando el ebook' = funnel lead magnet activado"
   ]
 }
