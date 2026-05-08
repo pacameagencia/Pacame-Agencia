@@ -18,6 +18,7 @@
 | Para elegir qué agente/skill cargar | [`docs/protocols/routing-rules.md`](docs/protocols/routing-rules.md) |
 | Antes de tocar datos/credenciales/notas de cualquier cliente | [`docs/protocols/aislamiento-clientes.md`](docs/protocols/aislamiento-clientes.md) |
 | Si la conversación menciona DARK_FRAMES, cinemáticas IA, reels @pacamespain, Cinema Studio Video 3.0, Seedance, o continuación trabajo creativo mayo 2026 | [`strategy/darkroom/RETOMAR-AQUI.md`](strategy/darkroom/RETOMAR-AQUI.md) |
+| **Antes de CUALQUIER generación visual/video/copy Dark Room** (Higgsfield, Soul, Nano Banana Pro, Cinematic Studio, Seedance, Kling, Veo, concept 00X, 360 sheet, outfit transform, character substitution) | [`strategy/darkroom/studio-config/KNOWLEDGE-INTEGRATION-v2.md`](strategy/darkroom/studio-config/KNOWLEDGE-INTEGRATION-v2.md) (31 secciones · **21 reglas duras** · 100% coverage CONOCIMIENTO PROMPT IA.txt 6907 lines · **enforcement automático** vía `infra/scripts/knowledge-gate-hook.py`) |
 
 > **Regla dura:** si saltas del input a generar sin cargar el protocolo aplicable, estás rompiendo el contrato PACAME. Para y vuelve aquí.
 
