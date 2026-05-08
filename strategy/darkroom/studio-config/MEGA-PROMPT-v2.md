@@ -251,27 +251,35 @@ BASE DNA: Photorealistic [AGE] [GENDER] with [HAIR DETAILS], [EYES], wearing [DE
 
 ---
 
-## SECTION J · Knowledge Integration v1 (NUEVO v2.2 · lectura completa CONOCIMIENTO PROMPT IA 6907 lines)
+## SECTION J · Knowledge Integration v2 (NUEVO v2.3 · COMPLETE coverage 6907 lines)
 
-> Doc completo en [`KNOWLEDGE-INTEGRATION-v1.md`](./KNOWLEDGE-INTEGRATION-v1.md) · 50+ hallazgos extraídos línea por línea · 15 reglas duras NUEVAS.
+> **Doc maestro completo**: [`KNOWLEDGE-INTEGRATION-v2.md`](./KNOWLEDGE-INTEGRATION-v2.md) · 31 secciones · **21 reglas duras** · 100% coverage · audit gaps en [`AUDIT-knowledge-gaps.md`](./AUDIT-knowledge-gaps.md).
+> **Enforcement automático**: hook `infra/scripts/knowledge-gate-hook.py` registrado en `.claude/settings.json` UserPromptSubmit. CADA generación visual/video/copy Dark Room dispara checklist 16-item obligatorio.
+> **v1 → v2**: v1 capturó 55% (técnico core) · v2 añade business/sales/scripting/platform/Custom GPT/troubleshooting/character bible/personas/vocabulary banks (45% restante).
 
-### Reglas duras 1-15 (resumen · ver doc completo para detalle)
+### 21 Reglas Duras (15 v1 + R16-R21 v2)
 
 1. **R1** — Generate 3 images mínimo per prompt (60-80% success vs 30-40%)
 2. **R2** — Evaluate 4 criteria binario: Prompt Adherence + Technical Quality + Emotional Impact + Usability
 3. **R3** — Higgsfield Soul para AUTHENTIC tier · Nano Banana Pro para CINEMATIC tier (no mezclar)
 4. **R4** — Workflow split: Soul base → Pro substitution → Soul-quality animation
-5. **R5** — Last frame = motion fluidity garantizada · generar last frame para CADA shot video premium
-6. **R6** — Video prompt formula simple: `[Subject] + [Action] + [Tone] + [Dialogue]` + "with subtle human mannerisms and natural timing"
-7. **R7** — Texture stack obligatorio paste al final de cada prompt CINEMATIC
+5. **R5** — Last frame = motion fluidity · generar last frame para CADA shot video premium
+6. **R6** — Video prompt formula simple `[Subject]+[Action]+[Tone]+[Dialogue]` + "with subtle human mannerisms and natural timing"
+7. **R7** — Texture stack obligatorio paste al final cada prompt CINEMATIC
 8. **R8** — Skin Realism 6-step prompt para close-ups Pablo
 9. **R9** — Object Texture 4-step prompt para products/vehicles prominent
-10. **R10** — Object Consistency Sheet OBLIGATORIO si vehículo/producto cross-shot (sport car, motorbike, yacht)
-11. **R11** — DoP Mindset structure: What MUST be correct → What → How → Where
-12. **R12** — "While keeping everything else identical" phrase MAGIC para edits surgical
-13. **R13** — Image numbering "first/second uploaded picture" para Level 3 substitutions
-14. **R14** — UGC outperforms 3-5x · stories diarias + reels tendencia = AUTHENTIC tier siempre
-15. **R15** — Don't over-refine: 5+ edits → regenerate from scratch
+10. **R10** — Object Consistency Sheet OBLIGATORIO si vehículo/producto cross-shot
+11. **R11** — DoP Mindset: What MUST be correct → What → How → Where
+12. **R12** — "While keeping everything else identical" phrase MAGIC
+13. **R13** — Image numbering "first/second uploaded picture" para Level 3
+14. **R14** — UGC outperforms 3-5x · stories AUTHENTIC tier siempre
+15. **R15** — Don't over-refine · 5+ edits → regenerate from scratch
+16. **R16 NUEVO** — Daily workflow = SIEMPRE parallel (nodes/batch) · NUNCA sequential (-80% time)
+17. **R17 NUEVO** — TODO video corto sigue 3-Act: Hook 1-2s + Content 3-4s + CTA 1-2s
+18. **R18 NUEVO** — Posting cadence: 1-2 posts/día IG (algorithm penaliza 5+/día)
+19. **R19 NUEVO** — Single scenario: 3 prompt variations exploradas antes de execute
+20. **R20 NUEVO** — Quarterly seasonal updates (Q1 winter / Q2 spring / Q3 summer / Q4 fall)
+21. **R21 NUEVO** — Use Nodes WHEN 10+ variations · Manual OK 1-3 variations one-off
 
 ### Hallazgos críticos NUEVOS para concept 005 v3 (Phase 3.5 + 4)
 
