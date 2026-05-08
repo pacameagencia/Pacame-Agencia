@@ -75,3 +75,5 @@ asset-library/
 
 # Outputs autogenerados (PDFs, HTML intermedios)
 tools/output/
+tools/dark-frames/.session-context.txt
+PacameCueva/
