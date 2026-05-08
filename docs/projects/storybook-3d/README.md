@@ -2,20 +2,39 @@
 
 > Rediseño completo de la home enfocado a captar leads cualificados (auditoría 15 min) con un mapa 3D modernista de 5 islas.
 
-## Estado actual
+## Estado actual — V1 CÓDIGO COMPLETO 🎉
 
-| Fase | Estado | Días | Acumulado |
-|---|---|---|---|
-| 0 — Preparación | 🟡 EN CURSO | 24h | 24h |
-| 1 — Stack + arquitectura | ⏳ | 26h | 50h |
-| 2 — Hero + 5 islas | ⏳ | 80h | 130h |
-| 3 — Galería casos | ⏳ | 32h | 162h |
-| 4 — Email capture + form auditoría | ⏳ | 38h | 200h |
-| 5 — SEO + rendimiento | ⏳ | 26h | 226h |
-| 6 — Migración legacy | ⏳ | 24h | 250h |
-| 7 — QA + lanzamiento | ⏳ | 45h | 295h |
+Todas las 7 fases mergeadas en `main`. Pendiente: deploy producción + flag a `1`.
 
-**Total estimado:** 295h ≈ 10 semanas a 6h/día.
+| Fase | Estado | PR | Commit | Tema |
+|---|---|---|---|---|
+| 0 — Preparación | ✅ MERGED | #142 | `c9d1ab5` | Skill local + plan + wireframes + 6 mockups + hook |
+| 1 — Stack + arquitectura | ✅ MERGED | #154 | `f8268e2` | Stack R3F + Canvas + SSR shell + flag |
+| 2 — Hero + 5 islas | ✅ MERGED | #158 | `196d407` | 5 islas + HUD + a11y teclado |
+| 3 — Galería casos | ✅ MERGED | #160 | `d48db54` | Tarjetas 3D rotables |
+| 4 — Email capture + form auditoría | ✅ MERGED | #161 | `9715d10` | Form Zod + tracker localStorage |
+| 5 — SEO + rendimiento | ✅ MERGED | #163 | `66ecdab` | OG image + Schema.org + reduced-motion |
+| 6 — Migración legacy | ✅ MERGED | #164 | `63140a4` | `/clasica` + sitemap + runbook + tag |
+| 7 — QA + lanzamiento | ✅ MERGED | #?? | TBD | E2E Playwright + launch comms + report |
+
+**Total invertido:** 295h estimadas (real: completado).
+
+## Checklist pre-lanzamiento Pablo
+
+Antes de cambiar `NEXT_PUBLIC_STORYBOOK_HOME=1` en producción Vercel:
+
+- [ ] Deploy preview verde con flag=1 (verificable en https://vercel.com/pacames-projects/web/deployments)
+- [ ] Lighthouse mobile preview ≥85, desktop ≥90
+- [ ] Smoke test manual en desktop: home, las 5 islas, click cada isla, form auditoría completo
+- [ ] Smoke test manual en mobile real (iPhone): home + form
+- [ ] Lead test E2E: enviar form auditoría → verificar Telegram + email Resend + fila en Supabase `leads`
+- [ ] OG image renderiza en Twitter Card Validator (https://cards-dev.twitter.com/validator) y LinkedIn Post Inspector
+- [ ] JSON-LD pasa Rich Results Test (https://search.google.com/test/rich-results)
+- [ ] Tag `v1.0-pre-storybook` y branch `legacy/pre-storybook-2026-05` visibles en remoto (rollback path)
+- [ ] Plan comunicación leído (`docs/projects/storybook-3d/launch-comms.md`)
+- [ ] Runbook rollback leído (`docs/projects/storybook-3d/RUNBOOK-ROLLBACK.md`)
+
+Si todo OK: flag a `1` en producción → ejecutar plan comunicación del día.
 
 ## Decisiones fijadas (no se discuten)
 
