@@ -2438,3 +2438,158 @@ body.page .elementor-widget-theme-post-content h2 {
   }
 }
 
+/* ============================================================
+   25. ELIMINAR SELECTORES DE CANTIDAD — alta gama high-ticket
+   ============================================================
+   Decisión Pablo (08-may-2026): los relojes y joyería son productos
+   high-ticket donde el cliente compra 1 unidad. El selector de cantidad
+   sobra y rompe la estética luxury. Además resolvía un bug en el
+   mini-cart drawer (Ecomus no actualizaba subtotal al cambiar qty).
+   Forzamos quantity=1 oculto y eliminamos los controles +/- y el input.
+*/
+
+/* 25.1 Single product — ocultar wrapper completo .quantity y el label "Cantidad:" */
+body.single-product .ecomus-product-atc-group .em-product-quantity,
+body.single-product .ecomus-product-atc-group .quantity__label,
+body.single-product .ecomus-product-atc-group .quantity,
+body.single-product form.cart > .em-product-quantity,
+body.single-product form.cart > .quantity,
+body.single-product .summary form.cart .em-product-quantity,
+body.single-product .summary form.cart .quantity__label,
+body.single-product .summary form.cart .quantity {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+
+/* 25.2 Single product — el botón add-to-cart pasa a ocupar todo el ancho */
+body.single-product .ecomus-product-atc-group {
+  display: block !important;
+}
+body.single-product .ecomus-product-atc-group .single_add_to_cart_button {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+/* 25.3 Página /carrito/ — ocultar columna cantidad ENTERA (th + td) */
+body.woocommerce-cart table.cart thead th.product-quantity,
+body.woocommerce-cart table.cart tbody td.product-quantity,
+body.woocommerce-cart table.shop_table_responsive thead th.product-quantity,
+body.woocommerce-cart table.shop_table_responsive tbody td.product-quantity {
+  display: none !important;
+}
+/* Botón "Update cart" tampoco tiene sentido sin qty editable */
+body.woocommerce-cart button[name="update_cart"],
+body.woocommerce-cart .em-button-update-cart {
+  display: none !important;
+}
+
+/* 25.4 Mini-cart drawer Elementor — ocultar selector cantidad */
+.elementor-menu-cart__product .quantity,
+.elementor-menu-cart__product .product-quantity,
+.elementor-menu-cart__product .ecomus-qty-button,
+.elementor-menu-cart__product input.qty,
+.elementor-menu-cart__products .quantity,
+.woocommerce.widget_shopping_cart .quantity .qty,
+.woocommerce.widget_shopping_cart .ecomus-qty-button,
+.woocommerce-mini-cart__product .quantity,
+.woocommerce-mini-cart .ecomus-qty-button {
+  display: none !important;
+}
+
+/* 25.5 Mostrar SOLO la cantidad como texto en mini-cart (sin controles) */
+.elementor-menu-cart__product-price .quantity,
+.woocommerce-mini-cart__product-price .quantity {
+  display: inline !important;
+  font-weight: 400 !important;
+  color: var(--royo-charcoal) !important;
+}
+
+/* ============================================================
+   26. BOTÓN AÑADIR AL CARRITO — refinado luxury
+   ============================================================
+   El botón Ecomus inserta tres spans: .text + .divide ('-') + .price.
+   Sólo queremos el texto. La divide ya estaba oculta (sec 16) pero el
+   precio sobraba dentro del botón (es redundante: ya hay precio arriba).
+*/
+
+/* 26.1 Single product — ocultar precio dentro del botón + divide */
+body.single-product .single_add_to_cart_button .price,
+body.single-product .single_add_to_cart_button .divide,
+body.single-product .single_add_to_cart_button .woocommerce-Price-amount {
+  display: none !important;
+}
+
+/* 26.2 Single product — botón limpio y centrado */
+body.single-product .single_add_to_cart_button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  padding: 1.1rem 1.75rem !important;
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+  border: 1px solid var(--royo-champagne) !important;
+  border-radius: 2px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+body.single-product .single_add_to_cart_button .text {
+  display: inline-block !important;
+  position: relative !important;
+  z-index: 2 !important;
+  letter-spacing: 0.15em !important;
+}
+body.single-product .single_add_to_cart_button:hover {
+  background: var(--royo-paper) !important;
+  color: var(--royo-ink) !important;
+  border-color: var(--royo-ink) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 14px rgba(26, 24, 22, 0.12) !important;
+}
+body.single-product .single_add_to_cart_button:active {
+  transform: translateY(0) !important;
+}
+
+/* 26.3 Loading state (cuando Ajax procesa el add) */
+body.single-product .single_add_to_cart_button.loading {
+  opacity: 0.7 !important;
+  pointer-events: none !important;
+}
+body.single-product .single_add_to_cart_button.added::after {
+  content: '✓ Añadido';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--royo-champagne-dark);
+  color: var(--royo-paper);
+  z-index: 3;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* 26.4 Mobile — botón a 100% */
+@media (max-width: 767px) {
+  body.single-product .single_add_to_cart_button {
+    width: 100% !important;
+    padding: 1.05rem 1.25rem !important;
+    font-size: 0.8rem !important;
+  }
+}
+
