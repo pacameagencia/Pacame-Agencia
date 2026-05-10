@@ -92,6 +92,7 @@
     .hero__eyebrow { display: inline-flex; align-items: center; gap: 0.7rem; padding: 0.5rem 1.2rem; background: {{PALETTE_ACCENT_RGBA10}}; border: 1px solid {{PALETTE_ACCENT_RGBA40}}; border-radius: 50px; font-size: 0.78rem; font-weight: 600; color: var(--ocre-bright); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 2rem; backdrop-filter: blur(8px); }
     .hero__eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--ocre-bright); border-radius: 50%; box-shadow: 0 0 12px var(--ocre-bright); animation: pulse 2s ease-in-out infinite; }
     @keyframes pulse { 50% { opacity: 0.5; transform: scale(0.8); } }
+    .hero__brandname { display: block; font-family: "{{FONT_DISPLAY}}", serif; color: var(--ocre-bright); font-size: clamp(1rem, 2.5vw, 1.4rem); letter-spacing: 0.25em; text-transform: uppercase; font-weight: 700; margin-bottom: 1rem; opacity: 0.95; text-shadow: 0 2px 12px rgba(0,0,0,0.4); }
     .hero__title { font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; line-height: 0.95; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
     .hero__title .accent { color: var(--ocre-bright); font-style: italic; font-weight: 400; }
     .hero__subtitle { font-size: clamp(1rem, 2.5vw, 1.3rem); color: rgba(250, 250, 247, 0.85); max-width: 600px; margin: 0 auto 2.5rem; font-weight: 300; line-height: 1.7; }
@@ -237,6 +238,7 @@
     <div class="hero__overlay"></div>
     <div class="hero__inner">
       <span class="hero__eyebrow">{{EYEBROW}}</span>
+      <div class="hero__brandname">{{NAME}}</div>
       <h1 class="hero__title">{{HERO_TITLE_LINE1}}<br><span class="accent">{{HERO_TITLE_LINE2}}</span></h1>
       <p class="hero__subtitle">{{HERO_SUBTITLE}}</p>
       <div class="hero__cta-row">
