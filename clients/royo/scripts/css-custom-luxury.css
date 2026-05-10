@@ -3599,3 +3599,240 @@ nav.breadcrumb {
   outline: none !important;
   border-color: var(--royo-champagne) !important;
 }
+
+/* ============================================================
+   36. MY ACCOUNT + FORMS WOOCOMMERCE LUXURY
+   ============================================================ */
+
+/* 36.1 My Account container */
+body.woocommerce-account .woocommerce {
+  max-width: 1100px !important;
+  margin: 2rem auto 4rem !important;
+  padding: 0 1.5rem !important;
+}
+
+/* 36.2 Login/Register form luxury card */
+body.woocommerce-account .u-columns.col2-set {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 2.5rem !important;
+  max-width: 1000px !important;
+  margin: 2rem auto !important;
+}
+body.woocommerce-account .u-column1.col-1,
+body.woocommerce-account .u-column2.col-2,
+body.woocommerce-account form.woocommerce-form-login,
+body.woocommerce-account form.woocommerce-form-register {
+  background: var(--royo-paper) !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  padding: 2.5rem 2rem !important;
+  width: auto !important;
+  max-width: none !important;
+  float: none !important;
+}
+
+/* 36.3 Headings login + register */
+body.woocommerce-account .woocommerce-form-login h2,
+body.woocommerce-account .woocommerce-form-register h2,
+body.woocommerce-account .u-column1 h2,
+body.woocommerce-account .u-column2 h2,
+body.woocommerce-account h2 {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.4rem !important;
+  font-weight: 400 !important;
+  color: var(--royo-ink) !important;
+  letter-spacing: -0.005em !important;
+  margin: 0 0 1.5rem !important;
+  padding-bottom: 1rem !important;
+  border-bottom: 1px solid var(--royo-line) !important;
+  position: relative !important;
+}
+body.woocommerce-account .woocommerce-form-login h2::after,
+body.woocommerce-account .woocommerce-form-register h2::after,
+body.woocommerce-account .u-column1 h2::after,
+body.woocommerce-account .u-column2 h2::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: var(--royo-champagne);
+}
+
+/* 36.4 Inputs + labels */
+body.woocommerce-account .woocommerce-form-row,
+body.woocommerce-account .form-row {
+  margin: 0 0 1.25rem !important;
+}
+body.woocommerce-account .woocommerce-form-row label,
+body.woocommerce-account .form-row label {
+  display: block !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-charcoal) !important;
+  margin: 0 0 0.5rem !important;
+}
+body.woocommerce-account .woocommerce-Input,
+body.woocommerce-account .form-row input.input-text,
+body.woocommerce input.input-text,
+body.woocommerce-page input.input-text,
+body.woocommerce select {
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  background: var(--royo-paper) !important;
+  padding: 0.85rem 1rem !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.95rem !important;
+  color: var(--royo-ink) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s ease !important;
+}
+body.woocommerce-account .woocommerce-Input:focus,
+body.woocommerce-account .form-row input.input-text:focus,
+body.woocommerce input.input-text:focus,
+body.woocommerce-page input.input-text:focus,
+body.woocommerce select:focus {
+  outline: none !important;
+  border-color: var(--royo-champagne) !important;
+  box-shadow: 0 0 0 3px rgba(184, 149, 106, 0.12) !important;
+}
+
+/* 36.5 Submit buttons WC luxury */
+body.woocommerce-account button[name="login"],
+body.woocommerce-account button[name="register"],
+body.woocommerce-account .woocommerce-button,
+body.woocommerce-account button.button[type="submit"],
+body.woocommerce button.button[type="submit"]:not(.alt),
+body.woocommerce-page button.button[type="submit"]:not(.alt) {
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+  border: 1px solid var(--royo-champagne) !important;
+  border-radius: 2px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  padding: 1rem 2rem !important;
+  cursor: pointer !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  width: auto !important;
+}
+body.woocommerce-account button[name="login"]:hover,
+body.woocommerce-account button[name="register"]:hover,
+body.woocommerce button.button[type="submit"]:not(.alt):hover {
+  background: var(--royo-paper) !important;
+  color: var(--royo-ink) !important;
+  border-color: var(--royo-ink) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 14px rgba(26, 24, 22, 0.12) !important;
+}
+
+/* 36.6 Lost password link */
+body.woocommerce-account .woocommerce-LostPassword a,
+body.woocommerce-account .woocommerce-lost-password {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.78rem !important;
+  color: var(--royo-champagne-dark) !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid transparent !important;
+  transition: border-color 0.2s ease !important;
+}
+body.woocommerce-account .woocommerce-LostPassword a:hover,
+body.woocommerce-account .woocommerce-lost-password:hover {
+  border-bottom-color: var(--royo-champagne-dark) !important;
+}
+
+/* 36.7 Account dashboard navigation (cuando logged in) */
+body.woocommerce-account .woocommerce-MyAccount-navigation {
+  background: var(--royo-paper) !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  padding: 1rem 0 !important;
+}
+body.woocommerce-account .woocommerce-MyAccount-navigation ul {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+body.woocommerce-account .woocommerce-MyAccount-navigation li {
+  border-bottom: 1px solid var(--royo-line) !important;
+}
+body.woocommerce-account .woocommerce-MyAccount-navigation li:last-child {
+  border-bottom: none !important;
+}
+body.woocommerce-account .woocommerce-MyAccount-navigation li a {
+  display: block !important;
+  padding: 0.9rem 1.5rem !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-charcoal) !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+body.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a,
+body.woocommerce-account .woocommerce-MyAccount-navigation li a:hover {
+  background: var(--royo-ivory) !important;
+  color: var(--royo-ink) !important;
+  border-left: 3px solid var(--royo-champagne) !important;
+  padding-left: calc(1.5rem - 3px) !important;
+}
+
+/* 36.8 Checkbox luxury */
+body.woocommerce-account input[type="checkbox"],
+body.woocommerce input[type="checkbox"],
+body.woocommerce-page input[type="checkbox"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 18px !important;
+  height: 18px !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  background: var(--royo-paper) !important;
+  cursor: pointer !important;
+  vertical-align: middle !important;
+  margin-right: 0.5rem !important;
+  position: relative !important;
+}
+body.woocommerce-account input[type="checkbox"]:checked,
+body.woocommerce input[type="checkbox"]:checked,
+body.woocommerce-page input[type="checkbox"]:checked {
+  background: var(--royo-ink) !important;
+  border-color: var(--royo-ink) !important;
+}
+body.woocommerce-account input[type="checkbox"]:checked::after,
+body.woocommerce input[type="checkbox"]:checked::after,
+body.woocommerce-page input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--royo-champagne);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* 36.9 Mobile responsive my-account */
+@media (max-width: 767px) {
+  body.woocommerce-account .u-columns.col2-set {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  body.woocommerce-account form.woocommerce-form-login,
+  body.woocommerce-account form.woocommerce-form-register,
+  body.woocommerce-account .u-column1.col-1,
+  body.woocommerce-account .u-column2.col-2 {
+    padding: 1.75rem 1.25rem !important;
+  }
+}
