@@ -3023,9 +3023,11 @@ img[srcset*="Sin-titulo"] {
   opacity: 0 !important;
 }
 
-/* 31.2 Wrapper de la imagen genérica recibe estilos placeholder editorial */
-li.product:has(img[src*="Sin-titulo"]) .product-thumbnail-wrap,
-li.product:has(img[src*="Sin-titulo"]) > a {
+/* 31.2 Wrapper de la imagen genérica recibe estilos placeholder editorial
+   Selector REAL Ecomus: .product-thumbnail.em-relative (NO .product-thumbnail-wrap).
+*/
+li.product:has(img[src*="Sin-titulo"]) .product-thumbnail.em-relative,
+li.product:has(img[src*="Sin-titulo"]) .product-thumbnail {
   position: relative !important;
   background: linear-gradient(135deg, var(--royo-ivory) 0%, var(--royo-paper) 100%) !important;
   background-image:
@@ -3033,12 +3035,11 @@ li.product:has(img[src*="Sin-titulo"]) > a {
     radial-gradient(circle at 70% 70%, rgba(184, 149, 106, 0.05), transparent 50%),
     linear-gradient(135deg, var(--royo-ivory) 0%, var(--royo-paper) 100%) !important;
   overflow: hidden !important;
-  display: block !important;
 }
 
 /* 31.3 Monograma R Playfair + texto editorial sobre el bg */
-li.product:has(img[src*="Sin-titulo"]) .product-thumbnail-wrap::before,
-li.product:has(img[src*="Sin-titulo"]) > a::before {
+li.product:has(img[src*="Sin-titulo"]) .product-thumbnail.em-relative::before,
+li.product:has(img[src*="Sin-titulo"]) .product-thumbnail::before {
   content: 'R';
   position: absolute !important;
   top: 38% !important;
@@ -3054,8 +3055,8 @@ li.product:has(img[src*="Sin-titulo"]) > a::before {
   pointer-events: none !important;
   z-index: 4 !important;
 }
-li.product:has(img[src*="Sin-titulo"]) .product-thumbnail-wrap::after,
-li.product:has(img[src*="Sin-titulo"]) > a::after {
+li.product:has(img[src*="Sin-titulo"]) .product-thumbnail.em-relative::after,
+li.product:has(img[src*="Sin-titulo"]) .product-thumbnail::after {
   content: 'PIEZA DISPONIBLE EN TIENDA';
   position: absolute !important;
   top: 65% !important;
@@ -3119,12 +3120,12 @@ body.single-product .woocommerce-product-gallery:has(img[src*="Sin-titulo"])::af
 
 /* 31.5 Mobile refinos */
 @media (max-width: 767px) {
-  li.product:has(img[src*="Sin-titulo"]) .product-thumbnail-wrap::before,
-  li.product:has(img[src*="Sin-titulo"]) > a::before {
+  li.product:has(img[src*="Sin-titulo"]) .product-thumbnail.em-relative::before,
+  li.product:has(img[src*="Sin-titulo"]) .product-thumbnail::before {
     font-size: 2rem !important;
   }
-  li.product:has(img[src*="Sin-titulo"]) .product-thumbnail-wrap::after,
-  li.product:has(img[src*="Sin-titulo"]) > a::after {
+  li.product:has(img[src*="Sin-titulo"]) .product-thumbnail.em-relative::after,
+  li.product:has(img[src*="Sin-titulo"]) .product-thumbnail::after {
     font-size: 0.52rem !important;
     letter-spacing: 0.14em !important;
   }
