@@ -1,0 +1,29 @@
+[
+  {
+    "id": "dc62a21b-9e40-4f57-b11e-f68008d4bfac",
+    "status": "completed",
+    "display_name": "Higgsfield Soul V2",
+    "job_set_type": "text2image_soul_v2",
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DOIc2LeqMNs69AbhbSOqSgTPOm/hf_20260510_191237_dc62a21b-9e40-4f57-b11e-f68008d4bfac.png",
+    "created_at": 1778440357.08967,
+    "params": {
+      "prompt": "Ultra-detailed three-quarter body shot of A small bipedal robot creature mascot, approximately 35cm tall, head-to-body proportions 1:1.5, head is a spherical chassis of brushed matte black metal #0A0A0A with two large round CUTE eyes glowing acid neon green #CFFF00 (Stitch-Baymax style proportions, NOT slit visor NOT humanoid), a third small pulsing single eye between the two main eyes also acid neon green, three-segment fractal antenna on top of head with acid green glow tips, compact body chassis with visible panel joinery and brushed metal finish, rubber-tech matte black joints with subtle sub-surface scattering, short articulated arms with exposed servos, compact legs with stabilizer pads, off-white #F2F2F2 fine stitching lines visible at joint articulations (Stitch-style detail), micro acid green LEDs on heel pads, back panel with visible solar mini-cells and status LEDs and cable bundles, no humanoid face, no mouth, expression conveyed entirely through the three glowing eyes. Full standing pose, weight slightly on left leg with right leg subtly forward, both arms relaxed at sides with hands articulated visible joints, body angled 25 degrees to camera-left showing depth of chassis paneling and back-panel solar cells partially visible, head turned toward camera at slight downward angle (3 degrees · slightly inquisitive), all three eyes locked on camera, fractal antenna fully extended. Background: pure matte charcoal black #0A0A0A studio backdrop, single neon acid green key light from upper-camera-left casting hard chiaroscuro shadow on the robot's right side (3:1 contrast ratio), subtle atmospheric haze with floating dust particles caught in the key light beam, ground plane reflection subtle, no gradients elsewhere. Camera: shot on Hasselblad X1D 70mm film lens emulation, f/2.8, ISO 100, 1/125s, vertical portrait orientation, full robot height in frame with 15% headroom and 15% feet room, sharp focus throughout. Texture stack realism: ray-traced global illumination, subsurface scattering on rubber-tech joints (knees, elbows, neck) creating soft material feel against the harder chassis metal, texture-rich brushed metal chassis micro-imperfections (subtle scratches along high-contact edges, faint oxidation on bottom edges where legs meet feet, fingerprints on smooth curved surfaces), rubber grip pads showing slight wear pattern on heels, micro acid green LEDs on heels glowing realistic bloom, off-white stitching lines at joint articulations visible (Stitch-style detail), contact shadows where feet touch the ground plane, uncompromising detail, premium commercial advertising look, Kodak Portra 400 push +1 grain emulation subtle, no plastic CGI cleanliness. Mood: mysterious tech-noir creature with unexpected cute presence, BB-8 carisma without humanoid face, Wall-E worn materials feel, Stitch large-eye empathy. No humanoid face, no mouth, no extra fingers or deformed limbs, no smiling glamour, no competitor brand logos, no readable text on chassis.",
+      "width": 1536,
+      "height": 2048,
+      "batch_size": 1,
+      "seed": 103033,
+      "enhance_prompt": false,
+      "use_sage_attention": false,
+      "quality": "1080p",
+      "use_relax": false,
+      "style_id": "3db34ab5-3439-4317-9e03-08dc30852e69",
+      "style": {
+        "id": "3db34ab5-3439-4317-9e03-08dc30852e69",
+        "name": "General",
+        "url": "https://cdn.higgsfield.ai/soul-v2-style/f33d85f2-6521-4fa8-8e8f-894cfbdee578.webp",
+        "strength": null
+      },
+      "style_strength": null
+    }
+  }
+]
