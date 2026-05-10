@@ -144,6 +144,39 @@ async function processEvent(event) {
 
 // === HTTP server ===
 const server = createServer((req, res) => {
+  // GET /c/<slug> — click tracking endpoint (registra click + 301 redirect al demo)
+  if (req.method === 'GET' && req.url.match(/^\/c\/([a-z0-9-]+)/)) {
+    const slug = req.url.match(/^\/c\/([a-z0-9-]+)/)[1];
+    const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || '';
+    const ua = req.headers['user-agent'] || '';
+    // 301 redirect inmediato al demo
+    res.writeHead(301, { Location: 'https://demos.pacameagencia.com/' + slug + '/' });
+    res.end();
+    // Async DB
+    (async () => {
+      try {
+        const r = await pg.query('select id from prospect_leads where slug=$1 limit 1', [slug]);
+        const leadId = r.rows[0]?.id;
+        if (!leadId) return;
+        const isBot = /googlebot|googleimageproxy|prefetch|preview|scanner|crawler|bot\b/i.test(ua);
+        if (isBot) {
+          console.log(`[click] ${slug} bot UA=${ua.slice(0,50)}`);
+          return;
+        }
+        await pg.query(
+          "insert into email_events (lead_id, event_type, occurred_at, raw, user_agent, ip) values ($1, 'email.clicked', now(), $2, $3, $4)",
+          [leadId, JSON.stringify({ source: 'custom_click', slug, target: '/' + slug + '/' }), ua, ip]
+        );
+        await pg.query(
+          "update prospect_leads set first_clicked_at=coalesce(first_clicked_at,now()), last_clicked_at=now(), click_count=click_count+1, status=case when status in ('replied','won') then status else 'clicked' end where id=$1",
+          [leadId]
+        );
+        console.log(`[click] ${slug} CLICK tracked`);
+      } catch (e) { console.error('[click] error:', e.message); }
+    })();
+    return;
+  }
+
   // GET /t/<slug>.gif — open tracking pixel custom (Resend no inyecta el suyo si HTML no tiene <img>)
   if (req.method === 'GET' && req.url.match(/^\/t\/([a-z0-9-]+)\.gif/)) {
     const slug = req.url.match(/^\/t\/([a-z0-9-]+)\.gif/)[1];
@@ -197,28 +230,46 @@ const server = createServer((req, res) => {
     const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || '';
     const ua = req.headers['user-agent'] || '';
     (async () => {
+      let leadName = null;
+      let leadId = null;
+      let leadCity = null;
       if (slug) {
         try {
-          const r = await pg.query('select id, name, phone from prospect_leads where slug=$1 limit 1', [slug]);
+          const r = await pg.query('select id, name, phone, city from prospect_leads where slug=$1 limit 1', [slug]);
           if (r.rows[0]) {
-            const lead = r.rows[0];
-            await pg.query(
-              "update prospect_leads set wa_consent=true, wa_consent_at=now(), wa_consent_source=$2, status=case when status in ('replied','won') then status else 'clicked' end where id=$1",
-              [lead.id, 'demo_click_' + type]
-            );
-            await pg.query(
-              "insert into email_events (lead_id, event_type, occurred_at, raw, user_agent, ip) values ($1, $2, now(), $3, $4, $5)",
-              [lead.id, 'demo.cta_click', JSON.stringify({ slug, type, lead_name: lead.name }), ua, ip]
-            );
-            console.log(`[contact] ${slug} <- ${type} click`);
+            leadId = r.rows[0].id;
+            leadName = r.rows[0].name;
+            leadCity = r.rows[0].city;
           }
-        } catch (e) { console.error('[contact] error:', e.message); }
+        } catch (e) { console.error('[contact] query error:', e.message); }
       }
+      // Mensaje con nombre real del lead (no slug)
+      const displayName = leadName || (slug || 'PACAME');
+      const cityPart = leadCity ? ` en ${leadCity}` : '';
+      const waText = `Hola Pablo, soy de ${displayName}${cityPart}. He visto la demo que me mandasteis y me interesa, ¿hablamos?`;
+      const emailSubj = `Interesado en demo PACAME — ${displayName}`;
+      const emailBody = `Hola Pablo,\n\nHe recibido tu email y visto la demo. Soy responsable de ${displayName}${cityPart}.\n\nMe interesa hablar — cuéntame los siguientes pasos.\n\nGracias.`;
+
       const dest = type === 'wa'
-        ? `https://wa.me/34722669381?text=${encodeURIComponent('Hola Pablo, vengo de la demo de ' + (slug || 'PACAME') + '. Me interesa.')}`
-        : `mailto:hola@pacameagencia.com?subject=${encodeURIComponent('Interesado en demo PACAME — ' + (slug || ''))}&body=${encodeURIComponent('Hola Pablo, he visto la demo y me interesa. ')}`;
+        ? `https://wa.me/34722669381?text=${encodeURIComponent(waText)}`
+        : `mailto:hola@pacameagencia.com?subject=${encodeURIComponent(emailSubj)}&body=${encodeURIComponent(emailBody)}`;
       res.writeHead(302, { Location: dest });
       res.end();
+
+      // DB async (después del redirect, no bloquea UX)
+      if (leadId) {
+        try {
+          await pg.query(
+            "update prospect_leads set wa_consent=true, wa_consent_at=now(), wa_consent_source=$2, status=case when status in ('replied','won') then status else 'clicked' end where id=$1",
+            [leadId, 'demo_click_' + type]
+          );
+          await pg.query(
+            "insert into email_events (lead_id, event_type, occurred_at, raw, user_agent, ip) values ($1, $2, now(), $3, $4, $5)",
+            [leadId, 'demo.cta_click', JSON.stringify({ slug, type, lead_name: leadName }), ua, ip]
+          );
+          console.log(`[contact] ${slug} <- ${type} click (${leadName})`);
+        } catch (e) { console.error('[contact] update error:', e.message); }
+      }
     })();
     return;
   }

@@ -57,6 +57,29 @@ const SUBJECTS = [
   (name, city) => `${name}, te montas tu web nueva esta semana?`,
 ];
 
+// ─────────────────────────────────────────────────────────────────
+// A/B TEST POOLS — sustituye SUBJECTS para hacer test
+// Pool A: tono suave, curiosity gap
+// Pool B: tono directo, dueño-a-dueño, urgencia
+// ─────────────────────────────────────────────────────────────────
+const SUBJECTS_POOL_A = [
+  (name, city) => `${name}, una idea que tengo para vosotros`,
+  (name, city) => `Para ${name} en ${city || 'tu ciudad'} — 1 min`,
+  (name, city) => `Hola ${name}, esto se queda entre nosotros`,
+  (name, city) => `Una pregunta sobre vuestra web, ${name}`,
+  (name, city) => `${name}, ¿tenéis 1 minuto?`,
+  (name, city) => `He pensado algo para ${name}`,
+];
+
+const SUBJECTS_POOL_B = [
+  (name, city) => `${name}: os monté algo, decidme si vale`,
+  (name, city) => `${name} + propuesta de web (sin coste)`,
+  (name, city) => `Para el dueño de ${name}`,
+  (name, city) => `${name} — 3 cosas que te quería contar`,
+  (name, city) => `Pablo aquí, dueño de PACAME — sobre ${name}`,
+  (name, city) => `${name}, te montas tu web nueva esta semana?`,
+];
+
 // Preheader: texto que sale en la bandeja después del asunto.
 // Boost directo de open rate. 50-90 chars máximo.
 const PREHEADERS = [
@@ -283,6 +306,34 @@ const CITY_MENTIONS = {
 
 // ─────────────────────────────────────────────────────────────────
 
+
+// ─────────────────────────────────────────────────────────────────
+// SUBJECTS / OPENINGS específicos para leads SIN WEB
+// (más fuertes, dolor de "no aparecer online")
+// ─────────────────────────────────────────────────────────────────
+const SUBJECTS_NO_WEB = [
+  (name, city) => `${name}, vuestro local no aparece online`,
+  (name, city) => `${name} en ${city || 'tu ciudad'} sin web — esto puede ayudar`,
+  (name, city) => `Buscaba ${name} en Google y no os encontré`,
+  (name, city) => `${name}: una idea sobre vuestra presencia online`,
+  (name, city) => `Para ${name} — sin web hoy en día`,
+  (name, city) => `${name}, perdéis reservas por no tener web`,
+];
+
+const PREHEADERS_NO_WEB = [
+  () => `Os monté una propuesta de cómo se vería. Tarda 30 segundos abrirla.`,
+  () => `Sin web, no aparecéis en Google Maps con la tarjeta completa. Eso son reservas perdidas.`,
+  () => `He hecho un mockup pensando en vuestro local. Si os encaja, hablamos.`,
+  () => `Hoy la gente busca cualquier sitio antes de ir. Sin web, llegan a la competencia.`,
+];
+
+const OPENINGS_NO_WEB = [
+  (city, type) => `Soy Pablo, de PACAME. Andaba revisando ${typeLabelPlural(type)} en ${city || 'la zona'} y vi que no tenéis web propia. La mayoría de ${typeLabelPlural(type)} ya la tienen — y la gente que no os encuentra online se va al de al lado.`,
+  (city, type) => `Soy Pablo (agencia digital pequeña). Buscando ${typeLabelPlural(type)} en ${city || 'la zona'} para una recomendación, vuestro nombre apareció pero sin web. Eso significa que cuando alguien os busca en Google solo ve la ficha vacía de Maps.`,
+  (city, type) => `Pablo, de PACAME. Cuando alguien hoy quiere ${type === 'cafe' ? 'tomar algo' : 'ir a comer'} ${city ? `en ${city}` : 'a un sitio'} hace 2 cosas: busca en Google y mira el menú. Sin web, perdéis la mitad de esos clientes potenciales.`,
+];
+
+
 // API pública
 
 // ─────────────────────────────────────────────────────────────────
@@ -290,13 +341,27 @@ const CITY_MENTIONS = {
 export function buildEmail(lead, demoUrl) {
 
   const slug = lead.slug;
+  const hasWeb = !!(lead.website || lead.web_url);
 
-  const subjectIdx = hash(slug + ":subject") % SUBJECTS.length; const subject = SUBJECTS[subjectIdx](lead.name, lead.city);
-  const preheaderIdx = hash(slug + ":preheader") % PREHEADERS.length; const preheader = PREHEADERS[preheaderIdx](lead.name);
+  // Pool de subjects/preheaders/openings: si NO tiene web, usar variantes con dolor más fuerte
+  // A/B test: 50/50 entre pool A (suave) y pool B (directo) para leads CON web
+  // Para leads SIN web usamos SUBJECTS_NO_WEB sin A/B (mensaje específico es ya su test)
+  const abPool = hash(slug + ":ab") % 2 === 0 ? 'A' : 'B';
+  const subjectsPool = hasWeb
+    ? (abPool === 'A' ? SUBJECTS_POOL_A : SUBJECTS_POOL_B)
+    : SUBJECTS_NO_WEB;
+  const preheadersPool = hasWeb ? PREHEADERS : PREHEADERS_NO_WEB;
+  const openingsPool = hasWeb ? OPENINGS : OPENINGS_NO_WEB;
+
+  // subjectIdx: para A/B usamos formato "10 + idx" para pool B, así <10 = pool A, >=10 = pool B
+  const subjectIdxRaw = hash(slug + ":subject") % subjectsPool.length;
+  const subjectIdx = hasWeb && abPool === 'B' ? 10 + subjectIdxRaw : subjectIdxRaw;
+  const subject = subjectsPool[subjectIdxRaw](lead.name, lead.city);
+  const preheaderIdx = hash(slug + ":preheader") % preheadersPool.length; const preheader = preheadersPool[preheaderIdx](lead.name);
 
   const greeting = pick(slug, ':greeting', GREETINGS)(lead.name);
 
-  const opening = pick(slug, ':opening', OPENINGS)(lead.city, lead.type);
+  const opening = openingsPool[hash(slug + ":opening") % openingsPool.length](lead.city, lead.type);
 
   const hook = pick(slug, ':hook', HOOKS)();
 
@@ -312,7 +377,7 @@ export function buildEmail(lead, demoUrl) {
 
 
 
-  return { subject, preheader, subjectIdx, preheaderIdx, greeting, opening, hook, photoNote, closing, signoff, postscript, cityMention };
+  return { subject, preheader, subjectIdx, preheaderIdx, abPool, greeting, opening, hook, photoNote, closing, signoff, postscript, cityMention };
 
 }
 
