@@ -3452,3 +3452,150 @@ body.page-id-10826 .wishlist-table .product-price {
     padding: 0 1rem !important;
   }
 }
+
+/* ============================================================
+   35. TRUST BAR EN ARCHIVE + REFINOS FINALES
+   ============================================================ */
+
+/* 35.1 Trust bar antes del grid en archive de categorías relojes */
+body.tax-product_cat:not([class*="joya"]):not([class*="anillo"]):not([class*="pendiente"]):not([class*="pulsera"]):not([class*="colgante"]):not([class*="gargantilla"]) .term-description::after {
+  content: '';
+  display: block;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--royo-line);
+}
+
+/* 35.2 Trust bar luxury — inserta via ::after-pseudo en el wrapper de la categoría */
+body.tax-product_cat .royo-archive-trust {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 1rem !important;
+  max-width: 920px !important;
+  margin: 0 auto 3rem !important;
+  padding: 1.5rem 2rem !important;
+  background: var(--royo-paper) !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+}
+body.tax-product_cat .royo-archive-trust__item {
+  text-align: center !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.65rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-charcoal) !important;
+  line-height: 1.4 !important;
+}
+body.tax-product_cat .royo-archive-trust__item::before {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: var(--royo-champagne-dark);
+  margin-bottom: 0.4rem;
+  line-height: 1;
+}
+body.tax-product_cat .royo-archive-trust__item:nth-child(1)::before { content: '★'; }
+body.tax-product_cat .royo-archive-trust__item:nth-child(2)::before { content: '✓'; }
+body.tax-product_cat .royo-archive-trust__item:nth-child(3)::before { content: '⌖'; }
+body.tax-product_cat .royo-archive-trust__item:nth-child(4)::before { content: '⊳'; }
+
+/* 35.3 Header categoría — title con monograma sutil */
+body.tax-product_cat .page-title,
+body.tax-product_cat .woocommerce-products-header__title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(1.6rem, 3vw, 2.4rem) !important;
+  font-weight: 300 !important;
+  letter-spacing: -0.01em !important;
+  color: var(--royo-ink) !important;
+  text-align: center !important;
+  margin: 2.5rem auto 0 !important;
+  position: relative !important;
+}
+
+/* 35.4 Recently viewed widget — luxury framing si existe */
+.wcboost-recently-viewed,
+.recently-viewed-products {
+  margin: 4rem auto !important;
+  max-width: 1280px !important;
+  padding: 0 1.5rem !important;
+}
+.wcboost-recently-viewed h2,
+.wcboost-recently-viewed-title,
+.recently-viewed-products h2 {
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem) !important;
+  font-weight: 300 !important;
+  text-align: center !important;
+  color: var(--royo-ink) !important;
+  letter-spacing: -0.005em !important;
+  margin: 0 auto 2rem !important;
+  position: relative !important;
+  padding-bottom: 1rem !important;
+}
+.wcboost-recently-viewed h2::after,
+.recently-viewed-products h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 1px;
+  background: var(--royo-champagne);
+}
+
+/* 35.5 Mobile refinos finales sec 35 */
+@media (max-width: 767px) {
+  body.tax-product_cat .royo-archive-trust {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem !important;
+    padding: 1.25rem 1rem !important;
+  }
+  body.tax-product_cat .royo-archive-trust__item {
+    font-size: 0.58rem !important;
+  }
+}
+
+/* 35.6 Refinos breadcrumbs (presente en archive y single product) */
+.woocommerce-breadcrumb,
+.breadcrumb,
+nav.breadcrumb {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-charcoal) !important;
+  margin: 1.5rem 0 !important;
+  padding: 0.5rem 0 !important;
+}
+.woocommerce-breadcrumb a,
+.breadcrumb a {
+  color: var(--royo-charcoal) !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid transparent !important;
+  transition: border-color 0.2s ease !important;
+}
+.woocommerce-breadcrumb a:hover,
+.breadcrumb a:hover {
+  color: var(--royo-champagne-dark) !important;
+  border-bottom-color: var(--royo-champagne-dark) !important;
+}
+
+/* 35.7 Sortby select luxury */
+.woocommerce-ordering select {
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  background: var(--royo-paper) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.78rem !important;
+  letter-spacing: 0.08em !important;
+  color: var(--royo-charcoal) !important;
+  padding: 0.7rem 2.5rem 0.7rem 1rem !important;
+  cursor: pointer !important;
+}
+.woocommerce-ordering select:focus {
+  outline: none !important;
+  border-color: var(--royo-champagne) !important;
+}
