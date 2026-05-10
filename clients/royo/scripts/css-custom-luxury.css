@@ -1,4 +1,5 @@
 
+
 /*
  * Joyería Royo — CSS custom alta gama
  * Pablo: pega TODO este bloque en wp-admin → Apariencia → Personalizar → CSS adicional → Publicar.
@@ -2849,4 +2850,284 @@ body.single-product .woocommerce-product-gallery:not(.woocommerce-product-galler
   background-size: 1000px 100% !important;
   animation: royoShimmer 2s infinite linear !important;
 }
+
+/* ============================================================
+   30. PRODUCTOS RELACIONADOS + ZOOM HOVER + MOBILE 375px
+   ============================================================ */
+
+/* 30.1 Sección "Productos relacionados" — heading editorial */
+body.single-product section.related,
+body.single-product section.related.products {
+  margin: 5rem auto 4rem !important;
+  max-width: 1280px !important;
+  padding: 0 1rem !important;
+}
+body.single-product section.related > h2,
+body.single-product section.related.products > h2 {
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem) !important;
+  font-weight: 300 !important;
+  text-align: center !important;
+  color: var(--royo-ink) !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 auto 2.5rem !important;
+  position: relative !important;
+  padding-bottom: 1.25rem !important;
+}
+body.single-product section.related > h2::after,
+body.single-product section.related.products > h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 1px;
+  background: var(--royo-champagne);
+}
+
+/* 30.2 Cards de productos relacionados — luxury */
+body.single-product section.related ul.products li.product {
+  background: var(--royo-paper) !important;
+  border: 1px solid transparent !important;
+  border-radius: 2px !important;
+  padding: 0.75rem !important;
+  transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease !important;
+}
+body.single-product section.related ul.products li.product:hover {
+  border-color: var(--royo-champagne) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 32px rgba(26, 24, 22, 0.06) !important;
+}
+
+/* 30.3 Imagen del card relacionado con padding luxury */
+body.single-product section.related ul.products li.product .product-thumbnail-wrap {
+  background: var(--royo-ivory) !important;
+  overflow: hidden !important;
+  border-radius: 2px !important;
+}
+body.single-product section.related ul.products li.product img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+body.single-product section.related ul.products li.product:hover img {
+  transform: scale(1.05) !important;
+}
+
+/* 30.4 Título y precio en cards relacionados */
+body.single-product section.related ul.products li.product .woocommerce-loop-product__title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 0.92rem !important;
+  font-weight: 400 !important;
+  color: var(--royo-ink) !important;
+  letter-spacing: -0.005em !important;
+  line-height: 1.4 !important;
+  margin: 0.85rem 0 0.5rem !important;
+}
+body.single-product section.related ul.products li.product .price {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  letter-spacing: -0.01em !important;
+}
+/* Sin badge "Distribuidor Oficial" en relacionados (ya está en card archive) */
+body.single-product section.related ul.products li.product .price::after {
+  content: none !important;
+}
+
+/* 30.5 Zoom on hover — featured image single product */
+body.single-product .woocommerce-product-gallery__image {
+  overflow: hidden !important;
+  border-radius: 2px !important;
+}
+body.single-product .woocommerce-product-gallery__image img {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: zoom-in !important;
+}
+body.single-product .woocommerce-product-gallery__image:hover img {
+  transform: scale(1.06) !important;
+}
+
+/* 30.6 Mobile 375px refinos extra (más fino que sec 20.6 que ya cubre lo básico) */
+@media (max-width: 375px) {
+  body.single-product .product_title {
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+  }
+  body.single-product .summary .price {
+    font-size: 1.7rem !important;
+  }
+  body.single-product .royo-product-subtitle {
+    font-size: 0.62rem !important;
+    letter-spacing: 0.14em !important;
+  }
+  body.single-product .royo-trust-bar {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.5rem !important;
+    padding: 1rem 0 !important;
+  }
+  body.single-product .royo-trust-bar__label {
+    font-size: 0.58rem !important;
+  }
+  body.single-product .royo-cta-whatsapp {
+    padding: 0.85rem 1rem !important;
+    font-size: 0.74rem !important;
+    letter-spacing: 0.08em !important;
+  }
+  body.single-product .royo-personal-service {
+    padding: 1rem !important;
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+  body.single-product .royo-official-dealer {
+    padding: 1.75rem 0.75rem !important;
+    margin: 2rem 0 !important;
+  }
+  body.single-product .royo-official-dealer__title {
+    font-size: 1.15rem !important;
+  }
+  body.single-product .royo-brand-banner {
+    padding: 3rem 1.25rem !important;
+  }
+  body.single-product .royo-brand-banner__title {
+    font-size: 1.4rem !important;
+  }
+  body.single-product .royo-brand-banner__text {
+    font-size: 0.85rem !important;
+    line-height: 1.6 !important;
+  }
+  body.single-product section.related ul.products li.product {
+    padding: 0.5rem !important;
+  }
+  body.single-product section.related ul.products li.product .woocommerce-loop-product__title {
+    font-size: 0.78rem !important;
+  }
+  body.single-product section.related ul.products li.product .price {
+    font-size: 0.82rem !important;
+  }
+}
+
+/* ============================================================
+   31. PLACEHOLDER LUXURY para imágenes genéricas "Sin-titulo*"
+   ============================================================
+   91 productos comparten 24 fotos "Sin-titulo-N.jpg" del cliente. En grid
+   de categoría parecen idénticos. Reemplazamos visualmente esa foto por
+   un placeholder editorial Royo (gradient ivory + monograma R Playfair +
+   texto "PIEZA DISPONIBLE EN TIENDA"). El producto se sigue identificando
+   por su título y precio, pero ya no parece duplicado visual con otros.
+*/
+
+/* 31.1 Ocultar la imagen Sin-titulo */
+img[src*="Sin-titulo"],
+img[srcset*="Sin-titulo"] {
+  opacity: 0 !important;
+}
+
+/* 31.2 Wrapper de la imagen genérica recibe estilos placeholder editorial */
+li.product:has(img[src*="Sin-titulo"]) .product-thumbnail-wrap,
+li.product:has(img[src*="Sin-titulo"]) > a {
+  position: relative !important;
+  background: linear-gradient(135deg, var(--royo-ivory) 0%, var(--royo-paper) 100%) !important;
+  background-image:
+    radial-gradient(circle at 30% 30%, rgba(184, 149, 106, 0.08), transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(184, 149, 106, 0.05), transparent 50%),
+    linear-gradient(135deg, var(--royo-ivory) 0%, var(--royo-paper) 100%) !important;
+  overflow: hidden !important;
+  display: block !important;
+}
+
+/* 31.3 Monograma R Playfair + texto editorial sobre el bg */
+li.product:has(img[src*="Sin-titulo"]) .product-thumbnail-wrap::before,
+li.product:has(img[src*="Sin-titulo"]) > a::before {
+  content: 'R';
+  position: absolute !important;
+  top: 38% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(2.5rem, 5vw, 4rem) !important;
+  font-weight: 300 !important;
+  font-style: italic !important;
+  color: var(--royo-champagne-dark) !important;
+  opacity: 0.7 !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+  z-index: 4 !important;
+}
+li.product:has(img[src*="Sin-titulo"]) .product-thumbnail-wrap::after,
+li.product:has(img[src*="Sin-titulo"]) > a::after {
+  content: 'PIEZA DISPONIBLE EN TIENDA';
+  position: absolute !important;
+  top: 65% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.6rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.18em !important;
+  color: var(--royo-champagne-dark) !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+}
+
+/* 31.4 Single product — placeholder más grande y elegante en featured image */
+body.single-product .woocommerce-product-gallery:has(img[src*="Sin-titulo"]) {
+  background: linear-gradient(135deg, var(--royo-ivory) 0%, var(--royo-paper) 100%) !important;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(184, 149, 106, 0.1), transparent 60%),
+    radial-gradient(circle at 75% 75%, rgba(184, 149, 106, 0.06), transparent 50%),
+    linear-gradient(135deg, var(--royo-ivory) 0%, var(--royo-paper) 100%) !important;
+  position: relative !important;
+  min-height: 500px !important;
+}
+body.single-product .woocommerce-product-gallery:has(img[src*="Sin-titulo"])::before {
+  content: 'R';
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(5rem, 12vw, 9rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--royo-champagne-dark);
+  opacity: 0.7;
+  line-height: 1;
+  z-index: 4;
+  pointer-events: none;
+}
+body.single-product .woocommerce-product-gallery:has(img[src*="Sin-titulo"])::after {
+  content: 'PIEZA DISPONIBLE EN TIENDA · C. TESIFONTE GALLEGO 2 · ALBACETE';
+  position: absolute;
+  top: 62%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.72rem, 1.2vw, 0.85rem);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--royo-charcoal);
+  text-align: center;
+  white-space: normal;
+  max-width: 80%;
+  line-height: 1.6;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* 31.5 Mobile refinos */
+@media (max-width: 767px) {
+  li.product:has(img[src*="Sin-titulo"]) .product-thumbnail-wrap::before,
+  li.product:has(img[src*="Sin-titulo"]) > a::before {
+    font-size: 2rem !important;
+  }
+  li.product:has(img[src*="Sin-titulo"]) .product-thumbnail-wrap::after,
+  li.product:has(img[src*="Sin-titulo"]) > a::after {
+    font-size: 0.52rem !important;
+    letter-spacing: 0.14em !important;
+  }
+}
+
 

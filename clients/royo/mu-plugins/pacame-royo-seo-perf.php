@@ -1,8 +1,6 @@
 <?php
 /**
- * PACAME — Royo: SEO + Performance hardening.
- *
- * Bloque B del Sprint "Continúa Mejorando" (sesión 2026-05-10).
+ * PACAME — Royo: SEO + Performance hardening + Schema.org enrichment + Title cleanup.
  *
  * Resuelve gaps detectados en audit:
  *   1. Homepage sin H1 (problema SEO grave). Inyecta H1 invisible accesible.
@@ -10,12 +8,14 @@
  *   3. LCP en single product sin preload. Emite <link rel=preload> para featured img.
  *   4. wp-embed.js carga 11KB sin uso. Dequeue.
  *   5. Galería single product: primera imagen con loading=lazy mata LCP. Forzar eager.
+ *   6.5. SKU pegado al título producto en SERP (ej. "Tissot PR 100 40mm T1504..."). Limpieza.
+ *   7. Schema.org Product sin brand/manufacturer/mpn. Bloquea rich snippets SERP.
  *
  * Reglas críticas aplicadas:
  *   - if (!defined('ABSPATH')) exit;
  *   - Whitelist conservadora de scripts a deferir (NO jQuery/Elementor/Yoast).
  *   - H1 con clase .screen-reader-text (visible solo a crawlers/lectores pantalla).
- *   - Health check: si rompe, sobrescribir con <?php // disabled.
+ *   - Health check post-upload: si rompe, sobrescribir con <?php // disabled.
  */
 
 if (!defined('ABSPATH')) exit;
@@ -49,7 +49,6 @@ const ROYO_DEFER_HANDLES = [
     'comment-reply',
 ];
 
-// Lista de handles que NO se pueden defer (rompen layout/funcionalidad)
 const ROYO_NEVER_DEFER = [
     'jquery',
     'jquery-core',
@@ -67,7 +66,6 @@ function royo_defer_non_critical_js($tag, $handle, $src) {
     if (in_array($handle, ROYO_NEVER_DEFER, true)) return $tag;
     foreach (ROYO_DEFER_HANDLES as $defer_handle) {
         if (stripos($handle, $defer_handle) !== false) {
-            // Si ya tiene defer/async, no duplicar
             if (stripos($tag, ' defer') !== false || stripos($tag, ' async') !== false) return $tag;
             return str_replace(' src=', ' defer src=', $tag);
         }
@@ -114,7 +112,6 @@ function royo_first_gallery_eager($attr, $attachment, $size) {
     if (!is_singular('product')) return $attr;
     global $product;
     if (!$product || !is_object($product)) return $attr;
-    // Solo afectar la imagen featured (primera de galería)
     if ((int) $attachment->ID === (int) $product->get_image_id()) {
         $attr['loading'] = 'eager';
         $attr['fetchpriority'] = 'high';
@@ -124,7 +121,7 @@ function royo_first_gallery_eager($attr, $attachment, $size) {
 }
 
 // =============================================================
-// 6. META TAG VIEWPORT garantizado (defensa contra remove de tema)
+// 6. META TAG VIEWPORT garantizado
 // =============================================================
 
 add_action('wp_head', 'royo_ensure_viewport', 0);
@@ -132,6 +129,204 @@ function royo_ensure_viewport() {
     static $emitted = false;
     if ($emitted) return;
     $emitted = true;
-    // No emitimos si el tema ya lo hace (Ecomus sí lo hace por default),
-    // este es solo fallback por si alguna optimización lo dequeue.
+}
+
+// =============================================================
+// 6.5 LIMPIAR SKU DEL TITLE en SERP
+// =============================================================
+// Productos tienen SKU pegado al title (ej. "Tissot PR 100 40mm T1504101109100").
+// Filter el title que Yoast/Ecomus emite para limpiar el SKU.
+
+function royo_clean_sku_from_title($title) {
+    if (!is_string($title) || empty($title)) return $title;
+    $patterns = [
+        '/\s+T\d{12,14}\s*/i',                       // Tissot
+        '/\s+H\d{8,10}\s*/i',                        // Hamilton
+        '/\s+L\d{8,10}\s*/i',                        // Longines
+        '/\s+C\d{12,14}\s*/i',                       // Certina
+        '/\s+0[12]\s+\d{3}\s+\d{4}\s+\d{4}-\d{2}\s+\d?\s*\d{2}\s+\d{2}(?:\s+\d{2})?(?:TLC)?\s*/i', // Oris
+    ];
+    foreach ($patterns as $p) {
+        $title = preg_replace($p, ' ', $title);
+    }
+    $title = preg_replace('/\s+/', ' ', $title);
+    $title = preg_replace('/\s*[·•]\s*$/', '', $title);
+    return trim($title);
+}
+
+add_filter('wpseo_title', 'royo_yoast_clean_title', 20, 1);
+function royo_yoast_clean_title($title) {
+    if (!is_singular('product')) return $title;
+    return royo_clean_sku_from_title($title);
+}
+
+add_filter('wpseo_metadesc', 'royo_yoast_clean_meta', 20, 1);
+function royo_yoast_clean_meta($desc) {
+    if (!is_singular('product')) return $desc;
+    return royo_clean_sku_from_title($desc);
+}
+
+add_filter('pre_get_document_title', 'royo_clean_doc_title', 20, 1);
+function royo_clean_doc_title($title) {
+    if (!is_singular('product')) return $title;
+    if (empty($title)) return $title;
+    return royo_clean_sku_from_title($title);
+}
+
+// Open Graph title (Facebook, LinkedIn, WhatsApp preview)
+add_filter('wpseo_opengraph_title', 'royo_yoast_clean_og_title', 20, 1);
+function royo_yoast_clean_og_title($title) {
+    if (!is_singular('product')) return $title;
+    return royo_clean_sku_from_title($title);
+}
+
+// Twitter Card title
+add_filter('wpseo_twitter_title', 'royo_yoast_clean_tw_title', 20, 1);
+function royo_yoast_clean_tw_title($title) {
+    if (!is_singular('product')) return $title;
+    return royo_clean_sku_from_title($title);
+}
+
+// Open Graph description
+add_filter('wpseo_opengraph_desc', 'royo_yoast_clean_og_desc', 20, 1);
+function royo_yoast_clean_og_desc($desc) {
+    if (!is_singular('product')) return $desc;
+    return royo_clean_sku_from_title($desc);
+}
+
+// =============================================================
+// 7. SCHEMA.ORG PRODUCT — añadir brand + manufacturer + mpn
+// =============================================================
+
+const ROYO_SCHEMA_OFFICIAL_BRANDS = [
+    'Tissot' => 'https://www.tissotwatches.com',
+    'Longines' => 'https://www.longines.com',
+    'Casio' => 'https://www.casio.com',
+    'Seiko' => 'https://www.seikowatches.com',
+    'Citizen' => 'https://www.citizenwatch.com',
+    'Hamilton' => 'https://www.hamiltonwatch.com',
+    'Oris' => 'https://www.oris.ch',
+    'Certina' => 'https://www.certina.com',
+    'MontBlanc' => 'https://www.montblanc.com',
+    'Mont Blanc' => 'https://www.montblanc.com',
+    'Victorinox' => 'https://www.victorinox.com',
+    'Baume & Mercier' => 'https://www.baume-et-mercier.com',
+    'Franck Muller' => 'https://www.franckmuller.com',
+    'Omega' => 'https://www.omegawatches.com',
+];
+
+function royo_schema_detect_brand($product) {
+    if (!$product || !is_object($product)) return null;
+    $cats = wp_get_post_terms($product->get_id(), 'product_cat', ['fields' => 'names']);
+    if (is_wp_error($cats)) return null;
+    foreach (ROYO_SCHEMA_OFFICIAL_BRANDS as $brand_name => $brand_url) {
+        if (in_array($brand_name, $cats, true)) {
+            return ['name' => $brand_name, 'url' => $brand_url];
+        }
+        if (stripos($product->get_name(), $brand_name) !== false) {
+            return ['name' => $brand_name, 'url' => $brand_url];
+        }
+    }
+    return null;
+}
+
+function royo_schema_apply_brand($piece, $product) {
+    $brand = royo_schema_detect_brand($product);
+    if (!$brand) return $piece;
+    if (empty($piece['brand'])) {
+        $piece['brand'] = [
+            '@type' => 'Brand',
+            'name' => $brand['name'],
+            'url' => $brand['url'],
+        ];
+    }
+    if (empty($piece['manufacturer'])) {
+        $piece['manufacturer'] = [
+            '@type' => 'Organization',
+            'name' => $brand['name'],
+            'url' => $brand['url'],
+        ];
+    }
+    $sku = $product->get_sku();
+    if ($sku && empty($piece['mpn'])) {
+        $piece['mpn'] = $sku;
+    }
+    return $piece;
+}
+
+// Filter WooCommerce structured data Product (hook estándar Ecomus consume)
+add_filter('woocommerce_structured_data_product', 'royo_schema_woo_product_brand', 200, 2);
+function royo_schema_woo_product_brand($markup, $product) {
+    if (!$product || !is_object($product)) return $markup;
+    return royo_schema_apply_brand($markup, $product);
+}
+
+// Filters Yoast (redundancia por si futuro Yoast Premium activo)
+add_filter('wpseo_schema_graph', 'royo_schema_add_brand', 200, 2);
+add_filter('wpseo_schema_product', 'royo_schema_product_brand', 200, 2);
+
+function royo_schema_product_brand($data, $context = null) {
+    if (!is_singular('product')) return $data;
+    global $product;
+    if (!$product || !is_object($product)) {
+        $product_id = get_queried_object_id();
+        if ($product_id) $product = wc_get_product($product_id);
+    }
+    if (!$product || !is_object($product)) return $data;
+    return royo_schema_apply_brand($data, $product);
+}
+
+function royo_schema_add_brand($graph, $context = null) {
+    if (!is_singular('product')) return $graph;
+    global $product;
+    if (!$product || !is_object($product)) {
+        $product_id = get_queried_object_id();
+        if ($product_id) $product = wc_get_product($product_id);
+    }
+    if (!$product || !is_object($product)) return $graph;
+
+    foreach ($graph as $i => $piece) {
+        if (!is_array($piece)) continue;
+        $type = isset($piece['@type']) ? $piece['@type'] : null;
+        if ($type === 'Product' || (is_array($type) && in_array('Product', $type, true))) {
+            $graph[$i] = royo_schema_apply_brand($piece, $product);
+        }
+    }
+    return $graph;
+}
+
+// Fallback: si no hay Yoast Y no hay Woo schema, emitir Product schema básico propio.
+add_action('wp_head', 'royo_schema_fallback_product', 99);
+function royo_schema_fallback_product() {
+    if (!is_singular('product')) return;
+    if (defined('WPSEO_VERSION')) return;
+    global $product;
+    if (!$product || !is_object($product)) {
+        $product_id = get_queried_object_id();
+        if ($product_id) $product = wc_get_product($product_id);
+    }
+    if (!$product || !is_object($product)) return;
+    $brand = royo_schema_detect_brand($product);
+
+    $schema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Product',
+        'name' => $product->get_name(),
+        'sku' => $product->get_sku(),
+        'description' => wp_strip_all_tags($product->get_short_description() ?: $product->get_description()),
+        'image' => wp_get_attachment_image_url($product->get_image_id(), 'full'),
+        'url' => get_permalink($product->get_id()),
+        'offers' => [
+            '@type' => 'Offer',
+            'price' => $product->get_price(),
+            'priceCurrency' => get_woocommerce_currency(),
+            'availability' => 'https://schema.org/' . ($product->is_in_stock() ? 'InStock' : 'OutOfStock'),
+            'seller' => ['@type' => 'JewelryStore', 'name' => 'Joyería Royo'],
+        ],
+    ];
+    if ($brand) {
+        $schema['brand'] = ['@type' => 'Brand', 'name' => $brand['name'], 'url' => $brand['url']];
+        $schema['mpn'] = $product->get_sku();
+    }
+    echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
 }
