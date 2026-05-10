@@ -4057,3 +4057,22 @@ body li.product:has(img[src*="Sin-titulo"]) .product-thumbnail::after {
     letter-spacing: 0.14em !important;
   }
 }
+
+
+/* ============================================================
+   40. OCULTAR EN HOME productos con placeholder Sin-titulo*
+   ============================================================
+   Para mantener la HOME visualmente impecable, ocultamos los productos
+   sin packshot oficial (Hamilton/Casio legacy, Longines descatalogados)
+   SÓLO en homepage. Siguen disponibles en su archive de categoría con
+   el placeholder Royo "PIEZA DISPONIBLE EN TIENDA".
+*/
+
+body.home li.product:has(img[src*="Sin-titulo"]) {
+  display: none !important;
+}
+
+/* Si TODO el carrusel es Sin-titulo (raro), restaurar visibilidad para no romper layout */
+body.home .ecomus-products-carousel ul.products:not(:has(li.product:not(:has(img[src*="Sin-titulo"])))) li.product:has(img[src*="Sin-titulo"]) {
+  display: list-item !important;
+}
