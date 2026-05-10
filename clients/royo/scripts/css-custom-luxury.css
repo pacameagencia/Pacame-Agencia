@@ -3261,3 +3261,194 @@ body.tax-product_cat .archive-description strong {
     font-size: 0.92rem !important;
   }
 }
+
+/* ============================================================
+   34. SEARCH RESULTS + WISHLIST PAGE LUXURY
+   ============================================================ */
+
+/* 34.1 Search results — H1 editorial */
+body.search h1.page-title,
+body.search-results .page-header h1,
+body.search-results h1 {
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(1.5rem, 3vw, 2.1rem) !important;
+  font-weight: 300 !important;
+  letter-spacing: -0.01em !important;
+  color: var(--royo-ink) !important;
+  text-align: center !important;
+  margin: 2rem auto 1rem !important;
+  padding: 0 1.5rem !important;
+}
+
+/* 34.2 Search no-results state */
+body.search-no-results .no-results,
+body.search.search-no-results .page-content,
+body.search-no-results .not-found {
+  max-width: 720px !important;
+  margin: 4rem auto !important;
+  padding: 4rem 2rem !important;
+  text-align: center !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  background: var(--royo-ivory) !important;
+}
+body.search-no-results .no-results::before {
+  content: 'R';
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--royo-champagne-dark);
+  opacity: 0.7;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+body.search-no-results .page-title {
+  font-family: 'Playfair Display', serif !important;
+  font-weight: 300 !important;
+}
+body.search-no-results form.search-form {
+  margin: 2rem auto !important;
+  max-width: 480px !important;
+}
+body.search-no-results form.search-form input[type="search"] {
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  padding: 0.85rem 1rem !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.95rem !important;
+  background: var(--royo-paper) !important;
+  width: 100% !important;
+  color: var(--royo-ink) !important;
+}
+body.search-no-results form.search-form input[type="search"]:focus {
+  border-color: var(--royo-champagne) !important;
+  outline: none !important;
+}
+
+/* 34.3 Search results — header del archive con count en badge */
+body.search-results .woocommerce-result-count,
+body.search .woocommerce-result-count {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.78rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-champagne-dark) !important;
+  text-align: center !important;
+  display: block !important;
+  margin: 0.5rem auto 2rem !important;
+}
+
+/* 34.4 Wishlist page — heading editorial */
+body.page-id-10826 h1,
+body.page-id-10826 .page-title,
+body[class*="wcboost-wishlist"] h1.page-title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(1.6rem, 3vw, 2.2rem) !important;
+  font-weight: 300 !important;
+  color: var(--royo-ink) !important;
+  text-align: center !important;
+  margin: 2rem auto 0.5rem !important;
+  letter-spacing: -0.01em !important;
+}
+
+body.page-id-10826 .page-content::before {
+  content: 'Tus piezas guardadas para más tarde';
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--royo-champagne-dark);
+  text-align: center;
+  margin: 0 auto 2.5rem;
+}
+
+/* 34.5 Wishlist empty state */
+body.page-id-10826 .wcboost-wishlist-empty,
+body.page-id-10826 .empty-wishlist {
+  max-width: 720px !important;
+  margin: 3rem auto !important;
+  padding: 4rem 2rem !important;
+  text-align: center !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  background: var(--royo-ivory) !important;
+}
+body.page-id-10826 .wcboost-wishlist-empty::before,
+body.page-id-10826 .empty-wishlist::before {
+  content: '♡';
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  color: var(--royo-champagne-dark);
+  opacity: 0.6;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+
+/* 34.6 Wishlist tabla con productos */
+body.page-id-10826 .wcboost-wishlist-table,
+body.page-id-10826 .wishlist-table {
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  background: var(--royo-paper) !important;
+  margin: 2rem auto !important;
+  max-width: 1100px !important;
+  overflow: hidden !important;
+}
+body.page-id-10826 .wcboost-wishlist-table th,
+body.page-id-10826 .wishlist-table th {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-charcoal) !important;
+  padding: 1.25rem 1rem !important;
+  border-bottom: 1px solid var(--royo-line) !important;
+  background: var(--royo-ivory) !important;
+}
+body.page-id-10826 .wcboost-wishlist-table td,
+body.page-id-10826 .wishlist-table td {
+  padding: 1.25rem 1rem !important;
+  border-bottom: 1px solid var(--royo-line) !important;
+  vertical-align: middle !important;
+}
+body.page-id-10826 .wcboost-wishlist-table .product-name a,
+body.page-id-10826 .wishlist-table .product-name a {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  color: var(--royo-ink) !important;
+  text-decoration: none !important;
+}
+body.page-id-10826 .wcboost-wishlist-table .product-name a:hover,
+body.page-id-10826 .wishlist-table .product-name a:hover {
+  color: var(--royo-champagne-dark) !important;
+}
+body.page-id-10826 .wcboost-wishlist-table .product-price,
+body.page-id-10826 .wishlist-table .product-price {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+}
+
+/* 34.7 Mobile refinos */
+@media (max-width: 767px) {
+  body.page-id-10826 .wcboost-wishlist-table thead {
+    display: none !important;
+  }
+  body.page-id-10826 .wcboost-wishlist-table td {
+    display: block !important;
+    text-align: center !important;
+    padding: 0.75rem !important;
+  }
+  body.search h1.page-title,
+  body.search-results h1 {
+    padding: 0 1rem !important;
+  }
+}

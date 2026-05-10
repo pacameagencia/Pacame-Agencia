@@ -53,6 +53,20 @@ function pacame_royo_replace_hardcoded($html) {
     'Sorry for the inconvenience. Go to our homepage or check out our latest collections.' => 'Sigue navegando entre nuestras colecciones de relojería oficial y joyería de oro 18kt, o vuelve a la portada para descubrir el catálogo completo.',
     '>Shop now<'                    => '>Volver a la tienda<',
     'Shop now'                      => 'Volver a la tienda',
+    // Search results page (Ecomus hardcoded)
+    'Search Results for:'           => 'Resultados para:',
+    'Search Results for'            => 'Resultados para',
+    'Search results for'            => 'Resultados para',
+    'Search Results'                => 'Resultados de búsqueda',
+    'Nothing was found'             => 'No se han encontrado resultados',
+    'Sorry, but nothing matched your search terms.' => 'Lo sentimos, no se han encontrado resultados que coincidan con tu búsqueda.',
+    'Please try again with some different keywords.' => 'Intenta con otras palabras clave o navega por nuestras categorías.',
+    // Wishlist page hardcoded
+    '>Wishlist<'                    => '>Favoritos<',
+    'Your wishlist is currently empty.' => 'Tu lista de favoritos está vacía.',
+    'Browse Products'               => 'Explorar productos',
+    'Return to shop'                => 'Volver a la tienda',
+    'Browse products'               => 'Explorar productos',
   );
   return strtr($html, $replacements);
 }
