@@ -3837,157 +3837,86 @@ body.woocommerce-page input[type="checkbox"]:checked::after {
   }
 }
 
-/* ============================================================
-   37. CONSISTENCIA VISUAL IMÁGENES PRODUCTO — aspect ratio 1:1
-   ============================================================
-   Problema detectado en audit: 91/106 Tissot son 1:1 (packshots oficiales
-   con SKU variant filename) pero 13 son fotos viejas del cliente en
-   portrait 600x850 (ratio 0.706). En grid de categoría las cards se ven
-   con altura distinta → producto inconsistente visualmente.
-   Misma situación en Casio (9), Seiko (9), Hamilton (8), Longines.
 
-   Fix: forzar aspect-ratio 1:1 + object-fit:contain + padding crema en
-   TODOS los wrappers de imagen producto. Sin tocar las imágenes (son
-   del cliente). Las cards quedan todas iguales con el producto centrado.
+
+/* ============================================================
+   37. CONSISTENCIA VISUAL IMÁGENES PRODUCTO — aspect ratio 1:1 v2
+   ============================================================
+   Wrapper real Ecomus = .product-thumbnail (NO .product-thumbnail-wrap).
+   v1 anterior tenía selector incorrecto → imágenes invisibles.
 */
 
-/* 37.1 Archive cards (categoría, marca, sub-cats) */
-body.archive ul.products li.product .product-thumbnail-wrap,
-body.archive ul.products li.product > a,
-body.tax-product_cat ul.products li.product .product-thumbnail-wrap,
-body.tax-product_cat ul.products li.product > a,
-body.post-type-archive-product ul.products li.product .product-thumbnail-wrap,
-body.search-results ul.products li.product .product-thumbnail-wrap,
-body.search ul.products li.product .product-thumbnail-wrap {
+body.archive .product-thumbnail.em-relative,
+body.tax-product_cat .product-thumbnail.em-relative,
+body.post-type-archive-product .product-thumbnail.em-relative,
+body.search-results .product-thumbnail.em-relative {
   aspect-ratio: 1 / 1 !important;
   overflow: hidden !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
   background: var(--royo-ivory) !important;
+  display: block !important;
   position: relative !important;
 }
 
-body.archive ul.products li.product .product-thumbnail-wrap img,
-body.archive ul.products li.product > a > img,
-body.tax-product_cat ul.products li.product .product-thumbnail-wrap img,
-body.tax-product_cat ul.products li.product > a > img,
-body.post-type-archive-product ul.products li.product .product-thumbnail-wrap img,
-body.search-results ul.products li.product img,
-body.search ul.products li.product img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-  object-position: center center !important;
-  padding: 0.75rem !important;
-  box-sizing: border-box !important;
-  background: transparent !important;
-}
-
-/* 37.2 Productos relacionados (single product) — misma regla */
-body.single-product section.related ul.products li.product .product-thumbnail-wrap,
-body.single-product section.related ul.products li.product > a {
-  aspect-ratio: 1 / 1 !important;
-  overflow: hidden !important;
+body.archive .product-thumbnail.em-relative > a.woocommerce-LoopProduct-link,
+body.tax-product_cat .product-thumbnail.em-relative > a.woocommerce-LoopProduct-link,
+body.post-type-archive-product .product-thumbnail.em-relative > a.woocommerce-LoopProduct-link,
+body.search-results .product-thumbnail.em-relative > a.woocommerce-LoopProduct-link {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  background: var(--royo-ivory) !important;
-}
-body.single-product section.related ul.products li.product img {
   width: 100% !important;
   height: 100% !important;
+  position: relative !important;
+}
+
+body.archive .product-thumbnail.em-relative > a > img,
+body.tax-product_cat .product-thumbnail.em-relative > a > img,
+body.post-type-archive-product .product-thumbnail.em-relative > a > img,
+body.search-results .product-thumbnail.em-relative > a > img {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  width: auto !important;
+  height: auto !important;
   object-fit: contain !important;
   object-position: center center !important;
   padding: 0.5rem !important;
   box-sizing: border-box !important;
-}
-
-/* 37.3 Single product — galería principal aspect ratio 1:1 */
-body.single-product .woocommerce-product-gallery__image,
-body.single-product .woocommerce-product-gallery__wrapper > div,
-body.single-product .flex-viewport .woocommerce-product-gallery__image {
-  aspect-ratio: 1 / 1 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: var(--royo-ivory) !important;
-  overflow: hidden !important;
-  position: relative !important;
-}
-body.single-product .woocommerce-product-gallery__image img,
-body.single-product .woocommerce-product-gallery__image a img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-  object-position: center center !important;
-  padding: 1rem !important;
-  box-sizing: border-box !important;
-}
-
-/* 37.4 Thumbnails verticales (sec 22.8 ya las forzaba 80x80 pero refinamos) */
-body.single-product .flex-control-thumbs li > img,
-body.single-product .flex-control-thumbs li > a > img {
-  aspect-ratio: 1 / 1 !important;
-  width: 100% !important;
-  height: auto !important;
-  object-fit: contain !important;
-  object-position: center center !important;
-  padding: 0.4rem !important;
-  background: var(--royo-ivory) !important;
-  box-sizing: border-box !important;
-}
-
-/* 37.5 Cart + mini-cart thumbnails — pequeño pero consistente */
-body.woocommerce-cart .product-thumbnail img,
-.elementor-menu-cart__product-image img,
-.woocommerce-mini-cart__product-image img,
-.widget_shopping_cart .product img {
-  aspect-ratio: 1 / 1 !important;
-  width: 80px !important;
-  height: 80px !important;
-  object-fit: contain !important;
-  object-position: center center !important;
-  padding: 0.25rem !important;
-  background: var(--royo-ivory) !important;
-  box-sizing: border-box !important;
-}
-
-/* 37.6 Wishlist tabla — thumbnail consistente */
-body.page-id-10826 .wcboost-wishlist-table .product-thumbnail img,
-body.page-id-10826 .wishlist-table .product-thumbnail img {
-  aspect-ratio: 1 / 1 !important;
-  width: 100px !important;
-  height: 100px !important;
-  object-fit: contain !important;
-  object-position: center center !important;
-  padding: 0.4rem !important;
-  background: var(--royo-ivory) !important;
-  box-sizing: border-box !important;
-}
-
-/* 37.7 Hover scale solo dentro del wrapper (no salta fuera) */
-body.archive ul.products li.product .product-thumbnail-wrap img,
-body.tax-product_cat ul.products li.product .product-thumbnail-wrap img,
-body.single-product section.related ul.products li.product img {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
-body.archive ul.products li.product:hover .product-thumbnail-wrap img,
-body.tax-product_cat ul.products li.product:hover .product-thumbnail-wrap img,
-body.single-product section.related ul.products li.product:hover img {
+
+body.archive li.product:hover .product-thumbnail.em-relative > a > img,
+body.tax-product_cat li.product:hover .product-thumbnail.em-relative > a > img,
+body.post-type-archive-product li.product:hover .product-thumbnail.em-relative > a > img,
+body.search-results li.product:hover .product-thumbnail.em-relative > a > img {
   transform: scale(1.04) !important;
 }
 
-/* 37.8 Mobile fallbacks — mantener aspect-ratio responsive */
+body.single-product section.related .product-thumbnail.em-relative {
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+  background: var(--royo-ivory) !important;
+  display: block !important;
+}
+body.single-product section.related .product-thumbnail.em-relative > a.woocommerce-LoopProduct-link {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+body.single-product section.related .product-thumbnail.em-relative > a > img {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  padding: 0.5rem !important;
+  box-sizing: border-box !important;
+}
+
 @media (max-width: 767px) {
-  body.archive ul.products li.product .product-thumbnail-wrap,
-  body.archive ul.products li.product > a,
-  body.tax-product_cat ul.products li.product .product-thumbnail-wrap,
-  body.tax-product_cat ul.products li.product > a {
-    aspect-ratio: 1 / 1 !important;
-  }
-  body.archive ul.products li.product img,
-  body.tax-product_cat ul.products li.product img {
-    padding: 0.5rem !important;
+  body.archive .product-thumbnail.em-relative > a > img,
+  body.tax-product_cat .product-thumbnail.em-relative > a > img,
+  body.post-type-archive-product .product-thumbnail.em-relative > a > img,
+  body.search-results .product-thumbnail.em-relative > a > img {
+    padding: 0.35rem !important;
   }
 }
