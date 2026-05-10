@@ -1,0 +1,6 @@
+# Material fuente externo · NO publicar en repo público
+# Ver _source-pointers.md para puntero al archivo original en disco local.
+_raw-input.txt
+_raw-input.md
+*.raw.txt
+*.raw.md
