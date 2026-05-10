@@ -141,10 +141,38 @@ const heartbeatInterval = setInterval(async () => {
   } catch {}
 }, 30_000);
 
+// === Screenshot de la web actual del lead (microlink free) ===
+const SCREENSHOT_CACHE_PATH = resolve(root, 'data/screenshot-cache.json');
+let screenshotCache = {};
+try { screenshotCache = JSON.parse(readFileSync(SCREENSHOT_CACHE_PATH, 'utf8')); } catch {}
+function saveScreenshotCache() {
+  try { writeFileSync(SCREENSHOT_CACHE_PATH, JSON.stringify(screenshotCache, null, 2)); } catch {}
+}
+async function getWebScreenshot(websiteUrl) {
+  if (!websiteUrl) return null;
+  if (screenshotCache[websiteUrl]) return screenshotCache[websiteUrl];
+  try {
+    const apiUrl = `https://api.microlink.io/?url=${encodeURIComponent(websiteUrl)}&screenshot=true&meta=false&viewport.width=1280&viewport.height=800`;
+    const r = await fetch(apiUrl, { signal: AbortSignal.timeout(20000) });
+    if (!r.ok) return null;
+    const data = await r.json();
+    const url = data?.data?.screenshot?.url || null;
+    if (url) {
+      screenshotCache[websiteUrl] = url;
+      saveScreenshotCache();
+    }
+    return url;
+  } catch (e) {
+    console.warn('[screenshot] error:', e.message);
+    return null;
+  }
+}
+
 // === Build config (igual que pipeline.mjs) ===
-function buildConfig(lead) {
+async function buildConfig(lead) {
   const palette = pickPalette(lead.slug);
   const hero_image = pickHeroByType(lead);
+  const before_screenshot = await getWebScreenshot(lead.website || lead.web_url);
   const isRegional = (lead.cuisine || '').toLowerCase().match(/regional|spanish|manchego|asturian|catalan|basque|gallego|valencian/);
   const isPub = lead.type === 'pub' || /beer|cerveza|brewery/i.test(lead.name);
   const isBrasa = /asador|brasa|grill|parrilla/i.test(lead.name);
@@ -205,7 +233,7 @@ function buildConfig(lead) {
     address_short: lead.address || lead.city || 'España',
     address_full: lead.address || lead.city || 'España',
     city: lead.city || 'España', postal: lead.postal || '',
-    rating: '4,5', review_count: '120', hero_image, font_display: palette.font,
+    rating: '4,5', review_count: '120', hero_image, before_screenshot, has_current_web: !!before_screenshot, font_display: palette.font,
     palette: { primary: palette.primary, dark: palette.dark, deep: palette.deep, cream: palette.cream, cream_warm: palette.cream_warm, accent: palette.accent, accent_bright: palette.accent_bright, accent_deep: palette.accent_deep, earth: palette.earth, text_muted: palette.text_muted },
     eyebrow, hero_title_line1: h1l1, hero_title_line2: h1l2, hero_subtitle: sub,
     pillar_eyebrow: 'Nuestra esencia', pillar_heading: pillarHeading, pillars,
@@ -294,7 +322,7 @@ async function processLead(lead) {
   try {
     // 1. Generate
     await pg.query(`update pipeline_runs set step='generating', generate_started_at=now() where id=$1`, [runId]);
-    const cfg = buildConfig(lead);
+    const cfg = await buildConfig(lead);
     writeFileSync(resolve(root, `data/${lead.slug}.json`), JSON.stringify(cfg, null, 2));
     execSync(`node "${resolve(root, 'scripts/generate-demo.mjs')}" "${resolve(root, `data/${lead.slug}.json`)}"`, { stdio: 'pipe' });
     await pg.query(`update pipeline_runs set generate_completed_at=now() where id=$1`, [runId]);
@@ -327,7 +355,7 @@ async function processLead(lead) {
     let payload = null;
     if (!DRY) {
       await pg.query(`update pipeline_runs set step='sending', send_started_at=now() where id=$1`, [runId]);
-      payload = emailFor(lead, url);
+      const clickUrl = PUBLIC_BASE_URL + '/c/' + lead.slug; payload = emailFor(lead, clickUrl);
       const unsubMailto = `mailto:${REPLY_TO}?subject=Unsubscribe%20${encodeURIComponent(lead.email)}`;
       const r = await fetch('https://api.resend.com/emails', {
         method: 'POST',

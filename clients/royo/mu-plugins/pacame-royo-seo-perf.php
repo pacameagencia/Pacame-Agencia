@@ -330,3 +330,143 @@ function royo_schema_fallback_product() {
     }
     echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
 }
+
+// =============================================================
+// 7. SCHEMA.ORG PRODUCT — añadir brand + manufacturer
+// =============================================================
+// Yoast/Ecomus emiten Product schema básico pero SIN brand. Esto bloquea
+// rich snippets SERP. Añadimos Schema.org brand basado en la auto-detección
+// del mu-plugin pacame-royo-single-product-enrich.php (17 marcas oficiales).
+
+const ROYO_SCHEMA_OFFICIAL_BRANDS = [
+    'Tissot' => 'https://www.tissotwatches.com',
+    'Longines' => 'https://www.longines.com',
+    'Casio' => 'https://www.casio.com',
+    'Seiko' => 'https://www.seikowatches.com',
+    'Citizen' => 'https://www.citizenwatch.com',
+    'Hamilton' => 'https://www.hamiltonwatch.com',
+    'Oris' => 'https://www.oris.ch',
+    'Certina' => 'https://www.certina.com',
+    'MontBlanc' => 'https://www.montblanc.com',
+    'Mont Blanc' => 'https://www.montblanc.com',
+    'Victorinox' => 'https://www.victorinox.com',
+    'Baume & Mercier' => 'https://www.baume-et-mercier.com',
+    'Franck Muller' => 'https://www.franckmuller.com',
+    'Omega' => 'https://www.omegawatches.com',
+];
+
+function royo_schema_detect_brand($product) {
+    if (!$product || !is_object($product)) return null;
+    $cats = wp_get_post_terms($product->get_id(), 'product_cat', ['fields' => 'names']);
+    if (is_wp_error($cats)) return null;
+    foreach (ROYO_SCHEMA_OFFICIAL_BRANDS as $brand_name => $brand_url) {
+        if (in_array($brand_name, $cats, true)) {
+            return ['name' => $brand_name, 'url' => $brand_url];
+        }
+        if (stripos($product->get_name(), $brand_name) !== false) {
+            return ['name' => $brand_name, 'url' => $brand_url];
+        }
+    }
+    return null;
+}
+
+// Filter WooCommerce structured data Product (hook estándar usado por Ecomus).
+add_filter('woocommerce_structured_data_product', 'royo_schema_woo_product_brand', 200, 2);
+function royo_schema_woo_product_brand($markup, $product) {
+    if (!$product || !is_object($product)) return $markup;
+    return royo_schema_apply_brand($markup, $product);
+}
+
+// Filter Yoast Schema graph + entity Product (probamos los 2 hooks por si hay Yoast SEO Premium).
+add_filter('wpseo_schema_graph', 'royo_schema_add_brand', 200, 2);
+add_filter('wpseo_schema_product', 'royo_schema_product_brand', 200, 2);
+
+function royo_schema_apply_brand($piece, $product) {
+    $brand = royo_schema_detect_brand($product);
+    if (!$brand) return $piece;
+    if (empty($piece['brand'])) {
+        $piece['brand'] = [
+            '@type' => 'Brand',
+            'name' => $brand['name'],
+            'url' => $brand['url'],
+        ];
+    }
+    if (empty($piece['manufacturer'])) {
+        $piece['manufacturer'] = [
+            '@type' => 'Organization',
+            'name' => $brand['name'],
+            'url' => $brand['url'],
+        ];
+    }
+    $sku = $product->get_sku();
+    if ($sku && empty($piece['mpn'])) {
+        $piece['mpn'] = $sku;
+    }
+    return $piece;
+}
+
+function royo_schema_product_brand($data, $context = null) {
+    if (!is_singular('product')) return $data;
+    global $product;
+    if (!$product || !is_object($product)) {
+        $product_id = get_queried_object_id();
+        if ($product_id) $product = wc_get_product($product_id);
+    }
+    if (!$product || !is_object($product)) return $data;
+    return royo_schema_apply_brand($data, $product);
+}
+
+function royo_schema_add_brand($graph, $context = null) {
+    if (!is_singular('product')) return $graph;
+    global $product;
+    if (!$product || !is_object($product)) {
+        $product_id = get_queried_object_id();
+        if ($product_id) $product = wc_get_product($product_id);
+    }
+    if (!$product || !is_object($product)) return $graph;
+
+    foreach ($graph as $i => $piece) {
+        if (!is_array($piece)) continue;
+        $type = isset($piece['@type']) ? $piece['@type'] : null;
+        if ($type === 'Product' || (is_array($type) && in_array('Product', $type, true))) {
+            $graph[$i] = royo_schema_apply_brand($piece, $product);
+        }
+    }
+    return $graph;
+}
+
+// Fallback: si Yoast no está activo, inyectar nuestro propio Product schema básico.
+add_action('wp_head', 'royo_schema_fallback_product', 99);
+function royo_schema_fallback_product() {
+    if (!is_singular('product')) return;
+    if (defined('WPSEO_VERSION')) return; // Yoast activo, ya emite schema
+    global $product;
+    if (!$product || !is_object($product)) {
+        $product_id = get_queried_object_id();
+        if ($product_id) $product = wc_get_product($product_id);
+    }
+    if (!$product || !is_object($product)) return;
+    $brand = royo_schema_detect_brand($product);
+
+    $schema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Product',
+        'name' => $product->get_name(),
+        'sku' => $product->get_sku(),
+        'description' => wp_strip_all_tags($product->get_short_description() ?: $product->get_description()),
+        'image' => wp_get_attachment_image_url($product->get_image_id(), 'full'),
+        'url' => get_permalink($product->get_id()),
+        'offers' => [
+            '@type' => 'Offer',
+            'price' => $product->get_price(),
+            'priceCurrency' => get_woocommerce_currency(),
+            'availability' => 'https://schema.org/' . ($product->is_in_stock() ? 'InStock' : 'OutOfStock'),
+            'seller' => ['@type' => 'JewelryStore', 'name' => 'Joyería Royo'],
+        ],
+    ];
+    if ($brand) {
+        $schema['brand'] = ['@type' => 'Brand', 'name' => $brand['name'], 'url' => $brand['url']];
+        $schema['mpn'] = $product->get_sku();
+    }
+    echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
+}
