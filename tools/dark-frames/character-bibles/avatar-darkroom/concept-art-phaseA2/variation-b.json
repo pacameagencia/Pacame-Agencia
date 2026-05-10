@@ -1,0 +1,21 @@
+[
+  {
+    "id": "690b7eac-7b3a-4fad-86d2-77bcf70782e9",
+    "status": "completed",
+    "display_name": "GPT Image 2",
+    "job_set_type": "imagegen_2_0",
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DOIc2LeqMNs69AbhbSOqSgTPOm/hf_20260510_192059_690b7eac-7b3a-4fad-86d2-77bcf70782e9.png",
+    "created_at": 1778440859.266629,
+    "params": {
+      "width": 1744,
+      "height": 2336,
+      "prompt": "Ultra-detailed extreme close-up portrait of A small bipedal robot creature mascot, approximately 35cm tall, head-to-body proportions 1:1.5, head is a spherical chassis of COMPLETELY MATTE BLACK metal (NOT brushed silver, NOT chrome, NOT grey - pure deep ink black #0A0A0A only), two large round CUTE eyes glowing acid neon green #CFFF00 with pure dark pupils inside (Stitch-Baymax cute proportions, NOT slit visor NOT humanoid face), a third small circular glowing acid neon green eye EXACTLY in the center of the forehead between the two main eyes, always visible at peak intensity (this is a critical identity anchor - DO NOT skip), a thin vertical black antenna stalk emerging from the top center of the head with THREE small spherical acid green glow nodes spaced evenly along it like a TV aerial (NOT a propeller, NOT a helix cross shape, NOT a Y-shape - a single vertical line with 3 dots), compact body chassis of matte black metal with visible panel joinery, rubber-tech matte black joints with subtle sub-surface scattering, short articulated arms, compact legs with stabilizer pads, off-white #F2F2F2 fine stitching lines visible at joint articulations (Stitch-style detail), micro acid green LEDs only on heel pads, back panel with visible solar mini-cells and status LEDs, no humanoid face, no mouth, expression conveyed entirely through the three glowing eyes. Sharper more mysterious mood, head and upper torso only, three-quarter angle facing camera, all three acid green eyes glowing intensely with peak luminance, fractal antenna with 3 acid green nodes prominent against background, head perfectly still no tilt, expression: slightly mischievous curious detective vibe. Background: pure matte charcoal black #0A0A0A with subtle volumetric haze caught in acid green rim light from camera-right, mysterious noir mood, no gradients. Camera: shot on Hasselblad X1D 120mm macro lens, f/4.5, ISO 100, absolute sharpness on the three eyes, infinite depth of field. Texture stack: ray-traced global illumination, matte black chassis micro-imperfections (subtle scratches and oxidation on edges - NO brushed silver), faint fingerprints on glossy surfaces breaking specular highlights, acid green glow with realistic bloom, halation only on brightest LED tips, contact shadows, Kodak Portra 400 push +1 grain. Mood: like detective noir but creature IA, more sharp/edgy than v1 close-up, less cute more mysterious sharp tech-noir. NO humanoid face, NO mouth, NO smiling, NO HDR over-processing.",
+      "medias": [],
+      "aspect_ratio": "3:4",
+      "quality": "high",
+      "resolution": "2k",
+      "model": "videotape-alpha",
+      "reference_elements": []
+    }
+  }
+]

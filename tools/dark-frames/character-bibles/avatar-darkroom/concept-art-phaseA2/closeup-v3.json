@@ -1,0 +1,29 @@
+[
+  {
+    "id": "82356e99-34c0-40b2-aac3-4b5c6bbbfa42",
+    "status": "completed",
+    "display_name": "Higgsfield Soul V2",
+    "job_set_type": "text2image_soul_v2",
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DOIc2LeqMNs69AbhbSOqSgTPOm/hf_20260510_191237_82356e99-34c0-40b2-aac3-4b5c6bbbfa42.png",
+    "created_at": 1778440357.192537,
+    "params": {
+      "prompt": "Ultra-detailed close-up portrait of A small bipedal robot creature mascot, approximately 35cm tall, head-to-body proportions 1:1.5, head is a spherical chassis of brushed matte black metal #0A0A0A with two large round CUTE eyes glowing acid neon green #CFFF00 (Stitch-Baymax style proportions, NOT slit visor NOT humanoid), a third small pulsing single eye between the two main eyes also acid neon green, three-segment fractal antenna on top of head with acid green glow tips, compact body chassis with visible panel joinery and brushed metal finish, rubber-tech matte black joints with subtle sub-surface scattering, short articulated arms with exposed servos, compact legs with stabilizer pads, off-white #F2F2F2 fine stitching lines visible at joint articulations (Stitch-style detail), micro acid green LEDs on heel pads, back panel with visible solar mini-cells and status LEDs and cable bundles, no humanoid face, no mouth, expression conveyed entirely through the three glowing eyes. Neutral curious expression, slow-blink mid-frame with the two large round acid green eyes locked toward camera at three-quarter angle, third pulsing eye in forehead at peak glow intensity, fractal antenna fully visible against background, head tilted 5 degrees right, no body visible (head and shoulders only). Background: pure matte charcoal black #0A0A0A studio backdrop, even cross-polarized clinical scan lighting from above with soft fill from camera-left, no gradients, optimized for VFX reference and identity capture. Camera: shot on Hasselblad X1D 120mm macro lens, f/4.5, ISO 100, 1/125s, vertical portrait orientation, absolute sharpness on the three eyes, infinite depth of field. Texture stack realism: ray-traced global illumination, subsurface scattering on rubber-tech joint areas around neck, texture-rich brushed metal chassis with micro-imperfections (faint scratches and oxidation on edges), faint fingerprints on glossy curved surfaces breaking specular highlights, acid green glow with realistic bloom not over-processed, contact shadows under chin where head meets shoulders, uncompromising detail, premium commercial advertising look, Kodak Portra 400 push +1 grain emulation subtle, halation only on the brightest acid green LED tips, no plastic CGI cleanliness, no HDR over-processing. Mood: mysterious tech-noir creature with unexpected cute eyes, reminiscent of BB-8 + Wall-E + Stitch hybrid in Blade Runner aesthetic. No humanoid face, no mouth, no smiling glamour stock-photo aesthetic, no competitor brand logos, no readable text on chassis.",
+      "width": 1536,
+      "height": 2048,
+      "batch_size": 1,
+      "seed": 788388,
+      "enhance_prompt": false,
+      "use_sage_attention": false,
+      "quality": "1080p",
+      "use_relax": false,
+      "style_id": "3db34ab5-3439-4317-9e03-08dc30852e69",
+      "style": {
+        "id": "3db34ab5-3439-4317-9e03-08dc30852e69",
+        "name": "General",
+        "url": "https://cdn.higgsfield.ai/soul-v2-style/f33d85f2-6521-4fa8-8e8f-894cfbdee578.webp",
+        "strength": null
+      },
+      "style_strength": null
+    }
+  }
+]
