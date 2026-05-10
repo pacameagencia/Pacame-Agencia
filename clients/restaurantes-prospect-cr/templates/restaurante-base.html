@@ -171,6 +171,22 @@
     .include h3 { font-family: '{{FONT_DISPLAY}}', serif; font-size: 1.25rem; color: var(--vino-deep); margin: 0.5rem 0 0.6rem; }
     .include p { color: var(--texto-muted); font-size: 0.92rem; line-height: 1.6; }
 
+
+    .comparison { padding: 5rem 1.5rem; background: linear-gradient(180deg, var(--crema) 0%, var(--crema-warm) 100%); }
+    .comparison__inner { max-width: 1100px; margin: 0 auto; }
+    .comparison__grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-top: 1.5rem; }
+    @media (min-width: 800px) { .comparison__grid { grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; } }
+    .comparison__card { background: var(--hueso); border-radius: 14px; overflow: hidden; box-shadow: 0 8px 30px -12px rgba(45, 24, 16, 0.15); position: relative; }
+    .comparison__label { position: absolute; top: 1rem; left: 1rem; padding: 0.35rem 0.9rem; background: var(--vino-deep); color: var(--ocre-bright); border-radius: 50px; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; z-index: 2; }
+    .comparison__card--after .comparison__label { background: var(--ocre); color: var(--vino-deep); }
+    .comparison__shot { width: 100%; aspect-ratio: 16/10; background: #ddd center/cover no-repeat; display: block; filter: contrast(0.95); }
+    .comparison__card--before .comparison__shot { filter: contrast(0.85) saturate(0.85); opacity: 0.78; }
+    .comparison__caption { padding: 1.2rem 1.4rem 1.6rem; }
+    .comparison__caption h3 { font-family: '{{FONT_DISPLAY}}', serif; font-size: 1.2rem; color: var(--vino-deep); margin-bottom: 0.4rem; }
+    .comparison__caption p { color: var(--texto-muted); font-size: 0.88rem; line-height: 1.55; }
+    .comparison__cta { text-align: center; margin-top: 2rem; }
+    .comparison__cta a { font-size: 0.92rem; color: var(--vino-deep); text-decoration: underline; }
+
     .booking { padding: 6rem 1.5rem; background: linear-gradient(135deg, var(--vino-deep) 0%, var(--tierra) 100%); color: var(--crema); position: relative; overflow: hidden; }
     .booking::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 30% 20%, {{PALETTE_ACCENT_RGBA12}}, transparent 50%), radial-gradient(circle at 70% 80%, {{PALETTE_PRIMARY_RGBA40}}, transparent 50%); pointer-events: none; }
     .booking__inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 3rem; position: relative; align-items: center; }
@@ -235,6 +251,27 @@
     <div class="pillars__inner">
       <div class="section-title"><span class="eyebrow">{{PILLAR_EYEBROW}}</span><h2>{{PILLAR_HEADING}}</h2></div>
       <div class="pillars__grid">{{PILLAR_BLOCKS}}</div>
+    </div>
+  </section>
+
+  <section class="comparison" id="comparacion">
+    <div class="comparison__inner">
+      <div class="section-title">
+        <span class="eyebrow">Antes / Después</span>
+        <h2>Vuestra web actual al lado de la propuesta</h2>
+      </div>
+      <div class="comparison__grid">
+        <div class="comparison__card comparison__card--before">
+          <span class="comparison__label">Antes — vuestra web hoy</span>
+          <img class="comparison__shot" src="{{BEFORE_SCREENSHOT}}" alt="Web actual de {{NAME}}" loading="lazy">
+          <div class="comparison__caption"><h3>Lo que ven los clientes ahora</h3><p>Captura real de vuestra web actual. Honestamente: para 2026, esto pierde reservas frente a competidores con web optimizada.</p></div>
+        </div>
+        <div class="comparison__card comparison__card--after">
+          <span class="comparison__label">Después — propuesta PACAME</span>
+          <img class="comparison__shot" src="{{HERO_IMAGE}}" alt="Propuesta PACAME para {{NAME}}" loading="lazy">
+          <div class="comparison__caption"><h3>Esta misma web, en su versión mejor</h3><p>Carga &lt;2s, mobile-first, reservas WhatsApp, SEO local. La que estáis viendo ahora.</p></div>
+        </div>
+      </div>
     </div>
   </section>
 

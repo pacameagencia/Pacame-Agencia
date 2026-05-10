@@ -283,6 +283,34 @@ const CITY_MENTIONS = {
 
 // ─────────────────────────────────────────────────────────────────
 
+
+// ─────────────────────────────────────────────────────────────────
+// SUBJECTS / OPENINGS específicos para leads SIN WEB
+// (más fuertes, dolor de "no aparecer online")
+// ─────────────────────────────────────────────────────────────────
+const SUBJECTS_NO_WEB = [
+  (name, city) => `${name}, vuestro local no aparece online`,
+  (name, city) => `${name} en ${city || 'tu ciudad'} sin web — esto puede ayudar`,
+  (name, city) => `Buscaba ${name} en Google y no os encontré`,
+  (name, city) => `${name}: una idea sobre vuestra presencia online`,
+  (name, city) => `Para ${name} — sin web hoy en día`,
+  (name, city) => `${name}, perdéis reservas por no tener web`,
+];
+
+const PREHEADERS_NO_WEB = [
+  () => `Os monté una propuesta de cómo se vería. Tarda 30 segundos abrirla.`,
+  () => `Sin web, no aparecéis en Google Maps con la tarjeta completa. Eso son reservas perdidas.`,
+  () => `He hecho un mockup pensando en vuestro local. Si os encaja, hablamos.`,
+  () => `Hoy la gente busca cualquier sitio antes de ir. Sin web, llegan a la competencia.`,
+];
+
+const OPENINGS_NO_WEB = [
+  (city, type) => `Soy Pablo, de PACAME. Andaba revisando ${typeLabelPlural(type)} en ${city || 'la zona'} y vi que no tenéis web propia. La mayoría de ${typeLabelPlural(type)} ya la tienen — y la gente que no os encuentra online se va al de al lado.`,
+  (city, type) => `Soy Pablo (agencia digital pequeña). Buscando ${typeLabelPlural(type)} en ${city || 'la zona'} para una recomendación, vuestro nombre apareció pero sin web. Eso significa que cuando alguien os busca en Google solo ve la ficha vacía de Maps.`,
+  (city, type) => `Pablo, de PACAME. Cuando alguien hoy quiere ${type === 'cafe' ? 'tomar algo' : 'ir a comer'} ${city ? `en ${city}` : 'a un sitio'} hace 2 cosas: busca en Google y mira el menú. Sin web, perdéis la mitad de esos clientes potenciales.`,
+];
+
+
 // API pública
 
 // ─────────────────────────────────────────────────────────────────
@@ -290,13 +318,19 @@ const CITY_MENTIONS = {
 export function buildEmail(lead, demoUrl) {
 
   const slug = lead.slug;
+  const hasWeb = !!(lead.website || lead.web_url);
 
-  const subjectIdx = hash(slug + ":subject") % SUBJECTS.length; const subject = SUBJECTS[subjectIdx](lead.name, lead.city);
-  const preheaderIdx = hash(slug + ":preheader") % PREHEADERS.length; const preheader = PREHEADERS[preheaderIdx](lead.name);
+  // Pool de subjects/preheaders/openings: si NO tiene web, usar variantes con dolor más fuerte
+  const subjectsPool = hasWeb ? SUBJECTS : SUBJECTS_NO_WEB;
+  const preheadersPool = hasWeb ? PREHEADERS : PREHEADERS_NO_WEB;
+  const openingsPool = hasWeb ? OPENINGS : OPENINGS_NO_WEB;
+
+  const subjectIdx = hash(slug + ":subject") % subjectsPool.length; const subject = subjectsPool[subjectIdx](lead.name, lead.city);
+  const preheaderIdx = hash(slug + ":preheader") % preheadersPool.length; const preheader = preheadersPool[preheaderIdx](lead.name);
 
   const greeting = pick(slug, ':greeting', GREETINGS)(lead.name);
 
-  const opening = pick(slug, ':opening', OPENINGS)(lead.city, lead.type);
+  const opening = openingsPool[hash(slug + ":opening") % openingsPool.length](lead.city, lead.type);
 
   const hook = pick(slug, ':hook', HOOKS)();
 

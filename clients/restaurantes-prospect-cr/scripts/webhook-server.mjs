@@ -144,6 +144,39 @@ async function processEvent(event) {
 
 // === HTTP server ===
 const server = createServer((req, res) => {
+  // GET /c/<slug> — click tracking endpoint (registra click + 301 redirect al demo)
+  if (req.method === 'GET' && req.url.match(/^\/c\/([a-z0-9-]+)/)) {
+    const slug = req.url.match(/^\/c\/([a-z0-9-]+)/)[1];
+    const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || '';
+    const ua = req.headers['user-agent'] || '';
+    // 301 redirect inmediato al demo
+    res.writeHead(301, { Location: 'https://demos.pacameagencia.com/' + slug + '/' });
+    res.end();
+    // Async DB
+    (async () => {
+      try {
+        const r = await pg.query('select id from prospect_leads where slug=$1 limit 1', [slug]);
+        const leadId = r.rows[0]?.id;
+        if (!leadId) return;
+        const isBot = /googlebot|googleimageproxy|prefetch|preview|scanner|crawler|bot\b/i.test(ua);
+        if (isBot) {
+          console.log(`[click] ${slug} bot UA=${ua.slice(0,50)}`);
+          return;
+        }
+        await pg.query(
+          "insert into email_events (lead_id, event_type, occurred_at, raw, user_agent, ip) values ($1, 'email.clicked', now(), $2, $3, $4)",
+          [leadId, JSON.stringify({ source: 'custom_click', slug, target: '/' + slug + '/' }), ua, ip]
+        );
+        await pg.query(
+          "update prospect_leads set first_clicked_at=coalesce(first_clicked_at,now()), last_clicked_at=now(), click_count=click_count+1, status=case when status in ('replied','won') then status else 'clicked' end where id=$1",
+          [leadId]
+        );
+        console.log(`[click] ${slug} CLICK tracked`);
+      } catch (e) { console.error('[click] error:', e.message); }
+    })();
+    return;
+  }
+
   // GET /t/<slug>.gif — open tracking pixel custom (Resend no inyecta el suyo si HTML no tiene <img>)
   if (req.method === 'GET' && req.url.match(/^\/t\/([a-z0-9-]+)\.gif/)) {
     const slug = req.url.match(/^\/t\/([a-z0-9-]+)\.gif/)[1];

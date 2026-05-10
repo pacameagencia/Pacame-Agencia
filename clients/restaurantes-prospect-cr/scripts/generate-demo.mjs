@@ -75,6 +75,7 @@ const replacements = {
   PHONE_WA: phoneWa,
   WA_MSG: waMsg,
   HERO_IMAGE: cfg.hero_image,
+  BEFORE_SCREENSHOT: cfg.before_screenshot || "",
   EYEBROW: cfg.eyebrow,
   HERO_TITLE_LINE1: cfg.hero_title_line1,
   HERO_TITLE_LINE2: cfg.hero_title_line2,
