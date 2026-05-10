@@ -3920,3 +3920,67 @@ body.single-product section.related .product-thumbnail.em-relative > a > img {
     padding: 0.35rem !important;
   }
 }
+
+
+/* ============================================================
+   38. CARRUSELES HOMEPAGE — extender sec 37 a body.home + ecomus swiper
+   ============================================================ */
+
+body.home .product-thumbnail.em-relative,
+body.page .product-thumbnail.em-relative,
+.ecomus-products-carousel .product-thumbnail.em-relative,
+.swiper.product-swiper--elementor .product-thumbnail.em-relative {
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+  background: var(--royo-ivory) !important;
+  display: block !important;
+  position: relative !important;
+}
+
+body.home .product-thumbnail.em-relative > a.woocommerce-LoopProduct-link,
+body.page .product-thumbnail.em-relative > a.woocommerce-LoopProduct-link,
+.ecomus-products-carousel .product-thumbnail.em-relative > a.woocommerce-LoopProduct-link,
+.swiper.product-swiper--elementor .product-thumbnail.em-relative > a.woocommerce-LoopProduct-link {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  position: relative !important;
+}
+
+body.home .product-thumbnail.em-relative > a > img,
+body.page .product-thumbnail.em-relative > a > img,
+.ecomus-products-carousel .product-thumbnail.em-relative > a > img,
+.swiper.product-swiper--elementor .product-thumbnail.em-relative > a > img {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  padding: 0.5rem !important;
+  box-sizing: border-box !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+body.home li.product:hover .product-thumbnail.em-relative > a > img,
+body.page li.product:hover .product-thumbnail.em-relative > a > img,
+.ecomus-products-carousel li.product:hover .product-thumbnail.em-relative > a > img {
+  transform: scale(1.04) !important;
+}
+
+/* Carrusel ecomus swiper-slide layout: cada slide debe tener altura uniforme */
+.swiper.product-swiper--elementor li.product,
+.ecomus-products-carousel li.product {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+@media (max-width: 767px) {
+  body.home .product-thumbnail.em-relative > a > img,
+  body.page .product-thumbnail.em-relative > a > img,
+  .ecomus-products-carousel .product-thumbnail.em-relative > a > img {
+    padding: 0.35rem !important;
+  }
+}
