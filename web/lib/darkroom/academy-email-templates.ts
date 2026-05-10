@@ -15,6 +15,11 @@
 
 const DARK_ROOM_DOMAIN = "darkroomcreative.cloud";
 const DARK_ROOM_SUPPORT = "support@darkroomcreative.cloud";
+// Sending desde subdominio aislado (verificado en Resend independiente del root,
+// que vive en otro workspace de Resend para envíos transaccionales de Dark Room SaaS).
+// Reply-To apunta al buzón real `support@darkroomcreative.cloud` (memoria reference_dark_room_mailboxes).
+const DARK_ACADEMY_SEND_DOMAIN = "academy.darkroomcreative.cloud";
+const DARK_ACADEMY_FROM_ADDRESS = "hola@academy.darkroomcreative.cloud";
 
 interface DarkRoomEmailOptions {
   preheader?: string;
@@ -170,8 +175,9 @@ export function renderLeadMagnetDeliveryEmail(input: LeadMagnetEmailInput): Rend
 
 export const DARK_ROOM_EMAIL_CONFIG = {
   fromName: "Dark Academy",
-  fromAddress: DARK_ROOM_SUPPORT,
-  fromHeader: `Dark Academy <${DARK_ROOM_SUPPORT}>`,
-  replyTo: DARK_ROOM_SUPPORT,
-  rootDomain: DARK_ROOM_DOMAIN,
+  fromAddress: DARK_ACADEMY_FROM_ADDRESS,
+  fromHeader: `Dark Academy <${DARK_ACADEMY_FROM_ADDRESS}>`,
+  replyTo: DARK_ROOM_SUPPORT, // respuestas al buzón real Dark Room
+  sendDomain: DARK_ACADEMY_SEND_DOMAIN, // dominio verificado SPF+DKIM en Resend
+  rootDomain: DARK_ROOM_DOMAIN, // dominio público de marca para links
 } as const;
