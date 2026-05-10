@@ -2850,3 +2850,159 @@ body.single-product .woocommerce-product-gallery:not(.woocommerce-product-galler
   animation: royoShimmer 2s infinite linear !important;
 }
 
+/* ============================================================
+   30. PRODUCTOS RELACIONADOS + ZOOM HOVER + MOBILE 375px
+   ============================================================ */
+
+/* 30.1 Sección "Productos relacionados" — heading editorial */
+body.single-product section.related,
+body.single-product section.related.products {
+  margin: 5rem auto 4rem !important;
+  max-width: 1280px !important;
+  padding: 0 1rem !important;
+}
+body.single-product section.related > h2,
+body.single-product section.related.products > h2 {
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem) !important;
+  font-weight: 300 !important;
+  text-align: center !important;
+  color: var(--royo-ink) !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 auto 2.5rem !important;
+  position: relative !important;
+  padding-bottom: 1.25rem !important;
+}
+body.single-product section.related > h2::after,
+body.single-product section.related.products > h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 1px;
+  background: var(--royo-champagne);
+}
+
+/* 30.2 Cards de productos relacionados — luxury */
+body.single-product section.related ul.products li.product {
+  background: var(--royo-paper) !important;
+  border: 1px solid transparent !important;
+  border-radius: 2px !important;
+  padding: 0.75rem !important;
+  transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease !important;
+}
+body.single-product section.related ul.products li.product:hover {
+  border-color: var(--royo-champagne) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 32px rgba(26, 24, 22, 0.06) !important;
+}
+
+/* 30.3 Imagen del card relacionado con padding luxury */
+body.single-product section.related ul.products li.product .product-thumbnail-wrap {
+  background: var(--royo-ivory) !important;
+  overflow: hidden !important;
+  border-radius: 2px !important;
+}
+body.single-product section.related ul.products li.product img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+body.single-product section.related ul.products li.product:hover img {
+  transform: scale(1.05) !important;
+}
+
+/* 30.4 Título y precio en cards relacionados */
+body.single-product section.related ul.products li.product .woocommerce-loop-product__title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 0.92rem !important;
+  font-weight: 400 !important;
+  color: var(--royo-ink) !important;
+  letter-spacing: -0.005em !important;
+  line-height: 1.4 !important;
+  margin: 0.85rem 0 0.5rem !important;
+}
+body.single-product section.related ul.products li.product .price {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  letter-spacing: -0.01em !important;
+}
+/* Sin badge "Distribuidor Oficial" en relacionados (ya está en card archive) */
+body.single-product section.related ul.products li.product .price::after {
+  content: none !important;
+}
+
+/* 30.5 Zoom on hover — featured image single product */
+body.single-product .woocommerce-product-gallery__image {
+  overflow: hidden !important;
+  border-radius: 2px !important;
+}
+body.single-product .woocommerce-product-gallery__image img {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: zoom-in !important;
+}
+body.single-product .woocommerce-product-gallery__image:hover img {
+  transform: scale(1.06) !important;
+}
+
+/* 30.6 Mobile 375px refinos extra (más fino que sec 20.6 que ya cubre lo básico) */
+@media (max-width: 375px) {
+  body.single-product .product_title {
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+  }
+  body.single-product .summary .price {
+    font-size: 1.7rem !important;
+  }
+  body.single-product .royo-product-subtitle {
+    font-size: 0.62rem !important;
+    letter-spacing: 0.14em !important;
+  }
+  body.single-product .royo-trust-bar {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.5rem !important;
+    padding: 1rem 0 !important;
+  }
+  body.single-product .royo-trust-bar__label {
+    font-size: 0.58rem !important;
+  }
+  body.single-product .royo-cta-whatsapp {
+    padding: 0.85rem 1rem !important;
+    font-size: 0.74rem !important;
+    letter-spacing: 0.08em !important;
+  }
+  body.single-product .royo-personal-service {
+    padding: 1rem !important;
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+  body.single-product .royo-official-dealer {
+    padding: 1.75rem 0.75rem !important;
+    margin: 2rem 0 !important;
+  }
+  body.single-product .royo-official-dealer__title {
+    font-size: 1.15rem !important;
+  }
+  body.single-product .royo-brand-banner {
+    padding: 3rem 1.25rem !important;
+  }
+  body.single-product .royo-brand-banner__title {
+    font-size: 1.4rem !important;
+  }
+  body.single-product .royo-brand-banner__text {
+    font-size: 0.85rem !important;
+    line-height: 1.6 !important;
+  }
+  body.single-product section.related ul.products li.product {
+    padding: 0.5rem !important;
+  }
+  body.single-product section.related ul.products li.product .woocommerce-loop-product__title {
+    font-size: 0.78rem !important;
+  }
+  body.single-product section.related ul.products li.product .price {
+    font-size: 0.82rem !important;
+  }
+}
+
