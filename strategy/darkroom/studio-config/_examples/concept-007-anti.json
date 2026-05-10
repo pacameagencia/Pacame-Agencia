@@ -1,0 +1,112 @@
+{
+  "concept_id": "dark-frames-998-anti-1act-impossible",
+  "title": "ANTI-EJEMPLO · format=1-act declarado pero shots=4 con cambios localización (concept 007 reproducido mal)",
+  "version": "v1",
+  "schema_version": 4,
+  "created_at": "2026-05-10",
+
+  "format": "1-act",
+  "tier": "CINEMATIC",
+  "style_anchor_variant": "vice_city_sunset_v2",
+
+  "duration_target_s": 14,
+  "duration_outro_s": 1.7,
+  "aspect_ratio": "9:16",
+  "resolution": "1080x1920",
+
+  "logline": "ANTI-EJEMPLO intencional. Reproduce concept 007 declarando erróneamente format=1-act. Validator DEBE bloquear porque (1) duration=14s viola rango 1-act 7-9s, (2) shots=4 viola maxItems=1 del format 1-act, (3) format=3-act tampoco salva porque tendría 4 escenas inconexas en 14s = anti-pattern.",
+
+  "research": [
+    { "source": "Vice City vibes", "type": "estetica", "data": "synthwave 80s" },
+    { "source": "Drive 2011", "type": "lente", "data": "anamorphic" },
+    { "source": "Miami Vice", "type": "lut", "data": "magenta cyan" },
+    { "source": "synthwave bass", "type": "audio", "data": "78bpm F# minor" },
+    { "source": "trailer 4-act", "type": "estructura", "data": "hook + content + cta + reveal" }
+  ],
+
+  "character_anchor": {
+    "soul_id_higgsfield": "55ac4b3b-51f7-497a-8150-87563a969915",
+    "soul_character_id": "PACAME",
+    "consistency_sheet": "tools/dark-frames/character-bibles/pablo/pablo-360-sheet-v1.png",
+    "body_descriptor_hardcoded": "Spanish man · athletic LEAN SLIM build · V-shape torso · short dark brown hair · dark beard · brown eyes · warm olive skin · NOT bulky NOT chubby.",
+    "wardrobe_single": "Pastel cream Hawaiian floral shirt + white tank + light beige linen pants + aviators"
+  },
+
+  "sequence": {
+    "narrative_arc": "4 escenas inconexas Vice Beach: arrival valet → toss llaves balcón → moto drift → yacht toast",
+    "structure_template": "trailer_4_act_with_protagonist",
+    "wardrobe_continuity": {
+      "single_wardrobe": true,
+      "description": "Pastel cream Hawaiian floral shirt + tank + linen pants + aviators",
+      "applied_in_all_shots": true,
+      "wardrobe_change_justification": null
+    },
+    "shots": [
+      {
+        "shot_id": "S1_arrival",
+        "title": "ARRIVAL",
+        "duration_seconds": 3.5,
+        "subject_motion": "Pablo poses confidently",
+        "camera_motion": "cinematic camera angle",
+        "motion_priority": "subject",
+        "audio_sync": [{"at_s": 0, "name": "engine"}],
+        "lens_reference_hollywood": "Drive cinema vibes"
+      },
+      {
+        "shot_id": "S2_toss",
+        "title": "TOSS",
+        "duration_seconds": 4,
+        "subject_motion": "catches keys",
+        "camera_motion": "whip pan",
+        "motion_priority": "subject",
+        "audio_sync": [{"at_s": 1, "name": "keys_jingle"}],
+        "lens_reference_hollywood": "Miami Vice"
+      },
+      {
+        "shot_id": "S3_ride",
+        "title": "RIDE",
+        "duration_seconds": 4,
+        "subject_motion": "drift bike",
+        "camera_motion": "low angle chase",
+        "motion_priority": "both",
+        "audio_sync": [{"at_s": 0, "name": "engine_rev"}],
+        "lens_reference_hollywood": "Mad Max"
+      },
+      {
+        "shot_id": "S4_toast",
+        "title": "TOAST",
+        "duration_seconds": 2.5,
+        "subject_motion": "Pablo poses confidently",
+        "camera_motion": "drone pull-back",
+        "motion_priority": "camera",
+        "audio_sync": [{"at_s": 1, "name": "champagne_clink"}],
+        "lens_reference_hollywood": "Tenet"
+      }
+    ]
+  },
+
+  "audio": {
+    "music_suno_prompt": "synthwave 80s 78bpm F# minor",
+    "music_key": "F# minor",
+    "music_bpm": 78,
+    "lufs_target": -16,
+    "voice_over": null,
+    "sfx_library_count": 4
+  },
+
+  "outro": {
+    "duration_seconds": 1.7,
+    "asset": "tools/dark-frames/assets/outro-darkroom-2s-v2.mp4",
+    "text_overlay": "TODO HECHO CON · darkroomcreative.cloud"
+  },
+
+  "caption_text_ig": "Pablo en Vice Beach hecho 100% IA. Dark Room Pro 24,90€/mes · Lifetime 349€ · darkroomcreative.cloud",
+  "caption_hashtags": "#DarkFrames #darkroomcreative #ViceCity #IA",
+
+  "estimated_cost_usd": 5.51,
+
+  "approval": {
+    "pablo_double_yes": false,
+    "approval_format_required": "intencional NO double-yes para forzar bloqueo en validator"
+  }
+}
