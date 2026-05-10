@@ -6,9 +6,19 @@
 
 ---
 
-## 1. Aplicar migración SQL a Supabase
+## 1. Aplicar migración SQL a Supabase ✅ APLICADA 2026-05-10
 
 **Archivo creado**: [`infra/migrations/050_academy_schema.sql`](../../../infra/migrations/050_academy_schema.sql)
+
+**Estado actualizado**: Claude aplicó la migración a Supabase PACAME (proyecto `kfmnllpscheodgxnutkw`, host `aws-1-eu-west-3.pooler.supabase.com`) usando psycopg2 + `DATABASE_URL` del `.env.local`.
+
+**Verificación**:
+- 9 tablas creadas (academy_users, academy_modules, academy_lessons, academy_progress, academy_quizzes, academy_news, academy_newsletter, academy_lead_magnets, academy_lead_captures).
+- 6 filas en `academy_modules` (seed inicial M1-M6).
+- 6 filas en `academy_lead_magnets` (todas con `published=false` hasta subir assets).
+- RLS habilitado en las 9 tablas.
+
+**Decisión confirmada**: la academia vive en el proyecto Supabase PACAME (no aislada en `dark-room-prod`). Migración a aislado queda como decisión futura si MRR justifica el coste extra (~$25/mes Supabase Pro adicional).
 
 **Qué hace**: crea 8 tablas (`academy_users`, `academy_modules`, `academy_lessons`, `academy_progress`, `academy_quizzes`, `academy_news`, `academy_newsletter`, `academy_lead_magnets`, `academy_lead_captures`) con RLS habilitado y seed inicial (6 módulos + 6 lead magnets en estado `published=false`).
 
@@ -62,19 +72,44 @@ Sprint B se entregó SIN auth real. Las páginas `/academia` y `/academia/lead-m
 
 ---
 
-## 3. Verificar dominio darkroomcreative.cloud en Resend
+## 3. Verificar subdominio academy.darkroomcreative.cloud en Resend ✅ CREADO
 
-**Necesario** para que `sendDarkRoomEmail` (en `web/lib/darkroom/academy-mailer.ts`) envíe desde `Dark Academy <support@darkroomcreative.cloud>` sin caer en spam o ser rechazado.
+**Estado actualizado 2026-05-10**: Claude creó el subdominio `academy.darkroomcreative.cloud` en Resend (workspace de la `RESEND_API_KEY` actual, mismo que `pacameagencia.com` verified).
 
-**Pasos en panel Resend**:
+> El root `darkroomcreative.cloud` ya estaba registrado en otro workspace de Resend (probablemente Dark Room IO independiente, para emails transaccionales de la membresía). Para evitar conflicto y separar email marketing academia de transactional Dark Room, usamos subdominio dedicado.
 
-1. Resend → Domains → Add Domain → `darkroomcreative.cloud`.
-2. Copiar registros SPF + DKIM + DMARC.
-3. Añadirlos al DNS del dominio (probablemente en Cloudflare según deployment Dark Room).
-4. Verificar en Resend (puede tardar 5-60 min en propagar).
-5. Confirmar que aparece como `Verified`.
+**Resend domain ID**: `a12d4ae2-7ec0-43b7-9682-9b61ebc768c7`
+**Status actual**: `not_started` (pendiente que Pablo añada DNS y verifique).
 
-**Mientras no esté verificado**: los emails de lead magnet capture llegarán a spam o serán rechazados. El endpoint funciona pero la entrega falla silenciosamente (log warning en `[academy-mailer]`).
+### Acción Pablo · añadir 3 registros DNS en Cloudflare (5 min)
+
+Zona DNS: `darkroomcreative.cloud`.
+
+| Tipo | Name | Value | TTL | Priority |
+|---|---|---|---|---|
+| **TXT** | `resend._domainkey.academy` | `p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDR5YLhdH6XRGWmrNjkKAe0chT5e+HIzT8t4j1lVjopyXjFSUnVwgJ4Z3ZZFdqoGPU6eFxdmzbqdWLJ5MHFYTMk7FUFk2xEH7wUrtPpncZqCeLh7eP5nDzfh8xxjMt3CgD4S7QBjpfmzjVZc7/5+srDl1oie8XVG4Ad0omzR+S7fQIDAQAB` | Auto | — |
+| **MX** | `send.academy` | `feedback-smtp.eu-west-1.amazonses.com` | Auto | 10 |
+| **TXT** | `send.academy` | `v=spf1 include:amazonses.com ~all` | Auto | — |
+
+Después de propagar (5-30 min):
+```bash
+# Claude lanzará la verificación con:
+curl -X POST "https://api.resend.com/domains/a12d4ae2-7ec0-43b7-9682-9b61ebc768c7/verify" \
+  -H "Authorization: Bearer $RESEND_API_KEY"
+```
+
+### Config aplicada en código
+
+`web/lib/darkroom/academy-email-templates.ts`:
+
+```ts
+fromHeader: "Dark Academy <hola@academy.darkroomcreative.cloud>",
+replyTo:    "support@darkroomcreative.cloud",  // buzón real (memoria existente)
+sendDomain: "academy.darkroomcreative.cloud",  // dominio Resend verificado
+rootDomain: "darkroomcreative.cloud",          // dominio marca para links públicos
+```
+
+**Mientras DNS no esté propagado y verificado**: los emails de lead magnet capture llegarán a spam o serán rechazados. El endpoint funciona pero la entrega falla silenciosamente (log warning en `[academy-mailer]`).
 
 **Plan B temporal** si urge probar en staging antes de verificar el dominio: usar un alias técnico ya dentro del dominio verificado pacameagencia.com pero invisible para el usuario, manteniendo la marca Dark Academy en el header `From` y enrutando respuestas a Dark Room:
 
@@ -92,16 +127,15 @@ Esto mantiene la regla R7: el remitente visible es "Dark Academy", el reply va a
 
 **Bucket necesario**: `academy-public` (público de lectura, escritura solo service_role).
 
-**Pasos**:
+**Estado bucket**: ✅ CREADO 2026-05-10 por Claude vía SDK Supabase con SERVICE_ROLE_KEY. Config aplicada:
+- `public: true`
+- `fileSizeLimit: 10 MB`
+- `allowedMimeTypes: ['application/pdf', 'text/html', 'application/json', 'text/markdown', 'text/csv', 'application/zip']`
 
-1. Crear bucket en Supabase Storage:
-   ```
-   nombre: academy-public
-   public: true
-   file size limit: 10 MB
-   allowed MIME: application/pdf, text/html, application/json
-   ```
-2. Subir los 6 lead magnets (cuando estén producidos por el subagente `dark-academy` + diseñador):
+**Falta** (acción Pablo o subagente NOVA):
+
+1. ~~Crear bucket~~ → ya hecho.
+2. Subir los 6 PDFs/Notions (cuando estén producidos por subagente `dark-academy` + visual-reviewer):
    - `academy-public/lm-m1-stack-2026.pdf`
    - `academy-public/lm-m2-20-prompts.html` (Notion exportado)
    - `academy-public/lm-m3-three-pass-review.pdf`
@@ -199,11 +233,12 @@ Si los 6 pasos pasan, Sprint B está cerrado. Si falla algún paso, troubleshoot
 
 | Bloqueador | Acción Pablo | Acción Claude después | Crítico para… |
 |---|---|---|---|
-| 1. Migración SQL | Run en SQL Editor | Auto-publish magnets | Cualquier API academy |
-| 2. Supabase Auth | Habilitar Magic Link + Google OAuth | Implementar rutas auth + dashboard | Sprint C dashboard learner |
-| 3. Dominio Resend | Add domain + verificar DNS | — | Que emails lleguen, no spam |
-| 4. Storage + PDFs | Crear bucket + subir 6 magnets | Marcar published=true | Descarga del recurso real |
-| 5. Middleware rewrite | Verificar funciona | Si falla, añadir rewrites a next.config | Acceso público a /academia |
-| 6. Test E2E | Ejecutar 6 pasos manuales | Iterar si algo falla | Validar Sprint B antes de Sprint C |
+| ~~1. Migración SQL~~ | ✅ Aplicada por Claude (psycopg2 + DATABASE_URL) | — | — |
+| 2. Supabase Auth | Habilitar Magic Link + Google OAuth en panel | Implementar rutas auth + dashboard | Sprint C dashboard learner |
+| 3. Subdominio Resend | Añadir 3 DNS records en Cloudflare (5 min) | Lanzar `POST /domains/{id}/verify` | Que emails lleguen, no spam |
+| ~~4a. Crear bucket Storage~~ | ✅ Creado por Claude (SDK + SERVICE_ROLE_KEY) | — | — |
+| 4b. Subir 6 PDFs | Maquetar + upload + marcar published=true | Marcar `published=true` por SQL si Pablo prefiere | Descarga del recurso real |
+| 5. Middleware rewrite | Verificar funciona en darkroomcreative.cloud/academia | Si falla, añadir rewrite a next.config | Acceso público a /academia |
+| 6. Test E2E | Ejecutar 6 pasos del runbook | Iterar si algo falla | Validar Sprint B antes de Sprint C |
 
-**Tiempo estimado total Pablo**: 60-90 minutos en panel Supabase + Resend + DNS. **Tiempo Claude después**: ~30 min para implementar Sprint C tras desbloqueo Auth.
+**Tiempo estimado Pablo restante**: 15-30 min (3 DNS records + habilitar Supabase Auth + decidir si maqueta PDF M1 ya o lo aplaza). **Tiempo Claude después**: lanzar verify Resend cuando DNS propague + ~30 min código Sprint C tras Auth.
