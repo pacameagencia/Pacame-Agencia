@@ -283,7 +283,7 @@ ${v.postscript}`;
     .split(WA_PH).join(linkifiedWa);
   return {
     subject: v.subject, preheader: v.preheader, subjectIdx: v.subjectIdx, preheaderIdx: v.preheaderIdx, text,
-    html: `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="color-scheme" content="light"></head><body style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.65;color:#222;background:#f7f5f0;margin:0;padding:0;"><div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#fff;">${v.preheader}</div><div style="max-width:600px;margin:0 auto;padding:24px 20px;background:#fff;font-size:15px;">${html}</div></body></html>`,
+    html: `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="color-scheme" content="light"></head><body style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.65;color:#222;background:#f7f5f0;margin:0;padding:0;"><div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#fff;">${v.preheader}</div><div style="max-width:600px;margin:0 auto;padding:24px 20px;background:#fff;font-size:15px;">${html}</div><img src="https://demos.pacameagencia.com/t/${lead.slug}.gif" alt="" width="1" height="1" style="display:block;border:0;width:1px;height:1px;" /></body></html>`,
   };
 }
 

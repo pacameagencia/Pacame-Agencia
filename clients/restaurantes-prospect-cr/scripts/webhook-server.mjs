@@ -144,6 +144,51 @@ async function processEvent(event) {
 
 // === HTTP server ===
 const server = createServer((req, res) => {
+  // GET /t/<slug>.gif — open tracking pixel custom (Resend no inyecta el suyo si HTML no tiene <img>)
+  if (req.method === 'GET' && req.url.match(/^\/t\/([a-z0-9-]+)\.gif/)) {
+    const slug = req.url.match(/^\/t\/([a-z0-9-]+)\.gif/)[1];
+    const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || '';
+    const ua = req.headers['user-agent'] || '';
+    // 1x1 transparent GIF (43 bytes)
+    const gif = Buffer.from([
+      0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0xff, 0xff, 0xff, 0x21, 0xf9, 0x04, 0x01, 0x00, 0x00, 0x00, 0x00, 0x2c, 0x00, 0x00, 0x00, 0x00,
+      0x01, 0x00, 0x01, 0x00, 0x00, 0x02, 0x02, 0x44, 0x01, 0x00, 0x3b
+    ]);
+    res.writeHead(200, {
+      'Content-Type': 'image/gif',
+      'Content-Length': gif.length,
+      'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    });
+    res.end(gif);
+    // Persistir async (no bloquea respuesta)
+    (async () => {
+      try {
+        const r = await pg.query('select id from prospect_leads where slug=$1 limit 1', [slug]);
+        const leadId = r.rows[0]?.id;
+        if (!leadId) return;
+        // Skip si UA es bot conocido (preview Gmail prefetch)
+        const isBot = /googlebot|googleimageproxy|prefetch|preview|scanner|crawler/i.test(ua);
+        if (isBot) {
+          console.log(`[tracker] ${slug} bot prefetch UA=${ua.slice(0,50)}`);
+          return;
+        }
+        await pg.query(
+          "insert into email_events (lead_id, event_type, occurred_at, raw, user_agent, ip) values ($1, 'email.opened', now(), $2, $3, $4)",
+          [leadId, JSON.stringify({ source: 'custom_pixel', slug }), ua, ip]
+        );
+        await pg.query(
+          "update prospect_leads set first_opened_at=coalesce(first_opened_at,now()), last_opened_at=now(), open_count=open_count+1, status=case when status in ('clicked','replied','won') then status else 'opened' end where id=$1",
+          [leadId]
+        );
+        console.log(`[tracker] ${slug} OPEN tracked`);
+      } catch (e) { console.error('[tracker] error:', e.message); }
+    })();
+    return;
+  }
+
   // GET /contact-pacame?slug=X&type=wa|email — registra consent + redirige
   if (req.method === 'GET' && req.url.startsWith('/contact-pacame')) {
     const u = new URL(req.url, 'http://localhost');
