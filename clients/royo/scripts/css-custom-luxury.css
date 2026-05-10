@@ -2593,3 +2593,260 @@ body.single-product .single_add_to_cart_button.added::after {
   }
 }
 
+/* ============================================================
+   27. SINGLE PRODUCT — refinos luxury post-PR #166
+   ============================================================ */
+
+/* 27.1 Galería sin flash blanco al cargar
+   Ecomus pone opacity:0 al wrapper hasta que JS inicializa la flexslider.
+   Forzamos opacity:1 + transición suave + skeleton bg sutil mientras carga. */
+body.single-product .woocommerce-product-gallery {
+  opacity: 1 !important;
+  transition: opacity 0.4s ease-out !important;
+  background: var(--royo-ivory) !important;
+  min-height: 400px !important;
+}
+body.single-product .woocommerce-product-gallery__wrapper {
+  background: transparent !important;
+}
+body.single-product .woocommerce-product-gallery__image img {
+  background: var(--royo-paper) !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* 27.2 Subtítulo premium — tipografía editorial */
+body.single-product .royo-product-subtitle {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.72rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-champagne-dark) !important;
+  margin: 0 0 1rem !important;
+  padding: 1rem 0 0.75rem !important;
+  border-top: 1px solid var(--royo-line) !important;
+  position: relative !important;
+}
+
+/* 27.3 Tooltips wishlist + comparator — quitar feos Ecomus, hover luxury */
+body.single-product .em-tooltip[data-tooltip]::before,
+body.single-product .em-tooltip[data-tooltip]::after,
+body.single-product .em-tooltip[data-tooltip_added]::before,
+body.single-product .em-tooltip[data-tooltip_added]::after {
+  display: none !important;
+}
+body.single-product .wcboost-wishlist-button,
+body.single-product .wcboost-products-compare-button {
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  background: var(--royo-paper) !important;
+  color: var(--royo-charcoal) !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+}
+body.single-product .wcboost-wishlist-button:hover,
+body.single-product .wcboost-products-compare-button:hover {
+  border-color: var(--royo-champagne) !important;
+  color: var(--royo-ink) !important;
+}
+/* Texto al lado del icono (en single product layout luxury) */
+body.single-product .wcboost-wishlist-button__text,
+body.single-product .wcboost-products-compare-button__text {
+  font-size: 0.7rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  font-weight: 500 !important;
+  color: var(--royo-charcoal) !important;
+}
+
+/* 27.4 Reviews vacías → placeholder editorial elegante */
+body.single-product .woocommerce-Reviews .commentlist:empty,
+body.single-product .woocommerce-Reviews .comment-form-rating ~ p:empty {
+  display: none !important;
+}
+body.single-product #reviews .woocommerce-noreviews,
+body.single-product .woocommerce-Reviews-title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.1rem !important;
+  font-weight: 400 !important;
+  color: var(--royo-ink) !important;
+  text-align: center !important;
+  padding: 2rem 1rem !important;
+  margin: 0 !important;
+  letter-spacing: -0.005em !important;
+  background: var(--royo-ivory) !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+}
+body.single-product #reviews .woocommerce-noreviews::before {
+  content: '★ ' !important;
+  color: var(--royo-champagne-dark) !important;
+  margin-right: 0.4em !important;
+}
+
+/* 27.5 Atributos — tabla densa → grid 2-col luxury con respiración */
+body.single-product .woocommerce-product-attributes,
+body.single-product table.woocommerce-product-attributes {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  border: none !important;
+  margin: 1.5rem 0 !important;
+  width: 100% !important;
+}
+body.single-product .woocommerce-product-attributes tbody {
+  display: contents !important;
+}
+body.single-product .woocommerce-product-attributes-item {
+  display: grid !important;
+  grid-template-columns: 1fr 2fr !important;
+  gap: 1rem !important;
+  padding: 0.85rem 0 !important;
+  border-top: 1px solid var(--royo-line) !important;
+}
+body.single-product .woocommerce-product-attributes-item:last-child {
+  border-bottom: 1px solid var(--royo-line) !important;
+}
+body.single-product .woocommerce-product-attributes-item__label {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: var(--royo-charcoal) !important;
+  align-self: center !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+body.single-product .woocommerce-product-attributes-item__value {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 0.95rem !important;
+  font-weight: 400 !important;
+  color: var(--royo-ink) !important;
+  align-self: center !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  letter-spacing: -0.005em !important;
+}
+body.single-product .woocommerce-product-attributes-item__value p {
+  margin: 0 !important;
+}
+
+@media (max-width: 767px) {
+  body.single-product .woocommerce-product-attributes-item {
+    grid-template-columns: 1fr !important;
+    gap: 0.25rem !important;
+  }
+  body.single-product .woocommerce-product-attributes-item__label {
+    font-size: 0.68rem !important;
+  }
+}
+
+/* ============================================================
+   28. ARCHIVE / CATEGORÍA — cards luxury
+   ============================================================ */
+
+/* 28.1 Card del producto en archive */
+body.archive ul.products li.product,
+body.tax-product_cat ul.products li.product,
+body.post-type-archive-product ul.products li.product {
+  border: 1px solid transparent !important;
+  border-radius: 2px !important;
+  padding: 1rem !important;
+  transition: border-color 0.35s ease, transform 0.35s ease !important;
+  background: var(--royo-paper) !important;
+}
+body.archive ul.products li.product:hover,
+body.tax-product_cat ul.products li.product:hover,
+body.post-type-archive-product ul.products li.product:hover {
+  border-color: var(--royo-champagne) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* 28.2 Imagen del card con padding crema sutil */
+body.archive ul.products li.product .product-thumbnail-wrap,
+body.archive ul.products li.product img,
+body.tax-product_cat ul.products li.product img {
+  background: var(--royo-ivory) !important;
+  border-radius: 2px !important;
+}
+
+/* 28.3 Título producto en card — Playfair luxury */
+body.archive ul.products li.product .woocommerce-loop-product__title,
+body.tax-product_cat ul.products li.product .woocommerce-loop-product__title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 0.95rem !important;
+  font-weight: 400 !important;
+  color: var(--royo-ink) !important;
+  letter-spacing: -0.005em !important;
+  margin: 0.75rem 0 0.4rem !important;
+  line-height: 1.35 !important;
+}
+
+/* 28.4 Precio en card */
+body.archive ul.products li.product .price,
+body.tax-product_cat ul.products li.product .price {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  color: var(--royo-ink) !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* 28.5 Badge oficial pequeño en archive (debajo del precio) */
+body.archive ul.products li.product .price::after,
+body.tax-product_cat ul.products li.product .price::after {
+  content: 'Distribuidor Oficial';
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--royo-champagne-dark);
+  margin-top: 0.4rem;
+}
+/* Solo en categorías de relojes (no joyería) - usar selector body */
+body.tax-product_cat[class*="joya"] ul.products li.product .price::after,
+body.tax-product_cat[class*="anillo"] ul.products li.product .price::after,
+body.tax-product_cat[class*="pendiente"] ul.products li.product .price::after,
+body.tax-product_cat[class*="pulsera"] ul.products li.product .price::after,
+body.tax-product_cat[class*="colgante"] ul.products li.product .price::after,
+body.tax-product_cat[class*="gargantilla"] ul.products li.product .price::after {
+  content: '' !important;
+  display: none !important;
+}
+
+/* ============================================================
+   29. PERFORMANCE / SKELETON / CRITICAL UTILITIES
+   ============================================================ */
+
+/* 29.1 Screen reader text utility (WP estándar) — para H1 invisible SEO */
+.screen-reader-text {
+  border: 0 !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  -webkit-clip-path: inset(50%) !important;
+  clip-path: inset(50%) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+  word-wrap: normal !important;
+}
+
+/* 29.2 Skeleton loader para gallery wrapper inicial */
+@keyframes royoShimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+body.single-product .woocommerce-product-gallery:not(.woocommerce-product-gallery--with-images) {
+  background: linear-gradient(90deg, var(--royo-ivory) 0%, var(--royo-paper) 50%, var(--royo-ivory) 100%) !important;
+  background-size: 1000px 100% !important;
+  animation: royoShimmer 2s infinite linear !important;
+}
+
