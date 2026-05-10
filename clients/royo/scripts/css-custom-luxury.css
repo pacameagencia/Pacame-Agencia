@@ -3129,3 +3129,135 @@ body.single-product .woocommerce-product-gallery:has(img[src*="Sin-titulo"])::af
     letter-spacing: 0.14em !important;
   }
 }
+
+/* ============================================================
+   32. 404 PAGE — luxury redesign
+   ============================================================ */
+
+body.error404 .error-404 {
+  padding: 5rem 1.5rem !important;
+  max-width: 720px !important;
+  margin: 4rem auto !important;
+  text-align: center !important;
+}
+body.error404 .error-404__image {
+  display: none !important;
+}
+body.error404 .error-404::before {
+  content: 'R';
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(5rem, 12vw, 8rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--royo-champagne-dark);
+  opacity: 0.7;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+body.error404 .error-404__title {
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(1.6rem, 3vw, 2.2rem) !important;
+  font-weight: 300 !important;
+  color: var(--royo-ink) !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 0 1rem !important;
+  line-height: 1.25 !important;
+}
+body.error404 .error-404__content {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.98rem !important;
+  color: var(--royo-charcoal) !important;
+  line-height: 1.7 !important;
+  max-width: 540px !important;
+  margin: 0 auto 2.5rem !important;
+}
+body.error404 .error-404__button,
+body.error404 .ecomus-button.error-404__button {
+  background: var(--royo-ink) !important;
+  color: var(--royo-paper) !important;
+  border: 1px solid var(--royo-champagne) !important;
+  border-radius: 2px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  padding: 1rem 2.25rem !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+body.error404 .error-404__button:hover {
+  background: var(--royo-paper) !important;
+  color: var(--royo-ink) !important;
+  border-color: var(--royo-ink) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 14px rgba(26, 24, 22, 0.12) !important;
+}
+/* Sub-CTAs útiles bajo el botón principal */
+body.error404 .error-404::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 1px;
+  background: var(--royo-line);
+  margin: 3rem auto 1.5rem;
+}
+
+/* ============================================================
+   33. ARCHIVE TERM DESCRIPTION (categorías de marca)
+   ============================================================
+   Las term descriptions luxury aparecen sobre el grid de productos.
+   Ecomus las renderiza en .term-description o .archive-description.
+*/
+
+body.tax-product_cat .term-description,
+body.tax-product_cat .archive-description,
+body.tax-product_cat .woocommerce-products-header__description,
+body.tax-product_cat .category-description {
+  max-width: 920px !important;
+  margin: 1.5rem auto 3rem !important;
+  padding: 2rem 2.5rem !important;
+  background: var(--royo-ivory) !important;
+  border: 1px solid var(--royo-line) !important;
+  border-radius: 2px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.95rem !important;
+  color: var(--royo-charcoal) !important;
+  line-height: 1.75 !important;
+  position: relative !important;
+}
+body.tax-product_cat .term-description::before,
+body.tax-product_cat .archive-description::before,
+body.tax-product_cat .woocommerce-products-header__description::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 2.5rem;
+  width: 50px;
+  height: 1px;
+  background: var(--royo-champagne);
+}
+body.tax-product_cat .term-description p,
+body.tax-product_cat .archive-description p,
+body.tax-product_cat .woocommerce-products-header__description p {
+  margin: 0 0 1rem !important;
+}
+body.tax-product_cat .term-description p:last-child,
+body.tax-product_cat .archive-description p:last-child {
+  margin-bottom: 0 !important;
+}
+body.tax-product_cat .term-description strong,
+body.tax-product_cat .archive-description strong {
+  color: var(--royo-ink) !important;
+  font-weight: 600 !important;
+}
+
+@media (max-width: 767px) {
+  body.tax-product_cat .term-description,
+  body.tax-product_cat .archive-description {
+    padding: 1.5rem 1.25rem !important;
+    font-size: 0.92rem !important;
+  }
+}
