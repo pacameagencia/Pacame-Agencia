@@ -51,6 +51,8 @@ yarn-error.log*
 .claude/agents/*
 !.claude/agents/visual-reviewer.md
 !.claude/agents/quality-reviewer.md
+!.claude/agents/concept-reviewer.md
+!.claude/agents/dark-academy.md
 !.claude/commands/
 .claude/commands/*
 !.claude/commands/*.md
