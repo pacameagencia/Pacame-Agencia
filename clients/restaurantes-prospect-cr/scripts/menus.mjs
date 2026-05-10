@@ -141,6 +141,70 @@ export const MENUS = {
   },
 };
 
+// Heros curados POR TIPO de local (más específicos que random).
+// URLs Unsplash verificadas: cada una corresponde al ambiente del tipo.
+export const HERO_BY_TYPE = {
+  pub: [
+    'https://images.unsplash.com/photo-1546726747-421c6d69c929?auto=format&fit=crop&w=2400&q=85', // craft beer bar
+    'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=2400&q=85', // beer pub interior
+    'https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=2400&q=85', // pub warm
+  ],
+  brasa: [
+    'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=2400&q=85', // grilled steak
+    'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=2400&q=85', // brasa fire
+    'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=2400&q=85', // grill close
+  ],
+  marisco: [
+    'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=2400&q=85', // seafood platter
+    'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=2400&q=85', // oysters ice
+    'https://images.unsplash.com/photo-1565978771542-4cd24e8d7c30?auto=format&fit=crop&w=2400&q=85', // restaurant by sea
+  ],
+  cafe: [
+    'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=2400&q=85', // cozy cafe
+    'https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=2400&q=85', // marble cafe
+    'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&w=2400&q=85', // espresso warm
+  ],
+  tasca: [
+    'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=2400&q=85', // tapas warm
+    'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=2400&q=85', // tasca interior
+    'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=2400&q=85', // jamón hanging
+  ],
+  gastro: [
+    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2400&q=85', // fine dining
+    'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=2400&q=85', // plated dish
+    'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=2400&q=85', // gastronomico
+  ],
+  default: [
+    'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=2400&q=85',
+    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=2400&q=85',
+    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=2400&q=85',
+  ],
+};
+
+function detectHeroBucket(lead) {
+  const t = (lead.type || '').toLowerCase();
+  const n = (lead.name || '').toLowerCase();
+  if (t === 'pub' || /beer|cerveza|brewery|brewing|tap|craft/.test(n)) return 'pub';
+  if (/asador|brasa|grill|parrilla|carb[oó]n|asado/.test(n)) return 'brasa';
+  if (/marisco|pescado|atlantic|atl[aá]ntic|playa|costa|puerto|marina|pulper[ií]a|marisquer[ií]a/.test(n)) return 'marisco';
+  if (t === 'cafe' || /caf[eé]|cafeter[ií]a|coffee|bistro/.test(n)) return 'cafe';
+  if (/tasca|taberna|mes[oó]n|cantina|venta /.test(n)) return 'tasca';
+  if (/gastro|estrella|michelin|fine dining/.test(n)) return 'gastro';
+  return 'default';
+}
+
+export function pickHeroByType(lead) {
+  const bucket = detectHeroBucket(lead);
+  const list = HERO_BY_TYPE[bucket] || HERO_BY_TYPE.default;
+  return list[hashSlug(lead.slug || '') % list.length];
+}
+
+function hashSlug(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) - h) + s.charCodeAt(i);
+  return Math.abs(h);
+}
+
 // Heros verificados (interiores/comida real, NUNCA personas)
 export const HEROS = [
   'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=2400&q=85',

@@ -31,43 +31,11 @@ const hexToRgb = (hex) => {
 };
 const rgba = (hex, a) => `rgba(${hexToRgb(hex)}, ${a})`;
 
-const dishHtml = (d) => {
-  const imageBlock = d.image
-    ? `<div class="dish__image" style="background-image: url('${d.image}');"></div>`
-    : `<div class="dish__image dish__image--placeholder" aria-hidden="true">
-         <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-           <path d="M4 18h24M6 18a10 10 0 0 1 20 0M16 8v2M12 4v2M20 4v2M2 22h28v2a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4v-2z"/>
-         </svg>
-       </div>`;
-  return `
-  <div class="dish">
-    ${imageBlock}
-    <div class="dish__body">
-      <div class="dish__head"><span class="dish__name">${d.name}</span><span class="dish__price">${d.price}</span></div>
-      <p class="dish__desc">${d.desc}</p>
-      ${d.tags && d.tags.length ? `<div class="dish__tags">${d.tags.map((t) => `<span class="dish__tag">${t}</span>`).join('')}</div>` : ''}
-    </div>
-  </div>`;
-};
-
 const pillarHtml = (p) => `
   <div class="pillar">
     <div class="pillar__icon">${p.icon}</div>
     <h3>${p.title}</h3>
     <p>${p.text}</p>
-  </div>`;
-
-const reviewHtml = (r) => `
-  <div class="review">
-    <div class="review__stars">${'★'.repeat(r.stars || 5)}</div>
-    <p class="review__text">"${r.text}"</p>
-    <div class="review__author">
-      <div class="review__avatar">${(r.author || '?').charAt(0)}</div>
-      <div>
-        <div class="review__name">${r.author}</div>
-        <div class="review__date">${r.date}</div>
-      </div>
-    </div>
   </div>`;
 
 // Variables a sustituir
@@ -116,15 +84,9 @@ const replacements = {
   PILLAR_EYEBROW: cfg.pillar_eyebrow || 'Nuestra esencia',
   PILLAR_HEADING: cfg.pillar_heading,
   PILLAR_BLOCKS: cfg.pillars.map(pillarHtml).join('\n'),
-  MENU_HEADING: cfg.menu_heading,
-  TAB1_LABEL: cfg.tab1_label || 'Para empezar',
-  TAB2_LABEL: cfg.tab2_label || 'Principales',
-  TAB3_LABEL: cfg.tab3_label || 'Dulces',
-  TAB1_DISHES: cfg.menu.entrantes.map(dishHtml).join('\n'),
-  TAB2_DISHES: cfg.menu.principales.map(dishHtml).join('\n'),
-  TAB3_DISHES: cfg.menu.postres.map(dishHtml).join('\n'),
-  REVIEWS_HEADING: cfg.reviews_heading || 'Cocina con alma · servicio cercano',
-  REVIEW_BLOCKS: cfg.reviews.map(reviewHtml).join('\n'),
+  // includes section (sustituye el bloque menu/reviews fake)
+  INCLUDES_EYEBROW: cfg.includes_eyebrow || 'Lo que incluye',
+  INCLUDES_HEADING: cfg.includes_heading || 'Vuestra web nueva, así de claro',
   BOOKING_HEADING: cfg.booking_heading || 'Reserva tu mesa<br>o llámanos directo',
   BOOKING_DESC: cfg.booking_desc,
   HOURS_DAYS: cfg.hours.days,

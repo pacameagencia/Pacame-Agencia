@@ -21,8 +21,8 @@ import { hostname } from 'node:os';
 import { resolveMx } from 'node:dns/promises';
 import { createConnection } from 'node:net';
 import { createRequire } from 'node:module';
-import { MENUS, pickMenu, pickHero, pickPalette } from './menus.mjs';
-import { buildEmail, rotateMenu } from './copy-variants.mjs';
+import { pickHeroByType, pickPalette } from './menus.mjs';
+import { buildEmail } from './copy-variants.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');
@@ -143,9 +143,8 @@ const heartbeatInterval = setInterval(async () => {
 
 // === Build config (igual que pipeline.mjs) ===
 function buildConfig(lead) {
-  const menu = pickMenu(lead);
   const palette = pickPalette(lead.slug);
-  const hero_image = pickHero(lead.slug);
+  const hero_image = pickHeroByType(lead);
   const isRegional = (lead.cuisine || '').toLowerCase().match(/regional|spanish|manchego|asturian|catalan|basque|gallego|valencian/);
   const isPub = lead.type === 'pub' || /beer|cerveza|brewery/i.test(lead.name);
   const isBrasa = /asador|brasa|grill|parrilla/i.test(lead.name);
@@ -210,14 +209,9 @@ function buildConfig(lead) {
     palette: { primary: palette.primary, dark: palette.dark, deep: palette.deep, cream: palette.cream, cream_warm: palette.cream_warm, accent: palette.accent, accent_bright: palette.accent_bright, accent_deep: palette.accent_deep, earth: palette.earth, text_muted: palette.text_muted },
     eyebrow, hero_title_line1: h1l1, hero_title_line2: h1l2, hero_subtitle: sub,
     pillar_eyebrow: 'Nuestra esencia', pillar_heading: pillarHeading, pillars,
-    menu_heading: menu.menu_heading, tab1_label: menu.tab1_label, tab2_label: menu.tab2_label, tab3_label: menu.tab3_label,
-    menu: rotateMenu(menu.menu, lead.slug), cuisine_label: lead.cuisine || 'Mediterránea',
-    reviews_heading: 'Lo que dicen los clientes',
-    reviews: [
-      { stars: 5, text: 'Trato muy cercano y la comida bien hecha. Repetiremos seguro.', author: 'Juan M.', date: 'Hace 2 semanas' },
-      { stars: 5, text: 'Sitio con buen ambiente, raciones generosas y precios honestos. Recomendable.', author: 'Carmen R.', date: 'Hace 1 mes' },
-      { stars: 4, text: 'Cocina rica y atención personal. Volveremos.', author: 'Pedro G.', date: 'Hace 1 mes' },
-    ],
+    cuisine_label: lead.cuisine || 'Mediterránea',
+    includes_eyebrow: 'Lo que incluye',
+    includes_heading: 'Vuestra web nueva, así de claro',
     booking_heading: 'Reserva tu mesa<br>o llámanos directo', booking_desc: bookingDesc,
     hours: { days: 'Martes a domingo', midday: '13:00 - 16:00', dinner: '20:30 - 23:30' },
   };
@@ -283,7 +277,7 @@ ${v.postscript}`;
     .split(WA_PH).join(linkifiedWa);
   return {
     subject: v.subject, preheader: v.preheader, subjectIdx: v.subjectIdx, preheaderIdx: v.preheaderIdx, text,
-    html: `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="color-scheme" content="light"></head><body style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.65;color:#222;background:#f7f5f0;margin:0;padding:0;"><div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#fff;">${v.preheader}</div><div style="max-width:600px;margin:0 auto;padding:24px 20px;background:#fff;font-size:15px;">${html}</div></body></html>`,
+    html: `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="color-scheme" content="light"></head><body style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.65;color:#222;background:#f7f5f0;margin:0;padding:0;"><div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#fff;">${v.preheader}</div><div style="max-width:600px;margin:0 auto;padding:24px 20px;background:#fff;font-size:15px;">${html}</div><img src="https://demos.pacameagencia.com/t/${lead.slug}.gif" alt="" width="1" height="1" style="display:block;border:0;width:1px;height:1px;" /></body></html>`,
   };
 }
 
