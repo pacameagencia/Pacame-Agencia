@@ -1,0 +1,473 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://darkroomcreative.cloud/schemas/dark-room-concept-v1.json",
+  "title": "Dark Room Concept JSON Canonical Schema v1",
+  "description": "Schema obligatorio para todo concept Dark Room. Cualquier render que no valide contra este schema con node tools/dark-frames/validate-concept.mjs es BLOCKED. Cubre 5 formatos canónicos: 1-act, 2-act, 3-act, story, carrusel. Ver DARK-ROOM-PLAYBOOK.md para decision tree y DARK-ROOM-REFERENCE.md para detalle.",
+  "type": "object",
+  "required": [
+    "concept_id",
+    "format",
+    "tier",
+    "duration_target_s",
+    "research",
+    "outro",
+    "caption_text_ig",
+    "caption_hashtags",
+    "approval"
+  ],
+  "properties": {
+    "concept_id": {
+      "type": "string",
+      "pattern": "^dark-frames-\\d{3}-[a-z0-9-]+$",
+      "description": "Patrón obligatorio: dark-frames-NNN-slug-kebab. Ej: dark-frames-008-hi-pablo"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 80
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^v\\d+(\\.\\d+)?$"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 4
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "format": {
+      "type": "string",
+      "enum": ["1-act", "2-act", "3-act", "story", "carrusel"],
+      "description": "Formato canónico Dark Room. Ver PLAYBOOK §1 decision tree."
+    },
+    "tier": {
+      "type": "string",
+      "enum": ["CINEMATIC", "AUTHENTIC", "HYBRID"],
+      "description": "Tier declarado. CINEMATIC=Hollywood-grade, AUTHENTIC=iPhone UGC, HYBRID=mix."
+    },
+    "style_anchor_variant": {
+      "type": "string",
+      "enum": ["canonico", "vice_city_sunset_v2", "br2049_v2", "mad_max_v2", "authentic_iphone_v2", "miami_vice_2006_v2"],
+      "description": "Variant del Style Anchor. Ver REFERENCE §3."
+    },
+    "duration_target_s": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 60
+    },
+    "duration_outro_s": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 3
+    },
+    "aspect_ratio": {
+      "type": "string",
+      "enum": ["9:16", "1:1", "4:5", "16:9", "3:4"]
+    },
+    "resolution": {
+      "type": "string",
+      "pattern": "^\\d+x\\d+$"
+    },
+    "logline": {
+      "type": "string",
+      "minLength": 50,
+      "maxLength": 800,
+      "description": "Resumen ejecutivo del concept en 1-3 frases. Hipótesis viral + funnel."
+    },
+    "research": {
+      "type": "array",
+      "minItems": 5,
+      "description": "OBLIGATORIO R-research-first. 5 datos REALES de referencia. Sin esto, render BLOCKED.",
+      "items": {
+        "type": "object",
+        "required": ["source", "type", "data"],
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Fuente real (peli/director/título/URL)"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["lente", "lut", "ritmo", "audio", "estructura", "director", "peli", "estetica", "trailer-3-act", "lighting", "color-grading", "shot-list"],
+            "description": "Tipo de dato research"
+          },
+          "data": {
+            "type": "string",
+            "minLength": 10,
+            "description": "Dato concreto extraído (ej: '35mm anamorphic Cooke S4i Prime, BR2049 Deakins American Cinematographer Oct 2017')"
+          }
+        }
+      }
+    },
+    "character_anchor": {
+      "type": "object",
+      "description": "Required si Pablo aparece en la pieza. NO required para concepts solo product/landscape.",
+      "properties": {
+        "soul_id_higgsfield": {
+          "type": "string",
+          "description": "Higgsfield Soul Character ID. Pablo=55ac4b3b-51f7-497a-8150-87563a969915"
+        },
+        "soul_character_id": {
+          "type": "string",
+          "description": "Reference ID interno (ej: PACAME)"
+        },
+        "consistency_sheet": {
+          "type": "string",
+          "description": "Path al 360 sheet PNG. Validate-concept.mjs verifica que existe físicamente."
+        },
+        "body_descriptor_hardcoded": {
+          "type": "string",
+          "minLength": 50,
+          "description": "Descripción anatómica para reforzar identity en cada prompt"
+        },
+        "wardrobe_single": {
+          "type": "string",
+          "description": "Wardrobe único de la pieza (Pilar 1 NARRATIVE-ARC). NULL si wardrobe-progression justificada."
+        }
+      }
+    },
+    "sequence": {
+      "type": "object",
+      "description": "Required para formats con motion (1-act, 2-act, 3-act). NO required para story (single shot simple) ni carrusel (no motion).",
+      "properties": {
+        "narrative_arc": {
+          "type": "string",
+          "description": "Resumen del arc narrativo (hook → build → climax → reveal)"
+        },
+        "structure_template": {
+          "type": "string",
+          "description": "Template aplicado (ej: 'single-action-evolutive', 'last-frame-chain', 'trailer-4-act-with-protagonist')"
+        },
+        "wardrobe_continuity": {
+          "type": "object",
+          "properties": {
+            "single_wardrobe": { "type": "boolean" },
+            "description": { "type": "string" },
+            "applied_in_all_shots": { "type": "boolean" },
+            "wardrobe_change_justification": {
+              "type": ["string", "null"],
+              "description": "Justificación si NO single_wardrobe (ej: 'morning Hawaiian → evening tuxedo with on-screen \"later that night\" cut')"
+            }
+          },
+          "required": ["single_wardrobe", "description"]
+        },
+        "lighting_continuity": {
+          "type": "object",
+          "properties": {
+            "key_temperature_kelvin_morning": { "type": "number" },
+            "key_temperature_kelvin_late_morning": { "type": "number" },
+            "key_temperature_kelvin_sunset": { "type": "number" },
+            "fill_temperature_kelvin": { "type": "number" },
+            "warm_cool_split": { "type": "boolean" },
+            "time_of_day_progression": { "type": "string" }
+          }
+        },
+        "shots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/shot"
+          }
+        },
+        "transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/transition"
+          }
+        }
+      }
+    },
+    "slides": {
+      "type": "array",
+      "description": "Required SOLO para format=carrusel. Length=7 obligatorio.",
+      "items": {
+        "type": "object",
+        "required": ["slide_id", "role", "image_path", "text_overlay"],
+        "properties": {
+          "slide_id": { "type": "integer", "minimum": 1, "maximum": 7 },
+          "role": {
+            "type": "string",
+            "enum": ["cover", "hook", "problem", "step1", "step2", "step3", "result", "cta"]
+          },
+          "image_path": { "type": "string" },
+          "text_overlay": { "type": "string", "maxLength": 200 },
+          "pablo_present": { "type": "boolean" }
+        }
+      }
+    },
+    "audio": {
+      "type": "object",
+      "properties": {
+        "music_suno_prompt": {
+          "type": "string",
+          "minLength": 30,
+          "description": "Prompt completo Suno para música licenseada-free"
+        },
+        "music_key": { "type": "string" },
+        "music_bpm": { "type": "number" },
+        "lufs_target": { "type": "number", "const": -16 },
+        "voice_over": { "type": ["string", "null"] },
+        "sfx_library_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "outro": {
+      "type": "object",
+      "required": ["asset"],
+      "properties": {
+        "duration_seconds": { "type": "number", "minimum": 0, "maximum": 3, "default": 1.7 },
+        "asset": {
+          "type": "string",
+          "description": "Path al outro Dark Room. Default: tools/dark-frames/assets/outro-darkroom-2s-v2.mp4"
+        },
+        "text_overlay": { "type": "string" }
+      }
+    },
+    "captions_burned_summary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "at_s_total": { "type": "number" },
+          "text": { "type": "string", "maxLength": 60 },
+          "shot": { "type": "string" }
+        }
+      }
+    },
+    "caption_text_ig": {
+      "type": "string",
+      "minLength": 50,
+      "maxLength": 2200,
+      "description": "Caption IG con CTA real (ej: 'Comenta GTA y te mando el ebook')"
+    },
+    "caption_hashtags": {
+      "type": "string",
+      "pattern": "(?=.*#darkroomcreative)(?=.*#(DarkFrames|DarkRoom))",
+      "description": "Hashtags. OBLIGATORIO #darkroomcreative + #DarkFrames (CINEMATIC) o #DarkRoom (resto)"
+    },
+    "estimated_cost_usd": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "Coste estimado en USD. Default cap $5. Override con flag --allow-high-cost en validate-concept."
+    },
+    "approval": {
+      "type": "object",
+      "required": ["pablo_double_yes"],
+      "properties": {
+        "pablo_double_yes": {
+          "type": "boolean",
+          "description": "Required true si tier incluye Seedance/Veo/Kling video premium"
+        },
+        "cost_guard_token": {
+          "type": "string",
+          "description": "Token Ed25519 single-use de emit-cost-guard.mjs. Required si pablo_double_yes=true"
+        },
+        "approval_format_required": {
+          "type": "string",
+          "description": "Formato exacto que Pablo debe decir (ej: 'SI aprueba video premium concept 008 · 1 shot · seedance_2_0 · 22.5 cr ($1.10)')"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "shot": {
+      "type": "object",
+      "required": [
+        "shot_id",
+        "title",
+        "duration_seconds",
+        "subject_motion",
+        "camera_motion",
+        "motion_priority",
+        "audio_sync",
+        "lens_reference_hollywood"
+      ],
+      "properties": {
+        "shot_id": {
+          "type": "string",
+          "pattern": "^S\\d+_[a-z0-9_]+$"
+        },
+        "title": { "type": "string" },
+        "duration_seconds": { "type": "number", "minimum": 0.5, "maximum": 12 },
+        "act": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "image_anchor_start_winner_recommended": {
+          "type": "string",
+          "description": "Path al PNG start frame. Validate-concept.mjs verifica que existe."
+        },
+        "image_anchor_end_winner_recommended": {
+          "type": "string",
+          "description": "Path al PNG end frame. Validate-concept.mjs verifica que existe."
+        },
+        "structure_role": { "type": "string" },
+        "subject_motion": {
+          "type": "string",
+          "minLength": 30,
+          "description": "Verbos concretos encadenados. NO genérico. Ver REFERENCE §7.2"
+        },
+        "camera_motion": {
+          "type": "string",
+          "minLength": 20,
+          "description": "Move concreto + speed. NO 'cinematic camera angle'."
+        },
+        "motion_priority": {
+          "type": "string",
+          "enum": ["subject", "camera", "both"]
+        },
+        "audio_sync": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["at_s", "name"],
+            "properties": {
+              "at_s": { "type": "number" },
+              "name": { "type": "string" },
+              "loudness": { "type": "string" }
+            }
+          }
+        },
+        "lens_reference_hollywood": {
+          "type": "string",
+          "minLength": 20,
+          "description": "Director + peli + especificación lens (ej: 'Newton Thomas Sigel — Drive 2011 magenta-cyan + motion blur on key 24fps')"
+        },
+        "skin_realism_R8_obligatorio": {
+          "type": "array",
+          "description": "Required si shot incluye close-up Pablo. Lista 6+ items skin realism."
+        },
+        "captions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["at_s_local", "text", "color", "font", "position"],
+            "properties": {
+              "at_s_local": { "type": "number" },
+              "at_s_total": { "type": "number" },
+              "text": { "type": "string", "maxLength": 60 },
+              "color": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+              "font": { "type": "string" },
+              "position": { "type": "string" },
+              "animation": { "type": "string" }
+            }
+          }
+        },
+        "transition_to_next": {
+          "$ref": "#/definitions/transition_inline"
+        }
+      }
+    },
+    "transition": {
+      "type": "object",
+      "required": ["from_shot", "to_shot", "type"],
+      "properties": {
+        "from_shot": { "type": "string", "pattern": "^S\\d+_[a-z0-9_]+$" },
+        "to_shot": { "type": "string", "pattern": "^S\\d+_[a-z0-9_]+$" },
+        "type": {
+          "type": "string",
+          "enum": [
+            "last_frame_chain",
+            "match_cut",
+            "j_cut_audio",
+            "whip_pan_continuation",
+            "push_in_to_closeup",
+            "match_action",
+            "color_match",
+            "symbolic_match",
+            "fade_to_outro",
+            "fade_cross"
+          ]
+        },
+        "ending_S_from": { "type": "string" },
+        "opening_S_to": { "type": "string" },
+        "audio_handoff": { "type": "string" }
+      }
+    },
+    "transition_inline": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string" },
+        "ending": { "type": "string" }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "title": "1-act format constraints",
+      "properties": {
+        "format": { "const": "1-act" },
+        "duration_target_s": { "minimum": 7, "maximum": 9 },
+        "sequence": {
+          "required": ["shots"],
+          "properties": {
+            "shots": { "minItems": 1, "maxItems": 1 },
+            "transitions": { "maxItems": 0 }
+          }
+        }
+      }
+    },
+    {
+      "title": "2-act format constraints",
+      "properties": {
+        "format": { "const": "2-act" },
+        "duration_target_s": { "minimum": 12, "maximum": 16 },
+        "sequence": {
+          "required": ["shots", "transitions"],
+          "properties": {
+            "shots": { "minItems": 2, "maxItems": 2 },
+            "transitions": {
+              "minItems": 1,
+              "maxItems": 1,
+              "items": {
+                "properties": {
+                  "type": { "const": "last_frame_chain" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "3-act format constraints",
+      "properties": {
+        "format": { "const": "3-act" },
+        "duration_target_s": { "minimum": 18, "maximum": 32 },
+        "sequence": {
+          "required": ["shots", "transitions"],
+          "properties": {
+            "shots": { "minItems": 3, "maxItems": 4 },
+            "transitions": { "minItems": 2, "maxItems": 4 }
+          }
+        }
+      }
+    },
+    {
+      "title": "story format constraints",
+      "properties": {
+        "format": { "const": "story" },
+        "tier": { "const": "AUTHENTIC" },
+        "duration_target_s": { "minimum": 4.5, "maximum": 5.5 },
+        "sequence": {
+          "required": ["shots"],
+          "properties": {
+            "shots": { "minItems": 1, "maxItems": 1 }
+          }
+        }
+      }
+    },
+    {
+      "title": "carrusel format constraints",
+      "properties": {
+        "format": { "const": "carrusel" },
+        "aspect_ratio": { "const": "4:5" },
+        "slides": {
+          "minItems": 7,
+          "maxItems": 7
+        }
+      },
+      "required": ["slides"]
+    }
+  ]
+}

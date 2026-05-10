@@ -1,0 +1,112 @@
+{
+  "concept_id": "dark-frames-999-piloto-1act",
+  "title": "Piloto sistema definitivo 1-act 8s · Pablo morning coffee",
+  "version": "v1",
+  "schema_version": 4,
+  "created_at": "2026-05-10",
+
+  "format": "1-act",
+  "tier": "AUTHENTIC",
+  "style_anchor_variant": "authentic_iphone_v2",
+
+  "duration_target_s": 8,
+  "duration_outro_s": 0,
+  "aspect_ratio": "9:16",
+  "resolution": "1080x1920",
+
+  "logline": "Piloto E2E del sistema definitivo Dark Room. UNA acción evolutiva continua: Pablo entra a la cocina, agarra la cafetera, sirve café, mira por la ventana mientras toma el primer sorbo. Tier AUTHENTIC iPhone para test sin coste premium.",
+
+  "research": [
+    {
+      "source": "Wong Kar-Wai · In the Mood for Love 2000 · DP Christopher Doyle",
+      "type": "lente",
+      "data": "35mm low angle slight handheld con ralenti natural · captura intimacidad cotidiana"
+    },
+    {
+      "source": "iPhone 15 Pro Max main camera native",
+      "type": "lighting",
+      "data": "Natural window light morning 9am · warm tungsten kitchen lamp fill · NO color grade applied"
+    },
+    {
+      "source": "Saul Leiter street photography color sensibility",
+      "type": "color-grading",
+      "data": "Muted warm earthtones · cream + olive + mocha · NO saturated"
+    },
+    {
+      "source": "Pablo PACAME daily routine real (BTS reference)",
+      "type": "ritmo",
+      "data": "Movimientos lentos meditativos · 8s contiene 4 micro-acciones encadenadas · cero stress"
+    },
+    {
+      "source": "Foley library natural ambient kitchen morning",
+      "type": "audio",
+      "data": "Coffee pot bubbling · ceramic mug placement · birds outside window · sip sound · zero music"
+    }
+  ],
+
+  "character_anchor": {
+    "soul_id_higgsfield": "55ac4b3b-51f7-497a-8150-87563a969915",
+    "soul_character_id": "PACAME",
+    "consistency_sheet": "tools/dark-frames/character-bibles/pablo/pablo-360-sheet-v1.png",
+    "body_descriptor_hardcoded": "Spanish man late 30s/early 40s, athletic-stocky LEAN SLIM build, V-shape torso, short-cropped dark brown hair, well-groomed dark-brown beard with subtle gray hints, brown eyes, warm olive Mediterranean skin, defined cheekbones, lean sharp jawline, NOT bulky NOT chubby NOT round face.",
+    "wardrobe_single": "Plain charcoal grey cotton t-shirt + light denim jeans · no accessories · no logo"
+  },
+
+  "sequence": {
+    "narrative_arc": "Single 8s morning ritual continuous shot · Pablo enters kitchen → grabs coffeepot → pours → first sip while looking at window. Mood: meditative, real, cotidiano.",
+    "structure_template": "single-action-evolutive",
+    "wardrobe_continuity": {
+      "single_wardrobe": true,
+      "description": "Plain charcoal grey cotton t-shirt + light denim jeans throughout entire 8s",
+      "applied_in_all_shots": true,
+      "wardrobe_change_justification": null
+    },
+    "lighting_continuity": {
+      "key_temperature_kelvin_morning": 5500,
+      "fill_temperature_kelvin": 3200,
+      "warm_cool_split": false,
+      "time_of_day_progression": "morning 9am stable throughout"
+    },
+    "shots": [
+      {
+        "shot_id": "S1_morning_coffee",
+        "title": "MORNING COFFEE RITUAL",
+        "duration_seconds": 8,
+        "act": 1,
+        "structure_role": "ACT 1 single continuous · meditative cotidiano",
+        "subject_motion": "Pablo walks 2 steps into kitchen frame-right (0-2s) · reaches with right hand to grab matte black coffeepot from counter (2-3.5s) · pours into ceramic mug slowly (3.5-5.5s) · turns body 30° toward window left while raising mug (5.5-7s) · takes first sip slowly with eyes half-closed (7-8s)",
+        "camera_motion": "Stable handheld iPhone 15 Pro Max main wide camera at hip height · subtle natural sway · slow drift-back from medium to medium-wide over 8s · no zoom",
+        "motion_priority": "subject",
+        "audio_sync": [
+          {"at_s": 0, "name": "ambient_kitchen_morning_birds_window", "loudness": "-32 LUFS bg"},
+          {"at_s": 2.5, "name": "coffeepot_metal_lift_clink", "loudness": "-22 LUFS"},
+          {"at_s": 4, "name": "coffee_pour_into_ceramic_mug", "loudness": "-18 LUFS"},
+          {"at_s": 7.2, "name": "first_sip_subtle_breath_in", "loudness": "-24 LUFS"}
+        ],
+        "lens_reference_hollywood": "Christopher Doyle In The Mood For Love 2000 · low-angle handheld intimate cotidiano + iPhone 15 Pro Max native (NO cinematic LUT)"
+      }
+    ]
+  },
+
+  "audio": {
+    "lufs_target": -16,
+    "voice_over": null,
+    "sfx_library_count": 4
+  },
+
+  "outro": {
+    "duration_seconds": 0,
+    "asset": "tools/dark-frames/assets/outro-darkroom-2s-v2.mp4",
+    "text_overlay": "n/a · stories no llevan outro"
+  },
+
+  "caption_text_ig": "Mi ritual de cada mañana antes de empezar a generar. Cero música. Solo café y luz natural. ¿Cuál es el tuyo? Cuéntamelo en comentarios.",
+  "caption_hashtags": "#DarkRoom #darkroomcreative #BTS #morningritual #cotidiano #createcalm",
+
+  "estimated_cost_usd": 0.5,
+
+  "approval": {
+    "pablo_double_yes": false,
+    "approval_format_required": "AUTHENTIC tier sin video premium · NO requiere doble SÍ"
+  }
+}
