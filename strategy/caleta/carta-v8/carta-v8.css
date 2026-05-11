@@ -34,7 +34,7 @@ body { font-family: var(--font-body); color: var(--ink); }
 .page {
   width: 210mm;
   height: 297mm;
-  padding: 16mm 16mm 14mm 16mm;
+  padding: 13mm 14mm 12mm 14mm;
   background: var(--paper);
   position: relative;
   overflow: hidden;
@@ -85,8 +85,8 @@ body { font-family: var(--font-body); color: var(--ink); }
   font-weight: 500;
   letter-spacing: 0.22em;
   color: var(--burdeos);
-  margin-bottom: 6mm;
-  padding-bottom: 3mm;
+  margin-bottom: 4mm;
+  padding-bottom: 2mm;
   border-bottom: 0.4pt solid var(--burdeos);
   position: relative;
   z-index: 2;
@@ -103,18 +103,23 @@ body { font-family: var(--font-body); color: var(--ink); }
 .header .h-molino { width: 7mm; height: 7mm; color: var(--burdeos); opacity: 0.9; }
 
 /* --- Sección ------------------------------------------------ */
-.section { margin-bottom: 8mm; position: relative; z-index: 2; }
-.section + .section { margin-top: 6mm; }
+.section {
+  margin-bottom: 4mm;
+  position: relative;
+  z-index: 2;
+  break-inside: avoid;
+}
+.section + .section { margin-top: 3mm; }
 
 .section-head {
   text-align: left;
-  margin-bottom: 6mm;
+  margin-bottom: 3.5mm;
   display: flex;
   align-items: center;
-  gap: 5mm;
+  gap: 4mm;
 }
 .section-head .s-icon {
-  width: 14mm; height: 14mm;
+  width: 12mm; height: 12mm;
   color: var(--burdeos);
   flex-shrink: 0;
 }
@@ -122,7 +127,7 @@ body { font-family: var(--font-body); color: var(--ink); }
 .section-head h2 {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 28pt;
+  font-size: 24pt;
   letter-spacing: -0.01em;
   color: var(--burdeos);
   line-height: 1;
@@ -150,7 +155,6 @@ body { font-family: var(--font-body); color: var(--ink); }
   column-gap: 10mm;
   column-fill: balance;
 }
-.section { break-inside: avoid; }
 
 /* Variante: sección densa (Picoteo) — Grid 2 columnas también pero compactado */
 .section.dense .cols {
@@ -166,7 +170,7 @@ body { font-family: var(--font-body); color: var(--ink); }
 /* --- Grupo (CROQUETAS, TOSTAS, PAN BAO...) ------------------ */
 .group {
   break-inside: avoid;
-  margin-bottom: 5mm;
+  margin-bottom: 3mm;
 }
 .group-label {
   display: inline-block;
@@ -176,8 +180,8 @@ body { font-family: var(--font-body); color: var(--ink); }
   letter-spacing: 0.28em;
   color: var(--burdeos);
   border-bottom: 0.4pt solid var(--burdeos);
-  padding: 0 0 1mm 0;
-  margin-bottom: 2mm;
+  padding: 0 0 0.6mm 0;
+  margin-bottom: 1.5mm;
   text-transform: uppercase;
 }
 .group-desc {
@@ -186,20 +190,20 @@ body { font-family: var(--font-body); color: var(--ink); }
   font-weight: 400;
   font-size: 10pt;
   color: var(--ink-soft);
-  margin-bottom: 1.5mm;
+  margin-bottom: 1mm;
   display: block;
 }
 
 /* --- Plato -------------------------------------------------- */
 .dish {
   break-inside: avoid;
-  margin-bottom: 4mm;
+  margin-bottom: 2.2mm;
 }
 .dish-head {
   display: flex;
   align-items: baseline;
   gap: 2mm;
-  margin-bottom: 1mm;
+  margin-bottom: 0.5mm;
 }
 .dish-name {
   font-family: var(--font-body);
@@ -258,10 +262,10 @@ body { font-family: var(--font-body); color: var(--ink); }
 .dish-desc {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 10.5pt;
-  line-height: 1.35;
+  font-size: 10pt;
+  line-height: 1.28;
   color: var(--ink-soft);
-  margin-bottom: 1.2mm;
+  margin-bottom: 0.6mm;
 }
 .dish-aler {
   display: flex;
@@ -276,39 +280,20 @@ body { font-family: var(--font-body); color: var(--ink); }
   opacity: 0.9;
 }
 
-/* --- Pie de página ------------------------------------------ */
+/* --- Pie de página (ligero, sin leyenda) -------------------- */
 .footer {
   margin-top: auto;
-  padding-top: 4mm;
+  padding-top: 2.5mm;
   border-top: 0.4pt solid var(--burdeos);
   position: relative;
   z-index: 2;
 }
-.footer-aler-legend {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 1.5mm 2.5mm;
-  margin-bottom: 3mm;
-}
-.footer-aler-legend .leg {
-  display: flex;
-  align-items: center;
-  gap: 1.2mm;
-  font-family: var(--font-mono);
-  font-size: 6.8pt;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: var(--gris-aler);
-  text-transform: uppercase;
-}
-.footer-aler-legend .leg .a-icon { width: 3.8mm; height: 3.8mm; flex-shrink: 0; }
-
 .footer-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: var(--font-mono);
-  font-size: 6.8pt;
+  font-size: 7pt;
   font-weight: 500;
   letter-spacing: 0.22em;
   color: var(--ink-soft);
@@ -319,56 +304,120 @@ body { font-family: var(--font-body); color: var(--ink); }
   font-style: italic;
   font-weight: 500;
   letter-spacing: 0.3em;
-  font-size: 8pt;
+  font-size: 8.5pt;
 }
 
-/* --- Cierre final (última página) --------------------------- */
-.closing {
-  margin-top: 10mm;
-  padding-top: 10mm;
-  border-top: 0.6pt solid var(--burdeos);
+/* --- Cajita única de alérgenos (solo página final) ---------- */
+.alergenos-box {
+  margin: 3mm 0 3mm;
+  padding: 3mm 5mm 2.5mm;
+  border: 0.5pt solid var(--burdeos);
+  border-radius: 1.2mm;
+  background: rgba(139, 46, 42, 0.03);
+  position: relative;
+  z-index: 2;
+}
+.alergenos-box-title {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--burdeos);
+  text-transform: uppercase;
   text-align: center;
+  margin-bottom: 2mm;
+  padding-bottom: 1.5mm;
+  border-bottom: 0.3pt solid var(--burdeos);
+}
+.alergenos-box-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1.5mm 2.5mm;
+}
+.alergenos-box-grid .leg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6mm;
+  font-family: var(--font-mono);
+  font-size: 6.4pt;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.1;
+}
+.alergenos-box-grid .leg .a-icon {
+  width: 4.6mm;
+  height: 4.6mm;
+  color: var(--gris-aler);
+}
+.alergenos-box-note {
+  margin-top: 2.5mm;
+  padding-top: 1.5mm;
+  border-top: 0.2pt dashed var(--burdeos);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 8.5pt;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+/* --- Cierre final (franja horizontal compacta) -------------- */
+.closing {
+  margin-top: 2.5mm;
+  padding-top: 2.5mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4mm;
   position: relative;
   z-index: 2;
 }
 .closing .c-molino {
-  width: 22mm;
-  height: 22mm;
+  width: 10mm;
+  height: 10mm;
   color: var(--burdeos);
-  margin: 0 auto 4mm;
-  display: block;
   opacity: 0.95;
+  flex-shrink: 0;
+}
+.closing .c-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4mm;
 }
 .closing .c-name {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 22pt;
+  font-size: 13pt;
   letter-spacing: -0.005em;
   color: var(--burdeos);
-  margin-bottom: 2mm;
+  line-height: 1;
   font-feature-settings: "ss01";
 }
 .closing .c-dir {
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: 10pt;
-  letter-spacing: 0.28em;
-  color: var(--burdeos);
-  margin-bottom: 4mm;
+  font-size: 7.5pt;
+  letter-spacing: 0.22em;
+  color: var(--ink-soft);
   text-transform: uppercase;
 }
 .closing .c-italic {
   font-family: var(--font-body);
   font-style: italic;
   font-weight: 400;
-  font-size: 10pt;
+  font-size: 9.5pt;
   color: var(--ink-soft);
-  margin-bottom: 2mm;
+  margin-bottom: 1mm;
 }
 .closing .c-micro {
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: 7.5pt;
+  font-size: 7pt;
   letter-spacing: 0.16em;
   color: var(--ink-soft);
   text-transform: uppercase;
