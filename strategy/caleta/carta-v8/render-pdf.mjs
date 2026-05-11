@@ -361,10 +361,17 @@ function sectionHTML(s) {
   `;
 }
 
-function legendHTML() {
-  return Object.entries(ALER_LABEL)
-    .map(([id, label]) => `<div class="leg">${aIcon(id)}<span>${label}</span></div>`)
+function alergenosBoxHTML() {
+  const items = Object.entries(ALER_LABEL)
+    .map(([id, label]) => `<div class="leg"><svg class="a-icon"><use href="#al-${id}"/></svg><span>${label}</span></div>`)
     .join("");
+  return `
+    <div class="alergenos-box">
+      <div class="alergenos-box-title">Leyenda de alérgenos</div>
+      <div class="alergenos-box-grid">${items}</div>
+      <div class="alergenos-box-note">Si tienes alguna alergia o intolerancia, infórmanos.</div>
+    </div>
+  `;
 }
 
 function pageHTML({ idx, total, romano, secciones, closing = false }) {
@@ -386,18 +393,18 @@ function pageHTML({ idx, total, romano, secciones, closing = false }) {
     ${secciones.map(sectionHTML).join("")}
 
     ${closing ? `
+    ${alergenosBoxHTML()}
     <div class="closing">
       <svg class="c-molino"><use href="#ic-molino"/></svg>
-      <div class="c-name">${data.marca.nombre}</div>
-      <div class="c-dir">${data.marca.direccion}</div>
-      <div class="c-italic">Si tienes alguna alergia o intolerancia, infórmanos.</div>
-      <div class="c-micro">IVA incluido · Producto de calidad seleccionado</div>
+      <div class="c-text">
+        <div class="c-name">${data.marca.nombre}</div>
+        <div class="c-dir">${data.marca.direccion}</div>
+      </div>
     </div>` : ""}
 
     <footer class="footer">
-      <div class="footer-aler-legend">${legendHTML()}</div>
       <div class="footer-meta">
-        <span>La Caleta Manchega · Gastrobar · Albacete</span>
+        <span>${closing ? "IVA incluido · Producto de calidad seleccionado" : "La Caleta Manchega · Gastrobar · Albacete"}</span>
         <span class="folio">${romanFor(idx)} / ${romanFor(total)}</span>
       </div>
     </footer>
@@ -413,19 +420,18 @@ function romanFor(n) {
 }
 
 // ─── DISTRIBUCIÓN DE SECCIONES POR PÁGINA ───────────────────
-// Decisión editorial v9 (5 páginas A4, tipografía grande, ritmo respirable):
-//   Página 1 (I)   → Entrantes con historia
-//   Página 2 (II)  → Picoteo con encanto (página estrella, sección más rica)
-//   Página 3 (III) → Verde que te quiero verde + Huevos rotos & canelones
-//   Página 4 (IV)  → Al pan
-//   Página 5 (V)   → Para terminar así + Final feliz + cierre
+// Decisión editorial v9.1 (4 páginas A4, márgenes apretados, leyenda alérgenos
+// en cajita única al final, no en cada página):
+//   Página 1 (I)   → Entrantes con historia + Verde que te quiero verde
+//   Página 2 (II)  → Picoteo con encanto (página estrella, 13 platos en 2 col)
+//   Página 3 (III) → Huevos rotos & canelones + Al pan
+//   Página 4 (IV)  → Para terminar así + Final feliz + cajita alérgenos + cierre
 const find = (id) => data.secciones.find((s) => s.id === id);
 const PAGES = [
-  { romano: "I",   secciones: [find("entrantes")] },
+  { romano: "I",   secciones: [find("entrantes"), find("ensaladas")] },
   { romano: "II",  secciones: [find("picoteo")] },
-  { romano: "III", secciones: [find("ensaladas"), find("huevos-canelones")] },
-  { romano: "IV",  secciones: [find("al-pan")] },
-  { romano: "V",   secciones: [find("para-terminar"), find("final-feliz")], closing: true },
+  { romano: "III", secciones: [find("huevos-canelones"), find("al-pan")] },
+  { romano: "IV",  secciones: [find("para-terminar"), find("final-feliz")], closing: true },
 ];
 
 // ─── HTML COMPLETO ──────────────────────────────────────────
@@ -474,7 +480,7 @@ const browser = await puppeteer.launch({
 
 const page = await browser.newPage();
 await page.setViewport({ width: 1240, height: 1754, deviceScaleFactor: 2 });
-const url = "file:///" + htmlOut.replace(/\\/g, "/");
+const url = "file:///" + htmlOut.replaceAll("\\", "/");
 console.log("[..] Navegando a", url);
 await page.goto(url, { waitUntil: "networkidle0", timeout: 60000 });
 await new Promise((r) => setTimeout(r, 1200)); // assets fonts
