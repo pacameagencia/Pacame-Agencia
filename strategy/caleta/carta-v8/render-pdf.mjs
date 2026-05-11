@@ -388,9 +388,10 @@ function pageHTML({ idx, total, romano, secciones, closing = false }) {
     ${closing ? `
     <div class="closing">
       <svg class="c-molino"><use href="#ic-molino"/></svg>
+      <div class="c-name">${data.marca.nombre}</div>
       <div class="c-dir">${data.marca.direccion}</div>
       <div class="c-italic">Si tienes alguna alergia o intolerancia, infórmanos.</div>
-      <div class="c-micro">IVA incluido · Todos nuestros platos se elaboran con producto de calidad seleccionado</div>
+      <div class="c-micro">IVA incluido · Producto de calidad seleccionado</div>
     </div>` : ""}
 
     <footer class="footer">
@@ -412,17 +413,19 @@ function romanFor(n) {
 }
 
 // ─── DISTRIBUCIÓN DE SECCIONES POR PÁGINA ───────────────────
-// Decisión editorial (4 páginas A4):
+// Decisión editorial v9 (5 páginas A4, tipografía grande, ritmo respirable):
 //   Página 1 (I)   → Entrantes con historia
-//   Página 2 (II)  → Verde que te quiero verde + Picoteo con encanto
-//   Página 3 (III) → Huevos rotos & canelones + Al pan
-//   Página 4 (IV)  → Para terminar así + Final feliz + cierre
+//   Página 2 (II)  → Picoteo con encanto (página estrella, sección más rica)
+//   Página 3 (III) → Verde que te quiero verde + Huevos rotos & canelones
+//   Página 4 (IV)  → Al pan
+//   Página 5 (V)   → Para terminar así + Final feliz + cierre
 const find = (id) => data.secciones.find((s) => s.id === id);
 const PAGES = [
   { romano: "I",   secciones: [find("entrantes")] },
-  { romano: "II",  secciones: [find("ensaladas"), find("picoteo")] },
-  { romano: "III", secciones: [find("huevos-canelones"), find("al-pan")] },
-  { romano: "IV",  secciones: [find("para-terminar"), find("final-feliz")], closing: true },
+  { romano: "II",  secciones: [find("picoteo")] },
+  { romano: "III", secciones: [find("ensaladas"), find("huevos-canelones")] },
+  { romano: "IV",  secciones: [find("al-pan")] },
+  { romano: "V",   secciones: [find("para-terminar"), find("final-feliz")], closing: true },
 ];
 
 // ─── HTML COMPLETO ──────────────────────────────────────────
@@ -434,7 +437,7 @@ const html = `<!doctype html>
 <head>
   <meta charset="utf-8">
   <title>La Caleta Manchega · Carta v8</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>${css}</style>
 </head>
 <body>
