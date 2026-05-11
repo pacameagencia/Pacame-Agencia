@@ -1,0 +1,205 @@
+{
+  "marca": {
+    "nombre": "LA CALETA MANCHEGA",
+    "subtitulo": "Gastrobar",
+    "tagline": "Cocina con raíces · Sabor con alma",
+    "direccion": "C/ Francisco Pizarro, 64 · Albacete",
+    "version": "v8"
+  },
+  "secciones": [
+    {
+      "id": "entrantes",
+      "numeroRomano": "I",
+      "nombre": "Entrantes con historia",
+      "tagline": "Donde todo empieza bien",
+      "icono": "vieira",
+      "grupos": [
+        {
+          "nombre": "Marineras",
+          "descripcion": "Pan de tosta crujiente con AOVE de romero",
+          "platos": [
+            { "nombre": "De Pulpo", "precio": "5", "descripcion": "Pulpo, aceite de romero, alioli y pimentón dulce de la Vera.", "alergenos": ["gluten","huevo","moluscos","lacteos"] },
+            { "nombre": "Clásica", "precio": "4", "descripcion": "Anchoa de salmuera 00 y nuestro AOVE fresco.", "alergenos": ["gluten","pescado","lacteos"] },
+            { "nombre": "Boquerón Vitoriano", "precio": "4", "badge": "NUEVO", "descripcion": "Boquerón en vinagre macerado en casa, ajo y perejil con AOVE arbequina.", "alergenos": ["gluten","pescado","lacteos"] }
+          ]
+        },
+        {
+          "nombre": "Croquetas",
+          "platos": [
+            { "nombre": "De Boletus", "precio": "2,90", "descripcion": "Con aceite de trufa.", "alergenos": ["gluten","huevo","lacteos"] },
+            { "nombre": "De Gambón", "precio": "2,90", "descripcion": "Con aceite de gamba.", "alergenos": ["gluten","huevo","lacteos","crustaceos"] },
+            { "nombre": "De Jamón y Pollo", "precio": "2,90", "badge": "NUEVO", "descripcion": "Receta tradicional con bechamel casera, jamón serrano y pollo asado.", "alergenos": ["gluten","huevo","lacteos"] },
+            { "nombre": "Del Chef", "precio": "2,90", "descripcion": "Sorpresa rotativa. Pregunta, que merece la pena.", "alergenos": ["gluten","huevo","lacteos"] }
+          ]
+        },
+        {
+          "nombre": "Ensaladilla",
+          "platos": [
+            { "nombre": "De Pulpo", "precio": "13", "media": "7", "descripcion": "Pulpo, aceite de romero, alioli, pimentón de la Vera y bastones de pan.", "alergenos": ["huevo","moluscos","gluten"] },
+            { "nombre": "Rusa Clásica", "precio": "10", "media": "6", "descripcion": "La de siempre con nuestra anchoa de salmuera 00.", "alergenos": ["huevo","pescado"] },
+            { "nombre": "De Gambas al Ajillo", "precio": "12", "media": "7", "badge": "NUEVO", "descripcion": "Con gambas al ajillo flambeadas, ajo de las Pedroñeras y AOVE de gamba.", "alergenos": ["huevo","crustaceos"] }
+          ]
+        },
+        {
+          "nombre": "Caracoles",
+          "platos": [
+            { "nombre": "Caracoles", "precio": "6", "descripcion": "Con nuestra salsa casera del abuelo.", "alergenos": ["moluscos"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ensaladas",
+      "numeroRomano": "II",
+      "nombre": "Verde que te quiero verde",
+      "tagline": "Ensaladas",
+      "icono": "hoja",
+      "grupos": [
+        {
+          "platos": [
+            { "nombre": "Tomate Raf con Ventresca", "precio": "12", "descripcion": "Tomate Raf, cebolla morada, AOVE arbequina de Madrigueras, lomos de ventresca y sal Maldon.", "alergenos": ["pescado"] },
+            { "nombre": "Burrata", "precio": "12", "descripcion": "Brotes frescos, burrata italiana, aceite de romero, manzana golden y frutos secos.", "alergenos": ["lacteos","frutos_cascara"] },
+            { "nombre": "Pollo Teriyaki", "precio": "12", "descripcion": "Brotes frescos, tomate, huevo cocido, picatostes, salsa teriyaki y nuestros bandidos crujientes.", "alergenos": ["huevo","gluten","soja","sesamo"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "picoteo",
+      "numeroRomano": "II",
+      "nombre": "Picoteo con encanto",
+      "tagline": "Para compartir… o no",
+      "icono": "cubiertos",
+      "grupos": [
+        {
+          "platos": [
+            { "nombre": "Torrezno Crujiente", "precio": "12", "media": "7", "badge": "FAVORITO", "descripcion": "Panceta curada hecha en nuestro horno con corteza suflada y mayonesa de pimentón.", "alergenos": ["huevo"] },
+            { "nombre": "Lendrecillas a la Miel", "precio": "12", "media": "7", "badge": "FAVORITO", "descripcion": "Mollejas de la abuela con nuestro toque moderno.", "alergenos": [] },
+            { "nombre": "Tequeños de Queso Fresco", "precio": "12", "media": "8", "badge": "FAVORITO", "descripcion": "Nuestra versión jugando con dulce y petazetas de frambuesa.", "alergenos": ["gluten","lacteos"] },
+            { "nombre": "Nachos Caseros", "precio": "12", "media": "7", "badge": "NUEVO", "descripcion": "Torta casera crujiente, guacamole, cebolla encurtida, pico de gallo, carrillera al vino tinto desmechada y queso rayado con jalapeño.", "alergenos": ["lacteos","gluten"] },
+            { "nombre": "Patatas Rancheras con Bacon", "precio": "10", "descripcion": "Patatas crujientes, salsa ranchera, pepitas de bacon y 4 quesos al horno.", "alergenos": ["lacteos","gluten"] },
+            { "nombre": "Patatas Bravas Caseras", "precio": "8,50", "descripcion": "Mini cascos enharinados a doble fritura con brava casera y alioli.", "alergenos": ["gluten","huevo"] },
+            { "nombre": "Bandidos con Patatas Crujientes", "precio": "8", "descripcion": "Pechuga de pollo crujiente acompañada de patatas crujientes.", "alergenos": ["gluten","huevo"] },
+            { "nombre": "Oreja a la Plancha Crujiente", "precio": "9", "descripcion": "Chuletilla de oreja crujiente con salsa brava.", "alergenos": ["sulfitos"] },
+            { "nombre": "Sepia a la Plancha", "precio": "14", "media": "8", "badge": "NUEVO", "descripcion": "Sepia fresca con AOVE de Madrigueras, ajo de las Pedroñeras, perejil y un toque de limón.", "alergenos": ["moluscos"] },
+            { "nombre": "Bacalao en Tempura", "precio": "8", "descripcion": "Lomo de bacalao en tempura casera con pisto manchego y alioli.", "alergenos": ["pescado","gluten","huevo"] },
+            { "nombre": "Fritura de Pescado", "precio": "15", "media": "8", "descripcion": "Boquerón, bienmesabe, chipirón, gambón y rayadura de limón.", "alergenos": ["pescado","crustaceos","moluscos","gluten"] },
+            { "nombre": "Cazuela de Gambón al Ajillo Pedroñero", "precio": "15", "descripcion": "Cazuela de gambones, AOVE, guindilla y ajo de las Pedroñeras laminado y flambeado. Con huevo +1 €.", "alergenos": ["crustaceos"] },
+            { "nombre": "Pata de Pulpo con Parmentier", "precio": "23", "descripcion": "Pata cocida (250–300 g) con parmentier de patata, aceite de romero, pimentón de la Vera y corteza de torrezno.", "alergenos": ["moluscos","lacteos"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "huevos-canelones",
+      "numeroRomano": "III",
+      "nombre": "Huevos rotos & canelones",
+      "tagline": "Clásicos de la casa",
+      "icono": "sarten",
+      "grupos": [
+        {
+          "nombre": "Huevos rotos",
+          "descripcion": "Romper nunca fue tan satisfactorio",
+          "platos": [
+            { "nombre": "Con Jamón", "precio": "12", "descripcion": "Patatas al montón, huevos con puntilla y jamón vuelta y vuelta.", "alergenos": ["huevo"] },
+            { "nombre": "Con Gambón", "precio": "16", "descripcion": "Patatas al montón, huevos con puntilla, gambón y aceite de gamba.", "alergenos": ["huevo","crustaceos"] },
+            { "nombre": "Con Foie y Trufa", "precio": "17", "badge": "NUEVO", "descripcion": "Patatas al montón, huevos con puntilla, escalopa de foie a la plancha y aceite de trufa negra.", "alergenos": ["huevo"] }
+          ]
+        },
+        {
+          "nombre": "Canelones de la casa",
+          "platos": [
+            { "nombre": "De Carrillera", "precio": "9", "descripcion": "Al horno con bechamel casera y demiglace de carrillera de cerdo.", "alergenos": ["gluten","lacteos","huevo"] },
+            { "nombre": "De Marisco y Gambas", "precio": "9", "descripcion": "Al horno con bechamel casera, aceite de gamba y brotes frescos.", "alergenos": ["gluten","lacteos","huevo","crustaceos"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "al-pan",
+      "numeroRomano": "III",
+      "nombre": "Al pan",
+      "tagline": "Bocados con personalidad",
+      "icono": "espiga",
+      "grupos": [
+        {
+          "nombre": "Miguelitos",
+          "platos": [
+            { "nombre": "De Carrillada y Boletus", "precio": "4", "descripcion": "Hojaldre casero con carrillera desmechada, mezclum, salsa brava, cebolla caramelizada al vino tinto y lascas de queso manchego.", "alergenos": ["gluten","lacteos"] }
+          ]
+        },
+        {
+          "nombre": "Tostas",
+          "platos": [
+            { "nombre": "Gambones, Gulas y Huevo", "precio": "7", "descripcion": "Pan de tosta, gambas, gulas y huevo con nuestro aceite de gamba y un toque picante.", "alergenos": ["gluten","huevo","crustaceos","pescado"] },
+            { "nombre": "Solomillo y Parmentier", "precio": "7", "descripcion": "Medallón de solomillo de cerdo con parmentier de patata y queso manchego rayado.", "alergenos": ["gluten","lacteos"] }
+          ]
+        },
+        {
+          "nombre": "Pan bao",
+          "platos": [
+            { "nombre": "De Carrillera", "precio": "5", "badge": "NUEVO", "descripcion": "Pan bao al vapor con carrillera al vino tinto, cebolla crujiente, mayonesa de pimentón y cilantro.", "alergenos": ["gluten","huevo","lacteos","sulfitos"] },
+            { "nombre": "De Bandidos Coreanos", "precio": "5", "badge": "NUEVO", "descripcion": "Pan bao al vapor con bandidos crujientes, gochujang, cebolla encurtida, mayo japonesa y sésamo.", "alergenos": ["gluten","huevo","soja","sesamo","mostaza"] }
+          ]
+        },
+        {
+          "nombre": "Hamburguesas",
+          "platos": [
+            { "nombre": "Vacuno Premium 180 g", "precio": "11,90", "descripcion": "Pan bretzel, carne jugosa, mezclum, mayo de bacon ahumado, bacon crujiente, queso cheddar y cebolla crujiente.", "alergenos": ["gluten","huevo","lacteos"] },
+            { "nombre": "Pollo Crujiente", "precio": "9,90", "descripcion": "Pan de mollete, mezclum, nuestros bandidos, queso edam, salsa gochujang, cebolla caramelizada y mostaza francesa.", "alergenos": ["gluten","huevo","lacteos","mostaza","sesamo"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "para-terminar",
+      "numeroRomano": "IV",
+      "nombre": "Para terminar así",
+      "tagline": "Platos con carácter · Cortes premium",
+      "icono": "cuchillo",
+      "grupos": [
+        {
+          "platos": [
+            { "nombre": "Cachopo Casero", "precio": "22", "descripcion": "Relleno de jamón serrano y queso manchego con pisto manchego casero.", "alergenos": ["gluten","huevo","lacteos"] },
+            { "nombre": "Chusmarro", "precio": "12", "descripcion": "Jugoso, cortado a cuchillo, con patatas al montón y pisto manchego.", "alergenos": [] },
+            { "nombre": "Abanico Ibérico", "precio": "14", "descripcion": "Cocinado al punto perfecto con patatas al montón y pisto manchego.", "alergenos": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "final-feliz",
+      "numeroRomano": "IV",
+      "nombre": "Final feliz",
+      "tagline": "Porque siempre hay sitio para el postre",
+      "icono": "copa",
+      "grupos": [
+        {
+          "platos": [
+            { "nombre": "Tarta de Queso Manchego con Tostarica", "precio": "7", "descripcion": "Nuestra tarta casera con base de galleta Tostarica y amarenas.", "alergenos": ["gluten","huevo","lacteos"] },
+            { "nombre": "Tiramisú Casero", "precio": "7", "descripcion": "Receta casera de la abuela.", "alergenos": ["huevo","lacteos","gluten"] },
+            { "nombre": "Torrija Casera", "precio": "7", "descripcion": "De pan de leche, base de crema de maracuyá y helado de vainilla.", "alergenos": ["gluten","huevo","lacteos"] },
+            { "nombre": "Buñuelos Fritos", "precio": "7", "descripcion": "Bombas de chocolate caliente acompañadas de helado.", "alergenos": ["gluten","huevo","lacteos"] },
+            { "nombre": "Brownie de Chocolate Casero", "precio": "7", "descripcion": "Bizcocho casero caliente con nueces y frutos secos con helado.", "alergenos": ["gluten","huevo","lacteos","frutos_cascara"] }
+          ]
+        }
+      ]
+    }
+  ],
+  "alergenos": {
+    "gluten": "Gluten",
+    "crustaceos": "Crustáceos",
+    "huevo": "Huevos",
+    "pescado": "Pescado",
+    "cacahuetes": "Cacahuetes",
+    "soja": "Soja",
+    "lacteos": "Lácteos",
+    "frutos_cascara": "Frutos de cáscara",
+    "apio": "Apio",
+    "mostaza": "Mostaza",
+    "sesamo": "Sésamo",
+    "sulfitos": "Sulfitos",
+    "altramuces": "Altramuces",
+    "moluscos": "Moluscos"
+  }
+}

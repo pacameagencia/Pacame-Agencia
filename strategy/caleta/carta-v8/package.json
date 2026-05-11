@@ -1,0 +1,13 @@
+{
+  "name": "carta-la-caleta-v8",
+  "version": "8.0.0",
+  "description": "Carta editorial premium La Caleta Manchega — render HTML+CSS a PDF imprimible",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render": "node render-pdf.mjs"
+  },
+  "dependencies": {
+    "puppeteer-core": "^23.0.0"
+  }
+}
