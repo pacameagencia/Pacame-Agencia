@@ -307,7 +307,7 @@ function priceHTML(p) {
 
 function badgeHTML(b) {
   if (!b) return "";
-  if (b === "NUEVO") return `<span class="dish-badge nuevo">Nuevo</span>`;
+  // NUEVO eliminado por decisión Pablo (v9.2)
   if (b === "FAVORITO") return `<span class="dish-badge favorito">Favorito</span>`;
   return "";
 }
@@ -420,18 +420,20 @@ function romanFor(n) {
 }
 
 // ─── DISTRIBUCIÓN DE SECCIONES POR PÁGINA ───────────────────
-// Decisión editorial v9.1 (4 páginas A4, márgenes apretados, leyenda alérgenos
-// en cajita única al final, no en cada página):
-//   Página 1 (I)   → Entrantes con historia + Verde que te quiero verde
-//   Página 2 (II)  → Picoteo con encanto (página estrella, 13 platos en 2 col)
-//   Página 3 (III) → Huevos rotos & canelones + Al pan
-//   Página 4 (IV)  → Para terminar así + Final feliz + cajita alérgenos + cierre
+// Decisión editorial v9.2 (5 páginas A4, tipografía 14pt para legibilidad real,
+// cajita alérgenos única en página final):
+//   Página 1 (I)   → Entrantes con historia
+//   Página 2 (II)  → Picoteo con encanto (página estrella)
+//   Página 3 (III) → Verde que te quiero verde + Huevos rotos & canelones
+//   Página 4 (IV)  → Al pan
+//   Página 5 (V)   → Para terminar así + Final feliz + cajita alérgenos + cierre
 const find = (id) => data.secciones.find((s) => s.id === id);
 const PAGES = [
-  { romano: "I",   secciones: [find("entrantes"), find("ensaladas")] },
+  { romano: "I",   secciones: [find("entrantes")] },
   { romano: "II",  secciones: [find("picoteo")] },
-  { romano: "III", secciones: [find("huevos-canelones"), find("al-pan")] },
-  { romano: "IV",  secciones: [find("para-terminar"), find("final-feliz")], closing: true },
+  { romano: "III", secciones: [find("ensaladas"), find("huevos-canelones")] },
+  { romano: "IV",  secciones: [find("al-pan")] },
+  { romano: "V",   secciones: [find("para-terminar"), find("final-feliz")], closing: true },
 ];
 
 // ─── HTML COMPLETO ──────────────────────────────────────────
