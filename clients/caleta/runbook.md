@@ -1,41 +1,43 @@
 # Runbook — La Caleta Manchega
 
-> Cómo intervenir la web oficial PACAME `lacaletamanchega.com` sin romper nada y sin pisar el `.es` que Pablo edita en Lovable.
+> Cómo intervenir la web oficial PACAME `lacaletamanchega.com` desde el repo PACAME.
 
 ---
 
-## 1. Topología
+## 1. Topología (desde 2026-05-13)
 
 ```
-                ┌──────────────────────────────────────────┐
-                │ GitHub: pacameagencia/                   │
-                │         lacaletamanchegaalbacete (priv)  │
-                │ branch main                              │
-                └────────────┬───────────┬─────────────────┘
-                             │           │
-                  push triggers          │ sync bidireccional
-                             │           │ (vía Lovable app)
-                             ▼           ▼
-              ┌────────────────────┐  ┌────────────────────────┐
-              │ Vercel             │  │ Lovable (GPT-Engineer) │
-              │ team pacames-      │  │ proyecto privado de    │
-              │ projects           │  │ Pablo                  │
-              │ project            │  │ sirve lacaletamanchega │
-              │ lacaletamanchega   │  │ .es                    │
-              │ albacete           │  │                        │
-              │ sirve .com + www   │  │                        │
-              └────────────────────┘  └────────────────────────┘
-                  Edge cdg1 París       Cloudflare frontend
+   ┌──────────────────────────────┐         ┌──────────────────────────────┐
+   │ GitHub                       │         │ GitHub                       │
+   │ pacameagencia/               │         │ pacameagencia/               │
+   │ lacaletamanchega-com (priv)  │         │ lacaletamanchegaalbacete     │
+   │ ← PACAME edita aquí          │         │ ← Lovable edita aquí         │
+   │ branch main                  │         │ branch main                  │
+   └──────────────┬───────────────┘         └──────────────┬───────────────┘
+                  │                                        │
+        push triggers redeploy                  push triggers redeploy
+                  ▼                                        ▼
+   ┌──────────────────────────────┐         ┌──────────────────────────────┐
+   │ Vercel project               │         │ Lovable hosting              │
+   │ pacames-projects /           │         │ (proyecto privado Pablo)     │
+   │ lacaletamanchegaalbacete     │         │ sirve lacaletamanchega.es    │
+   │ sirve lacaletamanchega.com   │         │                              │
+   │ + www. + edge cdg1 París     │         │                              │
+   └──────────────────────────────┘         └──────────────────────────────┘
+                  ▲                                        ▲
+                  │                                        │
+       ────  100% PACAME  ────                    ────  Pablo directo  ────
+                                                       (fuera de scope PACAME)
 
-DNS apex caletamanchega.com → A 216.198.79.1 (Vercel anycast AWS)
+DNS apex lacaletamanchega.com → A 216.198.79.1 (Vercel anycast AWS)
 DNS www → CNAME apex
 NS authoritative: ns1.dns-parking.com / ns2.dns-parking.com (Hostinger)
 SSL: Let's Encrypt R12/R13 auto-renew Vercel (expira ~25 Jul 2026)
 ```
 
-**Importante:** el repo es uno solo y ambas plataformas (Vercel + Lovable) miran a la misma rama `main`. Si editas en Lovable, el repo cambia → Vercel redeploya. Si editas en el repo directamente, Lovable también lo absorbe.
+**Repos separados** desde 2026-05-13. Editar en Lovable solo afecta al `.es`. Editar en `lacaletamanchega-com` solo afecta al `.com`. Cero riesgo de pisarse.
 
-Esto implica que un fix hecho desde PACAME puede ser **pisado por una edición posterior de Pablo en Lovable** si Lovable regenera ese mismo bloque. Hay que coordinar.
+**Vercel project name**: `lacaletamanchegaalbacete` (no se renombró para evitar romper aliases `*.vercel.app`). Pero su repo conectado es `pacameagencia/lacaletamanchega-com`.
 
 ---
 
@@ -57,77 +59,96 @@ curl -sI https://lacaletamanchega.com
 curl -sI https://www.lacaletamanchega.com
 echo | openssl s_client -connect www.lacaletamanchega.com:443 -servername www.lacaletamanchega.com 2>/dev/null \
   | openssl x509 -noout -issuer -subject -dates -ext subjectAltName
+curl -s https://www.lacaletamanchega.com | grep -iE "(canonical|og:url|\"url\":)"
 ```
 
-Cero riesgo: solo lectura, no modifica nada.
+---
+
+## 3. Editar la web `.com` (PR flow)
+
+### Setup primera vez
+
+```powershell
+git clone https://github.com/pacameagencia/lacaletamanchega-com.git C:\tmp\caleta-com
+cd C:\tmp\caleta-com
+npm install
+```
+
+### Flow de cambio
+
+```powershell
+cd C:\tmp\caleta-com
+git checkout main && git pull
+git checkout -b fix/<scope>-YYYY-MM-DD
+
+# edita lo que toque
+# (index.html, src/pages/*, src/data/menu.ts, etc.)
+
+npm run dev          # localhost:8080 para ver en vivo
+npm run build        # sanity check
+
+git add <files>
+git commit -m "<tipo>(<scope>): <mensaje en español>"
+git push -u origin fix/<scope>-YYYY-MM-DD
+
+gh pr create --repo pacameagencia/lacaletamanchega-com --fill
+gh pr merge <num> --repo pacameagencia/lacaletamanchega-com --merge --delete-branch=false
+```
+
+Vercel auto-deployea en `main`. Esperar `READY` con `mcp__vercel__list_deployments` o `vercel inspect <url>`.
+
+### Validar tras merge
+
+```bash
+curl -s https://www.lacaletamanchega.com | grep -i canonical
+# → <link rel="canonical" href="https://www.lacaletamanchega.com/" />
+```
+
+### Reglas duras al editar (heredadas en CLAUDE.md del repo cliente)
+
+- SEO siempre apunta a `https://www.lacaletamanchega.com` (canonical, og:url, JSON-LD, sitemap, robots, llms).
+- Nada de Lovable: no añadir `lovable-tagger`, no usar URLs de Lovable, no subir assets a `gpt-engineer-file-uploads`.
+- Datos legales fijos: GRUPO LA CALETA MANCHEGA SL · CIF B24910598.
 
 ---
 
-## 3. Operaciones de escritura (con cuidado Lovable bidireccional)
+## 4. Reconectar Vercel (ya hecho 2026-05-13, registrado para futuras referencias)
 
-### Pasos genéricos para tocar el código
+Si alguna vez hay que volver a apuntar el proyecto Vercel a otro repo:
 
-1. Avisar a Pablo: "voy a editar repo `lacaletamanchegaalbacete`, pausa Lovable si tienes algo a medias".
-2. Clonar repo en directorio temporal fuera del worktree PACAME:
-   ```powershell
-   git clone https://github.com/pacameagencia/lacaletamanchegaalbacete.git C:\tmp\caleta-edit
-   cd C:\tmp\caleta-edit
-   ```
-3. Crear rama feature (no `main` directo):
-   ```powershell
-   git checkout -b fix/<scope>-YYYY-MM-DD
-   ```
-4. Editar.
-5. Probar build local:
-   ```powershell
-   npm install --silent
-   npm run build
-   ```
-6. Commit + push:
-   ```powershell
-   git add <files>
-   git commit -m "fix(seo): canonical apunta a .com en vez de .es"
-   git push -u origin fix/<scope>-YYYY-MM-DD
-   ```
-7. Abrir PR contra `main` con `gh pr create`. Mergear con `gh pr merge --merge`.
-8. Vercel deployea automático en main → esperar `READY` con `mcp__vercel__list_deployments`.
-9. Validar con `curl -s https://www.lacaletamanchega.com | grep canonical`.
+```powershell
+cd C:\tmp\caleta-com
+vercel link --yes --scope pacames-projects --project lacaletamanchegaalbacete
+vercel git disconnect --yes
+vercel git connect https://github.com/<org>/<repo> --yes
+vercel deploy --prod --yes
+```
 
-### Riesgo Lovable: cómo mitigar
-
-- **Antes de editar**, decir a Pablo que no toque Lovable durante ~10 minutos.
-- Los archivos que Lovable regenera frecuentemente son `index.html`, components de páginas, data, schema. Si tu fix toca esos → mayor riesgo de pisarse.
-- Si Lovable pisa el fix, repetir y dejar una NOTA en `clients/caleta/history/` del incidente para que la próxima vez sea evidente.
-- Solución definitiva (a evaluar más adelante): **fork del repo** a uno nuevo gestionado solo por PACAME, desconectar Lovable de ese fork, y dejar el `.es` con el repo original que sigue Lovable. Dos webs, dos repos, sin pisarse.
+Vercel CLI ya está autenticado como `pacameagencia` en el equipo de Pablo.
 
 ---
 
-## 4. Fallos típicos y resolución
+## 5. Fallos típicos y resolución
 
 ### 404 / dominio caído
 
-1. Comprobar último deploy en Vercel — si está `ERROR` o `BUILDING` colgado, redeploy.
+1. Comprobar último deploy en Vercel — si está `ERROR` o `BUILDING` colgado, redeploy con `vercel redeploy <url>` o desde UI.
 2. Comprobar DNS — `nslookup lacaletamanchega.com 8.8.8.8` debe dar `216.198.79.1`.
 3. Si DNS está mal, entrar en Hostinger DNS Zone y restaurar el A record apex.
 
 ### SSL caducado o ERR_CERT
 
-- Vercel renueva auto Let's Encrypt 30 días antes del `notAfter`. Si peta, mirar `Vercel project → Settings → Domains → SSL`.
+- Vercel renueva auto Let's Encrypt 30 días antes del `notAfter`. Si peta, mirar Vercel project → Settings → Domains → SSL.
 - En caso extremo, re-añadir el dominio en Vercel (Remove + Add Domain) fuerza re-emisión SSL en <60s.
 
-### Lovable rompe el SEO
-
-- Verificar canonical: `curl -s https://www.lacaletamanchega.com | grep -i canonical`.
-- Debe apuntar a `https://www.lacaletamanchega.com/`. Si vuelve a apuntar a `.es`, repetir fix (Lovable pisó).
-
-### Vercel suspende el team `pacames-projects` (riesgo identificado en `strategy/arquitectura-3-capas.md`)
+### Vercel suspende el team `pacames-projects`
 
 - Plan B: transferir el proyecto a un team aparte tipo "Caleta IO" o "Pablo Personal" (mismo patrón que Dark Room IO).
 - Mientras llega, la web cae. Tener el repo backupeado y poder redeployar a otro hosting (Netlify / Cloudflare Pages) si fuera necesario.
 
 ---
 
-## 5. Convenciones
+## 6. Convenciones
 
 - Commits del repo cliente: en español, formato Conventional Commits.
 - Co-author Claude en commits hechos por PACAME: `Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>`.
