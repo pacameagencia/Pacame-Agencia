@@ -1,7 +1,9 @@
 # Arquitectura 4 Capas — PACAME / Clientes / SaaS propios / Negocios personales
 
 > Modelo de gobernanza operativa entre la factoría PACAME, sus clientes B2B, sus productos SaaS propios bajo el paraguas PACAME, y los negocios personales de Pablo Calleja totalmente aparte.
-> Última revisión: 2026-04-27.
+> Última revisión: 2026-05-13.
+>
+> **Cambio 2026-05-13:** La Caleta Manchega reclasificada de Capa 4 (personal) → Capa 2 (cliente B2B), al mismo nivel que Royo, Ecomglobalbox o Talleres Jaula. Web pública `lacaletamanchega.com` pasa a ser tratada como entrega de cliente.
 
 ---
 
@@ -22,7 +24,7 @@ La maquinaria que lo produce todo. Aquí viven los 10 agentes, los 798 skills, l
 ### 👥 Capa 2 — Clientes de PACAME
 Negocios externos que contratan a la factoría. Son DUEÑOS de su propia infraestructura. PACAME sólo entrega y mantiene.
 
-- **Ejemplos**: Ecomglobalbox (César Veld), Joyería Royo, Clara Women, Bravamood, etc.
+- **Ejemplos**: Ecomglobalbox (César Veld), Joyería Royo, Talleres Jaula, La Caleta Manchega, Clara Women, Bravamood, Casa Marisol, etc.
 - **Propietario**: cada cliente.
 - **Revenue**: el cliente factura; PACAME cobra fee aparte.
 - **Datos**: el cliente los tiene. PACAME guarda SÓLO metadata del encargo (nombre, estado, factura, fecha).
@@ -44,13 +46,13 @@ Productos SaaS que la factoría PACAME crea y opera. **Forman parte del paraguas
 ### 🏠 Capa 4 — Negocios personales de Pablo (no PACAME)
 Negocios que Pablo opera personalmente y que **NO forman parte de PACAME ni se mencionan junto a la marca**. PACAME (la factoría) le da potencia técnica a Pablo para llevarlos, pero a ojos del mundo son negocios independientes de Pablo Calleja, no de PACAME.
 
-- **Ejemplos**: La Caleta Manchega (negocio físico de hostelería; Pablo opera web + carta + RRSS).
+- **Ejemplos**: actualmente vacío (La Caleta Manchega se movió a Capa 2 el 2026-05-13). Capa reservada para futuros negocios personales si Pablo decide no exponerlos comercialmente bajo PACAME.
 - **Propietario**: Pablo Calleja persona.
-- **Revenue**: del negocio en sí (tickets restaurante, eventos, etc.). No factura PACAME.
+- **Revenue**: del negocio en sí (no factura PACAME).
 - **Datos**: del negocio. PACAME no los explota ni los guarda.
 - **Marca visible**: del negocio. **CERO mención pública a PACAME**.
 - **Dominio**: propio.
-- **Regla maestra**: **Aislamiento completo público y comercial**. PACAME es solo motor técnico interno, invisible al mundo. **No mencionar La Caleta cuando se hable de PACAME** (ni en marketing, ni en RRSS, ni en propuestas a clientes B2B). Solo se trata cuando el contexto sea explícitamente La Caleta.
+- **Regla maestra**: **Aislamiento completo público y comercial**. PACAME es solo motor técnico interno, invisible al mundo. Solo aplica si Pablo declara explícitamente que un negocio es personal puro.
 
 ---
 
@@ -70,8 +72,9 @@ Negocios que Pablo opera personalmente y que **NO forman parte de PACAME ni se m
    │ CLIENTES │        │ SaaS     │         │ NEGOCIOS │
    │   B2B    │        │ propios  │         │ PERSONAL │
    │ (César,  │        │ PACAME   │         │  PABLO   │
-   │ Royo,    │        │ (Dark    │         │ (Caleta) │
-   │ Marisol) │        │ AsesorPro)│        │          │
+   │ Royo,    │        │ (Dark    │         │ (vacío   │
+   │ Caleta,  │        │ Room)    │         │  hoy)    │
+   │ Jaula…)  │        │          │         │          │
    └──────────┘        └──────────┘         └──────────┘
        ▲                   ▲                     ▲
        │                   │                     │
@@ -92,27 +95,27 @@ La clave: **la factoría se reutiliza; los datos/marca/dinero NO se cruzan, y la
 | Capa | ¿Se menciona junto a PACAME en público? |
 |---|---|
 | 1 PACAME | Es PACAME. |
-| 2 Clientes B2B (Ecomglobalbox, Royo, Clara, Marisol…) | No, salvo casos de marketing con consentimiento del cliente (caso de éxito). |
+| 2 Clientes B2B (Ecomglobalbox, Royo, Talleres Jaula, **La Caleta Manchega**, Casa Marisol, Clara, …) | No por defecto, salvo casos de marketing con consentimiento del cliente (caso de éxito). |
 | 3 SaaS propios — **DarkRoom (flagship único)** | **No** — DarkRoom NO se menciona en público asociado a PACAME (riesgo legal del modelo "membresía colectiva"). Tiene marca independiente. AsesorPro / PromptForge / PacameGPT fueron descartados como SaaS Capa 3 (decisión 2026-04-28, ver `capa-3-saas-decisions.md`). PromptForge se recicló como micronicho free del flywheel DarkRoom. |
-| 4 Negocios personales (La Caleta) | **Nunca**. PACAME no aparece en su web, RRSS, comunicación. Pablo lo opera como persona. |
+| 4 Negocios personales (vacío hoy) | **Nunca**. PACAME no aparece en su web, RRSS, comunicación. Pablo lo opera como persona. |
 
 ---
 
-## Estado real a 2026-04-27
+## Estado real a 2026-05-13
 
 | Recurso | Capa 1 PACAME | Capa 2 Clientes B2B | Capa 3 SaaS propios | Capa 4 Personal Pablo |
 |---|---|---|---|---|
-| **Supabase proyectos** | `Pacame Agencia` (kfmnllpscheodgxnutkw) | clientes con infra propia | `dark-room-prod` (kxqcyukivvfygvrxxant) aislado — único proyecto Capa 3 vivo | `dmivrosjaenvcpjmhsmf`, `kmrionmdazlnwocgizik`, `whuiywcnnwhpvaawrvcp` (3 propios para Caleta) |
-| **Supabase org** | `pacameagencia` | — | `Dark Room IO` (vlznxeibibkaqqfvnivz) ✓ aislada | (orgs verificación pendiente) |
-| **Vercel projects** | `web` → pacameagencia.com | `pacame-casa-marisol-cadiz` | `dark-room` (en team `Dark Room IO`) | `caleta-gestiona`, `caleta-gestiona-n1x7`, `lacaletamanchegaalbacete`, `lacaleta-gestion` |
-| **Vercel team** | `pacames-projects` | Misma que PACAME ⚠️ | `Dark Room IO` (Pro) ✓ separado | Misma que PACAME ⚠️ — riesgo bajo (sin datos cross) |
-| **Stripe cuenta** | PACAME LIVE | del cliente | 🔴 Dark Room reutiliza PACAME LIVE — pendiente separar (riesgo group buy) | ✅ La Caleta no usa Stripe |
-| **Dominios Hostinger** | pacameagencia.com | clarawomen.shop, joyeriaroyo.com, la42.es, etc. | darkroomcreative.cloud | lacaletamanchega.{com,es,online} |
+| **Supabase proyectos** | `Pacame Agencia` (kfmnllpscheodgxnutkw) | clientes con infra propia · La Caleta usa `dmivrosjaenvcpjmhsmf`, `kmrionmdazlnwocgizik`, `whuiywcnnwhpvaawrvcp` (3 proyectos del cliente) | `dark-room-prod` (kxqcyukivvfygvrxxant) aislado — único proyecto Capa 3 vivo | — (vacío hoy) |
+| **Supabase org** | `pacameagencia` | (depende del cliente) | `Dark Room IO` (vlznxeibibkaqqfvnivz) ✓ aislada | — |
+| **Vercel projects** | `web` → pacameagencia.com | `pacame-casa-marisol-cadiz` · **La Caleta**: `lacaletamanchegaalbacete` (en team PACAME) + `caleta-gestiona`, `caleta-gestiona-n1x7`, `lacaleta-gestion` (en cuenta Personal Pablo Hobby) | `dark-room` (en team `Dark Room IO`) | — |
+| **Vercel team** | `pacames-projects` | Misma que PACAME ⚠️ | `Dark Room IO` (Pro) ✓ separado | — |
+| **Stripe cuenta** | PACAME LIVE | del cliente · ✅ La Caleta no usa Stripe | 🔴 Dark Room reutiliza PACAME LIVE — pendiente separar (riesgo group buy) | — |
+| **Dominios Hostinger** | pacameagencia.com | clarawomen.shop, joyeriaroyo.com, la42.es, etc. · **La Caleta**: `lacaletamanchega.{com,es,online}` | darkroomcreative.cloud | — |
 | **VPS** | Hostinger KVM2 72.62.185.125 | — | Contabo EU Windows (pendiente Dark Room) | — |
-| **Email ops** | hola@pacameagencia.com | del cliente | support@darkroomcreative.cloud | (TBD `ops@lacaletamanchega.com`) |
-| **Resend** | `re_5fSZn9m1_...` PACAME | — | `re_ZPx6dkfB_...` Dark Room ✓ separado | ✅ no usa |
-| **Mención pública con PACAME** | Es PACAME | No (salvo case study con consentimiento) | Sí — son ecosistema PACAME (excepto Dark Room por riesgo legal) | **Nunca** |
-| **Memoria Claude** | `.claude/projects/.../memory/` | etiqueta cliente | etiqueta self-project · vault `10-Proyectos-Propios/` | etiqueta personal · vault `11-Personal/` |
+| **Email ops** | hola@pacameagencia.com | del cliente · La Caleta: `lacaletamanchega@gmail.com` (operativo cliente) | support@darkroomcreative.cloud | — |
+| **Resend** | `re_5fSZn9m1_...` PACAME | — · La Caleta ✅ no usa | `re_ZPx6dkfB_...` Dark Room ✓ separado | — |
+| **Mención pública con PACAME** | Es PACAME | No por defecto (salvo case study con consentimiento) | Sí — son ecosistema PACAME (excepto Dark Room por riesgo legal) | **Nunca** |
+| **Memoria Claude** | `.claude/projects/.../memory/` | etiqueta cliente (`project_<slug>_client.md`) | etiqueta self-project · vault `10-Proyectos-Propios/` | etiqueta personal · vault `11-Personal/` |
 
 ---
 
@@ -126,6 +129,7 @@ La clave: **la factoría se reutiliza; los datos/marca/dinero NO se cruzan, y la
 ### 🟡 Medio
 4. **AdsPower cuenta personal de Pablo**: usada para Dark Room warming. Si Pablo vende PACAME o cambia rol, acceso lío. Mejor cuenta dedicada `ops@darkroomcreative.cloud`.
 5. **Dominios clientes en Hostinger de Pablo**: los dominios de clientes (lacaletamanchega, clarawomen…) están registrados bajo tu cuenta Hostinger. Si el cliente migra, hay que transferir. Mejor: que cada cliente contrate y registre en su cuenta, y tú seas solo DNS manager.
+6. **La Caleta SEO disperso en 3 hostings**: `lacaletamanchega.com` (Vercel), `lacaletamanchega.es` (Lovable + Cloudflare) y `lacaletamanchega.online` (Hostinger CDN) sirven la misma marca con contenidos parcialmente duplicados. El `.com` declara `canonical` apuntando al `.es`, así Google indexa el `.es` como oficial. Decisión 2026-05-13: el `.com` es el dominio oficial cara a PACAME (cliente Capa 2); el `.es` queda separado bajo control directo de Pablo en Lovable. Acción pendiente: arreglar canonical + og:url + JSON-LD en el repo `pacameagencia/lacaletamanchegaalbacete` para que apunten todos al `.com`.
 
 ### 🟢 Bajo
 6. **Naming sin tag de capa**: en Vercel y Supabase no hay prefijo `pacame-`, `client-`, `self-` que ayude a distinguir. Riesgo operativo (borrar el que no es). Solucionable con convención + tags.

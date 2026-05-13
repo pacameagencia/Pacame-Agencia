@@ -6,7 +6,8 @@ Escanea el vault PacameCueva, el repo PACAME y opcionalmente Supabase para detec
 1. Secrets expuestos (API keys, passwords, tokens, connection strings).
 2. Cross-references entre clientes (notas que mezclan clientes diferentes).
 3. Memorias en agent_memories sin tag de cliente cuando deberían tenerlo.
-4. Datos de clientes Capa 4 (La Caleta, Ecomglobalbox) en contextos PACAME públicos.
+4. Datos de entidades Capa 4 (negocios personales puros de Pablo) en contextos PACAME
+   públicos. Tras 2026-05-13 esta lista está vacía: La Caleta pasó a Capa 2 (cliente B2B).
 
 Uso:
   python infra/scripts/audit-client-isolation.py
@@ -45,9 +46,11 @@ VAULT = REPO_ROOT / "PacameCueva"
 CLIENTS_DIR = REPO_ROOT / "clients"
 
 # Clientes conocidos por slug (de MEMORY.md + clients/)
-KNOWN_CLIENTS = ["royo", "talleresjaula", "ecomglobalbox", "casa-marisol"]
-# Capa 4 (entidades aparte que NO deben aparecer en context PACAME público)
-CAPA_4_ENTIDADES = ["caleta", "la-caleta", "ecomglobalbox"]
+KNOWN_CLIENTS = ["royo", "talleresjaula", "ecomglobalbox", "casa-marisol", "caleta"]
+# Capa 4 (entidades aparte que NO deben aparecer en context PACAME público).
+# Vacía tras 2026-05-13: La Caleta movida a Capa 2 (cliente B2B normal).
+# Mantener la lista como hook para futuros negocios personales puros de Pablo.
+CAPA_4_ENTIDADES: list[str] = []
 
 # Patrones de secrets — cada uno: (label, regex, severity)
 SECRET_PATTERNS: list[tuple[str, str, str]] = [
@@ -188,7 +191,13 @@ def scan_cross_client(path: Path, text: str) -> Iterator[Finding]:
 
 
 def scan_capa_4_leaks(path: Path, text: str) -> Iterator[Finding]:
-    """Detecta menciones de Capa 4 (La Caleta, Ecomglobalbox personal) en contextos PACAME públicos."""
+    """Detecta menciones de entidades Capa 4 (negocios personales puros) en contextos PACAME públicos.
+
+    Tras 2026-05-13 la lista CAPA_4_ENTIDADES está vacía (La Caleta pasó a Capa 2).
+    El scanner sigue presente para activarse si Pablo añade un negocio personal puro nuevo.
+    """
+    if not CAPA_4_ENTIDADES:
+        return
     rel = str(path.relative_to(REPO_ROOT))
     # Carpetas "públicas" donde Capa 4 NUNCA debería aparecer
     public_paths = [

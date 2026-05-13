@@ -11,9 +11,9 @@ Este protocolo es OBLIGATORIO antes de ingestar info de un cliente nuevo, escrib
 | Capa | Qué es | Mención pública con PACAME |
 |---|---|---|
 | **1 — PACAME** | Factoría agencia (web pacameagencia.com, agentes IA propios, infra) | ✅ Sí |
-| **2 — Clientes B2B** | Externos que contratan la factoría (Royo, Talleres Jaula, Casa Marisol) | ✅ Como casos cliente, con permiso |
-| **3 — SaaS propios** | Productos PACAME (Dark Room, AsesorPro, PromptForge, PacameGPT) | ✅ Como ecosistema |
-| **4 — Personal Pablo** | La Caleta + Ecomglobalbox (entidades aparte de Pablo) | ❌ **NUNCA** en marketing/RRSS/casos PACAME |
+| **2 — Clientes B2B** | Externos que contratan la factoría (Royo, Talleres Jaula, Casa Marisol, La Caleta Manchega, Ecomglobalbox, …) | ✅ Como casos cliente, con permiso |
+| **3 — SaaS propios** | Productos PACAME (Dark Room, AsesorPro, PromptForge, PacameGPT) | ✅ Como ecosistema (Dark Room separado por riesgo legal) |
+| **4 — Personal Pablo** | Negocios personales puros de Pablo (vacío hoy — La Caleta movida a Capa 2 el 2026-05-13) | ❌ **NUNCA** en marketing/RRSS/casos PACAME |
 
 Doc maestro completo: [`strategy/arquitectura-3-capas.md`](../../strategy/arquitectura-3-capas.md).
 
@@ -63,7 +63,9 @@ tags = ['client:royo', 'memoria-tipo-x', ...]
 Triggers automáticos (en `agent_memories` y `agent_discoveries`):
 - Si el `title + content` menciona `royo` → añade tag `client:royo`
 - Si menciona `talleresjaula` → tag `client:talleresjaula`
-- Si menciona `ecomglobalbox` o `caleta` → tag `capa-4-mention` (entidades aparte)
+- Si menciona `ecomglobalbox` → tag `client:ecomglobalbox`
+- Si menciona `caleta` o `lacaletamanchega` → tag `client:caleta`
+- Si menciona `casa-marisol` → tag `client:casa-marisol`
 - Si menciona ≥2 clientes diferentes → flag `metadata.cross_client_warning` para revisión humana
 
 **Antes de hacer `/api/neural/query` para info de cliente:**
@@ -129,10 +131,10 @@ Antes de mencionar un cliente en RRSS, propuesta o web pública:
 | ¿Hay datos personales del cliente final? | Sí → mostrar agregado | Solo métricas anonimizadas |
 | ¿Mencionas resultados con números? | Sí → verificar | Confirmar números reales (no inflados) |
 
-**Anti-patrón crítico (capa-4):**
-- ❌ "Caso de éxito: La Caleta facturó X gracias a PACAME"
-- ❌ "Ecomglobalbox usa nuestro sistema con 6.9k MRR"
-- ✅ "Cliente del sector restauración pasó de Y a Z" (sin nombrar)
+**Anti-patrón crítico (cualquier capa):**
+- ❌ "Caso de éxito: <cliente> facturó X gracias a PACAME" si <cliente> no ha autorizado
+- ❌ Capa 4 (negocio personal de Pablo) mencionado junto a PACAME en cualquier contexto público
+- ✅ "Cliente del sector restauración pasó de Y a Z" (sin nombrar, si no hay autorización)
 
 ---
 
@@ -148,7 +150,7 @@ Detecta:
 - Secrets expuestos en vault Obsidian (CRÍTICO — vault va a GitHub privado)
 - Secrets expuestos en repo PACAME (cualquier file no whitelisted)
 - Notas que mencionan ≥2 clientes (potencial cruce)
-- Capa 4 leaks (La Caleta, Ecomglobalbox) en código/strategy/agents
+- Capa 4 leaks (entidades personales puras) en código/strategy/agents — hoy lista vacía tras mover La Caleta a Capa 2
 
 ```bash
 # Modo estricto: exit 1 si hay críticos (para CI)
@@ -184,7 +186,7 @@ WHERE metadata ? 'cross_client_warning';
 | Cliente menciona OTRO cliente legítimamente (comparativa) | OK con tag `cross-client-ref-intentional` en metadata |
 | Memoria interna PACAME que cita aprendizaje de un cliente | Tag `client:<slug>` + `learning-extracted` |
 | Capa 4 mencionada en doc de estrategia interna | OK si el doc está en `strategy/arquitectura-*` (excluido del auditor) |
-| Caleta/Ecomglobalbox mencionados en infra/scripts | OK si es config técnica (memoria del setup), NO en marketing |
+| Clientes Capa 2 mencionados en infra/scripts | OK si es config técnica (slug en KNOWN_CLIENTS, tagger), NO en marketing público |
 
 ---
 
@@ -238,3 +240,4 @@ WHERE id = '<uuid>';
 ## Cambios
 
 - **2026-05-03**: Versión inicial. Stack actual: 4 clientes activos, `client_credentials` con AES-256-GCM cifrado, triggers de tag automático en cerebro neural, auditor automático en `infra/scripts/`.
+- **2026-05-13**: La Caleta Manchega reclasificada de Capa 4 → Capa 2 (cliente B2B normal). Slug `caleta` añadido a `KNOWN_CLIENTS` del auditor. `CAPA_4_ENTIDADES` queda vacío hasta que aparezca un negocio personal puro nuevo.
