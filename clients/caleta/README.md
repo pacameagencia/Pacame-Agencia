@@ -16,7 +16,7 @@
 ## Accesos (referencia, NO valores)
 - **Dominio oficial PACAME:** `lacaletamanchega.com` (registrado Hostinger, NS `ns1/ns2.dns-parking.com`).
 - **Hosting web oficial:** Vercel, team `PACAME` (`pacames-projects`), proyecto `lacaletamanchegaalbacete` (`prj_B5wlyLrEzHIGPnG2Zvsj8VX55lcu`).
-- **Repo GitHub:** `pacameagencia/lacaletamanchegaalbacete` (privado).
+- **Repo GitHub:** `pacameagencia/lacaletamanchega-com` (privado).
 - **Branch producción:** `main`. Push automático → redeploy Vercel.
 - **Dominios paralelos (NO PACAME):**
   - `lacaletamanchega.es` → Lovable + Cloudflare (control directo Pablo, NO entra en scope PACAME).
@@ -26,17 +26,17 @@
 - **Resend / email transaccional:** no usa.
 
 ## Scope contratado PACAME
-- Web oficial sobre dominio `.com` (Vercel + repo `pacameagencia/lacaletamanchegaalbacete`).
+- Web oficial sobre dominio `.com` (Vercel + repo `pacameagencia/lacaletamanchega-com`).
 - Mantenimiento técnico (deploys, SSL, monitoring).
 - Carta digital + assets visuales (ver `strategy/caleta/carta-v8/` para generación PDF).
 - RRSS y contenido a demanda (Instagram + Facebook `@lacaletamanchega`).
 - **NO entra:** lacaletamanchega.es (Lovable de Pablo) ni lacaletamanchega.online (Hostinger).
 
 ## Estado (a 2026-05-13)
-- **Estado:** activo (reclasificado Capa 2 hoy).
-- **Última intervención:** 2026-05-13 (auditoría completa Vercel + reclasificación + plan fix canonical SEO).
-- **Sprint actual:** **Sprint 0 — independencia `.com` ↔ `.es`** — arreglar canonical SEO en repo para que `.com` deje de apuntar a `.es`, y consolidar gestión.
-- **Riesgos abiertos:** SEO canibalizado entre 3 dominios; 3 proyectos Vercel sueltos en cuenta Personal Hobby (`caleta-gestiona`, `caleta-gestiona-n1x7`, `lacaleta-gestion`) pendientes de auditar/borrar.
+- **Estado:** activo, gestionado 100% desde PACAME.
+- **Última intervención:** 2026-05-13 — Sprint 0 completado: reclasificación Capa 2 + fix canonical SEO + fork de repo independiente sin Lovable.
+- **Sprint actual:** ninguno abierto.
+- **Riesgos abiertos:** 3 proyectos Vercel sueltos en cuenta Personal Hobby (`caleta-gestiona`, `caleta-gestiona-n1x7`, `lacaleta-gestion`) pendientes de auditar/borrar (no afectan a la web oficial). Deuda técnica menor: `og:image` y favicon todavía apuntan a `storage.googleapis.com/gpt-engineer-file-uploads/...` (bucket Lovable); migrar a Vercel Blob cuando se priorice.
 
 ## Stack del cliente
 - Vite 5.x + React 18 + TypeScript (SPA build estático).
@@ -54,12 +54,13 @@
 - [ ] Reservas integradas (TheFork / sistema propio)
 
 ## Decisiones clave (registro)
-- **2026-05-13:** reclasificado de Capa 4 a Capa 2 (cliente B2B normal). Dominio oficial PACAME: `lacaletamanchega.com`. El `.es` (Lovable) y `.online` (Hostinger) quedan fuera de PACAME y bajo control directo de Pablo.
+- **2026-05-13 (mañana):** reclasificado de Capa 4 a Capa 2 (cliente B2B normal). Dominio oficial PACAME: `lacaletamanchega.com`. El `.es` (Lovable) y `.online` (Hostinger) quedan fuera de PACAME y bajo control directo de Pablo.
+- **2026-05-13 (tarde):** Fix canonical SEO completo (canonical, og:url, JSON-LD, sitemap, robots, llms apuntan a `.com`). Repo cliente forkeado a `pacameagencia/lacaletamanchega-com` (sin Lovable, gestionable solo desde PACAME). Proyecto Vercel `lacaletamanchegaalbacete` reconectado al nuevo repo. El repo viejo `pacameagencia/lacaletamanchegaalbacete` queda intacto sirviendo al `.es` desde Lovable (control directo de Pablo, fuera de scope PACAME).
 
 ## Vínculos
 - **Memoria Claude:** `MEMORY.md` → `project_caleta_client.md`.
 - **Vault Obsidian:** `PacameCueva/02-Clientes/caleta/` (mover desde `11-Personal/la-caleta.md` el 2026-05-13).
 - **Doc maestro arquitectura:** [`strategy/arquitectura-3-capas.md`](../../strategy/arquitectura-3-capas.md) — Capa 2.
-- **Repo cliente:** [`pacameagencia/lacaletamanchegaalbacete`](https://github.com/pacameagencia/lacaletamanchegaalbacete) (privado).
+- **Repo cliente:** [`pacameagencia/lacaletamanchega-com`](https://github.com/pacameagencia/lacaletamanchega-com) (privado).
 - **Proyecto Vercel:** [`vercel.com/pacames-projects/lacaletamanchegaalbacete`](https://vercel.com/pacames-projects/lacaletamanchegaalbacete).
 - **Carta PDF (generator):** [`strategy/caleta/carta-v8/`](../../strategy/caleta/carta-v8/).
