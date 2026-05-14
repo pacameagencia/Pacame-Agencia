@@ -203,6 +203,37 @@
     .booking__map { aspect-ratio: 4 / 5; background: var(--vino-dark); border-radius: 20px; overflow: hidden; border: 1px solid {{PALETTE_ACCENT_RGBA20}}; box-shadow: var(--shadow-deep); }
     .booking__map iframe { width: 100%; height: 100%; border: 0; }
 
+
+    /* CTA URGENT mid-page (tras "Lo que incluye") */
+    .urgent-cta { padding: 4rem 1.5rem; background: var(--vino-deep); color: var(--crema); position: relative; }
+    .urgent-cta::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 40%, {{PALETTE_ACCENT_RGBA15}}, transparent 70%); pointer-events: none; }
+    .urgent-cta__inner { max-width: 760px; margin: 0 auto; text-align: center; position: relative; }
+    .urgent-cta h2 { font-family: '{{FONT_DISPLAY}}', serif; font-size: clamp(1.7rem, 3.6vw, 2.6rem); line-height: 1.15; color: var(--hueso); margin-bottom: 1rem; }
+    .urgent-cta h2 strong { color: var(--ocre-bright); font-weight: 700; }
+    .urgent-cta p { color: rgba(245, 237, 224, 0.85); font-size: 1.05rem; line-height: 1.65; margin-bottom: 1.8rem; max-width: 580px; margin-left: auto; margin-right: auto; }
+    .urgent-cta__buttons { display: flex; flex-direction: column; gap: 0.7rem; align-items: center; max-width: 480px; margin: 0 auto; }
+    @media (min-width: 600px) { .urgent-cta__buttons { flex-direction: row; justify-content: center; } }
+    .btn-urgent { display: inline-flex; align-items: center; gap: 0.5rem; padding: 1.05rem 1.8rem; background: #25d366; color: white; border-radius: 50px; font-weight: 700; font-size: 1rem; box-shadow: 0 12px 36px -10px rgba(37, 211, 102, 0.55); transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none; min-height: 54px; }
+    .btn-urgent:hover { transform: translateY(-2px); box-shadow: 0 16px 44px -10px rgba(37, 211, 102, 0.7); }
+    .btn-ghost-urgent { display: inline-flex; align-items: center; gap: 0.5rem; padding: 1.05rem 1.6rem; background: rgba(255, 255, 255, 0.05); color: var(--hueso); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 50px; font-weight: 600; font-size: 0.95rem; min-height: 54px; text-decoration: none; transition: background 0.2s; }
+    .btn-ghost-urgent:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--ocre-bright); color: var(--ocre-bright); }
+    .urgent-cta__small { margin-top: 1.5rem; font-size: 0.82rem; opacity: 0.7; }
+
+    /* CTA STICKY (siempre visible mientras hacen scroll) */
+    .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; background: rgba(26, 6, 6, 0.95); backdrop-filter: blur(12px); border-top: 1px solid var(--ocre); padding: 0.7rem 1rem; transform: translateY(110%); animation: stickyIn 0.4s ease 2s forwards; box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.3); }
+    @keyframes stickyIn { to { transform: translateY(0); } }
+    .sticky-cta__inner { max-width: 700px; margin: 0 auto; display: flex; gap: 0.5rem; align-items: center; justify-content: center; }
+    .sticky-cta a { flex: 1; max-width: 280px; padding: 0.75rem 0.9rem; border-radius: 50px; font-weight: 700; font-size: 0.88rem; text-align: center; transition: transform 0.2s ease; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; }
+    .sticky-cta__wa { background: #25d366; color: white; box-shadow: 0 6px 18px -4px rgba(37, 211, 102, 0.4); }
+    .sticky-cta__email { background: var(--ocre); color: var(--vino-deep); }
+    .sticky-cta a:hover { transform: translateY(-1px); }
+    .sticky-cta__close { background: transparent; color: rgba(245, 237, 224, 0.5); border: 0; padding: 0.4rem; cursor: pointer; font-size: 1.2rem; line-height: 1; }
+    @media (max-width: 640px) { .sticky-cta a { font-size: 0.78rem; padding: 0.6rem 0.5rem; } }
+    /* Add bottom padding to body so sticky doesn't cover footer content */
+    body { padding-bottom: 80px; }
+    /* sticky hidden if user closes it */
+    .sticky-cta.is-closed { display: none; }
+
     .footer { background: var(--vino-deep); color: rgba(245, 237, 224, 0.7); padding: 3rem 1.5rem 2rem; text-align: center; font-size: 0.9rem; border-top: 1px solid {{PALETTE_ACCENT_RGBA15}}; }
     .footer__brand { color: var(--ocre-bright); font-weight: 700; font-family: '{{FONT_DISPLAY}}', serif; font-size: 1.2rem; margin-bottom: 0.5rem; }
     .footer__divider { width: 60px; height: 2px; background: var(--ocre); margin: 1.5rem auto; opacity: 0.5; }
@@ -312,6 +343,18 @@
     </div>
   </section>
 
+  <section class="urgent-cta">
+    <div class="urgent-cta__inner">
+      <h2>¿Os encaja? Esta semana puedo poner <strong>3 webs en marcha</strong></h2>
+      <p>Si pinta, en una llamada de 5 minutos cierro los detalles y mañana empezamos. Si no es para vosotros, decidme y dejamos aquí. Sin agobiar.</p>
+      <div class="urgent-cta__buttons">
+        <a href="/contact-pacame?slug={{SLUG}}&amp;type=wa" class="btn-urgent">📱 WhatsApp Pablo — contesto en &lt;1h</a>
+        <a href="/contact-pacame?slug={{SLUG}}&amp;type=email" class="btn-ghost-urgent">O escríbeme por email</a>
+      </div>
+      <p class="urgent-cta__small">Sin compromiso · Sin permanencias · Si la web no os encaja en 7 días, devolución total.</p>
+    </div>
+  </section>
+
   <footer class="footer">
     <div class="footer__brand">{{NAME}}</div>
     <p>{{ADDRESS_FULL}} · {{POSTAL_CITY}} · {{PHONE_DISPLAY}}</p>
@@ -329,5 +372,13 @@
     document.getElementById('year').textContent = new Date().getFullYear();
     /* tabs JS removed - no menu section */
   </script>
+  <div class="sticky-cta" id="stickyCta">
+    <div class="sticky-cta__inner">
+      <a class="sticky-cta__wa" href="/contact-pacame?slug={{SLUG}}&amp;type=wa">📱 WhatsApp Pablo</a>
+      <a class="sticky-cta__email" href="/contact-pacame?slug={{SLUG}}&amp;type=email">✉️ Email</a>
+      <button class="sticky-cta__close" onclick="document.getElementById('stickyCta').classList.add('is-closed')" aria-label="Cerrar">×</button>
+    </div>
+  </div>
+
 </body>
 </html>
