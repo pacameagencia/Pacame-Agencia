@@ -4115,4 +4115,58 @@ body.page li.product:hover .product-thumbnail.em-relative > a > img,
   }
 }
 
+/* ============================================================
+   42. FIX Z-INDEX — logo header tapaba menú móvil "Relojes"
+   ============================================================
+   Diagnóstico Playwright: document.elementFromPoint() en la posición
+   del link "Relojes" devolvía <img class="logo-dark"> en lugar del
+   enlace. El logo del header se renderizaba ENCIMA del panel del menú
+   móvil (.hamburger-panel z-index:1100, .panel__container z-index:auto)
+   bloqueando clicks y tapando visualmente el primer item.
+   Mismo patrón que el bug mini-cart drawer (PR #153).
+*/
+
+@media (max-width: 991px) {
+  /* 42.1 Panel hamburger SIEMPRE por encima del header/logo */
+  .hamburger-panel,
+  #mobile-menu-panel {
+    z-index: 99999 !important;
+  }
+  .hamburger-panel .panel__container {
+    z-index: 100000 !important;
+    position: absolute !important;
+  }
+  .hamburger-panel .panel__backdrop {
+    z-index: 99998 !important;
+  }
+
+  /* 42.2 Cuando el panel está abierto, el header/logo NO debe flotar
+     encima. Triple cobertura por desconocer la clase exacta de Ecomus. */
+  body.offscreen-panel--opened .site-header,
+  body.offscreen-panel--opened .header-mobile,
+  body.offscreen-panel--opened [class*="header-mobile"],
+  body.mobile-menu-open .site-header,
+  body:has(.hamburger-panel.offscreen-panel--open) .site-header,
+  body:has(.hamburger-panel.offscreen-panel--open) [class*="header-mobile"],
+  body:has(.hamburger-panel.offscreen-panel--open) .logo-dark,
+  body:has(#mobile-menu-panel.offscreen-panel--open) .header-mobile {
+    z-index: 1 !important;
+  }
+
+  /* 42.3 Fallback robusto: el logo nunca por encima del panel abierto */
+  body:has(.hamburger-panel.offscreen-panel--open) img.logo-dark,
+  body:has(#mobile-menu-panel.offscreen-panel--open) img.logo-dark {
+    z-index: -1 !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+  }
+
+  /* 42.4 Contenido del panel sobre su propio stacking */
+  .hamburger-panel .panel__content,
+  .hamburger-panel .panel__header {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+}
+
 
