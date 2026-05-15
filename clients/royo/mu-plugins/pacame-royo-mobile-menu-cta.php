@@ -16,7 +16,8 @@ if (!defined('ABSPATH')) exit;
 
 const ROYO_MENU_TEL_DISPLAY = '+34 967 21 79 03';
 const ROYO_MENU_TEL = '+34967217903';
-const ROYO_MENU_WHATSAPP = '34967217903';
+const ROYO_MENU_WHATSAPP = '34639185128';
+const ROYO_MENU_WHATSAPP_DISPLAY = '+34 639 18 51 28';
 const ROYO_MENU_WHATSAPP_MSG = 'Hola, me gustaría consultar sobre un producto de Joyería Royo.';
 const ROYO_MENU_ADDRESS = 'C. Tesifonte Gallego, 2 — Albacete';
 
@@ -57,7 +58,7 @@ function royo_mobile_menu_append_cta($items, $args) {
     $extra .= '<li class="menu-item royo-mobile-cta royo-mobile-cta-whatsapp">';
     $extra .= '<a href="' . esc_url($whatsapp_url) . '" target="_blank" rel="noopener nofollow">';
     $extra .= '<span class="royo-mobile-cta__label">WhatsApp</span>';
-    $extra .= '<span class="royo-mobile-cta__value">' . esc_html(ROYO_MENU_TEL_DISPLAY) . '</span>';
+    $extra .= '<span class="royo-mobile-cta__value">' . esc_html(ROYO_MENU_WHATSAPP_DISPLAY) . '</span>';
     $extra .= '</a>';
     $extra .= '</li>';
     // Address

@@ -124,7 +124,7 @@ Estado actual: VACÍA (solo H1, ningún contenido). Oportunidad SEO + branding d
 
 <p>Tenemos más de 600 referencias en tienda y acceso a los catálogos completos de cada marca. Si buscas una referencia concreta o una colección que no aparece, escríbenos y te la conseguimos.</p>
 
-<p><a href="/contacto-joyeria-royo-albacete/" class="btn-primary">Contáctanos</a> · <a href="https://wa.me/34967217903" class="btn-secondary">WhatsApp</a></p>
+<p><a href="/contacto-joyeria-royo-albacete/" class="btn-primary">Contáctanos</a> · <a href="https://wa.me/34639185128" class="btn-secondary">WhatsApp</a></p>
 ```
 
 ## Notas de implementación

@@ -83,7 +83,7 @@ const SOBRE_NOSOTROS_CONTENT = `
 
 <p class="royo-page-cta">
   <a href="/contacto-joyeria-royo-albacete/" class="royo-btn-primary">Cómo llegar</a>
-  <a href="https://wa.me/34967217903" target="_blank" rel="noopener" class="royo-btn-secondary">WhatsApp directo</a>
+  <a href="https://wa.me/34639185128" target="_blank" rel="noopener" class="royo-btn-secondary">WhatsApp directo</a>
 </p>
 `.trim();
 
