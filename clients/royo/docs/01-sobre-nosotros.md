@@ -97,7 +97,7 @@ Lunes a sábado · 10:00 — 13:30 / 17:00 — 20:30 [CONFIRMAR horario real]<br
 Teléfono: <a href="tel:+34967217903">+34 967 21 79 03</a><br>
 Email: <a href="mailto:jroyo@joyeriaroyo.com">jroyo@joyeriaroyo.com</a></p>
 
-<p><a href="/contacto-joyeria-royo-albacete/" class="btn-primary">Cómo llegar</a> · <a href="https://wa.me/34967217903" class="btn-secondary">WhatsApp directo</a></p>
+<p><a href="/contacto-joyeria-royo-albacete/" class="btn-primary">Cómo llegar</a> · <a href="https://wa.me/34639185128" class="btn-secondary">WhatsApp directo</a></p>
 ```
 
 ## Notas de implementación

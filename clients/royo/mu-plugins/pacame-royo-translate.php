@@ -61,6 +61,22 @@ function pacame_royo_replace_hardcoded($html) {
     'Nothing was found'             => 'No se han encontrado resultados',
     'Sorry, but nothing matched your search terms.' => 'Lo sentimos, no se han encontrado resultados que coincidan con tu búsqueda.',
     'Please try again with some different keywords.' => 'Intenta con otras palabras clave o navega por nuestras categorías.',
+    // Archive filtro (Ecomus catalog toolbar + widget filtro WooCommerce)
+    '</span> Filter</button>'       => '</span> Filtrar</button>',
+    '> Filter</button>'             => '> Filtrar</button>',
+    '<h6>Refine by</h6>'            => '<h6>Refinar por</h6>',
+    '>Refine by<'                   => '>Refinar por<',
+    'value="Filter"'                => 'value="Filtrar"',
+    '>Filter</h5>'                  => '>Filtrar</h5>',
+    '>Filter</span>'                => '>Filtrar</span>',
+    'title="Filter"'                => 'title="Filtrar"',
+    'aria-label="Filter"'           => 'aria-label="Filtrar"',
+    '>Filter products<'             => '>Filtrar productos<',
+    '>Filter Products<'             => '>Filtrar productos<',
+    'Showing all'                   => 'Mostrando todos',
+    'Showing the single result'     => 'Mostrando el único resultado',
+    '>Sort by<'                     => '>Ordenar por<',
+    '> Sort<'                       => '> Ordenar<',
     // Wishlist page hardcoded
     '>Wishlist<'                    => '>Favoritos<',
     'Your wishlist is currently empty.' => 'Tu lista de favoritos está vacía.',
@@ -149,6 +165,16 @@ function pacame_royo_replace_hardcoded($html) {
     'Edit address'                  => 'Editar dirección',
     'Edit Account'                  => 'Editar cuenta',
     'No order has been made yet.'   => 'Todavía no has realizado ningún pedido.',
+    // WhatsApp: número correcto +34 639 18 51 28 (el teléfono fijo +34 967 21 79 03
+    // se mantiene SOLO para llamadas tel:). Red de seguridad sobre páginas ya
+    // publicadas (institucionales, servicios, archives de marca) sin re-ejecutar
+    // scripts. strtr usa coincidencia más larga: los patrones con texto visible
+    // tienen prioridad sobre el href genérico.
+    'wa.me/34967217903" target="_blank" rel="noopener">+34 967 21 79 03</a>' => 'wa.me/34639185128" target="_blank" rel="noopener">+34 639 18 51 28</a>',
+    'wa.me/34967217903">+34 967 21 79 03</a>' => 'wa.me/34639185128">+34 639 18 51 28</a>',
+    'wa.me/34967217903'             => 'wa.me/34639185128',
+    'whatsapp.com/send?phone=34967217903' => 'whatsapp.com/send?phone=34639185128',
+    'api.whatsapp.com/send?phone=34967217903' => 'api.whatsapp.com/send?phone=34639185128',
   );
   return strtr($html, $replacements);
 }

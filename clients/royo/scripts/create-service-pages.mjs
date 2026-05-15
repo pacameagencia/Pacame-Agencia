@@ -77,7 +77,7 @@ const PAGES = [
 </p>
 
 <p class="royo-page-cta">
-  <a href="https://wa.me/34967217903?text=Hola%2C+me+gustar%C3%ADa+pedir+una+tasaci%C3%B3n+de+una+pieza" target="_blank" rel="noopener" class="royo-btn-primary royo-btn-whatsapp">Pedir cita por WhatsApp</a>
+  <a href="https://wa.me/34639185128?text=Hola%2C+me+gustar%C3%ADa+pedir+una+tasaci%C3%B3n+de+una+pieza" target="_blank" rel="noopener" class="royo-btn-primary royo-btn-whatsapp">Pedir cita por WhatsApp</a>
   <a href="/contacto-joyeria-royo-albacete/" class="royo-btn-secondary">Cómo llegar</a>
 </p>
 `.trim(),
@@ -125,7 +125,7 @@ const PAGES = [
 </p>
 
 <p class="royo-page-cta">
-  <a href="https://wa.me/34967217903?text=Hola%2C+necesito+reparar+un+reloj" target="_blank" rel="noopener" class="royo-btn-primary royo-btn-whatsapp">Consultar reparación por WhatsApp</a>
+  <a href="https://wa.me/34639185128?text=Hola%2C+necesito+reparar+un+reloj" target="_blank" rel="noopener" class="royo-btn-primary royo-btn-whatsapp">Consultar reparación por WhatsApp</a>
   <a href="/contacto-joyeria-royo-albacete/" class="royo-btn-secondary">Cómo llegar</a>
 </p>
 `.trim(),
@@ -142,7 +142,7 @@ const PAGES = [
 <h2>Cómo funciona el proceso</h2>
 
 <ol class="royo-brand-list">
-  <li><strong>Conversación inicial</strong> en tienda o por <a href="https://wa.me/34967217903" target="_blank" rel="noopener">WhatsApp</a>. Nos cuentas la idea, el motivo (compromiso, aniversario, regalo, herencia) y el presupuesto orientativo.</li>
+  <li><strong>Conversación inicial</strong> en tienda o por <a href="https://wa.me/34639185128" target="_blank" rel="noopener">WhatsApp</a>. Nos cuentas la idea, el motivo (compromiso, aniversario, regalo, herencia) y el presupuesto orientativo.</li>
   <li><strong>Boceto y propuesta</strong>: nuestros joyeros artesanos trabajan un primer diseño en papel o renderizado 3D según la complejidad. Te presentamos opciones de material, gemas y acabado.</li>
   <li><strong>Aprobación y presupuesto cerrado</strong>: con el diseño finalizado, te damos un presupuesto detallado y un plazo realista (típicamente 3-6 semanas).</li>
   <li><strong>Fabricación artesanal</strong>: la pieza se fabrica en taller con técnicas tradicionales (cera perdida, microfusión, soldadura, engastado a mano). Cada pieza se controla individualmente.</li>
@@ -177,7 +177,7 @@ const PAGES = [
 </p>
 
 <p class="royo-page-cta">
-  <a href="https://wa.me/34967217903?text=Hola%2C+me+gustar%C3%ADa+dise%C3%B1ar+una+joya+a+medida" target="_blank" rel="noopener" class="royo-btn-primary royo-btn-whatsapp">Empezar diseño por WhatsApp</a>
+  <a href="https://wa.me/34639185128?text=Hola%2C+me+gustar%C3%ADa+dise%C3%B1ar+una+joya+a+medida" target="_blank" rel="noopener" class="royo-btn-primary royo-btn-whatsapp">Empezar diseño por WhatsApp</a>
   <a href="/contacto-joyeria-royo-albacete/" class="royo-btn-secondary">Cómo llegar</a>
 </p>
 `.trim(),

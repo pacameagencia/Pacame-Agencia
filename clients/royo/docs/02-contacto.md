@@ -42,7 +42,7 @@ Estado actual: datos demo Ecomus ("66 Mott St, New York", "EComposer@example.com
     <h3>Cómo contactar</h3>
     <p>
       📞 Teléfono: <a href="tel:+34967217903">+34 967 21 79 03</a><br>
-      💬 WhatsApp: <a href="https://wa.me/34967217903">+34 967 21 79 03</a><br>
+      💬 WhatsApp: <a href="https://wa.me/34639185128">+34 639 18 51 28</a><br>
       ✉️ Email: <a href="mailto:jroyo@joyeriaroyo.com">jroyo@joyeriaroyo.com</a>
     </p>
 

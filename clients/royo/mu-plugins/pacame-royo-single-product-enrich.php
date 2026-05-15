@@ -26,7 +26,7 @@ if (!defined('ABSPATH')) {
 // Datos del cliente Royo (verificados en memoria PACAME 2026-05-07)
 define('ROYO_PHONE', '+34 967 21 79 03');
 define('ROYO_PHONE_DISPLAY', '967 21 79 03');
-define('ROYO_WHATSAPP', '34967217903');
+define('ROYO_WHATSAPP', '34639185128');
 define('ROYO_ADDRESS', 'C. Tesifonte Gallego, 2 — Albacete');
 define('ROYO_EMAIL', 'jroyo@joyeriaroyo.com');
 

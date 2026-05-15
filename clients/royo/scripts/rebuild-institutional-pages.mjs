@@ -99,7 +99,7 @@ const SOBRE_NOSOTROS_CONTENT = `
 
 <p class="royo-page-cta">
   <a href="/contacto-joyeria-royo-albacete/" class="royo-btn-primary">Cómo llegar</a>
-  <a href="https://wa.me/34967217903" target="_blank" rel="noopener" class="royo-btn-secondary">WhatsApp directo</a>
+  <a href="https://wa.me/34639185128" target="_blank" rel="noopener" class="royo-btn-secondary">WhatsApp directo</a>
 </p>
 `.trim();
 
@@ -128,7 +128,7 @@ const CONTACTO_CONTENT = `
     <h3>Cómo contactar</h3>
     <p>
       <strong>Teléfono</strong>: <a href="tel:+34967217903">+34 967 21 79 03</a><br>
-      <strong>WhatsApp</strong>: <a href="https://wa.me/34967217903" target="_blank" rel="noopener">+34 967 21 79 03</a><br>
+      <strong>WhatsApp</strong>: <a href="https://wa.me/34639185128" target="_blank" rel="noopener">+34 639 18 51 28</a><br>
       <strong>Email</strong>: <a href="mailto:jroyo@joyeriaroyo.com">jroyo@joyeriaroyo.com</a>
     </p>
   </div>
@@ -137,7 +137,7 @@ const CONTACTO_CONTENT = `
     <h2>Escríbenos</h2>
     <p>¿Tienes una duda sobre un reloj, una joya o un servicio? Cuéntanos y te respondemos en menos de 24 horas laborables.</p>
 
-    <p><a href="https://wa.me/34967217903?text=Hola%2C%20me%20gustar%C3%ADa%20consultar%20sobre%20un%20producto%20de%20Joyer%C3%ADa%20Royo." target="_blank" rel="noopener" class="royo-btn-primary royo-btn-whatsapp">Consultar por WhatsApp</a></p>
+    <p><a href="https://wa.me/34639185128?text=Hola%2C%20me%20gustar%C3%ADa%20consultar%20sobre%20un%20producto%20de%20Joyer%C3%ADa%20Royo." target="_blank" rel="noopener" class="royo-btn-primary royo-btn-whatsapp">Consultar por WhatsApp</a></p>
 
     <p>O escríbenos directamente a <a href="mailto:jroyo@joyeriaroyo.com">jroyo@joyeriaroyo.com</a> con tu pregunta y te atendemos en cuanto podamos.</p>
   </div>
@@ -258,7 +258,7 @@ const MARCAS_CONTENT = `
 
 <p class="royo-page-cta">
   <a href="/contacto-joyeria-royo-albacete/" class="royo-btn-primary">Contáctanos</a>
-  <a href="https://wa.me/34967217903" target="_blank" rel="noopener" class="royo-btn-secondary">WhatsApp directo</a>
+  <a href="https://wa.me/34639185128" target="_blank" rel="noopener" class="royo-btn-secondary">WhatsApp directo</a>
 </p>
 `.trim();
 
