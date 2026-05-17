@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#241B12">
+  <title>{{NAME}} — {{TAGLINE}} · {{ADDRESS_SHORT}}, {{CITY}}</title>
+  <meta name="description" content="{{NAME}} — {{META_DESC}}. Reservas: {{PHONE}}">
+  <meta property="og:title" content="{{NAME}} · {{ADDRESS_SHORT}}, {{CITY}}">
+  <meta property="og:description" content="{{TAGLINE}}. Reservas: {{PHONE}}">
+  <meta property="og:type" content="restaurant.menu">
+  <meta property="og:image" content="{{HERO_IMAGE}}">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="{{NAME}}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{NAME}} · {{CITY}}">
+  <meta name="twitter:image" content="{{HERO_IMAGE}}">
+  <script type="application/ld+json">{
+    "@context":"https://schema.org","@type":"Restaurant","name":"{{NAME}}","description":"{{META_DESC}}",
+    "image":"{{HERO_IMAGE}}","telephone":"{{PHONE}}","priceRange":"€€","servesCuisine":"{{CUISINE_LABEL}}",
+    "address":{"@type":"PostalAddress","streetAddress":"{{ADDRESS_FULL}}","addressLocality":"{{CITY}}","postalCode":"{{POSTAL}}","addressCountry":"ES"},
+    "aggregateRating":{"@type":"AggregateRating","ratingValue":"{{RATING_NUM}}","reviewCount":"{{REVIEW_COUNT}}"}
+  }</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&display=swap">
+  <style>
+    :root{
+      --paper:#F4EFE5; --paper-2:#EBE3D4; --card:#FBF8F1;
+      --ink:#241B12; --ink-soft:#6A5C49; --line:#D8CDB8;
+      --clay:#A2553A; --clay-deep:#7C3D27; --sage:#5E6A50;
+      --maxw:1140px; --ease:cubic-bezier(.22,.7,.2,1);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+    body{font-family:'Newsreader',Georgia,serif;color:var(--ink);background:var(--paper);line-height:1.7;font-weight:400;overflow-x:hidden;padding-bottom:84px;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4{font-family:'Cormorant Garamond',Georgia,serif;line-height:1.06;font-weight:600;letter-spacing:.005em}
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:0 1.6rem}
+    @keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+    .reveal{opacity:0;animation:rise 1.05s var(--ease) forwards}
+    .d1{animation-delay:.1s}.d2{animation-delay:.24s}.d3{animation-delay:.38s}.d4{animation-delay:.52s}.d5{animation-delay:.66s}
+
+    .ribbon{position:relative;z-index:60;background:var(--ink);color:var(--paper);text-align:center;font-size:.76rem;letter-spacing:.05em;padding:.6rem 1rem;font-family:'Newsreader',serif}
+    .ribbon b{color:#D9A988;text-transform:uppercase;letter-spacing:.18em;font-size:.68rem}
+
+    header.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+      padding:1.2rem 1.7rem;transition:.5s var(--ease);border-bottom:1px solid transparent}
+    header.nav.scrolled{background:rgba(244,239,229,.95);backdrop-filter:blur(14px);border-color:var(--line)}
+    .brand{display:flex;align-items:center;gap:.7rem;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.5rem;letter-spacing:.02em;color:var(--ink)}
+    .brand .mk{width:38px;height:38px;border:1.5px solid var(--clay);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:var(--clay)}
+    header.nav .brand{color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+    header.nav.scrolled .brand{color:var(--ink);text-shadow:none}
+    .nav-cta{font-family:'Newsreader',serif;font-size:.86rem;letter-spacing:.06em;color:#fff;border-bottom:1px solid rgba(255,255,255,.6);padding-bottom:2px;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+    header.nav.scrolled .nav-cta{color:var(--ink);border-color:var(--clay)}
+
+    .hero{position:relative;min-height:100svh;display:flex;align-items:center;color:#fff;overflow:hidden}
+    .hero__ph{position:absolute;inset:0;background:url('{{HERO_IMAGE}}') center/cover no-repeat;transform:scale(1.07);animation:sz 20s ease-out forwards}
+    @keyframes sz{to{transform:scale(1)}}
+    .hero__ph::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,rgba(20,14,8,.74) 0%,rgba(20,14,8,.38) 52%,rgba(20,14,8,.16) 100%)}
+    .hero__in{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;padding:7rem 1.6rem 4rem}
+    .kicker{font-family:'Newsreader',serif;font-size:.82rem;letter-spacing:.42em;text-transform:uppercase;color:#E7C7AC;margin-bottom:2.2rem;text-shadow:0 1px 10px rgba(0,0,0,.5)}
+    .hero h1{font-size:clamp(3rem,9.5vw,7rem);font-weight:500;color:#fff;max-width:13ch;letter-spacing:-.01em}
+    .hero h1 i{font-style:italic;color:#EAC6A7;font-weight:400}
+    .hero p{font-family:'Newsreader',serif;font-weight:300;margin:1.8rem 0 2.4rem;font-size:clamp(1.05rem,1.7vw,1.32rem);max-width:42ch;color:rgba(255,255,255,.9);line-height:1.75}
+    .hero__row{display:flex;flex-wrap:wrap;gap:1.4rem;align-items:center}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;font-family:'Newsreader',serif;font-size:1rem;letter-spacing:.02em;transition:.35s var(--ease);cursor:pointer}
+    .btn-solid{background:var(--clay);color:#fff;padding:1rem 2.1rem;border-radius:2px;box-shadow:0 18px 44px -18px rgba(124,61,39,.75)}
+    .btn-solid:hover{background:var(--clay-deep);transform:translateY(-2px)}
+    .btn-link{color:#fff;border-bottom:1px solid rgba(255,255,255,.55);padding-bottom:3px}
+    .btn-link:hover{border-color:#EAC6A7;color:#EAC6A7}
+    .hero__meta{margin-top:3rem;display:flex;gap:2rem;flex-wrap:wrap;font-family:'Newsreader',serif;font-size:.9rem;color:rgba(255,255,255,.78);letter-spacing:.03em}
+    .hero__meta b{color:#fff;font-weight:500}
+
+    section{padding:6.5rem 0}
+    .eyebrow{font-family:'Newsreader',serif;font-size:.8rem;letter-spacing:.34em;text-transform:uppercase;color:var(--clay);display:block;margin-bottom:1.4rem}
+    .h-sec{font-size:clamp(2.1rem,5vw,3.6rem);font-weight:500;max-width:16ch}
+    .lead{font-family:'Newsreader',serif;font-weight:300;color:var(--ink-soft);font-size:1.12rem;max-width:48ch;margin-top:1.1rem}
+    .divider{width:100%;height:1px;background:var(--line)}
+
+    .pillars__grid{display:grid;grid-template-columns:1fr;gap:0;margin-top:3.4rem}
+    @media(min-width:820px){.pillars__grid{grid-template-columns:repeat(3,1fr)}}
+    .pillar{padding:2.6rem 2rem;border-top:2px solid var(--ink);transition:.4s var(--ease)}
+    @media(min-width:820px){.pillar+.pillar{border-left:1px solid var(--line)}}
+    .pillar:hover{background:var(--card)}
+    .pillar__icon{font-size:1.8rem;width:auto;height:auto;margin-bottom:1.4rem;color:var(--clay)}
+    .pillar h3{font-size:1.7rem;font-weight:600;margin-bottom:.5rem}
+    .pillar p{font-family:'Newsreader',serif;font-weight:300;color:var(--ink-soft);font-size:1rem}
+
+    .gallery{background:var(--ink);color:var(--paper)}
+    .gallery .eyebrow{color:#D9A988}
+    .gallery h2{color:#fff}
+    .gallery__note{font-family:'Newsreader',serif;font-weight:300;font-size:.92rem;color:rgba(244,239,229,.62);max-width:40ch;margin-top:1rem}
+    .gallery__grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:3.4rem}
+    @media(min-width:820px){.gallery__grid{grid-template-columns:repeat(12,1fr);grid-auto-rows:200px}}
+    .shot{overflow:hidden;background:#2a2018;position:relative}
+    .shot img{width:100%;height:100%;object-fit:cover;filter:saturate(1.05);transition:transform 1s var(--ease)}
+    .shot:hover img{transform:scale(1.06)}
+    @media(min-width:820px){
+      .shot:nth-child(1){grid-column:span 5;grid-row:span 2}
+      .shot:nth-child(2){grid-column:span 4;grid-row:span 1}
+      .shot:nth-child(3){grid-column:span 3;grid-row:span 2}
+      .shot:nth-child(4){grid-column:span 4;grid-row:span 1}
+      .shot:nth-child(5){grid-column:span 7;grid-row:span 1;display:none}
+    }
+    @media(max-width:819px){.shot{aspect-ratio:1/1}.shot:nth-child(1){grid-column:1/-1;aspect-ratio:16/10}.shot:nth-child(5){display:none}}
+
+    .compare{background:var(--paper-2)}
+    .compare__grid{display:grid;grid-template-columns:1fr;gap:2rem;margin-top:3rem}
+    @media(min-width:860px){.compare__grid{grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}}
+    .cmp__shot{position:relative;background:#ddd;overflow:hidden;border:1px solid var(--line)}
+    .cmp__shot img{width:100%;aspect-ratio:16/10;object-fit:cover}
+    .cmp--before .cmp__shot img{filter:grayscale(.4) contrast(.9);opacity:.78}
+    .cmp .tag{font-family:'Newsreader',serif;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--clay);margin:1.1rem 0 .4rem;display:block}
+    .cmp h3{font-size:1.5rem;font-weight:600;margin-bottom:.4rem}
+    .cmp p{font-family:'Newsreader',serif;font-weight:300;color:var(--ink-soft);font-size:.96rem}
+
+    .audit-sec{background:var(--card)}
+    .audit__intro{font-family:'Newsreader',serif;font-weight:300;color:var(--ink-soft);font-size:1.12rem;max-width:52ch;margin-top:1.1rem}
+    .audit__grid{display:grid;grid-template-columns:1fr;gap:0;margin-top:3.2rem;border-top:1px solid var(--ink)}
+    .audit{display:flex;gap:1.8rem;padding:2rem .2rem;border-bottom:1px solid var(--line);align-items:baseline}
+    .audit__n{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:600;color:var(--clay);line-height:1;flex-shrink:0;width:2.2rem}
+    .audit__body h3{font-size:1.5rem;font-weight:600;margin-bottom:.45rem}
+    .audit__body p{font-family:'Newsreader',serif;font-weight:300;color:var(--ink-soft);font-size:1rem;max-width:60ch}
+    .includes__grid{display:grid;grid-template-columns:1fr;margin-top:3rem;border-top:1px solid var(--line)}
+    @media(min-width:780px){.includes__grid{grid-template-columns:1fr 1fr}}
+    .inc{padding:2rem .2rem;border-bottom:1px solid var(--line);display:flex;gap:1.4rem}
+    @media(min-width:780px){.inc:nth-child(odd){padding-right:3rem;border-right:1px solid var(--line)}.inc:nth-child(even){padding-left:3rem}}
+    .inc__n{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--clay);font-weight:600;line-height:1;flex-shrink:0}
+    .inc h3{font-size:1.4rem;font-weight:600;margin-bottom:.35rem}
+    .inc p{font-family:'Newsreader',serif;font-weight:300;color:var(--ink-soft);font-size:.96rem}
+
+    .booking{background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
+    .booking::before{content:'';position:absolute;width:60vw;height:60vw;border-radius:50%;background:radial-gradient(circle,rgba(162,85,58,.22),transparent 65%);top:-20vw;right:-15vw;pointer-events:none}
+    .booking__grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:center;position:relative}
+    @media(min-width:900px){.booking__grid{grid-template-columns:1.1fr .9fr}}
+    .booking .eyebrow{color:#D9A988}
+    .booking h2{color:#fff;font-size:clamp(2rem,4.6vw,3.4rem);font-weight:500}
+    .booking p{font-family:'Newsreader',serif;font-weight:300;color:rgba(244,239,229,.72);margin:1.1rem 0 2.2rem;max-width:44ch}
+    .booking__row{display:flex;flex-wrap:wrap;gap:1.4rem;align-items:center;margin-bottom:2.4rem}
+    .btn-paper{background:var(--paper);color:var(--ink);padding:1rem 2rem;border-radius:2px}
+    .btn-paper:hover{background:#fff;transform:translateY(-2px)}
+    .btn-linkd{color:#fff;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:3px}
+    .btn-linkd:hover{color:#EAC6A7;border-color:#EAC6A7}
+    .facts{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+    .fact h4{font-family:'Newsreader',serif;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:#D9A988;margin-bottom:.5rem;font-weight:500}
+    .fact .v{font-family:'Newsreader',serif;font-weight:300;color:rgba(244,239,229,.85);font-size:.98rem}
+    .fact .v b{color:#fff;font-weight:500}
+    .mapbox{aspect-ratio:4/5;overflow:hidden;border:1px solid rgba(244,239,229,.18)}
+    .mapbox iframe{width:100%;height:100%;border:0;filter:grayscale(.4) sepia(.15) contrast(1.05)}
+
+    .urgent{background:var(--clay);color:#fff;text-align:center}
+    .urgent__in{max-width:660px;margin:0 auto}
+    .urgent h2{font-size:clamp(2rem,4.6vw,3rem);font-weight:500;color:#fff}
+    .urgent h2 i{font-style:italic;color:#FBE4D2}
+    .urgent p{font-family:'Newsreader',serif;font-weight:300;margin:1.2rem auto 2.2rem;color:rgba(255,255,255,.92);max-width:46ch}
+    .urgent__btns{display:flex;flex-direction:column;gap:.9rem;align-items:center;max-width:440px;margin:0 auto}
+    @media(min-width:560px){.urgent__btns{flex-direction:row;justify-content:center}}
+    .u-yes{background:#fff;color:var(--clay-deep);padding:1.05rem 2rem;border-radius:2px;font-family:'Newsreader',serif;font-weight:500;font-size:1.02rem;min-height:54px;display:inline-flex;align-items:center;gap:.5rem;transition:.3s var(--ease)}
+    .u-yes:hover{transform:translateY(-2px);box-shadow:0 18px 40px -16px rgba(0,0,0,.4)}
+    .u-wa{color:#fff;border:1px solid rgba(255,255,255,.6);padding:1.05rem 1.8rem;border-radius:2px;font-family:'Newsreader',serif;min-height:54px;display:inline-flex;align-items:center;gap:.5rem;transition:.3s}
+    .u-wa:hover{background:rgba(255,255,255,.14)}
+    .urgent__small{font-family:'Newsreader',serif;font-weight:300;margin-top:1.7rem;font-size:.84rem;color:rgba(255,255,255,.85)}
+    .urgent__small a{color:#fff;text-decoration:underline}
+
+    footer{background:var(--ink);color:rgba(244,239,229,.6);text-align:center;padding:4rem 1.6rem 2.6rem;font-family:'Newsreader',serif;font-weight:300;font-size:.92rem}
+    footer .fb{font-family:'Cormorant Garamond',serif;color:#fff;font-size:1.9rem;font-weight:600;margin-bottom:.4rem}
+    .rule{width:50px;height:1px;background:var(--clay);margin:1.8rem auto;opacity:.8}
+    .pacame{font-size:.8rem;color:rgba(244,239,229,.5);margin-top:1.6rem}
+    .pacame a{color:#D9A988}
+    .pacame .pbtn{display:inline-block;margin:.3rem;padding:.7rem 1.4rem;border-radius:2px;font-weight:500;font-size:.86rem}
+    .pbtn--wa{background:#25D366;color:#fff}.pbtn--em{background:#fff;color:#222}
+
+    .sticky{position:fixed;left:0;right:0;bottom:0;z-index:55;background:rgba(36,27,18,.97);backdrop-filter:blur(14px);border-top:1px solid rgba(217,169,136,.35);padding:.7rem 1rem;transform:translateY(120%);animation:up .55s var(--ease) 2s forwards}
+    @keyframes up{to{transform:none}}
+    .sticky__in{max-width:660px;margin:0 auto;display:flex;gap:.5rem;align-items:center;justify-content:center}
+    .sticky a{flex:1;max-width:270px;padding:.85rem .9rem;font-family:'Newsreader',serif;font-weight:500;font-size:.88rem;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;min-height:46px;transition:transform .2s}
+    .sticky a:hover{transform:translateY(-1px)}
+    .s-yes{background:var(--clay);color:#fff}
+    .s-wa{background:var(--paper);color:var(--ink)}
+    .sticky__x{background:transparent;border:0;color:rgba(244,239,229,.5);font-size:1.2rem;padding:.5rem .7rem;cursor:pointer;line-height:1}
+    @media(max-width:620px){.sticky a{font-size:.78rem;padding:.7rem .5rem}}
+    .sticky.is-closed{display:none}
+
+    .fab{position:fixed;right:1.3rem;bottom:5.6rem;z-index:45;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(37,211,102,.5)}
+    .fab svg{width:27px;height:27px}
+    @media(min-width:760px){.fab{bottom:1.5rem}}
+  </style>
+</head>
+<body>
+  <div class="ribbon"><b>Propuesta de PACAME</b> &nbsp;·&nbsp; Mockup hecho para vosotros · Si os encaja, hablamos. Si no, ningún problema.</div>
+
+  <header class="nav" id="nav">
+    <a href="#" class="brand"><span class="mk">{{INITIALS}}</span> {{NAME_PART1}}&nbsp;{{NAME_PART2}}</a>
+    <a href="tel:{{PHONE_TEL}}" class="nav-cta">Reservar · {{PHONE_DISPLAY}}</a>
+  </header>
+
+  <section class="hero">
+    <div class="hero__ph"></div>
+    <div class="hero__in">
+      <div class="kicker reveal d1">{{EYEBROW}}</div>
+      <h1 class="reveal d2">{{HERO_TITLE_LINE1}} <i>{{HERO_TITLE_LINE2}}</i></h1>
+      <p class="reveal d3">{{HERO_SUBTITLE}}</p>
+      <div class="hero__row reveal d4">
+        <a href="tel:{{PHONE_TEL}}" class="btn btn-solid">Llamar para reservar</a>
+        <a href="#carta" class="btn btn-link">Conocer la casa</a>
+      </div>
+      <div class="hero__meta reveal d5"><span><b>{{NAME}}</b></span><span>{{ADDRESS_SHORT}}, {{CITY}}</span><span>{{HOURS_DAYS}}</span></div>
+    </div>
+  </section>
+
+  <section class="pillars">
+    <div class="wrap">
+      <span class="eyebrow">{{PILLAR_EYEBROW}}</span>
+      <h2 class="h-sec">{{PILLAR_HEADING}}</h2>
+      <div class="pillars__grid">{{PILLAR_BLOCKS}}</div>
+    </div>
+  </section>
+
+  <section class="gallery" id="carta">
+    <div class="wrap">
+      <span class="eyebrow">Un vistazo</span>
+      <h2 class="h-sec">El alma de {{NAME_PART1}}</h2>
+      <p class="gallery__note">Fotos de muestra para enseñar el estilo. Al lanzar la web real van las vuestras de verdad.</p>
+      <div class="gallery__grid">
+        <div class="shot"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1000&q=80" alt="Sala" loading="lazy"></div>
+        <div class="shot"><img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=800&q=80" alt="Producto" loading="lazy"></div>
+        <div class="shot"><img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80" alt="Cocina" loading="lazy"></div>
+        <div class="shot"><img src="https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?auto=format&fit=crop&w=800&q=80" alt="Mesa" loading="lazy"></div>
+        <div class="shot"><img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=900&q=80" alt="Detalle" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare" id="comparacion">
+    <div class="wrap">
+      <span class="eyebrow">Antes / Después</span>
+      <h2 class="h-sec">Vuestra web hoy, junto a la propuesta</h2>
+      <div class="compare__grid">
+        <div class="cmp cmp--before">
+          <div class="cmp__shot"><img src="{{BEFORE_SCREENSHOT}}" alt="Web actual de {{NAME}}" loading="lazy"></div>
+          <span class="tag">Antes — hoy</span><h3>Lo que ven ahora</h3>
+          <p>Captura real de vuestra web actual. Para 2026 esto pierde reservas frente a quien tiene web cuidada.</p>
+        </div>
+        <div class="cmp cmp--after">
+          <div class="cmp__shot"><img src="{{HERO_IMAGE}}" alt="Propuesta para {{NAME}}" loading="lazy"></div>
+          <span class="tag">Después — PACAME</span><h3>La misma casa, en su mejor versión</h3>
+          <p>Carga &lt;2s, móvil primero, reservas directas, SEO local. La que estáis viendo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="audit-sec" id="mejoras">
+    <div class="wrap">
+      <span class="eyebrow">{{IMPROVEMENTS_EYEBROW}}</span>
+      <h2 class="h-sec">{{IMPROVEMENTS_HEADING}}</h2>
+      <p class="audit__intro">{{IMPROVEMENTS_INTRO}}</p>
+      <div class="audit__grid">{{IMPROVEMENTS_BLOCKS}}</div>
+    </div>
+  </section>
+
+  <section class="includes" id="sobre">
+    <div class="wrap">
+      <span class="eyebrow">{{INCLUDES_EYEBROW}}</span>
+      <h2 class="h-sec">{{INCLUDES_HEADING}}</h2>
+      <div class="includes__grid">
+        <div class="inc"><span class="inc__n">01</span><div><h3>Carta digital editable</h3><p>Cambias platos desde un panel sencillo. Sin tocar código ni pagar por cada cambio.</p></div></div>
+        <div class="inc"><span class="inc__n">02</span><div><h3>Reservas por WhatsApp</h3><p>Botón directo a vuestro número. Cero comisiones de plataformas.</p></div></div>
+        <div class="inc"><span class="inc__n">03</span><div><h3>Mapa y cómo llegar</h3><p>Ubicación, horarios y accesos en un toque. Mejor SEO local.</p></div></div>
+        <div class="inc"><span class="inc__n">04</span><div><h3>Móvil primero &lt;2s</h3><p>Carga en menos de 2 segundos. El 78% os busca desde el móvil.</p></div></div>
+        <div class="inc"><span class="inc__n">05</span><div><h3>SEO local</h3><p>Aparecéis en "restaurante en {{CITY}}" con la ficha completa.</p></div></div>
+        <div class="inc"><span class="inc__n">06</span><div><h3>Reseñas Google reales</h3><p>Conectamos vuestras reseñas reales al lanzar. Sin inventar nada.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="booking" id="contacto">
+    <div class="wrap">
+      <div class="booking__grid">
+        <div>
+          <span class="eyebrow">Os esperamos</span>
+          <h2>{{BOOKING_HEADING}}</h2>
+          <p>{{BOOKING_DESC}}</p>
+          <div class="booking__row">
+            <a href="tel:{{PHONE_TEL}}" class="btn btn-paper">{{PHONE_DISPLAY}}</a>
+            <a href="https://www.google.com/maps/search/?api=1&query={{MAPS_QUERY}}" target="_blank" rel="noopener" class="btn btn-linkd">Cómo llegar →</a>
+          </div>
+          <div class="facts">
+            <div class="fact"><h4>Horario</h4><div class="v">{{HOURS_DAYS}}<br><b>{{HOURS_MIDDAY}}</b> y <b>{{HOURS_DINNER}}</b></div></div>
+            <div class="fact"><h4>Dónde</h4><div class="v">{{ADDRESS_FULL}}<br><b>{{POSTAL_CITY}}</b></div></div>
+          </div>
+        </div>
+        <div class="mapbox"><iframe loading="lazy" allowfullscreen src="https://www.google.com/maps?q={{MAPS_QUERY}}&output=embed" title="Mapa {{NAME}}"></iframe></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="urgent">
+    <div class="wrap"><div class="urgent__in">
+      <h2>¿Os encaja? Esta semana puedo poner <i>3 webs en marcha</i></h2>
+      <p>Decídmelo aquí mismo, un toque. Si es que sí, os llamo hoy y os cuento cómo la dejamos vuestra. Si no, ningún problema: las dos respuestas valen.</p>
+      <div class="urgent__btns">
+        <a href="/intent/{{SLUG}}/yes" class="u-yes">👍 Sí, me interesa</a>
+        <a href="/contact-pacame?slug={{SLUG}}&amp;type=wa" class="u-wa">📱 Mejor por WhatsApp ahora</a>
+      </div>
+      <p class="urgent__small">Sin compromiso · sin permanencia · precio en la llamada.<br><a href="/intent/{{SLUG}}/no">No es para nosotros</a></p>
+    </div></div>
+  </section>
+
+  <footer>
+    <div class="fb">{{NAME}}</div>
+    <p>{{ADDRESS_FULL}} · {{POSTAL_CITY}} · {{PHONE_DISPLAY}}</p>
+    <div class="rule"></div>
+    <p>© <span id="y">2026</span> {{NAME}} · {{TAGLINE}}</p>
+    <p class="pacame" style="margin-top:1.8rem">¿Os gusta? Si queréis que la pongamos en marcha real, contactad con Pablo (PACAME):<br><br>
+      <a href="/contact-pacame?slug={{SLUG}}&type=wa" target="_blank" rel="noopener" class="pbtn pbtn--wa">📱 WhatsApp Pablo</a>
+      <a href="/contact-pacame?slug={{SLUG}}&type=email" target="_blank" rel="noopener" class="pbtn pbtn--em">✉️ Email Pablo</a>
+      <br><br><span style="font-size:.7rem;opacity:.6">Diseño web por <a href="https://pacameagencia.com" target="_blank" rel="noopener">PACAME</a> · Propuesta no solicitada. Si no os interesa, sin problema.</span></p>
+  </footer>
+
+  <a href="https://wa.me/{{PHONE_WA}}?text={{WA_MSG}}" target="_blank" rel="noopener" class="fab" aria-label="Reservar por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></a>
+
+  <div class="sticky" id="sk">
+    <div class="sticky__in">
+      <a class="s-yes" href="/intent/{{SLUG}}/yes">👍 Sí, me interesa</a>
+      <a class="s-wa" href="/contact-pacame?slug={{SLUG}}&amp;type=wa">📱 WhatsApp</a>
+      <button class="sticky__x" onclick="document.getElementById('sk').classList.add('is-closed')" aria-label="Cerrar">×</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('y').textContent=new Date().getFullYear();
+    var n=document.getElementById('nav');
+    addEventListener('scroll',function(){n.classList.toggle('scrolled',scrollY>40)},{passive:true});
+  </script>
+</body>
+</html>

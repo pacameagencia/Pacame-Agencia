@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#15120E">
+  <title>{{NAME}} — {{TAGLINE}} · {{ADDRESS_SHORT}}, {{CITY}}</title>
+  <meta name="description" content="{{NAME}} — {{META_DESC}}. Reservas: {{PHONE}}">
+  <meta property="og:title" content="{{NAME}} · {{ADDRESS_SHORT}}, {{CITY}}">
+  <meta property="og:description" content="{{TAGLINE}}. Reservas: {{PHONE}}">
+  <meta property="og:type" content="restaurant.menu">
+  <meta property="og:image" content="{{HERO_IMAGE}}">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="{{NAME}}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{NAME}} · {{CITY}}">
+  <meta name="twitter:image" content="{{HERO_IMAGE}}">
+  <script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "{{NAME}}",
+    "description": "{{META_DESC}}",
+    "image": "{{HERO_IMAGE}}",
+    "telephone": "{{PHONE}}",
+    "priceRange": "€€",
+    "servesCuisine": "{{CUISINE_LABEL}}",
+    "address": { "@type": "PostalAddress", "streetAddress": "{{ADDRESS_FULL}}", "addressLocality": "{{CITY}}", "postalCode": "{{POSTAL}}", "addressCountry": "ES" },
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "{{RATING_NUM}}", "reviewCount": "{{REVIEW_COUNT}}" }
+  }</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root{
+      --bg:#FBF9F4; --bg-2:#F3EFE6; --ink:#17140F; --ink-soft:#5A5347;
+      --line:#E4DDCD; --paper:#FFFFFF;
+      --accent:#C0451F; --accent-deep:#8F3214; --accent-soft:#F6E7DC;
+      --leaf:#3F5239;
+      --r:18px; --maxw:1180px;
+      --ease:cubic-bezier(.2,.7,.2,1);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+    body{font-family:'Instrument Sans',-apple-system,system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;overflow-x:hidden;padding-bottom:84px;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;line-height:1.04;font-weight:600;letter-spacing:-.015em}
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:0 1.4rem}
+    @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+    .reveal{opacity:0;animation:rise .9s var(--ease) forwards}
+    .d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.28s}.d4{animation-delay:.38s}.d5{animation-delay:.5s}
+
+    .ribbon{position:relative;z-index:60;background:var(--ink);color:var(--bg);text-align:center;font-size:.74rem;letter-spacing:.04em;padding:.55rem 1rem}
+    .ribbon b{color:#F0C9A0;text-transform:uppercase;letter-spacing:.14em;font-size:.68rem}
+
+    header.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+      padding:1.05rem 1.6rem;background:rgba(251,249,244,.72);backdrop-filter:blur(16px) saturate(1.4);border-bottom:1px solid transparent;transition:.4s var(--ease)}
+    header.nav.scrolled{background:rgba(251,249,244,.94);border-color:var(--line)}
+    .brand{display:flex;align-items:center;gap:.65rem;font-family:'Fraunces',serif;font-weight:600;font-size:1.16rem}
+    .brand .dot{width:34px;height:34px;border-radius:11px;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:600;transform:rotate(-4deg)}
+    .nav-cta{display:inline-flex;align-items:center;gap:.45rem;padding:.62rem 1.15rem;border:1.5px solid var(--ink);border-radius:50px;font-weight:600;font-size:.84rem;transition:.3s var(--ease)}
+    .nav-cta:hover{background:var(--ink);color:var(--bg)}
+
+    .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:7rem 0 2.8rem;color:#FFF;overflow:hidden}
+    .hero__ph{position:absolute;inset:0;background:url('{{HERO_IMAGE}}') center/cover no-repeat;transform:scale(1.06);animation:slowzoom 18s ease-out forwards}
+    @keyframes slowzoom{to{transform:scale(1)}}
+    .hero__ph::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,12,8,.28) 0%,rgba(15,12,8,.12) 38%,rgba(15,12,8,.78) 100%)}
+    .hero__in{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 1.4rem}
+    .kicker{display:inline-flex;align-items:center;gap:.6rem;font-size:.74rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#F6E3D2;margin-bottom:1.4rem;text-shadow:0 1px 8px rgba(0,0,0,.55)}
+    .kicker::before{content:'';width:30px;height:1.5px;background:#F3D9C2}
+    .hero h1{font-size:clamp(2.9rem,9vw,6.4rem);font-weight:800;color:#FFF;max-width:14ch;text-shadow:0 2px 30px rgba(0,0,0,.3)}
+    .hero h1 em{font-style:italic;font-weight:400;color:#F2C9A6}
+    .hero p{margin:1.3rem 0 2rem;font-size:clamp(1rem,1.7vw,1.22rem);max-width:46ch;color:rgba(255,255,255,.88);font-weight:400}
+    .hero__row{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center}
+    .btn{display:inline-flex;align-items:center;gap:.55rem;padding:1rem 1.7rem;border-radius:50px;font-weight:600;font-size:.95rem;transition:.3s var(--ease);cursor:pointer;border:1.5px solid transparent;min-height:52px}
+    .btn-solid{background:var(--accent);color:#FFF;box-shadow:0 16px 40px -14px rgba(192,69,31,.7)}
+    .btn-solid:hover{background:var(--accent-deep);transform:translateY(-2px)}
+    .btn-line{background:rgba(255,255,255,.08);color:#FFF;border-color:rgba(255,255,255,.5);backdrop-filter:blur(8px)}
+    .btn-line:hover{background:#FFF;color:var(--ink)}
+    .hero__meta{display:flex;gap:1.6rem;margin-top:2.4rem;font-size:.86rem;color:rgba(255,255,255,.8);flex-wrap:wrap}
+    .hero__meta b{color:#FFF;font-weight:600}
+
+    section{padding:5.5rem 0}
+    .eyebrow{display:inline-block;font-size:.74rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem}
+    .h-sec{font-size:clamp(1.9rem,4.4vw,3.1rem);max-width:18ch}
+    .lead{color:var(--ink-soft);font-size:1.05rem;max-width:52ch;margin-top:.8rem}
+
+    .pillars__grid{display:grid;grid-template-columns:1fr;gap:1.1rem;margin-top:3rem}
+    @media(min-width:780px){.pillars__grid{grid-template-columns:repeat(3,1fr)}}
+    .pillar{padding:2.2rem 1.8rem;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);transition:.4s var(--ease)}
+    .pillar:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 24px 50px -28px rgba(23,20,15,.32)}
+    .pillar__icon{font-size:1.7rem;width:54px;height:54px;border-radius:14px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;margin-bottom:1.1rem}
+    .pillar h3{font-size:1.32rem;margin-bottom:.4rem}
+    .pillar p{color:var(--ink-soft);font-size:.95rem}
+
+    .gallery{background:var(--bg-2)}
+    .gallery__top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:1rem}
+    .gallery__note{font-size:.82rem;color:var(--ink-soft);max-width:34ch}
+    .gallery__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin-top:2.6rem}
+    @media(min-width:780px){.gallery__grid{grid-template-columns:repeat(4,1fr);gap:1rem}}
+    .shot{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:#ddd}
+    .shot:nth-child(1),.shot:nth-child(4){aspect-ratio:3/4}
+    @media(min-width:780px){.shot:nth-child(1){grid-row:span 2;aspect-ratio:auto}}
+    .shot img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+    .shot:hover img{transform:scale(1.07)}
+
+    .compare{background:var(--bg-2);border-top:1px solid var(--line)}
+    .compare__grid{display:grid;grid-template-columns:1fr;gap:1.4rem;margin-top:2.8rem}
+    @media(min-width:820px){.compare__grid{grid-template-columns:1fr 1fr;gap:2.4rem;align-items:center}}
+    .cmp{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;position:relative}
+    .cmp .tag{position:absolute;top:1rem;left:1rem;z-index:2;font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.34rem .85rem;border-radius:50px;background:var(--ink);color:var(--bg)}
+    .cmp--after .tag{background:var(--accent);color:#FFF}
+    .cmp img{width:100%;aspect-ratio:16/10;object-fit:cover}
+    .cmp--before img{filter:grayscale(.35) contrast(.92);opacity:.8}
+    .cmp__cap{padding:1.2rem 1.4rem 1.5rem}
+    .cmp__cap h3{font-size:1.15rem;margin-bottom:.3rem}
+    .cmp__cap p{font-size:.88rem;color:var(--ink-soft)}
+
+    .audit-sec{background:var(--accent-soft)}
+    .audit-sec .eyebrow{color:var(--accent-deep)}
+    .audit__intro{color:var(--ink-soft);font-size:1.05rem;max-width:56ch;margin-top:.9rem}
+    .audit__grid{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:2.8rem}
+    @media(min-width:780px){.audit__grid{grid-template-columns:1fr 1fr}}
+    .audit{display:flex;gap:1.1rem;padding:1.7rem 1.6rem;background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:14px;transition:.35s var(--ease)}
+    .audit:hover{transform:translateY(-3px);box-shadow:0 20px 44px -26px rgba(23,20,15,.3)}
+    .audit__n{font-family:'Fraunces',serif;font-weight:600;color:var(--accent);font-size:1.1rem;flex-shrink:0;line-height:1.5}
+    .audit__body h3{font-size:1.14rem;margin-bottom:.35rem}
+    .audit__body p{font-size:.93rem;color:var(--ink-soft)}
+    .includes__grid{display:grid;grid-template-columns:1fr;gap:0;margin-top:2.6rem;border-top:1px solid var(--line)}
+    @media(min-width:760px){.includes__grid{grid-template-columns:1fr 1fr}}
+    .inc{padding:1.8rem .4rem;border-bottom:1px solid var(--line);display:flex;gap:1.1rem}
+    @media(min-width:760px){.inc:nth-child(odd){padding-right:2.4rem;border-right:1px solid var(--line)}.inc:nth-child(even){padding-left:2.4rem}}
+    .inc__n{font-family:'Fraunces',serif;font-size:1.05rem;color:var(--accent);font-weight:600;flex-shrink:0}
+    .inc h3{font-size:1.18rem;margin-bottom:.3rem}
+    .inc p{font-size:.92rem;color:var(--ink-soft)}
+
+    .booking{background:var(--ink);color:var(--bg)}
+    .booking__grid{display:grid;grid-template-columns:1fr;gap:2.6rem;align-items:center}
+    @media(min-width:900px){.booking__grid{grid-template-columns:1.1fr .9fr}}
+    .booking .eyebrow{color:#F0C9A0}
+    .booking h2{font-size:clamp(1.9rem,4.4vw,3rem);color:#FFF}
+    .booking p{color:rgba(251,249,244,.74);margin:.9rem 0 2rem;max-width:46ch}
+    .booking__row{display:flex;flex-wrap:wrap;gap:.7rem;margin-bottom:2.2rem}
+    .btn-cream{background:var(--bg);color:var(--ink)}
+    .btn-cream:hover{background:#FFF;transform:translateY(-2px)}
+    .btn-ghostd{border-color:rgba(251,249,244,.4);color:var(--bg)}
+    .btn-ghostd:hover{background:rgba(251,249,244,.12)}
+    .facts{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .fact{padding:1.3rem;background:rgba(251,249,244,.06);border:1px solid rgba(251,249,244,.16);border-radius:14px}
+    .fact h4{font-family:'Instrument Sans',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:#F0C9A0;margin-bottom:.45rem;font-weight:600}
+    .fact .v{font-size:.96rem;color:var(--bg)}.fact .v b{color:#FFF}
+    .mapbox{aspect-ratio:4/5;border-radius:18px;overflow:hidden;border:1px solid rgba(251,249,244,.18)}
+    .mapbox iframe{width:100%;height:100%;border:0;filter:grayscale(.3) contrast(1.05)}
+
+    .urgent{background:var(--accent);color:#FFF;text-align:center}
+    .urgent__in{max-width:680px;margin:0 auto}
+    .urgent h2{font-size:clamp(1.7rem,4vw,2.7rem);color:#FFF}
+    .urgent h2 em{font-style:italic;color:#FFE3CF;font-weight:400}
+    .urgent p{margin:1rem auto 2rem;color:rgba(255,255,255,.92);max-width:48ch}
+    .urgent__btns{display:flex;flex-direction:column;gap:.7rem;align-items:center;max-width:460px;margin:0 auto}
+    @media(min-width:560px){.urgent__btns{flex-direction:row;justify-content:center}}
+    .u-yes{background:#FFF;color:var(--accent-deep);padding:1.05rem 1.9rem;border-radius:50px;font-weight:700;font-size:1rem;min-height:54px;display:inline-flex;align-items:center;gap:.5rem;transition:.3s var(--ease)}
+    .u-yes:hover{transform:translateY(-2px);box-shadow:0 18px 40px -16px rgba(0,0,0,.45)}
+    .u-wa{background:rgba(255,255,255,.12);color:#FFF;border:1.5px solid rgba(255,255,255,.55);padding:1.05rem 1.7rem;border-radius:50px;font-weight:600;min-height:54px;display:inline-flex;align-items:center;gap:.5rem;transition:.3s}
+    .u-wa:hover{background:rgba(255,255,255,.2)}
+    .urgent__small{margin-top:1.5rem;font-size:.8rem;color:rgba(255,255,255,.85)}
+    .urgent__small a{color:#FFF;text-decoration:underline}
+
+    footer{background:var(--ink);color:rgba(251,249,244,.6);text-align:center;padding:3.4rem 1.4rem 2.4rem;font-size:.88rem}
+    footer .fb{font-family:'Fraunces',serif;color:#F0C9A0;font-size:1.3rem;margin-bottom:.4rem}
+    .rule{width:54px;height:2px;background:var(--accent);margin:1.6rem auto;opacity:.7}
+    .pacame{font-size:.78rem;color:rgba(251,249,244,.5);margin-top:1.4rem}
+    .pacame a{color:#F0C9A0}
+    .pacame .pbtn{display:inline-block;margin:.3rem;padding:.65rem 1.3rem;border-radius:50px;font-weight:700;font-size:.84rem}
+    .pbtn--wa{background:#25D366;color:#fff}.pbtn--em{background:#fff;color:#222}
+
+    .sticky{position:fixed;left:0;right:0;bottom:0;z-index:55;background:rgba(23,20,15,.96);backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.12);padding:.7rem 1rem;transform:translateY(120%);animation:up .5s var(--ease) 1.8s forwards}
+    @keyframes up{to{transform:none}}
+    .sticky__in{max-width:680px;margin:0 auto;display:flex;gap:.5rem;align-items:center;justify-content:center}
+    .sticky a{flex:1;max-width:270px;padding:.8rem .9rem;border-radius:50px;font-weight:700;font-size:.86rem;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;min-height:46px;transition:transform .2s}
+    .sticky a:hover{transform:translateY(-1px)}
+    .s-yes{background:var(--accent);color:#FFF}
+    .s-wa{background:var(--bg);color:var(--ink)}
+    .sticky__x{background:transparent;border:0;color:rgba(255,255,255,.5);font-size:1.2rem;padding:.5rem .7rem;cursor:pointer;line-height:1}
+    @media(max-width:620px){.sticky a{font-size:.78rem;padding:.7rem .5rem}}
+    .sticky.is-closed{display:none}
+
+    .fab{position:fixed;right:1.3rem;bottom:5.6rem;z-index:45;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(37,211,102,.5)}
+    .fab svg{width:27px;height:27px}
+    @media(min-width:760px){.fab{bottom:1.5rem}}
+  </style>
+</head>
+<body>
+  <div class="ribbon"><b>Propuesta de PACAME</b> &nbsp;·&nbsp; Mockup hecho para vosotros · Si os encaja, hablamos. Si no, ningún problema.</div>
+
+  <header class="nav" id="nav">
+    <a href="#" class="brand"><span class="dot">{{INITIALS}}</span> {{NAME_PART1}}&nbsp;{{NAME_PART2}}</a>
+    <a href="tel:{{PHONE_TEL}}" class="nav-cta">Reservar · {{PHONE_DISPLAY}}</a>
+  </header>
+
+  <section class="hero">
+    <div class="hero__ph"></div>
+    <div class="hero__in">
+      <span class="kicker reveal d1">{{EYEBROW}}</span>
+      <h1 class="reveal d2">{{HERO_TITLE_LINE1}} <em>{{HERO_TITLE_LINE2}}</em></h1>
+      <p class="reveal d3">{{HERO_SUBTITLE}}</p>
+      <div class="hero__row reveal d4">
+        <a href="tel:{{PHONE_TEL}}" class="btn btn-solid">Llamar para reservar</a>
+        <a href="#carta" class="btn btn-line">Ver qué cocinamos</a>
+      </div>
+      <div class="hero__meta reveal d5">
+        <span><b>{{NAME}}</b></span><span>{{ADDRESS_SHORT}}, {{CITY}}</span><span>{{HOURS_DAYS}}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="pillars">
+    <div class="wrap">
+      <span class="eyebrow">{{PILLAR_EYEBROW}}</span>
+      <h2 class="h-sec">{{PILLAR_HEADING}}</h2>
+      <div class="pillars__grid">{{PILLAR_BLOCKS}}</div>
+    </div>
+  </section>
+
+  <section class="gallery" id="carta">
+    <div class="wrap">
+      <div class="gallery__top">
+        <div><span class="eyebrow">Un vistazo</span><h2 class="h-sec">Así se respira {{NAME_PART1}}</h2></div>
+        <p class="gallery__note">Fotos de muestra para enseñar el estilo. Cuando lancemos la web real van las vuestras de verdad.</p>
+      </div>
+      <div class="gallery__grid">
+        <div class="shot"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80" alt="Sala" loading="lazy"></div>
+        <div class="shot"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=700&q=80" alt="Plato" loading="lazy"></div>
+        <div class="shot"><img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=700&q=80" alt="Cocina" loading="lazy"></div>
+        <div class="shot"><img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=700&q=80" alt="Detalle" loading="lazy"></div>
+        <div class="shot"><img src="https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?auto=format&fit=crop&w=700&q=80" alt="Mesa" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare" id="comparacion">
+    <div class="wrap">
+      <span class="eyebrow">Antes / Después</span>
+      <h2 class="h-sec">Vuestra web hoy, al lado de la propuesta</h2>
+      <div class="compare__grid">
+        <div class="cmp cmp--before"><span class="tag">Antes — hoy</span><img src="{{BEFORE_SCREENSHOT}}" alt="Web actual de {{NAME}}" loading="lazy"><div class="cmp__cap"><h3>Lo que ven ahora</h3><p>Captura real de vuestra web actual. Para 2026 esto pierde reservas frente a quien tiene web cuidada.</p></div></div>
+        <div class="cmp cmp--after"><span class="tag">Después — PACAME</span><img src="{{HERO_IMAGE}}" alt="Propuesta para {{NAME}}" loading="lazy"><div class="cmp__cap"><h3>La misma web, en su mejor versión</h3><p>Carga &lt;2s, móvil primero, reservas directas, SEO local. La que estáis viendo.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="audit-sec" id="mejoras">
+    <div class="wrap">
+      <span class="eyebrow">{{IMPROVEMENTS_EYEBROW}}</span>
+      <h2 class="h-sec">{{IMPROVEMENTS_HEADING}}</h2>
+      <p class="audit__intro">{{IMPROVEMENTS_INTRO}}</p>
+      <div class="audit__grid">{{IMPROVEMENTS_BLOCKS}}</div>
+    </div>
+  </section>
+
+  <section class="includes" id="sobre">
+    <div class="wrap">
+      <span class="eyebrow">{{INCLUDES_EYEBROW}}</span>
+      <h2 class="h-sec">{{INCLUDES_HEADING}}</h2>
+      <div class="includes__grid">
+        <div class="inc"><span class="inc__n">01</span><div><h3>Carta digital editable</h3><p>Cambias platos desde un panel sencillo. Sin tocar código ni pagar por cada cambio.</p></div></div>
+        <div class="inc"><span class="inc__n">02</span><div><h3>Reservas por WhatsApp</h3><p>Botón directo a vuestro número. Cero comisiones de plataformas.</p></div></div>
+        <div class="inc"><span class="inc__n">03</span><div><h3>Mapa y cómo llegar</h3><p>Ubicación, horarios y accesos en un toque. Mejor SEO local.</p></div></div>
+        <div class="inc"><span class="inc__n">04</span><div><h3>Móvil primero &lt;2s</h3><p>Carga en menos de 2 segundos. El 78% os busca desde el móvil.</p></div></div>
+        <div class="inc"><span class="inc__n">05</span><div><h3>SEO local</h3><p>Aparecéis en "restaurante en {{CITY}}" con la ficha completa.</p></div></div>
+        <div class="inc"><span class="inc__n">06</span><div><h3>Reseñas Google reales</h3><p>Conectamos vuestras reseñas reales al lanzar. Sin inventar nada.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="booking" id="contacto">
+    <div class="wrap">
+      <div class="booking__grid">
+        <div>
+          <span class="eyebrow">Os esperamos</span>
+          <h2>{{BOOKING_HEADING}}</h2>
+          <p>{{BOOKING_DESC}}</p>
+          <div class="booking__row">
+            <a href="tel:{{PHONE_TEL}}" class="btn btn-cream">{{PHONE_DISPLAY}}</a>
+            <a href="https://www.google.com/maps/search/?api=1&query={{MAPS_QUERY}}" target="_blank" rel="noopener" class="btn btn-ghostd">Cómo llegar →</a>
+          </div>
+          <div class="facts">
+            <div class="fact"><h4>Horario</h4><div class="v">{{HOURS_DAYS}}<br><b>{{HOURS_MIDDAY}}</b> y <b>{{HOURS_DINNER}}</b></div></div>
+            <div class="fact"><h4>Dónde</h4><div class="v">{{ADDRESS_FULL}}<br><b>{{POSTAL_CITY}}</b></div></div>
+          </div>
+        </div>
+        <div class="mapbox"><iframe loading="lazy" allowfullscreen src="https://www.google.com/maps?q={{MAPS_QUERY}}&output=embed" title="Mapa {{NAME}}"></iframe></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="urgent">
+    <div class="wrap"><div class="urgent__in">
+      <h2>¿Os encaja? Esta semana puedo poner <em>3 webs en marcha</em></h2>
+      <p>Decídmelo aquí mismo, un toque. Si es que sí, os llamo hoy y os cuento cómo la dejamos vuestra. Si no, ningún problema: las dos respuestas valen.</p>
+      <div class="urgent__btns">
+        <a href="/intent/{{SLUG}}/yes" class="u-yes">👍 Sí, me interesa</a>
+        <a href="/contact-pacame?slug={{SLUG}}&amp;type=wa" class="u-wa">📱 Mejor por WhatsApp ahora</a>
+      </div>
+      <p class="urgent__small">Sin compromiso · sin permanencia · precio en la llamada.<br><a href="/intent/{{SLUG}}/no">No es para nosotros</a></p>
+    </div></div>
+  </section>
+
+  <footer>
+    <div class="fb">{{NAME}}</div>
+    <p>{{ADDRESS_FULL}} · {{POSTAL_CITY}} · {{PHONE_DISPLAY}}</p>
+    <div class="rule"></div>
+    <p>© <span id="y">2026</span> {{NAME}} · {{TAGLINE}}</p>
+    <p class="pacame" style="margin-top:1.8rem">¿Os gusta? Si queréis que la pongamos en marcha real, contactad con Pablo (PACAME):<br><br>
+      <a href="/contact-pacame?slug={{SLUG}}&type=wa" target="_blank" rel="noopener" class="pbtn pbtn--wa">📱 WhatsApp Pablo</a>
+      <a href="/contact-pacame?slug={{SLUG}}&type=email" target="_blank" rel="noopener" class="pbtn pbtn--em">✉️ Email Pablo</a>
+      <br><br><span style="font-size:.7rem;opacity:.6">Diseño web por <a href="https://pacameagencia.com" target="_blank" rel="noopener">PACAME</a> · Propuesta no solicitada. Si no os interesa, sin problema.</span></p>
+  </footer>
+
+  <a href="https://wa.me/{{PHONE_WA}}?text={{WA_MSG}}" target="_blank" rel="noopener" class="fab" aria-label="Reservar por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></a>
+
+  <div class="sticky" id="sk">
+    <div class="sticky__in">
+      <a class="s-yes" href="/intent/{{SLUG}}/yes">👍 Sí, me interesa</a>
+      <a class="s-wa" href="/contact-pacame?slug={{SLUG}}&amp;type=wa">📱 WhatsApp</a>
+      <button class="sticky__x" onclick="document.getElementById('sk').classList.add('is-closed')" aria-label="Cerrar">×</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('y').textContent=new Date().getFullYear();
+    var n=document.getElementById('nav');
+    addEventListener('scroll',function(){n.classList.toggle('scrolled',scrollY>40)},{passive:true});
+  </script>
+</body>
+</html>
