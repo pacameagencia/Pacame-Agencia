@@ -66,19 +66,24 @@ export const envRegistry = {
     provider: "Nebius",
     example: "https://api.tokenfactory.nebius.com/v1",
   },
+  // ⚠️ DEPRECATED v0.10.29 (2026-05-17): Gemma/Ollama eliminado del stack.
+  // Embeddings → OpenAI text-embedding-3-large (embed-openai.ts).
+  // LLM economy tier → Claude Haiku 4.5 (resolver.ts v0.10.30).
+  // Mantenemos las vars en el registry para que las migraciones legacy no se
+  // rompan al leer env, pero no las usa ningún call site activo.
   GEMMA_API_TOKEN: {
     category: "llm",
-    description: "Gemma self-hosted VPS (Ollama) — economy tier primary",
+    description: "[DEPRECATED v0.10.29] Gemma VPS — sustituido por OpenAI + Claude Haiku 4.5",
     required_in: [],
-    provider: "PACAME VPS",
-    example: "(bearer token del VPS)",
+    provider: "PACAME VPS (legacy)",
+    example: "",
   },
   GEMMA_API_URL: {
     category: "llm",
-    description: "Gemma VPS endpoint (default gemma.pacameagencia.com)",
+    description: "[DEPRECATED v0.10.29] endpoint Gemma — ya no se usa",
     required_in: [],
-    provider: "PACAME VPS",
-    example: "https://gemma.pacameagencia.com",
+    provider: "PACAME VPS (legacy)",
+    example: "",
   },
   GEMINI_API_KEY: {
     category: "llm",
@@ -90,11 +95,25 @@ export const envRegistry = {
   },
   OPENAI_API_KEY: {
     category: "llm",
-    description: "OpenAI — Whisper (transcripcion audio) + DALL-E 3 (imagenes)",
-    required_in: [],
+    description: "OpenAI — embeddings text-embedding-3-large (cerebro PACAME) + Whisper + DALL-E 3",
+    required_in: ["production", "preview", "development"],
     provider: "OpenAI",
     generate_url: "https://platform.openai.com/api-keys",
     example: "sk-proj-...",
+  },
+  EMBED_MODEL_OPENAI: {
+    category: "llm",
+    description: "Modelo embeddings OpenAI (default text-embedding-3-large)",
+    required_in: [],
+    provider: "OpenAI",
+    example: "text-embedding-3-large",
+  },
+  EMBED_DIM_OPENAI: {
+    category: "llm",
+    description: "Dimensiones embedding OpenAI (default 768 para compat DB; max 3072)",
+    required_in: [],
+    provider: "PACAME internal",
+    example: "768",
   },
   VERTEX_ACCESS_TOKEN: {
     category: "llm",
