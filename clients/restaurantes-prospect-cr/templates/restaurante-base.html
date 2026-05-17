@@ -227,7 +227,7 @@
     .sticky-cta__wa { background: #25d366; color: white; box-shadow: 0 6px 18px -4px rgba(37, 211, 102, 0.4); }
     .sticky-cta__email { background: var(--ocre); color: var(--vino-deep); }
     .sticky-cta a:hover { transform: translateY(-1px); }
-    .sticky-cta__close { background: transparent; color: rgba(245, 237, 224, 0.5); border: 0; padding: 0.4rem; cursor: pointer; font-size: 1.2rem; line-height: 1; }
+    .sticky-cta__close { background: transparent; color: rgba(245, 237, 224, 0.5); border: 0; padding: 0.6rem 0.8rem; cursor: pointer; font-size: 1.2rem; line-height: 1; }
     @media (max-width: 640px) { .sticky-cta a { font-size: 0.78rem; padding: 0.6rem 0.5rem; } }
     /* Add bottom padding to body so sticky doesn't cover footer content */
     body { padding-bottom: 80px; }
@@ -346,12 +346,12 @@
   <section class="urgent-cta">
     <div class="urgent-cta__inner">
       <h2>¿Os encaja? Esta semana puedo poner <strong>3 webs en marcha</strong></h2>
-      <p>Si pinta, en una llamada de 5 minutos cierro los detalles y mañana empezamos. Si no es para vosotros, decidme y dejamos aquí. Sin agobiar.</p>
+      <p>Decídmelo aquí mismo, un toque. Si es que sí, os llamo hoy y os cuento cómo la dejamos vuestra. Si no, ningún problema: las dos respuestas valen.</p>
       <div class="urgent-cta__buttons">
-        <a href="/contact-pacame?slug={{SLUG}}&amp;type=wa" class="btn-urgent">📱 WhatsApp Pablo — contesto en &lt;1h</a>
-        <a href="/contact-pacame?slug={{SLUG}}&amp;type=email" class="btn-ghost-urgent">O escríbeme por email</a>
+        <a href="/intent/{{SLUG}}/yes" class="btn-urgent">👍 Sí, me interesa</a>
+        <a href="/contact-pacame?slug={{SLUG}}&amp;type=wa" class="btn-ghost-urgent">📱 Mejor por WhatsApp ahora</a>
       </div>
-      <p class="urgent-cta__small">Sin compromiso · Sin permanencias · Si la web no os encaja en 7 días, devolución total.</p>
+      <p class="urgent-cta__small">Sin compromiso · sin permanencia · precio en la llamada.<br><a href="/intent/{{SLUG}}/no" style="color:inherit;text-decoration:underline;">No es para nosotros</a></p>
     </div>
   </section>
 
@@ -374,8 +374,8 @@
   </script>
   <div class="sticky-cta" id="stickyCta">
     <div class="sticky-cta__inner">
-      <a class="sticky-cta__wa" href="/contact-pacame?slug={{SLUG}}&amp;type=wa">📱 WhatsApp Pablo</a>
-      <a class="sticky-cta__email" href="/contact-pacame?slug={{SLUG}}&amp;type=email">✉️ Email</a>
+      <a class="sticky-cta__wa" href="/intent/{{SLUG}}/yes">👍 Sí, me interesa</a>
+      <a class="sticky-cta__email" href="/contact-pacame?slug={{SLUG}}&amp;type=wa">📱 WhatsApp</a>
       <button class="sticky-cta__close" onclick="document.getElementById('stickyCta').classList.add('is-closed')" aria-label="Cerrar">×</button>
     </div>
   </div>

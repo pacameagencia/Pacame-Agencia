@@ -183,12 +183,7 @@ La he hecho con vuestros datos reales (nombre, dirección, teléfono, ciudad) y 
 
 ${v.photoNote}
 
-Sobre el precio:
-
-  • 390€ de alta única (web montada, dominio propio, hosting, fotos colocadas, todo).
-  • 19€/mes de mantenimiento (cambios de carta, fotos, reseñas, retoques).
-
-Si queréis algo más a medida (reservas con calendario, pedidos online, integración con TPV, diseño 100% custom), escribidme por WhatsApp y lo hablamos sin compromiso:
+Cómo seguimos: si os encaja, os llamo o escribo y en 5 minutos os cuento cómo la dejamos vuestra de verdad — vuestro dominio, vuestras fotos, todo. El precio os lo digo ahí mismo: es menos de lo que estáis pensando y sin permanencia. Si queréis ir directos, escribidme por WhatsApp:
 
    ${PABLO_WA}
 

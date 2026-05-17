@@ -18,8 +18,6 @@ if (!RESEND_KEY) { console.error('No RESEND_API_KEY'); process.exit(1); }
 const FROM = 'PACAME <hola@pacameagencia.com>';
 const REPLY_TO = 'hola@pacameagencia.com';
 const PABLO_WA = 'https://wa.me/34722669381';
-const PRICE_SETUP = '390€';
-const PRICE_MONTHLY = '19€/mes';
 
 const args = process.argv.slice(2);
 const DRY = args.includes('--dry');
@@ -50,12 +48,7 @@ Lo que incluye:
 
 Una cosa importante sobre las fotos: las que veis NO son del local. He puesto unos placeholders elegantes y fotos genéricas porque por privacidad y derechos de imagen NO uso fotos vuestras sin permiso. La idea es que, si os mola la web, me mandéis vuestras fotos reales (interior, platos, equipo) y yo las pongo. Queda mil veces mejor con vuestras fotos.
 
-El precio:
-
-  • ${PRICE_SETUP} de alta única (web montada, dominio propio, hosting, fotos colocadas, todo).
-  • ${PRICE_MONTHLY} de mantenimiento (cambios de carta, fotos, reseñas, retoques).
-
-Si necesitáis algo más a medida (reservas con calendario, pedidos online, integración con TPV, diseño 100% custom...), me escribís por WhatsApp y lo hablamos sin compromiso:
+Cómo seguimos: si os encaja, os llamo o escribo y en 5 minutos os cuento cómo la dejamos vuestra de verdad — vuestro dominio, vuestras fotos, todo. El precio os lo digo ahí mismo: es menos de lo que estáis pensando y sin permanencia. Si queréis ir directos, me escribís por WhatsApp:
 
    ${PABLO_WA}
 
