@@ -1,21 +1,23 @@
 /**
  * PACAME — Dispatcher LLM Unificado (quality-first)
  *
- * Routing segun (tier, strategy):
- *   reasoning → Claude Opus extended thinking → Nebius Qwen-80B-Thinking fallback
- *   titan     → Claude Opus primary → Nebius Kimi-K2.5 fallback (quality-first)
- *   premium   → Claude Sonnet primary → Nebius Qwen-235B fallback (quality-first)
- *   standard  → Nebius Qwen-80B primary → Claude Haiku fallback
- *   economy   → Gemma self-hosted → Nebius Qwen-30B → Claude Haiku
+ * Sprint v0.10.30 (2026-05-17) — Stack 100% Anthropic primary + Nebius fallback.
+ * Eliminado provider `gemma` (Ollama VPS deprecated en v0.10.29).
  *
- * cost-first (opt-in): titan/premium pasan a Nebius primary.
+ * Routing (quality-first default):
+ *   reasoning → Claude Opus 4.6 + extended thinking → Nebius Qwen-80B fallback
+ *   titan     → Claude Opus 4.6 → Nebius Kimi-K2.5 fallback
+ *   premium   → Claude Sonnet 4.6 → Nebius Qwen-235B fallback
+ *   standard  → Claude Sonnet 4.6 → Nebius Qwen-80B fallback
+ *   economy   → Claude Haiku 4.5 → Nebius Qwen-30B fallback
+ *
+ * cost-first (opt-in): Nebius primary para TODO, Claude fallback.
  *
  * Observabilidad: cada call se registra en `llm_calls` via recordLlmCall (async fire-and-forget).
  * Budget: cada call verifica cap diario por tier; si se excede, degrada al tier inferior.
  */
 
 import { nebiusChat, type NebiusMessage } from "./nebius";
-import { gemmaChat, type GemmaMessage } from "./gemma";
 import { getLogger } from "@/lib/observability/logger";
 import {
   resolveTierToModel,
@@ -49,8 +51,6 @@ export interface LLMOptions {
   strategy?: LLMStrategy;
   /** Forzar proveedor (omitir routing) */
   forceProvider?: LLMProvider;
-  /** Saltar Gemma aunque el tier sea economy */
-  skipGemma?: boolean;
   /** Saltar budget check (emergencia) */
   skipBudgetCheck?: boolean;
   /** Etiqueta para observability (ej. "outreach/cold_email") */
@@ -113,7 +113,6 @@ export async function llmChat(
     maxTokens = 1024,
     temperature = 0.7,
     forceProvider,
-    skipGemma,
     skipBudgetCheck,
     actorId = null,
     metadata,
@@ -167,9 +166,7 @@ export async function llmChat(
   // Si forceProvider, saltamos chain y vamos directo
   const providerOrder: LLMProvider[] = forceProvider
     ? [forceProvider]
-    : resolved.providerOrder.filter(
-        (p) => !(p === "gemma" && (skipGemma || tier !== "economy"))
-      );
+    : resolved.providerOrder;
 
   // Brain context auto-injection — antes de llamar a provider chain.
   // Solo se activa si:
@@ -274,9 +271,6 @@ async function callProvider(
   provider: LLMProvider,
   args: ProviderCallArgs
 ): Promise<Omit<LLMResult, "latencyMs" | "fallback" | "tier" | "strategy" | "costUsd">> {
-  if (provider === "gemma") {
-    return callGemma(args.messages, args.maxTokens, args.temperature);
-  }
   if (provider === "nebius") {
     return callNebius(args.messages, args.model, args.maxTokens, args.temperature);
   }
@@ -287,24 +281,6 @@ async function callProvider(
     args.temperature,
     args.extras?.extendedThinking?.budgetTokens
   );
-}
-
-async function callGemma(
-  messages: LLMMessage[],
-  maxTokens: number,
-  temperature: number
-): Promise<Omit<LLMResult, "latencyMs" | "fallback" | "tier" | "strategy" | "costUsd">> {
-  const res = await gemmaChat(messages as GemmaMessage[], { maxTokens, temperature });
-  if (!res.content || res.content.length === 0) {
-    throw new Error("[llm] Gemma devolvio respuesta vacia");
-  }
-  return {
-    content: res.content,
-    provider: "gemma",
-    model: res.model,
-    tokensIn: res.tokensIn,
-    tokensOut: res.tokensOut,
-  };
 }
 
 async function callNebius(
