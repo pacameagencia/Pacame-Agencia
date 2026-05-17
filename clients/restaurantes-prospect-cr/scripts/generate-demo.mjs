@@ -49,10 +49,12 @@ const pillarHtml = (p) => `
   </div>`;
 
 // Bloque "qué mejoro en VUESTRA web y por qué" (auditoría real personalizada)
+const escHtml = (s) => String(s == null ? '' : s)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const auditHtml = (a) => `
   <div class="audit">
-    <span class="audit__n">${a.n}</span>
-    <div class="audit__body"><h3>${a.what}</h3><p>${a.why}</p></div>
+    <span class="audit__n">${escHtml(a.n)}</span>
+    <div class="audit__body"><h3>${escHtml(a.what)}</h3><p>${escHtml(a.why)}</p></div>
   </div>`;
 const improvements = Array.isArray(cfg.improvements) ? cfg.improvements : [];
 

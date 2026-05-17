@@ -91,11 +91,11 @@
     .gallery__grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:4rem}
     @media(min-width:820px){.gallery__grid{grid-template-columns:repeat(3,1fr);gap:1rem}}
     .shot{overflow:hidden;background:#1a150f;aspect-ratio:4/5;position:relative}
+    .shot:nth-child(1){grid-column:1 / -1;aspect-ratio:16/9}
     .shot::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 60px rgba(0,0,0,.5);pointer-events:none}
     .shot img{width:100%;height:100%;object-fit:cover;filter:brightness(.82) saturate(.95) contrast(1.06);transition:transform 1.1s var(--ease),filter .6s}
     .shot:hover img{transform:scale(1.05);filter:brightness(1) saturate(1.05)}
-    @media(min-width:820px){.shot:nth-child(1){grid-row:span 2;aspect-ratio:auto}.shot:nth-child(5){display:none}}
-    @media(max-width:819px){.shot:nth-child(5){display:none}}
+    @media(min-width:820px){.shot:nth-child(1){aspect-ratio:24/8}.shot:nth-child(5){display:none}}
     .gallery__note{font-family:'Jost',sans-serif;font-weight:300;font-size:.86rem;color:var(--muted);margin-top:1.2rem;letter-spacing:.04em}
 
     .compare{background:var(--bg)}
