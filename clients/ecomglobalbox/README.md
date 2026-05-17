@@ -11,10 +11,15 @@
 - **Email cliente (NO confundir con Pablo):** `ecomglobalbox@pm.me`.
   > ⚠️ Crítico: este correo es del CLIENTE, NO de Pablo. Pablo = `pablodesarrolloweb@gmail.com`. NO tocar (regla `feedback_pablo_email_real`).
 
-## Estado (a 2026-04-30)
-- **Estado:** activo (mantenimiento + dev features).
-- **Métricas:** 255 clientes, ~6.9k€ MRR.
+## Estado (a 2026-05-17)
+- **Estado:** activo (mantenimiento + dev features). Fase 20 desplegada (HEAD `691d99a`).
+- **Métricas:** ~287 subs de pago (273 active + 14 trialing), 149 past_due; Lauth core OK (`faltantes=0`).
+- **SSH:** operativo (puerto 22, clave `~/.ssh/cesar_mindset_vps`); bloqueo del 21-abr resuelto.
+- **Atención:** problema activo en pago de comisiones de afiliados (Stripe "Insufficient funds" + retry storm). Ver diagnóstico.
 - **Plan operativo detallado:** ver vault → `memoized-brewing-panda.md`.
+
+## Diagnósticos
+- [`diagnostico-2026-05-17.md`](diagnostico-2026-05-17.md) — diagnóstico en vivo read-only (infra, Laravel, Lauth, Stripe).
 
 ## Stack del cliente
 - **Backend:** Laravel 12 (PHP 8.x).
