@@ -28,15 +28,16 @@ describe("resolveTierToModel", () => {
     expect(r.models.nebius).toContain("Qwen3-235B");
   });
 
-  it("quality-first: standard → Nebius primary (NO Claude primary)", () => {
+  it("quality-first: standard → Claude Sonnet primary (Sprint v0.10.30 upgrade)", () => {
     const r = resolveTierToModel("standard", "quality-first");
-    expect(r.providerOrder[0]).toBe("nebius");
-    expect(r.providerOrder[1]).toBe("claude");
+    expect(r.providerOrder).toEqual(["claude", "nebius"]);
+    expect(r.models.claude).toBe("claude-sonnet-4-6");
   });
 
-  it("quality-first: economy → Gemma primary, luego Nebius, luego Claude", () => {
+  it("quality-first: economy → Claude Haiku 4.5 primary, Nebius fallback (Sprint v0.10.30: gemma removed)", () => {
     const r = resolveTierToModel("economy", "quality-first");
-    expect(r.providerOrder).toEqual(["gemma", "nebius", "claude"]);
+    expect(r.providerOrder).toEqual(["claude", "nebius"]);
+    expect(r.models.claude).toBe("claude-haiku-4-5-20251001");
   });
 
   it("cost-first: titan → Nebius primary (Kimi o override env)", () => {
@@ -51,9 +52,9 @@ describe("resolveTierToModel", () => {
     expect(r.providerOrder[0]).toBe("nebius");
   });
 
-  it("cost-first no afecta economy (siempre gemma first)", () => {
+  it("cost-first economy → Nebius primary (sin gemma post Sprint v0.10.30)", () => {
     const r = resolveTierToModel("economy", "cost-first");
-    expect(r.providerOrder[0]).toBe("gemma");
+    expect(r.providerOrder).toEqual(["nebius", "claude"]);
   });
 
   it("env override: CLAUDE_MODEL_TITAN cambia el modelo", () => {

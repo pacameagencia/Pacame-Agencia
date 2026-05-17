@@ -1,22 +1,32 @@
 /**
  * PACAME LLM Resolver — tier + strategy → (provider, model, extras)
  *
+ * Sprint v0.10.30 (2026-05-17) — Stack 100% Anthropic primary + Nebius fallback.
+ * Eliminado provider `gemma` (Ollama VPS deprecated en v0.10.29).
+ *
  * Pure: no side effects, no network, no reads of runtime env except via
  * the explicit `env` arg passed in. Makes it trivially testable.
  *
- * Strategies:
- *  - quality-first (default): Claude primary para titan/premium/reasoning,
- *    Nebius fallback. Standard → Nebius primary, Claude fallback.
- *    Economy → Gemma primary, Nebius fallback.
- *  - cost-first: Nebius primary para todo, Claude como ultimo fallback.
+ * Strategy actual:
+ *  - quality-first (default): Claude primary para TODOS los tiers, Nebius fallback.
+ *  - cost-first (opt-in): Nebius primary para todo, Claude como último fallback.
  *
- * Env overrides (CLAUDE_MODEL_TITAN, NEBIUS_MODEL_PREMIUM, etc.) permiten
- * cambiar modelos sin redeploy.
+ * Mapping tier → modelo Claude (default; override por env CLAUDE_MODEL_*):
+ *  - reasoning → Opus 4.6 (extended thinking habilitada)
+ *  - titan     → Opus 4.6
+ *  - premium   → Sonnet 4.6
+ *  - standard  → Sonnet 4.6
+ *  - economy   → Haiku 4.5
+ *
+ * Por qué quitamos gemma:
+ *  - Ollama (Gemma 4 e2b) consumía 2-4 GB RAM en VPS Hostinger
+ *  - Claude Haiku 4.5 es mejor calidad y cuesta <0,80€/1M tokens (irrelevante para nuestro volumen)
+ *  - 1 proveedor primario = menos puntos de fallo + más simple
  */
 
 export type LLMTier = "reasoning" | "titan" | "premium" | "standard" | "economy";
 export type LLMStrategy = "quality-first" | "cost-first";
-export type LLMProvider = "claude" | "nebius" | "gemma";
+export type LLMProvider = "claude" | "nebius";
 
 export interface ResolvedTier {
   /** Orden de providers a intentar. El primero es el primary. */
@@ -34,8 +44,8 @@ const DEFAULT_CLAUDE_MODELS: Record<LLMTier, string> = {
   reasoning: "claude-opus-4-6",
   titan: "claude-opus-4-6",
   premium: "claude-sonnet-4-6",
-  standard: "claude-haiku-4-5-20251001", // fallback only
-  economy: "claude-haiku-4-5-20251001",  // fallback only
+  standard: "claude-sonnet-4-6",
+  economy: "claude-haiku-4-5-20251001",
 };
 
 /** Defaults nebius — pueden override por env */
@@ -98,19 +108,12 @@ export function resolveTierToModel(
 
   let providerOrder: LLMProvider[];
 
-  if (tier === "economy") {
-    // Economy: siempre Gemma primero (gratis), luego Nebius, luego Claude
-    providerOrder = ["gemma", "nebius", "claude"];
-  } else if (strategy === "cost-first") {
-    // Cost-first: Nebius primary para todo
+  if (strategy === "cost-first") {
+    // Cost-first: Nebius primary para todo, Claude fallback
     providerOrder = ["nebius", "claude"];
   } else {
-    // Quality-first: Claude primary para reasoning/titan/premium, Nebius para standard
-    if (tier === "standard") {
-      providerOrder = ["nebius", "claude"];
-    } else {
-      providerOrder = ["claude", "nebius"];
-    }
+    // Quality-first (default): Claude primary SIEMPRE, Nebius fallback de resiliencia
+    providerOrder = ["claude", "nebius"];
   }
 
   // Extras: extended thinking solo cuando Claude es primary Y tier es reasoning
@@ -127,7 +130,6 @@ export function resolveTierToModel(
     models: {
       claude: cm,
       nebius: nm,
-      // gemma no tiene "model" parametrizable por tier — se configura en web/lib/gemma.ts
     },
     extras: Object.keys(extras).length > 0 ? extras : undefined,
   };

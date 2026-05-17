@@ -38,8 +38,8 @@ const TIER_DESC: Record<string, string> = {
   reasoning: "Claude Opus + extended thinking — DIOS, audits, decisiones criticas",
   titan: "Claude Opus — tareas high-stakes sin pensamiento visible",
   premium: "Claude Sonnet — client-facing (cold emails, chat, contact form, delivery)",
-  standard: "Nebius Qwen-80B — QA scoring, tareas internas con cierto rigor",
-  economy: "Gemma VPS gratis / Nebius Qwen-30B — DMs cortas, subject lines",
+  standard: "Claude Sonnet — QA scoring, tareas internas con cierto rigor",
+  economy: "Claude Haiku 4.5 — DMs cortas, subject lines, intent detection",
 };
 
 interface DailySpendRow {
@@ -198,8 +198,8 @@ export default function LlmCostsPage() {
                 Tracking LLM recien activado
               </h3>
               <p className="text-sm text-ink/60 leading-relaxed">
-                Esta vista registra cada llamada a modelos IA (Opus, Sonnet, Kimi,
-                DeepSeek, Qwen, Gemma). Aun no hay datos — los primeros calls
+                Esta vista registra cada llamada a modelos IA (Opus, Sonnet, Haiku,
+                Kimi, Qwen, Llama). Aun no hay datos — los primeros calls
                 apareceran aqui en segundos cuando el sistema genere algo:
                 outreach, chat, audit, delivery, DIOS...
               </p>
