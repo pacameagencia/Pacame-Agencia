@@ -24,7 +24,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
-import { embedBatch, toPgVector } from "@/lib/embed-ollama";
+import { embedBatch, toPgVector, modelInfo } from "@/lib/embed-openai";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -164,7 +164,6 @@ export async function GET() {
     ok: true,
     pending_total: data?.length ?? 0,
     pending_by_type: byType,
-    embed_model: process.env.EMBED_MODEL || "nomic-embed-text",
-    ollama_url: process.env.GEMMA_API_URL || "https://gemma.pacameagencia.com",
+    model: modelInfo(),
   });
 }
