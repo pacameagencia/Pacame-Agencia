@@ -22,7 +22,17 @@ if (!configPath) {
 }
 
 const cfg = JSON.parse(readFileSync(resolve(process.cwd(), configPath), 'utf8'));
-const tpl = readFileSync(resolve(root, 'templates/restaurante-base.html'), 'utf8');
+
+// Skin adaptativo por tipo de cocina. Fallback seguro a la plantilla base
+// si la skin no existe o no está reconocida (no rompe nunca).
+const SKIN_FILES = {
+  clean: 'templates/skin-clean.html',
+  editorial: 'templates/skin-editorial.html',
+  dark: 'templates/skin-dark.html',
+};
+const skinRel = SKIN_FILES[cfg.skin];
+const tplRel = skinRel && existsSync(resolve(root, skinRel)) ? skinRel : 'templates/restaurante-base.html';
+const tpl = readFileSync(resolve(root, tplRel), 'utf8');
 
 // Helpers
 const hexToRgb = (hex) => {
@@ -37,6 +47,16 @@ const pillarHtml = (p) => `
     <h3>${p.title}</h3>
     <p>${p.text}</p>
   </div>`;
+
+// Bloque "qué mejoro en VUESTRA web y por qué" (auditoría real personalizada)
+const escHtml = (s) => String(s == null ? '' : s)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const auditHtml = (a) => `
+  <div class="audit">
+    <span class="audit__n">${escHtml(a.n)}</span>
+    <div class="audit__body"><h3>${escHtml(a.what)}</h3><p>${escHtml(a.why)}</p></div>
+  </div>`;
+const improvements = Array.isArray(cfg.improvements) ? cfg.improvements : [];
 
 // Variables a sustituir
 const phoneTel = (cfg.phone || '').replace(/\s/g, '');
@@ -85,6 +105,10 @@ const replacements = {
   PILLAR_EYEBROW: cfg.pillar_eyebrow || 'Nuestra esencia',
   PILLAR_HEADING: cfg.pillar_heading,
   PILLAR_BLOCKS: cfg.pillars.map(pillarHtml).join('\n'),
+  IMPROVEMENTS_EYEBROW: cfg.improvements_eyebrow || 'Me he mirado la vuestra',
+  IMPROVEMENTS_HEADING: cfg.improvements_heading || 'Qué cambiaría en vuestra web (y por qué)',
+  IMPROVEMENTS_INTRO: cfg.improvements_intro || 'No es una plantilla: he entrado en lo que tenéis hoy. Esto es lo concreto que mejoro y el motivo.',
+  IMPROVEMENTS_BLOCKS: improvements.length ? improvements.map(auditHtml).join('\n') : '',
   // includes section (sustituye el bloque menu/reviews fake)
   INCLUDES_EYEBROW: cfg.includes_eyebrow || 'Lo que incluye',
   INCLUDES_HEADING: cfg.includes_heading || 'Vuestra web nueva, así de claro',

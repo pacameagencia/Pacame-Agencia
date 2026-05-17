@@ -21,7 +21,8 @@ import { hostname } from 'node:os';
 import { resolveMx } from 'node:dns/promises';
 import { createConnection } from 'node:net';
 import { createRequire } from 'node:module';
-import { pickHeroByType, pickPalette } from './menus.mjs';
+import { pickHeroByType, pickPalette, pickSkin } from './menus.mjs';
+import { auditSite, buildImprovements } from './site-audit.mjs';
 import { buildEmail } from './copy-variants.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -173,6 +174,10 @@ async function buildConfig(lead) {
   const palette = pickPalette(lead.slug);
   const hero_image = pickHeroByType(lead);
   const before_screenshot = await getWebScreenshot(lead.website || lead.web_url);
+  // Auditoría real de su web (fail-safe) → mejoras personalizadas + skin por tipo
+  const siteAudit = await auditSite(lead.website || lead.web_url);
+  const improvements = buildImprovements(lead, siteAudit);
+  const skin = pickSkin(lead);
   const isRegional = (lead.cuisine || '').toLowerCase().match(/regional|spanish|manchego|asturian|catalan|basque|gallego|valencian/);
   const isPub = lead.type === 'pub' || /beer|cerveza|brewery/i.test(lead.name);
   const isBrasa = /asador|brasa|grill|parrilla/i.test(lead.name);
@@ -227,6 +232,7 @@ async function buildConfig(lead) {
   const phoneClean = (lead.phone || '+34 900 000 000').trim();
   const phoneDisplay = phoneClean.replace(/^\+34\s?/, '').trim() || '900 000 000';
   return {
+    skin, improvements,
     slug: lead.slug, name: lead.name, tagline: pillarHeading,
     meta_desc: `${lead.name} en ${lead.city || 'España'}. Reservas y carta digital`,
     phone: phoneClean, phone_display: phoneDisplay,

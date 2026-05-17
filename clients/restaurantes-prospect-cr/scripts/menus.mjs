@@ -243,3 +243,17 @@ function hash(s) {
 }
 export const pickHero = (slug) => HEROS[hash(slug) % HEROS.length];
 export const pickPalette = (slug) => PALETTES[hash(slug + 'p') % PALETTES.length];
+
+// Skin adaptativo por tipo de cocina/local. 3 sistemas de diseño curados:
+//   dark      → fine-dining (asador, marisco, alta cocina, japonés)
+//   editorial → cálido tradicional (regional, mesón, tasca, casa de comidas)
+//   clean     → moderno limpio (resto: bar, café, pub, casual, sin cuisine)
+export function pickSkin(lead) {
+  const c = (lead.cuisine || '').toLowerCase();
+  const n = (lead.name || '').toLowerCase();
+  if (/seafood|fish|sushi|japanese|steak_house|barbecue|indian|marisc/.test(c) ||
+      /asador|brasa|parrilla|grill|marisquer|steak/.test(n)) return 'dark';
+  if (/regional|spanish|tapas|empanada|catalan|local|basque|gallego|valencian|manchego|asturian/.test(c) ||
+      /mes[oó]n|taberna|tasca|casa |venta |c[aá]ntico|bodeg[oó]n/.test(n)) return 'editorial';
+  return 'clean';
+}
