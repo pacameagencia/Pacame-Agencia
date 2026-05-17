@@ -45,6 +45,23 @@ const pg = new Client({ connectionString: DATABASE_URL, ssl: { rejectUnauthorize
 await pg.connect();
 console.log('[webhooks] pg connected');
 
+// === Telegram notify (speed-to-lead a Pablo) ===
+const TG_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+const TG_CHAT = process.env.TELEGRAM_CHAT_ID || '';
+if (!TG_TOKEN || !TG_CHAT) console.warn('[notify] TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID ausente — avisos a Pablo desactivados');
+async function notifyPablo(text) {
+  if (!TG_TOKEN || !TG_CHAT) return;
+  try {
+    const r = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TG_CHAT, text, parse_mode: 'HTML', disable_web_page_preview: true }),
+    });
+    if (!r.ok) console.error('[notify] telegram HTTP', r.status);
+  } catch (e) { console.error('[notify] telegram error:', e.message); }
+}
+const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
 // === Svix signature verify ===
 function verifySvix(rawBody, headers, secrets) {
   const svixId = headers['svix-id'];
@@ -143,7 +160,106 @@ async function processEvent(event) {
 }
 
 // === HTTP server ===
+// Guard global: un rechazo/excepción sin capturar NO debe tumbar el server
+process.on('unhandledRejection', (r) => console.error('[webhooks] unhandledRejection:', r?.message || r));
+process.on('uncaughtException', (e) => console.error('[webhooks] uncaughtException:', e?.message || e));
+
+const PABLO_WA_NUM = '34722669381';
+
+function intentPage({ ok, title, body, waHref }) {
+  const cta = waHref
+    ? `<a href="${waHref}" style="display:inline-block;margin-top:22px;padding:14px 26px;background:#25d366;color:#fff;border-radius:50px;font-weight:700;text-decoration:none;">📱 Abrir WhatsApp con Pablo</a>`
+    : '';
+  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title></head>
+<body style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f7f5f0;margin:0;color:#222;">
+<div style="max-width:520px;margin:0 auto;padding:64px 24px;text-align:center;">
+<div style="font-size:48px;line-height:1;margin-bottom:18px;">${ok ? '✅' : '👋'}</div>
+<h1 style="font-size:24px;margin:0 0 12px;">${title}</h1>
+<p style="font-size:16px;line-height:1.6;color:#444;margin:0;">${body}</p>
+${cta}
+<p style="margin-top:40px;font-size:12px;color:#999;">PACAME · pacameagencia.com</p>
+</div></body></html>`;
+}
+
 const server = createServer((req, res) => {
+  // GET /intent/<slug>/<yes|no> — captura intención de 1 clic desde el demo
+  {
+    const m = req.method === 'GET' && req.url.match(/^\/intent\/([a-z0-9-]+)\/(yes|no)\b/);
+    if (m) {
+      const slug = m[1];
+      const decision = m[2];
+      const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || '';
+      const ua = req.headers['user-agent'] || '';
+      const isBot = /googlebot|googleimageproxy|prefetch|preview|scanner|crawler|bot\b/i.test(ua);
+      (async () => {
+        let lead = null;
+        try {
+          const r = await pg.query('select id, name, phone, city, email from prospect_leads where slug=$1 limit 1', [slug]);
+          lead = r.rows[0] || null;
+        } catch (e) { console.error('[intent] query error:', e.message); }
+
+        if (decision === 'yes') {
+          const name = lead?.name || slug;
+          const cityPart = lead?.city ? ` en ${lead.city}` : '';
+          const waText = `Hola Pablo, soy de ${name}${cityPart}. Dije que sí en la demo, ¿hablamos?`;
+          const waHref = `https://wa.me/${PABLO_WA_NUM}?text=${encodeURIComponent(waText)}`;
+          const html = intentPage({
+            ok: true,
+            title: 'Hecho. Pablo os escribe hoy.',
+            body: 'Gracias por decir que sí. Pablo os contacta hoy mismo para contaros cómo dejamos la web vuestra de verdad. Sin compromiso.',
+            waHref,
+          });
+          res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+          res.end(html);
+          if (lead && !isBot) {
+            try {
+              await pg.query(
+                "update prospect_leads set reply_intent='cta_yes', wa_consent=true, wa_consent_at=now(), wa_consent_source='demo_intent_yes', replied_at=coalesce(replied_at, now()), status=case when status='won' then status else 'replied' end where id=$1",
+                [lead.id]
+              );
+              await pg.query(
+                "insert into email_events (lead_id, event_type, occurred_at, raw, user_agent, ip) values ($1, 'demo.intent_yes', now(), $2, $3, $4)",
+                [lead.id, JSON.stringify({ slug, decision }), ua, ip]
+              );
+              console.log(`[intent] ${slug} YES`);
+              await notifyPablo(
+                `🔥 <b>SÍ en la demo</b>\n<b>${esc(lead.name || slug)}</b>${lead.city ? ' · ' + esc(lead.city) : ''}\n` +
+                `📞 ${esc(lead.phone || '—')}\n✉️ ${esc(lead.email || '—')}\n` +
+                `🔗 https://demos.pacameagencia.com/${esc(slug)}/\n\nEscríbele YA por WhatsApp.`
+              );
+            } catch (e) { console.error('[intent] yes update error:', e.message); }
+          }
+          return;
+        }
+
+        // decision === 'no'
+        const html = intentPage({
+          ok: false,
+          title: 'Gracias por decirlo.',
+          body: 'Os quitamos de la lista ahora mismo. No recibiréis más correos nuestros. Suerte con el local.',
+          waHref: null,
+        });
+        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+        res.end(html);
+        if (lead && !isBot) {
+          try {
+            await pg.query(
+              "update prospect_leads set reply_intent='stop', do_not_contact=true, do_not_contact_reason='demo: boton no', unsubscribed_at=coalesce(unsubscribed_at, now()), status='unsubscribed' where id=$1",
+              [lead.id]
+            );
+            await pg.query(
+              "insert into email_events (lead_id, event_type, occurred_at, raw, user_agent, ip) values ($1, 'demo.intent_no', now(), $2, $3, $4)",
+              [lead.id, JSON.stringify({ slug, decision }), ua, ip]
+            );
+            console.log(`[intent] ${slug} NO`);
+            await notifyPablo(`👋 <b>NO en la demo</b> · ${esc(lead.name || slug)}${lead.city ? ' · ' + esc(lead.city) : ''} — fuera de lista.`);
+          } catch (e) { console.error('[intent] no update error:', e.message); }
+        }
+      })();
+      return;
+    }
+  }
+
   // GET /c/<slug> — click tracking endpoint (registra click + 301 redirect al demo)
   if (req.method === 'GET' && req.url.match(/^\/c\/([a-z0-9-]+)/)) {
     const slug = req.url.match(/^\/c\/([a-z0-9-]+)/)[1];
@@ -155,23 +271,30 @@ const server = createServer((req, res) => {
     // Async DB
     (async () => {
       try {
-        const r = await pg.query('select id from prospect_leads where slug=$1 limit 1', [slug]);
-        const leadId = r.rows[0]?.id;
-        if (!leadId) return;
+        const r = await pg.query('select id, name, city, phone, first_clicked_at from prospect_leads where slug=$1 limit 1', [slug]);
+        const lead = r.rows[0];
+        if (!lead) return;
         const isBot = /googlebot|googleimageproxy|prefetch|preview|scanner|crawler|bot\b/i.test(ua);
         if (isBot) {
           console.log(`[click] ${slug} bot UA=${ua.slice(0,50)}`);
           return;
         }
+        const wasFirstClick = !lead.first_clicked_at;
         await pg.query(
           "insert into email_events (lead_id, event_type, occurred_at, raw, user_agent, ip) values ($1, 'email.clicked', now(), $2, $3, $4)",
-          [leadId, JSON.stringify({ source: 'custom_click', slug, target: '/' + slug + '/' }), ua, ip]
+          [lead.id, JSON.stringify({ source: 'custom_click', slug, target: '/' + slug + '/' }), ua, ip]
         );
         await pg.query(
           "update prospect_leads set first_clicked_at=coalesce(first_clicked_at,now()), last_clicked_at=now(), click_count=click_count+1, status=case when status in ('replied','won') then status else 'clicked' end where id=$1",
-          [leadId]
+          [lead.id]
         );
         console.log(`[click] ${slug} CLICK tracked`);
+        if (wasFirstClick) {
+          await notifyPablo(
+            `👀 <b>Entró a la demo</b>\n<b>${esc(lead.name || slug)}</b>${lead.city ? ' · ' + esc(lead.city) : ''}\n` +
+            `📞 ${esc(lead.phone || '—')}\n🔗 https://demos.pacameagencia.com/${esc(slug)}/\n\nEstá mirándola ahora. Buen momento para un WhatsApp.`
+          );
+        }
       } catch (e) { console.error('[click] error:', e.message); }
     })();
     return;
@@ -233,13 +356,17 @@ const server = createServer((req, res) => {
       let leadName = null;
       let leadId = null;
       let leadCity = null;
+      let leadPhone = null;
+      let leadEmail = null;
       if (slug) {
         try {
-          const r = await pg.query('select id, name, phone, city from prospect_leads where slug=$1 limit 1', [slug]);
+          const r = await pg.query('select id, name, phone, city, email from prospect_leads where slug=$1 limit 1', [slug]);
           if (r.rows[0]) {
             leadId = r.rows[0].id;
             leadName = r.rows[0].name;
             leadCity = r.rows[0].city;
+            leadPhone = r.rows[0].phone;
+            leadEmail = r.rows[0].email;
           }
         } catch (e) { console.error('[contact] query error:', e.message); }
       }
@@ -268,6 +395,12 @@ const server = createServer((req, res) => {
             [leadId, 'demo.cta_click', JSON.stringify({ slug, type, lead_name: leadName }), ua, ip]
           );
           console.log(`[contact] ${slug} <- ${type} click (${leadName})`);
+          await notifyPablo(
+            `🔥 <b>Abrió ${type === 'wa' ? 'WhatsApp' : 'email'} desde la demo</b>\n` +
+            `<b>${esc(leadName || slug)}</b>${leadCity ? ' · ' + esc(leadCity) : ''}\n` +
+            `📞 ${esc(leadPhone || '—')}\n✉️ ${esc(leadEmail || '—')}\n` +
+            `🔗 https://demos.pacameagencia.com/${esc(slug)}/\n\nLead caliente. Contesta rápido.`
+          );
         } catch (e) { console.error('[contact] update error:', e.message); }
       }
     })();
