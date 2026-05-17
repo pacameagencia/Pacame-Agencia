@@ -538,7 +538,10 @@ async function isEmailValid(email) {
 
 // === Get next pending lead ===
 async function getNextPending() {
-  const leads = JSON.parse(readFileSync(resolve(root, 'data/leads-spain-email.json'), 'utf8'));
+  // Lista cualificada estricta (RCPT 250/251 verificado) si existe; si no, cruda.
+  const QUALIFIED = resolve(root, 'data/leads-qualified.json');
+  const LEADS_FILE = existsSync(QUALIFIED) ? QUALIFIED : resolve(root, 'data/leads-spain-email.json');
+  const leads = JSON.parse(readFileSync(LEADS_FILE, 'utf8'));
   // Excluir los ya enviados según DB
   const sentRes = await pg.query(`select lower(email) as email from prospect_leads where sent_at is not null or do_not_contact = true`);
   const sentSet = new Set(sentRes.rows.map((row) => row.email));
