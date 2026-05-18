@@ -215,7 +215,9 @@ export async function nebiusCopyBatch(
 }
 
 /**
- * Helper: clasificar texto con Nebius (alternativa a gemmaClassify).
+ * Helper: clasificar texto con Nebius como tier economy.
+ * (Sprint v0.10.38: prefer `llmChat({ tier: "economy" })` que rutea a Claude
+ * Haiku 4.5 primary + este nebiusClassify como fallback automático.)
  */
 export async function nebiusClassify(
   text: string,

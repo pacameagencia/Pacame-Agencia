@@ -66,25 +66,9 @@ export const envRegistry = {
     provider: "Nebius",
     example: "https://api.tokenfactory.nebius.com/v1",
   },
-  // ⚠️ DEPRECATED v0.10.29 (2026-05-17): Gemma/Ollama eliminado del stack.
-  // Embeddings → OpenAI text-embedding-3-large (embed-openai.ts).
-  // LLM economy tier → Claude Haiku 4.5 (resolver.ts v0.10.30).
-  // Mantenemos las vars en el registry para que las migraciones legacy no se
-  // rompan al leer env, pero no las usa ningún call site activo.
-  GEMMA_API_TOKEN: {
-    category: "llm",
-    description: "[DEPRECATED v0.10.29] Gemma VPS — sustituido por OpenAI + Claude Haiku 4.5",
-    required_in: [],
-    provider: "PACAME VPS (legacy)",
-    example: "",
-  },
-  GEMMA_API_URL: {
-    category: "llm",
-    description: "[DEPRECATED v0.10.29] endpoint Gemma — ya no se usa",
-    required_in: [],
-    provider: "PACAME VPS (legacy)",
-    example: "",
-  },
+  // (Sprint v0.10.38: GEMMA_API_TOKEN + GEMMA_API_URL eliminadas del registry.
+  // Stack 100% Anthropic + Nebius fallback desde v0.10.30. embed-openai desde
+  // v0.10.29. Ollama VPS deprecated y será apagado en migración Contabo.)
   GEMINI_API_KEY: {
     category: "llm",
     description: "Google Gemini API — backup multimodal",
