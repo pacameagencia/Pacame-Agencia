@@ -71,7 +71,7 @@ Cada output entregable (frontend, copy, video, branding, backend) pasa por **3 c
 web/                   → Next.js app (frontend + API routes)
 agents/                → Prompts completos de los 10 agentes PACAME
 agency-agents/         → 120+ subespecialistas (referencia)
-clients/               → Capa 2 — clientes B2B (royo, talleresjaula, ecomglobalbox, casa-marisol)
+clients/               → Capa 2 — clientes B2B (royo, talleresjaula, ecomglobalbox, casa-marisol, caleta, grupo-mlia)
 workflows/             → SOPs en Markdown (WAT framework)
 strategy/              → Roadmap, pricing, personas, visual-toolkit
 infra/                 → Scripts de despliegue y VPS
@@ -117,6 +117,7 @@ docs/                  → Protocolos, identidad, integraciones (cargados bajo d
 | Talleres Jaula | [`clients/talleresjaula/`](clients/talleresjaula/) | Activo (PIVOT 2026-04-29 a Shopify) |
 | Ecomglobalbox | [`clients/ecomglobalbox/`](clients/ecomglobalbox/) | Activo (Stripe+Lauth, Laravel 12) |
 | Casa Marisol | [`clients/casa-marisol/`](clients/casa-marisol/) | Test E2E Factoría completado |
+| Grupo MLIA | [`clients/grupo-mlia/`](clients/grupo-mlia/) | Activo (alta 2026-05-18 — WP mantenimiento + SEO + contenido) |
 
 > Convención de carpeta cliente: ver [`clients/README.md`](clients/README.md).
 
