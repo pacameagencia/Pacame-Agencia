@@ -97,9 +97,10 @@ function diagnose(lead, audit) {
 
 function waMessage(lead, contact, diag, demoUrl) {
   const hi = contact.owner_name ? `Hola ${contact.owner_name}` : 'Hola';
+  const cap = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
   const intro = diag.kind === 'sin-web'
-    ? `vi que ${lead.name} ${diag.finding}`
-    : `vi la web de ${lead.name} y ${diag.finding}`;
+    ? `He buscado a ${lead.name}: ${diag.finding}`
+    : `Le he echado un ojo a la web de ${lead.name}. ${cap(diag.finding)}`;
   return `${hi}, soy Pablo (PACAME). ${intro}. Sin que me lo pidierais os he montado una propuesta nueva — echadle un ojo, mejor desde el móvil:\n${demoUrl}\n\nSi os encaja, hablamos. Si no es lo vuestro, me lo decís y no insisto. Un saludo.`;
 }
 
