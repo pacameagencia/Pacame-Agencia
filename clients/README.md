@@ -53,7 +53,7 @@ clients/
 5. Si hay assets → vivir en `assets/` (jpegs, pngs, mockups).
 6. Cada sprint cerrado → entrada en `history/YYYY-MM-DD-<sprint>.md`.
 
-## Clientes activos (a 2026-05-13)
+## Clientes activos (a 2026-05-18)
 
 | Cliente | Slug | Estado | Sprint actual | Memoria |
 |---------|------|--------|---------------|---------|
@@ -62,3 +62,4 @@ clients/
 | Ecomglobalbox | `ecomglobalbox` | Activo (Stripe+Lauth, Laravel 12) | Mantenimiento | `project_ecomglobalbox_client.md` |
 | Casa Marisol | `casa-marisol` | Test E2E Factoría completado | Shipped 3/3 | `project_factoria_*.md` |
 | La Caleta Manchega | `caleta` | Activo (reclasificado de Capa 4 a Capa 2 el 2026-05-13) | Sprint 0 — fix canonical SEO `.com` ↔ `.es` | `project_caleta_client.md` |
+| Grupo MLIA | `grupo-mlia` | Activo (alta 2026-05-18 — mantenimiento WP + SEO + contenido) | Sprint 0 — onboarding WP (Yoast, sin WooCommerce) | `project_grupo_mlia_client.md` |
