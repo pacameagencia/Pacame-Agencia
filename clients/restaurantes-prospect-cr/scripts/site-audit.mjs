@@ -23,6 +23,50 @@ function hash(s) {
 // Elige una de varias redacciones equivalentes de forma estable por slug
 const variant = (slug, key, arr) => arr[hash(slug + key) % arr.length];
 
+// Normaliza a móvil español WhatsApp (34XXXXXXXXX) o null si no es móvil 6/7.
+export function esMobile(raw) {
+  let d = String(raw || '').replace(/[^\d]/g, '').replace(/^00/, '');
+  if (d.length === 9 && /^[67]/.test(d)) return '34' + d;
+  if (d.length === 11 && d.startsWith('34') && /^34[67]/.test(d)) return d;
+  if (d.length === 12 && d.startsWith('340')) { const x = '34' + d.slice(3); if (/^34[67]/.test(x)) return x; }
+  return null;
+}
+
+const NAME_STOP = /^(cocina|carta|men[uú]|nuestra|nuestro|inicio|reservas?|contacto|bienvenid|restaurante|especialidad|historia|sobre|equipo|gracias|familia|tradici|calidad|productos?|servicio|eventos?|grupo|local|casa|bar|el|la|los|las|de|del)$/i;
+
+// Extrae contacto REAL de su web (caja original). Nunca inventa: solo matches.
+export function extractContact(rawHtml) {
+  const out = { waSite: null, telMobiles: [], instagram: null, ownerName: null };
+  if (!rawHtml) return out;
+  const lo = rawHtml.toLowerCase();
+
+  const wa = lo.match(/(?:wa\.me\/|api\.whatsapp\.com\/send\?phone=|whatsapp\.com\/send\?phone=|wa\.link\/)(\+?\d[\d\s]{6,16})/);
+  if (wa) out.waSite = esMobile(wa[1]) || (/^\+?34\d{9}$/.test(wa[1].replace(/\s/g, '')) ? wa[1].replace(/[^\d]/g, '') : null);
+
+  const tels = [...lo.matchAll(/href=["']tel:([+\d\s().-]{7,20})/g)].map((m) => esMobile(m[1])).filter(Boolean);
+  out.telMobiles = [...new Set(tels)];
+
+  const ig = lo.match(/instagram\.com\/([a-z0-9_.]{2,30})/);
+  if (ig && !/^(p|reel|reels|explore|accounts|stories|about|tv)$/.test(ig[1])) out.instagram = ig[1];
+
+  // Nombre del dueño — solo si la web lo dice explícitamente (texto sin tags)
+  const text = rawHtml.replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/gi, ' ').replace(/\s+/g, ' ');
+  const pats = [
+    /(?:propietari[oa]|due[ñn][oa]|gerente|al frente|chef\s+(?:y\s+)?(?:propietari[oa])?|regentad[oa]\s+por)\s*[:,-]?\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]{2,}(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{2,}){0,2})/,
+    /\bfamilia\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]{3,})/,
+    /\bsoy\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]{2,}),?\s+(?:el|la)?\s*(?:due[ñn]|propietari|chef)/i,
+  ];
+  for (const p of pats) {
+    const m = text.match(p);
+    if (m && m[1]) {
+      const cand = m[1].trim();
+      const first = cand.split(' ')[0];
+      if (cand.length <= 40 && !NAME_STOP.test(first)) { out.ownerName = cand; break; }
+    }
+  }
+  return out;
+}
+
 export async function auditSite(rawUrl, timeoutMs = 7000) {
   const empty = { reachable: false };
   if (!rawUrl || typeof rawUrl !== 'string') return empty;
@@ -42,7 +86,8 @@ export async function auditSite(rawUrl, timeoutMs = 7000) {
     const buf = await res.arrayBuffer();
     const sec = +((Date.now() - t0) / 1000).toFixed(1);
     const kb = Math.round(buf.byteLength / 1024);
-    const html = Buffer.from(buf).slice(0, 600 * 1024).toString('utf8').toLowerCase();
+    const rawHtml = Buffer.from(buf).slice(0, 600 * 1024).toString('utf8');
+    const html = rawHtml.toLowerCase();
     if (!res.ok && !html) return empty;
 
     const has = (re) => re.test(html);
@@ -65,6 +110,7 @@ export async function auditSite(rawUrl, timeoutMs = 7000) {
       builder,
       sec,
       kb,
+      contact: extractContact(rawHtml),
     };
   } catch {
     return empty;
@@ -113,8 +159,8 @@ export function buildImprovements(lead, audit) {
 
   // Con web: solo afirmo lo que la auditoría detecta de verdad, sin exagerar.
   if (audit.sec >= 3.2) add(
-    'Vuestro servidor responde lento',
-    'Lo he medido: el servidor tarda en contestar, y eso se suma a lo que el cliente espera en su móvil antes de ver nada. La dejo rápida de origen.'
+    'El servidor tardó en responder al revisarla',
+    'Al auditarla desde fuera fue lenta en contestar. Si se repite para vuestros clientes, hay margen real. La dejo rápida de origen.'
   );
   if (!audit.responsive) add(
     'Le falta la configuración básica de móvil',
