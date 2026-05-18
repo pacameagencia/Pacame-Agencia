@@ -4,8 +4,11 @@
 - **Nombre comercial:** Grupo MLIA
 - **Razón social:** (pendiente — completar en vault)
 - **Capa:** 2 (cliente B2B externo)
-- **Industria:** Catering y eventos (marca "M-Lía" — catering, venta de
-  entradas/eventos; web corporativa, sin tienda online). Confirmar detalle con Pablo.
+- **Industria:** Hostelería y ocio local en **Hellín (Albacete)** — grupo
+  multi-vertical con locales propios: restaurante (cocina mediterránea, menú
+  del día), eventos (bodas/comuniones/empresa), catering, discoteca "Manía",
+  terraza, piscina, crepería "Chocolate y Menta", venta de entradas. Sede:
+  Avenida Castilla-La Mancha 1, Hellín. Web corporativa, sin tienda online.
 - **Web cliente:** https://grupomlia.com
 - **Plataforma:** WordPress + Yoast SEO (sin WooCommerce)
 
@@ -33,8 +36,12 @@
 ## Estado
 - **Estado:** activo.
 - **Alta:** 2026-05-18 (modelo Royo — capa de mantenimiento WP PACAME).
-- **Última intervención:** 2026-05-18 (onboarding).
-- **Próximo hito:** Sprint 1 — auditoría SEO técnica Yoast + plan de contenido.
+- **Última intervención:** 2026-05-18 (onboarding + auditoría inicial).
+- **Auditoría:** [`docs/auditoria-2026-05-18.md`](docs/auditoria-2026-05-18.md)
+  — negocio entendido, 13 hallazgos priorizados (P0 legal RGPD + restos demo,
+  P1 14 meta descriptions faltantes + SEO local, P2 deuda Elementor).
+- **Próximo hito:** Sprint 1 — saneo legal/demo + quick wins SEO Yoast
+  (14 meta desc + titles con keyword local + 301 slug catering).
 
 ## Stack del cliente
 - WordPress (REST API estándar `wp/v2`).
@@ -66,7 +73,8 @@
 ## Scripts en este cliente
 ```
 clients/grupo-mlia/scripts/
-└── onboard.mjs   # alta one-off: upsert clients + insert client_websites cifrado + test conexión
+├── onboard.mjs   # alta one-off: upsert clients + insert client_websites cifrado + test conexión
+└── audit.mjs     # auditoría read-only WP (estructura, CPTs, SEO Yoast, HTML) → JSON + digest
 ```
 Lee credenciales de `web/.env.local` (`SUPABASE_SERVICE_ROLE_KEY`,
 `NEXT_PUBLIC_SUPABASE_URL`, `WP_SECRET_KEY`, `MLIA_WP_*`). Ver `runbook.md`.
