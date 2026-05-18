@@ -79,7 +79,7 @@ const AGENT_COLORS: Record<string, string> = {
 const PROVIDER_COLORS: Record<string, string> = {
   claude: "#C67B5C",
   nebius: "#3B82F6",
-  gemma: "#10B981",
+  openai: "#10B981", // Sprint v0.10.38: era "gemma", ahora OpenAI (embeddings)
 };
 
 function fmtNum(n: number): string {
