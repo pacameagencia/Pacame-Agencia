@@ -159,8 +159,8 @@ export function buildImprovements(lead, audit) {
 
   // Con web: solo afirmo lo que la auditoría detecta de verdad, sin exagerar.
   if (audit.sec >= 3.2) add(
-    'Vuestro servidor responde lento',
-    'Lo he medido: el servidor tarda en contestar, y eso se suma a lo que el cliente espera en su móvil antes de ver nada. La dejo rápida de origen.'
+    'El servidor tardó en responder al revisarla',
+    'Al auditarla desde fuera fue lenta en contestar. Si se repite para vuestros clientes, hay margen real. La dejo rápida de origen.'
   );
   if (!audit.responsive) add(
     'Le falta la configuración básica de móvil',

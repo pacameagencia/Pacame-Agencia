@@ -83,15 +83,15 @@ const hasOsmMobile = (l) => String(l.phone || '').split(/[;,/]+/).some((p) => {
 // Gravedad de la web (peor = mejor target) + hallazgo honesto principal
 function diagnose(lead, audit) {
   if (!audit || !audit.reachable) {
-    return { score: 55, finding: `no tenéis web propia y quien os busca acaba en otro sitio`, kind: 'sin-web' };
+    return { score: 55, finding: `no tenéis web propia y quien os busca solo encuentra fichas de terceros (Maps, TripAdvisor...)`, kind: 'sin-web' };
   }
   let score = 8; const f = [];
   if (audit.pdfMenu) { score += 16; f.push('la carta es un PDF que en el móvil no hay quien lo lea'); }
-  if (!audit.responsive) { score += 30; f.push('la web no está adaptada al móvil'); }
+  if (!audit.responsive) { score += 30; f.push('a la web le falta la configuración básica de móvil y puede no verse bien en el teléfono'); }
   if (!audit.https) { score += 26; f.push('la web no tiene candado de seguridad y Chrome la marca insegura'); }
   if (!audit.hasReservation && !audit.hasWhatsapp) { score += 14; f.push('no hay forma de reservar sin llamar'); }
-  if (audit.builder) { score += 10; f.push(`la web está en plantilla de ${audit.builder}`); }
-  if (audit.sec >= 3.2) { score += 14; f.push('la web va lenta al abrir'); }
+  if (audit.builder) { score += 10; f.push(`la web está montada en plantilla de ${audit.builder}`); }
+  if (audit.sec >= 3.2) { score += 14; f.push('la web tardó varios segundos en cargar cuando la revisé'); }
   return { score, finding: f[0] || 'a la web se le puede sacar bastante más partido', kind: f.length ? 'web-rota' : 'web-ok' };
 }
 
@@ -146,6 +146,8 @@ const rows = [];
 for (const r of ranked) {
   const { lead, contact, diag } = r;
   try {
+    // Guard defensa: slug solo kebab-case (va a execSync + rutas de fichero)
+    if (!/^[a-z0-9-]{1,80}$/.test(lead.slug || '')) { console.warn(`  [skip] slug inválido: ${lead.slug}`); continue; }
     const cfg = await buildConfig(lead);
     writeFileSync(resolve(root, `data/${lead.slug}.json`), JSON.stringify(cfg, null, 2));
     execSync(`node "${resolve(root, 'scripts/generate-demo.mjs')}" "${resolve(root, `data/${lead.slug}.json`)}"`, { stdio: 'pipe' });
